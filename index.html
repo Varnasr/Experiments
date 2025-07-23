@@ -1,0 +1,1805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FWI Task Management Tool</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background-color: #f8fafb;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e40af 0%, #1d4ed8 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(30, 64, 175, 0.15);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 1fr 300px;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid #e5e7eb;
+        }
+
+        .card h2 {
+            color: #1f2937;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            font-weight: 600;
+            border-bottom: 2px solid #3b82f6;
+            padding-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-small {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .btn-small:hover {
+            background: #1d4ed8;
+        }
+
+        .position-card {
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            border: 1px solid #3b82f6;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: transform 0.2s ease;
+        }
+
+        .position-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .position-name {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .risk-indicator {
+            padding: 0.2rem 0.4rem;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .risk-low { background: #d1fae5; color: #059669; }
+        .risk-medium { background: #fed7aa; color: #ea580c; }
+        .risk-high { background: #fecaca; color: #dc2626; }
+
+        .role-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .role-spm { background: #dbeafe; color: #1e40af; }
+        .role-pm { background: #e0e7ff; color: #4338ca; }
+        .role-spa { background: #dcfce7; color: #16a34a; }
+        .role-fm { background: #fef3c7; color: #d97706; }
+        .role-pa { background: #f3e8ff; color: #7c3aed; }
+        .role-proj { background: #fecaca; color: #dc2626; }
+
+        .capabilities {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 0.5rem 0;
+        }
+
+        .capability {
+            background: rgba(59, 130, 246, 0.1);
+            color: #1d4ed8;
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .workload-section {
+            margin-top: 1rem;
+        }
+
+        .workload-display {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .workload-bar {
+            width: 120px;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            margin-right: 1rem;
+            overflow: hidden;
+        }
+
+        .workload-fill {
+            height: 100%;
+            transition: width 0.3s ease;
+            border-radius: 4px;
+        }
+
+        .workload-low { background: #10b981; }
+        .workload-medium { background: #f59e0b; }
+        .workload-high { background: #ef4444; }
+
+        .task-selection {
+            margin-top: 0.5rem;
+        }
+
+        .task-checkbox {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.3rem;
+            padding: 0.3rem;
+            border-radius: 6px;
+            transition: background-color 0.2s ease;
+        }
+
+        .task-checkbox:hover {
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .task-checkbox input[type="checkbox"] {
+            margin-right: 0.5rem;
+            transform: scale(1.2);
+            accent-color: #3b82f6;
+        }
+
+        .task-checkbox label {
+            font-size: 0.85rem;
+            color: #4a5568;
+            cursor: pointer;
+            flex-grow: 1;
+        }
+
+        .task-complexity {
+            font-size: 0.7rem;
+            padding: 0.1rem 0.4rem;
+            border-radius: 10px;
+            margin-left: 0.5rem;
+        }
+
+        .complexity-1 { background: #d1fae5; color: #059669; }
+        .complexity-2 { background: #fed7aa; color: #ea580c; }
+        .complexity-3 { background: #fecaca; color: #dc2626; }
+
+        .status-indicators {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .status-btn {
+            padding: 0.2rem 0.5rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .status-not-started { background: #f3f4f6; color: #6b7280; }
+        .status-in-progress { background: #dbeafe; color: #1d4ed8; }
+        .status-completed { background: #d1fae5; color: #059669; }
+        .status-blocked { background: #fecaca; color: #dc2626; }
+
+        .form-section {
+            grid-column: 1 / -1;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 1rem;
+            align-items: end;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 1rem;
+            border-radius: 12px;
+            transition: transform 0.2s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            font-weight: 500;
+            opacity: 0.8;
+        }
+
+        .stat-total { background: #fef3c7; color: #d97706; }
+        .stat-assigned { background: #dcfce7; color: #16a34a; }
+        .stat-urgent { background: #fecaca; color: #dc2626; }
+        .stat-evaluation { background: #e0e7ff; color: #4338ca; }
+
+        .available-tasks {
+            grid-column: 1 / -1;
+        }
+
+        .task-pool {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .predefined-task {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 1rem;
+            transition: border-color 0.3s ease, transform 0.2s ease;
+            cursor: pointer;
+        }
+
+        .predefined-task:hover {
+            border-color: #3b82f6;
+            transform: translateY(-2px);
+        }
+
+        .predefined-task.selected {
+            border-color: #3b82f6;
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+        }
+
+        .task-title {
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .task-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: #6b7280;
+        }
+
+        .task-category {
+            background: rgba(59, 130, 246, 0.1);
+            color: #1d4ed8;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+        }
+
+        .deadline-indicator {
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+
+        .deadline-overdue { background: #fecaca; color: #dc2626; }
+        .deadline-urgent { background: #fed7aa; color: #ea580c; }
+        .deadline-soon { background: #fef3c7; color: #d97706; }
+        .deadline-normal { background: #e0e7ff; color: #4338ca; }
+
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem;
+            border-left: 3px solid;
+            margin-bottom: 0.5rem;
+            background: #f8fafc;
+            border-radius: 0 6px 6px 0;
+            font-size: 0.85rem;
+        }
+
+        .timeline-overdue { border-left-color: #dc2626; background: #fef2f2; }
+        .timeline-urgent { border-left-color: #ea580c; background: #fff7ed; }
+        .timeline-soon { border-left-color: #d97706; background: #fffbeb; }
+
+        .timeline-date {
+            font-weight: 600;
+            margin-right: 0.75rem;
+            min-width: 80px;
+        }
+
+        .timeline-task {
+            flex-grow: 1;
+            color: #374151;
+        }
+
+        .critical-path {
+            border-left: 4px solid #dc2626;
+            padding-left: 0.5rem;
+        }
+
+        .skills-gap {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 6px;
+            padding: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .recommendation-section {
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .recommendation-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem;
+            background: white;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+            border: 1px solid #e0f2fe;
+        }
+
+        .progress-section {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e5e7eb;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+            transition: width 0.3s ease;
+        }
+
+        .export-section {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: white;
+            border-radius: 12px;
+            padding: 1rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            min-width: 200px;
+            z-index: 1000;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            width: 90%;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #6b7280;
+        }
+
+        @media (max-width: 1200px) {
+            .dashboard {
+                grid-template-columns: 1fr 1fr;
+            }
+            .export-section {
+                position: relative;
+                top: auto;
+                right: auto;
+                margin-bottom: 1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🐟 FWI Task Management Tool</h1>
+        <p>Comprehensive Task Distribution for Team Transitions</p>
+    </div>
+
+    <div class="container">
+        <!-- Export Actions -->
+        <div class="export-section">
+            <h3 style="font-size: 1rem; margin-bottom: 0.5rem; color: #1f2937;">📊 Export & Tools</h3>
+            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                <button class="btn-small" onclick="exportToPDF()">📄 Export PDF</button>
+                <button class="btn-small" onclick="exportToCSV()">📊 Export CSV</button>
+                <button class="btn-small" onclick="generateAgenda()">📋 Meeting Agenda</button>
+                <button class="btn-small" onclick="generateEmails()">📧 Email Templates</button>
+                <button class="btn-small" onclick="showHandoverChecklist()">✅ Handover Checklist</button>
+            </div>
+        </div>
+
+        <div class="dashboard">
+            <!-- Team Overview -->
+            <div class="card">
+                <h2>
+                    👥 Team Positions & Availability
+                    <div class="card-actions">
+                        <button class="btn-small" onclick="analyzeRisks()">⚠️ Analyze Risks</button>
+                        <button class="btn-small" onclick="showRecommendations()">🎯 Get Recommendations</button>
+                    </div>
+                </h2>
+                <div id="teamPositions">
+                    <!-- Positions will be populated here -->
+                </div>
+                
+                <!-- Overall Progress -->
+                <div class="progress-section">
+                    <h3 style="font-size: 1rem; margin-bottom: 0.5rem;">📈 Handover Progress</h3>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="overallProgress" style="width: 0%"></div>
+                    </div>
+                    <div style="font-size: 0.85rem; color: #6b7280;" id="progressText">0% of tasks assigned</div>
+                </div>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="card">
+                <h2>📊 Distribution Overview</h2>
+                <div class="stats-grid">
+                    <div class="stat-card stat-total">
+                        <div class="stat-number" id="totalTasks">0</div>
+                        <div class="stat-label">Available Tasks</div>
+                    </div>
+                    <div class="stat-card stat-assigned">
+                        <div class="stat-number" id="assignedTasks">0</div>
+                        <div class="stat-label">Selected</div>
+                    </div>
+                    <div class="stat-card stat-urgent">
+                        <div class="stat-number" id="overdueTasks">0</div>
+                        <div class="stat-label">Overdue</div>
+                    </div>
+                    <div class="stat-card stat-evaluation">
+                        <div class="stat-number" id="dueSoonTasks">0</div>
+                        <div class="stat-label">Due This Week</div>
+                    </div>
+                </div>
+                
+                <!-- Timeline Dashboard -->
+                <div style="margin-top: 1.5rem;">
+                    <h3 style="font-size: 1rem; font-weight: 600; color: #1f2937; margin-bottom: 0.5rem;">⏰ Upcoming Deadlines</h3>
+                    <div id="timelineDashboard" style="max-height: 150px; overflow-y: auto;">
+                        <!-- Timeline items will be populated here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Critical Analysis Panel -->
+            <div class="card">
+                <h2>🚨 Critical Analysis</h2>
+                <div id="criticalAnalysis">
+                    <div id="skillsGapAnalysis"></div>
+                    <div id="criticalPathAnalysis"></div>
+                    <div id="riskAnalysis"></div>
+                </div>
+            </div>
+
+            <!-- Available Tasks from PM Role -->
+            <div class="card available-tasks">
+                <h2>📋 Available Tasks from Program Manager Role</h2>
+                <p style="color: #6b7280; margin-bottom: 1rem; font-size: 0.9rem;">
+                    Select tasks from Praveen's responsibilities that need redistribution. Team members can choose what they can take on.
+                </p>
+                <div class="task-pool" id="taskPool">
+                    <!-- Predefined tasks will be populated here -->
+                </div>
+            </div>
+
+            <!-- Add Custom Task Form -->
+            <div class="card form-section">
+                <h2>➕ Add Custom Task</h2>
+                <form id="customTaskForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="taskTitle">Task Description</label>
+                            <input type="text" id="taskTitle" placeholder="Describe the specific task..." required>
+                        </div>
+                        <div class="form-group">
+                            <label for="taskCategory">Category</label>
+                            <select id="taskCategory" required>
+                                <option value="">Select Category</option>
+                                <option value="evaluation-study">Outcome Evaluation Study</option>
+                                <option value="data-management">Data Collection & Review</option>
+                                <option value="equipment">Equipment Management</option>
+                                <option value="farmer-relations">Farmer Relations</option>
+                                <option value="pond-management">Pond Addition/Management</option>
+                                <option value="auditing">Auditing & Quality Control</option>
+                                <option value="training">Training & Development</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="taskPriority">Priority</label>
+                            <select id="taskPriority" required>
+                                <option value="high">High</option>
+                                <option value="medium">Medium</option>
+                                <option value="low">Low</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="taskComplexity">Complexity</label>
+                            <select id="taskComplexity" required>
+                                <option value="1">Low (1)</option>
+                                <option value="2">Medium (2)</option>
+                                <option value="3">High (3)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row" style="grid-template-columns: 1fr 1fr 1fr 2fr;">
+                        <div class="form-group">
+                            <label for="taskDueDate">Due Date</label>
+                            <input type="date" id="taskDueDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="taskEstimatedHours">Est. Hours</label>
+                            <input type="number" id="taskEstimatedHours" min="1" max="40" placeholder="8">
+                        </div>
+                        <div class="form-group">
+                            <label for="taskCritical">Critical Path</label>
+                            <select id="taskCritical">
+                                <option value="false">No</option>
+                                <option value="true">Yes - Critical</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="taskNotes">Additional Notes & Contacts</label>
+                            <input type="text" id="taskNotes" placeholder="Requirements, skills needed, key contacts...">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn">Add Custom Task</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="recommendationsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🎯 Smart Assignment Recommendations</h2>
+                <button class="close-btn" onclick="closeModal('recommendationsModal')">&times;</button>
+            </div>
+            <div id="recommendationsContent"></div>
+        </div>
+    </div>
+
+    <div id="agendaModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📋 Meeting Agenda Generator</h2>
+                <button class="close-btn" onclick="closeModal('agendaModal')">&times;</button>
+            </div>
+            <div id="agendaContent"></div>
+        </div>
+    </div>
+
+    <div id="emailModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📧 Email Templates</h2>
+                <button class="close-btn" onclick="closeModal('emailModal')">&times;</button>
+            </div>
+            <div id="emailContent"></div>
+        </div>
+    </div>
+
+    <div id="handoverModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>✅ Handover Checklist</h2>
+                <button class="close-btn" onclick="closeModal('handoverModal')">&times;</button>
+            </div>
+            <div id="handoverContent"></div>
+        </div>
+    </div>
+
+    <script>
+        class TaskManager {
+            constructor() {
+                this.positions = [
+                    {
+                        id: 'spm',
+                        title: "Senior Program Manager",
+                        role: "spm",
+                        capabilities: ["Data Review", "Auditing", "Staff Training", "Equipment Management", "Inventory", "Strategic Planning", "Project Management"],
+                        selectedTasks: [],
+                        maxComplexity: 12,
+                        riskLevel: 'medium'
+                    },
+                    {
+                        id: 'spa',
+                        title: "Senior Program Associate", 
+                        role: "spa",
+                        capabilities: ["Data Collection", "Farmer Relations", "Equipment Maintenance", "Field Work", "Water Quality Testing", "Training Support"],
+                        selectedTasks: [],
+                        maxComplexity: 10,
+                        riskLevel: 'low'
+                    },
+                    {
+                        id: 'fm',
+                        title: "Field Manager",
+                        role: "fm",
+                        capabilities: ["Field Operations", "Farmer Relations", "Equipment Use", "Field Work", "Site Coordination", "Data Collection"],
+                        selectedTasks: [],
+                        maxComplexity: 9,
+                        riskLevel: 'low'
+                    },
+                    {
+                        id: 'pa1',
+                        title: "Program Associate (Aquaculture)",
+                        role: "pa",
+                        capabilities: ["Data Collection", "Farmer Relations", "Equipment Use", "Field Work", "Water Quality Testing"],
+                        selectedTasks: [],
+                        maxComplexity: 8,
+                        riskLevel: 'low'
+                    },
+                    {
+                        id: 'pa2',
+                        title: "Program Associate (General)",
+                        role: "pa",
+                        capabilities: ["Data Collection", "Farmer Relations", "Equipment Use", "Field Work", "Basic Maintenance"],
+                        selectedTasks: [],
+                        maxComplexity: 8,
+                        riskLevel: 'low'
+                    },
+                    {
+                        id: 'proj',
+                        title: "Project Associate",
+                        role: "proj",
+                        capabilities: ["Research Support", "Data Analysis", "Project Coordination", "Equipment Calibration", "Technical Support"],
+                        selectedTasks: [],
+                        maxComplexity: 7,
+                        riskLevel: 'low'
+                    }
+                ];
+
+                this.predefinedTasks = [
+                    {
+                        id: 'field-visits-eluru',
+                        title: "Conduct field visits to Eluru region for outcome evaluation",
+                        category: "evaluation-study",
+                        priority: "high",
+                        complexity: 2,
+                        dueDate: "2025-08-15",
+                        estimatedHours: 16,
+                        critical: true,
+                        status: "not-started",
+                        description: "Critical field work for evaluation timeline. Requires farmer coordination.",
+                        contacts: "Local coordinator: Ravi (98xx-xxx-xxx)"
+                    },
+                    {
+                        id: 'field-visits-nellore',
+                        title: "Conduct field visits to Nellore region for outcome evaluation",
+                        category: "evaluation-study", 
+                        priority: "high",
+                        complexity: 2,
+                        dueDate: "2025-08-20",
+                        estimatedHours: 16,
+                        critical: true,
+                        status: "not-started",
+                        description: "Critical field work for evaluation timeline. Requires farmer coordination.",
+                        contacts: "Local coordinator: Mani (98xx-xxx-xxx)"
+                    },
+                    {
+                        id: 'equipment-calibration',
+                        title: "Review and update equipment calibration records",
+                        category: "equipment",
+                        priority: "medium",
+                        complexity: 2,
+                        dueDate: "2025-08-01",
+                        estimatedHours: 8,
+                        critical: false,
+                        status: "not-started",
+                        description: "Equipment hasn't been calibrated for over 2 weeks per performance indicators.",
+                        contacts: "Equipment supplier: Tech Solutions (080-xxx-xxxx)"
+                    },
+                    {
+                        id: 'farmer-complaints',
+                        title: "Follow up on farmer complaints and relationship issues",
+                        category: "farmer-relations",
+                        priority: "high",
+                        complexity: 2,
+                        dueDate: "2025-07-30",
+                        estimatedHours: 12,
+                        critical: false,
+                        status: "not-started",
+                        description: "Address farmer concerns to maintain program participation.",
+                        contacts: "Affected farmers: See complaint log in shared drive"
+                    },
+                    {
+                        id: 'monthly-data-review',
+                        title: "Complete monthly data review for all pond sites",
+                        category: "data-management",
+                        priority: "medium",
+                        complexity: 1,
+                        dueDate: "2025-08-05",
+                        estimatedHours: 6,
+                        critical: false,
+                        status: "not-started",
+                        description: "Data entries need verification and error checking.",
+                        contacts: "Data team lead for questions"
+                    },
+                    {
+                        id: 'wq-data-review',
+                        title: "Water quality data entries review and error checking",
+                        category: "data-management",
+                        priority: "medium",
+                        complexity: 1,
+                        dueDate: "2025-07-28",
+                        estimatedHours: 4,
+                        critical: false,
+                        status: "not-started",
+                        description: "Bi-weekly review of water quality measurements as per PM indicators.",
+                        contacts: "Lab technician: Roshan"
+                    },
+                    {
+                        id: 'corrective-actions',
+                        title: "Conduct follow-ups after corrective action prescriptions",
+                        category: "farmer-relations",
+                        priority: "medium",
+                        complexity: 2,
+                        dueDate: "2025-08-10",
+                        estimatedHours: 10,
+                        critical: false,
+                        status: "not-started",
+                        description: "Ensure parameter improvements after corrective actions.",
+                        contacts: "Recent corrective actions in ARA database"
+                    },
+                    {
+                        id: 'equipment-storage',
+                        title: "Organize and maintain equipment storage area",
+                        category: "equipment",
+                        priority: "low",
+                        complexity: 1,
+                        dueDate: "2025-08-15",
+                        estimatedHours: 4,
+                        critical: false,
+                        status: "not-started",
+                        description: "Keep storage area clean and properly labeled.",
+                        contacts: "Storage room access: ask Chaitanya"
+                    },
+                    {
+                        id: 'pond-forms',
+                        title: "Complete farmer and pond forms for new commitments",
+                        category: "pond-management",
+                        priority: "medium",
+                        complexity: 1,
+                        dueDate: "2025-08-02",
+                        estimatedHours: 6,
+                        critical: false,
+                        status: "not-started",
+                        description: "Process new pond additions within required timeframes.",
+                        contacts: "Forms template in shared folder"
+                    },
+                    {
+                        id: 'master-doc-updates',
+                        title: "Update ARA master documentation",
+                        category: "data-management",
+                        priority: "medium",
+                        complexity: 1,
+                        dueDate: "2025-07-26",
+                        estimatedHours: 3,
+                        critical: false,
+                        status: "not-started",
+                        description: "Weekly updates to maintain program records.",
+                        contacts: "Master doc: Google Sheets link in email"
+                    },
+                    {
+                        id: 'audit-preparation',
+                        title: "Prepare for and support quarterly audits",
+                        category: "auditing",
+                        priority: "medium",
+                        complexity: 2,
+                        dueDate: "2025-09-01",
+                        estimatedHours: 8,
+                        critical: false,
+                        status: "not-started",
+                        description: "Ensure audit readiness and compliance with SOPs.",
+                        contacts: "Audit checklist: see performance indicators doc"
+                    },
+                    {
+                        id: 'evaluation-data-analysis',
+                        title: "Support outcome evaluation data analysis",
+                        category: "evaluation-study",
+                        priority: "high",
+                        complexity: 3,
+                        dueDate: "2025-09-15",
+                        estimatedHours: 20,
+                        critical: true,
+                        status: "not-started",
+                        description: "Process and analyze evaluation study data for reporting.",
+                        contacts: "Analysis software: contact IT for access"
+                    }
+                ];
+
+                this.customTasks = [];
+                this.initializeEventListeners();
+                this.setDefaultDueDate();
+                this.renderPositions();
+                this.renderTaskPool();
+                this.updateDashboard();
+                this.analyzeRisks();
+            }
+
+            initializeEventListeners() {
+                document.getElementById('customTaskForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.addCustomTask();
+                });
+            }
+
+            setDefaultDueDate() {
+                const oneWeekFromNow = new Date();
+                oneWeekFromNow.setDate(oneWeekFromNow.getDate() + 7);
+                const defaultDate = oneWeekFromNow.toISOString().split('T')[0];
+                document.getElementById('taskDueDate').value = defaultDate;
+            }
+
+            addCustomTask() {
+                const task = {
+                    id: 'custom-' + Date.now(),
+                    title: document.getElementById('taskTitle').value,
+                    category: document.getElementById('taskCategory').value,
+                    priority: document.getElementById('taskPriority').value,
+                    complexity: parseInt(document.getElementById('taskComplexity').value),
+                    dueDate: document.getElementById('taskDueDate').value,
+                    estimatedHours: parseInt(document.getElementById('taskEstimatedHours').value) || 4,
+                    critical: document.getElementById('taskCritical').value === 'true',
+                    status: "not-started",
+                    description: document.getElementById('taskNotes').value || "Custom task",
+                    contacts: "Contact info to be added",
+                    custom: true
+                };
+
+                this.customTasks.push(task);
+                this.renderTaskPool();
+                this.updateDashboard();
+                this.analyzeRisks();
+                document.getElementById('customTaskForm').reset();
+                this.setDefaultDueDate();
+            }
+
+            getAllTasks() {
+                return [...this.predefinedTasks, ...this.customTasks];
+            }
+
+            getDaysUntilDue(dueDate) {
+                const today = new Date();
+                const due = new Date(dueDate);
+                const diffTime = due - today;
+                return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            }
+
+            getDeadlineStatus(dueDate) {
+                const days = this.getDaysUntilDue(dueDate);
+                if (days < 0) return 'overdue';
+                if (days <= 2) return 'urgent';
+                if (days <= 7) return 'soon';
+                return 'normal';
+            }
+
+            getDeadlineClass(status) {
+                return `deadline-${status}`;
+            }
+
+            getDeadlineText(dueDate) {
+                const days = this.getDaysUntilDue(dueDate);
+                if (days < 0) return `${Math.abs(days)} days overdue`;
+                if (days === 0) return 'Due today';
+                if (days === 1) return 'Due tomorrow';
+                return `${days} days left`;
+            }
+
+            sortTasksByDeadline(tasks) {
+                return tasks.sort((a, b) => {
+                    const dateA = new Date(a.dueDate);
+                    const dateB = new Date(b.dueDate);
+                    return dateA - dateB;
+                });
+            }
+
+            calculateWorkload(position) {
+                const totalComplexity = position.selectedTasks.reduce((sum, taskId) => {
+                    const task = this.getAllTasks().find(t => t.id === taskId);
+                    return sum + (task ? task.complexity : 0);
+                }, 0);
+                
+                return Math.min((totalComplexity / position.maxComplexity) * 100, 100);
+            }
+
+            getWorkloadClass(percentage) {
+                if (percentage <= 50) return 'workload-low';
+                if (percentage <= 80) return 'workload-medium';
+                return 'workload-high';
+            }
+
+            updateTaskStatus(taskId, status) {
+                const task = this.getAllTasks().find(t => t.id === taskId);
+                if (task) {
+                    task.status = status;
+                    this.renderPositions();
+                    this.updateDashboard();
+                }
+            }
+
+            toggleTaskSelection(positionId, taskId, checked) {
+                const position = this.positions.find(p => p.id === positionId);
+                if (!position) return;
+
+                if (checked) {
+                    if (!position.selectedTasks.includes(taskId)) {
+                        position.selectedTasks.push(taskId);
+                    }
+                } else {
+                    position.selectedTasks = position.selectedTasks.filter(id => id !== taskId);
+                }
+
+                this.renderPositions();
+                this.updateDashboard();
+                this.analyzeRisks();
+            }
+
+            getCapabilityMatch(task, position) {
+                const categoryMap = {
+                    'evaluation-study': ['Data Collection', 'Field Work', 'Farmer Relations', 'Field Operations'],
+                    'data-management': ['Data Collection', 'Data Review', 'Research Support', 'Data Analysis'],
+                    'equipment': ['Equipment Management', 'Equipment Maintenance', 'Equipment Use', 'Equipment Calibration'],
+                    'farmer-relations': ['Farmer Relations', 'Field Work', 'Field Operations'],
+                    'pond-management': ['Field Work', 'Farmer Relations', 'Data Collection'],
+                    'auditing': ['Auditing', 'Data Review', 'Strategic Planning'],
+                    'training': ['Staff Training', 'Strategic Planning', 'Training Support']
+                };
+
+                const requiredCapabilities = categoryMap[task.category] || [];
+                const matchedCapabilities = requiredCapabilities.filter(cap => 
+                    position.capabilities.includes(cap)
+                );
+                
+                return matchedCapabilities.length / Math.max(requiredCapabilities.length, 1);
+            }
+
+            getRecommendations(task) {
+                return this.positions
+                    .map(position => {
+                        const capabilityMatch = this.getCapabilityMatch(task, position);
+                        const workload = this.calculateWorkload(position);
+                        const availabilityScore = Math.max(0, 100 - workload) / 100;
+                        
+                        const priorityMultiplier = task.priority === 'high' ? 1.5 : task.priority === 'medium' ? 1.2 : 1.0;
+                        const criticalMultiplier = task.critical ? 1.3 : 1.0;
+                        
+                        const score = (capabilityMatch * 0.6 + availabilityScore * 0.4) * priorityMultiplier * criticalMultiplier;
+                        
+                        return {
+                            position,
+                            score,
+                            capabilityMatch: Math.round(capabilityMatch * 100),
+                            availability: Math.round(availabilityScore * 100),
+                            workload: Math.round(workload)
+                        };
+                    })
+                    .sort((a, b) => b.score - a.score);
+            }
+
+            analyzeRisks() {
+                const allTasks = this.getAllTasks();
+                const unassignedTasks = allTasks.filter(task => 
+                    !this.positions.some(p => p.selectedTasks.includes(task.id))
+                );
+
+                // Update position risk levels
+                this.positions.forEach(position => {
+                    const workload = this.calculateWorkload(position);
+                    const overdueTasks = position.selectedTasks.filter(taskId => {
+                        const task = allTasks.find(t => t.id === taskId);
+                        return task && this.getDeadlineStatus(task.dueDate) === 'overdue';
+                    }).length;
+
+                    if (workload > 85 || overdueTasks > 0) {
+                        position.riskLevel = 'high';
+                    } else if (workload > 65 || position.selectedTasks.length > 4) {
+                        position.riskLevel = 'medium';
+                    } else {
+                        position.riskLevel = 'low';
+                    }
+                });
+
+                this.updateCriticalAnalysis();
+            }
+
+            updateCriticalAnalysis() {
+                const allTasks = this.getAllTasks();
+                const unassignedTasks = allTasks.filter(task => 
+                    !this.positions.some(p => p.selectedTasks.includes(task.id))
+                );
+
+                // Skills Gap Analysis
+                const skillsGaps = [];
+                unassignedTasks.forEach(task => {
+                    const recommendations = this.getRecommendations(task);
+                    const bestMatch = recommendations[0];
+                    if (bestMatch && bestMatch.capabilityMatch < 50) {
+                        skillsGaps.push({
+                            task: task.title,
+                            gap: 100 - bestMatch.capabilityMatch
+                        });
+                    }
+                });
+
+                // Critical Path Analysis
+                const criticalTasks = allTasks.filter(task => task.critical);
+                const unassignedCritical = criticalTasks.filter(task => 
+                    !this.positions.some(p => p.selectedTasks.includes(task.id))
+                );
+
+                // Risk Analysis
+                const highRiskPositions = this.positions.filter(p => p.riskLevel === 'high');
+                
+                this.renderCriticalAnalysis(skillsGaps, unassignedCritical, highRiskPositions);
+            }
+
+            renderCriticalAnalysis(skillsGaps, criticalTasks, riskPositions) {
+                const container = document.getElementById('criticalAnalysis');
+                
+                let html = '';
+                
+                if (skillsGaps.length > 0) {
+                    html += `
+                        <div class="skills-gap">
+                            <h4 style="color: #dc2626; margin-bottom: 0.5rem;">⚠️ Skills Gap Warnings</h4>
+                            ${skillsGaps.slice(0, 3).map(gap => 
+                                `<div style="font-size: 0.8rem; margin-bottom: 0.25rem;">
+                                    ${gap.task} - No ideal match found
+                                </div>`
+                            ).join('')}
+                        </div>
+                    `;
+                }
+
+                if (criticalTasks.length > 0) {
+                    html += `
+                        <div class="critical-path" style="margin-top: 0.5rem;">
+                            <h4 style="color: #dc2626; margin-bottom: 0.5rem;">🚨 Unassigned Critical Tasks</h4>
+                            ${criticalTasks.slice(0, 3).map(task => 
+                                `<div style="font-size: 0.8rem; margin-bottom: 0.25rem;">
+                                    ${task.title} - Due ${this.getDeadlineText(task.dueDate)}
+                                </div>`
+                            ).join('')}
+                        </div>
+                    `;
+                }
+
+                if (riskPositions.length > 0) {
+                    html += `
+                        <div style="margin-top: 0.5rem; padding: 0.5rem; background: #fef2f2; border-radius: 6px;">
+                            <h4 style="color: #dc2626; margin-bottom: 0.5rem;">⚠️ Overloaded Positions</h4>
+                            ${riskPositions.map(pos => 
+                                `<div style="font-size: 0.8rem; margin-bottom: 0.25rem;">
+                                    ${pos.title} - ${Math.round(this.calculateWorkload(pos))}% capacity
+                                </div>`
+                            ).join('')}
+                        </div>
+                    `;
+                }
+
+                if (html === '') {
+                    html = '<div style="color: #16a34a; font-size: 0.9rem; padding: 1rem; text-align: center;">✅ No critical issues detected</div>';
+                }
+
+                container.innerHTML = html;
+            }
+
+            renderPositions() {
+                const container = document.getElementById('teamPositions');
+                container.innerHTML = '';
+
+                this.positions.forEach(position => {
+                    const workload = this.calculateWorkload(position);
+                    const availableTasks = this.getAllTasks().filter(task => 
+                        !position.selectedTasks.includes(task.id)
+                    );
+
+                    const positionElement = document.createElement('div');
+                    positionElement.className = 'position-card';
+                    
+                    const selectedTasksList = position.selectedTasks.length > 0 ? 
+                        position.selectedTasks.map(taskId => {
+                            const task = this.getAllTasks().find(t => t.id === taskId);
+                            if (!task) return '';
+                            
+                            return `
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin: 0.25rem 0; padding: 0.25rem; background: white; border-radius: 4px; font-size: 0.8rem;">
+                                    <span>${task.title}</span>
+                                    <div class="status-indicators">
+                                        <button class="status-btn status-${task.status}" onclick="taskManager.updateTaskStatus('${task.id}', '${task.status === 'completed' ? 'not-started' : task.status === 'not-started' ? 'in-progress' : task.status === 'in-progress' ? 'completed' : 'blocked'}')">
+                                            ${task.status.replace('-', ' ')}
+                                        </button>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('') : 
+                        '<div style="color: #9ca3af; font-size: 0.8rem;">No tasks selected</div>';
+                    
+                    positionElement.innerHTML = `
+                        <div class="position-name">
+                            ${position.title}
+                            <span class="risk-indicator risk-${position.riskLevel}">
+                                ${position.riskLevel.toUpperCase()} RISK
+                            </span>
+                        </div>
+                        <span class="role-badge role-${position.role}">${position.role.toUpperCase()}</span>
+                        
+                        <div class="capabilities">
+                            ${position.capabilities.map(cap => 
+                                `<span class="capability">${cap}</span>`
+                            ).join('')}
+                        </div>
+                        
+                        <div class="workload-section">
+                            <div class="workload-display">
+                                <div class="workload-bar">
+                                    <div class="workload-fill ${this.getWorkloadClass(workload)}" 
+                                         style="width: ${workload}%"></div>
+                                </div>
+                                <span style="font-size: 0.9rem; font-weight: 500;">
+                                    ${Math.round(workload)}% capacity
+                                </span>
+                            </div>
+                            
+                            <div style="font-size: 0.8rem; color: #6b7280; margin-bottom: 0.5rem;">
+                                Selected: ${position.selectedTasks.length} tasks
+                            </div>
+                            
+                            <div style="max-height: 120px; overflow-y: auto; margin-bottom: 0.5rem;">
+                                ${selectedTasksList}
+                            </div>
+                        </div>
+
+                        <div class="task-selection">
+                            <div style="font-weight: 500; margin-bottom: 0.5rem; color: #374151;">
+                                Available Tasks:
+                            </div>
+                            ${availableTasks.length === 0 ? 
+                                '<div style="color: #9ca3af; font-size: 0.8rem;">All tasks selected</div>' :
+                                this.sortTasksByDeadline(availableTasks).slice(0, 5).map(task => {
+                                    const deadlineStatus = this.getDeadlineStatus(task.dueDate);
+                                    const deadlineText = this.getDeadlineText(task.dueDate);
+                                    const recommendation = this.getRecommendations(task).find(r => r.position.id === position.id);
+                                    const matchScore = recommendation ? recommendation.capabilityMatch : 0;
+                                    
+                                    return `
+                                        <div class="task-checkbox">
+                                            <input type="checkbox" 
+                                                   id="${position.id}-${task.id}"
+                                                   onchange="taskManager.toggleTaskSelection('${position.id}', '${task.id}', this.checked)">
+                                            <label for="${position.id}-${task.id}">${task.title}</label>
+                                            <div style="display: flex; align-items: center;">
+                                                <span style="font-size: 0.7rem; color: ${matchScore > 75 ? '#059669' : matchScore > 50 ? '#ea580c' : '#dc2626'}; margin-right: 0.3rem;">
+                                                    ${matchScore}%
+                                                </span>
+                                                <span class="deadline-indicator ${this.getDeadlineClass(deadlineStatus)}" style="font-size: 0.7rem; padding: 0.1rem 0.4rem; margin-right: 0.3rem;">
+                                                    ${deadlineText}
+                                                </span>
+                                                <span class="task-complexity complexity-${task.complexity}">${task.complexity}</span>
+                                            </div>
+                                        </div>
+                                    `;
+                                }).join('')
+                            }
+                            ${availableTasks.length > 5 ? `<div style="font-size: 0.8rem; color: #6b7280; margin-top: 0.5rem;">...and ${availableTasks.length - 5} more</div>` : ''}
+                        </div>
+                    `;
+                    
+                    container.appendChild(positionElement);
+                });
+            }
+
+            renderTaskPool() {
+                const container = document.getElementById('taskPool');
+                const allTasks = this.sortTasksByDeadline(this.getAllTasks());
+                
+                container.innerHTML = allTasks.map(task => {
+                    const deadlineStatus = this.getDeadlineStatus(task.dueDate);
+                    const deadlineText = this.getDeadlineText(task.dueDate);
+                    const isAssigned = this.positions.some(p => p.selectedTasks.includes(task.id));
+                    const assignedTo = isAssigned ? this.positions.find(p => p.selectedTasks.includes(task.id)) : null;
+                    
+                    return `
+                        <div class="predefined-task ${isAssigned ? 'selected' : ''}" data-task-id="${task.id}">
+                            <div class="task-title">
+                                ${task.title}
+                                ${task.critical ? '<span style="color: #dc2626; margin-left: 0.5rem;">🚨</span>' : ''}
+                                <div style="font-size: 0.7rem; color: #6b7280;">
+                                    ${task.estimatedHours}h • ${task.status.replace('-', ' ')}
+                                </div>
+                            </div>
+                            <div class="task-details">
+                                <span class="task-category">${task.category.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}</span>
+                                <div>
+                                    <span style="color: ${task.priority === 'high' ? '#dc2626' : task.priority === 'medium' ? '#ea580c' : '#059669'};">
+                                        ${task.priority.toUpperCase()}
+                                    </span>
+                                    <span class="task-complexity complexity-${task.complexity}" style="margin-left: 0.5rem;">
+                                        Complexity: ${task.complexity}
+                                    </span>
+                                </div>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem;">
+                                <div style="font-size: 0.8rem; color: #6b7280;">
+                                    ${task.description}
+                                </div>
+                                <div class="deadline-indicator ${this.getDeadlineClass(deadlineStatus)}">
+                                    📅 ${deadlineText}
+                                </div>
+                            </div>
+                            <div style="font-size: 0.75rem; color: #9ca3af; margin-top: 0.25rem;">
+                                Due: ${new Date(task.dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                                ${task.contacts ? ` • ${task.contacts}` : ''}
+                            </div>
+                            ${isAssigned ? `
+                                <div style="margin-top: 0.5rem; padding: 0.5rem; background: #f0f9ff; border-radius: 6px; font-size: 0.8rem;">
+                                    ✅ Assigned to: <strong>${assignedTo.title}</strong>
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            updateDashboard() {
+                const allTasks = this.getAllTasks();
+                const selectedTaskIds = this.positions.flatMap(p => p.selectedTasks);
+                
+                const overdueTasks = allTasks.filter(t => this.getDeadlineStatus(t.dueDate) === 'overdue').length;
+                const dueSoonTasks = allTasks.filter(t => {
+                    const status = this.getDeadlineStatus(t.dueDate);
+                    return status === 'urgent' || status === 'soon';
+                }).length;
+                
+                const progressPercentage = allTasks.length > 0 ? (selectedTaskIds.length / allTasks.length) * 100 : 0;
+                
+                document.getElementById('totalTasks').textContent = allTasks.length;
+                document.getElementById('assignedTasks').textContent = selectedTaskIds.length;
+                document.getElementById('overdueTasks').textContent = overdueTasks;
+                document.getElementById('dueSoonTasks').textContent = dueSoonTasks;
+                
+                document.getElementById('overallProgress').style.width = `${progressPercentage}%`;
+                document.getElementById('progressText').textContent = `${Math.round(progressPercentage)}% of tasks assigned`;
+                
+                this.renderTimelineDashboard();
+            }
+
+            renderTimelineDashboard() {
+                const container = document.getElementById('timelineDashboard');
+                const allTasks = this.sortTasksByDeadline(this.getAllTasks());
+                const urgentTasks = allTasks.filter(task => {
+                    const status = this.getDeadlineStatus(task.dueDate);
+                    return status === 'overdue' || status === 'urgent' || status === 'soon';
+                }).slice(0, 6);
+
+                if (urgentTasks.length === 0) {
+                    container.innerHTML = '<div style="color: #6b7280; font-size: 0.85rem; padding: 0.5rem;">No urgent deadlines</div>';
+                    return;
+                }
+
+                container.innerHTML = urgentTasks.map(task => {
+                    const deadlineStatus = this.getDeadlineStatus(task.dueDate);
+                    const deadlineText = this.getDeadlineText(task.dueDate);
+                    const isAssigned = this.positions.some(p => p.selectedTasks.includes(task.id));
+                    
+                    return `
+                        <div class="timeline-item timeline-${deadlineStatus}">
+                            <div class="timeline-date">${deadlineText}</div>
+                            <div class="timeline-task">
+                                ${task.title}
+                                ${task.critical ? ' 🚨' : ''}
+                                ${isAssigned ? '<span style="color: #16a34a; font-size: 0.7rem; margin-left: 0.5rem;">✓ Assigned</span>' : '<span style="color: #dc2626; font-size: 0.7rem; margin-left: 0.5rem;">⚠ Unassigned</span>'}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            // Export and Communication Features
+            exportToPDF() {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                
+                doc.setFontSize(20);
+                doc.text('FWI Task Distribution Report', 20, 20);
+                
+                doc.setFontSize(12);
+                doc.text(`Generated: ${new Date().toLocaleDateString()}`, 20, 35);
+                
+                let yPos = 50;
+                
+                this.positions.forEach(position => {
+                    if (yPos > 250) {
+                        doc.addPage();
+                        yPos = 20;
+                    }
+                    
+                    doc.setFontSize(14);
+                    doc.text(position.title, 20, yPos);
+                    yPos += 10;
+                    
+                    doc.setFontSize(10);
+                    doc.text(`Workload: ${Math.round(this.calculateWorkload(position))}%`, 25, yPos);
+                    yPos += 10;
+                    
+                    position.selectedTasks.forEach(taskId => {
+                        const task = this.getAllTasks().find(t => t.id === taskId);
+                        if (task && yPos < 280) {
+                            doc.text(`- ${task.title} (Due: ${new Date(task.dueDate).toLocaleDateString()})`, 30, yPos);
+                            yPos += 8;
+                        }
+                    });
+                    
+                    yPos += 10;
+                });
+                
+                doc.save('fwi-task-distribution.pdf');
+            }
+
+            exportToCSV() {
+                const allTasks = this.getAllTasks();
+                let csv = 'Task,Category,Priority,Complexity,Due Date,Assigned To,Status,Description\n';
+                
+                allTasks.forEach(task => {
+                    const assignedPosition = this.positions.find(p => p.selectedTasks.includes(task.id));
+                    const assignedTo = assignedPosition ? assignedPosition.title : 'Unassigned';
+                    
+                    csv += `"${task.title}","${task.category}","${task.priority}",${task.complexity},"${task.dueDate}","${assignedTo}","${task.status}","${task.description}"\n`;
+                });
+                
+                const blob = new Blob([csv], { type: 'text/csv' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'fwi-tasks.csv';
+                a.click();
+                window.URL.revokeObjectURL(url);
+            }
+
+            generateAgenda() {
+                const content = `
+                    <div style="font-family: Arial, sans-serif; line-height: 1.6;">
+                        <h3>Task Handover Meeting Agenda</h3>
+                        <p><strong>Date:</strong> ${new Date().toLocaleDateString()}<br>
+                        <strong>Purpose:</strong> Redistribute Program Manager responsibilities</p>
+                        
+                        <h4>1. Situation Overview (5 min)</h4>
+                        <ul>
+                            <li>Praveen's departure and immediate needs</li>
+                            <li>Critical deadlines (especially evaluation study)</li>
+                        </ul>
+                        
+                        <h4>2. Task Distribution Review (15 min)</h4>
+                        <ul>
+                            <li>High-priority assignments</li>
+                            <li>Skills matching and workload balance</li>
+                            <li>Critical path items requiring immediate attention</li>
+                        </ul>
+                        
+                        <h4>3. Individual Assignments (10 min)</h4>
+                        ${this.positions.map(pos => 
+                            pos.selectedTasks.length > 0 ? 
+                            `<p><strong>${pos.title}:</strong><br>${pos.selectedTasks.map(taskId => {
+                                const task = this.getAllTasks().find(t => t.id === taskId);
+                                return task ? `• ${task.title} (Due: ${new Date(task.dueDate).toLocaleDateString()})` : '';
+                            }).join('<br>')}</p>` : ''
+                        ).join('')}
+                        
+                        <h4>4. Support & Resources (5 min)</h4>
+                        <ul>
+                            <li>Access to systems and contacts</li>
+                            <li>Training needs identification</li>
+                            <li>Backup assignments</li>
+                        </ul>
+                        
+                        <h4>5. Next Steps (5 min)</h4>
+                        <ul>
+                            <li>Timeline for transition</li>
+                            <li>Follow-up meeting schedule</li>
+                            <li>Emergency contact procedures</li>
+                        </ul>
+                        
+                        <button class="btn" onclick="navigator.clipboard.writeText(document.querySelector('#agendaContent').innerText)">Copy to Clipboard</button>
+                    </div>
+                `;
+                
+                document.getElementById('agendaContent').innerHTML = content;
+                document.getElementById('agendaModal').style.display = 'block';
+            }
+
+            generateEmails() {
+                const emailTemplates = this.positions.filter(pos => pos.selectedTasks.length > 0).map(position => {
+                    const tasks = position.selectedTasks.map(taskId => {
+                        const task = this.getAllTasks().find(t => t.id === taskId);
+                        return task ? `• ${task.title}\n  Due: ${new Date(task.dueDate).toLocaleDateString()}\n  Details: ${task.description}\n  Contacts: ${task.contacts || 'N/A'}\n` : '';
+                    }).join('\n');
+
+                    return `
+                        <div style="margin-bottom: 2rem; padding: 1rem; border: 1px solid #e5e7eb; border-radius: 8px;">
+                            <h4>Email for ${position.title}</h4>
+                            <textarea style="width: 100%; height: 200px; font-family: monospace; font-size: 0.9rem;" readonly>
+Subject: Task Assignment - Program Manager Transition
+
+Dear [Name],
+
+Due to Praveen's departure, we need to redistribute his Program Manager responsibilities. You have been assigned the following tasks based on your expertise and current workload:
+
+${tasks}
+
+Please confirm your availability for these assignments and let me know if you need:
+- Access to any systems or resources
+- Additional context or training
+- Support from other team members
+
+The evaluation study deadlines are particularly critical, so please prioritize those tasks accordingly.
+
+Best regards,
+[Your Name]
+                            </textarea>
+                            <button class="btn-small" onclick="navigator.clipboard.writeText(this.previousElementSibling.value)">Copy Email</button>
+                        </div>
+                    `;
+                }).join('');
+
+                document.getElementById('emailContent').innerHTML = emailTemplates;
+                document.getElementById('emailModal').style.display = 'block';
+            }
+
+            showHandoverChecklist() {
+                const criticalTasks = this.getAllTasks().filter(t => t.critical);
+                const overdueTasks = this.getAllTasks().filter(t => this.getDeadlineStatus(t.dueDate) === 'overdue');
+                
+                const content = `
+                    <div style="font-family: Arial, sans-serif; line-height: 1.6;">
+                        <h3>Program Manager Handover Checklist</h3>
+                        
+                        <h4>🚨 Immediate Actions (Next 24 hours)</h4>
+                        <div style="background: #fef2f2; padding: 1rem; border-radius: 6px; margin-bottom: 1rem;">
+                            ${overdueTasks.length > 0 ? 
+                                `<strong>Overdue Tasks:</strong><br>${overdueTasks.map(t => `• ${t.title}`).join('<br>')}<br><br>` : 
+                                '✅ No overdue tasks<br><br>'
+                            }
+                            ${criticalTasks.length > 0 ? 
+                                `<strong>Critical Path Items:</strong><br>${criticalTasks.map(t => `• ${t.title} (Due: ${new Date(t.dueDate).toLocaleDateString()})`).join('<br>')}` : 
+                                '✅ All critical tasks covered'
+                            }
+                        </div>
+                        
+                        <h4>📋 Knowledge Transfer</h4>
+                        <ul>
+                            <li>☐ ARA database access and update procedures</li>
+                            <li>☐ Equipment calibration schedules and suppliers</li>
+                            <li>☐ Farmer contact information and relationship notes</li>
+                            <li>☐ Evaluation study protocols and timelines</li>
+                            <li>☐ Audit preparation materials and checklists</li>
+                        </ul>
+                        
+                        <h4>🔑 System Access</h4>
+                        <ul>
+                            <li>☐ Google Drive folders and permissions</li>
+                            <li>☐ Equipment calibration spreadsheet</li>
+                            <li>☐ Regional master documents (Eluru, Nellore)</li>
+                            <li>☐ Farmer database and forms</li>
+                            <li>☐ Audit materials and SOPs</li>
+                        </ul>
+                        
+                        <h4>👥 Key Contacts</h4>
+                        <ul>
+                            <li>☐ Local coordinators (Ravi, Mani)</li>
+                            <li>☐ Equipment suppliers and service providers</li>
+                            <li>☐ Lab technicians and data team</li>
+                            <li>☐ Farmers with active complaints or issues</li>
+                        </ul>
+                        
+                        <h4>📊 Status Updates</h4>
+                        <ul>
+                            <li>☐ Current water quality issues and corrective actions</li>
+                            <li>☐ Recent equipment problems and resolutions</li>
+                            <li>☐ Evaluation study progress and challenges</li>
+                            <li>☐ Pending farmer applications and commitments</li>
+                        </ul>
+                        
+                        <button class="btn" onclick="window.print()">Print Checklist</button>
+                    </div>
+                `;
+                
+                document.getElementById('handoverContent').innerHTML = content;
+                document.getElementById('handoverModal').style.display = 'block';
+            }
+
+            showRecommendations() {
+                const unassignedTasks = this.getAllTasks().filter(task => 
+                    !this.positions.some(p => p.selectedTasks.includes(task.id))
+                );
+
+                const recommendations = unassignedTasks.map(task => {
+                    const taskRecs = this.getRecommendations(task).slice(0, 3);
+                    return { task, recommendations: taskRecs };
+                });
+
+                const content = `
+                    <div style="font-family: Arial, sans-serif; line-height: 1.6;">
+                        <h3>Smart Assignment Recommendations</h3>
+                        ${recommendations.map(({ task, recommendations: recs }) => `
+                            <div style="margin-bottom: 1.5rem; padding: 1rem; border: 1px solid #e5e7eb; border-radius: 8px;">
+                                <h4 style="color: #1f2937; margin-bottom: 0.5rem;">
+                                    ${task.title}
+                                    ${task.critical ? ' 🚨' : ''}
+                                    <span style="font-size: 0.8rem; color: #6b7280;">
+                                        (${task.priority} priority, complexity ${task.complexity})
+                                    </span>
+                                </h4>
+                                <p style="font-size: 0.9rem; color: #6b7280; margin-bottom: 1rem;">
+                                    Due: ${new Date(task.dueDate).toLocaleDateString()} - ${this.getDeadlineText(task.dueDate)}
+                                </p>
+                                
+                                <div style="display: grid; gap: 0.5rem;">
+                                    ${recs.map((rec, index) => `
+                                        <div class="recommendation-item" style="border-left: 3px solid ${index === 0 ? '#16a34a' : index === 1 ? '#ea580c' : '#6b7280'};">
+                                            <div>
+                                                <strong>${rec.position.title}</strong><br>
+                                                <span style="font-size: 0.8rem; color: #6b7280;">
+                                                    ${rec.capabilityMatch}% skill match • ${rec.availability}% available
+                                                </span>
+                                            </div>
+                                            <div style="font-size: 0.8rem; color: #6b7280;">
+                                                Current: ${rec.workload}% capacity
+                                            </div>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        `).join('')}
+                        
+                        ${unassignedTasks.length === 0 ? 
+                            '<p style="text-align: center; color: #16a34a; font-size: 1.1rem;">✅ All tasks have been assigned!</p>' : 
+                            ''
+                        }
+                    </div>
+                `;
+                
+                document.getElementById('recommendationsContent').innerHTML = content;
+                document.getElementById('recommendationsModal').style.display = 'block';
+            }
+
+            // Initialize the application
+            
+        }
+
+        // Global functions for modal and export functionality
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function exportToPDF() {
+            taskManager.exportToPDF();
+        }
+
+        function exportToCSV() {
+            taskManager.exportToCSV();
+        }
+
+        function generateAgenda() {
+            taskManager.generateAgenda();
+        }
+
+        function generateEmails() {
+            taskManager.generateEmails();
+        }
+
+        function showHandoverChecklist() {
+            taskManager.showHandoverChecklist();
+        }
+
+        function analyzeRisks() {
+            taskManager.analyzeRisks();
+        }
+
+        function showRecommendations() {
+            taskManager.showRecommendations();
+        }
+
+        // Initialize the application
+        const taskManager = new TaskManager();
+
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
