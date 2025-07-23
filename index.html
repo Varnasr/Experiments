@@ -919,7 +919,7 @@
                         <label for="missingMember">Who is leaving/unavailable?</label>
                         <select id="missingMember" onchange="updateMissingMember()" style="border: 2px solid #f59e0b;">
                             <option value="">-- Select team member --</option>
-                            <option value="pm" selected>Program Manager (Praveen)</option>
+                            <option value="pm" selected>Program Manager </option>
                             <option value="spm">Senior Program Manager</option>
                             <option value="spa">Senior Program Associate</option>
                             <option value="fm">Field Manager</option>
@@ -1821,7 +1821,7 @@
                 this.missingMemberId = memberId;
                 
                 const memberNames = {
-                    pm: 'Program Manager (Praveen)',
+                    pm: 'Program Manager ()',
                     spm: 'Senior Program Manager',
                     spa: 'Senior Program Associate',
                     fm: 'Field Manager',
@@ -2331,7 +2331,7 @@
                 const doc = new jsPDF();
                 
                 const memberNames = {
-                    pm: 'Program Manager (Praveen)',
+                    pm: 'Program Manager ()',
                     spm: 'Senior Program Manager',
                     spa: 'Senior Program Associate',
                     fm: 'Field Manager',
@@ -2387,7 +2387,7 @@
 
             exportToCSV() {
                 const memberNames = {
-                    pm: 'Program Manager (Praveen)',
+                    pm: 'Program Manager ()',
                     spm: 'Senior Program Manager',
                     spa: 'Senior Program Associate',
                     fm: 'Field Manager',
@@ -2419,7 +2419,7 @@
 
             generateAgenda() {
                 const memberNames = {
-                    pm: 'Program Manager (Praveen)',
+                    pm: 'Program Manager ()',
                     spm: 'Senior Program Manager',
                     spa: 'Senior Program Associate',
                     fm: 'Field Manager',
@@ -2488,7 +2488,7 @@
 
             generateEmails() {
                 const memberNames = {
-                    pm: 'Program Manager (Praveen)',
+                    pm: 'Program Manager ()',
                     spm: 'Senior Program Manager',
                     spa: 'Senior Program Associate',
                     fm: 'Field Manager',
