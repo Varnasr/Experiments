@@ -75,7 +75,292 @@
             padding: 1rem;
         }
 
-        /* Quick Stats Bar */
+        /* Tab Navigation */
+        .tab-nav {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #e5e7eb;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #6b7280;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .tab-btn:hover {
+            color: #1d4ed8;
+        }
+
+        .tab-btn.active {
+            color: #1d4ed8;
+            border-bottom-color: #1d4ed8;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Instructions Box */
+        .instructions-box {
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            border: 2px solid #3b82f6;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .instructions-box h2 {
+            color: #1e40af;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .instructions-list {
+            list-style: none;
+        }
+
+        .instructions-list li {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 0.75rem;
+            color: #1f2937;
+        }
+
+        .instructions-list li:before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: #3b82f6;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* Plan Interface */
+        .plan-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .plan-section {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .plan-section h3 {
+            color: #1f2937;
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+            border-bottom: 2px solid #3b82f6;
+            padding-bottom: 0.5rem;
+        }
+
+        .assignment-interface {
+            margin-top: 1rem;
+        }
+
+        .task-selector {
+            margin-bottom: 1rem;
+        }
+
+        .task-selector label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: #374151;
+        }
+
+        .task-selector select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: border-color 0.2s ease;
+        }
+
+        .task-selector select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .task-details-box {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            min-height: 120px;
+        }
+
+        .assignee-selector {
+            margin-bottom: 1rem;
+        }
+
+        .assignee-options {
+            display: grid;
+            gap: 0.5rem;
+        }
+
+        .assignee-option {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .assignee-option:hover {
+            border-color: #3b82f6;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(59, 130, 246, 0.1);
+        }
+
+        .assignee-option.selected {
+            border-color: #3b82f6;
+            background: #eff6ff;
+        }
+
+        .assignee-name {
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.25rem;
+        }
+
+        .assignee-info {
+            font-size: 0.85rem;
+            color: #6b7280;
+        }
+
+        .match-score {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        .match-high { background: #d1fae5; color: #059669; }
+        .match-medium { background: #fed7aa; color: #ea580c; }
+        .match-low { background: #fecaca; color: #dc2626; }
+
+        .assign-btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            width: 100%;
+            transition: all 0.2s ease;
+        }
+
+        .assign-btn:hover {
+            background: #2563eb;
+            transform: translateY(-1px);
+        }
+
+        .assign-btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .action-card {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 1.25rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .action-card:hover {
+            border-color: #3b82f6;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(59, 130, 246, 0.1);
+        }
+
+        .action-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .action-title {
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.25rem;
+        }
+
+        .action-desc {
+            font-size: 0.85rem;
+            color: #6b7280;
+        }
+
+        /* Tooltip */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 250px;
+            background-color: #1f2937;
+            color: #fff;
+            text-align: left;
+            border-radius: 6px;
+            padding: 0.75rem;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -125px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Stats Bar */
         .stats-bar {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -117,47 +402,6 @@
             font-size: 0.75rem;
             color: #6b7280;
             margin-top: 0.25rem;
-        }
-
-        /* Tab Navigation */
-        .tab-nav {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-            border-bottom: 2px solid #e5e7eb;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .tab-btn {
-            background: none;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            cursor: pointer;
-            font-size: 0.95rem;
-            font-weight: 500;
-            color: #6b7280;
-            border-bottom: 2px solid transparent;
-            margin-bottom: -2px;
-            transition: all 0.2s ease;
-            white-space: nowrap;
-        }
-
-        .tab-btn:hover {
-            color: #1d4ed8;
-        }
-
-        .tab-btn.active {
-            color: #1d4ed8;
-            border-bottom-color: #1d4ed8;
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
         }
 
         /* Team Overview Tab */
@@ -509,6 +753,35 @@
             transform: translateY(-1px);
         }
 
+        /* Progress Overview */
+        .progress-overview {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .progress-bar-large {
+            width: 100%;
+            height: 20px;
+            background: #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress-fill-large {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
         /* Modal Styles */
         .modal {
             display: none;
@@ -553,6 +826,12 @@
         }
 
         /* Responsive Design */
+        @media (max-width: 1024px) {
+            .plan-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 1.25rem;
@@ -573,6 +852,10 @@
             }
             
             .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .quick-actions {
                 grid-template-columns: 1fr;
             }
         }
@@ -604,48 +887,194 @@
     </div>
 
     <div class="container">
-        <!-- Quick Stats Bar -->
-        <div class="stats-bar">
-            <div class="stat-card">
-                <div class="stat-icon" style="background: #fef3c7; color: #d97706;">📋</div>
-                <div class="stat-content">
-                    <div class="stat-number" id="totalTasks">0</div>
-                    <div class="stat-label">Available Tasks</div>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon" style="background: #dcfce7; color: #16a34a;">✅</div>
-                <div class="stat-content">
-                    <div class="stat-number" id="assignedTasks">0</div>
-                    <div class="stat-label">Assigned</div>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon" style="background: #fecaca; color: #dc2626;">⚠️</div>
-                <div class="stat-content">
-                    <div class="stat-number" id="overdueTasks">0</div>
-                    <div class="stat-label">Overdue</div>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon" style="background: #fed7aa; color: #ea580c;">⏰</div>
-                <div class="stat-content">
-                    <div class="stat-number" id="dueSoonTasks">0</div>
-                    <div class="stat-label">Due This Week</div>
-                </div>
-            </div>
-        </div>
-
         <!-- Tab Navigation -->
         <div class="tab-nav">
-            <button class="tab-btn active" onclick="switchTab('team')">👥 Team Overview</button>
+            <button class="tab-btn active" onclick="switchTab('plan')">📝 PLAN</button>
+            <button class="tab-btn" onclick="switchTab('dashboard')">📊 Dashboard</button>
+            <button class="tab-btn" onclick="switchTab('team')">👥 Team Overview</button>
             <button class="tab-btn" onclick="switchTab('tasks')">📋 Available Tasks</button>
             <button class="tab-btn" onclick="switchTab('analysis')">🚨 Critical Analysis</button>
             <button class="tab-btn" onclick="switchTab('timeline')">📅 Timeline</button>
         </div>
 
+        <!-- PLAN Tab -->
+        <div id="plan-tab" class="tab-content active">
+            <!-- Instructions Box -->
+            <div class="instructions-box">
+                <h2>🎯 How to Use This Tool</h2>
+                <ul class="instructions-list">
+                    <li><strong>Step 1:</strong> Select the team member who is leaving/unavailable</li>
+                    <li><strong>Step 2:</strong> Choose their tasks that need reassignment</li>
+                    <li><strong>Step 3:</strong> Assign each task to the best-suited team member</li>
+                    <li><strong>Step 4:</strong> Check the Dashboard to monitor progress</li>
+                    <li><strong>Tip:</strong> The tool recommends assignments based on skills and workload</li>
+                </ul>
+            </div>
+
+            <!-- Missing Member Selection -->
+            <div class="plan-section missing-member-section" style="background: #fef3c7; border: 2px solid #f59e0b; margin-bottom: 2rem;">
+                <h3 style="color: #92400e;">🚨 Configure Missing Team Member</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                    <div class="form-group">
+                        <label for="missingMember">Who is leaving/unavailable?</label>
+                        <select id="missingMember" onchange="updateMissingMember()" style="border: 2px solid #f59e0b;">
+                            <option value="">-- Select team member --</option>
+                            <option value="pm" selected>Program Manager (Praveen)</option>
+                            <option value="spm">Senior Program Manager</option>
+                            <option value="spa">Senior Program Associate</option>
+                            <option value="fm">Field Manager</option>
+                            <option value="pa1">Program Associate (Aquaculture)</option>
+                            <option value="pa2">Program Associate (General)</option>
+                            <option value="proj">Project Associate</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="absenceType">Type of absence</label>
+                        <select id="absenceType" style="border: 2px solid #f59e0b;">
+                            <option value="resignation" selected>Resignation/Departure</option>
+                            <option value="vacation">Vacation/Holiday</option>
+                            <option value="sabbatical">Sabbatical</option>
+                            <option value="medical">Medical Leave</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="absenceDuration">Duration (if temporary)</label>
+                        <input type="text" id="absenceDuration" placeholder="e.g., 2 weeks, 3 months" style="border: 2px solid #f59e0b;">
+                    </div>
+                </div>
+                <div id="memberTasksList" style="margin-top: 1rem; padding: 1rem; background: white; border-radius: 8px;">
+                    <strong>Tasks to reassign:</strong> <span id="taskCount">12 tasks from Program Manager role</span>
+                </div>
+            </div>
+
+            <div class="plan-container">
+                <!-- Task Assignment Interface -->
+                <div class="plan-section">
+                    <h3>Assign Tasks to Team Members</h3>
+                    
+                    <div class="assignment-interface">
+                        <div class="task-selector tooltip">
+                            <label for="taskSelect">1. Select a Task to Assign</label>
+                            <span class="tooltiptext">Choose from the absent member's tasks that need redistribution</span>
+                            <select id="taskSelect" onchange="updateTaskDetails()">
+                                <option value="">-- Select a task --</option>
+                            </select>
+                        </div>
+
+                        <div class="task-details-box" id="taskDetailsBox">
+                            <p style="color: #9ca3af; text-align: center;">Select a task to see details</p>
+                        </div>
+
+                        <div class="assignee-selector tooltip">
+                            <label>2. Choose Team Member</label>
+                            <span class="tooltiptext">Team members are ranked by their skill match and current workload</span>
+                            <div class="assignee-options" id="assigneeOptions">
+                                <!-- Will be populated when task is selected -->
+                            </div>
+                        </div>
+
+                        <button class="assign-btn" id="assignTaskBtn" onclick="assignSelectedTask()" disabled>
+                            Assign Task
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Current Assignments Summary -->
+                <div class="plan-section">
+                    <h3>Current Assignment Summary</h3>
+                    <div id="assignmentSummary">
+                        <!-- Will be populated dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <div class="action-card" onclick="switchTab('tasks'); setTimeout(() => document.getElementById('customTaskForm').scrollIntoView(), 100)">
+                    <div class="action-icon">➕</div>
+                    <div class="action-title">Add Custom Task</div>
+                    <div class="action-desc">Create a new task not in the list</div>
+                </div>
+                <div class="action-card" onclick="showRecommendations()">
+                    <div class="action-icon">🎯</div>
+                    <div class="action-title">Smart Recommendations</div>
+                    <div class="action-desc">AI-powered task assignments</div>
+                </div>
+                <div class="action-card" onclick="switchTab('analysis')">
+                    <div class="action-icon">⚠️</div>
+                    <div class="action-title">View Risks</div>
+                    <div class="action-desc">Check workload and skill gaps</div>
+                </div>
+                <div class="action-card" onclick="generateEmails()">
+                    <div class="action-icon">📧</div>
+                    <div class="action-title">Generate Emails</div>
+                    <div class="action-desc">Create assignment notifications</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Tab -->
+        <div id="dashboard-tab" class="tab-content">
+            <!-- Progress Overview -->
+            <div class="progress-overview">
+                <h2 style="margin-bottom: 1rem;">Overall Handover Progress</h2>
+                <div class="progress-bar-large">
+                    <div class="progress-fill-large" id="overallProgress" style="width: 0%">
+                        0%
+                    </div>
+                </div>
+                <p style="text-align: center; color: #6b7280; margin-top: 0.5rem;" id="progressText">
+                    0 of 0 tasks assigned
+                </p>
+            </div>
+
+            <!-- Quick Stats Bar -->
+            <div class="stats-bar">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #fef3c7; color: #d97706;">📋</div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="totalTasks">0</div>
+                        <div class="stat-label">Available Tasks</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #dcfce7; color: #16a34a;">✅</div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="assignedTasks">0</div>
+                        <div class="stat-label">Assigned</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #fecaca; color: #dc2626;">⚠️</div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="overdueTasks">0</div>
+                        <div class="stat-label">Overdue</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #fed7aa; color: #ea580c;">⏰</div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="dueSoonTasks">0</div>
+                        <div class="stat-label">Due This Week</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Timeline Preview -->
+            <div class="tasks-section">
+                <div class="section-header">
+                    <h2 class="section-title">Upcoming Deadlines</h2>
+                    <button class="btn" onclick="switchTab('timeline')">View Full Timeline</button>
+                </div>
+                <div id="dashboardTimeline">
+                    <!-- Will be populated with urgent tasks -->
+                </div>
+            </div>
+        </div>
+
         <!-- Team Overview Tab -->
-        <div id="team-tab" class="tab-content active">
+        <div id="team-tab" class="tab-content">
             <div class="team-grid" id="teamPositions">
                 <!-- Team positions will be populated here -->
             </div>
@@ -655,7 +1084,7 @@
         <div id="tasks-tab" class="tab-content">
             <div class="tasks-section">
                 <div class="section-header">
-                    <h2 class="section-title">Available Tasks from Program Manager Role</h2>
+                    <h2 class="section-title" id="availableTasksTitle">Available Tasks from Program Manager Role</h2>
                     <button class="btn" onclick="showRecommendations()">🎯 Smart Recommendations</button>
                 </div>
                 <div class="task-grid" id="taskPool">
@@ -1007,13 +1436,129 @@
                 ];
 
                 this.customTasks = [];
+                this.selectedTaskId = null;
+                this.selectedAssigneeId = null;
+                this.missingMemberId = 'pm'; // Default to PM
+                
+                // Add tasks for each role (example tasks for other roles)
+                this.roleSpecificTasks = {
+                    pm: this.predefinedTasks, // PM tasks already defined
+                    spm: [
+                        {
+                            id: 'spm-audit-review',
+                            title: "Conduct quarterly audit review",
+                            category: "auditing",
+                            priority: "high",
+                            complexity: 3,
+                            dueDate: "2025-08-10",
+                            estimatedHours: 12,
+                            critical: true,
+                            status: "not-started",
+                            description: "Review all audit findings and prepare report",
+                            contacts: "Audit team lead"
+                        },
+                        {
+                            id: 'spm-staff-training',
+                            title: "Organize monthly staff training session",
+                            category: "training",
+                            priority: "medium",
+                            complexity: 2,
+                            dueDate: "2025-08-05",
+                            estimatedHours: 8,
+                            critical: false,
+                            status: "not-started",
+                            description: "Plan and conduct training on new procedures",
+                            contacts: "HR department"
+                        }
+                    ],
+                    spa: [
+                        {
+                            id: 'spa-water-testing',
+                            title: "Weekly water quality testing rounds",
+                            category: "data-management",
+                            priority: "high",
+                            complexity: 2,
+                            dueDate: "2025-07-28",
+                            estimatedHours: 6,
+                            critical: false,
+                            status: "not-started",
+                            description: "Collect and test water samples from all sites",
+                            contacts: "Lab coordinator"
+                        }
+                    ],
+                    fm: [
+                        {
+                            id: 'fm-site-inspection',
+                            title: "Monthly site inspections",
+                            category: "farmer-relations",
+                            priority: "medium",
+                            complexity: 2,
+                            dueDate: "2025-08-01",
+                            estimatedHours: 10,
+                            critical: false,
+                            status: "not-started",
+                            description: "Visit and inspect all field sites",
+                            contacts: "Regional coordinators"
+                        }
+                    ],
+                    pa1: [
+                        {
+                            id: 'pa1-data-entry',
+                            title: "Enter weekly pond data",
+                            category: "data-management",
+                            priority: "medium",
+                            complexity: 1,
+                            dueDate: "2025-07-27",
+                            estimatedHours: 4,
+                            critical: false,
+                            status: "not-started",
+                            description: "Update database with collected field data",
+                            contacts: "Database admin"
+                        }
+                    ],
+                    pa2: [
+                        {
+                            id: 'pa2-farmer-visits',
+                            title: "Routine farmer check-ins",
+                            category: "farmer-relations",
+                            priority: "medium",
+                            complexity: 1,
+                            dueDate: "2025-07-29",
+                            estimatedHours: 6,
+                            critical: false,
+                            status: "not-started",
+                            description: "Visit assigned farmers for routine support",
+                            contacts: "Farmer list in drive"
+                        }
+                    ],
+                    proj: [
+                        {
+                            id: 'proj-data-analysis',
+                            title: "Analyze monthly performance data",
+                            category: "data-management",
+                            priority: "high",
+                            complexity: 2,
+                            dueDate: "2025-08-03",
+                            estimatedHours: 8,
+                            critical: false,
+                            status: "not-started",
+                            description: "Create performance analysis report",
+                            contacts: "Research team"
+                        }
+                    ]
+                };
+                
                 this.initializeEventListeners();
                 this.setDefaultDueDate();
+                this.updateMissingMember();
+                this.populateTaskSelector();
                 this.renderPositions();
                 this.renderTaskPool();
                 this.updateDashboard();
                 this.analyzeRisks();
                 this.renderTimeline();
+                this.updateAssignmentSummary();
+                this.renderDashboardTimeline();
             }
 
             initializeEventListeners() {
@@ -1028,6 +1573,217 @@
                 oneWeekFromNow.setDate(oneWeekFromNow.getDate() + 7);
                 const defaultDate = oneWeekFromNow.toISOString().split('T')[0];
                 document.getElementById('taskDueDate').value = defaultDate;
+            }
+
+            populateTaskSelector() {
+                const select = document.getElementById('taskSelect');
+                const activePositions = this.positions.filter(p => p.id !== this.missingMemberId);
+                const unassignedTasks = this.getAllTasks().filter(task => 
+                    !activePositions.some(p => p.selectedTasks.includes(task.id))
+                );
+                
+                const sortedTasks = this.sortTasksByDeadline(unassignedTasks);
+                
+                select.innerHTML = '<option value="">-- Select a task --</option>';
+                sortedTasks.forEach(task => {
+                    const option = document.createElement('option');
+                    option.value = task.id;
+                    option.textContent = `${task.title} (Due: ${new Date(task.dueDate).toLocaleDateString()})`;
+                    if (task.critical) {
+                        option.textContent = '🚨 ' + option.textContent;
+                    }
+                    select.appendChild(option);
+                });
+            }
+
+            updateTaskDetails() {
+                const taskId = document.getElementById('taskSelect').value;
+                const detailsBox = document.getElementById('taskDetailsBox');
+                const assigneeOptions = document.getElementById('assigneeOptions');
+                
+                if (!taskId) {
+                    detailsBox.innerHTML = '<p style="color: #9ca3af; text-align: center;">Select a task to see details</p>';
+                    assigneeOptions.innerHTML = '';
+                    document.getElementById('assignTaskBtn').disabled = true;
+                    this.selectedTaskId = null;
+                    this.selectedAssigneeId = null;
+                    return;
+                }
+                
+                const task = this.getAllTasks().find(t => t.id === taskId);
+                if (!task) return;
+                
+                this.selectedTaskId = taskId;
+                
+                const deadlineStatus = this.getDeadlineStatus(task.dueDate);
+                const deadlineText = this.getDeadlineText(task.dueDate);
+                
+                detailsBox.innerHTML = `
+                    <div style="margin-bottom: 0.5rem;">
+                        <strong style="color: #1f2937;">${task.title}</strong>
+                        ${task.critical ? '<span style="color: #dc2626; margin-left: 0.5rem;">🚨 Critical</span>' : ''}
+                    </div>
+                    <div style="font-size: 0.85rem; color: #6b7280; margin-bottom: 0.5rem;">
+                        ${task.description}
+                    </div>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap; font-size: 0.8rem;">
+                        <span><strong>Category:</strong> ${task.category.replace('-', ' ')}</span>
+                        <span><strong>Priority:</strong> <span style="color: ${task.priority === 'high' ? '#dc2626' : task.priority === 'medium' ? '#ea580c' : '#059669'}">${task.priority}</span></span>
+                        <span><strong>Complexity:</strong> ${task.complexity}/3</span>
+                        <span><strong>Hours:</strong> ${task.estimatedHours}h</span>
+                    </div>
+                    <div style="margin-top: 0.5rem; padding: 0.5rem; background: ${
+                        deadlineStatus === 'overdue' ? '#fef2f2' :
+                        deadlineStatus === 'urgent' ? '#fff7ed' :
+                        deadlineStatus === 'soon' ? '#fffbeb' : '#eff6ff'
+                    }; border-radius: 6px;">
+                        <strong>Due:</strong> ${new Date(task.dueDate).toLocaleDateString()} - ${deadlineText}
+                    </div>
+                    ${task.contacts ? `<div style="margin-top: 0.5rem; font-size: 0.8rem; color: #6b7280;"><strong>Contacts:</strong> ${task.contacts}</div>` : ''}
+                `;
+                
+                // Get recommendations and populate assignee options
+                const recommendations = this.getRecommendations(task);
+                assigneeOptions.innerHTML = recommendations.length > 0 ? recommendations.map((rec, index) => {
+                    const matchClass = rec.capabilityMatch > 75 ? 'match-high' : 
+                                     rec.capabilityMatch > 50 ? 'match-medium' : 'match-low';
+                    
+                    return `
+                        <div class="assignee-option" onclick="selectAssignee('${rec.position.id}')">
+                            <div class="assignee-name">${rec.position.title}</div>
+                            <div class="assignee-info">
+                                ${rec.position.capabilities.slice(0, 3).join(', ')}
+                                ${rec.position.capabilities.length > 3 ? '...' : ''}
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span class="match-score ${matchClass}">
+                                    ${rec.capabilityMatch}% match
+                                </span>
+                                <span style="font-size: 0.75rem; color: #6b7280;">
+                                    ${rec.workload}% workload
+                                </span>
+                            </div>
+                        </div>
+                    `;
+                }).join('') : '<p style="color: #dc2626; text-align: center; padding: 1rem;">No available team members to assign tasks to!</p>';
+            }
+
+            selectAssignee(positionId) {
+                this.selectedAssigneeId = positionId;
+                
+                // Update visual selection
+                document.querySelectorAll('.assignee-option').forEach(option => {
+                    option.classList.remove('selected');
+                });
+                event.currentTarget.classList.add('selected');
+                
+                // Enable assign button
+                document.getElementById('assignTaskBtn').disabled = false;
+            }
+
+            assignSelectedTask() {
+                if (!this.selectedTaskId || !this.selectedAssigneeId) return;
+                
+                this.toggleTaskSelection(this.selectedAssigneeId, this.selectedTaskId, true);
+                
+                // Reset the form
+                document.getElementById('taskSelect').value = '';
+                this.updateTaskDetails();
+                
+                // Update all views
+                this.populateTaskSelector();
+                this.updateAssignmentSummary();
+                
+                // Show success message
+                alert('Task assigned successfully!');
+                
+                // Update dashboard
+                this.updateDashboard();
+                this.renderDashboardTimeline();
+            }
+
+            updateAssignmentSummary() {
+                const summary = document.getElementById('assignmentSummary');
+                
+                const html = this.positions
+                    .filter(position => position.id !== this.missingMemberId) // Exclude missing member
+                    .map(position => {
+                    const workload = this.calculateWorkload(position);
+                    const workloadClass = this.getWorkloadClass(workload);
+                    
+                    return `
+                        <div style="margin-bottom: 1rem; padding: 1rem; background: #f9fafb; border-radius: 8px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                                <strong>${position.title}</strong>
+                                <span class="risk-badge risk-${position.riskLevel}">${position.riskLevel.toUpperCase()}</span>
+                            </div>
+                            <div class="workload-meter">
+                                <div class="workload-label">
+                                    <span>Workload: ${position.selectedTasks.length} tasks</span>
+                                    <span>${Math.round(workload)}%</span>
+                                </div>
+                                <div class="workload-bar">
+                                    <div class="workload-fill ${workloadClass}" style="width: ${workload}%"></div>
+                                </div>
+                            </div>
+                            ${position.selectedTasks.length > 0 ? 
+                                `<div style="margin-top: 0.5rem; font-size: 0.8rem; color: #6b7280;">
+                                    Latest: ${this.getAllTasks().find(t => t.id === position.selectedTasks[position.selectedTasks.length - 1])?.title || 'Unknown'}
+                                </div>` : 
+                                '<div style="margin-top: 0.5rem; font-size: 0.8rem; color: #9ca3af;">No tasks assigned yet</div>'
+                            }
+                        </div>
+                    `;
+                }).join('');
+                
+                summary.innerHTML = html;
+            }
+
+            renderDashboardTimeline() {
+                const container = document.getElementById('dashboardTimeline');
+                const allTasks = this.sortTasksByDeadline(this.getAllTasks());
+                const urgentTasks = allTasks.filter(task => {
+                    const status = this.getDeadlineStatus(task.dueDate);
+                    return status === 'overdue' || status === 'urgent' || status === 'soon';
+                }).slice(0, 5);
+
+                if (urgentTasks.length === 0) {
+                    container.innerHTML = '<p style="color: #16a34a; text-align: center; padding: 2rem;">✅ No urgent deadlines - all tasks are well scheduled!</p>';
+                    return;
+                }
+
+                container.innerHTML = urgentTasks.map(task => {
+                    const deadlineStatus = this.getDeadlineStatus(task.dueDate);
+                    const deadlineText = this.getDeadlineText(task.dueDate);
+                    const activePositions = this.positions.filter(p => p.id !== this.missingMemberId);
+                    const isAssigned = activePositions.some(p => p.selectedTasks.includes(task.id));
+                    const assignedTo = isAssigned ? activePositions.find(p => p.selectedTasks.includes(task.id)) : null;
+                    
+                    return `
+                        <div style="margin-bottom: 0.75rem; padding: 0.75rem; background: #f9fafb; border-radius: 8px; border-left: 4px solid ${
+                            deadlineStatus === 'overdue' ? '#dc2626' :
+                            deadlineStatus === 'urgent' ? '#ea580c' : '#d97706'
+                        };">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                                <div>
+                                    <div style="font-weight: 500; color: #1f2937;">
+                                        ${task.title}
+                                        ${task.critical ? '<span style="color: #dc2626; margin-left: 0.5rem; font-size: 0.9rem;">🚨</span>' : ''}
+                                    </div>
+                                    <div style="font-size: 0.8rem; color: #6b7280; margin-top: 0.25rem;">
+                                        ${deadlineText} • ${new Date(task.dueDate).toLocaleDateString()}
+                                    </div>
+                                </div>
+                                <div style="text-align: right;">
+                                    ${isAssigned ? 
+                                        `<span style="color: #16a34a; font-size: 0.8rem;">✓ ${assignedTo.title}</span>` : 
+                                        `<button class="btn" style="font-size: 0.75rem; padding: 0.25rem 0.75rem;" onclick="switchTab('plan'); setTimeout(() => { document.getElementById('taskSelect').value = '${task.id}'; updateTaskDetails(); }, 100)">Assign Now</button>`
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
             }
 
             addCustomTask() {
@@ -1047,16 +1803,51 @@
                 };
 
                 this.customTasks.push(task);
+                this.populateTaskSelector();
                 this.renderTaskPool();
                 this.updateDashboard();
                 this.analyzeRisks();
                 this.renderTimeline();
                 document.getElementById('customTaskForm').reset();
                 this.setDefaultDueDate();
+                
+                // Switch to PLAN tab
+                switchTab('plan');
+                alert('Custom task added! You can now assign it from the PLAN tab.');
+            }
+
+            updateMissingMember() {
+                const memberId = document.getElementById('missingMember').value || 'pm';
+                this.missingMemberId = memberId;
+                
+                const memberNames = {
+                    pm: 'Program Manager (Praveen)',
+                    spm: 'Senior Program Manager',
+                    spa: 'Senior Program Associate',
+                    fm: 'Field Manager',
+                    pa1: 'Program Associate (Aquaculture)',
+                    pa2: 'Program Associate (General)',
+                    proj: 'Project Associate'
+                };
+                
+                const tasks = this.getAllTasks();
+                document.getElementById('taskCount').textContent = `${tasks.length} tasks from ${memberNames[memberId]} role`;
+                
+                // Reset all assignments when changing member
+                this.positions.forEach(p => p.selectedTasks = []);
+                
+                // Update all views
+                this.populateTaskSelector();
+                this.renderPositions();
+                this.renderTaskPool();
+                this.updateDashboard();
+                this.renderDashboardTimeline();
+                this.updateAssignmentSummary();
             }
 
             getAllTasks() {
-                return [...this.predefinedTasks, ...this.customTasks];
+                const baseTasks = this.roleSpecificTasks[this.missingMemberId] || this.predefinedTasks;
+                return [...baseTasks, ...this.customTasks];
             }
 
             getDaysUntilDue(dueDate) {
@@ -1120,7 +1911,7 @@
 
             toggleTaskSelection(positionId, taskId, checked) {
                 const position = this.positions.find(p => p.id === positionId);
-                if (!position) return;
+                if (!position || position.id === this.missingMemberId) return;
 
                 if (checked) {
                     if (!position.selectedTasks.includes(taskId)) {
@@ -1141,6 +1932,9 @@
                 this.updateDashboard();
                 this.analyzeRisks();
                 this.renderTimeline();
+                this.populateTaskSelector();
+                this.updateAssignmentSummary();
+                this.renderDashboardTimeline();
             }
 
             getCapabilityMatch(task, position) {
@@ -1164,6 +1958,7 @@
 
             getRecommendations(task) {
                 return this.positions
+                    .filter(position => position.id !== this.missingMemberId) // Exclude missing member
                     .map(position => {
                         const capabilityMatch = this.getCapabilityMatch(task, position);
                         const workload = this.calculateWorkload(position);
@@ -1187,12 +1982,13 @@
 
             analyzeRisks() {
                 const allTasks = this.getAllTasks();
+                const activePositions = this.positions.filter(p => p.id !== this.missingMemberId);
                 const unassignedTasks = allTasks.filter(task => 
-                    !this.positions.some(p => p.selectedTasks.includes(task.id))
+                    !activePositions.some(p => p.selectedTasks.includes(task.id))
                 );
 
                 // Update position risk levels
-                this.positions.forEach(position => {
+                activePositions.forEach(position => {
                     const workload = this.calculateWorkload(position);
                     const overdueTasks = position.selectedTasks.filter(taskId => {
                         const task = allTasks.find(t => t.id === taskId);
@@ -1213,8 +2009,9 @@
 
             updateCriticalAnalysis() {
                 const allTasks = this.getAllTasks();
+                const activePositions = this.positions.filter(p => p.id !== this.missingMemberId);
                 const unassignedTasks = allTasks.filter(task => 
-                    !this.positions.some(p => p.selectedTasks.includes(task.id))
+                    !activePositions.some(p => p.selectedTasks.includes(task.id))
                 );
 
                 // Skills Gap Analysis
@@ -1233,11 +2030,11 @@
                 // Critical Path Analysis
                 const criticalTasks = allTasks.filter(task => task.critical);
                 const unassignedCritical = criticalTasks.filter(task => 
-                    !this.positions.some(p => p.selectedTasks.includes(task.id))
+                    !activePositions.some(p => p.selectedTasks.includes(task.id))
                 );
 
                 // Risk Analysis
-                const highRiskPositions = this.positions.filter(p => p.riskLevel === 'high');
+                const highRiskPositions = activePositions.filter(p => p.riskLevel === 'high');
                 
                 this.renderCriticalAnalysis(skillsGaps, unassignedCritical, highRiskPositions);
             }
@@ -1290,7 +2087,9 @@
                 const container = document.getElementById('teamPositions');
                 container.innerHTML = '';
 
-                this.positions.forEach(position => {
+                this.positions
+                    .filter(position => position.id !== this.missingMemberId) // Exclude missing member
+                    .forEach(position => {
                     const workload = this.calculateWorkload(position);
                     
                     const positionCard = document.createElement('div');
@@ -1357,17 +2156,34 @@
             }
 
             renderTaskPool() {
+                // Update section title
+                const memberNames = {
+                    pm: 'Program Manager',
+                    spm: 'Senior Program Manager',
+                    spa: 'Senior Program Associate',
+                    fm: 'Field Manager',
+                    pa1: 'Program Associate (Aquaculture)',
+                    pa2: 'Program Associate (General)',
+                    proj: 'Project Associate'
+                };
+                
+                const titleElement = document.getElementById('availableTasksTitle');
+                if (titleElement) {
+                    titleElement.textContent = `Available Tasks from ${memberNames[this.missingMemberId]} Role`;
+                }
+                
                 const container = document.getElementById('taskPool');
                 const allTasks = this.sortTasksByDeadline(this.getAllTasks());
                 
                 container.innerHTML = allTasks.map(task => {
                     const deadlineStatus = this.getDeadlineStatus(task.dueDate);
                     const deadlineText = this.getDeadlineText(task.dueDate);
-                    const isAssigned = this.positions.some(p => p.selectedTasks.includes(task.id));
-                    const assignedTo = isAssigned ? this.positions.find(p => p.selectedTasks.includes(task.id)) : null;
+                    const activePositions = this.positions.filter(p => p.id !== this.missingMemberId);
+                    const isAssigned = activePositions.some(p => p.selectedTasks.includes(task.id));
+                    const assignedTo = isAssigned ? activePositions.find(p => p.selectedTasks.includes(task.id)) : null;
                     
                     return `
-                        <div class="task-card ${isAssigned ? 'selected' : ''}" onclick="showTaskAssignment('${task.id}')">
+                        <div class="task-card ${isAssigned ? 'selected' : ''}" onclick="showTaskDetails('${task.id}')">
                             <div class="task-header">
                                 <div class="task-title">
                                     ${task.title}
@@ -1396,7 +2212,11 @@
                                 <div style="margin-top: 0.5rem; padding: 0.5rem; background: #f0f9ff; border-radius: 6px; font-size: 0.8rem;">
                                     ✅ Assigned to: <strong>${assignedTo.title}</strong>
                                 </div>
-                            ` : ''}
+                            ` : `
+                                <button class="btn" style="margin-top: 0.5rem; width: 100%;" onclick="event.stopPropagation(); switchTab('plan'); setTimeout(() => { document.getElementById('taskSelect').value = '${task.id}'; updateTaskDetails(); }, 100)">
+                                    Assign This Task
+                                </button>
+                            `}
                         </div>
                     `;
                 }).join('');
@@ -1437,8 +2257,9 @@
                     
                     tasksByWeek[weekKey].forEach(task => {
                         const deadlineStatus = this.getDeadlineStatus(task.dueDate);
-                        const isAssigned = this.positions.some(p => p.selectedTasks.includes(task.id));
-                        const assignedTo = isAssigned ? this.positions.find(p => p.selectedTasks.includes(task.id)) : null;
+                        const activePositions = this.positions.filter(p => p.id !== this.missingMemberId);
+                        const isAssigned = activePositions.some(p => p.selectedTasks.includes(task.id));
+                        const assignedTo = isAssigned ? activePositions.find(p => p.selectedTasks.includes(task.id)) : null;
                         
                         html += `
                             <div style="margin-bottom: 1rem; padding: 0.75rem; background: #f9fafb; border-radius: 8px; border-left: 4px solid ${
@@ -1481,7 +2302,8 @@
 
             updateDashboard() {
                 const allTasks = this.getAllTasks();
-                const selectedTaskIds = this.positions.flatMap(p => p.selectedTasks);
+                const activePositions = this.positions.filter(p => p.id !== this.missingMemberId);
+                const selectedTaskIds = activePositions.flatMap(p => p.selectedTasks);
                 
                 const overdueTasks = allTasks.filter(t => this.getDeadlineStatus(t.dueDate) === 'overdue').length;
                 const dueSoonTasks = allTasks.filter(t => {
@@ -1489,26 +2311,53 @@
                     return status === 'urgent' || status === 'soon';
                 }).length;
                 
+                const progressPercentage = allTasks.length > 0 ? (selectedTaskIds.length / allTasks.length) * 100 : 0;
+                
                 document.getElementById('totalTasks').textContent = allTasks.length;
                 document.getElementById('assignedTasks').textContent = selectedTaskIds.length;
                 document.getElementById('overdueTasks').textContent = overdueTasks;
                 document.getElementById('dueSoonTasks').textContent = dueSoonTasks;
+                
+                const progressBar = document.getElementById('overallProgress');
+                progressBar.style.width = `${progressPercentage}%`;
+                progressBar.textContent = `${Math.round(progressPercentage)}%`;
+                
+                document.getElementById('progressText').textContent = `${selectedTaskIds.length} of ${allTasks.length} tasks assigned`;
             }
 
-            // Export and Communication Features
+            // Export and Communication Features remain the same...
             exportToPDF() {
                 const { jsPDF } = window.jspdf;
                 const doc = new jsPDF();
+                
+                const memberNames = {
+                    pm: 'Program Manager (Praveen)',
+                    spm: 'Senior Program Manager',
+                    spa: 'Senior Program Associate',
+                    fm: 'Field Manager',
+                    pa1: 'Program Associate (Aquaculture)',
+                    pa2: 'Program Associate (General)',
+                    proj: 'Project Associate'
+                };
+                
+                const absenceType = document.getElementById('absenceType').value;
+                const duration = document.getElementById('absenceDuration').value;
                 
                 doc.setFontSize(20);
                 doc.text('FWI Task Distribution Report', 20, 20);
                 
                 doc.setFontSize(12);
                 doc.text(`Generated: ${new Date().toLocaleDateString()}`, 20, 35);
+                doc.text(`Missing: ${memberNames[this.missingMemberId]} (${absenceType})`, 20, 45);
+                if (duration) {
+                    doc.text(`Duration: ${duration}`, 20, 55);
+                }
                 
-                let yPos = 50;
+                let yPos = duration ? 70 : 60;
                 
-                this.positions.forEach(position => {
+                this.positions
+                    .filter(position => position.id !== this.missingMemberId)
+                    .forEach(position => {
                     if (yPos > 250) {
                         doc.addPage();
                         yPos = 20;
@@ -1537,8 +2386,20 @@
             }
 
             exportToCSV() {
+                const memberNames = {
+                    pm: 'Program Manager (Praveen)',
+                    spm: 'Senior Program Manager',
+                    spa: 'Senior Program Associate',
+                    fm: 'Field Manager',
+                    pa1: 'Program Associate (Aquaculture)',
+                    pa2: 'Program Associate (General)',
+                    proj: 'Project Associate'
+                };
+                
                 const allTasks = this.getAllTasks();
-                let csv = 'Task,Category,Priority,Complexity,Due Date,Assigned To,Status,Description\n';
+                let csv = `Task Distribution Report - Missing: ${memberNames[this.missingMemberId]}\n`;
+                csv += `Generated: ${new Date().toLocaleDateString()}\n\n`;
+                csv += 'Task,Category,Priority,Complexity,Due Date,Assigned To,Status,Description\n';
                 
                 allTasks.forEach(task => {
                     const assignedPosition = this.positions.find(p => p.selectedTasks.includes(task.id));
@@ -1557,16 +2418,32 @@
             }
 
             generateAgenda() {
+                const memberNames = {
+                    pm: 'Program Manager (Praveen)',
+                    spm: 'Senior Program Manager',
+                    spa: 'Senior Program Associate',
+                    fm: 'Field Manager',
+                    pa1: 'Program Associate (Aquaculture)',
+                    pa2: 'Program Associate (General)',
+                    proj: 'Project Associate'
+                };
+                
+                const absenceType = document.getElementById('absenceType').value;
+                const duration = document.getElementById('absenceDuration').value;
+                
                 const content = `
                     <div style="font-family: Arial, sans-serif; line-height: 1.6;">
                         <h3>Task Handover Meeting Agenda</h3>
                         <p><strong>Date:</strong> ${new Date().toLocaleDateString()}<br>
-                        <strong>Purpose:</strong> Redistribute Program Manager responsibilities</p>
+                        <strong>Purpose:</strong> Redistribute ${memberNames[this.missingMemberId]} responsibilities<br>
+                        <strong>Reason:</strong> ${absenceType.charAt(0).toUpperCase() + absenceType.slice(1)}<br>
+                        ${duration ? `<strong>Duration:</strong> ${duration}<br>` : ''}
+                        </p>
                         
                         <h4>1. Situation Overview (5 min)</h4>
                         <ul>
-                            <li>Praveen's departure and immediate needs</li>
-                            <li>Critical deadlines (especially evaluation study)</li>
+                            <li>${memberNames[this.missingMemberId]}'s ${absenceType} and immediate needs</li>
+                            <li>Critical deadlines and priority tasks</li>
                         </ul>
                         
                         <h4>2. Task Distribution Review (15 min)</h4>
@@ -1577,7 +2454,9 @@
                         </ul>
                         
                         <h4>3. Individual Assignments (10 min)</h4>
-                        ${this.positions.map(pos => 
+                        ${this.positions
+                            .filter(p => p.id !== this.missingMemberId)
+                            .map(pos => 
                             pos.selectedTasks.length > 0 ? 
                             `<p><strong>${pos.title}:</strong><br>${pos.selectedTasks.map(taskId => {
                                 const task = this.getAllTasks().find(t => t.id === taskId);
@@ -1608,7 +2487,22 @@
             }
 
             generateEmails() {
-                const emailTemplates = this.positions.filter(pos => pos.selectedTasks.length > 0).map(position => {
+                const memberNames = {
+                    pm: 'Program Manager (Praveen)',
+                    spm: 'Senior Program Manager',
+                    spa: 'Senior Program Associate',
+                    fm: 'Field Manager',
+                    pa1: 'Program Associate (Aquaculture)',
+                    pa2: 'Program Associate (General)',
+                    proj: 'Project Associate'
+                };
+                
+                const absenceType = document.getElementById('absenceType').value;
+                const duration = document.getElementById('absenceDuration').value;
+                
+                const emailTemplates = this.positions
+                    .filter(pos => pos.id !== this.missingMemberId && pos.selectedTasks.length > 0)
+                    .map(position => {
                     const tasks = position.selectedTasks.map(taskId => {
                         const task = this.getAllTasks().find(t => t.id === taskId);
                         return task ? `• ${task.title}\n  Due: ${new Date(task.dueDate).toLocaleDateString()}\n  Details: ${task.description}\n  Contacts: ${task.contacts || 'N/A'}\n` : '';
@@ -1618,11 +2512,11 @@
                         <div style="margin-bottom: 2rem; padding: 1rem; border: 1px solid #e5e7eb; border-radius: 8px;">
                             <h4>Email for ${position.title}</h4>
                             <textarea style="width: 100%; height: 200px; font-family: monospace; font-size: 0.9rem;" readonly>
-Subject: Task Assignment - Program Manager Transition
+Subject: Task Assignment - ${memberNames[this.missingMemberId]} ${absenceType === 'resignation' ? 'Transition' : 'Coverage'}
 
 Dear [Name],
 
-Due to Praveen's departure, we need to redistribute his Program Manager responsibilities. You have been assigned the following tasks based on your expertise and current workload:
+Due to ${memberNames[this.missingMemberId]}'s ${absenceType}${duration ? ` (${duration})` : ''}, we need to ${duration ? 'temporarily cover' : 'redistribute'} their responsibilities. You have been assigned the following tasks based on your expertise and current workload:
 
 ${tasks}
 
@@ -1631,7 +2525,7 @@ Please confirm your availability for these assignments and let me know if you ne
 - Additional context or training
 - Support from other team members
 
-The evaluation study deadlines are particularly critical, so please prioritize those tasks accordingly.
+${duration ? `These assignments are temporary for the duration of ${duration}.` : 'These are permanent reassignments.'}
 
 Best regards,
 [Your Name]
@@ -1641,7 +2535,7 @@ Best regards,
                     `;
                 }).join('');
 
-                document.getElementById('emailContent').innerHTML = emailTemplates;
+                document.getElementById('emailContent').innerHTML = emailTemplates || '<p>No assignments to generate emails for yet. Assign some tasks first!</p>';
                 document.getElementById('emailModal').style.display = 'block';
             }
 
@@ -1708,8 +2602,9 @@ Best regards,
             }
 
             showRecommendations() {
+                const activePositions = this.positions.filter(p => p.id !== this.missingMemberId);
                 const unassignedTasks = this.getAllTasks().filter(task => 
-                    !this.positions.some(p => p.selectedTasks.includes(task.id))
+                    !activePositions.some(p => p.selectedTasks.includes(task.id))
                 );
 
                 const recommendations = unassignedTasks.map(task => {
@@ -1785,16 +2680,40 @@ Best regards,
             event.target.classList.add('active');
         }
 
-        // Task assignment modal
-        function showTaskAssignment(taskId) {
+        // Task details modal
+        function showTaskDetails(taskId) {
             const task = taskManager.getAllTasks().find(t => t.id === taskId);
             if (!task) return;
             
-            const recommendations = taskManager.getRecommendations(task);
+            const activePositions = taskManager.positions.filter(p => p.id !== taskManager.missingMemberId);
+            const isAssigned = activePositions.some(p => p.selectedTasks.includes(task.id));
             
-            alert(`Task: ${task.title}\n\nBest matches:\n${recommendations.slice(0, 3).map((r, i) => 
-                `${i + 1}. ${r.position.title} (${r.capabilityMatch}% match, ${r.availability}% available)`
-            ).join('\n')}\n\nClick on team cards in the Team Overview tab to assign.`);
+            if (!isAssigned) {
+                // Switch to PLAN tab and auto-select this task
+                switchTab('plan');
+                setTimeout(() => {
+                    document.getElementById('taskSelect').value = taskId;
+                    updateTaskDetails();
+                }, 100);
+            } else {
+                const assignedTo = activePositions.find(p => p.selectedTasks.includes(task.id));
+                alert(`Task: ${task.title}\n\nAlready assigned to: ${assignedTo.title}\n\nTo reassign, go to the PLAN tab.`);
+            }
+        }
+
+        // Update task details (called from select change)
+        function updateTaskDetails() {
+            taskManager.updateTaskDetails();
+        }
+
+        // Select assignee
+        function selectAssignee(positionId) {
+            taskManager.selectAssignee(positionId);
+        }
+
+        // Assign selected task
+        function assignSelectedTask() {
+            taskManager.assignSelectedTask();
         }
 
         // Global functions for modal and export functionality
@@ -1824,6 +2743,11 @@ Best regards,
 
         function showRecommendations() {
             taskManager.showRecommendations();
+        }
+
+        // Update missing member
+        function updateMissingMember() {
+            taskManager.updateMissingMember();
         }
 
         // Initialize the application
