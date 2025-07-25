@@ -3,10 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ARA Programme Task Management & Transition Tool</title>
+    <title>FWI Task Management & Transition Tool</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --fwi-primary: #0891b2;
+            --fwi-secondary: #0e7490;
+            --fwi-accent: #06b6d4;
+            --fwi-light: #ecfeff;
+            --fwi-dark: #164e63;
+            --success: #059669;
+            --warning: #d97706;
+            --danger: #dc2626;
+            --neutral: #6b7280;
+        }
         
         * {
             margin: 0;
@@ -17,16 +29,17 @@
         body {
             font-family: 'Inter', sans-serif;
             line-height: 1.6;
-            color: #1a1a1a;
-            background-color: #f8fafb;
+            color: #1f2937;
+            background: linear-gradient(135deg, var(--fwi-light) 0%, #f0f9ff 100%);
+            min-height: 100vh;
         }
 
         .header {
-            background: linear-gradient(135deg, #1e40af 0%, #1d4ed8 100%);
+            background: linear-gradient(135deg, var(--fwi-primary) 0%, var(--fwi-secondary) 100%);
             color: white;
             padding: 2rem 0;
             text-align: center;
-            box-shadow: 0 4px 20px rgba(30, 64, 175, 0.15);
+            box-shadow: 0 4px 20px rgba(8, 145, 178, 0.2);
         }
 
         .header h1 {
@@ -42,74 +55,195 @@
         }
 
         .container {
-            max-width: 1600px;
+            max-width: 1400px;
             margin: 2rem auto;
             padding: 0 1rem;
         }
 
-        .dashboard {
-            display: grid;
-            grid-template-columns: 1fr 1fr 300px;
-            gap: 2rem;
+        .instructions {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
             margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border-left: 4px solid var(--fwi-primary);
+        }
+
+        .instructions h2 {
+            color: var(--fwi-dark);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .instructions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .instruction-card {
+            background: var(--fwi-light);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--fwi-accent);
+        }
+
+        .instruction-card h3 {
+            color: var(--fwi-dark);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .instruction-card p {
+            color: var(--neutral);
+            font-size: 0.9rem;
+        }
+
+        .tabs {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+
+        .tab-nav {
+            display: flex;
+            background: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 1rem 2rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--neutral);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .tab-btn.active {
+            color: var(--fwi-primary);
+            background: white;
+        }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--fwi-primary);
+        }
+
+        .tab-btn:hover:not(.active) {
+            background: #f1f5f9;
+            color: var(--fwi-secondary);
+        }
+
+        .tab-content {
+            display: none;
+            padding: 2rem;
+            min-height: 600px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .section-title {
+            color: var(--fwi-dark);
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .card {
             background: white;
-            border-radius: 16px;
+            border-radius: 12px;
             padding: 1.5rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            border: 1px solid #e5e7eb;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
         }
 
-        .card h2 {
-            color: #1f2937;
-            margin-bottom: 1rem;
-            font-size: 1.3rem;
-            font-weight: 600;
-            border-bottom: 2px solid #3b82f6;
-            padding-bottom: 0.5rem;
+        .card-header {
             display: flex;
-            justify-content: space-between;
+            justify-content: between;
             align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--fwi-light);
         }
 
-        .card-actions {
-            display: flex;
-            gap: 0.5rem;
+        .card-title {
+            color: var(--fwi-dark);
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--fwi-primary) 0%, var(--fwi-secondary) 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(8, 145, 178, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--neutral);
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
         }
 
         .btn-small {
-            background: #3b82f6;
-            color: white;
-            border: none;
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.75rem;
-            font-weight: 500;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
         }
 
-        .btn-small:hover {
-            background: #1d4ed8;
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
         }
 
         .position-card {
-            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-            border: 1px solid #3b82f6;
+            background: linear-gradient(135deg, var(--fwi-light) 0%, #f0f9ff 100%);
+            border: 2px solid var(--fwi-accent);
             border-radius: 12px;
-            padding: 1rem;
-            margin-bottom: 1rem;
+            padding: 1.5rem;
             transition: transform 0.2s ease;
         }
 
         .position-card:hover {
             transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(8, 145, 178, 0.15);
         }
 
         .position-name {
             font-weight: 600;
-            color: #2d3748;
+            color: var(--fwi-dark);
             margin-bottom: 0.5rem;
             font-size: 1.1rem;
             display: flex;
@@ -118,45 +252,41 @@
         }
 
         .risk-indicator {
-            padding: 0.2rem 0.4rem;
+            padding: 0.25rem 0.5rem;
             border-radius: 10px;
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             font-weight: 600;
         }
 
-        .risk-low { background: #d1fae5; color: #059669; }
-        .risk-medium { background: #fed7aa; color: #ea580c; }
-        .risk-high { background: #fecaca; color: #dc2626; }
+        .risk-low { background: #d1fae5; color: var(--success); }
+        .risk-medium { background: #fed7aa; color: var(--warning); }
+        .risk-high { background: #fecaca; color: var(--danger); }
 
         .role-badge {
             display: inline-block;
-            padding: 0.3rem 0.8rem;
+            padding: 0.25rem 0.75rem;
             border-radius: 20px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 600;
-            margin-bottom: 0.5rem;
+            margin-bottom: 1rem;
+            background: var(--fwi-primary);
+            color: white;
         }
-
-        .role-manager { background: #dbeafe; color: #1e40af; }
-        .role-spa { background: #dcfce7; color: #16a34a; }
-        .role-pa { background: #fef3c7; color: #d97706; }
-        .role-external { background: #f3e8ff; color: #7c3aed; }
-        .role-support { background: #fecaca; color: #dc2626; }
 
         .capabilities {
             display: flex;
             flex-wrap: wrap;
             gap: 0.5rem;
-            margin: 0.5rem 0;
+            margin: 1rem 0;
         }
 
         .capability {
-            background: rgba(59, 130, 246, 0.1);
-            color: #1d4ed8;
+            background: rgba(8, 145, 178, 0.1);
+            color: var(--fwi-secondary);
             padding: 0.25rem 0.5rem;
             border-radius: 6px;
             font-size: 0.8rem;
-            border: 1px solid rgba(59, 130, 246, 0.2);
+            border: 1px solid rgba(8, 145, 178, 0.2);
         }
 
         .workload-section {
@@ -172,7 +302,7 @@
         .workload-bar {
             width: 120px;
             height: 8px;
-            background: #e5e7eb;
+            background: #e2e8f0;
             border-radius: 4px;
             margin-right: 1rem;
             overflow: hidden;
@@ -184,73 +314,89 @@
             border-radius: 4px;
         }
 
-        .workload-low { background: #10b981; }
-        .workload-medium { background: #f59e0b; }
-        .workload-high { background: #ef4444; }
+        .workload-low { background: var(--success); }
+        .workload-medium { background: var(--warning); }
+        .workload-high { background: var(--danger); }
 
-        .task-selection {
-            margin-top: 0.5rem;
+        .task-pool {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1rem;
         }
 
-        .task-checkbox {
+        .task-card {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .task-card:hover {
+            border-color: var(--fwi-accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(8, 145, 178, 0.15);
+        }
+
+        .task-card.assigned {
+            border-color: var(--success);
+            background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 100%);
+        }
+
+        .task-title {
+            font-weight: 600;
+            color: var(--fwi-dark);
+            margin-bottom: 0.5rem;
             display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .task-meta {
+            display: flex;
+            justify-content: space-between;
             align-items: center;
-            margin-bottom: 0.3rem;
-            padding: 0.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .task-category {
+            background: var(--fwi-light);
+            color: var(--fwi-primary);
+            padding: 0.25rem 0.5rem;
             border-radius: 6px;
-            transition: background-color 0.2s ease;
+            font-size: 0.75rem;
+            font-weight: 600;
         }
 
-        .task-checkbox:hover {
-            background: rgba(59, 130, 246, 0.05);
+        .priority-critical { color: #7c2d12; font-weight: 700; }
+        .priority-high { color: var(--danger); }
+        .priority-medium { color: var(--warning); }
+        .priority-low { color: var(--success); }
+
+        .deadline-indicator {
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
         }
 
-        .task-checkbox input[type="checkbox"] {
-            margin-right: 0.5rem;
-            transform: scale(1.2);
-            accent-color: #3b82f6;
-        }
-
-        .task-checkbox label {
-            font-size: 0.85rem;
-            color: #4a5568;
-            cursor: pointer;
-            flex-grow: 1;
-        }
-
-        .task-complexity {
-            font-size: 0.7rem;
-            padding: 0.1rem 0.4rem;
-            border-radius: 10px;
-            margin-left: 0.5rem;
-        }
-
-        .complexity-1 { background: #d1fae5; color: #059669; }
-        .complexity-2 { background: #fed7aa; color: #ea580c; }
-        .complexity-3 { background: #fecaca; color: #dc2626; }
-
-        .status-indicators {
-            display: flex;
-            gap: 0.5rem;
-            margin-top: 0.5rem;
-        }
-
-        .status-btn {
-            padding: 0.2rem 0.5rem;
-            border: none;
-            border-radius: 4px;
-            font-size: 0.7rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .status-not-started { background: #f3f4f6; color: #6b7280; }
-        .status-in-progress { background: #dbeafe; color: #1d4ed8; }
-        .status-completed { background: #d1fae5; color: #059669; }
-        .status-blocked { background: #fecaca; color: #dc2626; }
+        .deadline-overdue { background: #fecaca; color: var(--danger); }
+        .deadline-urgent { background: #fed7aa; color: var(--warning); }
+        .deadline-soon { background: #fef3c7; color: #d97706; }
+        .deadline-normal { background: var(--fwi-light); color: var(--fwi-primary); }
 
         .form-section {
-            grid-column: 1 / -1;
+            background: #f8fafc;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
         }
 
         .form-group {
@@ -261,7 +407,7 @@
             display: block;
             margin-bottom: 0.5rem;
             font-weight: 600;
-            color: #2d3748;
+            color: var(--fwi-dark);
         }
 
         .form-group input,
@@ -269,7 +415,7 @@
         .form-group textarea {
             width: 100%;
             padding: 0.75rem;
-            border: 2px solid #e5e7eb;
+            border: 2px solid #e2e8f0;
             border-radius: 8px;
             font-size: 1rem;
             transition: border-color 0.3s ease;
@@ -280,52 +426,55 @@
         .form-group select:focus,
         .form-group textarea:focus {
             outline: none;
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            border-color: var(--fwi-primary);
+            box-shadow: 0 0 0 3px rgba(8, 145, 178, 0.1);
         }
 
         .form-group input[type="range"] {
-            width: 100%;
-            margin: 0.5rem 0;
-            accent-color: #3b82f6;
+            accent-color: var(--fwi-primary);
         }
 
-        .form-row {
+        .decision-matrix {
+            background: var(--fwi-light);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--fwi-accent);
+        }
+
+        .option-comparison {
             display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr;
+            grid-template-columns: repeat(3, 1fr);
             gap: 1rem;
-            align-items: end;
+            margin-bottom: 2rem;
         }
 
-        .btn {
-            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
-            font-family: 'Inter', sans-serif;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        .option-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+            text-align: center;
+            transition: all 0.3s ease;
         }
 
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        .option-card.top-ranked {
+            border-color: var(--success);
+            background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 100%);
         }
 
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 1rem;
-            margin-top: 1rem;
+            margin: 1.5rem 0;
         }
 
         .stat-card {
-            text-align: center;
-            padding: 1rem;
+            background: white;
+            padding: 1.5rem;
             border-radius: 12px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
             transition: transform 0.2s ease;
         }
 
@@ -336,155 +485,17 @@
         .stat-number {
             font-size: 2rem;
             font-weight: 700;
+            color: var(--fwi-primary);
             margin-bottom: 0.25rem;
         }
 
         .stat-label {
-            font-size: 0.85rem;
+            font-size: 0.9rem;
+            color: var(--neutral);
             font-weight: 500;
-            opacity: 0.8;
         }
 
-        .stat-total { background: #fef3c7; color: #d97706; }
-        .stat-assigned { background: #dcfce7; color: #16a34a; }
-        .stat-urgent { background: #fecaca; color: #dc2626; }
-        .stat-evaluation { background: #e0e7ff; color: #4338ca; }
-
-        .available-tasks {
-            grid-column: 1 / -1;
-        }
-
-        .task-pool {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .predefined-task {
-            background: white;
-            border: 2px solid #e5e7eb;
-            border-radius: 12px;
-            padding: 1rem;
-            transition: border-color 0.3s ease, transform 0.2s ease;
-            cursor: pointer;
-        }
-
-        .predefined-task:hover {
-            border-color: #3b82f6;
-            transform: translateY(-2px);
-        }
-
-        .predefined-task.selected {
-            border-color: #3b82f6;
-            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-        }
-
-        .task-title {
-            font-weight: 600;
-            color: #1f2937;
-            margin-bottom: 0.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-        }
-
-        .task-details {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.85rem;
-            color: #6b7280;
-        }
-
-        .task-category {
-            background: rgba(59, 130, 246, 0.1);
-            color: #1d4ed8;
-            padding: 0.2rem 0.5rem;
-            border-radius: 4px;
-            font-size: 0.75rem;
-        }
-
-        .deadline-indicator {
-            padding: 0.2rem 0.5rem;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            margin-left: 0.5rem;
-        }
-
-        .deadline-overdue { background: #fecaca; color: #dc2626; }
-        .deadline-urgent { background: #fed7aa; color: #ea580c; }
-        .deadline-soon { background: #fef3c7; color: #d97706; }
-        .deadline-normal { background: #e0e7ff; color: #4338ca; }
-
-        .timeline-item {
-            display: flex;
-            align-items: center;
-            padding: 0.5rem;
-            border-left: 3px solid;
-            margin-bottom: 0.5rem;
-            background: #f8fafc;
-            border-radius: 0 6px 6px 0;
-            font-size: 0.85rem;
-        }
-
-        .timeline-overdue { border-left-color: #dc2626; background: #fef2f2; }
-        .timeline-urgent { border-left-color: #ea580c; background: #fff7ed; }
-        .timeline-soon { border-left-color: #d97706; background: #fffbeb; }
-
-        .timeline-date {
-            font-weight: 600;
-            margin-right: 0.75rem;
-            min-width: 80px;
-        }
-
-        .timeline-task {
-            flex-grow: 1;
-            color: #374151;
-        }
-
-        .skills-gap {
-            background: #fef2f2;
-            border: 1px solid #fecaca;
-            border-radius: 6px;
-            padding: 0.5rem;
-            margin-top: 0.5rem;
-        }
-
-        .recommendation-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.5rem;
-            background: white;
-            border-radius: 6px;
-            margin-bottom: 0.5rem;
-            border: 1px solid #e0f2fe;
-        }
-
-        .progress-section {
-            margin-top: 1rem;
-            padding-top: 1rem;
-            border-top: 1px solid #e5e7eb;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 6px;
-            background: #e5e7eb;
-            border-radius: 3px;
-            overflow: hidden;
-            margin-bottom: 0.5rem;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #3b82f6, #1d4ed8);
-            transition: width 0.3s ease;
-        }
-
-        .export-section {
+        .export-actions {
             position: fixed;
             top: 100px;
             right: 20px;
@@ -492,8 +503,22 @@
             border-radius: 12px;
             padding: 1rem;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            min-width: 200px;
+            min-width: 180px;
             z-index: 1000;
+            border: 1px solid var(--fwi-accent);
+        }
+
+        .export-actions h3 {
+            color: var(--fwi-dark);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .export-actions .btn {
+            width: 100%;
+            margin-bottom: 0.5rem;
+            font-size: 0.8rem;
+            padding: 0.5rem;
         }
 
         .modal {
@@ -515,7 +540,7 @@
             background: white;
             border-radius: 12px;
             padding: 2rem;
-            max-width: 600px;
+            max-width: 700px;
             max-height: 80vh;
             overflow-y: auto;
             width: 90%;
@@ -525,9 +550,14 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
             padding-bottom: 1rem;
-            border-bottom: 1px solid #e5e7eb;
+            border-bottom: 2px solid var(--fwi-light);
+        }
+
+        .modal-header h2 {
+            color: var(--fwi-dark);
+            margin: 0;
         }
 
         .close-btn {
@@ -535,254 +565,288 @@
             border: none;
             font-size: 1.5rem;
             cursor: pointer;
-            color: #6b7280;
+            color: var(--neutral);
+            padding: 0.5rem;
         }
 
-        @media (max-width: 1200px) {
-            .dashboard {
-                grid-template-columns: 1fr 1fr;
+        .close-btn:hover {
+            color: var(--danger);
+        }
+
+        @media (max-width: 768px) {
+            .tab-nav {
+                flex-direction: column;
             }
-            .export-section {
+            
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .task-pool {
+                grid-template-columns: 1fr;
+            }
+            
+            .option-comparison {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .export-actions {
                 position: relative;
                 top: auto;
                 right: auto;
                 margin-bottom: 1rem;
             }
         }
-
-        @media (max-width: 768px) {
-            .dashboard {
-                grid-template-columns: 1fr;
-            }
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>🐟 ARA Programme Task Management & Transition Tool</h1>
-        <p>Comprehensive Task Distribution and Organizational Decision Support for Program Manager Transition</p>
+        <h1>🐟 FWI Task Management & Transition Tool</h1>
+        <p>Comprehensive Task Distribution and Organizational Decision Support</p>
     </div>
 
     <div class="container">
-        <!-- Export Actions -->
-        <div class="export-section">
-            <h3 style="font-size: 1rem; margin-bottom: 0.5rem; color: #1f2937;">📊 Export & Tools</h3>
-            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                <button class="btn-small" onclick="exportToPDF()">📄 Export PDF</button>
-                <button class="btn-small" onclick="exportToCSV()">📊 Export CSV</button>
-                <button class="btn-small" onclick="generateAgenda()">📋 Meeting Agenda</button>
-                <button class="btn-small" onclick="generateEmails()">📧 Email Templates</button>
-                <button class="btn-small" onclick="showHandoverChecklist()">✅ Handover Checklist</button>
+        <!-- Instructions Section -->
+        <div class="instructions">
+            <h2>📋 How to Use This Tool</h2>
+            <p>This tool helps you redistribute tasks when team members leave and evaluate organizational restructuring options. Follow the steps below:</p>
+            
+            <div class="instructions-grid">
+                <div class="instruction-card">
+                    <h3>🎯 Step 1: Organizational Decision</h3>
+                    <p>Use the "Restructuring Options" tab to evaluate whether to promote internally, hire a new manager, or create a specialized role. Adjust the criteria weights based on your priorities.</p>
+                </div>
+                
+                <div class="instruction-card">
+                    <h3>👥 Step 2: Review Team</h3>
+                    <p>Check current team capacity and capabilities in the "Team Overview" tab. See workload levels and assess who can take on additional responsibilities.</p>
+                </div>
+                
+                <div class="instruction-card">
+                    <h3>📋 Step 3: Assign Tasks</h3>
+                    <p>In the "Task Distribution" tab, select which team members should take on specific tasks. The tool shows skill matches and workload impact.</p>
+                </div>
+                
+                <div class="instruction-card">
+                    <h3>📊 Step 4: Export & Communicate</h3>
+                    <p>Use the export panel to generate meeting agendas, email templates, and handover checklists to communicate decisions to your team.</p>
+                </div>
             </div>
         </div>
 
-        <div class="dashboard">
-            <!-- Team Overview -->
-            <div class="card">
-                <h2>
-                    👥 Team Positions & Availability
-                    <div class="card-actions">
-                        <button class="btn-small" onclick="analyzeRisks()">⚠️ Analyze Risks</button>
-                        <button class="btn-small" onclick="showRecommendations()">🎯 Get Recommendations</button>
-                    </div>
-                </h2>
-                <div id="teamPositions">
-                    <!-- Positions will be populated here -->
-                </div>
-                
-                <!-- Overall Progress -->
-                <div class="progress-section">
-                    <h3 style="font-size: 1rem; margin-bottom: 0.5rem;">📈 Handover Progress</h3>
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="overallProgress" style="width: 0%"></div>
-                    </div>
-                    <div style="font-size: 0.85rem; color: #6b7280;" id="progressText">0% of tasks assigned</div>
-                </div>
+        <!-- Export Actions Panel -->
+        <div class="export-actions">
+            <h3>📊 Export & Tools</h3>
+            <button class="btn btn-small" onclick="exportToPDF()">📄 Export PDF</button>
+            <button class="btn btn-small" onclick="exportToCSV()">📋 Export CSV</button>
+            <button class="btn btn-small" onclick="generateAgenda()">📋 Meeting Agenda</button>
+            <button class="btn btn-small" onclick="generateEmails()">📧 Email Templates</button>
+            <button class="btn btn-small" onclick="showHandoverChecklist()">✅ Handover Checklist</button>
+        </div>
+
+        <!-- Main Tabs -->
+        <div class="tabs">
+            <div class="tab-nav">
+                <button class="tab-btn active" onclick="switchTab('overview')">📊 Overview</button>
+                <button class="tab-btn" onclick="switchTab('restructuring')">🎯 Restructuring Options</button>
+                <button class="tab-btn" onclick="switchTab('team')">👥 Team Overview</button>
+                <button class="tab-btn" onclick="switchTab('tasks')">📋 Task Distribution</button>
+                <button class="tab-btn" onclick="switchTab('custom')">➕ Add Tasks</button>
             </div>
 
-            <!-- Quick Stats -->
-            <div class="card">
-                <h2>📊 Distribution Overview</h2>
+            <!-- Overview Tab -->
+            <div id="overview" class="tab-content active">
+                <h2 class="section-title">📊 Transition Overview</h2>
+                
                 <div class="stats-grid">
-                    <div class="stat-card stat-total">
+                    <div class="stat-card">
                         <div class="stat-number" id="totalTasks">0</div>
-                        <div class="stat-label">Available Tasks</div>
+                        <div class="stat-label">Total Tasks</div>
                     </div>
-                    <div class="stat-card stat-assigned">
+                    <div class="stat-card">
                         <div class="stat-number" id="assignedTasks">0</div>
-                        <div class="stat-label">Selected</div>
+                        <div class="stat-label">Assigned</div>
                     </div>
-                    <div class="stat-card stat-urgent">
+                    <div class="stat-card">
+                        <div class="stat-number" id="criticalTasks">0</div>
+                        <div class="stat-label">Critical Tasks</div>
+                    </div>
+                    <div class="stat-card">
                         <div class="stat-number" id="overdueTasks">0</div>
                         <div class="stat-label">Overdue</div>
                     </div>
-                    <div class="stat-card stat-evaluation">
-                        <div class="stat-number" id="dueSoonTasks">0</div>
-                        <div class="stat-label">Due This Week</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">🚨 Critical Analysis</h3>
+                        <button class="btn btn-small" onclick="analyzeRisks()">🔄 Refresh Analysis</button>
+                    </div>
+                    <div id="criticalAnalysis">
+                        <!-- Analysis will be populated here -->
                     </div>
                 </div>
-                
-                <!-- Timeline Dashboard -->
-                <div style="margin-top: 1.5rem;">
-                    <h3 style="font-size: 1rem; font-weight: 600; color: #1f2937; margin-bottom: 0.5rem;">⏰ Upcoming Deadlines</h3>
-                    <div id="timelineDashboard" style="max-height: 150px; overflow-y: auto;">
-                        <!-- Timeline items will be populated here -->
+
+                <div class="card">
+                    <h3 class="card-title">⏰ Upcoming Deadlines</h3>
+                    <div id="timelineDashboard">
+                        <!-- Timeline will be populated here -->
                     </div>
                 </div>
             </div>
 
-            <!-- Critical Analysis Panel -->
-            <div class="card">
-                <h2>🚨 Critical Analysis</h2>
-                <div id="criticalAnalysis">
-                    <!-- Analysis will be populated here -->
-                </div>
-            </div>
-
-            <!-- Organizational Decision Framework -->
-            <div class="card form-section">
-                <h2>🎯 Organizational Restructuring Decision Framework</h2>
-                <p style="color: #6b7280; margin-bottom: 1rem; font-size: 0.9rem;">
-                    Evaluate different approaches to replacing departed Program Manager role
-                </p>
+            <!-- Restructuring Options Tab -->
+            <div id="restructuring" class="tab-content">
+                <h2 class="section-title">🎯 Organizational Restructuring Decision Framework</h2>
                 
-                <div class="stats-grid" style="margin-bottom: 2rem;">
-                    <div class="stat-card" style="background: #f0f9ff; color: #1e40af;">
-                        <div class="stat-number">Option 1</div>
-                        <div class="stat-label">Promote Senior PA</div>
-                    </div>
-                    <div class="stat-card" style="background: #f0fdf4; color: #15803d;">
-                        <div class="stat-number">Option 2</div>
-                        <div class="stat-label">Hire New PM</div>
-                    </div>
-                    <div class="stat-card" style="background: #fef3c7; color: #d97706;">
-                        <div class="stat-number">Option 3</div>
-                        <div class="stat-label">Hire Lab Ops Manager</div>
-                    </div>
-                    <div class="stat-card" style="background: #f3e8ff; color: #7c3aed; cursor: pointer;" onclick="showDetailedAnalysis()">
-                        <div class="stat-number">Compare</div>
-                        <div class="stat-label">Decision Matrix</div>
-                    </div>
-                </div>
-                
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
-                    <div>
-                        <h3 style="font-size: 1.1rem; margin-bottom: 1rem; color: #1f2937;">📊 Decision Criteria Weighting</h3>
-                        <div class="form-group">
-                            <label>Cost Considerations (0-100%)</label>
-                            <input type="range" id="costWeight" min="0" max="100" value="25" onchange="updateDecisionMatrix()">
-                            <span id="costValue">25%</span>
-                        </div>
-                        <div class="form-group">
-                            <label>Speed of Implementation (0-100%)</label>
-                            <input type="range" id="speedWeight" min="0" max="100" value="30" onchange="updateDecisionMatrix()">
-                            <span id="speedValue">30%</span>
-                        </div>
-                        <div class="form-group">
-                            <label>Quality/Capability Match (0-100%)</label>
-                            <input type="range" id="qualityWeight" min="0" max="100" value="35" onchange="updateDecisionMatrix()">
-                            <span id="qualityValue">35%</span>
-                        </div>
-                        <div class="form-group">
-                            <label>Long-term Sustainability (0-100%)</label>
-                            <input type="range" id="sustainabilityWeight" min="0" max="100" value="10" onchange="updateDecisionMatrix()">
-                            <span id="sustainabilityValue">10%</span>
-                        </div>
-                    </div>
+                <div class="card">
+                    <p style="margin-bottom: 1.5rem; color: var(--neutral);">
+                        Evaluate different approaches to replacing the departed Program Manager role. Adjust the criteria weights below based on your organization's priorities.
+                    </p>
                     
-                    <div>
-                        <h3 style="font-size: 1.1rem; margin-bottom: 1rem; color: #1f2937;">⚖️ Decision Matrix Results</h3>
-                        <div id="decisionMatrix" style="background: #f8fafc; padding: 1rem; border-radius: 8px;">
-                            <!-- Decision matrix will be populated here -->
+                    <div class="option-comparison">
+                        <div class="option-card">
+                            <h3>Option 1</h3>
+                            <h4>Promote Senior PA</h4>
+                            <p>Quick implementation, lower cost</p>
                         </div>
-                        <button class="btn" onclick="showDetailedAnalysis()" style="margin-top: 1rem;">
-                            📋 Show Detailed Analysis
-                        </button>
+                        <div class="option-card">
+                            <h3>Option 2</h3>
+                            <h4>Hire New PM</h4>
+                            <p>Proven structure, strategic capability</p>
+                        </div>
+                        <div class="option-card">
+                            <h3>Option 3</h3>
+                            <h4>Hire Lab Ops Manager</h4>
+                            <p>Specialized focus, operational expertise</p>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                        <div>
+                            <h3 style="margin-bottom: 1rem; color: var(--fwi-dark);">📊 Decision Criteria Weighting</h3>
+                            <div class="form-group">
+                                <label>Cost Considerations: <span id="costValue">25%</span></label>
+                                <input type="range" id="costWeight" min="0" max="100" value="25" onchange="updateDecisionMatrix()">
+                            </div>
+                            <div class="form-group">
+                                <label>Speed of Implementation: <span id="speedValue">30%</span></label>
+                                <input type="range" id="speedWeight" min="0" max="100" value="30" onchange="updateDecisionMatrix()">
+                            </div>
+                            <div class="form-group">
+                                <label>Quality/Capability Match: <span id="qualityValue">35%</span></label>
+                                <input type="range" id="qualityWeight" min="0" max="100" value="35" onchange="updateDecisionMatrix()">
+                            </div>
+                            <div class="form-group">
+                                <label>Long-term Sustainability: <span id="sustainabilityValue">10%</span></label>
+                                <input type="range" id="sustainabilityWeight" min="0" max="100" value="10" onchange="updateDecisionMatrix()">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h3 style="margin-bottom: 1rem; color: var(--fwi-dark);">⚖️ Recommendation Results</h3>
+                            <div class="decision-matrix" id="decisionMatrix">
+                                <!-- Decision matrix will be populated here -->
+                            </div>
+                            <button class="btn" onclick="showDetailedAnalysis()" style="margin-top: 1rem;">
+                                📋 Show Detailed Analysis
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Available Tasks -->
-            <div class="card available-tasks">
-                <h2>📋 Available Tasks from ARA Program Manager Role</h2>
-                <p style="color: #6b7280; margin-bottom: 1rem; font-size: 0.9rem;">
-                    Tasks from departed Program Manager's responsibilities that need redistribution. Includes critical outcome evaluation tasks with external deadlines.
-                    <strong>Priority:</strong> Outcome evaluation tasks must be covered immediately.
+            <!-- Team Overview Tab -->
+            <div id="team" class="tab-content">
+                <h2 class="section-title">👥 Team Positions & Availability</h2>
+                
+                <div class="team-grid" id="teamPositions">
+                    <!-- Team positions will be populated here -->
+                </div>
+            </div>
+
+            <!-- Task Distribution Tab -->
+            <div id="tasks" class="tab-content">
+                <h2 class="section-title">📋 Available Tasks for Redistribution</h2>
+                
+                <p style="margin-bottom: 1.5rem; color: var(--neutral);">
+                    Tasks from the departed Program Manager's responsibilities that need redistribution. 
+                    <strong style="color: var(--danger);">Priority:</strong> Outcome evaluation tasks must be covered immediately.
                 </p>
+                
                 <div class="task-pool" id="taskPool">
-                    <!-- Predefined tasks will be populated here -->
+                    <!-- Tasks will be populated here -->
                 </div>
             </div>
 
-            <!-- Add Custom Task Form -->
-            <div class="card form-section">
-                <h2>➕ Add Custom Task</h2>
-                <form id="customTaskForm">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="taskTitle">Task Description</label>
-                            <input type="text" id="taskTitle" placeholder="Describe the specific task..." required>
+            <!-- Add Custom Tasks Tab -->
+            <div id="custom" class="tab-content">
+                <h2 class="section-title">➕ Add Custom Task</h2>
+                
+                <div class="form-section">
+                    <form id="customTaskForm">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="taskTitle">Task Description</label>
+                                <input type="text" id="taskTitle" placeholder="Describe the specific task..." required>
+                            </div>
+                            <div class="form-group">
+                                <label for="taskCategory">Category</label>
+                                <select id="taskCategory" required>
+                                    <option value="">Select Category</option>
+                                    <option value="outcome-evaluation">Outcome Evaluation Study</option>
+                                    <option value="lab-operations">Lab Operations & Quality Control</option>
+                                    <option value="field-research">Field Research & Data Collection</option>
+                                    <option value="farmer-engagement">Farmer Relationship Management</option>
+                                    <option value="equipment-management">Equipment & Resource Management</option>
+                                    <option value="strategic-planning">Strategic Planning & Analysis</option>
+                                    <option value="protocol-compliance">Protocol Compliance & Training</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="taskPriority">Priority</label>
+                                <select id="taskPriority" required>
+                                    <option value="critical">Critical</option>
+                                    <option value="high">High</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="low">Low</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="taskComplexity">Complexity</label>
+                                <select id="taskComplexity" required>
+                                    <option value="1">Low (1)</option>
+                                    <option value="2">Medium (2)</option>
+                                    <option value="3">High (3)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="taskDueDate">Due Date</label>
+                                <input type="date" id="taskDueDate" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="taskEstimatedHours">Est. Hours</label>
+                                <input type="number" id="taskEstimatedHours" min="1" max="40" placeholder="8">
+                            </div>
+                            <div class="form-group">
+                                <label for="taskCritical">Critical Path</label>
+                                <select id="taskCritical">
+                                    <option value="false">No</option>
+                                    <option value="true">Yes - Critical</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="taskNotes">Additional Notes & Contacts</label>
+                                <input type="text" id="taskNotes" placeholder="Requirements, skills needed, key contacts...">
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="taskCategory">Category</label>
-                            <select id="taskCategory" required>
-                                <option value="">Select Category</option>
-                                <option value="outcome-evaluation">Outcome Evaluation Study</option>
-                                <option value="lab-operations">Lab Operations & Quality Control</option>
-                                <option value="field-research">Field Research & Data Collection</option>
-                                <option value="farmer-engagement">Farmer Relationship Management</option>
-                                <option value="equipment-management">Equipment & Resource Management</option>
-                                <option value="strategic-planning">Strategic Planning & Analysis</option>
-                                <option value="protocol-compliance">Protocol Compliance & Training</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="taskPriority">Priority</label>
-                            <select id="taskPriority" required>
-                                <option value="critical">Critical</option>
-                                <option value="high">High</option>
-                                <option value="medium">Medium</option>
-                                <option value="low">Low</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="taskComplexity">Complexity</label>
-                            <select id="taskComplexity" required>
-                                <option value="1">Low (1)</option>
-                                <option value="2">Medium (2)</option>
-                                <option value="3">High (3)</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-row" style="grid-template-columns: 1fr 1fr 1fr 2fr;">
-                        <div class="form-group">
-                            <label for="taskDueDate">Due Date</label>
-                            <input type="date" id="taskDueDate" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="taskEstimatedHours">Est. Hours</label>
-                            <input type="number" id="taskEstimatedHours" min="1" max="40" placeholder="8">
-                        </div>
-                        <div class="form-group">
-                            <label for="taskCritical">Critical Path</label>
-                            <select id="taskCritical">
-                                <option value="false">No</option>
-                                <option value="true">Yes - Critical</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="taskNotes">Additional Notes & Contacts</label>
-                            <input type="text" id="taskNotes" placeholder="Requirements, skills needed, key contacts...">
-                        </div>
-                    </div>
-                    <button type="submit" class="btn">Add Custom Task</button>
-                </form>
+                        <button type="submit" class="btn" style="margin-top: 1rem;">Add Custom Task</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
@@ -1040,11 +1104,7 @@
                 this.customTasks = [];
                 this.initializeEventListeners();
                 this.setDefaultDueDate();
-                this.renderPositions();
-                this.renderTaskPool();
-                this.updateDashboard();
-                this.updateDecisionMatrix();
-                this.analyzeRisks();
+                this.renderAll();
             }
 
             initializeEventListeners() {
@@ -1078,9 +1138,7 @@
                 };
 
                 this.customTasks.push(task);
-                this.renderTaskPool();
-                this.updateDashboard();
-                this.analyzeRisks();
+                this.renderAll();
                 document.getElementById('customTaskForm').reset();
                 this.setDefaultDueDate();
             }
@@ -1104,24 +1162,12 @@
                 return 'normal';
             }
 
-            getDeadlineClass(status) {
-                return `deadline-${status}`;
-            }
-
             getDeadlineText(dueDate) {
                 const days = this.getDaysUntilDue(dueDate);
                 if (days < 0) return `${Math.abs(days)} days overdue`;
                 if (days === 0) return 'Due today';
                 if (days === 1) return 'Due tomorrow';
                 return `${days} days left`;
-            }
-
-            sortTasksByDeadline(tasks) {
-                return tasks.sort((a, b) => {
-                    const dateA = new Date(a.dueDate);
-                    const dateB = new Date(b.dueDate);
-                    return dateA - dateB;
-                });
             }
 
             calculateWorkload(position) {
@@ -1142,79 +1188,21 @@
                 return 'workload-high';
             }
 
-            updateTaskStatus(taskId, status) {
-                const task = this.getAllTasks().find(t => t.id === taskId);
-                if (task) {
-                    task.status = status;
-                    this.renderPositions();
-                    this.updateDashboard();
-                }
-            }
-
-            toggleTaskSelection(positionId, taskId, checked) {
-                const position = this.positions.find(p => p.id === positionId);
-                if (!position) return;
-
-                if (checked) {
-                    if (!position.selectedTasks.includes(taskId)) {
+            toggleTaskAssignment(taskId, positionId) {
+                // Remove task from all positions first
+                this.positions.forEach(pos => {
+                    pos.selectedTasks = pos.selectedTasks.filter(id => id !== taskId);
+                });
+                
+                // Add to selected position if provided
+                if (positionId) {
+                    const position = this.positions.find(p => p.id === positionId);
+                    if (position) {
                         position.selectedTasks.push(taskId);
                     }
-                } else {
-                    position.selectedTasks = position.selectedTasks.filter(id => id !== taskId);
-                }
-
-                this.renderPositions();
-                this.updateDashboard();
-                this.analyzeRisks();
-            }
-
-            getCapabilityMatch(task, position) {
-                const categoryMap = {
-                    'outcome-evaluation': ['Research Support', 'Data Collection', 'Field Work', 'Protocol Implementation', 'Strategic Planning'],
-                    'lab-operations': ['Lab Operations', 'Equipment Calibration', 'Technical Analysis', 'Research Support'],
-                    'field-research': ['Field Work', 'Data Collection', 'Farmer Relations', 'Water Quality Testing'],
-                    'farmer-engagement': ['Farmer Relations', 'Field Work', 'Strategic Planning', 'Team Management'],
-                    'equipment-management': ['Lab Operations', 'Equipment Calibration', 'Technical Analysis'],
-                    'strategic-planning': ['Strategic Planning', 'Research Coordination', 'Team Management', 'Data Analysis'],
-                    'protocol-compliance': ['Research Support', 'Protocol Implementation', 'Strategic Planning', 'Team Management']
-                };
-
-                const requiredCapabilities = categoryMap[task.category] || [];
-                const matchedCapabilities = requiredCapabilities.filter(cap => 
-                    position.capabilities.includes(cap)
-                );
-                
-                let managementBonus = 0;
-                if (task.category === 'strategic-planning' || task.category === 'farmer-engagement') {
-                    if (position.role === 'manager' || position.title.includes('Senior')) {
-                        managementBonus = 0.2;
-                    }
                 }
                 
-                return Math.min(1, (matchedCapabilities.length / Math.max(requiredCapabilities.length, 1)) + managementBonus);
-            }
-
-            getRecommendations(task) {
-                return this.positions
-                    .map(position => {
-                        const capabilityMatch = this.getCapabilityMatch(task, position);
-                        const workload = this.calculateWorkload(position);
-                        const availabilityScore = Math.max(0, 100 - workload) / 100;
-                        
-                        const priorityMultiplier = task.priority === 'critical' ? 2.0 : task.priority === 'high' ? 1.5 : task.priority === 'medium' ? 1.2 : 1.0;
-                        const criticalMultiplier = task.critical ? 1.3 : 1.0;
-                        
-                        const score = (capabilityMatch * 0.6 + availabilityScore * 0.4) * priorityMultiplier * criticalMultiplier;
-                        
-                        return {
-                            position,
-                            score,
-                            capabilityMatch: Math.round(capabilityMatch * 100),
-                            availability: Math.round(availabilityScore * 100),
-                            workload: Math.round(workload)
-                        };
-                    })
-                    .sort((a, b) => b.score - a.score);
+                this.renderAll();
             }
 
             updateDecisionMatrix() {
@@ -1243,18 +1231,13 @@
                 }).sort((a, b) => b.weightedScore - a.weightedScore);
                 
                 const matrixHtml = `
-                    <div style="margin-bottom: 1rem;">
-                        <h4 style="font-size: 0.9rem; color: #374151; margin-bottom: 0.5rem;">Ranked Options:</h4>
-                        ${scores.map((option, index) => `
-                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem; background: ${index === 0 ? '#d1fae5' : index === 1 ? '#fef3c7' : '#fecaca'}; border-radius: 4px; margin-bottom: 0.25rem;">
-                                <span style="font-weight: 500; font-size: 0.85rem;">${index + 1}. ${option.name}</span>
-                                <span style="font-weight: 600; color: ${index === 0 ? '#059669' : index === 1 ? '#d97706' : '#dc2626'};">${option.weightedScore}%</span>
-                            </div>
-                        `).join('')}
-                    </div>
-                    <div style="font-size: 0.8rem; color: #6b7280;">
-                        Weights: Cost ${Math.round(costWeight*100)}% • Speed ${Math.round(speedWeight*100)}% • Quality ${Math.round(qualityWeight*100)}% • Sustainability ${Math.round(sustainabilityWeight*100)}%
-                    </div>
+                    <h4 style="margin-bottom: 1rem; color: var(--fwi-dark);">Ranked Options:</h4>
+                    ${scores.map((option, index) => `
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: ${index === 0 ? '#d1fae5' : index === 1 ? '#fef3c7' : '#fecaca'}; border-radius: 8px; margin-bottom: 0.5rem;">
+                            <span style="font-weight: 600; color: var(--fwi-dark);">${index + 1}. ${option.name}</span>
+                            <span style="font-weight: 700; font-size: 1.1rem; color: ${index === 0 ? 'var(--success)' : index === 1 ? 'var(--warning)' : 'var(--danger)'};">${option.weightedScore}%</span>
+                        </div>
+                    `).join('')}
                 `;
                 
                 document.getElementById('decisionMatrix').innerHTML = matrixHtml;
@@ -1282,61 +1265,28 @@
                     }
                 });
 
-                this.updateCriticalAnalysis();
+                this.renderCriticalAnalysis();
             }
 
-            updateCriticalAnalysis() {
+            renderCriticalAnalysis() {
                 const allTasks = this.getAllTasks();
                 const unassignedTasks = allTasks.filter(task => 
                     !this.positions.some(p => p.selectedTasks.includes(task.id))
                 );
-
-                const skillsGaps = [];
-                unassignedTasks.forEach(task => {
-                    const recommendations = this.getRecommendations(task);
-                    const bestMatch = recommendations[0];
-                    if (bestMatch && bestMatch.capabilityMatch < 50) {
-                        skillsGaps.push({
-                            task: task.title,
-                            gap: 100 - bestMatch.capabilityMatch
-                        });
-                    }
-                });
-
                 const criticalTasks = allTasks.filter(task => task.critical);
                 const unassignedCritical = criticalTasks.filter(task => 
                     !this.positions.some(p => p.selectedTasks.includes(task.id))
                 );
-
                 const highRiskPositions = this.positions.filter(p => p.riskLevel === 'high');
-                
-                this.renderCriticalAnalysis(skillsGaps, unassignedCritical, highRiskPositions);
-            }
-
-            renderCriticalAnalysis(skillsGaps, criticalTasks, riskPositions) {
-                const container = document.getElementById('criticalAnalysis');
                 
                 let html = '';
                 
-                if (skillsGaps.length > 0) {
+                if (unassignedCritical.length > 0) {
                     html += `
-                        <div class="skills-gap">
-                            <h4 style="color: #dc2626; margin-bottom: 0.5rem;">⚠️ Skills Gap Warnings</h4>
-                            ${skillsGaps.slice(0, 3).map(gap => 
-                                `<div style="font-size: 0.8rem; margin-bottom: 0.25rem;">
-                                    ${gap.task} - No ideal match found
-                                </div>`
-                            ).join('')}
-                        </div>
-                    `;
-                }
-
-                if (criticalTasks.length > 0) {
-                    html += `
-                        <div style="margin-top: 0.5rem; padding: 0.5rem; background: #fef2f2; border-radius: 6px; border-left: 4px solid #dc2626;">
-                            <h4 style="color: #dc2626; margin-bottom: 0.5rem;">🚨 Unassigned Critical Tasks</h4>
-                            ${criticalTasks.slice(0, 3).map(task => 
-                                `<div style="font-size: 0.8rem; margin-bottom: 0.25rem;">
+                        <div style="background: #fef2f2; padding: 1rem; border-radius: 8px; border-left: 4px solid var(--danger); margin-bottom: 1rem;">
+                            <h4 style="color: var(--danger); margin-bottom: 0.5rem;">🚨 Unassigned Critical Tasks</h4>
+                            ${unassignedCritical.slice(0, 3).map(task => 
+                                `<div style="margin-bottom: 0.25rem;">
                                     ${task.title} - Due ${this.getDeadlineText(task.dueDate)}
                                 </div>`
                             ).join('')}
@@ -1344,12 +1294,12 @@
                     `;
                 }
 
-                if (riskPositions.length > 0) {
+                if (highRiskPositions.length > 0) {
                     html += `
-                        <div style="margin-top: 0.5rem; padding: 0.5rem; background: #fef2f2; border-radius: 6px;">
-                            <h4 style="color: #dc2626; margin-bottom: 0.5rem;">⚠️ Overloaded Positions</h4>
-                            ${riskPositions.map(pos => 
-                                `<div style="font-size: 0.8rem; margin-bottom: 0.25rem;">
+                        <div style="background: #fff7ed; padding: 1rem; border-radius: 8px; border-left: 4px solid var(--warning); margin-bottom: 1rem;">
+                            <h4 style="color: var(--warning); margin-bottom: 0.5rem;">⚠️ Overloaded Positions</h4>
+                            ${highRiskPositions.map(pos => 
+                                `<div style="margin-bottom: 0.25rem;">
                                     ${pos.title} - ${Math.round(this.calculateWorkload(pos))}% capacity
                                 </div>`
                             ).join('')}
@@ -1358,202 +1308,137 @@
                 }
 
                 if (html === '') {
-                    html = '<div style="color: #16a34a; font-size: 0.9rem; padding: 1rem; text-align: center;">✅ No critical issues detected</div>';
+                    html = '<div style="color: var(--success); text-align: center; padding: 2rem; font-size: 1.1rem;">✅ No critical issues detected</div>';
                 }
 
-                container.innerHTML = html;
+                document.getElementById('criticalAnalysis').innerHTML = html;
             }
 
             renderPositions() {
                 const container = document.getElementById('teamPositions');
-                container.innerHTML = '';
-
-                this.positions.forEach(position => {
-                    const workload = this.calculateWorkload(position);
-                    const availableTasks = this.getAllTasks().filter(task => 
-                        !position.selectedTasks.includes(task.id)
-                    );
-
-                    const positionElement = document.createElement('div');
-                    positionElement.className = 'position-card';
-                    
-                    const selectedTasksList = position.selectedTasks.length > 0 ? 
-                        position.selectedTasks.map(taskId => {
-                            const task = this.getAllTasks().find(t => t.id === taskId);
-                            if (!task) return '';
-                            
-                            return `
-                                <div style="display: flex; justify-content: space-between; align-items: center; margin: 0.25rem 0; padding: 0.25rem; background: white; border-radius: 4px; font-size: 0.8rem;">
-                                    <span>${task.title}</span>
-                                    <div class="status-indicators">
-                                        <button class="status-btn status-${task.status}" onclick="taskManager.updateTaskStatus('${task.id}', '${task.status === 'completed' ? 'not-started' : task.status === 'not-started' ? 'in-progress' : task.status === 'in-progress' ? 'completed' : 'blocked'}')">
-                                            ${task.status.replace('-', ' ')}
-                                        </button>
-                                    </div>
-                                </div>
-                            `;
-                        }).join('') : 
-                        '<div style="color: #9ca3af; font-size: 0.8rem;">No tasks selected</div>';
-                    
-                    positionElement.innerHTML = `
-                        <div class="position-name">
-                            ${position.title}
-                            <span class="risk-indicator risk-${position.riskLevel}">
-                                ${position.riskLevel.toUpperCase()} RISK
-                            </span>
-                        </div>
-                        <span class="role-badge role-${position.role}">${position.role.toUpperCase()}</span>
-                        
-                        <div class="capabilities">
-                            ${position.capabilities.map(cap => 
-                                `<span class="capability">${cap}</span>`
-                            ).join('')}
-                        </div>
-                        
-                        <div class="workload-section">
-                            <div class="workload-display">
-                                <div class="workload-bar">
-                                    <div class="workload-fill ${this.getWorkloadClass(workload)}" 
-                                         style="width: ${workload}%"></div>
-                                </div>
-                                <span style="font-size: 0.9rem; font-weight: 500;">
-                                    ${Math.round(workload)}% capacity
-                                </span>
-                            </div>
-                            
-                            <div style="font-size: 0.8rem; color: #6b7280; margin-bottom: 0.5rem;">
-                                Selected: ${position.selectedTasks.length} tasks
-                            </div>
-                            
-                            <div style="max-height: 120px; overflow-y: auto; margin-bottom: 0.5rem;">
-                                ${selectedTasksList}
-                            </div>
-                        </div>
-
-                        <div class="task-selection">
-                            <div style="font-weight: 500; margin-bottom: 0.5rem; color: #374151;">
-                                Available Tasks:
-                            </div>
-                            ${availableTasks.length === 0 ? 
-                                '<div style="color: #9ca3af; font-size: 0.8rem;">All tasks selected</div>' :
-                                this.sortTasksByDeadline(availableTasks).slice(0, 5).map(task => {
-                                    const deadlineStatus = this.getDeadlineStatus(task.dueDate);
-                                    const deadlineText = this.getDeadlineText(task.dueDate);
-                                    const recommendation = this.getRecommendations(task).find(r => r.position.id === position.id);
-                                    const matchScore = recommendation ? recommendation.capabilityMatch : 0;
-                                    
-                                    return `
-                                        <div class="task-checkbox">
-                                            <input type="checkbox" 
-                                                   id="${position.id}-${task.id}"
-                                                   onchange="taskManager.toggleTaskSelection('${position.id}', '${task.id}', this.checked)">
-                                            <label for="${position.id}-${task.id}">${task.title}</label>
-                                            <div style="display: flex; align-items: center;">
-                                                <span style="font-size: 0.7rem; color: ${matchScore > 75 ? '#059669' : matchScore > 50 ? '#ea580c' : '#dc2626'}; margin-right: 0.3rem;">
-                                                    ${matchScore}%
-                                                </span>
-                                                <span class="deadline-indicator ${this.getDeadlineClass(deadlineStatus)}" style="font-size: 0.7rem; padding: 0.1rem 0.4rem; margin-right: 0.3rem;">
-                                                    ${deadlineText}
-                                                </span>
-                                                <span class="task-complexity complexity-${task.complexity}">${task.complexity}</span>
-                                            </div>
-                                        </div>
-                                    `;
-                                }).join('')
-                            }
-                            ${availableTasks.length > 5 ? `<div style="font-size: 0.8rem; color: #6b7280; margin-top: 0.5rem;">...and ${availableTasks.length - 5} more</div>` : ''}
-                        </div>
-                    `;
-                    
-                    container.appendChild(positionElement);
-                });
-            }
-
-            renderTaskPool() {
-                const container = document.getElementById('taskPool');
-                const allTasks = this.sortTasksByDeadline(this.getAllTasks());
                 
-                container.innerHTML = allTasks.map(task => {
-                    const deadlineStatus = this.getDeadlineStatus(task.dueDate);
-                    const deadlineText = this.getDeadlineText(task.dueDate);
-                    const isAssigned = this.positions.some(p => p.selectedTasks.includes(task.id));
-                    const assignedTo = isAssigned ? this.positions.find(p => p.selectedTasks.includes(task.id)) : null;
+                container.innerHTML = this.positions.map(position => {
+                    const workload = this.calculateWorkload(position);
                     
                     return `
-                        <div class="predefined-task ${isAssigned ? 'selected' : ''}" data-task-id="${task.id}">
-                            <div class="task-title">
-                                ${task.title}
-                                ${task.critical ? '<span style="color: #dc2626; margin-left: 0.5rem;">🚨</span>' : ''}
-                                <div style="font-size: 0.7rem; color: #6b7280;">
-                                    ${task.estimatedHours}h • ${task.status.replace('-', ' ')}
-                                </div>
+                        <div class="position-card">
+                            <div class="position-name">
+                                ${position.title}
+                                <span class="risk-indicator risk-${position.riskLevel}">
+                                    ${position.riskLevel.toUpperCase()}
+                                </span>
                             </div>
-                            <div class="task-details">
-                                <span class="task-category">${task.category.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}</span>
-                                <div>
-                                    <span style="color: ${task.priority === 'critical' ? '#7c2d12' : task.priority === 'high' ? '#dc2626' : task.priority === 'medium' ? '#ea580c' : '#059669'};">
-                                        ${task.priority.toUpperCase()}
+                            <span class="role-badge">${position.role.toUpperCase()}</span>
+                            
+                            <div class="capabilities">
+                                ${position.capabilities.map(cap => 
+                                    `<span class="capability">${cap}</span>`
+                                ).join('')}
+                            </div>
+                            
+                            <div class="workload-section">
+                                <div class="workload-display">
+                                    <div class="workload-bar">
+                                        <div class="workload-fill ${this.getWorkloadClass(workload)}" 
+                                             style="width: ${workload}%"></div>
+                                    </div>
+                                    <span style="font-weight: 600;">
+                                        ${Math.round(workload)}% capacity
                                     </span>
-                                    <span class="task-complexity complexity-${task.complexity}" style="margin-left: 0.5rem;">
-                                        Complexity: ${task.complexity}
-                                    </span>
+                                </div>
+                                
+                                <div style="margin-top: 1rem;">
+                                    <strong>Assigned Tasks (${position.selectedTasks.length}):</strong>
+                                    ${position.selectedTasks.length === 0 ? 
+                                        '<div style="color: var(--neutral); font-style: italic;">No tasks assigned</div>' :
+                                        position.selectedTasks.map(taskId => {
+                                            const task = this.getAllTasks().find(t => t.id === taskId);
+                                            return task ? `<div style="margin: 0.25rem 0;">• ${task.title}</div>` : '';
+                                        }).join('')
+                                    }
                                 </div>
                             </div>
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem;">
-                                <div style="font-size: 0.8rem; color: #6b7280;">
-                                    ${task.description}
-                                </div>
-                                <div class="deadline-indicator ${this.getDeadlineClass(deadlineStatus)}">
-                                    📅 ${deadlineText}
-                                </div>
-                            </div>
-                            <div style="font-size: 0.75rem; color: #9ca3af; margin-top: 0.25rem;">
-                                Due: ${new Date(task.dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                                ${task.contacts ? ` • ${task.contacts}` : ''}
-                            </div>
-                            ${isAssigned ? `
-                                <div style="margin-top: 0.5rem; padding: 0.5rem; background: #f0f9ff; border-radius: 6px; font-size: 0.8rem;">
-                                    ✅ Assigned to: <strong>${assignedTo.title}</strong>
-                                </div>
-                            ` : ''}
                         </div>
                     `;
                 }).join('');
             }
 
-            updateDashboard() {
-                const allTasks = this.getAllTasks();
-                const selectedTaskIds = this.positions.flatMap(p => p.selectedTasks);
+            renderTaskPool() {
+                const container = document.getElementById('taskPool');
+                const allTasks = this.getAllTasks().sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
                 
-                const overdueTasks = allTasks.filter(t => this.getDeadlineStatus(t.dueDate) === 'overdue').length;
-                const dueSoonTasks = allTasks.filter(t => {
-                    const status = this.getDeadlineStatus(t.dueDate);
-                    return status === 'urgent' || status === 'soon';
-                }).length;
-                
-                const progressPercentage = allTasks.length > 0 ? (selectedTaskIds.length / allTasks.length) * 100 : 0;
-                
-                document.getElementById('totalTasks').textContent = allTasks.length;
-                document.getElementById('assignedTasks').textContent = selectedTaskIds.length;
-                document.getElementById('overdueTasks').textContent = overdueTasks;
-                document.getElementById('dueSoonTasks').textContent = dueSoonTasks;
-                
-                document.getElementById('overallProgress').style.width = `${progressPercentage}%`;
-                document.getElementById('progressText').textContent = `${Math.round(progressPercentage)}% of tasks assigned`;
-                
-                this.renderTimelineDashboard();
+                container.innerHTML = allTasks.map(task => {
+                    const deadlineStatus = this.getDeadlineStatus(task.dueDate);
+                    const deadlineText = this.getDeadlineText(task.dueDate);
+                    const assignedPosition = this.positions.find(p => p.selectedTasks.includes(task.id));
+                    
+                    return `
+                        <div class="task-card ${assignedPosition ? 'assigned' : ''}" onclick="showTaskAssignmentModal('${task.id}')">
+                            <div class="task-title">
+                                ${task.title}
+                                ${task.critical ? '<span style="color: var(--danger);">🚨</span>' : ''}
+                            </div>
+                            
+                            <div class="task-meta">
+                                <span class="task-category">${task.category.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}</span>
+                                <span class="priority-${task.priority}">${task.priority.toUpperCase()}</span>
+                            </div>
+                            
+                            <p style="color: var(--neutral); margin-bottom: 1rem; font-size: 0.9rem;">
+                                ${task.description}
+                            </p>
+                            
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <span style="font-size: 0.8rem; color: var(--neutral);">
+                                        ${task.estimatedHours}h • Complexity: ${task.complexity}
+                                    </span>
+                                </div>
+                                <span class="deadline-indicator deadline-${deadlineStatus}">
+                                    📅 ${deadlineText}
+                                </span>
+                            </div>
+                            
+                            ${assignedPosition ? `
+                                <div style="margin-top: 1rem; padding: 0.75rem; background: var(--fwi-light); border-radius: 8px; color: var(--fwi-dark);">
+                                    ✅ Assigned to: <strong>${assignedPosition.title}</strong>
+                                </div>
+                            ` : `
+                                <div style="margin-top: 1rem; padding: 0.75rem; background: #fef2f2; border-radius: 8px; color: var(--danger);">
+                                    ⚠️ Unassigned - Click to assign
+                                </div>
+                            `}
+                        </div>
+                    `;
+                }).join('');
             }
 
-            renderTimelineDashboard() {
+            renderStats() {
+                const allTasks = this.getAllTasks();
+                const assignedTasks = allTasks.filter(task => 
+                    this.positions.some(p => p.selectedTasks.includes(task.id))
+                );
+                const criticalTasks = allTasks.filter(task => task.critical);
+                const overdueTasks = allTasks.filter(task => 
+                    this.getDeadlineStatus(task.dueDate) === 'overdue'
+                );
+                
+                document.getElementById('totalTasks').textContent = allTasks.length;
+                document.getElementById('assignedTasks').textContent = assignedTasks.length;
+                document.getElementById('criticalTasks').textContent = criticalTasks.length;
+                document.getElementById('overdueTasks').textContent = overdueTasks.length;
+            }
+
+            renderTimeline() {
                 const container = document.getElementById('timelineDashboard');
-                const allTasks = this.sortTasksByDeadline(this.getAllTasks());
+                const allTasks = this.getAllTasks().sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
                 const urgentTasks = allTasks.filter(task => {
                     const status = this.getDeadlineStatus(task.dueDate);
                     return status === 'overdue' || status === 'urgent' || status === 'soon';
-                }).slice(0, 6);
+                }).slice(0, 5);
 
                 if (urgentTasks.length === 0) {
-                    container.innerHTML = '<div style="color: #6b7280; font-size: 0.85rem; padding: 0.5rem;">No urgent deadlines</div>';
+                    container.innerHTML = '<div style="color: var(--neutral); text-align: center; padding: 2rem;">No urgent deadlines</div>';
                     return;
                 }
 
@@ -1563,155 +1448,45 @@
                     const isAssigned = this.positions.some(p => p.selectedTasks.includes(task.id));
                     
                     return `
-                        <div class="timeline-item timeline-${deadlineStatus}">
-                            <div class="timeline-date">${deadlineText}</div>
-                            <div class="timeline-task">
-                                ${task.title}
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; margin-bottom: 0.5rem; background: white; border-radius: 8px; border-left: 4px solid ${deadlineStatus === 'overdue' ? 'var(--danger)' : deadlineStatus === 'urgent' ? 'var(--warning)' : 'var(--fwi-primary)'};">
+                            <div>
+                                <strong>${task.title}</strong>
                                 ${task.critical ? ' 🚨' : ''}
-                                ${isAssigned ? '<span style="color: #16a34a; font-size: 0.7rem; margin-left: 0.5rem;">✓ Assigned</span>' : '<span style="color: #dc2626; font-size: 0.7rem; margin-left: 0.5rem;">⚠ Unassigned</span>'}
+                                <div style="font-size: 0.8rem; color: var(--neutral);">
+                                    ${deadlineText}
+                                </div>
+                            </div>
+                            <div>
+                                ${isAssigned ? 
+                                    '<span style="color: var(--success); font-weight: 600;">✓ Assigned</span>' : 
+                                    '<span style="color: var(--danger); font-weight: 600;">⚠ Unassigned</span>'
+                                }
                             </div>
                         </div>
                     `;
                 }).join('');
             }
 
-            showDetailedAnalysis() {
-                const content = `
-                    <div style="font-family: Arial, sans-serif; line-height: 1.6;">
-                        <h3>📊 Detailed Organizational Options Analysis</h3>
-                        
-                        ${this.organizationalOptions.map(option => `
-                            <div style="margin-bottom: 2rem; padding: 1.5rem; border: 2px solid #e5e7eb; border-radius: 12px;">
-                                <h4 style="color: #1f2937; margin-bottom: 1rem;">${option.name}</h4>
-                                
-                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
-                                    <div>
-                                        <h5 style="color: #059669; margin-bottom: 0.5rem;">✅ Advantages:</h5>
-                                        <ul style="margin: 0; padding-left: 1rem;">
-                                            ${option.pros.map(pro => `<li style="margin-bottom: 0.25rem;">${pro}</li>`).join('')}
-                                        </ul>
-                                    </div>
-                                    
-                                    <div>
-                                        <h5 style="color: #dc2626; margin-bottom: 0.5rem;">❌ Disadvantages:</h5>
-                                        <ul style="margin: 0; padding-left: 1rem;">
-                                            ${option.cons.map(con => `<li style="margin-bottom: 0.25rem;">${con}</li>`).join('')}
-                                        </ul>
-                                    </div>
-                                </div>
-                                
-                                <div style="background: #fef2f2; padding: 1rem; border-radius: 8px;">
-                                    <h5 style="color: #dc2626; margin-bottom: 0.5rem;">⚠️ Risk Factors:</h5>
-                                    <ul style="margin: 0; padding-left: 1rem;">
-                                        ${option.riskFactors.map(risk => `<li style="margin-bottom: 0.25rem;">${risk}</li>`).join('')}
-                                    </ul>
-                                </div>
-                                
-                                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; margin-top: 1rem;">
-                                    <div style="text-align: center; padding: 0.5rem; background: #f3f4f6; border-radius: 6px;">
-                                        <div style="font-weight: 600;">Cost</div>
-                                        <div style="color: ${option.cost <= 3 ? '#059669' : option.cost <= 6 ? '#d97706' : '#dc2626'};">${option.cost}/10</div>
-                                    </div>
-                                    <div style="text-align: center; padding: 0.5rem; background: #f3f4f6; border-radius: 6px;">
-                                        <div style="font-weight: 600;">Speed</div>
-                                        <div style="color: ${option.speed >= 7 ? '#059669' : option.speed >= 4 ? '#d97706' : '#dc2626'};">${option.speed}/10</div>
-                                    </div>
-                                    <div style="text-align: center; padding: 0.5rem; background: #f3f4f6; border-radius: 6px;">
-                                        <div style="font-weight: 600;">Quality</div>
-                                        <div style="color: ${option.quality >= 7 ? '#059669' : option.quality >= 4 ? '#d97706' : '#dc2626'};">${option.quality}/10</div>
-                                    </div>
-                                    <div style="text-align: center; padding: 0.5rem; background: #f3f4f6; border-radius: 6px;">
-                                        <div style="font-weight: 600;">Sustainability</div>
-                                        <div style="color: ${option.sustainability >= 7 ? '#059669' : option.sustainability >= 4 ? '#d97706' : '#dc2626'};">${option.sustainability}/10</div>
-                                    </div>
-                                </div>
-                            </div>
-                        `).join('')}
-                        
-                        <div style="background: #f0f9ff; padding: 1.5rem; border-radius: 12px; margin-top: 2rem;">
-                            <h4 style="color: #1e40af; margin-bottom: 1rem;">💡 Recommendation Framework</h4>
-                            <p style="margin-bottom: 1rem;">Based on your specific situation with the outcome evaluation study:</p>
-                            <ul style="margin: 0; padding-left: 1rem;">
-                                <li><strong>If timeline is critical:</strong> Consider promoting Senior PA short-term while planning longer-term hire</li>
-                                <li><strong>If quality is paramount:</strong> Delay decision and hire experienced Program Manager</li>
-                                <li><strong>If specialization needed:</strong> Lab Operations Manager may fill specific gaps</li>
-                                <li><strong>If budget constrained:</strong> Promote internally and provide additional training</li>
-                            </ul>
-                        </div>
-                    </div>
-                `;
-                
-                document.getElementById('recommendationsContent').innerHTML = content;
-                document.getElementById('recommendationsModal').style.display = 'block';
+            renderAll() {
+                this.renderPositions();
+                this.renderTaskPool();
+                this.renderStats();
+                this.renderTimeline();
+                this.updateDecisionMatrix();
+                this.analyzeRisks();
             }
 
-            showRecommendations() {
-                const unassignedTasks = this.getAllTasks().filter(task => 
-                    !this.positions.some(p => p.selectedTasks.includes(task.id))
-                );
-
-                const recommendations = unassignedTasks.map(task => {
-                    const taskRecs = this.getRecommendations(task).slice(0, 3);
-                    return { task, recommendations: taskRecs };
-                });
-
-                const content = `
-                    <div style="font-family: Arial, sans-serif; line-height: 1.6;">
-                        <h3>Smart Assignment Recommendations</h3>
-                        ${recommendations.map(({ task, recommendations: recs }) => `
-                            <div style="margin-bottom: 1.5rem; padding: 1rem; border: 1px solid #e5e7eb; border-radius: 8px;">
-                                <h4 style="color: #1f2937; margin-bottom: 0.5rem;">
-                                    ${task.title}
-                                    ${task.critical ? ' 🚨' : ''}
-                                    <span style="font-size: 0.8rem; color: #6b7280;">
-                                        (${task.priority} priority, complexity ${task.complexity})
-                                    </span>
-                                </h4>
-                                <p style="font-size: 0.9rem; color: #6b7280; margin-bottom: 1rem;">
-                                    Due: ${new Date(task.dueDate).toLocaleDateString()} - ${this.getDeadlineText(task.dueDate)}
-                                </p>
-                                
-                                <div style="display: grid; gap: 0.5rem;">
-                                    ${recs.map((rec, index) => `
-                                        <div class="recommendation-item" style="border-left: 3px solid ${index === 0 ? '#16a34a' : index === 1 ? '#ea580c' : '#6b7280'};">
-                                            <div>
-                                                <strong>${rec.position.title}</strong><br>
-                                                <span style="font-size: 0.8rem; color: #6b7280;">
-                                                    ${rec.capabilityMatch}% skill match • ${rec.availability}% available
-                                                </span>
-                                            </div>
-                                            <div style="font-size: 0.8rem; color: #6b7280;">
-                                                Current: ${rec.workload}% capacity
-                                            </div>
-                                        </div>
-                                    `).join('')}
-                                </div>
-                            </div>
-                        `).join('')}
-                        
-                        ${unassignedTasks.length === 0 ? 
-                            '<p style="text-align: center; color: #16a34a; font-size: 1.1rem;">✅ All tasks have been assigned!</p>' : 
-                            ''
-                        }
-                    </div>
-                `;
-                
-                document.getElementById('recommendationsContent').innerHTML = content;
-                document.getElementById('recommendationsModal').style.display = 'block';
-            }
-
+            // Export Functions
             exportToPDF() {
                 const { jsPDF } = window.jspdf;
                 const doc = new jsPDF();
                 
                 doc.setFontSize(20);
-                doc.text('ARA Programme Task Distribution Report', 20, 20);
-                
+                doc.text('FWI Task Distribution Report', 20, 20);
                 doc.setFontSize(12);
                 doc.text(`Generated: ${new Date().toLocaleDateString()}`, 20, 35);
                 
                 let yPos = 50;
-                
                 this.positions.forEach(position => {
                     if (yPos > 250) {
                         doc.addPage();
@@ -1733,11 +1508,10 @@
                             yPos += 8;
                         }
                     });
-                    
                     yPos += 10;
                 });
                 
-                doc.save('ara-task-distribution.pdf');
+                doc.save('fwi-task-distribution.pdf');
             }
 
             exportToCSV() {
@@ -1755,50 +1529,26 @@
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = 'ara-tasks.csv';
+                a.download = 'fwi-tasks.csv';
                 a.click();
                 window.URL.revokeObjectURL(url);
             }
 
             generateAgenda() {
-                const topOption = this.organizationalOptions
-                    .map(option => ({
-                        ...option,
-                        score: ((10-option.cost)/10 * 0.25) + (option.speed/10 * 0.3) + (option.quality/10 * 0.35) + (option.sustainability/10 * 0.1)
-                    }))
-                    .sort((a, b) => b.score - a.score)[0];
-
                 const content = `
-                    <div style="font-family: Arial, sans-serif; line-height: 1.6;">
-                        <h3>ARA Programme Transition Meeting Agenda</h3>
+                    <div style="font-family: Inter, sans-serif; line-height: 1.6;">
+                        <h3>FWI Programme Transition Meeting Agenda</h3>
                         <p><strong>Date:</strong> ${new Date().toLocaleDateString()}<br>
-                        <strong>Purpose:</strong> Address Program Manager departure and redistribute responsibilities<br>
-                        <strong>Critical Context:</strong> Outcome evaluation study has external deadlines</p>
+                        <strong>Purpose:</strong> Address Program Manager departure and redistribute responsibilities</p>
                         
                         <h4>1. Situation Overview (10 min)</h4>
                         <ul>
                             <li>Program Manager departure timeline and handover status</li>
-                            <li>Critical outcome evaluation tasks requiring immediate attention</li>
-                            <li>Current team capacity and workload assessment</li>
+                            <li>Critical tasks requiring immediate attention</li>
+                            <li>Current team capacity assessment</li>
                         </ul>
                         
-                        <h4>2. Organizational Restructuring Options (15 min)</h4>
-                        <ul>
-                            <li><strong>Option 1:</strong> Promote Senior PA to management role (quick implementation)</li>
-                            <li><strong>Option 2:</strong> Hire new Program Manager (quality focus)</li>
-                            <li><strong>Option 3:</strong> Hire Lab Operations Manager (specialized role)</li>
-                            <li><strong>Preliminary Recommendation:</strong> ${topOption.name}</li>
-                        </ul>
-                        
-                        <h4>3. Immediate Task Redistribution (15 min)</h4>
-                        <ul>
-                            <li>Outcome evaluation critical tasks (shadowing, compliance monitoring)</li>
-                            <li>Lab operations continuity</li>
-                            <li>Farmer relationship management</li>
-                            <li>Emergency coverage assignments</li>
-                        </ul>
-                        
-                        <h4>4. Current Assignment Status (10 min)</h4>
+                        <h4>2. Task Distribution Review (20 min)</h4>
                         ${this.positions.map(pos => 
                             pos.selectedTasks.length > 0 ? 
                             `<p><strong>${pos.title}:</strong><br>${pos.selectedTasks.map(taskId => {
@@ -1807,19 +1557,11 @@
                             }).join('<br>')}</p>` : ''
                         ).join('')}
                         
-                        <h4>5. Risk Mitigation (5 min)</h4>
+                        <h4>3. Next Steps (10 min)</h4>
                         <ul>
-                            <li>Outcome evaluation timeline protection</li>
-                            <li>Knowledge transfer priorities</li>
-                            <li>Stakeholder communication plan</li>
-                        </ul>
-                        
-                        <h4>6. Next Steps & Timeline (5 min)</h4>
-                        <ul>
-                            <li>Decision deadline for organizational structure</li>
-                            <li>Immediate task reassignment implementation</li>
+                            <li>Timeline for transition</li>
                             <li>Follow-up meeting schedule</li>
-                            <li>Communication to external stakeholders</li>
+                            <li>Support and resources needed</li>
                         </ul>
                         
                         <button class="btn" onclick="navigator.clipboard.writeText(document.querySelector('#agendaContent').innerText)">Copy to Clipboard</button>
@@ -1834,32 +1576,27 @@
                 const emailTemplates = this.positions.filter(pos => pos.selectedTasks.length > 0).map(position => {
                     const tasks = position.selectedTasks.map(taskId => {
                         const task = this.getAllTasks().find(t => t.id === taskId);
-                        return task ? `• ${task.title}\n  Due: ${new Date(task.dueDate).toLocaleDateString()}\n  Details: ${task.description}\n  Contacts: ${task.contacts || 'N/A'}\n` : '';
+                        return task ? `• ${task.title}\n  Due: ${new Date(task.dueDate).toLocaleDateString()}\n  Details: ${task.description}\n` : '';
                     }).join('\n');
 
                     return `
-                        <div style="margin-bottom: 2rem; padding: 1rem; border: 1px solid #e5e7eb; border-radius: 8px;">
+                        <div style="margin-bottom: 2rem; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 8px;">
                             <h4>Email for ${position.title}</h4>
-                            <textarea style="width: 100%; height: 200px; font-family: monospace; font-size: 0.9rem;" readonly>
-Subject: Task Assignment - ARA Program Manager Transition
+                            <textarea style="width: 100%; height: 150px; font-family: monospace; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 4px;" readonly>
+Subject: Task Assignment - Program Manager Transition
 
 Dear [Name],
 
-Due to our Program Manager's departure, we need to redistribute ARA programme responsibilities. You have been assigned the following tasks based on your expertise and current workload:
+Due to our Program Manager's departure, we need to redistribute responsibilities. You have been assigned the following tasks:
 
 ${tasks}
 
-Please confirm your availability for these assignments and let me know if you need:
-- Access to any systems or resources
-- Additional context or training
-- Support from other team members
-
-The outcome evaluation study deadlines are particularly critical, so please prioritize those tasks accordingly.
+Please confirm your availability and let me know if you need additional support or resources.
 
 Best regards,
 [Your Name]
                             </textarea>
-                            <button class="btn-small" onclick="navigator.clipboard.writeText(this.previousElementSibling.value)">Copy Email</button>
+                            <button class="btn btn-small" onclick="navigator.clipboard.writeText(this.previousElementSibling.value)" style="margin-top: 0.5rem;">Copy Email</button>
                         </div>
                     `;
                 }).join('');
@@ -1869,111 +1606,158 @@ Best regards,
             }
 
             showHandoverChecklist() {
-                const criticalTasks = this.getAllTasks().filter(t => t.critical);
-                const overdueTasks = this.getAllTasks().filter(t => this.getDeadlineStatus(t.dueDate) === 'overdue');
-                
                 const content = `
-                    <div style="font-family: Arial, sans-serif; line-height: 1.6;">
-                        <h3>ARA Program Manager Handover Checklist</h3>
+                    <div style="font-family: Inter, sans-serif; line-height: 1.6;">
+                        <h3>Program Manager Handover Checklist</h3>
                         
-                        <h4>🚨 Immediate Actions (Next 24 hours)</h4>
-                        <div style="background: #fef2f2; padding: 1rem; border-radius: 6px; margin-bottom: 1rem;">
-                            ${overdueTasks.length > 0 ? 
-                                `<strong>Overdue Tasks:</strong><br>${overdueTasks.map(t => `• ${t.title}`).join('<br>')}<br><br>` : 
-                                '✅ No overdue tasks<br><br>'
-                            }
-                            ${criticalTasks.length > 0 ? 
-                                `<strong>Critical Path Items:</strong><br>${criticalTasks.map(t => `• ${t.title} (Due: ${new Date(t.dueDate).toLocaleDateString()})`).join('<br>')}` : 
-                                '✅ All critical tasks covered'
-                            }
-                        </div>
+                        <h4>🚨 Immediate Actions</h4>
+                        <ul>
+                            <li>☐ Identify critical tasks requiring immediate coverage</li>
+                            <li>☐ Brief team on temporary task assignments</li>
+                            <li>☐ Ensure access to essential systems and documents</li>
+                        </ul>
                         
                         <h4>📋 Knowledge Transfer</h4>
                         <ul>
-                            <li>☐ ARA database access and update procedures</li>
-                            <li>☐ Equipment calibration schedules and suppliers</li>
-                            <li>☐ Farmer contact information and relationship notes</li>
-                            <li>☐ Outcome evaluation study protocols and timelines</li>
-                            <li>☐ Lab operations procedures and safety protocols</li>
+                            <li>☐ Document ongoing projects and their status</li>
+                            <li>☐ Share key contact information</li>
+                            <li>☐ Review standard operating procedures</li>
+                            <li>☐ Identify any unique processes or requirements</li>
                         </ul>
                         
                         <h4>🔑 System Access</h4>
                         <ul>
-                            <li>☐ Google Drive folders and permissions</li>
-                            <li>☐ Equipment calibration spreadsheet</li>
-                            <li>☐ Regional master documents (Eluru, Nellore)</li>
-                            <li>☐ Farmer database and forms</li>
-                            <li>☐ Lab management systems and protocols</li>
-                        </ul>
-                        
-                        <h4>👥 Key Contacts</h4>
-                        <ul>
-                            <li>☐ Regional coordinators (Eluru, Nellore)</li>
-                            <li>☐ Equipment suppliers and service providers</li>
-                            <li>☐ Lab technicians and data team</li>
-                            <li>☐ Farmers with active issues or applications</li>
-                            <li>☐ ExPros team for outcome evaluation</li>
+                            <li>☐ Transfer or share necessary login credentials</li>
+                            <li>☐ Update permissions for interim managers</li>
+                            <li>☐ Ensure backup access to critical systems</li>
                         </ul>
                         
                         <h4>📊 Status Updates</h4>
                         <ul>
-                            <li>☐ Current water quality issues and corrective actions</li>
-                            <li>☐ Recent equipment problems and resolutions</li>
-                            <li>☐ Outcome evaluation study progress and challenges</li>
-                            <li>☐ Pending farmer applications and commitments</li>
+                            <li>☐ Current project status and deadlines</li>
+                            <li>☐ Pending decisions requiring attention</li>
+                            <li>☐ Upcoming meetings and commitments</li>
                         </ul>
                         
-                        <button class="btn" onclick="window.print()">Print Checklist</button>
+                        <button class="btn" onclick="window.print()" style="margin-top: 1rem;">Print Checklist</button>
                     </div>
                 `;
                 
                 document.getElementById('handoverContent').innerHTML = content;
                 document.getElementById('handoverModal').style.display = 'block';
             }
+
+            showDetailedAnalysis() {
+                const content = `
+                    <div style="font-family: Inter, sans-serif; line-height: 1.6;">
+                        <h3>📊 Detailed Organizational Options Analysis</h3>
+                        
+                        ${this.organizationalOptions.map(option => `
+                            <div style="margin-bottom: 2rem; padding: 1.5rem; border: 2px solid #e2e8f0; border-radius: 12px;">
+                                <h4 style="color: var(--fwi-dark); margin-bottom: 1rem;">${option.name}</h4>
+                                
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                                    <div>
+                                        <h5 style="color: var(--success); margin-bottom: 0.5rem;">✅ Advantages:</h5>
+                                        <ul>
+                                            ${option.pros.map(pro => `<li>${pro}</li>`).join('')}
+                                        </ul>
+                                    </div>
+                                    
+                                    <div>
+                                        <h5 style="color: var(--danger); margin-bottom: 0.5rem;">❌ Disadvantages:</h5>
+                                        <ul>
+                                            ${option.cons.map(con => `<li>${con}</li>`).join('')}
+                                        </ul>
+                                    </div>
+                                </div>
+                                
+                                <div style="background: #fef2f2; padding: 1rem; border-radius: 8px;">
+                                    <h5 style="color: var(--danger); margin-bottom: 0.5rem;">⚠️ Risk Factors:</h5>
+                                    <ul>
+                                        ${option.riskFactors.map(risk => `<li>${risk}</li>`).join('')}
+                                    </ul>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                
+                document.getElementById('recommendationsContent').innerHTML = content;
+                document.getElementById('recommendationsModal').style.display = 'block';
+            }
         }
 
-        // Global functions
+        // Global Functions
+        function switchTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all tab buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab and mark button as active
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function showTaskAssignmentModal(taskId) {
+            const task = taskManager.getAllTasks().find(t => t.id === taskId);
+            if (!task) return;
+            
+            const currentAssignment = taskManager.positions.find(p => p.selectedTasks.includes(taskId));
+            
+            const content = `
+                <div>
+                    <h3>${task.title}</h3>
+                    <p style="margin: 1rem 0; color: var(--neutral);">${task.description}</p>
+                    
+                    <div style="margin-bottom: 1rem;">
+                        <strong>Due:</strong> ${new Date(task.dueDate).toLocaleDateString()} 
+                        <strong>Priority:</strong> ${task.priority} 
+                        <strong>Complexity:</strong> ${task.complexity}
+                    </div>
+                    
+                    <h4>Assign to:</h4>
+                    <div style="margin: 1rem 0;">
+                        <button class="btn btn-secondary" onclick="taskManager.toggleTaskAssignment('${taskId}', null); closeModal('recommendationsModal'); taskManager.renderAll();">
+                            Unassign Task
+                        </button>
+                    </div>
+                    
+                    ${taskManager.positions.map(position => `
+                        <div style="margin: 0.5rem 0; padding: 0.75rem; border: 2px solid ${currentAssignment && currentAssignment.id === position.id ? 'var(--fwi-primary)' : '#e2e8f0'}; border-radius: 8px; cursor: pointer;" onclick="taskManager.toggleTaskAssignment('${taskId}', '${position.id}'); closeModal('recommendationsModal'); taskManager.renderAll();">
+                            <strong>${position.title}</strong><br>
+                            <span style="color: var(--neutral); font-size: 0.9rem;">
+                                Current workload: ${Math.round(taskManager.calculateWorkload(position))}%
+                            </span>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            
+            document.getElementById('recommendationsContent').innerHTML = content;
+            document.getElementById('recommendationsModal').style.display = 'block';
+        }
+
         function closeModal(modalId) {
             document.getElementById(modalId).style.display = 'none';
         }
 
-        function exportToPDF() {
-            taskManager.exportToPDF();
-        }
+        function exportToPDF() { taskManager.exportToPDF(); }
+        function exportToCSV() { taskManager.exportToCSV(); }
+        function generateAgenda() { taskManager.generateAgenda(); }
+        function generateEmails() { taskManager.generateEmails(); }
+        function showHandoverChecklist() { taskManager.showHandoverChecklist(); }
+        function analyzeRisks() { taskManager.analyzeRisks(); }
+        function updateDecisionMatrix() { taskManager.updateDecisionMatrix(); }
+        function showDetailedAnalysis() { taskManager.showDetailedAnalysis(); }
 
-        function exportToCSV() {
-            taskManager.exportToCSV();
-        }
-
-        function generateAgenda() {
-            taskManager.generateAgenda();
-        }
-
-        function generateEmails() {
-            taskManager.generateEmails();
-        }
-
-        function showHandoverChecklist() {
-            taskManager.showHandoverChecklist();
-        }
-
-        function analyzeRisks() {
-            taskManager.analyzeRisks();
-        }
-
-        function showRecommendations() {
-            taskManager.showRecommendations();
-        }
-
-        function updateDecisionMatrix() {
-            taskManager.updateDecisionMatrix();
-        }
-
-        function showDetailedAnalysis() {
-            taskManager.showDetailedAnalysis();
-        }
-
-        // Initialize the application
+        // Initialize
         const taskManager = new TaskManager();
 
         // Close modals when clicking outside
