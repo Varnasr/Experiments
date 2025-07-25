@@ -176,7 +176,7 @@
 
         .card-header {
             display: flex;
-            justify-content: between;
+            justify-content: space-between;
             align-items: center;
             margin-bottom: 1rem;
             padding-bottom: 1rem;
@@ -495,31 +495,91 @@
             font-weight: 500;
         }
 
-        .export-actions {
-            position: fixed;
-            top: 100px;
-            right: 20px;
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .tool-section {
             background: white;
             border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .tool-section h3 {
+            color: var(--fwi-dark);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tool-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .export-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .export-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .export-checkbox input {
+            width: auto;
+        }
+
+        .preview-area {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
             padding: 1rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            min-width: 180px;
-            z-index: 1000;
+            margin-top: 1rem;
+            max-height: 200px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 0.85rem;
+        }
+
+        .progress-tracker {
+            background: linear-gradient(135deg, var(--fwi-light) 0%, #f0f9ff 100%);
+            border-radius: 12px;
+            padding: 1.5rem;
             border: 1px solid var(--fwi-accent);
         }
 
-        .export-actions h3 {
-            color: var(--fwi-dark);
-            font-size: 0.9rem;
+        .progress-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
             margin-bottom: 0.5rem;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
         }
 
-        .export-actions .btn {
-            width: 100%;
-            margin-bottom: 0.5rem;
-            font-size: 0.8rem;
-            padding: 0.5rem;
+        .progress-status {
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
         }
+
+        .status-complete { background: #d1fae5; color: var(--success); }
+        .status-partial { background: #fed7aa; color: var(--warning); }
+        .status-pending { background: #fecaca; color: var(--danger); }
 
         .modal {
             display: none;
@@ -594,11 +654,8 @@
                 grid-template-columns: repeat(2, 1fr);
             }
             
-            .export-actions {
-                position: relative;
-                top: auto;
-                right: auto;
-                margin-bottom: 1rem;
+            .tools-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -632,20 +689,10 @@
                 </div>
                 
                 <div class="instruction-card">
-                    <h3>📊 Step 4: Export & Communicate</h3>
-                    <p>Use the export panel to generate meeting agendas, email templates, and handover checklists to communicate decisions to your team.</p>
+                    <h3>🛠️ Step 4: Use Tools</h3>
+                    <p>Use the "Tools" tab to generate reports, meeting agendas, email templates, and track handover progress. All documents can be customized and exported.</p>
                 </div>
             </div>
-        </div>
-
-        <!-- Export Actions Panel -->
-        <div class="export-actions">
-            <h3>📊 Export & Tools</h3>
-            <button class="btn btn-small" onclick="exportToPDF()">📄 Export PDF</button>
-            <button class="btn btn-small" onclick="exportToCSV()">📋 Export CSV</button>
-            <button class="btn btn-small" onclick="generateAgenda()">📋 Meeting Agenda</button>
-            <button class="btn btn-small" onclick="generateEmails()">📧 Email Templates</button>
-            <button class="btn btn-small" onclick="showHandoverChecklist()">✅ Handover Checklist</button>
         </div>
 
         <!-- Main Tabs -->
@@ -655,6 +702,7 @@
                 <button class="tab-btn" onclick="switchTab('restructuring')">🎯 Restructuring Options</button>
                 <button class="tab-btn" onclick="switchTab('team')">👥 Team Overview</button>
                 <button class="tab-btn" onclick="switchTab('tasks')">📋 Task Distribution</button>
+                <button class="tab-btn" onclick="switchTab('tools')">🛠️ Tools</button>
                 <button class="tab-btn" onclick="switchTab('custom')">➕ Add Tasks</button>
             </div>
 
@@ -783,6 +831,101 @@
                 </div>
             </div>
 
+            <!-- Tools Tab -->
+            <div id="tools" class="tab-content">
+                <h2 class="section-title">🛠️ Export Tools & Communication</h2>
+                
+                <div class="tools-grid">
+                    <!-- Export Tools -->
+                    <div class="tool-section">
+                        <h3>📊 Data Export</h3>
+                        <div class="export-options">
+                            <div class="export-checkbox">
+                                <input type="checkbox" id="includeTeam" checked>
+                                <label for="includeTeam">Include Team Data</label>
+                            </div>
+                            <div class="export-checkbox">
+                                <input type="checkbox" id="includeTasks" checked>
+                                <label for="includeTasks">Include Task Details</label>
+                            </div>
+                            <div class="export-checkbox">
+                                <input type="checkbox" id="includeRisks" checked>
+                                <label for="includeRisks">Include Risk Analysis</label>
+                            </div>
+                            <div class="export-checkbox">
+                                <input type="checkbox" id="includeTimeline" checked>
+                                <label for="includeTimeline">Include Timeline</label>
+                            </div>
+                        </div>
+                        <div class="tool-buttons">
+                            <button class="btn" onclick="exportToPDF()">📄 Export PDF Report</button>
+                            <button class="btn" onclick="exportToCSV()">📊 Export Task CSV</button>
+                            <button class="btn btn-secondary" onclick="previewExport()">👁️ Preview Export</button>
+                        </div>
+                        <div id="exportPreview" class="preview-area" style="display: none;">
+                            <!-- Export preview will appear here -->
+                        </div>
+                    </div>
+
+                    <!-- Communication Tools -->
+                    <div class="tool-section">
+                        <h3>📧 Communication Tools</h3>
+                        <div class="tool-buttons">
+                            <button class="btn" onclick="generateAgenda()">📋 Meeting Agenda</button>
+                            <button class="btn" onclick="generateEmails()">📧 Email Templates</button>
+                            <button class="btn" onclick="generateAnnouncement()">📢 Team Announcement</button>
+                            <button class="btn btn-secondary" onclick="generateSlackUpdate()">💬 Slack Update</button>
+                        </div>
+                    </div>
+
+                    <!-- Handover Tools -->
+                    <div class="tool-section">
+                        <h3>✅ Handover Management</h3>
+                        <div class="tool-buttons">
+                            <button class="btn" onclick="showHandoverChecklist()">✅ Handover Checklist</button>
+                            <button class="btn" onclick="generateKnowledgeTransfer()">📚 Knowledge Transfer Guide</button>
+                            <button class="btn" onclick="createTransitionPlan()">📅 Transition Timeline</button>
+                            <button class="btn btn-secondary" onclick="generateSOPs()">📋 SOPs & Procedures</button>
+                        </div>
+                    </div>
+
+                    <!-- Progress Tracking -->
+                    <div class="tool-section">
+                        <h3>📈 Progress Tracking</h3>
+                        <div class="progress-tracker">
+                            <div id="progressTracking">
+                                <!-- Progress tracking will be populated here -->
+                            </div>
+                        </div>
+                        <div class="tool-buttons" style="margin-top: 1rem;">
+                            <button class="btn" onclick="updateProgress()">🔄 Update Progress</button>
+                            <button class="btn btn-secondary" onclick="generateProgressReport()">📊 Progress Report</button>
+                        </div>
+                    </div>
+
+                    <!-- Risk Assessment -->
+                    <div class="tool-section">
+                        <h3>⚠️ Risk Management</h3>
+                        <div class="tool-buttons">
+                            <button class="btn" onclick="generateRiskAssessment()">⚠️ Risk Assessment</button>
+                            <button class="btn" onclick="createContingencyPlan()">🛡️ Contingency Plan</button>
+                            <button class="btn btn-secondary" onclick="scheduleCheckIns()">📅 Schedule Check-ins</button>
+                        </div>
+                    </div>
+
+                    <!-- Document Templates -->
+                    <div class="tool-section">
+                        <h3>📄 Document Templates</h3>
+                        <div class="tool-buttons">
+                            <button class="btn" onclick="generateJobDescription()">👔 Job Description</button>
+                            <button class="btn" onclick="generateTrainingPlan()">🎓 Training Plan</button>
+                            <button class="btn" onclick="generatePerformanceMetrics()">📊 Performance Metrics</button>
+                            <button class="btn btn-secondary" onclick="customTemplate()">✏️ Custom Template</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Add Custom Tasks Tab -->
             <div id="custom" class="tab-content">
                 <h2 class="section-title">➕ Add Custom Task</h2>
@@ -875,7 +1018,7 @@
     <div id="emailModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>📧 Email Templates</h2>
+                <h2>📧 Communication Templates</h2>
                 <button class="close-btn" onclick="closeModal('emailModal')">&times;</button>
             </div>
             <div id="emailContent"></div>
@@ -889,6 +1032,16 @@
                 <button class="close-btn" onclick="closeModal('handoverModal')">&times;</button>
             </div>
             <div id="handoverContent"></div>
+        </div>
+    </div>
+
+    <div id="templateModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="templateModalTitle">📄 Document Template</h2>
+                <button class="close-btn" onclick="closeModal('templateModal')">&times;</button>
+            </div>
+            <div id="templateContent"></div>
         </div>
     </div>
 
@@ -1102,9 +1255,18 @@
                 ];
 
                 this.customTasks = [];
+                this.handoverProgress = {
+                    knowledgeTransfer: 'partial',
+                    systemAccess: 'pending',
+                    taskAssignment: 'partial',
+                    documentHandover: 'pending',
+                    stakeholderNotification: 'pending'
+                };
+
                 this.initializeEventListeners();
                 this.setDefaultDueDate();
                 this.renderAll();
+                this.updateProgressTracking();
             }
 
             initializeEventListeners() {
@@ -1467,6 +1629,27 @@
                 }).join('');
             }
 
+            updateProgressTracking() {
+                const container = document.getElementById('progressTracking');
+                const progressItems = [
+                    { key: 'knowledgeTransfer', label: 'Knowledge Transfer', status: this.handoverProgress.knowledgeTransfer },
+                    { key: 'systemAccess', label: 'System Access Setup', status: this.handoverProgress.systemAccess },
+                    { key: 'taskAssignment', label: 'Task Assignment', status: this.handoverProgress.taskAssignment },
+                    { key: 'documentHandover', label: 'Document Handover', status: this.handoverProgress.documentHandover },
+                    { key: 'stakeholderNotification', label: 'Stakeholder Notification', status: this.handoverProgress.stakeholderNotification }
+                ];
+
+                container.innerHTML = progressItems.map(item => `
+                    <div class="progress-item">
+                        <span>${item.label}</span>
+                        <span class="progress-status status-${item.status}">
+                            ${item.status === 'complete' ? '✅ Complete' : 
+                              item.status === 'partial' ? '🔄 In Progress' : '⏳ Pending'}
+                        </span>
+                    </div>
+                `).join('');
+            }
+
             renderAll() {
                 this.renderPositions();
                 this.renderTaskPool();
@@ -1474,6 +1657,7 @@
                 this.renderTimeline();
                 this.updateDecisionMatrix();
                 this.analyzeRisks();
+                this.updateProgressTracking();
             }
 
             // Export Functions
@@ -1532,6 +1716,36 @@
                 a.download = 'fwi-tasks.csv';
                 a.click();
                 window.URL.revokeObjectURL(url);
+            }
+
+            previewExport() {
+                const preview = document.getElementById('exportPreview');
+                const allTasks = this.getAllTasks();
+                
+                let content = `FWI Task Distribution Report\n`;
+                content += `Generated: ${new Date().toLocaleDateString()}\n\n`;
+                
+                content += `SUMMARY:\n`;
+                content += `Total Tasks: ${allTasks.length}\n`;
+                content += `Assigned Tasks: ${allTasks.filter(t => this.positions.some(p => p.selectedTasks.includes(t.id))).length}\n`;
+                content += `Critical Tasks: ${allTasks.filter(t => t.critical).length}\n\n`;
+                
+                this.positions.forEach(position => {
+                    if (position.selectedTasks.length > 0) {
+                        content += `${position.title.toUpperCase()}\n`;
+                        content += `Workload: ${Math.round(this.calculateWorkload(position))}%\n`;
+                        position.selectedTasks.forEach(taskId => {
+                            const task = allTasks.find(t => t.id === taskId);
+                            if (task) {
+                                content += `- ${task.title} (Due: ${new Date(task.dueDate).toLocaleDateString()})\n`;
+                            }
+                        });
+                        content += `\n`;
+                    }
+                });
+                
+                preview.innerHTML = content;
+                preview.style.display = 'block';
             }
 
             generateAgenda() {
@@ -1605,47 +1819,247 @@ Best regards,
                 document.getElementById('emailModal').style.display = 'block';
             }
 
+            generateAnnouncement() {
+                const content = `
+                    <div style="font-family: Inter, sans-serif; line-height: 1.6;">
+                        <h3>Team Announcement Template</h3>
+                        <textarea style="width: 100%; height: 300px; font-family: monospace; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 4px;" readonly>
+Subject: Important Update - Program Manager Transition
+
+Dear Team,
+
+I want to inform you about an important transition within our FWI program. [Program Manager Name] will be leaving their position on [Date], and we have developed a comprehensive plan to ensure continuity of our critical work.
+
+Task Redistribution:
+We have carefully analyzed all ongoing responsibilities and redistributed them among team members based on capabilities and current workload:
+
+${this.positions.filter(pos => pos.selectedTasks.length > 0).map(pos => 
+`${pos.title}:
+${pos.selectedTasks.map(taskId => {
+    const task = this.getAllTasks().find(t => t.id === taskId);
+    return task ? `- ${task.title}` : '';
+}).join('\n')}
+`).join('\n')}
+
+Support and Resources:
+- All necessary system access will be provided
+- Knowledge transfer sessions are scheduled
+- Additional support will be available during the transition
+
+Next Steps:
+- Individual meetings will be scheduled this week
+- Training sessions for new responsibilities will begin immediately
+- Weekly check-ins will be implemented to ensure smooth transition
+
+Please reach out if you have any questions or concerns about these changes.
+
+Best regards,
+[Your Name]
+                        </textarea>
+                        <button class="btn" onclick="navigator.clipboard.writeText(this.previousElementSibling.value)" style="margin-top: 0.5rem;">Copy Announcement</button>
+                    </div>
+                `;
+                
+                document.getElementById('emailContent').innerHTML = content;
+                document.getElementById('emailModal').style.display = 'block';
+            }
+
+            generateSlackUpdate() {
+                const content = `
+                    <div style="font-family: Inter, sans-serif; line-height: 1.6;">
+                        <h3>Slack Update Template</h3>
+                        <textarea style="width: 100%; height: 200px; font-family: monospace; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 4px;" readonly>
+🚨 IMPORTANT UPDATE - FWI Program Transition 🚨
+
+Team, we have a structured plan for handling [PM Name]'s departure:
+
+✅ All critical tasks have been redistributed
+⏰ Evaluation study timeline remains on track  
+🤝 Support systems are in place
+
+Key assignments:
+${this.positions.filter(pos => pos.selectedTasks.length > 0).slice(0, 3).map(pos => 
+`• ${pos.title}: ${pos.selectedTasks.length} tasks assigned`).join('\n')}
+
+📅 Individual meetings this week
+💬 Questions? DM me or comment below
+
+Thanks for your flexibility during this transition! 🙏
+                        </textarea>
+                        <button class="btn" onclick="navigator.clipboard.writeText(this.previousElementSibling.value)" style="margin-top: 0.5rem;">Copy Slack Update</button>
+                    </div>
+                `;
+                
+                document.getElementById('emailContent').innerHTML = content;
+                document.getElementById('emailModal').style.display = 'block';
+            }
+
             showHandoverChecklist() {
                 const content = `
                     <div style="font-family: Inter, sans-serif; line-height: 1.6;">
                         <h3>Program Manager Handover Checklist</h3>
                         
-                        <h4>🚨 Immediate Actions</h4>
+                        <h4>🚨 Immediate Actions (Next 24 hours)</h4>
                         <ul>
                             <li>☐ Identify critical tasks requiring immediate coverage</li>
                             <li>☐ Brief team on temporary task assignments</li>
                             <li>☐ Ensure access to essential systems and documents</li>
+                            <li>☐ Notify key stakeholders of transition plan</li>
                         </ul>
                         
-                        <h4>📋 Knowledge Transfer</h4>
+                        <h4>📋 Knowledge Transfer (Week 1)</h4>
                         <ul>
-                            <li>☐ Document ongoing projects and their status</li>
-                            <li>☐ Share key contact information</li>
-                            <li>☐ Review standard operating procedures</li>
-                            <li>☐ Identify any unique processes or requirements</li>
+                            <li>☐ Outcome evaluation protocols and timelines</li>
+                            <li>☐ Equipment calibration procedures and schedules</li>
+                            <li>☐ Farmer relationship status and key contacts</li>
+                            <li>☐ Current project status and upcoming milestones</li>
+                            <li>☐ Budget and resource allocation information</li>
                         </ul>
                         
-                        <h4>🔑 System Access</h4>
+                        <h4>🔑 System Access & Permissions</h4>
                         <ul>
-                            <li>☐ Transfer or share necessary login credentials</li>
-                            <li>☐ Update permissions for interim managers</li>
-                            <li>☐ Ensure backup access to critical systems</li>
+                            <li>☐ Google Drive folders and permissions updated</li>
+                            <li>☐ Lab equipment access and calibration logs</li>
+                            <li>☐ Regional databases (Eluru, Nellore)</li>
+                            <li>☐ Farmer contact database and forms</li>
+                            <li>☐ Financial systems and procurement access</li>
                         </ul>
                         
-                        <h4>📊 Status Updates</h4>
+                        <h4>👥 Stakeholder Communication</h4>
                         <ul>
-                            <li>☐ Current project status and deadlines</li>
-                            <li>☐ Pending decisions requiring attention</li>
-                            <li>☐ Upcoming meetings and commitments</li>
+                            <li>☐ Team members individually briefed</li>
+                            <li>☐ Regional coordinators notified</li>
+                            <li>☐ Partner organizations informed</li>
+                            <li>☐ Farmers and community leaders updated</li>
                         </ul>
                         
                         <button class="btn" onclick="window.print()" style="margin-top: 1rem;">Print Checklist</button>
+                        <button class="btn btn-secondary" onclick="taskManager.updateHandoverProgress()" style="margin-left: 0.5rem;">Mark Items Complete</button>
                     </div>
                 `;
                 
                 document.getElementById('handoverContent').innerHTML = content;
                 document.getElementById('handoverModal').style.display = 'block';
             }
+
+            updateHandoverProgress() {
+                // This would normally update based on user input
+                // For demo purposes, we'll cycle through progress states
+                const keys = Object.keys(this.handoverProgress);
+                const randomKey = keys[Math.floor(Math.random() * keys.length)];
+                const currentStatus = this.handoverProgress[randomKey];
+                
+                if (currentStatus === 'pending') {
+                    this.handoverProgress[randomKey] = 'partial';
+                } else if (currentStatus === 'partial') {
+                    this.handoverProgress[randomKey] = 'complete';
+                }
+                
+                this.updateProgressTracking();
+            }
+
+            // Additional Tool Functions
+            generateKnowledgeTransfer() {
+                this.showTemplateModal('Knowledge Transfer Guide', `
+                    <h3>Knowledge Transfer Guide - Program Manager Role</h3>
+                    <h4>1. Current Project Status</h4>
+                    <ul>
+                        <li>Outcome evaluation study: Timeline, protocols, critical deadlines</li>
+                        <li>Active farmers and pond sites</li>
+                        <li>Equipment status and maintenance schedules</li>
+                        <li>Budget and resource allocation</li>
+                    </ul>
+                    
+                    <h4>2. Key Relationships</h4>
+                    <ul>
+                        <li>Regional coordinators and their specialties</li>
+                        <li>Farmer leaders and community contacts</li>
+                        <li>Equipment suppliers and service providers</li>
+                        <li>Partner organizations and their roles</li>
+                    </ul>
+                    
+                    <h4>3. Standard Operating Procedures</h4>
+                    <ul>
+                        <li>Weekly calibration and maintenance routines</li>
+                        <li>Data collection and quality control protocols</li>
+                        <li>Farmer communication and visit schedules</li>
+                        <li>Reporting and documentation requirements</li>
+                    </ul>
+                    
+                    <h4>4. Problem-Solving Resources</h4>
+                    <ul>
+                        <li>Troubleshooting guides for common issues</li>
+                        <li>Emergency contacts and escalation procedures</li>
+                        <li>Historical solutions to recurring problems</li>
+                    </ul>
+                `);
+            }
+
+            generateRiskAssessment() {
+                const allTasks = this.getAllTasks();
+                const unassignedCritical = allTasks.filter(t => t.critical && !this.positions.some(p => p.selectedTasks.includes(t.id)));
+                const overloadedPositions = this.positions.filter(p => this.calculateWorkload(p) > 85);
+                
+                this.showTemplateModal('Risk Assessment Report', `
+                    <h3>Transition Risk Assessment</h3>
+                    
+                    <h4>🚨 High Risk Areas</h4>
+                    ${unassignedCritical.length > 0 ? `
+                        <div style="background: #fef2f2; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                            <strong>Unassigned Critical Tasks:</strong>
+                            <ul>
+                                ${unassignedCritical.map(task => `<li>${task.title} - Due ${this.getDeadlineText(task.dueDate)}</li>`).join('')}
+                            </ul>
+                        </div>
+                    ` : '<p style="color: var(--success);">✅ All critical tasks assigned</p>'}
+                    
+                    ${overloadedPositions.length > 0 ? `
+                        <div style="background: #fff7ed; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                            <strong>Overloaded Team Members:</strong>
+                            <ul>
+                                ${overloadedPositions.map(pos => `<li>${pos.title} - ${Math.round(this.calculateWorkload(pos))}% capacity</li>`).join('')}
+                            </ul>
+                        </div>
+                    ` : '<p style="color: var(--success);">✅ No team members overloaded</p>'}
+                    
+                    <h4>⚠️ Medium Risk Areas</h4>
+                    <ul>
+                        <li>Knowledge transfer completeness</li>
+                        <li>System access continuity</li>
+                        <li>Stakeholder communication gaps</li>
+                    </ul>
+                    
+                    <h4>🛡️ Mitigation Strategies</h4>
+                    <ul>
+                        <li>Implement buddy system for critical tasks</li>
+                        <li>Schedule weekly check-ins during transition</li>
+                        <li>Maintain clear escalation procedures</li>
+                        <li>Document all processes and contacts</li>
+                    </ul>
+                `);
+            }
+
+            showTemplateModal(title, content) {
+                document.getElementById('templateModalTitle').textContent = title;
+                document.getElementById('templateContent').innerHTML = content + `
+                    <div style="margin-top: 2rem;">
+                        <button class="btn" onclick="navigator.clipboard.writeText(document.querySelector('#templateContent').innerText)">Copy Content</button>
+                        <button class="btn btn-secondary" onclick="window.print()" style="margin-left: 0.5rem;">Print</button>
+                    </div>
+                `;
+                document.getElementById('templateModal').style.display = 'block';
+            }
+
+            // Placeholder functions for additional tools
+            createTransitionPlan() { this.showTemplateModal('Transition Timeline', '<p>Transition timeline template would be generated here...</p>'); }
+            generateSOPs() { this.showTemplateModal('Standard Operating Procedures', '<p>SOPs template would be generated here...</p>'); }
+            generateProgressReport() { this.showTemplateModal('Progress Report', '<p>Progress report would be generated here...</p>'); }
+            createContingencyPlan() { this.showTemplateModal('Contingency Plan', '<p>Contingency plan would be generated here...</p>'); }
+            scheduleCheckIns() { this.showTemplateModal('Check-in Schedule', '<p>Check-in schedule template would be generated here...</p>'); }
+            generateJobDescription() { this.showTemplateModal('Job Description', '<p>Job description template would be generated here...</p>'); }
+            generateTrainingPlan() { this.showTemplateModal('Training Plan', '<p>Training plan would be generated here...</p>'); }
+            generatePerformanceMetrics() { this.showTemplateModal('Performance Metrics', '<p>Performance metrics template would be generated here...</p>'); }
+            customTemplate() { this.showTemplateModal('Custom Template', '<p>Custom template builder would be available here...</p>'); }
 
             showDetailedAnalysis() {
                 const content = `
@@ -1685,6 +2099,10 @@ Best regards,
                 
                 document.getElementById('recommendationsContent').innerHTML = content;
                 document.getElementById('recommendationsModal').style.display = 'block';
+            }
+
+            updateProgress() {
+                this.updateHandoverProgress();
             }
         }
 
@@ -1750,9 +2168,24 @@ Best regards,
 
         function exportToPDF() { taskManager.exportToPDF(); }
         function exportToCSV() { taskManager.exportToCSV(); }
+        function previewExport() { taskManager.previewExport(); }
         function generateAgenda() { taskManager.generateAgenda(); }
         function generateEmails() { taskManager.generateEmails(); }
+        function generateAnnouncement() { taskManager.generateAnnouncement(); }
+        function generateSlackUpdate() { taskManager.generateSlackUpdate(); }
         function showHandoverChecklist() { taskManager.showHandoverChecklist(); }
+        function generateKnowledgeTransfer() { taskManager.generateKnowledgeTransfer(); }
+        function createTransitionPlan() { taskManager.createTransitionPlan(); }
+        function generateSOPs() { taskManager.generateSOPs(); }
+        function updateProgress() { taskManager.updateProgress(); }
+        function generateProgressReport() { taskManager.generateProgressReport(); }
+        function generateRiskAssessment() { taskManager.generateRiskAssessment(); }
+        function createContingencyPlan() { taskManager.createContingencyPlan(); }
+        function scheduleCheckIns() { taskManager.scheduleCheckIns(); }
+        function generateJobDescription() { taskManager.generateJobDescription(); }
+        function generateTrainingPlan() { taskManager.generateTrainingPlan(); }
+        function generatePerformanceMetrics() { taskManager.generatePerformanceMetrics(); }
+        function customTemplate() { taskManager.customTemplate(); }
         function analyzeRisks() { taskManager.analyzeRisks(); }
         function updateDecisionMatrix() { taskManager.updateDecisionMatrix(); }
         function showDetailedAnalysis() { taskManager.showDetailedAnalysis(); }
