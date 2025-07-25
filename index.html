@@ -2050,16 +2050,1213 @@ Thanks for your flexibility during this transition! 🙏
                 document.getElementById('templateModal').style.display = 'block';
             }
 
-            // Placeholder functions for additional tools
-            createTransitionPlan() { this.showTemplateModal('Transition Timeline', '<p>Transition timeline template would be generated here...</p>'); }
-            generateSOPs() { this.showTemplateModal('Standard Operating Procedures', '<p>SOPs template would be generated here...</p>'); }
-            generateProgressReport() { this.showTemplateModal('Progress Report', '<p>Progress report would be generated here...</p>'); }
-            createContingencyPlan() { this.showTemplateModal('Contingency Plan', '<p>Contingency plan would be generated here...</p>'); }
-            scheduleCheckIns() { this.showTemplateModal('Check-in Schedule', '<p>Check-in schedule template would be generated here...</p>'); }
-            generateJobDescription() { this.showTemplateModal('Job Description', '<p>Job description template would be generated here...</p>'); }
-            generateTrainingPlan() { this.showTemplateModal('Training Plan', '<p>Training plan would be generated here...</p>'); }
-            generatePerformanceMetrics() { this.showTemplateModal('Performance Metrics', '<p>Performance metrics template would be generated here...</p>'); }
-            customTemplate() { this.showTemplateModal('Custom Template', '<p>Custom template builder would be available here...</p>'); }
+            // Fully functional additional tools
+            createTransitionPlan() {
+                const allTasks = this.getAllTasks();
+                const sortedTasks = allTasks.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
+                const criticalTasks = sortedTasks.filter(t => t.critical);
+                const today = new Date();
+                
+                // Create timeline phases
+                const phases = [
+                    { name: "Immediate Actions", duration: "Days 1-3", tasks: sortedTasks.filter(t => this.getDaysUntilDue(t.dueDate) <= 3) },
+                    { name: "Critical Task Coverage", duration: "Week 1", tasks: criticalTasks.filter(t => this.getDaysUntilDue(t.dueDate) <= 7) },
+                    { name: "Knowledge Transfer", duration: "Weeks 1-2", tasks: sortedTasks.filter(t => t.category === 'outcome-evaluation') },
+                    { name: "System Handover", duration: "Weeks 2-3", tasks: sortedTasks.filter(t => t.category === 'lab-operations') },
+                    { name: "Relationship Transfer", duration: "Weeks 3-4", tasks: sortedTasks.filter(t => t.category === 'farmer-engagement') },
+                    { name: "Full Operation", duration: "Month 2+", tasks: sortedTasks.filter(t => !t.critical) }
+                ];
+
+                this.showTemplateModal('Transition Timeline', `
+                    <h3>📅 Comprehensive Transition Timeline</h3>
+                    <p><strong>Total Duration:</strong> 6-8 weeks for complete transition</p>
+                    
+                    ${phases.map(phase => `
+                        <div style="margin-bottom: 2rem; padding: 1.5rem; border-left: 4px solid var(--fwi-primary); background: var(--fwi-light);">
+                            <h4 style="color: var(--fwi-dark);">${phase.name} (${phase.duration})</h4>
+                            ${phase.tasks.length > 0 ? `
+                                <ul>
+                                    ${phase.tasks.slice(0, 5).map(task => `
+                                        <li>${task.title} - Due: ${new Date(task.dueDate).toLocaleDateString()}
+                                            ${this.positions.find(p => p.selectedTasks.includes(task.id)) ? 
+                                                ` (Assigned to: ${this.positions.find(p => p.selectedTasks.includes(task.id)).title})` : 
+                                                ' (⚠️ Unassigned)'
+                                            }
+                                        </li>
+                                    `).join('')}
+                                    ${phase.tasks.length > 5 ? `<li><em>...and ${phase.tasks.length - 5} more tasks</em></li>` : ''}
+                                </ul>
+                            ` : '<p><em>No specific tasks for this phase</em></p>'}
+                        </div>
+                    `).join('')}
+                    
+                    <h4>🎯 Key Milestones</h4>
+                    <ul>
+                        <li><strong>Day 3:</strong> All critical tasks assigned and briefed</li>
+                        <li><strong>Week 1:</strong> Outcome evaluation protocols transferred</li>
+                        <li><strong>Week 2:</strong> All system access granted and tested</li>
+                        <li><strong>Week 3:</strong> Farmer relationships handed over</li>
+                        <li><strong>Week 4:</strong> First independent operation cycle</li>
+                        <li><strong>Month 2:</strong> Full autonomous operation achieved</li>
+                    </ul>
+                    
+                    <h4>⚠️ Risk Mitigation Checkpoints</h4>
+                    <ul>
+                        <li>Daily check-ins during Week 1</li>
+                        <li>Bi-weekly reviews for Weeks 2-4</li>
+                        <li>Monthly assessments thereafter</li>
+                        <li>Emergency escalation procedures documented</li>
+                    </ul>
+                `);
+            }
+
+            generateSOPs() {
+                const tasksByCategory = {};
+                this.getAllTasks().forEach(task => {
+                    if (!tasksByCategory[task.category]) {
+                        tasksByCategory[task.category] = [];
+                    }
+                    tasksByCategory[task.category].push(task);
+                });
+
+                const sopSections = {
+                    'outcome-evaluation': {
+                        title: 'Outcome Evaluation Study Procedures',
+                        procedures: [
+                            'Protocol refresher training (quarterly)',
+                            'Staff shadowing at control farms (bi-weekly)',
+                            'Quality control measurements (weekly)',
+                            'Data validation and error checking (daily)',
+                            'Compliance monitoring during corrective actions'
+                        ]
+                    },
+                    'lab-operations': {
+                        title: 'Laboratory Operations Standards',
+                        procedures: [
+                            'Equipment calibration (weekly on Mondays)',
+                            'Reagent inventory and restocking (bi-weekly)',
+                            'Quality control testing (daily)',
+                            'Maintenance log updates (after each use)',
+                            'Safety protocol compliance checks'
+                        ]
+                    },
+                    'field-research': {
+                        title: 'Field Research Protocols',
+                        procedures: [
+                            'Site visit scheduling and preparation',
+                            'Data collection standardization',
+                            'Equipment transport and setup',
+                            'Farmer coordination and communication',
+                            'Field data validation procedures'
+                        ]
+                    },
+                    'farmer-engagement': {
+                        title: 'Farmer Relationship Management',
+                        procedures: [
+                            'Regular relationship building visits (monthly)',
+                            'Complaint handling and resolution process',
+                            'New farmer onboarding procedures',
+                            'Pond addition approval workflow',
+                            'Community meeting organization'
+                        ]
+                    }
+                };
+
+                this.showTemplateModal('Standard Operating Procedures', `
+                    <h3>📋 FWI Program Standard Operating Procedures</h3>
+                    <p><strong>Version:</strong> 2.0 | <strong>Effective Date:</strong> ${new Date().toLocaleDateString()}</p>
+                    <p><strong>Purpose:</strong> Ensure continuity of operations during and after program manager transition</p>
+                    
+                    ${Object.entries(sopSections).map(([category, section]) => `
+                        <div style="margin-bottom: 2rem; padding: 1.5rem; border: 1px solid #e2e8f0; border-radius: 8px;">
+                            <h4 style="color: var(--fwi-primary);">${section.title}</h4>
+                            
+                            <h5>Standard Procedures:</h5>
+                            <ol>
+                                ${section.procedures.map(procedure => `<li>${procedure}</li>`).join('')}
+                            </ol>
+                            
+                            ${tasksByCategory[category] ? `
+                                <h5>Current Active Tasks:</h5>
+                                <ul>
+                                    ${tasksByCategory[category].map(task => `
+                                        <li>${task.title} - Priority: ${task.priority}
+                                            ${this.positions.find(p => p.selectedTasks.includes(task.id)) ? 
+                                                ` | Assigned to: ${this.positions.find(p => p.selectedTasks.includes(task.id)).title}` : 
+                                                ' | ⚠️ Unassigned'
+                                            }
+                                        </li>
+                                    `).join('')}
+                                </ul>
+                            ` : ''}
+                            
+                            <h5>Quality Standards:</h5>
+                            <ul>
+                                <li>All procedures must be documented in real-time</li>
+                                <li>Deviations require supervisor approval</li>
+                                <li>Weekly review and validation required</li>
+                                <li>Training updates quarterly</li>
+                            </ul>
+                        </div>
+                    `).join('')}
+                    
+                    <h4>🚨 Emergency Procedures</h4>
+                    <ul>
+                        <li><strong>Equipment Failure:</strong> Contact supplier immediately, document issue, implement backup procedures</li>
+                        <li><strong>Data Loss:</strong> Activate backup systems, notify R&D support, initiate recovery protocols</li>
+                        <li><strong>Farmer Complaints:</strong> Document thoroughly, escalate within 24 hours, implement resolution plan</li>
+                        <li><strong>Staff Absence:</strong> Cross-training protocols, temporary reassignment procedures</li>
+                    </ul>
+                    
+                    <h4>📊 Performance Indicators</h4>
+                    <ul>
+                        <li>Task completion rate: >95%</li>
+                        <li>Quality control compliance: 100%</li>
+                        <li>Farmer satisfaction: >90%</li>
+                        <li>Equipment uptime: >98%</li>
+                    </ul>
+                `);
+            }
+
+            generateProgressReport() {
+                const allTasks = this.getAllTasks();
+                const assignedTasks = allTasks.filter(task => this.positions.some(p => p.selectedTasks.includes(task.id)));
+                const criticalAssigned = allTasks.filter(task => task.critical && this.positions.some(p => p.selectedTasks.includes(task.id)));
+                const overdueTasks = allTasks.filter(task => this.getDeadlineStatus(task.dueDate) === 'overdue');
+                
+                const progressPercentage = Math.round((assignedTasks.length / allTasks.length) * 100);
+                const criticalProgressPercentage = Math.round((criticalAssigned.length / allTasks.filter(t => t.critical).length) * 100);
+                
+                const workloadAnalysis = this.positions.map(pos => ({
+                    position: pos,
+                    workload: this.calculateWorkload(pos),
+                    tasks: pos.selectedTasks.length
+                }));
+
+                const handoverCompletionItems = Object.entries(this.handoverProgress);
+                const completedItems = handoverCompletionItems.filter(([key, status]) => status === 'complete').length;
+                const handoverProgress = Math.round((completedItems / handoverCompletionItems.length) * 100);
+
+                this.showTemplateModal('Transition Progress Report', `
+                    <h3>📊 FWI Program Transition Progress Report</h3>
+                    <p><strong>Report Date:</strong> ${new Date().toLocaleDateString()} | <strong>Reporting Period:</strong> Transition Phase</p>
+                    
+                    <h4>📈 Overall Progress Summary</h4>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin: 1rem 0;">
+                        <div style="background: var(--fwi-light); padding: 1rem; border-radius: 8px; text-align: center;">
+                            <div style="font-size: 2rem; font-weight: bold; color: var(--fwi-primary);">${progressPercentage}%</div>
+                            <div>Tasks Assigned</div>
+                        </div>
+                        <div style="background: ${criticalProgressPercentage === 100 ? '#d1fae5' : '#fef3c7'}; padding: 1rem; border-radius: 8px; text-align: center;">
+                            <div style="font-size: 2rem; font-weight: bold; color: ${criticalProgressPercentage === 100 ? 'var(--success)' : 'var(--warning)'};">${criticalProgressPercentage}%</div>
+                            <div>Critical Tasks Covered</div>
+                        </div>
+                        <div style="background: var(--fwi-light); padding: 1rem; border-radius: 8px; text-align: center;">
+                            <div style="font-size: 2rem; font-weight: bold; color: var(--fwi-primary);">${handoverProgress}%</div>
+                            <div>Handover Complete</div>
+                        </div>
+                        <div style="background: ${overdueTasks.length === 0 ? '#d1fae5' : '#fecaca'}; padding: 1rem; border-radius: 8px; text-align: center;">
+                            <div style="font-size: 2rem; font-weight: bold; color: ${overdueTasks.length === 0 ? 'var(--success)' : 'var(--danger)'};">${overdueTasks.length}</div>
+                            <div>Overdue Tasks</div>
+                        </div>
+                    </div>
+                    
+                    <h4>👥 Team Workload Analysis</h4>
+                    ${workloadAnalysis.map(item => `
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; margin: 0.5rem 0; background: white; border-radius: 8px; border-left: 4px solid ${item.workload > 85 ? 'var(--danger)' : item.workload > 65 ? 'var(--warning)' : 'var(--success)'};">
+                            <span><strong>${item.position.title}</strong></span>
+                            <span>${item.tasks} tasks (${Math.round(item.workload)}% capacity)</span>
+                        </div>
+                    `).join('')}
+                    
+                    <h4>⚠️ Risk Assessment</h4>
+                    <ul>
+                        ${overdueTasks.length > 0 ? `<li style="color: var(--danger);"><strong>HIGH:</strong> ${overdueTasks.length} overdue tasks requiring immediate attention</li>` : ''}
+                        ${workloadAnalysis.filter(w => w.workload > 85).length > 0 ? `<li style="color: var(--warning);"><strong>MEDIUM:</strong> ${workloadAnalysis.filter(w => w.workload > 85).length} team members overloaded</li>` : ''}
+                        ${allTasks.filter(t => !this.positions.some(p => p.selectedTasks.includes(t.id))).length > 0 ? `<li style="color: var(--warning);"><strong>MEDIUM:</strong> ${allTasks.filter(t => !this.positions.some(p => p.selectedTasks.includes(t.id))).length} unassigned tasks</li>` : ''}
+                        ${overdueTasks.length === 0 && workloadAnalysis.filter(w => w.workload > 85).length === 0 ? '<li style="color: var(--success);"><strong>LOW:</strong> No critical risks identified</li>' : ''}
+                    </ul>
+                    
+                    <h4>🎯 Next Actions Required</h4>
+                    <ol>
+                        ${progressPercentage < 100 ? '<li>Complete task assignments for all unassigned items</li>' : ''}
+                        ${handoverProgress < 100 ? '<li>Finalize handover checklist items</li>' : ''}
+                        ${overdueTasks.length > 0 ? '<li>Address overdue tasks immediately</li>' : ''}
+                        <li>Schedule weekly progress review meetings</li>
+                        <li>Implement performance monitoring systems</li>
+                        <li>Establish feedback mechanisms with stakeholders</li>
+                    </ol>
+                    
+                    <h4>📅 Timeline Status</h4>
+                    <p><strong>Current Phase:</strong> ${progressPercentage < 50 ? 'Initial Planning' : progressPercentage < 80 ? 'Active Transition' : 'Finalization'}</p>
+                    <p><strong>Expected Completion:</strong> ${handoverProgress > 75 ? 'On Track' : handoverProgress > 50 ? 'Minor Delays Expected' : 'Significant Delays Possible'}</p>
+                    <p><strong>Recommendation:</strong> ${handoverProgress > 75 ? 'Continue current pace' : 'Accelerate handover activities and increase support'}</p>
+                `);
+            }
+
+            createContingencyPlan() {
+                const allTasks = this.getAllTasks();
+                const criticalTasks = allTasks.filter(t => t.critical);
+                const unassignedCritical = criticalTasks.filter(t => !this.positions.some(p => p.selectedTasks.includes(t.id)));
+                const overloadedPositions = this.positions.filter(p => this.calculateWorkload(p) > 85);
+                const singlePointsOfFailure = this.positions.filter(p => p.selectedTasks.filter(taskId => {
+                    const task = allTasks.find(t => t.id === taskId);
+                    return task && task.critical;
+                }).length > 0);
+
+                this.showTemplateModal('Contingency Plan', `
+                    <h3>🛡️ FWI Program Transition Contingency Plan</h3>
+                    <p><strong>Plan Version:</strong> 1.0 | <strong>Effective Date:</strong> ${new Date().toLocaleDateString()}</p>
+                    <p><strong>Scope:</strong> Risk mitigation during Program Manager transition period</p>
+                    
+                    <h4>🚨 Critical Risk Scenarios & Responses</h4>
+                    
+                    <div style="margin-bottom: 2rem; padding: 1.5rem; border: 2px solid var(--danger); border-radius: 8px; background: #fef2f2;">
+                        <h5 style="color: var(--danger);">SCENARIO 1: Key Personnel Unavailability</h5>
+                        <p><strong>Risk:</strong> Assigned team member becomes unavailable during critical tasks</p>
+                        <p><strong>Trigger:</strong> >24 hour absence during critical task period</p>
+                        <p><strong>Response:</strong></p>
+                        <ul>
+                            <li><strong>Immediate (0-4 hours):</strong> Activate backup assignments</li>
+                            <li><strong>Short-term (4-24 hours):</strong> Redistribute critical tasks</li>
+                            <li><strong>Medium-term (1-7 days):</strong> Implement cross-training protocols</li>
+                        </ul>
+                        <p><strong>Backup Assignments:</strong></p>
+                        <ul>
+                            ${singlePointsOfFailure.map(pos => `
+                                <li>${pos.title} → Backup: ${this.positions.find(p => p.id !== pos.id && p.currentWorkload < 70)?.title || 'R&D Support Staff'}</li>
+                            `).join('')}
+                        </ul>
+                    </div>
+
+                    <div style="margin-bottom: 2rem; padding: 1.5rem; border: 2px solid var(--warning); border-radius: 8px; background: #fff7ed;">
+                        <h5 style="color: var(--warning);">SCENARIO 2: Critical Task Delays</h5>
+                        <p><strong>Risk:</strong> Outcome evaluation study timeline compromised</p>
+                        <p><strong>Trigger:</strong> Any critical task >48 hours overdue</p>
+                        <p><strong>Response:</strong></p>
+                        <ul>
+                            <li><strong>Immediate:</strong> Escalate to R&D management</li>
+                            <li><strong>4 hours:</strong> Reassign resources from non-critical tasks</li>
+                            <li><strong>24 hours:</strong> Request external consultant support</li>
+                            <li><strong>48 hours:</strong> Activate emergency protocols</li>
+                        </ul>
+                        <p><strong>Resource Reallocation Matrix:</strong></p>
+                        <ul>
+                            <li>Outcome evaluation tasks: Top priority - all resources available</li>
+                            <li>Lab operations: Reduce to essential calibration only</li>
+                            <li>Farmer visits: Defer non-critical relationship building</li>
+                        </ul>
+                    </div>
+
+                    <div style="margin-bottom: 2rem; padding: 1.5rem; border: 2px solid var(--fwi-primary); border-radius: 8px; background: var(--fwi-light);">
+                        <h5 style="color: var(--fwi-dark);">SCENARIO 3: System Access Issues</h5>
+                        <p><strong>Risk:</strong> Loss of access to critical systems or data</p>
+                        <p><strong>Trigger:</strong> Any system unavailable >2 hours</p>
+                        <p><strong>Response:</strong></p>
+                        <ul>
+                            <li><strong>Immediate:</strong> Switch to backup systems/manual processes</li>
+                            <li><strong>2 hours:</strong> Contact IT support and system administrators</li>
+                            <li><strong>4 hours:</strong> Implement paper-based temporary procedures</li>
+                            <li><strong>24 hours:</strong> Escalate to senior management</li>
+                        </ul>
+                        <p><strong>Backup Procedures:</strong></p>
+                        <ul>
+                            <li>Equipment logs: Paper-based recording system</li>
+                            <li>Data collection: Manual forms with delayed digital entry</li>
+                            <li>Communication: Phone trees and email backups</li>
+                        </ul>
+                    </div>
+
+                    <h4>📞 Emergency Contact Tree</h4>
+                    <ol>
+                        <li><strong>Primary Escalation:</strong> Senior Program Associate</li>
+                        <li><strong>Secondary Escalation:</strong> R&D Support Staff</li>
+                        <li><strong>Management Escalation:</strong> Department Head</li>
+                        <li><strong>External Support:</strong> ExPros Associate</li>
+                    </ol>
+
+                    <h4>📋 Decision Authority Matrix</h4>
+                    <ul>
+                        <li><strong>Task Reassignment (non-critical):</strong> Senior PA</li>
+                        <li><strong>Resource Reallocation:</strong> Department Head approval required</li>
+                        <li><strong>Timeline Extensions:</strong> Management committee decision</li>
+                        <li><strong>External Contractor Hiring:</strong> Senior management approval</li>
+                    </ul>
+
+                    <h4>🔄 Recovery Procedures</h4>
+                    <ol>
+                        <li><strong>Immediate Recovery (0-24 hours):</strong> Restore normal operations, document incident</li>
+                        <li><strong>Short-term Recovery (1-7 days):</strong> Analyze root causes, implement improvements</li>
+                        <li><strong>Long-term Recovery (1-4 weeks):</strong> Review and update contingency plans</li>
+                    </ol>
+
+                    <h4>📊 Monitoring & Review</h4>
+                    <ul>
+                        <li><strong>Daily:</strong> Risk indicator monitoring during transition period</li>
+                        <li><strong>Weekly:</strong> Contingency plan effectiveness review</li>
+                        <li><strong>Monthly:</strong> Plan updates based on lessons learned</li>
+                    </ul>
+                `);
+            }
+
+            scheduleCheckIns() {
+                const today = new Date();
+                const checkInSchedule = [];
+                
+                // Generate check-in schedule for next 8 weeks
+                for (let week = 0; week < 8; week++) {
+                    const checkInDate = new Date(today);
+                    checkInDate.setDate(today.getDate() + (week * 7));
+                    
+                    let frequency, focus, attendees;
+                    if (week < 2) {
+                        frequency = 'Daily + Weekly Summary';
+                        focus = 'Critical task coverage and immediate issues';
+                        attendees = 'All assigned team members + Management';
+                    } else if (week < 4) {
+                        frequency = 'Bi-weekly';
+                        focus = 'Progress review and adjustment';
+                        attendees = 'Team leads + Management';
+                    } else {
+                        frequency = 'Weekly';
+                        focus = 'Performance monitoring and optimization';
+                        attendees = 'Team leads (Management as needed)';
+                    }
+                    
+                    checkInSchedule.push({
+                        week: week + 1,
+                        date: checkInDate,
+                        frequency,
+                        focus,
+                        attendees
+                    });
+                }
+
+                this.showTemplateModal('Check-in Schedule', `
+                    <h3>📅 Transition Check-in Schedule</h3>
+                    <p><strong>Schedule Period:</strong> ${today.toLocaleDateString()} - ${checkInSchedule[7].date.toLocaleDateString()}</p>
+                    <p><strong>Purpose:</strong> Ensure smooth transition with regular monitoring and support</p>
+                    
+                    <h4>📋 Check-in Calendar</h4>
+                    ${checkInSchedule.map(item => `
+                        <div style="margin-bottom: 1.5rem; padding: 1rem; border-left: 4px solid var(--fwi-primary); background: ${item.week <= 2 ? '#fef2f2' : item.week <= 4 ? '#fff7ed' : 'var(--fwi-light)'};">
+                            <h5>Week ${item.week} - Starting ${item.date.toLocaleDateString()}</h5>
+                            <p><strong>Frequency:</strong> ${item.frequency}</p>
+                            <p><strong>Focus:</strong> ${item.focus}</p>
+                            <p><strong>Attendees:</strong> ${item.attendees}</p>
+                            ${item.week <= 2 ? '<p style="color: var(--danger);"><strong>⚠️ Critical Period:</strong> Daily monitoring required</p>' : ''}
+                        </div>
+                    `).join('')}
+                    
+                    <h4>📝 Standard Agenda Template</h4>
+                    <ol>
+                        <li><strong>Progress Review (10 min)</strong>
+                            <ul>
+                                <li>Task completion status</li>
+                                <li>Deadline adherence</li>
+                                <li>Quality metrics</li>
+                            </ul>
+                        </li>
+                        <li><strong>Issues & Challenges (15 min)</strong>
+                            <ul>
+                                <li>Current blockers</li>
+                                <li>Resource needs</li>
+                                <li>Technical difficulties</li>
+                            </ul>
+                        </li>
+                        <li><strong>Support & Solutions (10 min)</strong>
+                            <ul>
+                                <li>Required assistance</li>
+                                <li>Training needs</li>
+                                <li>Process improvements</li>
+                            </ul>
+                        </li>
+                        <li><strong>Next Period Planning (5 min)</strong>
+                            <ul>
+                                <li>Upcoming priorities</li>
+                                <li>Resource allocation</li>
+                                <li>Risk mitigation</li>
+                            </ul>
+                        </li>
+                    </ol>
+                    
+                    <h4>📊 Key Performance Indicators to Track</h4>
+                    <ul>
+                        <li><strong>Task Completion Rate:</strong> % of assigned tasks completed on time</li>
+                        <li><strong>Quality Metrics:</strong> Error rates, rework requirements</li>
+                        <li><strong>Team Confidence:</strong> Self-reported capability levels</li>
+                        <li><strong>Stakeholder Satisfaction:</strong> Farmer/partner feedback</li>
+                        <li><strong>System Performance:</strong> Equipment uptime, data accuracy</li>
+                    </ul>
+                    
+                    <h4>⚠️ Escalation Triggers</h4>
+                    <ul>
+                        <li>Any critical task >24 hours overdue</li>
+                        <li>Team member confidence <70%</li>
+                        <li>Quality metrics decline >20%</li>
+                        <li>Multiple system failures in same week</li>
+                        <li>Stakeholder complaints increase</li>
+                    </ul>
+                    
+                    <h4>📧 Meeting Logistics</h4>
+                    <p><strong>Format:</strong> Video conference with screen sharing for data review</p>
+                    <p><strong>Duration:</strong> 30-45 minutes (longer for crisis situations)</p>
+                    <p><strong>Documentation:</strong> Brief meeting notes shared within 24 hours</p>
+                    <p><strong>Follow-up:</strong> Action items tracked and reviewed next meeting</p>
+                `);
+            }
+
+            generateJobDescription() {
+                const tasksByCategory = {};
+                this.getAllTasks().forEach(task => {
+                    if (!tasksByCategory[task.category]) {
+                        tasksByCategory[task.category] = [];
+                    }
+                    tasksByCategory[task.category].push(task);
+                });
+
+                // Analyze current assignments to understand role requirements
+                const roleAnalysis = this.positions.map(pos => ({
+                    position: pos,
+                    tasks: pos.selectedTasks.map(taskId => this.getAllTasks().find(t => t.id === taskId)).filter(Boolean),
+                    totalComplexity: pos.selectedTasks.reduce((sum, taskId) => {
+                        const task = this.getAllTasks().find(t => t.id === taskId);
+                        return sum + (task ? task.complexity : 0);
+                    }, 0)
+                }));
+
+                this.showTemplateModal('Job Description Templates', `
+                    <h3>👔 Job Description Templates for New Roles</h3>
+                    <p><strong>Generated Date:</strong> ${new Date().toLocaleDateString()}</p>
+                    <p><strong>Based on:</strong> Current task redistribution analysis</p>
+                    
+                    <div style="margin-bottom: 2rem; padding: 1.5rem; border: 2px solid var(--fwi-primary); border-radius: 8px;">
+                        <h4>Program Manager - FWI Aquaculture Research</h4>
+                        <p><strong>Department:</strong> Research & Development</p>
+                        <p><strong>Reports to:</strong> Senior Research Director</p>
+                        <p><strong>Employment Type:</strong> Full-time, Permanent</p>
+                        
+                        <h5>Position Summary:</h5>
+                        <p>Lead the FWI aquaculture research program, managing field operations, outcome evaluation studies, and team coordination. Responsible for ensuring research quality, stakeholder relationships, and operational excellence across multiple regions.</p>
+                        
+                        <h5>Key Responsibilities:</h5>
+                        <ul>
+                            <li><strong>Research Management (40%)</strong>
+                                <ul>
+                                    <li>Oversee outcome evaluation study protocols and implementation</li>
+                                    <li>Ensure data quality and research integrity</li>
+                                    <li>Coordinate with external research partners (ExPros)</li>
+                                    <li>Manage research timelines and deliverables</li>
+                                </ul>
+                            </li>
+                            <li><strong>Laboratory Operations (25%)</strong>
+                                <ul>
+                                    <li>Supervise equipment calibration and maintenance</li>
+                                    <li>Manage reagent inventory and procurement</li>
+                                    <li>Ensure compliance with quality control protocols</li>
+                                    <li>Oversee safety and regulatory compliance</li>
+                                </ul>
+                            </li>
+                            <li><strong>Team Leadership (20%)</strong>
+                                <ul>
+                                    <li>Manage Program Associates across Eluru and Nellore regions</li>
+                                    <li>Conduct performance reviews and development planning</li>
+                                    <li>Provide training and mentorship</li>
+                                    <li>Coordinate with R&D support staff</li>
+                                </ul>
+                            </li>
+                            <li><strong>Stakeholder Relations (15%)</strong>
+                                <ul>
+                                    <li>Maintain relationships with participating farmers</li>
+                                    <li>Address farmer concerns and feedback</li>
+                                    <li>Coordinate with regional coordinators</li>
+                                    <li>Manage community engagement activities</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        
+                        <h5>Required Qualifications:</h5>
+                        <ul>
+                            <li>Master's degree in Aquaculture, Marine Biology, or related field</li>
+                            <li>Minimum 5 years experience in aquaculture research</li>
+                            <li>Proven team management experience (3+ direct reports)</li>
+                            <li>Experience with field research and data collection</li>
+                            <li>Strong analytical and problem-solving skills</li>
+                        </ul>
+                        
+                        <h5>Preferred Qualifications:</h5>
+                        <ul>
+                            <li>PhD in relevant field</li>
+                            <li>Experience with rural community engagement</li>
+                            <li>Knowledge of Indian aquaculture practices</li>
+                            <li>Proficiency in regional languages (Telugu preferred)</li>
+                            <li>Experience with outcome evaluation methodologies</li>
+                        </ul>
+                    </div>
+                    
+                    <div style="margin-bottom: 2rem; padding: 1.5rem; border: 2px solid var(--success); border-radius: 8px;">
+                        <h4>Laboratory Operations Manager</h4>
+                        <p><strong>Department:</strong> Research & Development</p>
+                        <p><strong>Reports to:</strong> Program Manager</p>
+                        <p><strong>Employment Type:</strong> Full-time, Permanent</p>
+                        
+                        <h5>Position Summary:</h5>
+                        <p>Specialized role focused on laboratory operations, equipment management, and quality control for the FWI aquaculture research program. Ensures operational excellence and supports field research activities.</p>
+                        
+                        <h5>Key Responsibilities:</h5>
+                        <ul>
+                            <li>Equipment calibration and maintenance (daily)</li>
+                            <li>Quality control testing and validation</li>
+                            <li>Inventory management and procurement</li>
+                            <li>Training staff on laboratory procedures</li>
+                            <li>Safety and compliance oversight</li>
+                        </ul>
+                        
+                        <h5>Required Qualifications:</h5>
+                        <ul>
+                            <li>Bachelor's degree in Chemistry, Biology, or related field</li>
+                            <li>3+ years laboratory management experience</li>
+                            <li>Experience with analytical equipment and calibration</li>
+                            <li>Strong attention to detail and quality focus</li>
+                        </ul>
+                    </div>
+                    
+                    <h4>📊 Role Distribution Analysis</h4>
+                    <p>Based on current task assignments:</p>
+                    ${roleAnalysis.filter(r => r.tasks.length > 0).map(role => `
+                        <div style="margin-bottom: 1rem; padding: 1rem; background: var(--fwi-light); border-radius: 8px;">
+                            <strong>${role.position.title}</strong><br>
+                            Tasks: ${role.tasks.length} | Complexity Score: ${role.totalComplexity}<br>
+                            <em>Primary Categories: ${[...new Set(role.tasks.map(t => t.category))].join(', ')}</em>
+                        </div>
+                    `).join('')}
+                    
+                    <h4>💰 Compensation Guidelines</h4>
+                    <ul>
+                        <li><strong>Program Manager:</strong> ₹8-12 lakhs annually (based on experience)</li>
+                        <li><strong>Lab Operations Manager:</strong> ₹5-8 lakhs annually</li>
+                        <li><strong>Additional Benefits:</strong> Health insurance, professional development, field allowances</li>
+                    </ul>
+                `);
+            }
+
+            generateTrainingPlan() {
+                // Analyze skill gaps based on task assignments
+                const skillGaps = [];
+                const trainingNeeds = {};
+                
+                this.positions.forEach(position => {
+                    if (position.selectedTasks.length > 0) {
+                        const assignedTasks = position.selectedTasks.map(taskId => 
+                            this.getAllTasks().find(t => t.id === taskId)
+                        ).filter(Boolean);
+                        
+                        const requiredSkills = [];
+                        assignedTasks.forEach(task => {
+                            switch(task.category) {
+                                case 'outcome-evaluation':
+                                    requiredSkills.push('Research Protocols', 'Data Collection', 'Quality Control');
+                                    break;
+                                case 'lab-operations':
+                                    requiredSkills.push('Equipment Calibration', 'Laboratory Safety', 'Quality Testing');
+                                    break;
+                                case 'farmer-engagement':
+                                    requiredSkills.push('Communication', 'Relationship Management', 'Conflict Resolution');
+                                    break;
+                                case 'field-research':
+                                    requiredSkills.push('Field Methodology', 'Data Collection', 'Equipment Operation');
+                                    break;
+                            }
+                        });
+                        
+                        const skillGap = requiredSkills.filter(skill => 
+                            !position.capabilities.some(cap => cap.toLowerCase().includes(skill.toLowerCase()))
+                        );
+                        
+                        if (skillGap.length > 0) {
+                            trainingNeeds[position.id] = {
+                                position: position.title,
+                                gaps: [...new Set(skillGap)],
+                                urgency: assignedTasks.some(t => t.critical) ? 'High' : 'Medium'
+                            };
+                        }
+                    }
+                });
+
+                this.showTemplateModal('Training & Development Plan', `
+                    <h3>🎓 FWI Program Training & Development Plan</h3>
+                    <p><strong>Plan Period:</strong> ${new Date().toLocaleDateString()} - ${new Date(Date.now() + 90*24*60*60*1000).toLocaleDateString()}</p>
+                    <p><strong>Objective:</strong> Bridge skill gaps and ensure competency for new responsibilities</p>
+                    
+                    <h4>🎯 Individual Training Plans</h4>
+                    ${Object.values(trainingNeeds).map(need => `
+                        <div style="margin-bottom: 2rem; padding: 1.5rem; border: 2px solid ${need.urgency === 'High' ? 'var(--danger)' : 'var(--warning)'}; border-radius: 8px; background: ${need.urgency === 'High' ? '#fef2f2' : '#fff7ed'};">
+                            <h5>${need.position} - ${need.urgency} Priority</h5>
+                            <p><strong>Identified Skill Gaps:</strong></p>
+                            <ul>
+                                ${need.gaps.map(gap => `<li>${gap}</li>`).join('')}
+                            </ul>
+                            
+                            <h6>Recommended Training:</h6>
+                            <ul>
+                                ${need.gaps.map(gap => {
+                                    switch(gap) {
+                                        case 'Research Protocols':
+                                            return '<li><strong>Research Protocols:</strong> 2-day intensive with ExPros associate, hands-on shadowing</li>';
+                                        case 'Equipment Calibration':
+                                            return '<li><strong>Equipment Calibration:</strong> 1-day technical training with current PM, weekly practice sessions</li>';
+                                        case 'Communication':
+                                            return '<li><strong>Farmer Communication:</strong> 1-day workshop on community engagement, field practice</li>';
+                                        case 'Quality Control':
+                                            return '<li><strong>Quality Control:</strong> 3-day comprehensive training, certification program</li>';
+                                        default:
+                                            return `<li><strong>${gap}:</strong> Customized training program based on specific needs</li>`;
+                                    }
+                                }).join('')}
+                            </ul>
+                            
+                            <p><strong>Timeline:</strong> ${need.urgency === 'High' ? 'Complete within 2 weeks' : 'Complete within 4 weeks'}</p>
+                        </div>
+                    `).join('')}
+                    
+                    ${Object.keys(trainingNeeds).length === 0 ? 
+                        '<div style="text-align: center; padding: 2rem; color: var(--success);"><strong>✅ No critical skill gaps identified</strong><br>Current team capabilities match assigned responsibilities well.</div>' : ''
+                    }
+                    
+                    <h4>📚 Training Program Components</h4>
+                    
+                    <div style="margin-bottom: 1.5rem; padding: 1rem; border-left: 4px solid var(--fwi-primary); background: var(--fwi-light);">
+                        <h5>1. Core Competency Training (All Staff)</h5>
+                        <ul>
+                            <li><strong>Week 1:</strong> FWI Program Overview & Objectives</li>
+                            <li><strong>Week 2:</strong> Data Collection Standardization</li>
+                            <li><strong>Week 3:</strong> Communication & Stakeholder Management</li>
+                            <li><strong>Week 4:</strong> Emergency Procedures & Problem Solving</li>
+                        </ul>
+                        <p><strong>Format:</strong> 2-hour weekly sessions, mix of theory and practical exercises</p>
+                    </div>
+                    
+                    <div style="margin-bottom: 1.5rem; padding: 1rem; border-left: 4px solid var(--success); background: #f0fdf4;">
+                        <h5>2. Specialized Technical Training</h5>
+                        <ul>
+                            <li><strong>Laboratory Operations:</strong> Equipment calibration, safety protocols, quality control</li>
+                            <li><strong>Field Research:</strong> Measurement techniques, data validation, equipment maintenance</li>
+                            <li><strong>Farmer Relations:</strong> Communication strategies, conflict resolution, community engagement</li>
+                        </ul>
+                        <p><strong>Format:</strong> Intensive workshops with hands-on practice and certification</p>
+                    </div>
+                    
+                    <div style="margin-bottom: 1.5rem; padding: 1rem; border-left: 4px solid var(--warning); background: #fff7ed;">
+                        <h5>3. Leadership Development (Senior Staff)</h5>
+                        <ul>
+                            <li>Team management and delegation</li>
+                            <li>Decision-making under pressure</li>
+                            <li>Performance management and feedback</li>
+                            <li>Strategic thinking and planning</li>
+                        </ul>
+                        <p><strong>Format:</strong> Monthly workshops plus individual mentoring</p>
+                    </div>
+                    
+                    <h4>📅 Training Schedule</h4>
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <tr style="background: var(--fwi-light);">
+                            <th style="border: 1px solid #e2e8f0; padding: 0.5rem;">Week</th>
+                            <th style="border: 1px solid #e2e8f0; padding: 0.5rem;">Focus</th>
+                            <th style="border: 1px solid #e2e8f0; padding: 0.5rem;">Target Audience</th>
+                            <th style="border: 1px solid #e2e8f0; padding: 0.5rem;">Duration</th>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #e2e8f0; padding: 0.5rem;">1</td>
+                            <td style="border: 1px solid #e2e8f0; padding: 0.5rem;">Critical Task Handover</td>
+                            <td style="border: 1px solid #e2e8f0; padding: 0.5rem;">Assigned Critical Task Owners</td>
+                            <td style="border: 1px solid #e2e8f0; padding: 0.5rem;">Daily sessions</td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #e2e8f0; padding: 0.5rem;">2-3</td>
+                            <td style="border: 1px solid #e2e8f0; padding: 0.5rem;">Technical Skills Training</td>
+                            <td style="border: 1px solid #e2e8f0; padding: 0.5rem;">All Staff (by specialization)</td>
+                            <td style="border: 1px solid #e2e8f0; padding: 0.5rem;">Half-day workshops</td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #e2e8f0; padding: 0.5rem;">4-6</td>
+                            <td style="border: 1px solid #e2e8f0; padding: 0.5rem;">Practical Application</td>
+                            <td style="border: 1px solid #e2e8f0; padding: 0.5rem;">All Staff</td>
+                            <td style="border: 1px solid #e2e8f0; padding: 0.5rem;">On-the-job training</td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #e2e8f0; padding: 0.5rem;">7-8</td>
+                            <td style="border: 1px solid #e2e8f0; padding: 0.5rem;">Assessment & Certification</td>
+                            <td style="border: 1px solid #e2e8f0; padding: 0.5rem;">All Staff</td>
+                            <td style="border: 1px solid #e2e8f0; padding: 0.5rem;">Individual assessments</td>
+                        </tr>
+                    </table>
+                    
+                    <h4>📊 Success Metrics</h4>
+                    <ul>
+                        <li><strong>Competency Assessment Scores:</strong> >85% pass rate</li>
+                        <li><strong>Task Performance:</strong> No quality degradation post-training</li>
+                        <li><strong>Confidence Levels:</strong> Self-reported confidence >80%</li>
+                        <li><strong>Feedback Scores:</strong> Training effectiveness >4.0/5.0</li>
+                    </ul>
+                    
+                    <h4>💰 Training Budget Estimate</h4>
+                    <ul>
+                        <li><strong>External Trainers:</strong> ₹50,000 - ₹75,000</li>
+                        <li><strong>Materials & Resources:</strong> ₹15,000 - ₹25,000</li>
+                        <li><strong>Staff Time (opportunity cost):</strong> ₹100,000 - ₹150,000</li>
+                        <li><strong>Total Estimated Cost:</strong> ₹165,000 - ₹250,000</li>
+                    </ul>
+                `);
+            }
+
+            generatePerformanceMetrics() {
+                const allTasks = this.getAllTasks();
+                const criticalTasks = allTasks.filter(t => t.critical);
+                const assignedPositions = this.positions.filter(p => p.selectedTasks.length > 0);
+
+                this.showTemplateModal('Performance Metrics Framework', `
+                    <h3>📊 FWI Program Performance Metrics Framework</h3>
+                    <p><strong>Measurement Period:</strong> Transition Period + Ongoing Operations</p>
+                    <p><strong>Review Frequency:</strong> Weekly (transition), Monthly (steady-state)</p>
+                    
+                    <h4>🎯 Key Performance Indicators (KPIs)</h4>
+                    
+                    <div style="margin-bottom: 2rem; padding: 1.5rem; border: 2px solid var(--danger); border-radius: 8px; background: #fef2f2;">
+                        <h5 style="color: var(--danger);">CRITICAL METRICS (Must Track Daily)</h5>
+                        
+                        <h6>1. Research Integrity & Timeline Adherence</h6>
+                        <ul>
+                            <li><strong>Outcome Evaluation Milestone Completion:</strong> 100% on-time delivery required</li>
+                            <li><strong>Data Quality Score:</strong> >95% accuracy in all measurements</li>
+                            <li><strong>Protocol Compliance Rate:</strong> 100% adherence to research protocols</li>
+                            <li><strong>Critical Task Completion Rate:</strong> 100% within defined timelines</li>
+                        </ul>
+                        
+                        <h6>Current Status:</h6>
+                        <ul>
+                            <li>Critical Tasks Assigned: ${criticalTasks.filter(t => this.positions.some(p => p.selectedTasks.includes(t.id))).length}/${criticalTasks.length}</li>
+                            <li>Overdue Critical Tasks: ${criticalTasks.filter(t => this.getDeadlineStatus(t.dueDate) === 'overdue').length}</li>
+                            <li>Risk Level: ${criticalTasks.filter(t => !this.positions.some(p => p.selectedTasks.includes(t.id))).length > 0 ? 'HIGH' : 'LOW'}</li>
+                        </ul>
+                    </div>
+                    
+                    <div style="margin-bottom: 2rem; padding: 1.5rem; border: 2px solid var(--warning); border-radius: 8px; background: #fff7ed;">
+                        <h5 style="color: var(--warning);">OPERATIONAL METRICS (Weekly Tracking)</h5>
+                        
+                        <h6>2. Laboratory Operations Efficiency</h6>
+                        <ul>
+                            <li><strong>Equipment Uptime:</strong> >98% availability</li>
+                            <li><strong>Calibration Compliance:</strong> 100% on-schedule calibrations</li>
+                            <li><strong>Quality Control Pass Rate:</strong> >95% first-time pass</li>
+                            <li><strong>Inventory Availability:</strong> Zero stockouts of critical reagents</li>
+                        </ul>
+                        
+                        <h6>3. Team Performance & Capacity</h6>
+                        <ul>
+                            <li><strong>Task Completion Rate:</strong> >90% tasks completed on time</li>
+                            <li><strong>Workload Distribution:</strong> No individual >85% capacity sustained</li>
+                            <li><strong>Training Completion:</strong> 100% required training within timeline</li>
+                            <li><strong>Staff Confidence Level:</strong> >80% self-reported competency</li>
+                        </ul>
+                        
+                        <h6>Current Team Status:</h6>
+                        ${assignedPositions.map(pos => `
+                            <li>${pos.title}: ${pos.selectedTasks.length} tasks, ${Math.round(this.calculateWorkload(pos))}% capacity</li>
+                        `).join('')}
+                    </div>
+                    
+                    <div style="margin-bottom: 2rem; padding: 1.5rem; border: 2px solid var(--fwi-primary); border-radius: 8px; background: var(--fwi-light);">
+                        <h5 style="color: var(--fwi-dark);">STAKEHOLDER SATISFACTION (Monthly Tracking)</h5>
+                        
+                        <h6>4. Farmer & Community Relations</h6>
+                        <ul>
+                            <li><strong>Farmer Satisfaction Score:</strong> >4.0/5.0 (quarterly survey)</li>
+                            <li><strong>Complaint Resolution Time:</strong> <48 hours average</li>
+                            <li><strong>Community Engagement Rate:</strong> >90% participation in scheduled activities</li>
+                            <li><strong>Relationship Quality Index:</strong> Maintained or improved vs. baseline</li>
+                        </ul>
+                        
+                        <h6>5. Internal Stakeholder Satisfaction</h6>
+                        <ul>
+                            <li><strong>Management Confidence:</strong> >4.0/5.0 monthly rating</li>
+                            <li><strong>R&D Integration Score:</strong> Seamless collaboration maintained</li>
+                            <li><strong>Partner Organization Feedback:</strong> No deterioration in relationships</li>
+                        </ul>
+                    </div>
+                    
+                    <h4>📈 Performance Tracking Dashboard</h4>
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 1.5rem;">
+                        <tr style="background: var(--fwi-light);">
+                            <th style="border: 1px solid #e2e8f0; padding: 0.5rem;">Metric Category</th>
+                            <th style="border: 1px solid #e2e8f0; padding: 0.5rem;">Target</th>
+                            <th style="border: 1px solid #e2e8f0; padding: 0.5rem;">Current Status</th>
+                            <th style="border: 1px solid #e2e8f0; padding: 0.5rem;">Trend</th>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #e2e8f0; padding: 0.5rem;">Critical Task Coverage</td>
+                            <td style="border: 1px solid #e2e8f0; padding: 0.5rem;">100%</td>
+                            <td style="border: 1px solid #e2e8f0; padding: 0.5rem;">${Math.round((criticalTasks.filter(t => this.positions.some(p => p.selectedTasks.includes(t.id))).length / criticalTasks.length) * 100)}%</td>
+                            <td style="border: 1px solid #e2e8f0; padding: 0.5rem;">📈 Improving</td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #e2e8f0; padding: 0.5rem;">Team Workload Balance</td>
+                            <td style="border: 1px solid #e2e8f0; padding: 0.5rem;"><85% max</td>
+                            <td style="border: 1px solid #e2e8f0; padding: 0.5rem;">${assignedPositions.filter(p => this.calculateWorkload(p) > 85).length === 0 ? 'Within Target' : 'Over Capacity'}</td>
+                            <td style="border: 1px solid #e2e8f0; padding: 0.5rem;">${assignedPositions.filter(p => this.calculateWorkload(p) > 85).length === 0 ? '✅ Good' : '⚠️ Monitor'}</td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #e2e8f0; padding: 0.5rem;">Task Assignment Rate</td>
+                            <td style="border: 1px solid #e2e8f0; padding: 0.5rem;">100%</td>
+                            <td style="border: 1px solid #e2e8f0; padding: 0.5rem;">${Math.round((allTasks.filter(t => this.positions.some(p => p.selectedTasks.includes(t.id))).length / allTasks.length) * 100)}%</td>
+                            <td style="border: 1px solid #e2e8f0; padding: 0.5rem;">📈 Improving</td>
+                        </tr>
+                    </table>
+                    
+                    <h4>🚨 Alert Thresholds & Escalation</h4>
+                    <ul>
+                        <li><strong>RED ALERT:</strong> Any critical metric falls below threshold → Immediate management intervention</li>
+                        <li><strong>YELLOW WARNING:</strong> Declining trend over 2 consecutive periods → Enhanced monitoring</li>
+                        <li><strong>GREEN STATUS:</strong> All metrics within target range → Standard monitoring</li>
+                    </ul>
+                    
+                    <h4>📊 Reporting Schedule</h4>
+                    <ul>
+                        <li><strong>Daily:</strong> Critical metrics dashboard (during transition)</li>
+                        <li><strong>Weekly:</strong> Operational metrics summary</li>
+                        <li><strong>Monthly:</strong> Comprehensive performance report</li>
+                        <li><strong>Quarterly:</strong> Stakeholder satisfaction survey</li>
+                    </ul>
+                    
+                    <h4>🎯 Success Criteria for Transition Completion</h4>
+                    <ol>
+                        <li>All critical tasks assigned and being executed successfully</li>
+                        <li>Team performance metrics stable for 4 consecutive weeks</li>
+                        <li>Stakeholder satisfaction maintained at pre-transition levels</li>
+                        <li>No operational disruptions or quality degradation</li>
+                        <li>Team confidence levels >80% across all roles</li>
+                    </ol>
+                    
+                    <h4>🔄 Continuous Improvement Process</h4>
+                    <ul>
+                        <li><strong>Monthly Review:</strong> Analyze trends and identify improvement opportunities</li>
+                        <li><strong>Quarterly Assessment:</strong> Comprehensive evaluation and metric refinement</li>
+                        <li><strong>Annual Planning:</strong> Strategic review and goal setting for next period</li>
+                    </ul>
+                `);
+            }
+
+            customTemplate() {
+                this.showTemplateModal('Custom Template Builder', `
+                    <h3>✏️ Custom Template Builder</h3>
+                    <p>Create custom documents and templates for your specific needs.</p>
+                    
+                    <div style="margin-bottom: 1.5rem;">
+                        <h4>📋 Quick Templates</h4>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+                            <button class="btn btn-secondary" onclick="taskManager.generateCustomTemplate('meeting-notes')">Meeting Notes Template</button>
+                            <button class="btn btn-secondary" onclick="taskManager.generateCustomTemplate('status-report')">Status Report Template</button>
+                            <button class="btn btn-secondary" onclick="taskManager.generateCustomTemplate('incident-report')">Incident Report Template</button>
+                            <button class="btn btn-secondary" onclick="taskManager.generateCustomTemplate('training-record')">Training Record Template</button>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 1.5rem;">
+                        <h4>📝 Custom Document Generator</h4>
+                        <div class="form-group">
+                            <label for="templateTitle">Document Title:</label>
+                            <input type="text" id="templateTitle" placeholder="Enter document title...">
+                        </div>
+                        <div class="form-group">
+                            <label for="templateType">Document Type:</label>
+                            <select id="templateType">
+                                <option value="report">Report</option>
+                                <option value="checklist">Checklist</option>
+                                <option value="procedure">Procedure</option>
+                                <option value="communication">Communication</option>
+                                <option value="form">Form</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="templateContent">Content Outline:</label>
+                            <textarea id="templateContent" rows="6" placeholder="Enter main sections and content points..."></textarea>
+                        </div>
+                        <button class="btn" onclick="taskManager.generateCustomDocument()">Generate Custom Document</button>
+                    </div>
+                    
+                    <div style="background: var(--fwi-light); padding: 1rem; border-radius: 8px;">
+                        <h5>💡 Template Suggestions</h5>
+                        <ul>
+                            <li><strong>Equipment Logs:</strong> Daily/weekly equipment usage and maintenance records</li>
+                            <li><strong>Farmer Visit Reports:</strong> Structured format for documenting farmer interactions</li>
+                            <li><strong>Quality Control Checklists:</strong> Step-by-step verification procedures</li>
+                            <li><strong>Emergency Response Plans:</strong> Quick-reference guides for crisis situations</li>
+                            <li><strong>Training Evaluation Forms:</strong> Assess training effectiveness and knowledge retention</li>
+                        </ul>
+                    </div>
+                `);
+            }
+
+            generateCustomTemplate(templateType) {
+                let content = '';
+                switch(templateType) {
+                    case 'meeting-notes':
+                        content = `
+                            <h3>📝 Meeting Notes Template</h3>
+                            <div style="font-family: monospace; background: #f8fafc; padding: 1rem; border-radius: 8px;">
+                                <strong>Meeting Notes - [Meeting Title]</strong><br><br>
+                                <strong>Date:</strong> [Date]<br>
+                                <strong>Time:</strong> [Start Time] - [End Time]<br>
+                                <strong>Location/Platform:</strong> [Location or Video Conference Link]<br>
+                                <strong>Meeting Lead:</strong> [Name]<br>
+                                <strong>Note Taker:</strong> [Name]<br><br>
+                                
+                                <strong>Attendees:</strong><br>
+                                • [Name] - [Role]<br>
+                                • [Name] - [Role]<br>
+                                • [Name] - [Role]<br><br>
+                                
+                                <strong>Agenda Items:</strong><br>
+                                1. [Agenda Item 1]<br>
+                                2. [Agenda Item 2]<br>
+                                3. [Agenda Item 3]<br><br>
+                                
+                                <strong>Discussion Summary:</strong><br>
+                                [Main discussion points and key insights]<br><br>
+                                
+                                <strong>Decisions Made:</strong><br>
+                                • [Decision 1]<br>
+                                • [Decision 2]<br><br>
+                                
+                                <strong>Action Items:</strong><br>
+                                • [Action] - Assigned to: [Name] - Due: [Date]<br>
+                                • [Action] - Assigned to: [Name] - Due: [Date]<br><br>
+                                
+                                <strong>Next Meeting:</strong><br>
+                                Date: [Date]<br>
+                                Focus: [Next meeting focus]<br><br>
+                                
+                                <strong>Notes:</strong><br>
+                                [Additional notes or follow-up items]
+                            </div>
+                        `;
+                        break;
+                    case 'status-report':
+                        content = `
+                            <h3>📊 Status Report Template</h3>
+                            <div style="font-family: monospace; background: #f8fafc; padding: 1rem; border-radius: 8px;">
+                                <strong>Weekly Status Report - [Period]</strong><br><br>
+                                <strong>Reporting Period:</strong> [Start Date] - [End Date]<br>
+                                <strong>Report Date:</strong> [Date]<br>
+                                <strong>Prepared by:</strong> [Name]<br><br>
+                                
+                                <strong>SUMMARY</strong><br>
+                                Overall Status: [Green/Yellow/Red]<br>
+                                Key Achievements: [Brief summary]<br>
+                                Major Challenges: [Brief summary]<br><br>
+                                
+                                <strong>TASK PROGRESS</strong><br>
+                                • Completed Tasks: [Number]<br>
+                                • In Progress: [Number]<br>
+                                • Overdue: [Number]<br>
+                                • Upcoming Deadlines: [Number]<br><br>
+                                
+                                <strong>KEY ACCOMPLISHMENTS</strong><br>
+                                1. [Accomplishment 1]<br>
+                                2. [Accomplishment 2]<br>
+                                3. [Accomplishment 3]<br><br>
+                                
+                                <strong>CHALLENGES & ISSUES</strong><br>
+                                1. [Challenge 1] - Status: [Resolution approach]<br>
+                                2. [Challenge 2] - Status: [Resolution approach]<br><br>
+                                
+                                <strong>UPCOMING WEEK PRIORITIES</strong><br>
+                                1. [Priority 1]<br>
+                                2. [Priority 2]<br>
+                                3. [Priority 3]<br><br>
+                                
+                                <strong>SUPPORT NEEDED</strong><br>
+                                • [Support request 1]<br>
+                                • [Support request 2]<br><br>
+                                
+                                <strong>METRICS</strong><br>
+                                • Quality Score: [Score/Rating]<br>
+                                • Team Utilization: [Percentage]<br>
+                                • Stakeholder Satisfaction: [Rating]<br><br>
+                                
+                                <strong>NEXT PERIOD OUTLOOK</strong><br>
+                                [Brief outlook for next reporting period]
+                            </div>
+                        `;
+                        break;
+                    case 'incident-report':
+                        content = `
+                            <h3>🚨 Incident Report Template</h3>
+                            <div style="font-family: monospace; background: #f8fafc; padding: 1rem; border-radius: 8px;">
+                                <strong>INCIDENT REPORT</strong><br><br>
+                                <strong>Incident ID:</strong> [Auto-generated or assigned]<br>
+                                <strong>Date of Incident:</strong> [Date]<br>
+                                <strong>Time of Incident:</strong> [Time]<br>
+                                <strong>Reported by:</strong> [Name and Role]<br>
+                                <strong>Report Date:</strong> [Date]<br><br>
+                                
+                                <strong>INCIDENT DETAILS</strong><br>
+                                <strong>Type:</strong> [Equipment/Process/Safety/Quality/Other]<br>
+                                <strong>Severity Level:</strong> [Low/Medium/High/Critical]<br>
+                                <strong>Location:</strong> [Specific location]<br>
+                                <strong>Personnel Involved:</strong> [Names and roles]<br><br>
+                                
+                                <strong>DESCRIPTION</strong><br>
+                                [Detailed description of what happened]<br><br>
+                                
+                                <strong>IMMEDIATE IMPACT</strong><br>
+                                • Operations: [Impact on operations]<br>
+                                • Personnel: [Any injuries or safety concerns]<br>
+                                • Equipment: [Equipment damage or malfunction]<br>
+                                • Data/Quality: [Impact on data quality or research]<br><br>
+                                
+                                <strong>IMMEDIATE ACTIONS TAKEN</strong><br>
+                                1. [Action 1] - Time: [Time] - By: [Name]<br>
+                                2. [Action 2] - Time: [Time] - By: [Name]<br>
+                                3. [Action 3] - Time: [Time] - By: [Name]<br><br>
+                                
+                                <strong>ROOT CAUSE ANALYSIS</strong><br>
+                                <strong>Contributing Factors:</strong><br>
+                                • [Factor 1]<br>
+                                • [Factor 2]<br>
+                                <strong>Root Cause:</strong> [Primary root cause]<br><br>
+                                
+                                <strong>CORRECTIVE ACTIONS</strong><br>
+                                1. [Action] - Responsible: [Name] - Due: [Date]<br>
+                                2. [Action] - Responsible: [Name] - Due: [Date]<br><br>
+                                
+                                <strong>PREVENTIVE MEASURES</strong><br>
+                                • [Measure 1]<br>
+                                • [Measure 2]<br><br>
+                                
+                                <strong>FOLLOW-UP REQUIRED</strong><br>
+                                • [Follow-up action] - Due: [Date]<br><br>
+                                
+                                <strong>LESSONS LEARNED</strong><br>
+                                [Key takeaways and improvements for future]<br><br>
+                                
+                                <strong>APPROVALS</strong><br>
+                                Prepared by: [Name] - Date: [Date]<br>
+                                Reviewed by: [Manager Name] - Date: [Date]<br>
+                                Approved by: [Senior Manager] - Date: [Date]
+                            </div>
+                        `;
+                        break;
+                    case 'training-record':
+                        content = `
+                            <h3>🎓 Training Record Template</h3>
+                            <div style="font-family: monospace; background: #f8fafc; padding: 1rem; border-radius: 8px;">
+                                <strong>TRAINING RECORD</strong><br><br>
+                                <strong>Training ID:</strong> [Training identifier]<br>
+                                <strong>Training Title:</strong> [Title of training program]<br>
+                                <strong>Training Date:</strong> [Date]<br>
+                                <strong>Duration:</strong> [Hours/Days]<br>
+                                <strong>Trainer:</strong> [Trainer name and credentials]<br><br>
+                                
+                                <strong>PARTICIPANT INFORMATION</strong><br>
+                                <strong>Name:</strong> [Participant name]<br>
+                                <strong>Position:</strong> [Job title]<br>
+                                <strong>Department:</strong> [Department]<br>
+                                <strong>Employee ID:</strong> [ID number]<br><br>
+                                
+                                <strong>TRAINING OBJECTIVES</strong><br>
+                                1. [Objective 1]<br>
+                                2. [Objective 2]<br>
+                                3. [Objective 3]<br><br>
+                                
+                                <strong>TRAINING CONTENT COVERED</strong><br>
+                                • Module 1: [Module name] - [Duration]<br>
+                                • Module 2: [Module name] - [Duration]<br>
+                                • Module 3: [Module name] - [Duration]<br>
+                                • Practical Exercise: [Description] - [Duration]<br><br>
+                                
+                                <strong>ASSESSMENT RESULTS</strong><br>
+                                <strong>Written Test:</strong> [Score/Grade] - Pass/Fail<br>
+                                <strong>Practical Assessment:</strong> [Score/Grade] - Pass/Fail<br>
+                                <strong>Overall Result:</strong> [Pass/Fail]<br><br>
+                                
+                                <strong>COMPETENCIES ACHIEVED</strong><br>
+                                ✓ [Competency 1]<br>
+                                ✓ [Competency 2]<br>
+                                ✓ [Competency 3]<br><br>
+                                
+                                <strong>AREAS FOR IMPROVEMENT</strong><br>
+                                • [Area 1]<br>
+                                • [Area 2]<br><br>
+                                
+                                <strong>ADDITIONAL TRAINING RECOMMENDED</strong><br>
+                                • [Recommendation 1] - Timeline: [Timeline]<br>
+                                • [Recommendation 2] - Timeline: [Timeline]<br><br>
+                                
+                                <strong>PARTICIPANT FEEDBACK</strong><br>
+                                <strong>Training Quality (1-5):</strong> [Rating]<br>
+                                <strong>Trainer Effectiveness (1-5):</strong> [Rating]<br>
+                                <strong>Relevance to Job (1-5):</strong> [Rating]<br>
+                                <strong>Comments:</strong> [Participant comments]<br><br>
+                                
+                                <strong>CERTIFICATION</strong><br>
+                                <strong>Certificate Issued:</strong> Yes/No<br>
+                                <strong>Certificate Number:</strong> [Number]<br>
+                                <strong>Valid Until:</strong> [Date]<br>
+                                <strong>Renewal Requirements:</strong> [Requirements]<br><br>
+                                
+                                <strong>SIGNATURES</strong><br>
+                                Participant: [Signature] - Date: [Date]<br>
+                                Trainer: [Signature] - Date: [Date]<br>
+                                Supervisor: [Signature] - Date: [Date]
+                            </div>
+                        `;
+                        break;
+                }
+                
+                this.showTemplateModal('Custom Template: ' + templateType.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase()), content);
+            }
+
+            generateCustomDocument() {
+                const title = document.getElementById('templateTitle').value || 'Custom Document';
+                const type = document.getElementById('templateType').value;
+                const contentOutline = document.getElementById('templateContent').value || 'Document content to be added';
+                
+                const content = `
+                    <h3>📄 ${title}</h3>
+                    <p><strong>Document Type:</strong> ${type.charAt(0).toUpperCase() + type.slice(1)}</p>
+                    <p><strong>Generated:</strong> ${new Date().toLocaleDateString()}</p>
+                    
+                    <div style="font-family: monospace; background: #f8fafc; padding: 1rem; border-radius: 8px;">
+                        <strong>${title.toUpperCase()}</strong><br><br>
+                        
+                        <strong>Document Information:</strong><br>
+                        Version: 1.0<br>
+                        Effective Date: ${new Date().toLocaleDateString()}<br>
+                        Review Date: ${new Date(Date.now() + 90*24*60*60*1000).toLocaleDateString()}<br>
+                        Owner: [Document Owner]<br><br>
+                        
+                        <strong>Purpose:</strong><br>
+                        [Purpose and scope of this document]<br><br>
+                        
+                        <strong>Content Outline:</strong><br>
+                        ${contentOutline.split('\n').map(line => line.trim() ? `${line}<br>` : '<br>').join('')}
+                        
+                        <br><strong>Additional Sections to Consider:</strong><br>
+                        ${type === 'report' ? '• Executive Summary<br>• Methodology<br>• Findings<br>• Recommendations<br>• Appendices<br>' : ''}
+                        ${type === 'checklist' ? '• Prerequisites<br>• Step-by-step items<br>• Verification criteria<br>• Sign-off requirements<br>' : ''}
+                        ${type === 'procedure' ? '• Scope and Applicability<br>• Responsibilities<br>• Step-by-step Process<br>• Quality Controls<br>• Records<br>' : ''}
+                        ${type === 'communication' ? '• Target Audience<br>• Key Messages<br>• Distribution Method<br>• Feedback Mechanism<br>' : ''}
+                        ${type === 'form' ? '• Instructions<br>• Required Fields<br>• Approval Process<br>• Record Keeping<br>' : ''}
+                        
+                        <br><strong>Approval:</strong><br>
+                        Prepared by: [Name] - Date: [Date]<br>
+                        Reviewed by: [Name] - Date: [Date]<br>
+                        Approved by: [Name] - Date: [Date]<br>
+                    </div>
+                `;
+                
+                this.showTemplateModal(title, content);
+            }
 
             showDetailedAnalysis() {
                 const content = `
@@ -2189,6 +3386,9 @@ Thanks for your flexibility during this transition! 🙏
         function analyzeRisks() { taskManager.analyzeRisks(); }
         function updateDecisionMatrix() { taskManager.updateDecisionMatrix(); }
         function showDetailedAnalysis() { taskManager.showDetailedAnalysis(); }
+
+        // Add these new global functions for the TaskManager methods
+        window.taskManager = taskManager; // Make taskManager globally accessible for the custom template functions
 
         // Initialize
         const taskManager = new TaskManager();
