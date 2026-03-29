@@ -20,28 +20,12 @@ Not everything here is polished. That's the point.
 
 ## Current Projects
 
-### FWI Task Management Tool
-
-A comprehensive task distribution system built for managing staff transitions at Fish Welfare Initiative.
-
-**File:** `index.html`
-**Deploy:** Netlify (via GitHub integration)
-
-**Features:**
-- Smart task assignment recommendations based on role and capacity
-- Real-time progress tracking across team members
-- Export capabilities: PDF and CSV
-- Automated meeting agenda and email generation
-- Risk analysis and critical path management for transition planning
-
-**Usage:** Open `index.html` in any modern browser. No installation or build step required.
-
 ### Court Petition Translator (Hindi → English)
 
 An AI-powered tool for translating Hindi Supreme Court and High Court petitions into formal legal English.
 
 **Directory:** `court-translator/`
-**Serverless function:** `netlify/functions/court-translate.mjs`
+**Serverless function:** `netlify/functions/court-translate.js`
 **Stage:** Prototype
 
 **How it works:**
@@ -73,12 +57,12 @@ Projects in this repo follow a simple lifecycle:
 
 ```
 Experiments/
-├── index.html                          # FWI Task Management Tool
+├── index.html                          # Experiments index page
 ├── court-translator/
 │   └── index.html                      # Court Petition Translator UI
 ├── netlify/
 │   └── functions/
-│       └── court-translate.mjs         # Hindi → English translation API
+│       └── court-translate.js          # Hindi → English translation API
 ├── netlify.toml                        # Netlify build & functions config
 ├── .env.example                        # Required environment variables
 ├── LICENSE                             # MIT License
