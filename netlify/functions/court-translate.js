@@ -2,7 +2,7 @@
 // Experiment: court-translator
 // Uses Sarvam.ai for base translation + Groq/Llama 3.3 70B for legal terminology refinement
 
-const MAX_CHUNK = 1800; // under Sarvam's 2000 char limit for sarvam-translate:v1
+const MAX_CHUNK = 1800;
 
 function splitIntoChunks(text) {
   const paragraphs = text.split(/\n\n+/);
@@ -21,12 +21,10 @@ function splitIntoChunks(text) {
       }
     } else {
       if (current) { chunks.push(current); current = ""; }
-      // Split long paragraph on sentence boundaries (purna viram or period)
       const sentences = para.split(/(?<=[।.])\s*/);
       for (const sentence of sentences) {
         if (!sentence) continue;
         if (sentence.length > MAX_CHUNK) {
-          // Hard split for extremely long sentences (rare)
           for (let i = 0; i < sentence.length; i += MAX_CHUNK) {
             chunks.push(sentence.slice(i, i + MAX_CHUNK));
           }
@@ -58,7 +56,6 @@ async function translateChunk(text) {
       mode: "formal",
       numerals_format: "international",
     }),
-    signal: AbortSignal.timeout(30000),
   });
 
   if (!res.ok) {
@@ -110,7 +107,6 @@ Output ONLY the refined English translation. No explanations, no preamble.`,
       ],
       max_tokens: 4096,
     }),
-    signal: AbortSignal.timeout(30000),
   });
 
   if (!groqRes.ok) throw new Error(`Groq API ${groqRes.status}`);
@@ -119,65 +115,65 @@ Output ONLY the refined English translation. No explanations, no preamble.`,
   return data.choices?.[0]?.message?.content || rawTranslation;
 }
 
-export default async function handler(req) {
+exports.handler = async function (event) {
   const headers = {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Headers": "Content-Type",
     "Content-Type": "application/json",
   };
 
-  if (req.method === "OPTIONS") {
-    return new Response("", { status: 204, headers });
+  if (event.httpMethod === "OPTIONS") {
+    return { statusCode: 204, headers, body: "" };
   }
 
-  if (req.method !== "POST") {
-    return new Response(JSON.stringify({ error: "POST required" }), { status: 405, headers });
+  if (event.httpMethod !== "POST") {
+    return { statusCode: 405, headers, body: JSON.stringify({ error: "POST required" }) };
   }
 
   let body;
   try {
-    body = await req.json();
+    body = JSON.parse(event.body);
   } catch {
-    return new Response(JSON.stringify({ error: "Invalid JSON" }), { status: 400, headers });
+    return { statusCode: 400, headers, body: JSON.stringify({ error: "Invalid JSON" }) };
   }
 
   const { text } = body;
   if (!text || !text.trim()) {
-    return new Response(JSON.stringify({ error: "text is required" }), { status: 400, headers });
+    return { statusCode: 400, headers, body: JSON.stringify({ error: "text is required" }) };
   }
 
   const trimmed = text.trim();
   if (trimmed.length > 50000) {
-    return new Response(JSON.stringify({ error: "Text too long. Maximum 50,000 characters." }), { status: 400, headers });
+    return { statusCode: 400, headers, body: JSON.stringify({ error: "Text too long. Maximum 50,000 characters." }) };
   }
 
   const chunks = splitIntoChunks(trimmed);
 
-  // Translate all chunks via Sarvam in parallel
   let rawParts;
   try {
     rawParts = await Promise.all(chunks.map(translateChunk));
   } catch (e) {
-    console.log("Sarvam translation error:", e.message); // keep
-    return new Response(JSON.stringify({ error: "Translation failed. Please try again." }), { status: 502, headers });
+    return { statusCode: 502, headers, body: JSON.stringify({ error: "Translation failed. Please try again." }) };
   }
 
   const rawTranslation = rawParts.join("\n\n");
 
-  // Refine with Groq for legal terminology
   let refined;
   let refinementApplied = true;
   try {
     refined = await refineLegalTranslation(rawTranslation);
   } catch (e) {
-    console.log("Groq refinement error:", e.message); // keep
     refined = rawTranslation;
     refinementApplied = false;
   }
 
-  return new Response(JSON.stringify({
-    translation: refined,
-    chunksProcessed: chunks.length,
-    refinementApplied,
-  }), { status: 200, headers });
-}
+  return {
+    statusCode: 200,
+    headers,
+    body: JSON.stringify({
+      translation: refined,
+      chunksProcessed: chunks.length,
+      refinementApplied,
+    }),
+  };
+};
