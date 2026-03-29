@@ -1,0 +1,42 @@
+cff-version: 1.2.0
+title: The Real Middle
+message: >-
+  If you use this software or its data visualizations, please cite it
+  using the metadata from this file.
+type: software
+authors:
+  - family-names: Sri Raman
+    given-names: Varna
+    alias: Varnasr
+repository-code: https://github.com/Varnasr/The-Real-Middle
+url: https://impactmojo.in
+abstract: >-
+  An interactive tool helping Indian users discover their actual economic
+  position within India's income distribution. Addresses the common
+  misconception where upper-income earners self-identify as "middle class"
+  through income calculators, budget simulations, healthcare and education
+  cost analysis, rural vs urban comparisons, and poverty cycle exploration.
+keywords:
+  - income-inequality
+  - india
+  - economic-position
+  - middle-class
+  - data-visualization
+  - react
+license: MIT
+references:
+  - type: data
+    title: World Inequality Database (WID)
+    authors:
+      - name: World Inequality Lab
+    url: https://wid.world
+  - type: data
+    title: Periodic Labour Force Survey (PLFS) 2023-24
+    authors:
+      - name: Ministry of Statistics and Programme Implementation, Government of India
+    url: https://mospi.gov.in
+  - type: data
+    title: Economic Survey 2024-25
+    authors:
+      - name: Ministry of Finance, Government of India
+    url: https://indiabudget.gov.in

@@ -1,0 +1,140 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* Prevent horizontal scroll on mobile */
+    overflow-x: hidden;
+  }
+
+  code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+      monospace;
+  }
+
+  /* Improve touch targets for mobile */
+  @media (max-width: 768px) {
+    button {
+      min-height: 44px;
+    }
+    
+    input[type="number"],
+    input[type="text"],
+    select {
+      min-height: 44px;
+      font-size: 16px; /* Prevents zoom on iOS */
+    }
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-amber-600 hover:bg-amber-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200;
+    /* Better mobile touch target */
+    @apply min-h-[44px] flex items-center justify-center;
+  }
+  
+  .btn-secondary {
+    @apply bg-slate-600 hover:bg-slate-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200;
+    /* Better mobile touch target */
+    @apply min-h-[44px] flex items-center justify-center;
+  }
+  
+  .card {
+    @apply bg-slate-800 border border-slate-700 rounded-lg shadow-xl p-4 sm:p-6;
+  }
+  
+  .input-field {
+    @apply w-full p-3 border border-slate-600 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent bg-slate-700 text-white;
+    /* Improve mobile experience */
+    @apply min-h-[44px] text-base;
+  }
+
+  /* Mobile-specific improvements */
+  @media (max-width: 640px) {
+    .card {
+      @apply p-3;
+    }
+    
+    .btn-primary,
+    .btn-secondary {
+      @apply py-3 px-4 text-sm;
+    }
+    
+    /* Better spacing for mobile */
+    .space-y-6 > * + * {
+      @apply mt-4;
+    }
+    
+    .space-y-8 > * + * {
+      @apply mt-6;
+    }
+  }
+
+  /* Ensure charts are responsive */
+  .recharts-wrapper {
+    @apply w-full;
+  }
+
+  /* Improve range input styling for mobile */
+  input[type="range"] {
+    @apply h-2 bg-slate-600 rounded-lg appearance-none cursor-pointer;
+    @apply min-h-[44px]; /* Better touch target */
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    @apply appearance-none w-5 h-5 bg-amber-500 rounded-full cursor-pointer;
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    @apply w-5 h-5 bg-amber-500 rounded-full cursor-pointer border-0;
+  }
+
+  /* Mobile keyboard optimizations */
+  @media (max-width: 768px) {
+    /* Prevent viewport jumping when keyboard appears */
+    .fixed-viewport {
+      height: 100vh;
+      height: 100dvh; /* Dynamic viewport height for modern browsers */
+    }
+  }
+
+  /* Loading states for better UX */
+  .loading {
+    @apply opacity-50 pointer-events-none;
+  }
+
+  /* Improved focus states for accessibility */
+  button:focus,
+  input:focus,
+  select:focus {
+    @apply outline-none ring-2 ring-amber-500 ring-offset-2 ring-offset-slate-900;
+  }
+
+  /* Better scrollbar styling */
+  ::-webkit-scrollbar {
+    @apply w-2;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-slate-800;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-slate-600 rounded;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-slate-500;
+  }
+}

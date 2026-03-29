@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Ummidvaar Dastaavez — Candidate Dossiers</title>
+<meta http-equiv="Cache-Control" content="no-store"/>
+
+<style>
+  :root{
+    /* Professional blue-gold palette optimized for government documents */
+    --mmsf-blue:#1e3a8a;
+    --mmsf-gold:#fbbf24;
+    --mmsf-navy:#0f172a;
+    --mmsf-grey:#64748b;
+    --bg:#ffffff;
+    --card:#ffffff;
+    --border:#e2e8f0;
+    --soft:#f8fafc;
+  }
+  [data-theme="dark"]{
+    --bg:#0f1115; --card:#1e293b; --mmsf-navy:#e2e8f0; --mmsf-grey:#cbd5e1;
+    --border:#334155; --soft:#1e293b; --mmsf-blue:#60a5fa; --mmsf-gold:#fcd34d;
+  }
+  html,body{
+    margin:0; background:var(--bg); color:var(--mmsf-navy);
+    font:14px/1.6 'Segoe UI',system-ui,-apple-system,Roboto,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+  }
+  .wrap{max-width:1100px;margin:0 auto;padding:24px}
+  header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;border-bottom:3px solid var(--mmsf-blue);padding-bottom:16px;margin-bottom:24px}
+  h1{margin:0;font-size:1.9rem;font-weight:800;color:var(--mmsf-blue);letter-spacing:-0.5px}
+  .sunmoon{width:40px;height:40px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;border:2px solid var(--mmsf-blue);background:var(--card);cursor:pointer;transition:all 0.2s}
+  .sunmoon:hover{background:var(--soft)}
+  .sunmoon svg{width:20px;height:20px;color:var(--mmsf-blue)}
+
+  .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin-top:16px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+  .muted{color:var(--mmsf-grey)}
+  .hl{background:var(--mmsf-gold);color:var(--mmsf-navy);padding:3px 8px;border-radius:4px;font-weight:600}
+  .btn{display:inline-flex;align-items:center;gap:8px;background:var(--mmsf-blue);color:#fff;border:none;border-radius:8px;padding:11px 16px;font-weight:600;cursor:pointer;transition:all 0.2s}
+  .btn:hover{background:#1e40af;transform:translateY(-1px);box-shadow:0 2px 8px rgba(30,58,138,0.3)}
+  .btn.secondary{background:var(--mmsf-gold);color:var(--mmsf-navy)}
+  .btn.secondary:hover{background:#f59e0b}
+  input[type="file"]{display:block;margin-top:8px;padding:4px}
+  .row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .error{border-left:4px solid #dc2626;background:#fef2f2;color:#991b1b;padding:12px;border-radius:8px;margin-top:12px;display:none}
+  [data-theme="dark"] .error{background:#450a0a;color:#fca5a5}
+
+  .small{font-size:.93rem}
+  code{background:var(--soft);padding:3px 7px;border-radius:4px;font-family:'Courier New',monospace}
+
+  #preview{max-width:900px;margin:0 auto}
+  .sheet{border:1px solid var(--border);border-radius:10px;padding:18px;margin:14px 0;background:#fff;color:#000}
+  [data-theme="dark"] .sheet{background:#fff;color:#000}
+  .sheet h3{margin:.3rem 0 .7rem 0;color:var(--mmsf-blue)}
+  .kv{display:grid;grid-template-columns:160px 1fr 160px 1fr;gap:8px 14px}
+  .kv strong{white-space:nowrap;color:var(--mmsf-navy)}
+  hr{border:0;border-top:2px solid var(--mmsf-gold);margin:14px 0}
+
+  /* PRINT LAYOUT — Professional LaTeX-style formatting */
+  @media print{ body{background:#fff} }
+  @page{size:A4;margin:0}
+  
+  .print-wrap{font:11pt/1.5 'Times New Roman',Georgia,serif; color:#1a1a1a}
+  .print-page{page-break-after:always; padding:25mm 20mm; position:relative; min-height:247mm}
+  .print-header{border-bottom:3px solid var(--mmsf-blue);padding-bottom:8mm;margin-bottom:10mm}
+  .print-title{font:700 24pt/1.2 'Arial',sans-serif; margin:0 0 3mm 0; color:var(--mmsf-blue)}
+  .print-subtitle{font:400 11pt/1.3 'Arial',sans-serif; color:var(--mmsf-grey); margin:0}
+  
+  .cat-badge{display:inline-block;background:var(--mmsf-gold);color:var(--mmsf-navy);padding:3px 10px;border-radius:4px;font:600 10pt 'Arial',sans-serif;margin-bottom:8mm}
+  
+  .info-grid{display:grid;grid-template-columns:38mm 62mm 38mm 62mm;gap:3mm 7mm;margin-bottom:10mm}
+  .info-grid .label{font:600 9.5pt 'Arial',sans-serif;color:#334155}
+  .info-grid .value{font:400 10pt 'Arial',sans-serif;color:#1e293b;border-bottom:1px solid #e2e8f0;padding-bottom:1mm}
+  
+  .section{margin-top:8mm}
+  .section-header{display:flex;align-items:center;gap:5mm;margin:0 0 3mm 0}
+  .gold-bar{width:4mm;height:3mm;background:var(--mmsf-gold)}
+  .section-header span{font:600 11.5pt 'Arial',sans-serif;color:var(--mmsf-blue)}
+  .section-content{font:400 10.5pt/1.6 'Times New Roman',serif; color:#374151; white-space:pre-wrap}
+  
+  .pagenum{position:absolute;bottom:12mm;right:20mm;font:400 9pt 'Arial',sans-serif;color:#94a3b8}
+  .watermark{position:absolute;top:15mm;right:20mm;font:400 8pt 'Arial',sans-serif;color:#cbd5e1}
+</style>
+</head>
+<body>
+<div class="wrap" id="app" data-theme="light">
+  <header>
+    <h1>Ummidvaar Dastaavez — Candidate Dossiers</h1>
+    <button class="sunmoon" id="themeToggle" aria-label="Toggle theme" title="Toggle theme">
+      <svg id="sunIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      <svg id="moonIcon" style="display:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </header>
+
+  <section class="card">
+    <h2 style="color:var(--mmsf-blue)">What This Is & Why It Matters</h2>
+    <p>
+      This tool transforms structured <span class="hl">CSV data</span> into professional <span class="hl">PDF candidate dossiers</span> with LaTeX-quality typography, 
+      using a professional blue and gold color palette optimized for government documentation. All phone numbers and emails are <strong>mandatorily masked</strong> for privacy protection.
+    </p>
+    <p>
+      <strong>Why this tool is necessary:</strong> Political organizations often rely on inconsistent Excel sheets, handwritten forms, or poorly formatted Word documents 
+      for candidate assessment. This leads to missing information, inconsistent evaluation criteria, and unprofessional documentation during critical selection processes.
+    </p>
+    <p class="muted small">
+      <strong>Required CSV columns (18 fields):</strong><br/>
+      <code>preference, name, category, caste, age, gender, occupation, education, year_joined, phone, email, 
+      criminal_record, rationale, strengths, weaknesses, proposers, positions_held, elections_contested</code>
+    </p>
+  </section>
+
+  <section class="card">
+    <h2 style="color:var(--mmsf-blue)">Technical Features & PDF Output Quality</h2>
+    <p>
+      <strong>Professional PDF Features:</strong>
+    </p>
+    <ul style="margin-left:20px;line-height:1.8">
+      <li>📐 <strong>LaTeX-quality typography</strong> - Times New Roman body text with Arial headers for optimal readability</li>
+      <li>📊 <strong>Structured tabular layout</strong> - Information presented in bordered tables with alternating row colors</li>
+      <li>📄 <strong>One candidate per page</strong> - Easy filing and distribution for committee review</li>
+      <li>🎨 <strong>Professional color scheme</strong> - Deep blue (#1e3a8a) for headers, gold (#fbbf24) for accents</li>
+      <li>📏 <strong>A4 print optimization</strong> - Precise margins (20mm) and spacing for standard printing</li>
+      <li>🔢 <strong>Automatic page numbering</strong> - Sequential page numbers for document organization</li>
+      <li>📝 <strong>Section formatting</strong> - Clear visual hierarchy with underlined headers and justified text</li>
+    </ul>
+    <p style="margin-top:15px">
+      <strong>Technical Implementation:</strong> Pure client-side JavaScript with zero dependencies. Uses CSS print media queries for PDF generation,
+      ensuring consistent output across browsers. CSV parsing handles edge cases including quoted fields, commas within values, and various line endings (CRLF/LF).
+      UTF-8 encoding support ensures proper rendering of Hindi and regional language text.
+    </p>
+  </section>
+
+  <section class="card">
+    <h2 style="color:var(--mmsf-blue)">Generate Professional PDF</h2>
+    <p style="margin-bottom:15px">
+      <strong>Why structured PDFs matter:</strong> Committee members need consistent formats to compare candidates fairly. 
+      This tool enforces standardization while maintaining professional presentation standards used in government documentation.
+      The blue-gold color scheme provides high contrast for readability while the tabular layout ensures quick information scanning.
+    </p>
+    <div class="row">
+      <div>
+        <label><strong>Upload CSV File</strong></label>
+        <input id="csvFile" type="file" accept=".csv,text/csv"/>
+      </div>
+      <button id="printBtn" class="btn" disabled>📄 Generate PDF</button>
+      <button id="previewBtn" class="btn secondary" disabled>👁️ Preview</button>
+      <a id="templateLink" class="btn secondary" download="candidate_template.csv">⬇️ Download Template</a>
+      <button id="sampleBtn" class="btn">📋 View Sample</button>
+      <div id="busy" class="muted" style="display:none">Processing...</div>
+    </div>
+    <div id="fileError" class="error"></div>
+    <p class="muted small">💡 <strong>Privacy by Design:</strong> Phone masking (shows only last 4 digits) and email obfuscation (r***@domain) 
+    are hardcoded and cannot be disabled, ensuring compliance with data protection guidelines. No server upload means your data never leaves your computer.</p>
+  </section>
+
+  <section class="card">
+    <h2 style="color:var(--mmsf-blue)">Preview</h2>
+    <div id="preview"></div>
+  </section>
+
+  <footer class="card muted small">
+    <strong>Privacy & Compliance:</strong> Non-partisan civic tool for transparent candidate assessment • All personal data (phone/email) is automatically masked • 
+    No data is stored or transmitted - all processing happens locally in your browser • Compliant with Indian IT Act 2000 • 
+    Built with professional government documentation standards using a blue-gold color palette optimized for readability and print quality
+  </footer>
+</div>
+
+<script>
+(function(){
+  /* Theme toggle */
+  const app = document.getElementById('app'), sun = document.getElementById('sunIcon'), moon = document.getElementById('moonIcon');
+  document.getElementById('themeToggle').addEventListener('click', ()=>{
+    const cur = app.getAttribute('data-theme')==='dark' ? 'light':'dark';
+    app.setAttribute('data-theme', cur);
+    if(cur==='dark'){sun.style.display='none';moon.style.display='block';} else {sun.style.display='block';moon.style.display='none';}
+  });
+
+  /* Helpers */
+  const HEADERS = "preference,name,category,caste,age,gender,occupation,education,year_joined,phone,email,criminal_record,rationale,strengths,weaknesses,proposers,positions_held,elections_contested".split(',');
+  const norm = s => String(s||'').trim().toLowerCase().replace(/\s+/g,'').replace(/_/g,'');
+  const esc = s => String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const maskPhone = v => { 
+    const d = String(v||'').replace(/\D/g,''); 
+    return d ? '******' + d.slice(-4) : 'N/A'; 
+  };
+  const maskEmail = v => {
+    const email = String(v||'').trim();
+    if(!email || !email.includes('@')) return 'N/A';
+    const [local, domain] = email.split('@');
+    return local.charAt(0) + '***@' + domain;
+  };
+
+  function showError(msg){ const e=document.getElementById('fileError'); e.style.display='block'; e.textContent=msg; }
+  function clearError(){ const e=document.getElementById('fileError'); e.style.display='none'; e.textContent=''; }
+  function setBusy(on){ document.getElementById('busy').style.display = on?'inline':'none'; }
+
+  /* CSV parser with quote handling */
+  function parseCSV(text){
+    const rows=[]; let row=[], cur='', q=false;
+    // Remove BOM if present
+    text = text.replace(/^\uFEFF/, '');
+    for(let i=0;i<text.length;i++){
+      const c=text[i], n=text[i+1];
+      if(q){
+        if(c=='"' && n=='"'){ cur+='"'; i++; }
+        else if(c=='"'){ q=false; }
+        else { cur+=c; }
+      }else{
+        if(c=='"'){ q=true; }
+        else if(c==','){ row.push(cur); cur=''; }
+        else if(c=='\n'){ row.push(cur); rows.push(row); row=[]; cur=''; }
+        else if(c=='\r'){ /* ignore */ }
+        else { cur+=c; }
+      }
+    }
+    row.push(cur); rows.push(row);
+    return rows;
+  }
+
+  /* Template CSV with comprehensive political candidate data */
+  const templateCSV = [
+    HEADERS.join(','),
+    '1,"Rajender Kumar Chaudhary",OBC,Jat,54,Male,Advocate/Farmer,"BA, LLB, LLM (Pursuing)",1985,9012239999,rajender.chaudhary@example.com,No adverse records,"Belief in party ideology; long family history with party","College-days party youth wing; strong administrative connections","Limited digital campaign experience","Ram Singh (Ex HM, 5x MLA); Furkan Ahmed (MLA)","Ward President (2010-2015); DCC Member (2018-present)","Nagar Palika 2019 (Won); Assembly 2022 (Runner-up)"',
+    '2,"Aasma Parveen",General,Sheikh,42,Female,School Teacher,"MA (Education)",2007,9897426789,aasma.parveen@example.com,Clean record,"Strong grassroots rapport in wards 4-7; education focus","Women\'s SHG networks; good booth mobilization","Limited funding base","Pradeep Kumar (Councillor); Neelam Devi (ZP Member)","Ward Education Committee (2015-2019)","Ward 6 Municipal Election 2019 (Won)"',
+    '3,"Vikram Singh",SC,Chamar,39,Male,Small Business Owner,B.Com,2010,9876542345,vikram.singh@example.com,No cases,"Entrepreneur background; strong youth outreach","Strong union connections; event organization skills","New to party committees","Mahesh Ram (Ex DCC Gen Secy); Poonam Bala (PCC Member)","Block Youth President (2021-present)","First-time contender"',
+    '4,"Sudhir Shandilya",General,Brahmin,49,Male,Business/Farmer,MA,1996,9410111515,sudhir.shandilya@example.com,No criminal record,"Relief provider mindset; party strengthening focus","NSUI Best District President Award 2005; Kisan Congress VP 2020","Needs more grassroots presence","Multiple senior party leaders","NSUI City President (1996-1998); NSUI District President (1998-2007)",No elections contested',
+    '5,"Ritu Kandiyal",General,Thakur,44,Female,Business,BA,2000,9897427777,ritu.kandiyal@example.com,Clean,"25 years party experience; women\'s group activation","Good hold in ladies and youth groups","Needs broader coalition building","Senior women leaders","Mahila Congress VP (2003-2006); State GS (2011-2013); INTUC District President",No direct elections'
+  ].join('\n');
+
+  document.getElementById('templateLink').href = URL.createObjectURL(new Blob([templateCSV], {type:'text/csv'}));
+
+  /* State */
+  let records = [];
+
+  const csvInput   = document.getElementById('csvFile');
+  const previewBtn = document.getElementById('previewBtn');
+  const printBtn   = document.getElementById('printBtn');
+  const sampleBtn  = document.getElementById('sampleBtn');
+  const previewDiv = document.getElementById('preview');
+
+  /* Load CSV - FIXED ERROR HERE */
+  csvInput.addEventListener('change', async ()=>{
+    clearError(); records = []; previewDiv.innerHTML=''; previewBtn.disabled = true; printBtn.disabled = true;
+    const f = csvInput.files && csvInput.files[0]; // FIXED: was csvFile.files[0]
+    if(!f) return;
+    if(!/\.csv$/i.test(f.name)){ showError('Please upload a CSV file (not PDF or other format).'); return; }
+    if(f.size > 12 * 1024 * 1024){ showError('CSV file too large (>12MB).'); return; }
+
+    setBusy(true);
+    try{
+      const text = await f.text();
+      const rows = parseCSV(text).filter(r => r.some(c => String(c).trim()!==''));
+      if(rows.length<2){ showError('CSV has no data rows.'); setBusy(false); return; }
+      
+      const headerRaw = rows[0];
+      const headerNorm = headerRaw.map(h=>norm(h));
+      const backMap = {};
+      HEADERS.forEach(req=>{
+        const idx = headerNorm.indexOf(norm(req));
+        backMap[req] = idx>=0 ? idx : null;
+      });
+      
+      const missing = HEADERS.filter(k => backMap[k]===null);
+      if(missing.length){ showError('CSV missing required columns: ' + missing.join(', ')); setBusy(false); return; }
+
+      records = rows.slice(1).map(r=>{
+        const obj={}; 
+        HEADERS.forEach(k => { 
+          const idx=backMap[k]; 
+          obj[k]= idx!==null ? (r[idx] ?? '') : ''; 
+        });
+        return obj;
+      }).filter(o => Object.values(o).some(v => String(v).trim()!==''));
+      
+      if(!records.length){ showError('CSV has no valid data rows.'); setBusy(false); return; }
+      previewBtn.disabled = false; 
+      printBtn.disabled = false;
+    }catch(e){
+      showError('CSV parse failed: ' + (e?.message||e));
+    }finally{
+      setBusy(false);
+    }
+  });
+
+  /* Preview on page */
+  previewBtn.addEventListener('click', ()=>{
+    previewDiv.innerHTML='';
+    records.forEach((r,i)=>{
+      const el=document.createElement('div'); 
+      el.className='sheet';
+      el.innerHTML = `
+        <h3>Preference ${r.preference||i+1}: ${esc(r.name||'Unnamed')} <span class="muted small">(${esc(r.category||'')}${r.caste?'/'+esc(r.caste):''})</span></h3>
+        <div class="kv small">
+          <strong>Name</strong><div>${esc(r.name||'')}</div>
+          <strong>Category/Caste</strong><div>${esc(r.category||'')}${r.caste?'/'+esc(r.caste):''}</div>
+          <strong>Age</strong><div>${esc(r.age||'')} ${r.gender ? '(' + esc(r.gender) + ')' : ''}</div>
+          <strong>Occupation</strong><div>${esc(r.occupation||'')}</div>
+          <strong>Education</strong><div>${esc(r.education||'')}</div>
+          <strong>Year Joined</strong><div>${esc(r.year_joined||'')}</div>
+          <strong>Phone</strong><div>${esc(maskPhone(r.phone))}</div>
+          <strong>Email</strong><div>${esc(maskEmail(r.email))}</div>
+        </div>
+        <hr/>
+        <div class="small"><strong>Criminal Record:</strong> ${esc(r.criminal_record||'No records')}</div>
+        <div class="small"><strong>Rationale:</strong> ${esc(r.rationale||'')}</div>
+        <div class="small"><strong>Strengths:</strong> ${esc(r.strengths||'')}</div>
+        <div class="small"><strong>Weaknesses:</strong> ${esc(r.weaknesses||'')}</div>
+        <div class="small"><strong>Proposers:</strong> ${esc(r.proposers||'')}</div>
+        <div class="small"><strong>Positions Held:</strong> ${esc(r.positions_held||'')}</div>
+        <div class="small"><strong>Elections Contested:</strong> ${esc(r.elections_contested||'')}</div>
+      `;
+      previewDiv.appendChild(el);
+    });
+  });
+
+  /* Generate professional PDF */
+  function openPrintWindow(list){
+    const w = window.open('', '_blank');
+    const today = new Date();
+    const dateStr = today.toLocaleDateString('en-IN', { year:'numeric', month:'long', day:'numeric' });
+    
+    const pages = [];
+    
+    // Generate one page per candidate
+    list.forEach((r,idx)=>{
+      const categoryInfo = [r.category, r.caste].filter(Boolean).join('/') || '—';
+      
+      pages.push(`
+        <div class="print-page">
+          <div class="print-header">
+            <h1 class="print-title">Candidate Dossier</h1>
+            <div class="print-date">${dateStr}</div>
+          </div>
+          
+          <div class="cat-badge">Preference ${r.preference || (idx+1)}</div>
+          
+          <h2 class="candidate-name">${esc(r.name || 'Name Not Provided')}</h2>
+          
+          <table class="info-table">
+            <tr>
+              <td class="label">Name</td><td class="value">${esc(r.name||'—')}</td>
+              <td class="label">Category/Caste</td><td class="value">${categoryInfo}</td>
+            </tr>
+            <tr>
+              <td class="label">Age</td><td class="value">${esc(r.age||'—')}</td>
+              <td class="label">Gender</td><td class="value">${esc(r.gender||'—')}</td>
+            </tr>
+            <tr>
+              <td class="label">Occupation</td><td class="value">${esc(r.occupation||'—')}</td>
+              <td class="label">Education</td><td class="value">${esc(r.education||'—')}</td>
+            </tr>
+            <tr>
+              <td class="label">Year Joined</td><td class="value">${esc(r.year_joined||'—')}</td>
+              <td class="label">Phone</td><td class="value">${esc(maskPhone(r.phone))}</td>
+            </tr>
+            <tr>
+              <td class="label">Email</td><td class="value" colspan="3">${esc(maskEmail(r.email))}</td>
+            </tr>
+            <tr>
+              <td class="label">Criminal Record</td><td class="value" colspan="3">${esc(r.criminal_record||'No records')}</td>
+            </tr>
+          </table>
+          
+          ${r.rationale ? `
+          <div class="section">
+            <div class="section-header">Rationale</div>
+            <div class="section-content">${esc(r.rationale)}</div>
+          </div>` : ''}
+          
+          ${r.strengths ? `
+          <div class="section">
+            <div class="section-header">Strengths</div>
+            <div class="section-content">${esc(r.strengths)}</div>
+          </div>` : ''}
+          
+          ${r.weaknesses ? `
+          <div class="section">
+            <div class="section-header">Weaknesses</div>
+            <div class="section-content">${esc(r.weaknesses)}</div>
+          </div>` : ''}
+          
+          ${r.proposers ? `
+          <div class="section">
+            <div class="section-header">Proposers</div>
+            <div class="section-content">${esc(r.proposers)}</div>
+          </div>` : ''}
+          
+          ${r.positions_held ? `
+          <div class="section">
+            <div class="section-header">Positions Held</div>
+            <div class="section-content">${esc(r.positions_held)}</div>
+          </div>` : ''}
+          
+          ${r.elections_contested ? `
+          <div class="section">
+            <div class="section-header">Elections Contested</div>
+            <div class="section-content">${esc(r.elections_contested)}</div>
+          </div>` : ''}
+          
+          <div class="pagenum">Page ${idx + 1}</div>
+        </div>
+      `);
+    });
+
+    const printStyles = `
+      @page { size: A4; margin: 0; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font-family: 'Times New Roman', Georgia, serif; background: white; color: #000; }
+      .print-page { 
+        width: 210mm; 
+        min-height: 297mm; 
+        padding: 20mm 18mm; 
+        page-break-after: always;
+        position: relative;
+      }
+      .print-header {
+        border-bottom: 3px solid #1e3a8a;
+        padding-bottom: 5mm;
+        margin-bottom: 8mm;
+      }
+      .print-title {
+        font: bold 22pt Arial, sans-serif;
+        color: #1e3a8a;
+        margin: 0;
+      }
+      .print-date {
+        font: 10pt Arial, sans-serif;
+        color: #666;
+        margin-top: 2mm;
+      }
+      .cat-badge {
+        display: inline-block;
+        background: #fbbf24;
+        color: #000;
+        padding: 2mm 4mm;
+        font: bold 10pt Arial, sans-serif;
+        border-radius: 2mm;
+        margin-bottom: 5mm;
+      }
+      .candidate-name {
+        font: bold 18pt Arial, sans-serif;
+        color: #1e3a8a;
+        margin: 0 0 8mm 0;
+      }
+      .info-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 10mm;
+        font-size: 11pt;
+      }
+      .info-table td {
+        padding: 2mm 3mm;
+        border: 1px solid #ddd;
+      }
+      .info-table .label {
+        font-weight: bold;
+        font-family: Arial, sans-serif;
+        background: #f8f9fa;
+        width: 25%;
+        font-size: 10pt;
+      }
+      .info-table .value {
+        font-family: 'Times New Roman', serif;
+        font-size: 11pt;
+      }
+      .section {
+        margin-top: 6mm;
+      }
+      .section-header {
+        font: bold 11pt Arial, sans-serif;
+        color: #1e3a8a;
+        border-bottom: 2px solid #fbbf24;
+        padding-bottom: 1mm;
+        margin-bottom: 2mm;
+      }
+      .section-content {
+        font: 11pt/1.5 'Times New Roman', serif;
+        color: #333;
+        text-align: justify;
+      }
+      .pagenum {
+        position: absolute;
+        bottom: 10mm;
+        right: 18mm;
+        font: 9pt Arial, sans-serif;
+        color: #666;
+      }
+      @media print {
+        body { margin: 0; }
+      }
+    `;
+    
+    const html = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="utf-8"/>
+        <title>Candidate Dossiers</title>
+        <style>${printStyles}</style>
+      </head>
+      <body>
+        ${pages.join('')}
+        <script>setTimeout(function(){window.print()},300)</${'script'}>
+      </body>
+      </html>
+    `;
+    w.document.open(); 
+    w.document.write(html); 
+    w.document.close();
+  }
+
+  /* Generate PDF from CSV */
+  printBtn.addEventListener('click', ()=>{
+    if(!records.length){ showError('Please upload a CSV file first.'); return; }
+    const sorted = [...records].sort((a,b)=> {
+      const prefA = parseInt(a.preference) || 999;
+      const prefB = parseInt(b.preference) || 999;
+      return prefA - prefB;
+    });
+    openPrintWindow(sorted);
+  });
+
+  /* Sample one-pager */
+  sampleBtn.addEventListener('click', ()=>{
+    const sample = [{
+      preference:'1',
+      name:'Rajender Kumar Chaudhary',
+      category:'OBC',
+      caste:'Jat',
+      age:'54',
+      gender:'Male',
+      occupation:'Advocate / Farmer',
+      education:'BA, LLB, LLM (Pursuing)',
+      year_joined:'1985',
+      phone:'9012239999',
+      email:'rajender.chaudhary@example.com',
+      criminal_record:'No adverse records',
+      rationale:'Belief in Congress ideology; long family history with party. True soldier of the party with honest loyalty and dedication.',
+      strengths:'College-days NSUI involvement; strong administrative connections; good hold in area administration',
+      weaknesses:'Limited digital campaign experience',
+      proposers:'Ram Singh Saini (Ex Home Minister, 5x MLA); Furkan Ahmed (MLA); Dr. Rakam Singh (Ex State Minister)',
+      positions_held:'Ward President (2010-2015); DCC Member (2018-present); NSUI Vice President (1990-1993)',
+      elections_contested:'Nagar Palika Election 2019 (Won); Assembly Election 2022 (Runner-up)'
+    }];
+    openPrintWindow(sample);
+  });
+
+  // Clean up any old service workers
+  if('serviceWorker' in navigator){
+    navigator.serviceWorker.getRegistrations().then(rs=>rs.forEach(r=>r.unregister())).catch(()=>{});
+  }
+})();
+</script>
+</body>
+</html>

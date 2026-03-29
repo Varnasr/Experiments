@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JRCMEB9TBW"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-JRCMEB9TBW');</script>
+<title>Methodology — How India Lives | ImpactMojo</title>
+<meta name="description" content="Methodology note for the 205 state-level choropleth maps of India covering demography, health, gender, economy, and more.">
+<meta name="theme-color" content="#0EA5E9">
+<link href="https://www.impactmojo.in/assets/images/favicon.png" rel="icon" type="image/png">
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Amaranth:wght@400;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--primary-bg:#FFFFFF;--secondary-bg:#F8FAFC;--accent-color:#0EA5E9;--accent-hover:#0284C7;--text-primary:#0F172A;--text-secondary:#475569;--text-muted:#94A3B8;--card-bg:#FFFFFF;--border-color:#E2E8F0;--gradient-primary:linear-gradient(135deg,#0EA5E9 0%,#6366F1 100%);}
+html[data-theme="dark"]{--primary-bg:#0F172A;--secondary-bg:#1E293B;--text-primary:#F1F5F9;--text-secondary:#CBD5E1;--text-muted:#64748B;--card-bg:#1E293B;--border-color:#334155;}
+body{font-family:'Amaranth',Arial,sans-serif;background:var(--primary-bg);color:var(--text-primary);line-height:1.7;}
+
+/* Header */
+.header{background:rgba(15,23,42,0.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border-color);position:fixed;top:0;left:0;right:0;z-index:1000;}
+html[data-theme="dark"] .header{background:rgba(248,250,252,0.95);}
+.nav-container{max-width:1280px;margin:0 auto;padding:0 20px;display:flex;align-items:center;justify-content:space-between;height:60px;}
+.logo-container{display:flex;align-items:center;gap:12px;text-decoration:none;}
+.logo-container img{width:36px;height:36px;}
+.logo-main{font-family:'Inter',sans-serif;font-size:1.1rem;font-weight:700;color:#F8FAFC;}
+html[data-theme="dark"] .logo-main{color:#0F172A;}
+.logo-tagline{font-size:0.65rem;color:#CBD5E1;}
+html[data-theme="dark"] .logo-tagline{color:#475569;}
+.nav-right{display:flex;align-items:center;gap:16px;}
+.nav-right a{font-family:'Inter',sans-serif;font-size:0.85rem;font-weight:500;color:#CBD5E1;text-decoration:none;padding:6px 12px;border-radius:6px;transition:all 0.2s;}
+.nav-right a:hover{color:#FFF;background:rgba(255,255,255,0.1);}
+html[data-theme="dark"] .nav-right a{color:#475569;}
+html[data-theme="dark"] .nav-right a:hover{color:#0F172A;background:rgba(0,0,0,0.1);}
+.theme-selector{display:flex;gap:2px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:3px;}
+html[data-theme="dark"] .theme-selector{background:rgba(0,0,0,0.1);border-color:rgba(0,0,0,0.15);}
+.theme-btn{background:transparent;border:none;color:rgba(255,255,255,0.5);padding:6px;border-radius:5px;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;width:30px;height:30px;}
+html[data-theme="dark"] .theme-btn{color:rgba(0,0,0,0.4);}
+.theme-btn:hover{background:rgba(255,255,255,0.1);color:white;}
+html[data-theme="dark"] .theme-btn:hover{background:rgba(0,0,0,0.1);color:#0F172A;}
+.theme-btn.active{background:var(--accent-color);color:white;}
+.theme-btn svg{width:16px;height:16px;}
+
+/* Content */
+.content{max-width:800px;margin:0 auto;padding:100px 24px 60px;}
+.content h1{font-family:'Inter',sans-serif;font-size:2rem;font-weight:800;margin-bottom:8px;}
+.content h1 span{background:var(--gradient-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.content .lead{color:var(--text-secondary);font-size:1.05rem;margin-bottom:36px;}
+.content h2{font-family:'Inter',sans-serif;font-size:1.3rem;font-weight:700;margin:40px 0 12px;padding-top:20px;border-top:1px solid var(--border-color);}
+.content h2:first-of-type{border-top:none;padding-top:0;}
+.content p{color:var(--text-secondary);margin-bottom:16px;}
+.content ul,.content ol{color:var(--text-secondary);margin:0 0 16px 24px;}
+.content li{margin-bottom:8px;}
+.content strong{color:var(--text-primary);}
+.content code{font-family:'JetBrains Mono',monospace;background:var(--secondary-bg);padding:2px 6px;border-radius:4px;font-size:0.85em;}
+
+/* Data sources table */
+.source-table{width:100%;border-collapse:collapse;margin:16px 0 24px;font-size:0.9rem;}
+.source-table th,.source-table td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--border-color);}
+.source-table th{font-family:'Inter',sans-serif;font-weight:600;font-size:0.8rem;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-muted);background:var(--secondary-bg);}
+.source-table td{color:var(--text-secondary);}
+
+/* Quality badges */
+.badge{display:inline-block;font-family:'Inter',sans-serif;font-size:0.75rem;font-weight:600;padding:3px 10px;border-radius:6px;margin-right:4px;}
+.badge-built{background:rgba(14,165,233,0.1);color:#0284C7;}
+.badge-new{background:rgba(245,158,11,0.1);color:#D97706;}
+.badge-uncertain{background:rgba(239,68,68,0.1);color:#DC2626;}
+
+/* Limitation cards */
+.limitation{background:var(--secondary-bg);border:1px solid var(--border-color);border-radius:12px;padding:16px 20px;margin-bottom:12px;}
+.limitation h3{font-family:'Inter',sans-serif;font-size:0.95rem;font-weight:600;margin-bottom:4px;}
+.limitation p{margin-bottom:0;font-size:0.9rem;}
+
+/* Footer */
+.site-footer{text-align:center;padding:40px 24px;border-top:1px solid var(--border-color);}
+.site-footer p{color:var(--text-muted);font-size:0.82rem;margin-bottom:6px;}
+.site-footer a{color:var(--accent-color);text-decoration:none;}
+
+@media(max-width:768px){
+    .content{padding:80px 16px 40px;}
+    .content h1{font-size:1.5rem;}
+    .source-table{font-size:0.78rem;}
+    .source-table th,.source-table td{padding:8px 10px;}
+}
+</style>
+</head>
+<body>
+
+<a href="#main" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;" tabindex="0">Skip to content</a>
+
+<header class="header">
+    <nav class="nav-container">
+        <a href="index.html" class="logo-container">
+            <img src="https://www.impactmojo.in/assets/images/ImpactMojo%20Logo.png" alt="ImpactMojo" width="36" height="36">
+            <div class="logo-text">
+                <span class="logo-main">How India Lives</span>
+                <span class="logo-tagline">An ImpactMojo Project</span>
+            </div>
+        </a>
+        <div class="nav-right">
+            <a href="index.html">Maps</a>
+            <div class="theme-selector">
+                <button class="theme-btn" data-theme="system" title="System theme" aria-label="System theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/></svg></button>
+                <button class="theme-btn" data-theme="light" title="Light theme" aria-label="Light theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></button>
+                <button class="theme-btn" data-theme="dark" title="Dark theme" aria-label="Dark theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"/></svg></button>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<main class="content" id="main">
+
+<h1>Map <span>Methodology</span> Note</h1>
+<p class="lead">How the 205 state-level choropleth maps were built, what data they use, and what they can and cannot tell you.</p>
+
+<h2>What These Maps Are</h2>
+<p>205 state-level choropleth maps of India covering demography, food and culture, economy, health, gender, caste, religion, education, environment, democracy, social protection, and reproductive choices. Each map shows a single indicator across India's <strong>28 states and 8 union territories</strong> (36 units).</p>
+
+<h2>Data Sources</h2>
+<p>The maps draw primarily on seven source families:</p>
+
+<table class="source-table">
+    <thead>
+        <tr><th>Source</th><th>Data Year</th><th>Coverage</th><th>~Maps</th></tr>
+    </thead>
+    <tbody>
+        <tr><td><strong>NFHS-5</strong></td><td>2019-21</td><td>Health, nutrition, family planning, domestic violence, women's empowerment, dietary patterns</td><td>~80</td></tr>
+        <tr><td><strong>Census of India</strong></td><td>2011</td><td>Demographics, language, religion, education, housing, disability, migration, household assets</td><td>~45</td></tr>
+        <tr><td><strong>PLFS</strong></td><td>2022-23</td><td>Employment, labour force participation, workforce informality</td><td>~10</td></tr>
+        <tr><td><strong>NCRB Crime in India</strong></td><td>2022</td><td>Crimes against women, crimes against SCs, dowry deaths, trafficking, acid attacks</td><td>~12</td></tr>
+        <tr><td><strong>NHA / HCES / SRS</strong></td><td>2018-23</td><td>Health expenditure, consumption, mortality</td><td>~15</td></tr>
+        <tr><td><strong>Government Dashboards</strong></td><td>2022-24</td><td>MGNREGA, JJM, NSAP, Udyam, PMFBY, UDISE+, DPIIT Startup India</td><td>~20</td></tr>
+        <tr><td><strong>Other</strong></td><td>Various</td><td>IMD, CGWB, CPCB, FSI, ECI, ADR, TRAI, RBI, NASA VIIRS, NACO, Pew, CSDS, SFLC.in, IHDS-II, NABARD, Dharmaviki/IIT-B</td><td>~23</td></tr>
+    </tbody>
+</table>
+
+<p><strong>Note on NCRB data:</strong> NCRB data reflects <em>registered cases</em>, not incidence. States with high crime registration rates may have better police responsiveness rather than worse safety. States with low rates may suppress reporting. This caveat is flagged on every NCRB-sourced map.</p>
+
+<h2>Data Quality Flags</h2>
+<p>Each map carries one of three flags:</p>
+<p>
+    <span class="badge badge-built">BUILT</span> Values taken directly from published official tables. No interpolation.
+</p>
+<p>
+    <span class="badge badge-new">NEW</span> Values compiled from published official sources during map preparation. Cross-checked against source publications.
+</p>
+<p>
+    <span class="badge badge-uncertain">UNCERTAIN</span> Values derived from proxy indicators, crowdsourced databases, or methodologically contested sources. <strong>18 maps</strong> carry this flag, including temple density, inter-caste marriage, child labour (post-2011), honour killings, witch-hunting deaths, manual scavenging, and gig workers. Each carries a specific caveat in its source line.
+</p>
+
+<h2>How the Maps Were Rendered</h2>
+<p>Maps are rendered programmatically using <strong>Python 3</strong> with <strong>GeoPandas</strong> and <strong>Matplotlib</strong>. The base shapefile is Natural Earth 10m Admin-1 (<code>ne_10m_admin_1_states_provinces.shp</code>), filtered to India.</p>
+<p>The rendering script (<code>maps_v2.py</code>) takes a standardised data dictionary for each map containing the title, unit, source, year, takeaway sentence, shock statistic, highest and lowest state callouts, national average, and a complete state-to-value data dictionary. Given the same input, it produces the same output.</p>
+<p><strong>Northeast India's</strong> eight states plus Sikkim are rendered in a dedicated inset panel overlaying the main map's NE region, since their polygons are too small for readable labels at national scale. Every state receives a two-letter abbreviation and its data value.</p>
+
+<h2>Design Conventions</h2>
+<ul>
+    <li>Warm off-white background (<code>#F8F6F1</code>), 16:9 aspect ratio, 200 DPI PNG output</li>
+    <li><strong>Amaranth Bold ALL CAPS</strong> for titles; <strong>Inter</strong> (variable weight) for all other text</li>
+    <li>Each of the 12 thematic sections has a dedicated three-stop colour gradient (light to dark)</li>
+    <li>A <strong>red shock-stat box</strong> (top right) highlights the single most audience-confronting number</li>
+    <li>The colourbar (bottom centre) carries an <strong>amber marker</strong> at the national average value</li>
+    <li>Source and data year appear bottom left; copyright line bottom right</li>
+</ul>
+
+<h2>Key Limitations</h2>
+
+<div class="limitation">
+    <h3>Temporal mismatch</h3>
+    <p>Maps span data from 2011 to 2024. No attempt is made to harmonise time periods. Each map's source line states its data year.</p>
+</div>
+<div class="limitation">
+    <h3>State-level aggregation</h3>
+    <p>State averages conceal large within-state variation. A state average for Bihar conceals Patna (near-national-average performance) and Seemanchal (far below).</p>
+</div>
+<div class="limitation">
+    <h3>NCRB reporting bias</h3>
+    <p>States with high crime registration rates may have better police responsiveness rather than worse safety. States with low rates may suppress reporting.</p>
+</div>
+<div class="limitation">
+    <h3>Census 2011 age</h3>
+    <p>For rapidly changing indicators (urbanisation, digital access, employment), Census 2011 is directionally valid but quantitatively outdated. Where newer survey data exists, it is preferred.</p>
+</div>
+<div class="limitation">
+    <h3>Estimates are not fabrications</h3>
+    <p>The 18 UNCERTAIN maps use the best available published data. They carry wider confidence intervals and should be presented with their caveats stated.</p>
+</div>
+
+<p style="margin-top:32px;padding:20px;background:var(--secondary-bg);border-radius:12px;border:1px solid var(--border-color);">
+    <strong>These maps are pedagogical tools</strong> designed for facilitated discussion. They are not intended as standalone data references. For policy or academic citation, consult the underlying source publications directly.
+</p>
+
+<p style="margin-top:24px;color:var(--text-muted);font-size:0.85rem;font-style:italic;">
+    Version 2. March 2026. Rendered with maps_v2.py using GeoPandas + Matplotlib.<br>
+    Data work courtesy Varna (MMSF Cohort 1) &middot; Sangam Nirmaan Parichay.
+</p>
+
+</main>
+
+<footer class="site-footer">
+    <p>Part of <a href="https://www.impactmojo.in">ImpactMojo</a> — Free development education for South Asia</p>
+    <p><a href="index.html">&larr; Back to Maps</a></p>
+</footer>
+
+<script>
+(function(){
+    const saved = localStorage.getItem('im-theme');
+    if (saved === 'dark') document.documentElement.setAttribute('data-theme','dark');
+    else if (saved === 'light') document.documentElement.removeAttribute('data-theme');
+    else if (window.matchMedia('(prefers-color-scheme:dark)').matches) document.documentElement.setAttribute('data-theme','dark');
+})();
+document.querySelectorAll('.theme-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const t = btn.dataset.theme;
+        document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        if (t==='dark'){document.documentElement.setAttribute('data-theme','dark');localStorage.setItem('im-theme','dark');}
+        else if(t==='light'){document.documentElement.removeAttribute('data-theme');localStorage.setItem('im-theme','light');}
+        else{localStorage.removeItem('im-theme');if(window.matchMedia('(prefers-color-scheme:dark)').matches)document.documentElement.setAttribute('data-theme','dark');else document.documentElement.removeAttribute('data-theme');}
+    });
+});
+(function(){const s=localStorage.getItem('im-theme')||'system';const btn=document.querySelector(`.theme-btn[data-theme="${s}"]`);if(btn)btn.classList.add('active');else document.querySelector('.theme-btn[data-theme="system"]').classList.add('active');})();
+</script>
+</body>
+</html>

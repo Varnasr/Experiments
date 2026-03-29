@@ -16,14 +16,10 @@
             display: flex;
             flex-direction: column;
         }
-        main {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 3rem 1.5rem 2rem;
-        }
-        .container { max-width: 580px; width: 100%; }
+
+        /* Layout */
+        main { flex: 1; padding: 3rem 1.5rem 2rem; }
+        .container { max-width: 720px; margin: 0 auto; }
 
         /* Header / intro */
         .intro { margin-bottom: 2.5rem; }
@@ -39,7 +35,7 @@
         }
         .intro p:last-child { margin-bottom: 0; }
 
-        /* Section label */
+        /* Section labels */
         .section-label {
             font-size: 0.6875rem;
             font-weight: 700;
@@ -47,7 +43,9 @@
             letter-spacing: 0.08em;
             color: #9ca3af;
             margin-bottom: 0.75rem;
+            margin-top: 2rem;
         }
+        .section-label:first-of-type { margin-top: 0; }
 
         /* Cards */
         .card {
@@ -79,6 +77,8 @@
             font-size: 0.75rem;
             color: #9ca3af;
         }
+
+        /* Badges */
         .badge {
             display: inline-block;
             font-size: 0.6875rem;
@@ -89,7 +89,10 @@
             margin-left: 0.4rem;
         }
         .badge-ai { background: #f3eeff; color: #7C3AED; }
-        .badge-proto { background: #fef3c7; color: #b45309; }
+        .badge-data { background: #e0f2fe; color: #0369a1; }
+        .badge-research { background: #fce7f3; color: #be185d; }
+        .badge-creative { background: #fef3c7; color: #b45309; }
+        .badge-tool { background: #d1fae5; color: #065f46; }
 
         /* Footer */
         footer {
@@ -104,9 +107,7 @@
             text-decoration: none;
         }
         footer a:hover { text-decoration: underline; }
-        .footer-links {
-            margin-bottom: 0.35rem;
-        }
+        .footer-links { margin-bottom: 0.35rem; }
         .footer-links a + a::before {
             content: "\00b7";
             margin: 0 0.5rem;
@@ -123,12 +124,96 @@
                 <p>Not everything here is polished. That's the point.</p>
             </div>
 
-            <p class="section-label">Projects</p>
+            <p class="section-label">Data &amp; Visualisation</p>
+
+            <a class="card" href="how-india-lives/">
+                <h2>How India Lives <span class="badge badge-data">Data</span></h2>
+                <p>205 state-level choropleth maps showcasing India's diversity across demography, health, gender, economy, education, and environment. A pedagogical tool for understanding why India's states are so different — and why it matters for policy.</p>
+                <p class="tech">HTML &middot; CSS &middot; JavaScript</p>
+            </a>
+
+            <a class="card" href="someperspective/">
+                <h2>Some Perspective <span class="badge badge-data">Data</span></h2>
+                <p>Data-driven analysis of India's political economy (2014–2025) — policy impact, fiscal trends, and governance indicators with interactive visualisations.</p>
+                <p class="tech">HTML &middot; JavaScript &middot; Charts</p>
+            </a>
+
+            <a class="card" href="india-dev-indicators/">
+                <h2>India Development Indicators <span class="badge badge-data">Data</span></h2>
+                <p>Interactive dashboard tracking GDP, HDI, literacy, and infrastructure spending with Chart.js visualisations. Part of the ImpactMojo ecosystem.</p>
+                <p class="tech">HTML &middot; Chart.js</p>
+            </a>
+
+            <a class="card" href="sdg-progress-tracker/">
+                <h2>SDG Progress Tracker <span class="badge badge-data">Data</span></h2>
+                <p>India's progress on all 17 UN Sustainable Development Goals — scores, trends, radar charts, and category breakdowns. Part of the ImpactMojo ecosystem.</p>
+                <p class="tech">JavaScript &middot; Charts</p>
+            </a>
+
+            <a class="card" href="adani-infra-db/">
+                <h2>Adani Infrastructure Database <span class="badge badge-data">Data</span></h2>
+                <p>Open-source geographic database of 325 major infrastructure projects (2001–2025) — searchable, filterable, with government support classification.</p>
+                <p class="tech">HTML &middot; JavaScript</p>
+            </a>
+
+            <p class="section-label">Research &amp; Analysis</p>
+
+            <a class="card" href="H-VSAINC/">
+                <h2>Hyderabad Voting Patterns <span class="badge badge-research">Research</span></h2>
+                <p>Analysis of Hyderabad voting patterns and public infrastructure (1999–2023) — comparing AIMIM constituencies vs others across 5 assembly seats, with party-wise vote share trends.</p>
+                <p class="tech">HTML &middot; Data Visualisation</p>
+            </a>
+
+            <a class="card" href="BiharParichay-Project/">
+                <h2>Bihar Parichay <span class="badge badge-research">Research</span></h2>
+                <p>Cost-optimised demographic classification system for Bihar — development economics research achieving 99% cost reduction through local mapping instead of API calls.</p>
+                <p class="tech">HTML &middot; JavaScript</p>
+            </a>
+
+            <a class="card" href="dev-case-studies/">
+                <h2>Development Case Studies <span class="badge badge-research">Research</span></h2>
+                <p>200 real development case studies from 117 countries — searchable, filterable, and fully cited. A reference library for practitioners and students.</p>
+                <p class="tech">JavaScript</p>
+            </a>
+
+            <a class="card" href="development-discourses/">
+                <h2>Development Discourses <span class="badge badge-research">Research</span></h2>
+                <p>A curated open-access library of 500+ research papers, books, and grey literature for development practitioners in South Asia.</p>
+                <p class="tech">JavaScript</p>
+            </a>
+
+            <p class="section-label">Tools</p>
 
             <a class="card" href="court-translator/">
-                <h2>Court Petition Translator <span class="badge badge-ai">AI</span> <span class="badge badge-proto">Prototype</span></h2>
-                <p>Translates Hindi Supreme Court and High Court petitions into formal legal English. Handles the legalese — terms like <em>yaachikaakartha</em> become "Petitioner" and <em>anuchhed</em> becomes "Article" — so the output reads like it was drafted in English.</p>
+                <h2>Court Petition Translator <span class="badge badge-ai">AI</span> <span class="badge badge-tool">Tool</span></h2>
+                <p>Translates Hindi Supreme Court and High Court petitions into formal legal English. Handles the legalese — <em>yaachikaakartha</em> becomes "Petitioner", <em>anuchhed</em> becomes "Article" — so the output reads like it was drafted in English.</p>
                 <p class="tech">Sarvam AI &middot; Llama 3.3 70B via Groq &middot; Netlify Functions</p>
+            </a>
+
+            <a class="card" href="CandidateDossier/">
+                <h2>Candidate Dossier Generator <span class="badge badge-tool">Tool</span></h2>
+                <p>CSV &rarr; LaTeX &rarr; PDF dossier generator. A privacy-first tool for creating uniform, masked candidate dossiers — useful for blind recruitment and evaluation panels.</p>
+                <p class="tech">LaTeX &middot; Netlify Functions</p>
+            </a>
+
+            <a class="card" href="The-Real-Middle/">
+                <h2>The Real Middle <span class="badge badge-data">Data</span> <span class="badge badge-tool">Tool</span></h2>
+                <p>Interactive game revealing where you really stand in India's income distribution. Think you're middle class? Most Indians overestimate their position — find out if you do too.</p>
+                <p class="tech">React &middot; JavaScript</p>
+            </a>
+
+            <a class="card" href="deveconomics-toolkit/">
+                <h2>Dev Economics Toolkit <span class="badge badge-tool">Tool</span></h2>
+                <p>11 interactive apps for development economics — impact evaluation, poverty analysis, programme design, and data exploration. Built for ImpactMojo.</p>
+                <p class="tech">R Shiny &middot; Python Shiny</p>
+            </a>
+
+            <p class="section-label">Creative</p>
+
+            <a class="card" href="theverylastsuperhero/">
+                <h2>The Very Last Superhero <span class="badge badge-creative">Creative</span></h2>
+                <p>A fully illustrated speculative fiction novel set in a climate-collapsed India, blending AI, memory, and resistance through the journey of a 14-year-old girl.</p>
+                <p class="tech">HTML &middot; Illustrated Web Novel</p>
             </a>
         </div>
     </main>

@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>India Development Indicators — An ImpactMojo Project</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Amaranth:wght@400;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://code.iconify.design/iconify-icon/2.3.0/iconify-icon.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0c0c0f;--surface:#141418;--surface2:#1c1c22;--surface3:#26262e;
+  --text:#e4e4ec;--text-dim:#9898a8;--text-muted:#5c5c6e;
+  --accent:#0EA5E9;--accent2:#6366F1;--accent-green:#10B981;
+  --accent-red:#EF4444;--accent-amber:#F59E0B;
+  --border:rgba(255,255,255,.08);--radius:12px;--radius-sm:8px;
+  --font-heading:'Inter',system-ui,sans-serif;
+  --font-body:'Amaranth','Inter',system-ui,sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+  --paper-plane-bg:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='0.3' stroke-linecap='round' stroke-linejoin='round' opacity='0.03'%3E%3Cpath d='M22 2L11 13'/%3E%3Cpath d='M22 2L15 22L11 13L2 9L22 2Z'/%3E%3C/svg%3E");
+}
+html{scroll-behavior:smooth}
+body{
+  min-height:100vh;font-family:var(--font-body);background:var(--bg);color:var(--text);
+  background-image:var(--paper-plane-bg);background-size:80px 80px;
+  overflow-x:hidden;
+}
+
+/* Banner */
+.im-banner{
+  position:fixed;top:0;left:0;right:0;z-index:1100;
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent2) 100%);
+  padding:6px 20px;display:flex;align-items:center;justify-content:center;gap:8px;
+  font-family:var(--font-heading);font-size:11px;font-weight:600;
+  color:#fff;letter-spacing:.5px;text-transform:uppercase;
+}
+.im-banner iconify-icon{font-size:14px}
+.im-banner a{color:#fff;text-decoration:none;opacity:.85}
+.im-banner a:hover{opacity:1}
+
+/* Footer */
+.im-footer{
+  background:var(--bg);background-image:var(--paper-plane-bg);background-size:80px 80px;
+  border-top:1px solid var(--border);
+  padding:14px 20px;display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;
+  font-family:var(--font-heading);font-size:10px;color:var(--text-muted);
+}
+.im-footer a{color:var(--accent);text-decoration:none}
+.im-footer a:hover{text-decoration:underline}
+.im-footer .sep{opacity:.3}
+.im-footer iconify-icon{font-size:12px;vertical-align:middle}
+
+/* Main Content */
+.main{max-width:1200px;margin:0 auto;padding:52px 24px 24px}
+
+/* Page Header */
+.page-header{text-align:center;padding:48px 0 32px}
+.page-header h1{
+  font-family:var(--font-heading);font-size:clamp(28px,5vw,42px);font-weight:800;
+  letter-spacing:-1px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.page-header .subtitle{
+  font-family:var(--font-body);font-size:clamp(14px,2.5vw,18px);color:var(--text-dim);margin-top:8px;
+}
+.page-header .updated{
+  font-family:var(--font-mono);font-size:11px;color:var(--text-muted);margin-top:12px;
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--surface);padding:4px 12px;border-radius:20px;border:1px solid var(--border);
+}
+
+/* Section Titles */
+.section-title{
+  font-family:var(--font-heading);font-size:20px;font-weight:700;margin:40px 0 20px;
+  display:flex;align-items:center;gap:10px;
+}
+.section-title iconify-icon{color:var(--accent);font-size:22px}
+
+/* KPI Cards */
+.kpi-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
+}
+.kpi-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:20px;position:relative;overflow:hidden;
+  transition:transform .2s ease,border-color .2s ease;
+}
+.kpi-card:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.15)}
+.kpi-card .kpi-icon{
+  width:40px;height:40px;border-radius:var(--radius-sm);
+  display:flex;align-items:center;justify-content:center;margin-bottom:12px;
+  font-size:20px;
+}
+.kpi-card .kpi-value{
+  font-family:var(--font-heading);font-size:28px;font-weight:800;letter-spacing:-0.5px;
+}
+.kpi-card .kpi-label{
+  font-family:var(--font-body);font-size:13px;color:var(--text-dim);margin-top:2px;
+}
+.kpi-card .kpi-trend{
+  display:inline-flex;align-items:center;gap:4px;
+  font-family:var(--font-mono);font-size:11px;margin-top:8px;
+  padding:2px 8px;border-radius:12px;
+}
+.kpi-trend.up{background:rgba(16,185,129,.12);color:var(--accent-green)}
+.kpi-trend.down{background:rgba(239,68,68,.12);color:var(--accent-red)}
+.kpi-trend.neutral{background:rgba(245,158,11,.12);color:var(--accent-amber)}
+
+/* Chart Grid */
+.chart-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:20px;
+}
+.chart-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:20px;
+}
+.chart-card h3{
+  font-family:var(--font-heading);font-size:14px;font-weight:600;margin-bottom:16px;
+  display:flex;align-items:center;gap:8px;color:var(--text-dim);
+}
+.chart-card h3 iconify-icon{color:var(--accent);font-size:16px}
+.chart-wrap{position:relative;width:100%;aspect-ratio:4/3}
+.chart-wrap canvas{width:100%!important;height:100%!important}
+
+/* Timeline */
+.timeline{position:relative;padding-left:32px;margin-top:8px}
+.timeline::before{
+  content:'';position:absolute;left:11px;top:0;bottom:0;width:2px;
+  background:linear-gradient(180deg,var(--accent),var(--accent2));border-radius:2px;
+}
+.tl-item{
+  position:relative;padding:0 0 28px 0;
+  opacity:0;transform:translateY(16px);
+  transition:opacity .5s ease,transform .5s ease;
+}
+.tl-item.visible{opacity:1;transform:translateY(0)}
+.tl-dot{
+  position:absolute;left:-27px;top:4px;width:14px;height:14px;border-radius:50%;
+  background:var(--accent);border:3px solid var(--bg);
+}
+.tl-item:nth-child(even) .tl-dot{background:var(--accent2)}
+.tl-year{
+  font-family:var(--font-mono);font-size:12px;font-weight:600;color:var(--accent);margin-bottom:4px;
+}
+.tl-title{font-family:var(--font-heading);font-size:15px;font-weight:600}
+.tl-desc{font-family:var(--font-body);font-size:13px;color:var(--text-dim);margin-top:4px;line-height:1.5}
+
+/* Animations */
+.fade-in{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+
+/* Responsive */
+@media(max-width:900px){
+  .kpi-grid{grid-template-columns:repeat(2,1fr)}
+  .chart-grid{grid-template-columns:1fr}
+}
+@media(max-width:540px){
+  .kpi-grid{grid-template-columns:1fr}
+  .main{padding:52px 14px 14px}
+  .im-banner{font-size:10px;padding:5px 12px}
+}
+</style>
+</head>
+<body>
+
+<!-- ImpactMojo Banner -->
+<div class="im-banner">
+  <iconify-icon icon="si:airplane-line"></iconify-icon>
+  An ImpactMojo Project
+  <span style="opacity:.5">|</span>
+  <a href="crony_tracker.html">Crony Capitalism Tracker</a>
+</div>
+
+<div class="main">
+
+  <!-- Page Header -->
+  <div class="page-header fade-in">
+    <h1>India Development Indicators</h1>
+    <div class="subtitle">Tracking Progress Across Key Metrics</div>
+    <div class="updated">
+      <iconify-icon icon="si:clock-line"></iconify-icon>
+      Data as of 2024
+    </div>
+  </div>
+
+  <!-- KPI Cards -->
+  <div class="section-title fade-in">
+    <iconify-icon icon="si:dashboard-line"></iconify-icon>
+    Key Performance Indicators
+  </div>
+  <div class="kpi-grid" id="kpiGrid"></div>
+
+  <!-- Charts -->
+  <div class="section-title fade-in">
+    <iconify-icon icon="si:chart-line"></iconify-icon>
+    Data Visualizations
+  </div>
+  <div class="chart-grid">
+    <div class="chart-card fade-in">
+      <h3><iconify-icon icon="si:trending-up-line"></iconify-icon> GDP Growth Over Time (%)</h3>
+      <div class="chart-wrap"><canvas id="gdpGrowthChart"></canvas></div>
+    </div>
+    <div class="chart-card fade-in">
+      <h3><iconify-icon icon="si:pie-chart-line"></iconify-icon> Sector Contribution to GDP</h3>
+      <div class="chart-wrap"><canvas id="sectorChart"></canvas></div>
+    </div>
+    <div class="chart-card fade-in">
+      <h3><iconify-icon icon="si:bar-chart-line"></iconify-icon> Infrastructure Spending ($ Billion)</h3>
+      <div class="chart-wrap"><canvas id="infraChart"></canvas></div>
+    </div>
+    <div class="chart-card fade-in">
+      <h3><iconify-icon icon="si:users-line"></iconify-icon> State-wise HDI (Top 10)</h3>
+      <div class="chart-wrap"><canvas id="hdiChart"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Development Timeline -->
+  <div class="section-title fade-in">
+    <iconify-icon icon="si:calendar-line"></iconify-icon>
+    Development Timeline
+  </div>
+  <div class="timeline" id="timeline"></div>
+
+</div>
+
+<!-- Footer -->
+<div class="im-footer">
+  <iconify-icon icon="si:airplane-line"></iconify-icon>
+  <span>An ImpactMojo Project</span>
+  <span class="sep">|</span>
+  <a href="crony_tracker.html">Crony Capitalism Tracker</a>
+  <span class="sep">|</span>
+  <span>Built with open data</span>
+  <span class="sep">|</span>
+  <span>Sources: World Bank, UNDP, MoSPI, RBI</span>
+</div>
+
+<script>
+// ─── Data ────────────────────────────────────────────────────────────────────
+
+const kpis = [
+  { icon:'si:dollar-line', label:'GDP (Current)', value:'$3.7T', trend:'+8.2%', dir:'up', bg:'rgba(14,165,233,.12)', color:'#0EA5E9' },
+  { icon:'si:trending-up-line', label:'GDP Growth Rate', value:'6.5%', trend:'+0.3pp', dir:'up', bg:'rgba(16,185,129,.12)', color:'#10B981' },
+  { icon:'si:users-line', label:'Population', value:'1.44B', trend:'+0.8%', dir:'up', bg:'rgba(99,102,241,.12)', color:'#6366F1' },
+  { icon:'si:heart-line', label:'HDI Score', value:'0.644', trend:'+0.012', dir:'up', bg:'rgba(245,158,11,.12)', color:'#F59E0B' },
+  { icon:'si:book-line', label:'Literacy Rate', value:'77.7%', trend:'+3.1%', dir:'up', bg:'rgba(236,72,153,.12)', color:'#EC4899' },
+  { icon:'si:clock-line', label:'Life Expectancy', value:'70.8 yr', trend:'+1.2yr', dir:'up', bg:'rgba(34,211,238,.12)', color:'#22D3EE' },
+];
+
+const gdpGrowthData = {
+  labels:['2014','2015','2016','2017','2018','2019','2020','2021','2022','2023','2024'],
+  values:[7.4,8.0,8.3,6.8,6.5,3.9,-5.8,9.7,7.2,7.8,6.5]
+};
+
+const sectorData = {
+  labels:['Agriculture','Industry','Services'],
+  values:[17,26,57],
+  colors:['#10B981','#F59E0B','#0EA5E9']
+};
+
+const infraData = {
+  labels:['Roads','Railways','Ports','Airports','Power'],
+  values:[28,19,6,4.5,22]
+};
+
+const hdiData = {
+  states:['Kerala','Goa','Delhi','Himachal Pradesh','Chandigarh','Punjab','Sikkim','Tamil Nadu','Maharashtra','Uttarakhand'],
+  values:[0.782,0.761,0.746,0.725,0.720,0.714,0.710,0.708,0.696,0.684]
+};
+
+const timelineData = [
+  { year:'2014', title:'Make in India', desc:'Major initiative to transform India into a global manufacturing hub, attracting FDI across 25 sectors.' },
+  { year:'2015', title:'Digital India Launch', desc:'Flagship programme to transform India into a digitally empowered society and knowledge economy.' },
+  { year:'2015', title:'Smart Cities Mission', desc:'Urban renewal and retrofitting programme for 100 cities with a focus on core infrastructure.' },
+  { year:'2016', title:'Demonetization', desc:'Withdrawal of Rs 500 and Rs 1000 notes — aimed at curbing black money and pushing digital payments.' },
+  { year:'2017', title:'GST Rollout', desc:'Goods and Services Tax unified India\'s fragmented tax regime into a single national market.' },
+  { year:'2019', title:'Jal Jeevan Mission', desc:'Programme to provide safe and adequate drinking water to all rural households by 2024.' },
+  { year:'2020', title:'National Education Policy', desc:'NEP 2020 — comprehensive overhaul of the education system, the first in 34 years.' },
+  { year:'2020', title:'Aatmanirbhar Bharat', desc:'Self-reliant India package worth Rs 20 lakh crore announced during the COVID-19 pandemic.' },
+  { year:'2022', title:'5G Rollout Begins', desc:'India launched 5G services, targeting nationwide coverage with one of the fastest rollouts globally.' },
+  { year:'2023', title:'Chandrayaan-3 Success', desc:'India became the first country to land near the lunar south pole, boosting its space programme.' },
+  { year:'2023', title:'UPI Crosses 10B Txns/Month', desc:'Unified Payments Interface cemented India\'s position as the world leader in real-time digital payments.' },
+  { year:'2024', title:'Semiconductor Fab Push', desc:'Major investments in domestic chip fabrication with approvals for multiple semiconductor plants.' },
+];
+
+// ─── Render KPI Cards ────────────────────────────────────────────────────────
+
+const kpiGrid = document.getElementById('kpiGrid');
+kpis.forEach((k, i) => {
+  const card = document.createElement('div');
+  card.className = 'kpi-card fade-in';
+  card.style.transitionDelay = (i * 80) + 'ms';
+  card.innerHTML = `
+    <div class="kpi-icon" style="background:${k.bg};color:${k.color}">
+      <iconify-icon icon="${k.icon}"></iconify-icon>
+    </div>
+    <div class="kpi-value">${k.value}</div>
+    <div class="kpi-label">${k.label}</div>
+    <div class="kpi-trend ${k.dir}">
+      <iconify-icon icon="${k.dir === 'up' ? 'si:arrow-up-line' : 'si:arrow-down-line'}"></iconify-icon>
+      ${k.trend}
+    </div>`;
+  kpiGrid.appendChild(card);
+});
+
+// ─── Render Timeline ─────────────────────────────────────────────────────────
+
+const timeline = document.getElementById('timeline');
+timelineData.forEach(t => {
+  const item = document.createElement('div');
+  item.className = 'tl-item';
+  item.innerHTML = `
+    <div class="tl-dot"></div>
+    <div class="tl-year">${t.year}</div>
+    <div class="tl-title">${t.title}</div>
+    <div class="tl-desc">${t.desc}</div>`;
+  timeline.appendChild(item);
+});
+
+// ─── Scroll Animations ──────────────────────────────────────────────────────
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); }});
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.fade-in, .tl-item').forEach(el => observer.observe(el));
+
+// ─── Charts ──────────────────────────────────────────────────────────────────
+
+const chartDefaults = {
+  color: '#9898a8',
+  borderColor: 'rgba(255,255,255,0.08)',
+};
+Chart.defaults.color = chartDefaults.color;
+Chart.defaults.borderColor = chartDefaults.borderColor;
+Chart.defaults.font.family = "'Inter', 'Amaranth', system-ui, sans-serif";
+
+// GDP Growth Line Chart
+new Chart(document.getElementById('gdpGrowthChart'), {
+  type: 'line',
+  data: {
+    labels: gdpGrowthData.labels,
+    datasets: [{
+      label: 'GDP Growth %',
+      data: gdpGrowthData.values,
+      borderColor: '#0EA5E9',
+      backgroundColor: 'rgba(14,165,233,0.1)',
+      fill: true,
+      tension: 0.35,
+      pointRadius: 4,
+      pointHoverRadius: 7,
+      pointBackgroundColor: '#0EA5E9',
+      pointBorderColor: '#0c0c0f',
+      pointBorderWidth: 2,
+      borderWidth: 2.5,
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: '#1c1c22',
+        borderColor: 'rgba(255,255,255,0.1)',
+        borderWidth: 1,
+        titleFont: { weight: '600' },
+        callbacks: {
+          label: ctx => ctx.parsed.y + '%'
+        }
+      }
+    },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { size: 11 } } },
+      y: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { font: { size: 11 }, callback: v => v + '%' } }
+    }
+  }
+});
+
+// Sector Doughnut Chart
+new Chart(document.getElementById('sectorChart'), {
+  type: 'doughnut',
+  data: {
+    labels: sectorData.labels,
+    datasets: [{
+      data: sectorData.values,
+      backgroundColor: sectorData.colors,
+      borderColor: '#141418',
+      borderWidth: 3,
+      hoverBorderColor: '#1c1c22',
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    cutout: '55%',
+    plugins: {
+      legend: {
+        position: 'bottom',
+        labels: { padding: 16, usePointStyle: true, pointStyleWidth: 10, font: { size: 12 } }
+      },
+      tooltip: {
+        backgroundColor: '#1c1c22',
+        borderColor: 'rgba(255,255,255,0.1)',
+        borderWidth: 1,
+        callbacks: { label: ctx => ' ' + ctx.label + ': ' + ctx.parsed + '%' }
+      }
+    }
+  }
+});
+
+// Infrastructure Spending Bar Chart
+new Chart(document.getElementById('infraChart'), {
+  type: 'bar',
+  data: {
+    labels: infraData.labels,
+    datasets: [{
+      label: 'Spending ($B)',
+      data: infraData.values,
+      backgroundColor: ['#0EA5E9','#6366F1','#10B981','#F59E0B','#EC4899'],
+      borderRadius: 6,
+      borderSkipped: false,
+      barPercentage: 0.6,
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: '#1c1c22',
+        borderColor: 'rgba(255,255,255,0.1)',
+        borderWidth: 1,
+        callbacks: { label: ctx => '$' + ctx.parsed.y + 'B' }
+      }
+    },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { size: 11 } } },
+      y: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { font: { size: 11 }, callback: v => '$' + v + 'B' } }
+    }
+  }
+});
+
+// State-wise HDI Horizontal Bar Chart
+new Chart(document.getElementById('hdiChart'), {
+  type: 'bar',
+  data: {
+    labels: hdiData.states,
+    datasets: [{
+      label: 'HDI',
+      data: hdiData.values,
+      backgroundColor: hdiData.values.map((v, i) => {
+        const colors = ['#0EA5E9','#22D3EE','#6366F1','#818CF8','#10B981','#34D399','#F59E0B','#FBBF24','#EC4899','#F472B6'];
+        return colors[i];
+      }),
+      borderRadius: 4,
+      borderSkipped: false,
+      barPercentage: 0.65,
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    indexAxis: 'y',
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: '#1c1c22',
+        borderColor: 'rgba(255,255,255,0.1)',
+        borderWidth: 1,
+        callbacks: { label: ctx => 'HDI: ' + ctx.parsed.x.toFixed(3) }
+      }
+    },
+    scales: {
+      x: {
+        min: 0.6, max: 0.8,
+        grid: { color: 'rgba(255,255,255,0.04)' },
+        ticks: { font: { size: 11 }, callback: v => v.toFixed(2) }
+      },
+      y: {
+        grid: { display: false },
+        ticks: { font: { size: 11 }, mirror: false }
+      }
+    }
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use this project in your research, please cite it as below."
+type: software
+title: "Infrastructure Database: Geographic Database of Major Indian Infrastructure Projects"
+authors:
+  - family-names: Raman
+    given-names: Varna Sri
+url: "https://github.com/Varnasr/adani-infra-db"
+repository-code: "https://github.com/Varnasr/adani-infra-db"
+license: MIT
+keywords:
+  - infrastructure
+  - india
+  - geographic-database
+  - open-data
+  - public-interest
+
+date-released: "2025-01-01"

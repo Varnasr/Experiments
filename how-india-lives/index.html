@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JRCMEB9TBW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-JRCMEB9TBW');
+</script>
+
+<title>How India Lives — 205 Maps of India's Diversity | ImpactMojo</title>
+<meta name="description" content="205 state-level choropleth maps showcasing India's diversity across demography, health, gender, economy, education, environment, and more. A pedagogical tool for policy understanding.">
+<meta property="og:title" content="How India Lives — 205 Maps of India's Diversity">
+<meta property="og:description" content="A visual atlas of how different India's states are — and why it matters for policy.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://how-india-lives.impactmojo.in">
+<meta property="og:image" content="https://www.impactmojo.in/assets/images/ImpactMojo%20Logo.png">
+<meta name="theme-color" content="#0EA5E9">
+
+<!-- Favicons -->
+<link href="https://www.impactmojo.in/assets/images/favicon.png" rel="icon" type="image/png">
+<link href="https://www.impactmojo.in/assets/images/apple-touch-icon.png" rel="apple-touch-icon">
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Amaranth:wght@400;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ── RESET & VARIABLES ── */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+    --primary-bg: #FFFFFF;
+    --secondary-bg: #F8FAFC;
+    --accent-color: #0EA5E9;
+    --accent-hover: #0284C7;
+    --secondary-accent: #6366F1;
+    --success-color: #10B981;
+    --warning-color: #F59E0B;
+    --danger-color: #EF4444;
+    --text-primary: #0F172A;
+    --text-secondary: #475569;
+    --text-muted: #94A3B8;
+    --card-bg: #FFFFFF;
+    --hover-bg: #F1F5F9;
+    --border-color: #E2E8F0;
+    --gradient-primary: linear-gradient(135deg, #0EA5E9 0%, #6366F1 100%);
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1);
+    --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1);
+}
+
+html[data-theme="dark"] {
+    --primary-bg: #0F172A;
+    --secondary-bg: #1E293B;
+    --text-primary: #F1F5F9;
+    --text-secondary: #CBD5E1;
+    --text-muted: #64748B;
+    --card-bg: #1E293B;
+    --hover-bg: #334155;
+    --border-color: #334155;
+    --shadow-md: 0 4px 6px rgba(0,0,0,0.3);
+    --shadow-lg: 0 10px 15px rgba(0,0,0,0.3);
+    --shadow-xl: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+body {
+    font-family: 'Amaranth', Arial, sans-serif;
+    background: var(--primary-bg);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+/* ── HEADER ── */
+.header {
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border-color);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+html[data-theme="dark"] .header { background: rgba(248, 250, 252, 0.95); }
+
+.nav-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+}
+.logo-container img { width: 36px; height: 36px; }
+.logo-text { display: flex; flex-direction: column; }
+.logo-main {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #F8FAFC;
+}
+html[data-theme="dark"] .logo-main { color: #0F172A; }
+.logo-tagline {
+    font-size: 0.65rem;
+    color: #CBD5E1;
+    letter-spacing: 0.3px;
+}
+html[data-theme="dark"] .logo-tagline { color: #475569; }
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+.nav-right a {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #CBD5E1;
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+.nav-right a:hover { color: #FFF; background: rgba(255,255,255,0.1); }
+html[data-theme="dark"] .nav-right a { color: #475569; }
+html[data-theme="dark"] .nav-right a:hover { color: #0F172A; background: rgba(0,0,0,0.1); }
+
+/* Theme toggle */
+.theme-selector {
+    display: flex;
+    gap: 2px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 8px;
+    padding: 3px;
+}
+html[data-theme="dark"] .theme-selector { background: rgba(0,0,0,0.1); border-color: rgba(0,0,0,0.15); }
+.theme-btn {
+    background: transparent;
+    border: none;
+    color: rgba(255,255,255,0.5);
+    padding: 6px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+}
+html[data-theme="dark"] .theme-btn { color: rgba(0,0,0,0.4); }
+.theme-btn:hover { background: rgba(255,255,255,0.1); color: white; }
+html[data-theme="dark"] .theme-btn:hover { background: rgba(0,0,0,0.1); color: #0F172A; }
+.theme-btn.active { background: var(--accent-color); color: white; }
+.theme-btn svg { width: 16px; height: 16px; }
+
+/* ── HERO ── */
+.hero {
+    background: var(--secondary-bg);
+    border-bottom: 1px solid var(--border-color);
+    padding: 100px 24px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+.hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(14, 165, 233, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+}
+.hero h1 {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    margin-bottom: 12px;
+    position: relative;
+}
+.hero h1 span {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.hero .subtitle {
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+    max-width: 680px;
+    margin: 0 auto 28px;
+    position: relative;
+}
+.hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 2.5rem;
+    flex-wrap: wrap;
+    position: relative;
+    margin-bottom: 24px;
+}
+.hero-stat { text-align: center; }
+.hero-stat .number {
+    font-family: 'Inter', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-color);
+}
+.hero-stat .label {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+.hero .method-link {
+    display: inline-block;
+    padding: 10px 24px;
+    background: var(--text-primary);
+    color: var(--primary-bg);
+    text-decoration: none;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 0.88rem;
+    transition: all 0.2s;
+}
+.hero .method-link:hover { background: var(--accent-color); color: white; }
+
+/* Paper plane */
+.paper-plane {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    top: 25%;
+    right: 8%;
+    animation: float 6s ease-in-out infinite;
+    opacity: 0.12;
+    pointer-events: none;
+}
+@keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-15px) rotate(5deg); }
+}
+
+/* ── SECTION NAV ── */
+.section-nav {
+    position: sticky;
+    top: 60px;
+    z-index: 100;
+    background: var(--primary-bg);
+    border-bottom: 1px solid var(--border-color);
+    padding: 0 16px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+.section-nav::-webkit-scrollbar { height: 0; }
+.section-nav ul {
+    display: flex;
+    list-style: none;
+    max-width: 1280px;
+    margin: 0 auto;
+    gap: 0;
+}
+.section-nav a {
+    display: block;
+    padding: 12px 14px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-decoration: none;
+    color: var(--text-muted);
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+}
+.section-nav a:hover,
+.section-nav a.active {
+    color: var(--accent-color);
+    border-bottom-color: var(--accent-color);
+}
+
+/* ── FILTER BAR ── */
+.filter-bar {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 20px 24px 0;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.filter-bar input {
+    flex: 1;
+    min-width: 220px;
+    padding: 10px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 0.88rem;
+    font-family: inherit;
+    background: var(--card-bg);
+    color: var(--text-primary);
+}
+.filter-bar input:focus { outline: none; border-color: var(--accent-color); }
+.filter-bar select {
+    padding: 10px 14px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-family: 'Inter', sans-serif;
+    background: var(--card-bg);
+    color: var(--text-primary);
+    cursor: pointer;
+}
+.filter-bar .result-count {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+}
+
+/* ── SECTIONS ── */
+.section {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 48px 24px 32px;
+}
+.section-header {
+    margin-bottom: 32px;
+    border-left: 4px solid var(--accent-color);
+    padding-left: 20px;
+}
+.section-header h2 {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+.section-header p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    max-width: 700px;
+}
+.map-count {
+    display: inline-block;
+    background: var(--accent-color);
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 12px;
+    margin-left: 8px;
+    vertical-align: middle;
+}
+
+/* ── MAP CARDS ── */
+.map-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 20px;
+}
+.map-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+.map-card:hover {
+    border-color: var(--accent-color);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-xl);
+}
+.map-card .map-image {
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: var(--secondary-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+.map-card .map-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.map-card .card-body { padding: 16px 20px; }
+.map-card h3 {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    line-height: 1.3;
+}
+.map-card .takeaway {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+.map-card .policy-note {
+    font-size: 0.8rem;
+    color: var(--accent-color);
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    padding-top: 10px;
+    border-top: 1px solid var(--border-color);
+}
+.map-card .meta {
+    display: flex;
+    gap: 6px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+}
+.tag {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: var(--hover-bg);
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+.tag.source { background: rgba(16,185,129,0.1); color: #059669; }
+.tag.quality-built { background: rgba(14,165,233,0.1); color: #0284C7; }
+.tag.quality-new { background: rgba(245,158,11,0.1); color: #D97706; }
+.tag.quality-uncertain { background: rgba(239,68,68,0.1); color: #DC2626; }
+
+/* ── LIGHTBOX ── */
+.lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.92);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+}
+.lightbox.active { display: flex; }
+.lightbox img {
+    max-width: 95%;
+    max-height: 90vh;
+    border-radius: 8px;
+}
+.lightbox .close-btn {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+    background: none;
+    border: none;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ── FOOTER ── */
+.site-footer {
+    text-align: center;
+    padding: 48px 24px;
+    border-top: 1px solid var(--border-color);
+    margin-top: 48px;
+}
+.site-footer p {
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    margin-bottom: 6px;
+}
+.site-footer a {
+    color: var(--accent-color);
+    text-decoration: none;
+}
+.site-footer a:hover { text-decoration: underline; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+    .hero { padding: 80px 16px 32px; }
+    .hero h1 { font-size: 1.8rem; }
+    .hero-stats { gap: 1.5rem; }
+    .map-grid { grid-template-columns: 1fr; }
+    .section { padding: 32px 16px 24px; }
+    .nav-right a.hide-mobile { display: none; }
+    .paper-plane { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- Skip link -->
+<a href="#main" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;" tabindex="0">Skip to content</a>
+
+<!-- Header -->
+<header class="header">
+    <nav class="nav-container">
+        <a href="https://www.impactmojo.in" class="logo-container">
+            <img src="https://www.impactmojo.in/assets/images/ImpactMojo%20Logo.png" alt="ImpactMojo" width="36" height="36">
+            <div class="logo-text">
+                <span class="logo-main">How India Lives</span>
+                <span class="logo-tagline">An ImpactMojo Project</span>
+            </div>
+        </a>
+        <div class="nav-right">
+            <a href="methodology.html" class="hide-mobile">Methodology</a>
+            <a href="https://www.impactmojo.in" class="hide-mobile">ImpactMojo</a>
+            <div class="theme-selector">
+                <button class="theme-btn" data-theme="system" title="System theme" aria-label="System theme">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/></svg>
+                </button>
+                <button class="theme-btn" data-theme="light" title="Light theme" aria-label="Light theme">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                </button>
+                <button class="theme-btn" data-theme="dark" title="Dark theme" aria-label="Dark theme">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"/></svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+    <svg class="paper-plane" viewBox="0 0 200 200"><path d="M50,150 L150,50 L50,100 L80,130 Z" fill="none" stroke="#0EA5E9" stroke-width="3"/><path d="M80,130 L150,50" stroke="#10B981" stroke-width="2" stroke-dasharray="4,4"/><circle cx="150" cy="50" r="4" fill="#0EA5E9"/></svg>
+    <h1>How <span>India</span> Lives</h1>
+    <p class="subtitle">
+        205 state-level maps revealing how different India's states truly are — on health, wealth, gender, food, faith, work, and everything in between. A visual atlas for understanding why one-size-fits-all policy doesn't work.
+    </p>
+    <div class="hero-stats">
+        <div class="hero-stat"><span class="number">205</span><span class="label">Maps</span></div>
+        <div class="hero-stat"><span class="number">36</span><span class="label">States & UTs</span></div>
+        <div class="hero-stat"><span class="number">12</span><span class="label">Themes</span></div>
+        <div class="hero-stat"><span class="number">7+</span><span class="label">Data Sources</span></div>
+    </div>
+    <a href="methodology.html" class="method-link">Read the Methodology</a>
+</section>
+
+<!-- Section Nav -->
+<nav class="section-nav" id="section-nav">
+    <ul>
+        <li><a href="#demography">Demography</a></li>
+        <li><a href="#food-and-culture">Food & Culture</a></li>
+        <li><a href="#economy">Economy</a></li>
+        <li><a href="#health">Health</a></li>
+        <li><a href="#gender">Gender</a></li>
+        <li><a href="#caste">Caste</a></li>
+        <li><a href="#religion">Religion</a></li>
+        <li><a href="#education">Education</a></li>
+        <li><a href="#environment">Environment</a></li>
+        <li><a href="#democracy">Democracy</a></li>
+        <li><a href="#social-protection">Social Protection</a></li>
+        <li><a href="#reproductive-choices">Reproductive Choices</a></li>
+    </ul>
+</nav>
+
+<!-- Filter -->
+<div class="filter-bar">
+    <input type="text" id="search" placeholder="Search maps by title, keyword, or source...">
+    <select id="source-filter">
+        <option value="">All Sources</option>
+        <option value="NFHS">NFHS-5</option>
+        <option value="Census">Census 2011</option>
+        <option value="PLFS">PLFS</option>
+        <option value="NCRB">NCRB</option>
+        <option value="NHA">NHA</option>
+        <option value="SRS">SRS</option>
+        <option value="RBI">RBI</option>
+    </select>
+    <select id="quality-filter">
+        <option value="">All Quality Flags</option>
+        <option value="BUILT">BUILT</option>
+        <option value="NEW">NEW</option>
+        <option value="UNCERTAIN">UNCERTAIN</option>
+    </select>
+    <span class="result-count" id="result-count"></span>
+</div>
+
+<!-- Main content — populated by JS -->
+<main id="main"></main>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+    <button class="close-btn" onclick="closeLightbox()" aria-label="Close">&times;</button>
+    <img id="lightbox-img" src="" alt="">
+</div>
+
+<!-- Footer -->
+<footer class="site-footer">
+    <p>Data work courtesy <strong>Varna</strong> (MMSF Cohort 1) &middot; Sangam Nirmaan Parichay</p>
+    <p>Maps rendered with Python 3 + GeoPandas + Matplotlib &middot; <a href="methodology.html">Full methodology</a></p>
+    <p>Part of <a href="https://www.impactmojo.in">ImpactMojo</a> — Free development education for South Asia</p>
+    <p style="margin-top:12px;font-size:0.72rem;">&copy; 2026 How India Lives. Data sourced from official government publications. Maps are pedagogical tools, not standalone data references.</p>
+</footer>
+
+<script>
+// ── Theme Toggle ──
+(function(){
+    const saved = localStorage.getItem('im-theme');
+    if (saved === 'dark') document.documentElement.setAttribute('data-theme','dark');
+    else if (saved === 'light') document.documentElement.removeAttribute('data-theme');
+    else if (window.matchMedia('(prefers-color-scheme:dark)').matches) document.documentElement.setAttribute('data-theme','dark');
+})();
+
+document.querySelectorAll('.theme-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const t = btn.dataset.theme;
+        document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        if (t === 'dark') { document.documentElement.setAttribute('data-theme','dark'); localStorage.setItem('im-theme','dark'); }
+        else if (t === 'light') { document.documentElement.removeAttribute('data-theme'); localStorage.setItem('im-theme','light'); }
+        else { localStorage.removeItem('im-theme'); if (window.matchMedia('(prefers-color-scheme:dark)').matches) document.documentElement.setAttribute('data-theme','dark'); else document.documentElement.removeAttribute('data-theme'); }
+    });
+});
+// Set active state
+(function(){
+    const s = localStorage.getItem('im-theme') || 'system';
+    const btn = document.querySelector(`.theme-btn[data-theme="${s}"]`);
+    if (btn) btn.classList.add('active');
+    else document.querySelector('.theme-btn[data-theme="system"]').classList.add('active');
+})();
+
+// ── Map Data ──
+let ALL_MAPS = [];
+
+const SECTION_ORDER = [
+    'demography','food-and-culture','economy','health',
+    'gender','caste','religion','education',
+    'environment','democracy','social-protection','reproductive-choices'
+];
+
+const SECTION_META = {
+    'demography': { title: 'Demography', desc: 'Population, urbanisation, migration, linguistic diversity — the fundamental shape of who lives where.' },
+    'food-and-culture': { title: 'Food & Culture', desc: "What India eats, drinks, and avoids — vegetarianism, alcohol, tobacco, and dietary diversity by state." },
+    'economy': { title: 'Economy', desc: 'Income, employment, informality, infrastructure — the vast economic distance between states.' },
+    'health': { title: 'Health', desc: 'Mortality, nutrition, disease burden, healthcare access — where you are born still determines how long you live.' },
+    'gender': { title: 'Gender', desc: "Women's work, safety, autonomy, and the sharp variation in what it means to be a woman across Indian states." },
+    'caste': { title: 'Caste', desc: 'SC/ST demographics, discrimination, violence, and the persistence of caste in shaping life outcomes.' },
+    'religion': { title: 'Religion', desc: "Religious composition, diversity, and the geography of faith across India's states." },
+    'education': { title: 'Education', desc: 'Literacy, enrolment, dropout rates, digital access — the building blocks of opportunity.' },
+    'environment': { title: 'Environment', desc: 'Forest cover, air quality, groundwater, climate vulnerability — the environmental context of development.' },
+    'democracy': { title: 'Democracy', desc: 'Voter turnout, political representation, and the health of democratic participation across states.' },
+    'social-protection': { title: 'Social Protection', desc: 'Government schemes, safety nets, and how effectively the state reaches its most vulnerable citizens.' },
+    'reproductive-choices': { title: 'Reproductive Choices', desc: 'Contraception, sterilisation, family planning — where reproductive autonomy varies most sharply.' }
+};
+
+async function loadMaps() {
+    try {
+        const res = await fetch('data/maps.json');
+        ALL_MAPS = await res.json();
+    } catch(e) { ALL_MAPS = []; }
+    renderAll();
+    updateCount();
+}
+
+function renderAll() {
+    const main = document.getElementById('main');
+    const sections = {};
+    ALL_MAPS.forEach(m => {
+        if (!sections[m.section]) sections[m.section] = [];
+        sections[m.section].push(m);
+    });
+
+    let html = '';
+    SECTION_ORDER.forEach(sid => {
+        const maps = sections[sid] || [];
+        const meta = SECTION_META[sid];
+        if (!meta) return;
+        html += `<section class="section" id="${sid}">
+            <div class="section-header">
+                <h2>${meta.title} <span class="map-count">${maps.length} maps</span></h2>
+                <p>${meta.desc}</p>
+            </div>
+            <div class="map-grid">${maps.map(cardHTML).join('')}</div>
+        </section>`;
+    });
+    main.innerHTML = html;
+}
+
+function cardHTML(m) {
+    const src = m.file ? `maps/${m.section}/${m.file}` : '';
+    const qc = m.quality ? `quality-${m.quality.toLowerCase()}` : '';
+    return `<div class="map-card" data-section="${m.section}" data-source="${m.source}" data-quality="${m.quality||''}" data-search="${m.title.toLowerCase()} ${(m.tags||[]).join(' ').toLowerCase()}" ${m.file ? `onclick="openLightbox('${src}')"` : ''}>
+        <div class="map-image">${m.file ? `<img src="${src}" alt="${m.title}" loading="lazy">` : `<div style="color:var(--text-muted);font-size:0.8rem;padding:20px;text-align:center">Image pending</div>`}</div>
+        <div class="card-body">
+            <h3>${m.title}</h3>
+            ${m.takeaway ? `<p class="takeaway">${m.takeaway}</p>` : ''}
+            ${m.policy ? `<p class="policy-note">${m.policy}</p>` : ''}
+            <div class="meta">
+                <span class="tag source">${m.source}</span>
+                ${m.year ? `<span class="tag">${m.year}</span>` : ''}
+                ${m.quality ? `<span class="tag ${qc}">${m.quality}</span>` : ''}
+            </div>
+        </div>
+    </div>`;
+}
+
+// ── Lightbox ──
+function openLightbox(src) {
+    document.getElementById('lightbox-img').src = src;
+    document.getElementById('lightbox').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('active');
+    document.body.style.overflow = '';
+}
+document.getElementById('lightbox').addEventListener('click', e => { if (e.target === e.currentTarget) closeLightbox(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+// ── Filter ──
+const searchEl = document.getElementById('search');
+const srcFilter = document.getElementById('source-filter');
+const qualFilter = document.getElementById('quality-filter');
+
+function applyFilters() {
+    const q = searchEl.value.toLowerCase().trim();
+    const src = srcFilter.value;
+    const qual = qualFilter.value;
+    let vis = 0;
+    document.querySelectorAll('.map-card').forEach(c => {
+        const ok = (!q || c.dataset.search.includes(q))
+            && (!src || c.dataset.source.includes(src))
+            && (!qual || c.dataset.quality === qual);
+        c.style.display = ok ? '' : 'none';
+        if (ok) vis++;
+    });
+    updateCount(vis);
+}
+function updateCount(n) {
+    const total = document.querySelectorAll('.map-card').length;
+    const c = n !== undefined ? n : total;
+    document.getElementById('result-count').textContent = c === total ? `${total} maps` : `${c} of ${total} maps`;
+}
+
+searchEl.addEventListener('input', applyFilters);
+srcFilter.addEventListener('change', applyFilters);
+qualFilter.addEventListener('change', applyFilters);
+
+// ── Active nav ──
+const navObs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            document.querySelectorAll('.section-nav a').forEach(a => a.classList.remove('active'));
+            const link = document.querySelector(`.section-nav a[href="#${entry.target.id}"]`);
+            if (link) link.classList.add('active');
+        }
+    });
+}, { rootMargin: '-120px 0px -60% 0px' });
+
+loadMaps().then(() => {
+    document.querySelectorAll('.section').forEach(s => navObs.observe(s));
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+# Code Owners for The-Real-Middle
+# These owners will be automatically requested for review on pull requests.
+
+# Default owner for everything in the repo
+* @Varnasr
+
+# Source code
+/src/ @Varnasr
+
+# Public assets and static files
+/public/ @Varnasr

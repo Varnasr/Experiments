@@ -1,0 +1,515 @@
+[
+  {
+    "title": "Challenges and Opportunities for Universal Health Coverage in South Asia: A Scoping Review",
+    "authors": "Jayendra Sharma, Milena Pavlova, Wim Groot",
+    "year": 2025,
+    "type": "paper",
+    "topic": "Public Health",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11800725/",
+    "description": "Scoping review examining challenges and opportunities for UHC across South Asian countries, identifying underfunding, fragmented health systems, and inadequate insurance coverage as key barriers.",
+    "id": "challenges-and-opportunities-for-universal-health-coverage-in-south-asia-a",
+    "access_type": "open_access",
+    "tags": [
+      "South-Asia",
+      "UHC",
+      "public-health",
+      "scoping-review"
+    ],
+    "verified": false
+  },
+  {
+    "title": "Extending Universal Health Coverage to Informal Workers: A Systematic Review of Health Financing Schemes in Low- and Middle-Income Countries in Southeast Asia",
+    "authors": "Andrea Hannah Kaiser, Niccolò Rotigliano, Steffen Flessa, Björn Ekman, Jesper Sundewall",
+    "year": 2023,
+    "type": "paper",
+    "topic": "Public Health",
+    "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0288269",
+    "description": "Systematic review of health financing schemes implemented to extend UHC to informal workers in Southeast Asia, a region characterized by high prevalence of informal employment.",
+    "id": "extending-universal-health-coverage-to-informal-workers-a-systematic-review-of",
+    "access_type": "open_access",
+    "doi": "10.1371/journal.pone.0288269",
+    "tags": [
+      "Southeast-Asia",
+      "UHC",
+      "employment",
+      "public-health",
+      "systematic-review"
+    ],
+    "verified": false
+  },
+  {
+    "title": "Moving toward Universal Health Coverage with a National Health Insurance Program: A Scoping Review of Experiences in Eleven Low- and Lower-Middle-Income Countries",
+    "authors": "Katya Galactionova, Elizabeth Kalesha, Abena Asumadu-Sakyi, Fabrizio Tediosi",
+    "year": 2025,
+    "type": "paper",
+    "topic": "Public Health",
+    "url": "https://journals.plos.org/globalpublichealth/article?id=10.1371/journal.pgph.0003651",
+    "description": "Assesses strategies adopted by low- and lower-middle-income countries with a national health insurance scheme to expand UHC, examining variations in progress across eleven countries.",
+    "id": "moving-toward-universal-health-coverage-with-a-national-health-insurance",
+    "access_type": "open_access",
+    "doi": "10.1371/journal.pgph.0003651",
+    "tags": [
+      "UHC",
+      "health-insurance",
+      "public-health",
+      "scoping-review"
+    ],
+    "verified": false
+  },
+  {
+    "title": "Achieving Universal Health Coverage in Low- and Middle-Income Countries: Challenges for Policy Post-Pandemic and Beyond",
+    "authors": "Oyeli Ochie, Olalekan Olasehinde, Rebecca Adegboyega",
+    "year": 2023,
+    "type": "paper",
+    "topic": "Public Health",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10084872/",
+    "description": "Narrative review of 118 peer-reviewed and grey literature sources examining UHC challenges in LMICs, including weak health systems, financing gaps, and epidemiological transitions exacerbated by COVID-19.",
+    "id": "achieving-universal-health-coverage-in-low-and-middle-income-countries",
+    "access_type": "open_access",
+    "tags": [
+      "UHC",
+      "public-health"
+    ],
+    "verified": false
+  },
+  {
+    "title": "Tracking Universal Health Coverage: 2023 Global Monitoring Report",
+    "authors": "World Health Organization, World Bank",
+    "year": 2023,
+    "type": "grey_literature",
+    "topic": "Public Health",
+    "url": "https://www.who.int/publications/i/item/9789240080379",
+    "description": "Joint WHO-World Bank global monitoring report tracking progress toward UHC, concluding the world is off track for significant progress by 2030 with persistent gaps in service coverage and financial protection.",
+    "id": "tracking-universal-health-coverage-2023-global-monitoring-report",
+    "access_type": "open_access",
+    "tags": [
+      "UHC",
+      "public-health"
+    ],
+    "verified": false
+  },
+  {
+    "title": "Workload and Emerging Challenges of Community Health Workers in Low- and Middle-Income Countries: A Mixed-Methods Systematic Review",
+    "authors": "Tegbar Yigzaw, Wondwosen Shiferaw, Frehiwot Berhane, Mengistu Hailemariam",
+    "year": 2023,
+    "type": "paper",
+    "topic": "Public Health",
+    "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0282717",
+    "description": "Systematic review summarizing community health workers' perceived workload in LMICs, finding that excessive workload affects productivity and retention of CHWs in remote and underserved areas.",
+    "id": "workload-and-emerging-challenges-of-community-health-workers-in-low-and-middle",
+    "access_type": "open_access",
+    "doi": "10.1371/journal.pone.0282717",
+    "tags": [
+      "CHWs",
+      "mixed-methods",
+      "public-health",
+      "systematic-review"
+    ],
+    "verified": false
+  },
+  {
+    "title": "Community Health Workers and COVID-19: Cross-Country Evidence on Their Roles, Experiences, Challenges and Adaptive Strategies",
+    "authors": "Meenakshi Gautham, Kok Maryse, Kerry Scott, Shivam Gupta, Maryse C Kok",
+    "year": 2023,
+    "type": "paper",
+    "topic": "Public Health",
+    "url": "https://journals.plos.org/globalpublichealth/article?id=10.1371/journal.pgph.0001447",
+    "description": "Cross-country study examining CHWs' contributions during COVID-19 in India, Bangladesh, Pakistan, Sierra Leone, Kenya, and Ethiopia, analyzing their frontline roles, challenges, and adaptive strategies.",
+    "id": "community-health-workers-and-covid-19-cross-country-evidence-on-their-roles",
+    "access_type": "open_access",
+    "doi": "10.1371/journal.pgph.0001447",
+    "tags": [
+      "Bangladesh",
+      "CHWs",
+      "India",
+      "Pakistan",
+      "public-health"
+    ],
+    "verified": false
+  },
+  {
+    "title": "Task Shifting Healthcare Services in the Post-COVID World: A Scoping Review",
+    "authors": "Emily Liang, Arjun Mitra, Sonia Abi Jaoude, Veronica Vargas",
+    "year": 2023,
+    "type": "paper",
+    "topic": "Public Health",
+    "url": "https://journals.plos.org/globalpublichealth/article?id=10.1371/journal.pgph.0001712",
+    "description": "Scoping review of task shifting and task sharing approaches that move tasks from highly trained professionals to other providers, examining evidence and implications for health service delivery in LMICs.",
+    "id": "task-shifting-healthcare-services-in-the-post-covid-world-a-scoping-review",
+    "access_type": "open_access",
+    "doi": "10.1371/journal.pgph.0001712",
+    "tags": [
+      "public-health",
+      "scoping-review"
+    ],
+    "verified": false
+  },
+  {
+    "title": "Regional Overview of Food Security and Nutrition 2020: Asia and the Pacific",
+    "authors": "FAO, UNICEF, WFP, WHO",
+    "year": 2020,
+    "type": "grey_literature",
+    "topic": "Public Health",
+    "url": "https://www.who.int/docs/default-source/wpro---documents/health-topics/nutrition/210118-fao-panorama-report-2020-3.pdf",
+    "description": "Joint UN report on food security and nutrition in Asia and the Pacific, assessing progress toward SDG 2 targets and noting the expected impact of COVID-19 disruptions on all forms of malnutrition.",
+    "id": "regional-overview-of-food-security-and-nutrition-2020-asia-and-the-pacific",
+    "access_type": "open_access",
+    "tags": [
+      "food-security",
+      "nutrition",
+      "public-health"
+    ],
+    "verified": false
+  },
+  {
+    "title": "Factors Associated with Wasting Among Children Under Five Years Old in South Asia: Implications for Action",
+    "authors": "Nita Dalmiya, Harriet Torlesse, Victor Aguayo",
+    "year": 2018,
+    "type": "paper",
+    "topic": "Public Health",
+    "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0198749",
+    "description": "Analysis of factors associated with child wasting across South Asia finding that low maternal BMI is a significant predictor and boys are more likely to be wasted than girls in Afghanistan, Bangladesh, India, and Pakistan.",
+    "id": "factors-associated-with-wasting-among-children-under-five-years-old-in-south",
+    "access_type": "open_access",
+    "doi": "10.1371/journal.pone.0198749",
+    "tags": [
+      "Afghanistan",
+      "Bangladesh",
+      "India",
+      "Pakistan",
+      "South-Asia",
+      "maternal-health",
+      "public-health"
+    ],
+    "verified": false
+  },
+  {
+    "title": "Contribution of Malnutrition to Infant and Child Deaths in Sub-Saharan Africa and South Asia",
+    "authors": "Cynthia Boschi-Pinto, Emily R Smith, Jonathon L Simon, Myo Myo Mon, Alka Dev",
+    "year": 2024,
+    "type": "paper",
+    "topic": "Public Health",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11624724/",
+    "description": "Study using postmortem data from seven LMICs revealing that malnutrition plays a significant role in the causal chain of 40% of deaths among children under 5 years of age in Sub-Saharan Africa and South Asia.",
+    "id": "contribution-of-malnutrition-to-infant-and-child-deaths-in-sub-saharan-africa",
+    "access_type": "open_access",
+    "tags": [
+      "South-Asia",
+      "Sub-Saharan-Africa",
+      "nutrition",
+      "public-health"
+    ],
+    "verified": false
+  },
+  {
+    "title": "Socioeconomic Inequalities in Access to Maternal Healthcare in South-Asian Countries: A Systematic Review",
+    "authors": "Parveen Ali, Rubab Zahra, Shehla Naeem, Sana Waqas",
+    "year": 2025,
+    "type": "paper",
+    "topic": "Public Health",
+    "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0326130",
+    "description": "Systematic review of 55 studies from India, Nepal, Bangladesh, Afghanistan, and Pakistan showing that maternal healthcare access is linked to economic status, education, and women's autonomy in patriarchal family structures.",
+    "id": "socioeconomic-inequalities-in-access-to-maternal-healthcare-in-south-asian",
+    "access_type": "open_access",
+    "doi": "10.1371/journal.pone.0326130",
+    "tags": [
+      "Afghanistan",
+      "Bangladesh",
+      "India",
+      "Nepal",
+      "Pakistan",
+      "education",
+      "maternal-health",
+      "public-health",
+      "systematic-review"
+    ],
+    "verified": false
+  },
+  {
+    "title": "COVID-19 and Mental Health in 8 Low- and Middle-Income Countries: A Prospective Cohort Study",
+    "authors": "Tassew Woldehanna, Anja Benshaul-Tolonen, Manuela Angelucci, Sandra Favara, Marta Favara",
+    "year": 2023,
+    "type": "paper",
+    "topic": "Public Health",
+    "url": "https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.1004081",
+    "description": "Prospective cohort study of 21,162 individuals across 8 LMICs in Asia, Africa, and South America, finding that depression symptoms increased significantly (0.29 SD) in the first 4 months following COVID-19 onset.",
+    "id": "covid-19-and-mental-health-in-8-low-and-middle-income-countries-a-prospective",
+    "access_type": "open_access",
+    "doi": "10.1371/journal.pmed.1004081",
+    "tags": [
+      "public-health"
+    ],
+    "verified": false
+  },
+  {
+    "title": "Mental Health Policy Implementation in Low- and Middle-Income Countries: A Realist Review Protocol",
+    "authors": "Ruth Trainor, Florence Baingana, Assegid Debebe",
+    "year": 2025,
+    "type": "paper",
+    "topic": "Public Health",
+    "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0320420",
+    "description": "Protocol for a realist synthesis explaining how, why, for whom, and under what health system conditions certain mental health policy implementation strategies work or fail in LMICs.",
+    "id": "mental-health-policy-implementation-in-low-and-middle-income-countries-a",
+    "access_type": "open_access",
+    "doi": "10.1371/journal.pone.0320420",
+    "tags": [
+      "public-health"
+    ],
+    "verified": false
+  },
+  {
+    "title": "Measures to Strengthen Primary Health-Care Systems in Low- and Middle-Income Countries",
+    "authors": "Shannon Barkley, Ernesto Bascolo, Hernan Montenegro, Shannon McManus",
+    "year": 2020,
+    "type": "paper",
+    "topic": "Public Health",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7607465/",
+    "description": "WHO Bulletin article identifying priorities for improving primary health care in LMICs, including community engagement and adapting PHC to evolving population needs for achieving UHC by 2030.",
+    "id": "measures-to-strengthen-primary-health-care-systems-in-low-and-middle-income",
+    "access_type": "open_access",
+    "tags": [
+      "public-health"
+    ],
+    "verified": false
+  },
+  {
+    "title": "Primary Health Care on the Road to Universal Health Coverage: 2019 Global Monitoring Report",
+    "authors": "World Health Organization, World Bank",
+    "year": 2019,
+    "type": "grey_literature",
+    "topic": "Public Health",
+    "url": "https://www.who.int/publications/i/item/9789240029040",
+    "description": "WHO-World Bank monitoring report examining PHC service coverage indicators across income groups and regions, released ahead of the UN High-Level Meeting on Universal Health Coverage.",
+    "id": "primary-health-care-on-the-road-to-universal-health-coverage-2019-global",
+    "access_type": "open_access",
+    "tags": [
+      "UHC",
+      "public-health"
+    ],
+    "verified": false
+  },
+  {
+    "title": "Self-Management of Chronic, Non-Communicable Diseases in South Asian Settings: A Systematic Mixed-Studies Review",
+    "authors": "Farooq Siddiqui, Omara Dogar, Mona Kanaan, Kamran Siddiqi",
+    "year": 2024,
+    "type": "paper",
+    "topic": "Public Health",
+    "url": "https://journals.plos.org/globalpublichealth/article?id=10.1371/journal.pgph.0001668",
+    "description": "Systematic review finding that age, education, income, knowledge, social support, self-efficacy, and affordability of medicine are key determinants of chronic NCD self-management in South Asia.",
+    "id": "self-management-of-chronic-non-communicable-diseases-in-south-asian-settings-a",
+    "access_type": "open_access",
+    "doi": "10.1371/journal.pgph.0001668",
+    "tags": [
+      "South-Asia",
+      "education",
+      "public-health",
+      "systematic-review"
+    ],
+    "verified": false
+  },
+  {
+    "title": "Social Determinants of Health: The Role of Effective Communication in the COVID-19 Pandemic in Developing Countries",
+    "authors": "John Osita Ataguba",
+    "year": 2020,
+    "type": "paper",
+    "topic": "Public Health",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7480618/",
+    "description": "Open access paper in Global Health Action arguing that effective crisis communication is among the most critical social determinants of health for reducing COVID-19 morbidity and relieving pressure on weak health systems in developing countries.",
+    "id": "social-determinants-of-health-the-role-of-effective-communication-in-the-covid",
+    "access_type": "open_access",
+    "tags": [
+      "public-health"
+    ],
+    "verified": false
+  },
+  {
+    "title": "Social Determinants of Infectious Diseases in South Asia",
+    "authors": "Bir Rawal, Rajesh Manandhar, Sameer Dixit",
+    "year": 2016,
+    "type": "paper",
+    "topic": "Public Health",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4897585/",
+    "description": "PMC open access paper examining social determinants of infectious diseases in South Asia with special reference to HIV and tuberculosis, concluding that addressing social factors is essential for sustainable intervention.",
+    "id": "social-determinants-of-infectious-diseases-in-south-asia",
+    "access_type": "open_access",
+    "tags": [
+      "South-Asia",
+      "public-health"
+    ],
+    "verified": false
+  },
+  {
+    "title": "Social Determinants of Health, Report of a Regional Consultation, Colombo, Sri Lanka",
+    "authors": "World Health Organization, Regional Office for South-East Asia",
+    "year": 2008,
+    "type": "grey_literature",
+    "topic": "Public Health",
+    "url": "https://www.who.int/publications/i/item/sea-he-190",
+    "description": "WHO South-East Asia regional consultation report on social determinants of health, examining health inequities driven by socioeconomic position and the double burden of disease in the region.",
+    "id": "social-determinants-of-health-report-of-a-regional-consultation-colombo-sri",
+    "access_type": "open_access",
+    "tags": [
+      "Sri-Lanka",
+      "public-health"
+    ],
+    "verified": false
+  },
+  {
+    "title": "Demographic, Socioeconomic and Regional Disparities in the Coverage of Water, Sanitation and Hygiene Facilities in Four South Asian Countries",
+    "authors": "Md Hasibul Islam Jitu, Mohammad Shahed Masud",
+    "year": 2025,
+    "type": "paper",
+    "topic": "Public Health",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11913270/",
+    "description": "PLOS ONE study using MICS data from Afghanistan, Bangladesh, Nepal, and Pakistan to examine WASH facility coverage disparities and identify significant socioeconomic and demographic factors.",
+    "id": "demographic-socioeconomic-and-regional-disparities-in-the-coverage-of-water",
+    "access_type": "open_access",
+    "tags": [
+      "Afghanistan",
+      "Bangladesh",
+      "Nepal",
+      "Pakistan",
+      "South-Asia",
+      "WASH",
+      "public-health"
+    ],
+    "verified": false
+  },
+  {
+    "title": "Water, Sanitation, and Hygiene (WASH) Factors and the Incidence of Communicable Diseases in Urban Bangladesh: Evidence from Municipal Areas",
+    "authors": "Md Nuruzzaman Khan, Raaj Kishore Biswas, Shuva Das",
+    "year": 2025,
+    "type": "paper",
+    "topic": "Public Health",
+    "url": "https://journals.plos.org/plosntds/article?id=10.1371/journal.pntd.0013329",
+    "description": "PLOS NTDs study finding that nearly one in four participants in urban Bangladesh reported communicable diseases, with diarrhoea most common and poor hand hygiene showing the strongest disease association.",
+    "id": "water-sanitation-and-hygiene-wash-factors-and-the-incidence-of-communicable",
+    "access_type": "open_access",
+    "doi": "10.1371/journal.pntd.0013329",
+    "tags": [
+      "Bangladesh",
+      "WASH",
+      "public-health"
+    ],
+    "verified": false
+  },
+  {
+    "title": "Water, Sanitation and Hygiene (WASH): The Evolution of a Global Health and Development Sector",
+    "authors": "Sara de Wit, Euphrasia Luseka, David Bradley, Joe Brown, Jayant Bhagwan, Barbara Evans, Matthew C Freeman, Guy Howard, Isha Ray, Ian Ross, Sheillah Simiyu, Oliver Cumming, Clare I R Chandler",
+    "year": 2024,
+    "type": "paper",
+    "topic": "Public Health",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11459319/",
+    "description": "BMJ Global Health open access article examining the evolution of the global WASH sector, noting that universal WASH access by 2030 under SDG 6 remains a distant prospect in many countries.",
+    "id": "water-sanitation-and-hygiene-wash-the-evolution-of-a-global-health-and",
+    "access_type": "open_access",
+    "tags": [
+      "WASH",
+      "public-health"
+    ],
+    "verified": false
+  },
+  {
+    "title": "Progress on Household Drinking Water, Sanitation and Hygiene 2000-2020: Five Years into the SDGs",
+    "authors": "WHO, UNICEF",
+    "year": 2021,
+    "type": "grey_literature",
+    "topic": "Public Health",
+    "url": "https://data.unicef.org/wp-content/uploads/2021/06/JMP-2021-progress-report.pdf",
+    "description": "WHO/UNICEF Joint Monitoring Programme report presenting updated global and regional WASH estimates, serving as the leading source of comparable progress data for SDG 6 monitoring.",
+    "id": "progress-on-household-drinking-water-sanitation-and-hygiene-2000-2020-five",
+    "access_type": "open_access",
+    "tags": [
+      "WASH",
+      "public-health"
+    ],
+    "verified": false
+  },
+  {
+    "title": "Essential Childhood Immunization in 43 Low- and Middle-Income Countries: Analysis of Spatial Trends and Socioeconomic Inequalities in Vaccine Coverage",
+    "authors": "Anna Dimitrova, Jayanta Bhattacharya, Nirmala Naidoo, Ties Boerma",
+    "year": 2023,
+    "type": "paper",
+    "topic": "Public Health",
+    "url": "https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.1004166",
+    "description": "PLOS Medicine open access analysis of spatial trends and socioeconomic inequalities in essential childhood immunization coverage across 43 LMICs, revealing persistent wealth and geographic disparities.",
+    "id": "essential-childhood-immunization-in-43-low-and-middle-income-countries-analysis",
+    "access_type": "open_access",
+    "doi": "10.1371/journal.pmed.1004166",
+    "tags": [
+      "public-health"
+    ],
+    "verified": false
+  },
+  {
+    "title": "Vaccine Equity in Low and Middle Income Countries: A Systematic Review and Meta-Analysis",
+    "authors": "Abimbola Olaniran, Aduragbemi Banke-Thomas, Helen Smith, Susan Tull",
+    "year": 2022,
+    "type": "paper",
+    "topic": "Public Health",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9194352/",
+    "description": "Systematic review highlighting that global DTP3 coverage stagnated at 85% since 2010, with 14 million infants missing initial doses in 2019, driven by wealth, education, gender, and geographic inequalities.",
+    "id": "vaccine-equity-in-low-and-middle-income-countries-a-systematic-review-and-meta",
+    "access_type": "open_access",
+    "tags": [
+      "education",
+      "gender",
+      "meta-analysis",
+      "public-health",
+      "systematic-review"
+    ],
+    "verified": false
+  },
+  {
+    "title": "Digital Health Interventions for Improving Access to Primary Care in India: A Scoping Review",
+    "authors": "Smisha Agarwal, Yumna Vahanvaty, Manushi Patel, Olakunle Alonge",
+    "year": 2024,
+    "type": "paper",
+    "topic": "Public Health",
+    "url": "https://journals.plos.org/globalpublichealth/article?id=10.1371/journal.pgph.0002645",
+    "description": "PLOS Global Public Health scoping review of digital health interventions to improve primary care access in India, examining telemedicine and mobile health approaches for vulnerable populations.",
+    "id": "digital-health-interventions-for-improving-access-to-primary-care-in-india-a",
+    "access_type": "open_access",
+    "doi": "10.1371/journal.pgph.0002645",
+    "tags": [
+      "India",
+      "digital",
+      "mobile-technology",
+      "public-health",
+      "scoping-review"
+    ],
+    "verified": false
+  },
+  {
+    "title": "World Development Report 2004: Making Services Work for Poor People",
+    "authors": "World Bank",
+    "year": 2004,
+    "type": "book",
+    "topic": "Public Health",
+    "url": "https://openknowledge.worldbank.org/entities/publication/c7755269-fa9d-5a07-9471-4ea35492b1d9",
+    "description": "World Bank flagship report arguing that broad improvements in welfare require putting poor people at the center of service provision, proposing frameworks for monitoring providers, amplifying voice, and strengthening incentives.",
+    "id": "world-development-report-2004-making-services-work-for-poor-people",
+    "access_type": "open_access",
+    "tags": [
+      "public-health"
+    ],
+    "verified": false
+  },
+  {
+    "title": "Monitoring Progress towards Universal Health Coverage at Country and Global Levels",
+    "authors": "Margaret E Kruk, Anna D Gage, Catherine Arsenault, Keely Jordan, Hannah H Leslie, Sanam Roder-DeWan, Olusoji Adeyi, Pierre Barker, Bernadette Daelmans, Svetlana V Doubova",
+    "year": 2014,
+    "type": "paper",
+    "topic": "Public Health",
+    "url": "https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.1001731",
+    "description": "PLOS Medicine framework paper proposing methods for monitoring UHC progress at country and global levels, examining both service coverage and financial protection indicators.",
+    "id": "monitoring-progress-towards-universal-health-coverage-at-country-and-global",
+    "access_type": "open_access",
+    "doi": "10.1371/journal.pmed.1001731",
+    "tags": [
+      "UHC",
+      "public-health"
+    ],
+    "verified": false
+  }
+]
