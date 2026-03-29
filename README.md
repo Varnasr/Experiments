@@ -36,6 +36,24 @@ A comprehensive task distribution system built for managing staff transitions at
 
 **Usage:** Open `index.html` in any modern browser. No installation or build step required.
 
+### Court Petition Translator (Hindi → English)
+
+An AI-powered tool for translating Hindi Supreme Court and High Court petitions into formal legal English.
+
+**Directory:** `court-translator/`
+**Serverless function:** `netlify/functions/court-translate.mjs`
+**Stage:** Prototype
+
+**How it works:**
+1. Hindi text is split into chunks and translated via [Sarvam AI](https://www.sarvam.ai) (`sarvam-translate:v1`, formal mode)
+2. The raw translation is refined by Llama 3.3 70B (via Groq) with a legal-terminology-aware prompt that corrects terms like याचिकाकर्ता → Petitioner, माननीय → Hon'ble, अनुच्छेद → Article, etc.
+
+**Environment variables required:**
+- `SARVAM_API_KEY` — from [Sarvam AI dashboard](https://dashboard.sarvam.ai)
+- `GROQ_API_KEY` — from [Groq console](https://console.groq.com) (free tier)
+
+**Usage:** Open `court-translator/index.html` in the browser (via Netlify deploy). Paste Hindi petition text and click Translate.
+
 ---
 
 ## How This Repo Works
@@ -55,9 +73,16 @@ Projects in this repo follow a simple lifecycle:
 
 ```
 Experiments/
-├── index.html      # Current active experiment (FWI Task Tool)
-├── LICENSE         # MIT License
-└── README.md       # This file
+├── index.html                          # FWI Task Management Tool
+├── court-translator/
+│   └── index.html                      # Court Petition Translator UI
+├── netlify/
+│   └── functions/
+│       └── court-translate.mjs         # Hindi → English translation API
+├── netlify.toml                        # Netlify build & functions config
+├── .env.example                        # Required environment variables
+├── LICENSE                             # MIT License
+└── README.md                           # This file
 ```
 
 ---
