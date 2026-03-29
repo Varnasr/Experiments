@@ -210,7 +210,7 @@
 <body>
     <div class="container">
         <header>
-            <a class="back-link" href="/">&larr; Back to Experiments</a>
+            <a class="back-link" href="../">&larr; Back to Experiments</a>
             <h1>Court Petition Translator <span class="badge badge-ai">AI Powered</span> <span class="badge badge-exp">Experiment</span></h1>
             <p class="subtitle">Translate Hindi Supreme Court and High Court petitions into formal legal English. Powered by Sarvam AI with legal terminology refinement via Llama 3.3 70B.</p>
         </header>
@@ -284,7 +284,7 @@
 
             try {
                 if (!navigator.onLine) throw new Error('offline');
-                const res = await fetch('/.netlify/functions/court-translate', {
+                const res = await fetch('https://varnasr-experiments.netlify.app/.netlify/functions/court-translate', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ text }),
