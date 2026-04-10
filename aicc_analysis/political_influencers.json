@@ -1,0 +1,4764 @@
+{
+  "Table": [
+    {
+      "districtid": null,
+      "DistrictName": null,
+      "statename": null,
+      "Observer": "SHRI CHALLA VAMSHI CHAND REDDY",
+      "mobile_no": "550550055",
+      "Profiles": 0
+    },
+    {
+      "districtid": null,
+      "DistrictName": null,
+      "statename": null,
+      "Observer": "Shri Sunil Ahire",
+      "mobile_no": "9820002337",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2058,
+      "DistrictName": "Allurisita Rama Raju",
+      "statename": "Andhra Pradesh",
+      "Observer": "SHRI DEBASIS PATNAIK",
+      "mobile_no": "9937220256",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2059,
+      "DistrictName": "Anakapalli",
+      "statename": "Andhra Pradesh",
+      "Observer": "SUSHANT MISHRA",
+      "mobile_no": "9871812333",
+      "Profiles": 3
+    },
+    {
+      "districtid": 2060,
+      "DistrictName": "Anantapuram",
+      "statename": "Andhra Pradesh",
+      "Observer": "SHRI. PARMESHWAR NAIK",
+      "mobile_no": "9448120755",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2061,
+      "DistrictName": "Anantapuram City",
+      "statename": "Andhra Pradesh",
+      "Observer": "SHRI. PARMESHWAR NAIK",
+      "mobile_no": "9448120755",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2062,
+      "DistrictName": "Annamayya (Rajampet)",
+      "statename": "Andhra Pradesh",
+      "Observer": "SHRI K MAHENDRAN",
+      "mobile_no": "9884655222",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2063,
+      "DistrictName": "Bapatla",
+      "statename": "Andhra Pradesh",
+      "Observer": "SHRI. SHARAD AHIRE",
+      "mobile_no": "9423093333",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2064,
+      "DistrictName": "Chittoor",
+      "statename": "Andhra Pradesh",
+      "Observer": "DR.K JAYAKUMAR",
+      "mobile_no": "9444020571",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2065,
+      "DistrictName": "Chittoor City",
+      "statename": "Andhra Pradesh",
+      "Observer": "DR.K JAYAKUMAR",
+      "mobile_no": "9444020571",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2066,
+      "DistrictName": "Dr Ambedkar Konaseema",
+      "statename": "Andhra Pradesh",
+      "Observer": "SHRI AHKILESH SHUKLA",
+      "mobile_no": "9305046756",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2067,
+      "DistrictName": "East Godavari (Rajahmundry)",
+      "statename": "Andhra Pradesh",
+      "Observer": "MS. AMBA PRASAD",
+      "mobile_no": "8700260827",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2068,
+      "DistrictName": "Eluru",
+      "statename": "Andhra Pradesh",
+      "Observer": "CAPT. PRAVEEN DAWAR",
+      "mobile_no": "9810774281",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2069,
+      "DistrictName": "Eluru City",
+      "statename": "Andhra Pradesh",
+      "Observer": "CAPT. PRAVEEN DAWAR",
+      "mobile_no": "9810774281",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2070,
+      "DistrictName": "Guntur",
+      "statename": "Andhra Pradesh",
+      "Observer": "SHRI. SAUMYA REDDY",
+      "mobile_no": "9686018042",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2071,
+      "DistrictName": "Guntur City",
+      "statename": "Andhra Pradesh",
+      "Observer": "SHRI. SAUMYA REDDY",
+      "mobile_no": "9686018042",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2072,
+      "DistrictName": "Kadapa City",
+      "statename": "Andhra Pradesh",
+      "Observer": "SHRI. VIJAY VASANTH",
+      "mobile_no": "9884233352",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2073,
+      "DistrictName": "Kakinada",
+      "statename": "Andhra Pradesh",
+      "Observer": "SHRI. ALI MEHANDI",
+      "mobile_no": "9910788784",
+      "Profiles": 4
+    },
+    {
+      "districtid": 2074,
+      "DistrictName": "Kakinada City",
+      "statename": "Andhra Pradesh",
+      "Observer": "SHRI. ALI MEHANDI",
+      "mobile_no": "9910788784",
+      "Profiles": 1
+    },
+    {
+      "districtid": 2075,
+      "DistrictName": "Krishna (Machilipattinam)",
+      "statename": "Andhra Pradesh",
+      "Observer": "SHRI SANJAY DUTT",
+      "mobile_no": "9833331212",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2076,
+      "DistrictName": "Kurnool",
+      "statename": "Andhra Pradesh",
+      "Observer": "SHRI. YOGESH H.C",
+      "mobile_no": "9845235022",
+      "Profiles": 1
+    },
+    {
+      "districtid": 2077,
+      "DistrictName": "Kurnool City",
+      "statename": "Andhra Pradesh",
+      "Observer": "SHRI. YOGESH H.C",
+      "mobile_no": "9845235022",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2078,
+      "DistrictName": "Machilipatinam City",
+      "statename": "Andhra Pradesh",
+      "Observer": "SHRI SANJAY DUTT",
+      "mobile_no": "9833331212",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2079,
+      "DistrictName": "Manyam",
+      "statename": "Andhra Pradesh",
+      "Observer": "SHRI DEBASIS PATNAIK",
+      "mobile_no": "9937220256",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2080,
+      "DistrictName": "Nandyal",
+      "statename": "Andhra Pradesh",
+      "Observer": "SHRI. N.A.HARIS",
+      "mobile_no": "9900009232",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2081,
+      "DistrictName": "Nellore City",
+      "statename": "Andhra Pradesh",
+      "Observer": "SHRI HASSAN MOULANA",
+      "mobile_no": "7900066666",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2082,
+      "DistrictName": "NTR (Vijayawada)",
+      "statename": "Andhra Pradesh",
+      "Observer": "SHRI. NEERAJ DANGI",
+      "mobile_no": "9829040715",
+      "Profiles": 1
+    },
+    {
+      "districtid": 2083,
+      "DistrictName": "Ongole City",
+      "statename": "Andhra Pradesh",
+      "Observer": "SHRI NADEEM JAVED",
+      "mobile_no": "7233888888",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2084,
+      "DistrictName": "Palnadu (Narasaraopet)",
+      "statename": "Andhra Pradesh",
+      "Observer": "DR. SHIKHA MEEL",
+      "mobile_no": "9610277286",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2085,
+      "DistrictName": "Prakasam (Ongole)",
+      "statename": "Andhra Pradesh",
+      "Observer": "SHRI NADEEM JAVED",
+      "mobile_no": "7233888888",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2086,
+      "DistrictName": "Rajahmundry City",
+      "statename": "Andhra Pradesh",
+      "Observer": "MS. AMBA PRASAD",
+      "mobile_no": "8700260827",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2087,
+      "DistrictName": "SPS Nellore",
+      "statename": "Andhra Pradesh",
+      "Observer": "SHRI HASSAN MOULANA",
+      "mobile_no": "7900066666",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2088,
+      "DistrictName": "Sri Satyasai (Hindupur)",
+      "statename": "Andhra Pradesh",
+      "Observer": "SHRI AJAY SINGH",
+      "mobile_no": "7899999999",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2089,
+      "DistrictName": "Srikakulam",
+      "statename": "Andhra Pradesh",
+      "Observer": "SHRI SURAJ SINGH THAKUR",
+      "mobile_no": "9773777707",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2090,
+      "DistrictName": "Srikakulam City",
+      "statename": "Andhra Pradesh",
+      "Observer": "SHRI SURAJ SINGH THAKUR",
+      "mobile_no": "9773777707",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2091,
+      "DistrictName": "Tirupati",
+      "statename": "Andhra Pradesh",
+      "Observer": "MS. R.SUDHA",
+      "mobile_no": "9444141925",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2092,
+      "DistrictName": "Tirupati City",
+      "statename": "Andhra Pradesh",
+      "Observer": "MS. R.SUDHA",
+      "mobile_no": "9444141925",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2093,
+      "DistrictName": "Vijayawada City",
+      "statename": "Andhra Pradesh",
+      "Observer": "SHRI. NEERAJ DANGI",
+      "mobile_no": "9829040715",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2094,
+      "DistrictName": "Visakhapatnam",
+      "statename": "Andhra Pradesh",
+      "Observer": "Shri Sunil Ahire",
+      "mobile_no": "9820002337",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2096,
+      "DistrictName": "Vizianagaram",
+      "statename": "Andhra Pradesh",
+      "Observer": "SHRI. RAVINDRA DAS",
+      "mobile_no": "9500011112",
+      "Profiles": 1
+    },
+    {
+      "districtid": 2097,
+      "DistrictName": "Vizianagaram City",
+      "statename": "Andhra Pradesh",
+      "Observer": "SHRI. RAVINDRA DAS",
+      "mobile_no": "9500011112",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2098,
+      "DistrictName": "West Godavari (Narasapuram)",
+      "statename": "Andhra Pradesh",
+      "Observer": "SHRI. JASVEER SINGH DIMPA",
+      "mobile_no": "9154400001",
+      "Profiles": 10
+    },
+    {
+      "districtid": 2099,
+      "DistrictName": "YSR Kadapa",
+      "statename": "Andhra Pradesh",
+      "Observer": "SHRI. VIJAY VASANTH",
+      "mobile_no": "9884233352",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2400,
+      "DistrictName": "Anjaw",
+      "statename": "Arunachal Pradesh",
+      "Observer": "SHRI AMARPREET LALLY",
+      "mobile_no": "9815602156",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2380,
+      "DistrictName": "Bichom",
+      "statename": "Arunachal Pradesh",
+      "Observer": "SHRI PURANCHAND PADHI",
+      "mobile_no": "9685555000",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2402,
+      "DistrictName": "Changlang",
+      "statename": "Arunachal Pradesh",
+      "Observer": "SHRI VEDPAL LOHIA",
+      "mobile_no": "9811444883",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2397,
+      "DistrictName": "Dibang Valley",
+      "statename": "Arunachal Pradesh",
+      "Observer": "SHRI YOGESH CHAUDHARY",
+      "mobile_no": "9868990016",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2381,
+      "DistrictName": "East Kameng",
+      "statename": "Arunachal Pradesh",
+      "Observer": "SHRI. SHAIK MASTAN WALI, EX. AICC SECRETARY",
+      "mobile_no": "9246487888",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2394,
+      "DistrictName": "East Siang",
+      "statename": "Arunachal Pradesh",
+      "Observer": "MS ISHITA SEDHA",
+      "mobile_no": "9927395757",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2389,
+      "DistrictName": "Kamle",
+      "statename": "Arunachal Pradesh",
+      "Observer": "SHRI LALIT FARSWAN",
+      "mobile_no": "9411113233",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2384,
+      "DistrictName": "Keyi Panyor",
+      "statename": "Arunachal Pradesh",
+      "Observer": "SHRI BISHWARANJAN MOHANTHY",
+      "mobile_no": "9937715270",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2386,
+      "DistrictName": "Kra Daadi",
+      "statename": "Arunachal Pradesh",
+      "Observer": "SHRI RAJPAL BISHT",
+      "mobile_no": "9412110909",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2387,
+      "DistrictName": "Kurung Kumey",
+      "statename": "Arunachal Pradesh",
+      "Observer": "SHRI RAJPAL BISHT",
+      "mobile_no": "9412110909",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2392,
+      "DistrictName": "Lepa-Rada",
+      "statename": "Arunachal Pradesh",
+      "Observer": "SHRI LALIT FARSWAN",
+      "mobile_no": "9411113233",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2399,
+      "DistrictName": "Lohit",
+      "statename": "Arunachal Pradesh",
+      "Observer": "SHRI AMARPREET LALLY",
+      "mobile_no": "9815602156",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2404,
+      "DistrictName": "Longding",
+      "statename": "Arunachal Pradesh",
+      "Observer": "SHRI KIRAN MUGABASAV",
+      "mobile_no": "9916101007",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2398,
+      "DistrictName": "Lower Dibang Valley",
+      "statename": "Arunachal Pradesh",
+      "Observer": "SHRI YOGESH CHAUDHARY",
+      "mobile_no": "9868990016",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2393,
+      "DistrictName": "Lower Siang",
+      "statename": "Arunachal Pradesh",
+      "Observer": "MS ISHITA SEDHA",
+      "mobile_no": "9927395757",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2385,
+      "DistrictName": "Lower Subansiri",
+      "statename": "Arunachal Pradesh",
+      "Observer": "SHRI BISHWARANJAN MOHANTHY",
+      "mobile_no": "9937715270",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2401,
+      "DistrictName": "Namsai",
+      "statename": "Arunachal Pradesh",
+      "Observer": "SHRI AMARPREET LALLY",
+      "mobile_no": "9815602156",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2382,
+      "DistrictName": "Pakke Kessang",
+      "statename": "Arunachal Pradesh",
+      "Observer": "SHRI. SHAIK MASTAN WALI, EX. AICC SECRETARY",
+      "mobile_no": "9246487888",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2383,
+      "DistrictName": "Papum Pare",
+      "statename": "Arunachal Pradesh",
+      "Observer": "SHRI BISHWARANJAN MOHANTHY",
+      "mobile_no": "9937715270",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2391,
+      "DistrictName": "Shi-Yomi",
+      "statename": "Arunachal Pradesh",
+      "Observer": "SHRI LALIT FARSWAN",
+      "mobile_no": "9411113233",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2395,
+      "DistrictName": "Siang",
+      "statename": "Arunachal Pradesh",
+      "Observer": "DR ZAHIDA SHABNAM",
+      "mobile_no": "9314616777",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2378,
+      "DistrictName": "Tawang",
+      "statename": "Arunachal Pradesh",
+      "Observer": "SHRI PURANCHAND PADHI",
+      "mobile_no": "9685555000",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2403,
+      "DistrictName": "Tirap",
+      "statename": "Arunachal Pradesh",
+      "Observer": "SHRI KIRAN MUGABASAV",
+      "mobile_no": "9916101007",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2396,
+      "DistrictName": "Upper Siang",
+      "statename": "Arunachal Pradesh",
+      "Observer": "DR ZAHIDA SHABNAM",
+      "mobile_no": "9314616777",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2388,
+      "DistrictName": "Upper Subansiri",
+      "statename": "Arunachal Pradesh",
+      "Observer": "MS KIM HAOKIP",
+      "mobile_no": "9862568514",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2379,
+      "DistrictName": "West Kameng",
+      "statename": "Arunachal Pradesh",
+      "Observer": "SHRI PURANCHAND PADHI",
+      "mobile_no": "9685555000",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2390,
+      "DistrictName": "West Siang",
+      "statename": "Arunachal Pradesh",
+      "Observer": "SHRI LALIT FARSWAN",
+      "mobile_no": "9411113233",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2259,
+      "DistrictName": "Araria",
+      "statename": "Bihar",
+      "Observer": "SHRI. AFTAB AHMED",
+      "mobile_no": "9212002466",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2286,
+      "DistrictName": "Arwal",
+      "statename": "Bihar",
+      "Observer": "SMT. NEETU VERMA",
+      "mobile_no": "9810643074",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2288,
+      "DistrictName": "Aurangabad",
+      "statename": "Bihar",
+      "Observer": "SHRI RAJESH THAKUR",
+      "mobile_no": "9470171122",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2275,
+      "DistrictName": "Banka",
+      "statename": "Bihar",
+      "Observer": "SHRI DEBASIS PATNAIK",
+      "mobile_no": "9937220256",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2271,
+      "DistrictName": "Begusarai",
+      "statename": "Bihar",
+      "Observer": "SHRI MAMAN KHAN",
+      "mobile_no": "9818300005",
+      "Profiles": 11
+    },
+    {
+      "districtid": 2274,
+      "DistrictName": "Bhagalpur",
+      "statename": "Bihar",
+      "Observer": "SHRI DEBASIS PATNAIK",
+      "mobile_no": "9937220256",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2282,
+      "DistrictName": "Bhojpur",
+      "statename": "Bihar",
+      "Observer": "MS. AMBA PRASAD",
+      "mobile_no": "8700260827",
+      "Profiles": 5
+    },
+    {
+      "districtid": 2283,
+      "DistrictName": "Buxar",
+      "statename": "Bihar",
+      "Observer": "SHRI RAJESH RATHORE",
+      "mobile_no": "9765577555",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2264,
+      "DistrictName": "Darbhanga",
+      "statename": "Bihar",
+      "Observer": "SMT. SANGEETA BENIWAL, EX. MP CANDIDATE",
+      "mobile_no": "9414134567",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2289,
+      "DistrictName": "Gaya",
+      "statename": "Bihar",
+      "Observer": "SHRI YOGESH DIKSHIT",
+      "mobile_no": "9412275432",
+      "Profiles": 1
+    },
+    {
+      "districtid": 2266,
+      "DistrictName": "Gopalganj",
+      "statename": "Bihar",
+      "Observer": "SHRI MAQSOOD KHAN",
+      "mobile_no": "9793111786",
+      "Profiles": 2
+    },
+    {
+      "districtid": 2287,
+      "DistrictName": "Jahanabad",
+      "statename": "Bihar",
+      "Observer": "SMT. NEETU VERMA",
+      "mobile_no": "9810643074",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2277,
+      "DistrictName": "Jamui",
+      "statename": "Bihar",
+      "Observer": "SMT. SHAMINA SHAFIQ",
+      "mobile_no": "9968099993",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2284,
+      "DistrictName": "Kaimur",
+      "statename": "Bihar",
+      "Observer": "SHRI RAJESH RATHORE",
+      "mobile_no": "9765577555",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2263,
+      "DistrictName": "Katihar",
+      "statename": "Bihar",
+      "Observer": "SHRI. ARUN YADAV",
+      "mobile_no": "9868180243",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2272,
+      "DistrictName": "Khagaria",
+      "statename": "Bihar",
+      "Observer": "SHRI RAO DAN SINGH, EX. MINISTER",
+      "mobile_no": "9015300007",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2260,
+      "DistrictName": "Kishanganj",
+      "statename": "Bihar",
+      "Observer": "SHRI. AFTAB AHMED",
+      "mobile_no": "9212002466",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2276,
+      "DistrictName": "Lakhisarai",
+      "statename": "Bihar",
+      "Observer": "SMT. SHAMINA SHAFIQ",
+      "mobile_no": "9968099993",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2262,
+      "DistrictName": "Madhepur",
+      "statename": "Bihar",
+      "Observer": "SHRI. SANJAY KAPOOR",
+      "mobile_no": "9412251451",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2256,
+      "DistrictName": "Madhubaini",
+      "statename": "Bihar",
+      "Observer": "SHRI AHKILESH SHUKLA",
+      "mobile_no": "9305046756",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2273,
+      "DistrictName": "Munger",
+      "statename": "Bihar",
+      "Observer": "SHRI RAO DAN SINGH, EX. MINISTER",
+      "mobile_no": "9015300007",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2265,
+      "DistrictName": "Muzzafarpur",
+      "statename": "Bihar",
+      "Observer": "SHRI MANAS CHAUDHARY",
+      "mobile_no": "9437000001",
+      "Profiles": 1
+    },
+    {
+      "districtid": 2278,
+      "DistrictName": "Nalanda",
+      "statename": "Bihar",
+      "Observer": "SHRI. RANVIJAY SINGH LOCHAV",
+      "mobile_no": "9999099444",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2290,
+      "DistrictName": "Nawada",
+      "statename": "Bihar",
+      "Observer": "SHRI JAISHANKAR PATHAK",
+      "mobile_no": "9431706664",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2252,
+      "DistrictName": "Paschlm Champaran",
+      "statename": "Bihar",
+      "Observer": "SHRI NILANSHU CHATURVEDI",
+      "mobile_no": "9589820017",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2281,
+      "DistrictName": "Patna Rural 1",
+      "statename": "Bihar",
+      "Observer": "SHRI ASHOK SINGH, MP",
+      "mobile_no": "9752405589",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2279,
+      "DistrictName": "Patna Rural 2",
+      "statename": "Bihar",
+      "Observer": "SHRI BHAJAN LAL JATAV, MP",
+      "mobile_no": "9784778861",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2280,
+      "DistrictName": "Patna Urban",
+      "statename": "Bihar",
+      "Observer": "SHRI ASHOK SINGH, MP",
+      "mobile_no": "9752405589",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2261,
+      "DistrictName": "Purnia",
+      "statename": "Bihar",
+      "Observer": "SHRI. SANJAY KAPOOR",
+      "mobile_no": "9412251451",
+      "Profiles": 4
+    },
+    {
+      "districtid": 2253,
+      "DistrictName": "Purvi Champaran",
+      "statename": "Bihar",
+      "Observer": "SHRI HIMMAT SINGH PATEL, EX. MLA",
+      "mobile_no": "9825012034",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2285,
+      "DistrictName": "Rohtas",
+      "statename": "Bihar",
+      "Observer": "MS. SHWETA SINGH",
+      "mobile_no": "9122124426",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2258,
+      "DistrictName": "Saharsa",
+      "statename": "Bihar",
+      "Observer": "SHRI VINOD SULTANPURI",
+      "mobile_no": "9816189666",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2270,
+      "DistrictName": "Samastipur",
+      "statename": "Bihar",
+      "Observer": "SHRI. ABDUL HANNAN",
+      "mobile_no": "9811824426",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2268,
+      "DistrictName": "Saran",
+      "statename": "Bihar",
+      "Observer": "SHRI SATYANARAYAN PATEL",
+      "mobile_no": "9826049999",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2291,
+      "DistrictName": "Sheikhpur",
+      "statename": "Bihar",
+      "Observer": "SHRI JAISHANKAR PATHAK",
+      "mobile_no": "9431706664",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2254,
+      "DistrictName": "Sheohar",
+      "statename": "Bihar",
+      "Observer": "SHRI. SANJAY CHHOKAR",
+      "mobile_no": "9215961701",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2255,
+      "DistrictName": "Sitamarhi",
+      "statename": "Bihar",
+      "Observer": "SHRI. SANJAY CHHOKAR",
+      "mobile_no": "9215961701",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2267,
+      "DistrictName": "Siwan",
+      "statename": "Bihar",
+      "Observer": "SHRI MALENDRA RAJAN",
+      "mobile_no": "9459287419",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2257,
+      "DistrictName": "Supaul",
+      "statename": "Bihar",
+      "Observer": "SHRI VINOD SULTANPURI",
+      "mobile_no": "9816189666",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2269,
+      "DistrictName": "Vaishali",
+      "statename": "Bihar",
+      "Observer": "DR. RAGINI NAYAK",
+      "mobile_no": "9811294884",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1954,
+      "DistrictName": "Balod",
+      "statename": "Chhattisgarh",
+      "Observer": "SHRI MANOJ YADAV, AICC SECRETARY",
+      "mobile_no": "9899105464",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1944,
+      "DistrictName": "Balodabazar",
+      "statename": "Chhattisgarh",
+      "Observer": "DR. NITIN RAUT, EX. MINISTER",
+      "mobile_no": "9930925000",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1929,
+      "DistrictName": "Balrampur",
+      "statename": "Chhattisgarh",
+      "Observer": "SHRI VIKAS THAKRE",
+      "mobile_no": "9422808522",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1963,
+      "DistrictName": "Bastar Rural",
+      "statename": "Chhattisgarh",
+      "Observer": "SHRI SAPTAGIRI ULAKA",
+      "mobile_no": "9778195222",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1945,
+      "DistrictName": "Bemetara",
+      "statename": "Chhattisgarh",
+      "Observer": "SHRI SHYAM KUMAR BARWE",
+      "mobile_no": "9923709988",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1953,
+      "DistrictName": "Bhilai city",
+      "statename": "Chhattisgarh",
+      "Observer": "SHRI AJAY KUMAR LALLU",
+      "mobile_no": "8765955030",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1967,
+      "DistrictName": "Bijapaur",
+      "statename": "Chhattisgarh",
+      "Observer": "SHRI AZMATULLAH HUSSAINI",
+      "mobile_no": "X9949607733",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1943,
+      "DistrictName": "Bilaigarh-sarangarh",
+      "statename": "Chhattisgarh",
+      "Observer": "DR. NITIN RAUT, EX. MINISTER",
+      "mobile_no": "9930925000",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1935,
+      "DistrictName": "Bilaspur City",
+      "statename": "Chhattisgarh",
+      "Observer": "SHRI UMANG SINGAR",
+      "mobile_no": "9826040402",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1934,
+      "DistrictName": "Bilaspur Rural",
+      "statename": "Chhattisgarh",
+      "Observer": "SHRI UMANG SINGAR",
+      "mobile_no": "9826040402",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1965,
+      "DistrictName": "Dantewada",
+      "statename": "Chhattisgarh",
+      "Observer": "SHRI AZMATULLAH HUSSAINI",
+      "mobile_no": "X9949607733",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1958,
+      "DistrictName": "Dhamtari",
+      "statename": "Chhattisgarh",
+      "Observer": "SMT. REHANAA CHISTI EX.CHAIRMAN MAHILA AYOG",
+      "mobile_no": "9414084133",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1952,
+      "DistrictName": "Durg city",
+      "statename": "Chhattisgarh",
+      "Observer": "SHRI AJAY KUMAR LALLU",
+      "mobile_no": "8765955030",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1951,
+      "DistrictName": "Durg rural",
+      "statename": "Chhattisgarh",
+      "Observer": "SHRI AJAY KUMAR LALLU",
+      "mobile_no": "8765955030",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1933,
+      "DistrictName": "Garella-Pendra Marwahi",
+      "statename": "Chhattisgarh",
+      "Observer": "SHRI SUBODH KANT SAHAI",
+      "mobile_no": "9031157222",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1959,
+      "DistrictName": "Gariaband",
+      "statename": "Chhattisgarh",
+      "Observer": "SMT. REHANAA CHISTI EX.CHAIRMAN MAHILA AYOG",
+      "mobile_no": "9414084133",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1962,
+      "DistrictName": "Jagdalpur City",
+      "statename": "Chhattisgarh",
+      "Observer": "SHRI SAPTAGIRI ULAKA",
+      "mobile_no": "9778195222",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1941,
+      "DistrictName": "Janjgeer-Champa",
+      "statename": "Chhattisgarh",
+      "Observer": "SHRI VIVEK BANSAL",
+      "mobile_no": "9837082678",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1927,
+      "DistrictName": "Jashpur",
+      "statename": "Chhattisgarh",
+      "Observer": "SHRI RAJESH THAKUR",
+      "mobile_no": "9470171122",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1955,
+      "DistrictName": "Kanker",
+      "statename": "Chhattisgarh",
+      "Observer": "SHRI MANOJ YADAV, AICC SECRETARY",
+      "mobile_no": "9899105464",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1946,
+      "DistrictName": "Kawardha",
+      "statename": "Chhattisgarh",
+      "Observer": "SHRI SHYAM KUMAR BARWE",
+      "mobile_no": "9923709988",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1947,
+      "DistrictName": "Khairagarh-Chhuikhadan-Gandai",
+      "statename": "Chhattisgarh",
+      "Observer": "SHRI CHARAN SINGH SAPRA",
+      "mobile_no": "9892244223",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1961,
+      "DistrictName": "Kondagaon",
+      "statename": "Chhattisgarh",
+      "Observer": "SHRI SAPTAGIRI ULAKA",
+      "mobile_no": "9778195222",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1937,
+      "DistrictName": "Korba City",
+      "statename": "Chhattisgarh",
+      "Observer": "SHRI R. C. KHUNTIA",
+      "mobile_no": "9868103999",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1938,
+      "DistrictName": "Korba Rural",
+      "statename": "Chhattisgarh",
+      "Observer": "SHRI R. C. KHUNTIA",
+      "mobile_no": "9868103999",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1931,
+      "DistrictName": "Koriya",
+      "statename": "Chhattisgarh",
+      "Observer": "SHRI SUBODH KANT SAHAI",
+      "mobile_no": "9031157222",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1960,
+      "DistrictName": "Mahasamund",
+      "statename": "Chhattisgarh",
+      "Observer": "MS RITA CHAUDHARY",
+      "mobile_no": "9829210065",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1932,
+      "DistrictName": "Manendragarh-Chirmiri-Bharatpur",
+      "statename": "Chhattisgarh",
+      "Observer": "SHRI SUBODH KANT SAHAI",
+      "mobile_no": "9031157222",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1950,
+      "DistrictName": "Mohla-Manpur-Ambagarh Chowki",
+      "statename": "Chhattisgarh",
+      "Observer": "SHRI CHARAN SINGH SAPRA",
+      "mobile_no": "9892244223",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1936,
+      "DistrictName": "Mungeli",
+      "statename": "Chhattisgarh",
+      "Observer": "SHRI UMANG SINGAR",
+      "mobile_no": "9826040402",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1964,
+      "DistrictName": "Narayanpur",
+      "statename": "Chhattisgarh",
+      "Observer": "SHRI AZMATULLAH HUSSAINI",
+      "mobile_no": "X9949607733",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1939,
+      "DistrictName": "Raigarh City",
+      "statename": "Chhattisgarh",
+      "Observer": "SHRI SITARAM LAMBA",
+      "mobile_no": "9983011222",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1940,
+      "DistrictName": "Raigarh Rural",
+      "statename": "Chhattisgarh",
+      "Observer": "SHRI SITARAM LAMBA",
+      "mobile_no": "9983011222",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1956,
+      "DistrictName": "Raipur City",
+      "statename": "Chhattisgarh",
+      "Observer": "SHRI PRAFULLA GUDADHE",
+      "mobile_no": "9822228497",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1957,
+      "DistrictName": "Raipur Rural",
+      "statename": "Chhattisgarh",
+      "Observer": "SHRI PRAFULLA GUDADHE",
+      "mobile_no": "9822228497",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1948,
+      "DistrictName": "Rajnandgaon City",
+      "statename": "Chhattisgarh",
+      "Observer": "SHRI CHARAN SINGH SAPRA",
+      "mobile_no": "9892244223",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1949,
+      "DistrictName": "Rajnandgaon Rural",
+      "statename": "Chhattisgarh",
+      "Observer": "SHRI CHARAN SINGH SAPRA",
+      "mobile_no": "9892244223",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1942,
+      "DistrictName": "Sakti",
+      "statename": "Chhattisgarh",
+      "Observer": "SHRI VIVEK BANSAL",
+      "mobile_no": "9837082678",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1966,
+      "DistrictName": "Sukma",
+      "statename": "Chhattisgarh",
+      "Observer": "SHRI AZMATULLAH HUSSAINI",
+      "mobile_no": "X9949607733",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1930,
+      "DistrictName": "Surajpur",
+      "statename": "Chhattisgarh",
+      "Observer": "SHRI VIKAS THAKRE",
+      "mobile_no": "9422808522",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1928,
+      "DistrictName": "Surguja",
+      "statename": "Chhattisgarh",
+      "Observer": "SHRI RAJESH THAKUR",
+      "mobile_no": "9470171122",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2364,
+      "DistrictName": "Adarsh Nagar",
+      "statename": "Delhi",
+      "Observer": "SHRI ASHOK SINGH",
+      "mobile_no": "9425112143",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2367,
+      "DistrictName": "Babarpur",
+      "statename": "Delhi",
+      "Observer": "SHRI R. C. KHUNTIA",
+      "mobile_no": "9868103999",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2377,
+      "DistrictName": "Badarpur",
+      "statename": "Delhi",
+      "Observer": "SHRI GC CHANDRASHEKHAR, MP",
+      "mobile_no": "9845004979",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2365,
+      "DistrictName": "Chandni Chowk",
+      "statename": "Delhi",
+      "Observer": "SHRI N RAGUVEERA REDDY",
+      "mobile_no": "9135549999",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2366,
+      "DistrictName": "Karawal Nagar",
+      "statename": "Delhi",
+      "Observer": "SHRI SURENDER SHARMA",
+      "mobile_no": "9817206464",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2370,
+      "DistrictName": "Karol Bagh",
+      "statename": "Delhi",
+      "Observer": "SHRI VIKAR RASOOL WANI",
+      "mobile_no": "9906044484",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2373,
+      "DistrictName": "Kirari",
+      "statename": "Delhi",
+      "Observer": "SHRI SURESH KUMAR",
+      "mobile_no": "9418063205",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2369,
+      "DistrictName": "Krishna Nagar",
+      "statename": "Delhi",
+      "Observer": "SHRI SUKHDEV PANSE",
+      "mobile_no": "9425002499",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2376,
+      "DistrictName": "Mehrauli",
+      "statename": "Delhi",
+      "Observer": "SHRI SURENDER SINGH BAGHEL",
+      "mobile_no": "9425357942",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2375,
+      "DistrictName": "Najafgarh",
+      "statename": "Delhi",
+      "Observer": "SHRI BHAJAN LAL JATAV, MP",
+      "mobile_no": "9784778861",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2371,
+      "DistrictName": "New Delhi",
+      "statename": "Delhi",
+      "Observer": "SHRI B.K HARIPRASAD",
+      "mobile_no": "9448079905",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2368,
+      "DistrictName": "Patparganj",
+      "statename": "Delhi",
+      "Observer": "SHRI. AJAY KUMAR LALLU",
+      "mobile_no": "7521826419",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2372,
+      "DistrictName": "Rohini",
+      "statename": "Delhi",
+      "Observer": "SHRI LALJI DESAI",
+      "mobile_no": "9409424344",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2374,
+      "DistrictName": "Tilak Nagar",
+      "statename": "Delhi",
+      "Observer": "SHRI VIJAY INDER SINGLA",
+      "mobile_no": "9013180244",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2249,
+      "DistrictName": "Kushavati",
+      "statename": "Goa",
+      "Observer": "SHRI VIJAY INDER SINGLA",
+      "mobile_no": "9013180244",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2250,
+      "DistrictName": "Mhadei",
+      "statename": "Goa",
+      "Observer": "SHRI RC KHUNTIA",
+      "mobile_no": "9810399295",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2251,
+      "DistrictName": "North Goa",
+      "statename": "Goa",
+      "Observer": "MS SHOBHA OZA",
+      "mobile_no": "9911390501",
+      "Profiles": 1
+    },
+    {
+      "districtid": 2248,
+      "DistrictName": "South Goa",
+      "statename": "Goa",
+      "Observer": "SHRI N RAGUVEERA REDDY",
+      "mobile_no": "9135549999",
+      "Profiles": 1
+    },
+    {
+      "districtid": 2100,
+      "DistrictName": "Bilaspur",
+      "statename": "Himachal Pradesh",
+      "Observer": "MS HINA KAWRE",
+      "mobile_no": "8989252684",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2101,
+      "DistrictName": "Chamba",
+      "statename": "Himachal Pradesh",
+      "Observer": "SHRI SUKHDEV BHAGAT",
+      "mobile_no": "9431118023",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2102,
+      "DistrictName": "Hamirpur",
+      "statename": "Himachal Pradesh",
+      "Observer": "SHRI SHAKTISINH GOHIL",
+      "mobile_no": "9824000852",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2103,
+      "DistrictName": "Kangra",
+      "statename": "Himachal Pradesh",
+      "Observer": "SHRI VIKAR RASOOL WANI",
+      "mobile_no": "9906044484",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2104,
+      "DistrictName": "Kinnaur",
+      "statename": "Himachal Pradesh",
+      "Observer": "SHRI. RANVIJAY SINGH LOCHAV",
+      "mobile_no": "9999099444",
+      "Profiles": 1
+    },
+    {
+      "districtid": 2105,
+      "DistrictName": "Kullu",
+      "statename": "Himachal Pradesh",
+      "Observer": "SHRI KULDEEP INDORA",
+      "mobile_no": "9414064546",
+      "Profiles": 2
+    },
+    {
+      "districtid": 2106,
+      "DistrictName": "Lahaulspiti",
+      "statename": "Himachal Pradesh",
+      "Observer": "KM. JYOTI RAUTELA",
+      "mobile_no": "9911757933",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2107,
+      "DistrictName": "Mandi",
+      "statename": "Himachal Pradesh",
+      "Observer": "SHRI RAJESH THAKUR",
+      "mobile_no": "9470171122",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2108,
+      "DistrictName": "Shimla (R)",
+      "statename": "Himachal Pradesh",
+      "Observer": "SMT. SANJANA JATAV",
+      "mobile_no": "9376702771",
+      "Profiles": 2
+    },
+    {
+      "districtid": 2207,
+      "DistrictName": "Shimla (U)",
+      "statename": "Himachal Pradesh",
+      "Observer": "SMT. SANJANA JATAV",
+      "mobile_no": "9376702771",
+      "Profiles": 2
+    },
+    {
+      "districtid": 2109,
+      "DistrictName": "Sirmaur",
+      "statename": "Himachal Pradesh",
+      "Observer": "SHRI BP SINGH",
+      "mobile_no": "9810384335",
+      "Profiles": 6
+    },
+    {
+      "districtid": 2110,
+      "DistrictName": "Solan",
+      "statename": "Himachal Pradesh",
+      "Observer": "SHRI. JITENDRA BAGHEL",
+      "mobile_no": "9810061611",
+      "Profiles": 1
+    },
+    {
+      "districtid": 2111,
+      "DistrictName": "Una",
+      "statename": "Himachal Pradesh",
+      "Observer": "SHRI SUKHDEV PANSE",
+      "mobile_no": "9425002499",
+      "Profiles": 5
+    },
+    {
+      "districtid": 2112,
+      "DistrictName": "Anantnag",
+      "statename": "Jammu and Kashmir",
+      "Observer": "SHRI RAFIQ KHAN",
+      "mobile_no": "9351610110",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2113,
+      "DistrictName": "Bandipur",
+      "statename": "Jammu and Kashmir",
+      "Observer": "SHRI SITARAM LAMBA",
+      "mobile_no": "9983011222",
+      "Profiles": 1
+    },
+    {
+      "districtid": 2114,
+      "DistrictName": "Baramulla",
+      "statename": "Jammu and Kashmir",
+      "Observer": "SHRI. ABDUL HANNAN",
+      "mobile_no": "9811824426",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2115,
+      "DistrictName": "Budgam",
+      "statename": "Jammu and Kashmir",
+      "Observer": "SMT. SHAMINA SHAFIQ",
+      "mobile_no": "9968099993",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2116,
+      "DistrictName": "Doda",
+      "statename": "Jammu and Kashmir",
+      "Observer": "SHRI PRAKASH JOSHI",
+      "mobile_no": "9311090389",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2117,
+      "DistrictName": "Ganderbal",
+      "statename": "Jammu and Kashmir",
+      "Observer": "SHRI. SANJAY CHHOKAR",
+      "mobile_no": "9215961701",
+      "Profiles": 2
+    },
+    {
+      "districtid": 2118,
+      "DistrictName": "Jammu Rural",
+      "statename": "Jammu and Kashmir",
+      "Observer": "SHRI MOHAN MARKAM",
+      "mobile_no": "9070040857",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2119,
+      "DistrictName": "Jammu Urban",
+      "statename": "Jammu and Kashmir",
+      "Observer": "MS RITA CHAUDHARY",
+      "mobile_no": "9829210065",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2120,
+      "DistrictName": "Kathua",
+      "statename": "Jammu and Kashmir",
+      "Observer": "SHRI YASHPAL ARYA",
+      "mobile_no": "9997196151",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2121,
+      "DistrictName": "Kishtwar",
+      "statename": "Jammu and Kashmir",
+      "Observer": "SHRI KEWAL SINGH PATHANIA",
+      "mobile_no": "9418034500",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2122,
+      "DistrictName": "Kulgam",
+      "statename": "Jammu and Kashmir",
+      "Observer": "SHRI. JAYENDRA RAMOLA",
+      "mobile_no": "9412050948",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2123,
+      "DistrictName": "Kupwara",
+      "statename": "Jammu and Kashmir",
+      "Observer": "SHRI. SANJAY KAPOOR",
+      "mobile_no": "9412251451",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2124,
+      "DistrictName": "Poonch",
+      "statename": "Jammu and Kashmir",
+      "Observer": "SHRI. ANANT DAHIYA",
+      "mobile_no": "9871981981",
+      "Profiles": 4
+    },
+    {
+      "districtid": 2125,
+      "DistrictName": "Pulwama",
+      "statename": "Jammu and Kashmir",
+      "Observer": "SHRI. AFTAB AHMED",
+      "mobile_no": "9212002466",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2126,
+      "DistrictName": "Rajouri",
+      "statename": "Jammu and Kashmir",
+      "Observer": "SHRI SURESH KUMAR",
+      "mobile_no": "9418063205",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2127,
+      "DistrictName": "Ramban",
+      "statename": "Jammu and Kashmir",
+      "Observer": "SHRI JETTI KUSUM KUMAR",
+      "mobile_no": "9848016000",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2128,
+      "DistrictName": "Reasi",
+      "statename": "Jammu and Kashmir",
+      "Observer": "SMT. SARIKA SINGH",
+      "mobile_no": "9414515905",
+      "Profiles": 4
+    },
+    {
+      "districtid": 2129,
+      "DistrictName": "Samba",
+      "statename": "Jammu and Kashmir",
+      "Observer": "SHRI. TASVEER SOLANKI",
+      "mobile_no": "9818364236",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2130,
+      "DistrictName": "Shopian",
+      "statename": "Jammu and Kashmir",
+      "Observer": "SHRI DINESH GURJAR",
+      "mobile_no": "9479327189",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2131,
+      "DistrictName": "Srinagar",
+      "statename": "Jammu and Kashmir",
+      "Observer": "SHRI. AJAY KUMAR LALLU",
+      "mobile_no": "7521826419",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2132,
+      "DistrictName": "Udhampur",
+      "statename": "Jammu and Kashmir",
+      "Observer": "SHRI. UDAI BHAN",
+      "mobile_no": "9896971047",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1807,
+      "DistrictName": "Bokaro",
+      "statename": "Jharkhand",
+      "Observer": "MS. HINA KAWARE, EX. DY-SPEAKER",
+      "mobile_no": "X_8989252684",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1808,
+      "DistrictName": "Chatra",
+      "statename": "Jharkhand",
+      "Observer": "SHRI SHYAM KUMAR BARWE, MP",
+      "mobile_no": "X_9923709988",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1809,
+      "DistrictName": "Deoghar",
+      "statename": "Jharkhand",
+      "Observer": "SHRI MALENDRA RAJAN, MLA",
+      "mobile_no": "X_9459287419",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1810,
+      "DistrictName": "Dhanbad",
+      "statename": "Jharkhand",
+      "Observer": "SHRI DINESH GURJAR",
+      "mobile_no": "9479327189",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1811,
+      "DistrictName": "Dumka",
+      "statename": "Jharkhand",
+      "Observer": "SHRI SURAJ SINGH THAKUR",
+      "mobile_no": "9773777707",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1812,
+      "DistrictName": "East Singhbhum",
+      "statename": "Jharkhand",
+      "Observer": "SHRI ANANT PATEL, MLA",
+      "mobile_no": "X_9426590646",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1813,
+      "DistrictName": "Garhwa",
+      "statename": "Jharkhand",
+      "Observer": "SMT. YASHOMATI THAKUR , EX MINISTER",
+      "mobile_no": "X_7745081111",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1814,
+      "DistrictName": "Giridih",
+      "statename": "Jharkhand",
+      "Observer": "SHRI IMRAN KHEDAWALA, MLA",
+      "mobile_no": "X_9327426017",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1815,
+      "DistrictName": "Godda",
+      "statename": "Jharkhand",
+      "Observer": "SHRI RC KHUNTIA",
+      "mobile_no": "9810399295",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1816,
+      "DistrictName": "Gumla",
+      "statename": "Jharkhand",
+      "Observer": "SHRI RAGHU SHARMA",
+      "mobile_no": "9829054019",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1817,
+      "DistrictName": "Hazaribagh",
+      "statename": "Jharkhand",
+      "Observer": "SHRI SUDEEP ROY BURMAN, EX. CLP",
+      "mobile_no": "X_9862818625",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1818,
+      "DistrictName": "Jamtara",
+      "statename": "Jharkhand",
+      "Observer": "SHRI ARUN YADAV, EX. MPCC PRESIDENT",
+      "mobile_no": "X_9425087222",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1819,
+      "DistrictName": "Khunti",
+      "statename": "Jharkhand",
+      "Observer": "SMT. SZARITA LAITPHLANG, AICC SECRETARY",
+      "mobile_no": "9862065493",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1820,
+      "DistrictName": "Koderma",
+      "statename": "Jharkhand",
+      "Observer": "SHRI MANIKRAO THAKRE, MEMBER CWC",
+      "mobile_no": "X_9689664990",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1821,
+      "DistrictName": "Latehar",
+      "statename": "Jharkhand",
+      "Observer": "SHRI SUNIL KEDAR, EX. MINISTER",
+      "mobile_no": "X_9422108360",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1822,
+      "DistrictName": "Lohardaga",
+      "statename": "Jharkhand",
+      "Observer": "SHRI MOHAN MARKAM",
+      "mobile_no": "9070040857",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1823,
+      "DistrictName": "Pakur",
+      "statename": "Jharkhand",
+      "Observer": "SHRI ABDUL KHALEQUE, EX. MP",
+      "mobile_no": "X_7002433353",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1824,
+      "DistrictName": "Palamu",
+      "statename": "Jharkhand",
+      "Observer": "DR. AMEE YAJNIK, MEMBER CEC",
+      "mobile_no": "X_9825107727",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1825,
+      "DistrictName": "Ramgarh",
+      "statename": "Jharkhand",
+      "Observer": "SHRI. PREM SAI THEKAM, EX MINISTER",
+      "mobile_no": "X_9826816232",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1826,
+      "DistrictName": "Ranchi Mahanagar",
+      "statename": "Jharkhand",
+      "Observer": "SHRI VIJAY INDER SINGLA, EX MINISTER",
+      "mobile_no": "X_9013180244",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1827,
+      "DistrictName": "Ranchi Rural",
+      "statename": "Jharkhand",
+      "Observer": "SMT. PHULO DEVI NETAM, MP MEMBER CWC",
+      "mobile_no": "X_9425597472",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1828,
+      "DistrictName": "Sahibganj",
+      "statename": "Jharkhand",
+      "Observer": "SHRI PRABHU TOKIA, PRESIDENT TCC D&N HAVELI",
+      "mobile_no": "X_8141570666",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1829,
+      "DistrictName": "Saraikela-Kharsawan",
+      "statename": "Jharkhand",
+      "Observer": "SHRI BISHWARANJAN MOHANTHY",
+      "mobile_no": "9937715270",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1830,
+      "DistrictName": "Simdega",
+      "statename": "Jharkhand",
+      "Observer": "SHRI. H. S. LUCKY",
+      "mobile_no": "9872511115",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1831,
+      "DistrictName": "West Singhbhum",
+      "statename": "Jharkhand",
+      "Observer": "SHRI SAJJAN SINGH VERMA, EX. MINISTER",
+      "mobile_no": "X_9425066877",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2316,
+      "DistrictName": "Ahilyanagar City",
+      "statename": "Maharashtra",
+      "Observer": "SHRI SARAT RAUT",
+      "mobile_no": "9438061787",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2315,
+      "DistrictName": "Ahilyanagar Rural",
+      "statename": "Maharashtra",
+      "Observer": "SHRI SARAT RAUT",
+      "mobile_no": "9438061787",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2324,
+      "DistrictName": "Akola City",
+      "statename": "Maharashtra",
+      "Observer": "SHRI GIDUGU RUDRA RAJU",
+      "mobile_no": "9848422023",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2323,
+      "DistrictName": "Akola Rural",
+      "statename": "Maharashtra",
+      "Observer": "SHRI GIDUGU RUDRA RAJU",
+      "mobile_no": "9848422023",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2327,
+      "DistrictName": "Amravati City",
+      "statename": "Maharashtra",
+      "Observer": "SHRI. AFTAB AHMED",
+      "mobile_no": "9212002466",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2326,
+      "DistrictName": "Amravati Rural",
+      "statename": "Maharashtra",
+      "Observer": "SHRI. AFTAB AHMED",
+      "mobile_no": "9212002466",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2344,
+      "DistrictName": "Beed",
+      "statename": "Maharashtra",
+      "Observer": "SMT. NEETU VERMA",
+      "mobile_no": "9810643074",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2331,
+      "DistrictName": "Bhandara",
+      "statename": "Maharashtra",
+      "Observer": "SMT. SANGEETA BENIWAL, EX. MP CANDIDATE",
+      "mobile_no": "9414134567",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2307,
+      "DistrictName": "Bhiwandi City",
+      "statename": "Maharashtra",
+      "Observer": "SHRI MAMAN KHAN",
+      "mobile_no": "9818300005",
+      "Profiles": 5
+    },
+    {
+      "districtid": 2321,
+      "DistrictName": "Buldhana",
+      "statename": "Maharashtra",
+      "Observer": "SHRI. ABDUL HANNAN",
+      "mobile_no": "9811824426",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2335,
+      "DistrictName": "Chandrapur City",
+      "statename": "Maharashtra",
+      "Observer": "SHRI SANTOSH KOLKUNDA",
+      "mobile_no": "9441949255",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2334,
+      "DistrictName": "Chandrapur Rural",
+      "statename": "Maharashtra",
+      "Observer": "SHRI SANTOSH KOLKUNDA",
+      "mobile_no": "9441949255",
+      "Profiles": 1
+    },
+    {
+      "districtid": 2341,
+      "DistrictName": "Chatrapati Sambhaji Nagar City",
+      "statename": "Maharashtra",
+      "Observer": "SHRI VIVEK BANSAL",
+      "mobile_no": "9837082678",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2342,
+      "DistrictName": "Chatrapati Sambhaji Nagar Rural",
+      "statename": "Maharashtra",
+      "Observer": "SHRI VIVEK BANSAL",
+      "mobile_no": "9837082678",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2343,
+      "DistrictName": "Dharashiv",
+      "statename": "Maharashtra",
+      "Observer": "SHRI RAJESH TIWARI",
+      "mobile_no": "9425259577",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2313,
+      "DistrictName": "Dhule City",
+      "statename": "Maharashtra",
+      "Observer": "SHRI YOGESH DIKSHIT",
+      "mobile_no": "9412275432",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2312,
+      "DistrictName": "Dhule Rural",
+      "statename": "Maharashtra",
+      "Observer": "SHRI YOGESH DIKSHIT",
+      "mobile_no": "9412275432",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2299,
+      "DistrictName": "Dombiwali",
+      "statename": "Maharashtra",
+      "Observer": "DR PALAK VERMA",
+      "mobile_no": "7600995555",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2333,
+      "DistrictName": "Gadchiroli",
+      "statename": "Maharashtra",
+      "Observer": "SHRI MANISH YADAV",
+      "mobile_no": "9950922222",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2332,
+      "DistrictName": "Gondia",
+      "statename": "Maharashtra",
+      "Observer": "SMT. SANGEETA BENIWAL, EX. MP CANDIDATE",
+      "mobile_no": "9414134567",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2336,
+      "DistrictName": "Hingoli",
+      "statename": "Maharashtra",
+      "Observer": "SHRI. SANJAY CHHOKAR",
+      "mobile_no": "9215961701",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2356,
+      "DistrictName": "Ichalkaranji",
+      "statename": "Maharashtra",
+      "Observer": "SHRI JAISHANKAR PATHAK",
+      "mobile_no": "9431706664",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2319,
+      "DistrictName": "Jalgaon City",
+      "statename": "Maharashtra",
+      "Observer": "SHRI PRAMOD KUMAR",
+      "mobile_no": "9810032249",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2318,
+      "DistrictName": "Jalgaon Rural",
+      "statename": "Maharashtra",
+      "Observer": "SHRI PRAMOD KUMAR",
+      "mobile_no": "9810032249",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2338,
+      "DistrictName": "Jalna City",
+      "statename": "Maharashtra",
+      "Observer": "SHRI HIMMAT SINGH PATEL, EX. MLA",
+      "mobile_no": "9825012034",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2337,
+      "DistrictName": "Jalna Rural",
+      "statename": "Maharashtra",
+      "Observer": "SHRI HIMMAT SINGH PATEL, EX. MLA",
+      "mobile_no": "9825012034",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2298,
+      "DistrictName": "Kalyan City",
+      "statename": "Maharashtra",
+      "Observer": "DR PALAK VERMA",
+      "mobile_no": "7600995555",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2357,
+      "DistrictName": "Kolhapur City",
+      "statename": "Maharashtra",
+      "Observer": "SHRI JAISHANKAR PATHAK",
+      "mobile_no": "9431706664",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2355,
+      "DistrictName": "Kolhapur Rural",
+      "statename": "Maharashtra",
+      "Observer": "SHRI JAISHANKAR PATHAK",
+      "mobile_no": "9431706664",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2349,
+      "DistrictName": "Latur City",
+      "statename": "Maharashtra",
+      "Observer": "SHRI. H. S. LUCKY",
+      "mobile_no": "9872511115",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2348,
+      "DistrictName": "Latur Rural",
+      "statename": "Maharashtra",
+      "Observer": "SHRI. H. S. LUCKY",
+      "mobile_no": "9872511115",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2351,
+      "DistrictName": "Madha (Solapur)",
+      "statename": "Maharashtra",
+      "Observer": "SHRI DEBASIS PATNAIK",
+      "mobile_no": "9937220256",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2311,
+      "DistrictName": "Malegaon City",
+      "statename": "Maharashtra",
+      "Observer": "SMT. SHAMINA SHAFIQ",
+      "mobile_no": "9968099993",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2305,
+      "DistrictName": "Mira Bhayandar City",
+      "statename": "Maharashtra",
+      "Observer": "SHRI. BELLAIAH NAIK",
+      "mobile_no": "9848048504",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2330,
+      "DistrictName": "Nagpur City",
+      "statename": "Maharashtra",
+      "Observer": "SHRI. ARUN YADAV",
+      "mobile_no": "9868180243",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2329,
+      "DistrictName": "Nagpur Rural",
+      "statename": "Maharashtra",
+      "Observer": "SHRI RAO DAN SINGH, EX. MINISTER",
+      "mobile_no": "9015300007",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2345,
+      "DistrictName": "Nanded City",
+      "statename": "Maharashtra",
+      "Observer": "Shri Venugopal Rao Harkara",
+      "mobile_no": "9703303333",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2347,
+      "DistrictName": "Nanded North Rural",
+      "statename": "Maharashtra",
+      "Observer": "Shri Venugopal Rao Harkara",
+      "mobile_no": "9703303333",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2346,
+      "DistrictName": "Nanded South Rural",
+      "statename": "Maharashtra",
+      "Observer": "Shri Venugopal Rao Harkara",
+      "mobile_no": "9703303333",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2314,
+      "DistrictName": "Nandurbar",
+      "statename": "Maharashtra",
+      "Observer": "SHRI AHKILESH SHUKLA",
+      "mobile_no": "9305046756",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2308,
+      "DistrictName": "Nashik City",
+      "statename": "Maharashtra",
+      "Observer": "SHRI MAQSOOD KHAN",
+      "mobile_no": "9793111786",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2310,
+      "DistrictName": "Nashik Rural North",
+      "statename": "Maharashtra",
+      "Observer": "SMT. SHAMINA SHAFIQ",
+      "mobile_no": "9968099993",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2309,
+      "DistrictName": "Nashik Rural South",
+      "statename": "Maharashtra",
+      "Observer": "SHRI MAQSOOD KHAN",
+      "mobile_no": "9793111786",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2302,
+      "DistrictName": "Navi Mumbai",
+      "statename": "Maharashtra",
+      "Observer": "SHRI NADEEM JAVED",
+      "mobile_no": "7233888888",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2304,
+      "DistrictName": "Palghar",
+      "statename": "Maharashtra",
+      "Observer": "SHRI. BELLAIAH NAIK",
+      "mobile_no": "9848048504",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2297,
+      "DistrictName": "Panvel",
+      "statename": "Maharashtra",
+      "Observer": "DR. RAGINI NAYAK",
+      "mobile_no": "9811294884",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2340,
+      "DistrictName": "Parbhani City",
+      "statename": "Maharashtra",
+      "Observer": "SHRI. AZMATULLAH HUSAINI",
+      "mobile_no": "9949607733",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2339,
+      "DistrictName": "Parbhani Rural",
+      "statename": "Maharashtra",
+      "Observer": "SHRI. AZMATULLAH HUSAINI",
+      "mobile_no": "9949607733",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2363,
+      "DistrictName": "Pimpri-Chinchwad",
+      "statename": "Maharashtra",
+      "Observer": "SHRI VINOD SULTANPURI",
+      "mobile_no": "9816189666",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2361,
+      "DistrictName": "Pune City East",
+      "statename": "Maharashtra",
+      "Observer": "SHRI VINOD SULTANPURI",
+      "mobile_no": "9816189666",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2362,
+      "DistrictName": "Pune City West",
+      "statename": "Maharashtra",
+      "Observer": "SHRI VINOD SULTANPURI",
+      "mobile_no": "9816189666",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2359,
+      "DistrictName": "Pune Rural",
+      "statename": "Maharashtra",
+      "Observer": "SHRI. YOGESH H.C",
+      "mobile_no": "9845235022",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2360,
+      "DistrictName": "Pune Rural Baramati",
+      "statename": "Maharashtra",
+      "Observer": "SHRI. YOGESH H.C",
+      "mobile_no": "9845235022",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2295,
+      "DistrictName": "Raigad North",
+      "statename": "Maharashtra",
+      "Observer": "DR. RAGINI NAYAK",
+      "mobile_no": "9811294884",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2296,
+      "DistrictName": "Raigad South",
+      "statename": "Maharashtra",
+      "Observer": "DR. RAGINI NAYAK",
+      "mobile_no": "9811294884",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2294,
+      "DistrictName": "Ratnagiri North",
+      "statename": "Maharashtra",
+      "Observer": "SHRI DANISH ABRAR",
+      "mobile_no": "8800279050",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2293,
+      "DistrictName": "Ratnagiri South",
+      "statename": "Maharashtra",
+      "Observer": "SHRI DANISH ABRAR",
+      "mobile_no": "8800279050",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2320,
+      "DistrictName": "Raver",
+      "statename": "Maharashtra",
+      "Observer": "SHRI PRAMOD KUMAR",
+      "mobile_no": "9810032249",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2353,
+      "DistrictName": "Sangli Rural",
+      "statename": "Maharashtra",
+      "Observer": "SHRI THOTA LAXMIKANT RAO",
+      "mobile_no": "9000009661",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2354,
+      "DistrictName": "Sangli-Miraj-Kupwad City",
+      "statename": "Maharashtra",
+      "Observer": "SHRI THOTA LAXMIKANT RAO",
+      "mobile_no": "9000009661",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2358,
+      "DistrictName": "Satara",
+      "statename": "Maharashtra",
+      "Observer": "SHRI MALENDRA RAJAN",
+      "mobile_no": "9459287419",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2317,
+      "DistrictName": "Shirdi",
+      "statename": "Maharashtra",
+      "Observer": "SHRI RAJESH THAKUR",
+      "mobile_no": "9470171122",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2292,
+      "DistrictName": "Sindhudurg",
+      "statename": "Maharashtra",
+      "Observer": "SHRI DANISH ABRAR",
+      "mobile_no": "8800279050",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2352,
+      "DistrictName": "Solapur City",
+      "statename": "Maharashtra",
+      "Observer": "SHRI DEBASIS PATNAIK",
+      "mobile_no": "9937220256",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2350,
+      "DistrictName": "Solapur Rural",
+      "statename": "Maharashtra",
+      "Observer": "SHRI DEBASIS PATNAIK",
+      "mobile_no": "9937220256",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2301,
+      "DistrictName": "Thane City",
+      "statename": "Maharashtra",
+      "Observer": "SHRI NADEEM JAVED",
+      "mobile_no": "7233888888",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2306,
+      "DistrictName": "Thane Rural",
+      "statename": "Maharashtra",
+      "Observer": "SHRI MAMAN KHAN",
+      "mobile_no": "9818300005",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2300,
+      "DistrictName": "Ulhasnagar",
+      "statename": "Maharashtra",
+      "Observer": "DR PALAK VERMA",
+      "mobile_no": "7600995555",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2303,
+      "DistrictName": "Vasai Virar",
+      "statename": "Maharashtra",
+      "Observer": "SHRI. BELLAIAH NAIK",
+      "mobile_no": "9848048504",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2328,
+      "DistrictName": "Wardha",
+      "statename": "Maharashtra",
+      "Observer": "MS. SHWETA SINGH",
+      "mobile_no": "9122124426",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2322,
+      "DistrictName": "Washim",
+      "statename": "Maharashtra",
+      "Observer": "SHRI GIDUGU RUDRA RAJU",
+      "mobile_no": "9848422023",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2325,
+      "DistrictName": "Yavatmal",
+      "statename": "Maharashtra",
+      "Observer": "SHRI. SANJAY KAPOOR",
+      "mobile_no": "9412251451",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2232,
+      "DistrictName": "Bishnupur",
+      "statename": "Manipur",
+      "Observer": "SHRI. AZMATULLAH HUSAINI",
+      "mobile_no": "9949607733",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2227,
+      "DistrictName": "Chandel",
+      "statename": "Manipur",
+      "Observer": "SHRI PRAFULLA GUDADHE",
+      "mobile_no": "9822228497",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2233,
+      "DistrictName": "Churachandpur",
+      "statename": "Manipur",
+      "Observer": "Shri Venugopal Rao Harkara",
+      "mobile_no": "9703303333",
+      "Profiles": 2
+    },
+    {
+      "districtid": 2223,
+      "DistrictName": "City District",
+      "statename": "Manipur",
+      "Observer": "SHRI GIDUGU RUDRA RAJU",
+      "mobile_no": "9848422023",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2220,
+      "DistrictName": "Imphal East",
+      "statename": "Manipur",
+      "Observer": "SHRI SARAT RAUT",
+      "mobile_no": "9438061787",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2228,
+      "DistrictName": "Imphal West-I",
+      "statename": "Manipur",
+      "Observer": "DR PALAK VERMA",
+      "mobile_no": "7600995555",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2229,
+      "DistrictName": "Imphal West-II",
+      "statename": "Manipur",
+      "Observer": "DR PALAK VERMA",
+      "mobile_no": "7600995555",
+      "Profiles": 3
+    },
+    {
+      "districtid": 2226,
+      "DistrictName": "Kakching",
+      "statename": "Manipur",
+      "Observer": "SHRI PRAFULLA GUDADHE",
+      "mobile_no": "9822228497",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2231,
+      "DistrictName": "Sadar Hills",
+      "statename": "Manipur",
+      "Observer": "SHRI. YOGESH H.C",
+      "mobile_no": "9845235022",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2221,
+      "DistrictName": "Sawombung",
+      "statename": "Manipur",
+      "Observer": "SHRI SARAT RAUT",
+      "mobile_no": "9438061787",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2224,
+      "DistrictName": "Senapati",
+      "statename": "Manipur",
+      "Observer": "SHRI. H. S. LUCKY",
+      "mobile_no": "9872511115",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2230,
+      "DistrictName": "Tamenglong",
+      "statename": "Manipur",
+      "Observer": "SHRI. YOGESH H.C",
+      "mobile_no": "9845235022",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2222,
+      "DistrictName": "Thoubal",
+      "statename": "Manipur",
+      "Observer": "SHRI. AJAY KUMAR LALLU",
+      "mobile_no": "7521826419",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2225,
+      "DistrictName": "Ukhrul",
+      "statename": "Manipur",
+      "Observer": "SHRI. H. S. LUCKY",
+      "mobile_no": "9872511115",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2244,
+      "DistrictName": "East Garo hills",
+      "statename": "Meghalaya",
+      "Observer": "SHRI MANISH YADAV",
+      "mobile_no": "9950922222",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2235,
+      "DistrictName": "East Jaintia Hill",
+      "statename": "Meghalaya",
+      "Observer": "MS KIM HAOKIP",
+      "mobile_no": "9862568514",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2238,
+      "DistrictName": "East Khasi Hills",
+      "statename": "Meghalaya",
+      "Observer": "SHRI. SAUMYA REDDY",
+      "mobile_no": "9686018042",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2241,
+      "DistrictName": "Eastern West Khasi Hills",
+      "statename": "Meghalaya",
+      "Observer": "SHRI DANISH ABRAR",
+      "mobile_no": "8800279050",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2243,
+      "DistrictName": "North Garo Hills",
+      "statename": "Meghalaya",
+      "Observer": "SHRI MANISH YADAV",
+      "mobile_no": "9950922222",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2236,
+      "DistrictName": "Ri Bhoi",
+      "statename": "Meghalaya",
+      "Observer": "SHRI. J.R.LOBO",
+      "mobile_no": "9448375245",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2237,
+      "DistrictName": "Shillong City",
+      "statename": "Meghalaya",
+      "Observer": "SHRI NADEEM JAVED",
+      "mobile_no": "7233888888",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2246,
+      "DistrictName": "South Garo Hills",
+      "statename": "Meghalaya",
+      "Observer": "SHRI AMIR HUSSAIN KHUTHEIBAM",
+      "mobile_no": "7085556980",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2247,
+      "DistrictName": "South West Garo Hills",
+      "statename": "Meghalaya",
+      "Observer": "SHRI AMIR HUSSAIN KHUTHEIBAM",
+      "mobile_no": "7085556980",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2240,
+      "DistrictName": "South West Khasi Hills",
+      "statename": "Meghalaya",
+      "Observer": "SHRI SACHIN NAIK",
+      "mobile_no": "9423435630",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2245,
+      "DistrictName": "Tura City",
+      "statename": "Meghalaya",
+      "Observer": "SMT TILOTAMA LOITONGBAM",
+      "mobile_no": "9862708273",
+      "Profiles": 1
+    },
+    {
+      "districtid": 2242,
+      "DistrictName": "West Garo hills",
+      "statename": "Meghalaya",
+      "Observer": "SHRI. BELLAIAH NAIK",
+      "mobile_no": "9848048504",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2234,
+      "DistrictName": "West Jaintia Hill",
+      "statename": "Meghalaya",
+      "Observer": "MS KIM HAOKIP",
+      "mobile_no": "9862568514",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2239,
+      "DistrictName": "West khasi Hills",
+      "statename": "Meghalaya",
+      "Observer": "SHRI SACHIN NAIK",
+      "mobile_no": "9423435630",
+      "Profiles": 4
+    },
+    {
+      "districtid": 2209,
+      "DistrictName": "Dimapur",
+      "statename": "Nagaland",
+      "Observer": "DR. VIJAY LAKSHMI SADHO",
+      "mobile_no": "9425392490",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2218,
+      "DistrictName": "Kiphire",
+      "statename": "Nagaland",
+      "Observer": "SHRI. IVAN DSOUZA",
+      "mobile_no": "9845085875",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2208,
+      "DistrictName": "Kohima",
+      "statename": "Nagaland",
+      "Observer": "SHRI LALJI DESAI",
+      "mobile_no": "9409424344",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2215,
+      "DistrictName": "Longleng",
+      "statename": "Nagaland",
+      "Observer": "SHRI. BALMOORI VENKAT",
+      "mobile_no": "7386722222",
+      "Profiles": 1
+    },
+    {
+      "districtid": 2217,
+      "DistrictName": "Mokokchung",
+      "statename": "Nagaland",
+      "Observer": "SHRI. K.B.R.NAIDU",
+      "mobile_no": "9560700817",
+      "Profiles": 1
+    },
+    {
+      "districtid": 2214,
+      "DistrictName": "Mon",
+      "statename": "Nagaland",
+      "Observer": "SHRI RAHUL BAL",
+      "mobile_no": "9910999388",
+      "Profiles": 5
+    },
+    {
+      "districtid": 2219,
+      "DistrictName": "Noklak",
+      "statename": "Nagaland",
+      "Observer": "SHRI. IVAN DSOUZA",
+      "mobile_no": "9845085875",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2210,
+      "DistrictName": "Peren",
+      "statename": "Nagaland",
+      "Observer": "SHRI VICTOR KEISHING",
+      "mobile_no": "9436020295",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2211,
+      "DistrictName": "Phek",
+      "statename": "Nagaland",
+      "Observer": "SHRI BISHWARANJAN MOHANTHY",
+      "mobile_no": "9937715270",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2216,
+      "DistrictName": "Tuensang",
+      "statename": "Nagaland",
+      "Observer": "SHRI. BALMOORI VENKAT",
+      "mobile_no": "7386722222",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2213,
+      "DistrictName": "Wokha",
+      "statename": "Nagaland",
+      "Observer": "SHRI INDRAVIJAYSINH GOHIL",
+      "mobile_no": "9825613066",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2212,
+      "DistrictName": "Zunheboto",
+      "statename": "Nagaland",
+      "Observer": "SHRI BISHWARANJAN MOHANTHY",
+      "mobile_no": "9937715270",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1832,
+      "DistrictName": "Angul ",
+      "statename": "Odisha",
+      "Observer": "SHRI DK SURESH, EX MP",
+      "mobile_no": "X_9845029142",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1833,
+      "DistrictName": "Balasore ",
+      "statename": "Odisha",
+      "Observer": "SHRI SHREYAS M PATEL, MP",
+      "mobile_no": "X_9008469613",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1834,
+      "DistrictName": "Bargarh ",
+      "statename": "Odisha",
+      "Observer": "SMT. SHOBHA TAI BACHAV, MP",
+      "mobile_no": "X_9823298886",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1835,
+      "DistrictName": "Bhadrak ",
+      "statename": "Odisha",
+      "Observer": "SHRI RAFIQ KHAN",
+      "mobile_no": "9351610110",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1836,
+      "DistrictName": "Bhubaneswar ",
+      "statename": "Odisha",
+      "Observer": "SHRI. J. D. SEELAM",
+      "mobile_no": "9868181113",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1837,
+      "DistrictName": "Bolangir ",
+      "statename": "Odisha",
+      "Observer": "SHRI. C. D. MEYYAPPAN, EX. AICC SECRETARY",
+      "mobile_no": "X_9841078007",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1838,
+      "DistrictName": "Boudh ",
+      "statename": "Odisha",
+      "Observer": "SHRI. BV SRINIVAS",
+      "mobile_no": "X_9945400666",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1839,
+      "DistrictName": "Cuttack ",
+      "statename": "Odisha",
+      "Observer": "SHRI. S. A. SAMPATH KUMAR, AICC SECRETARY",
+      "mobile_no": "X_7032523366",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1840,
+      "DistrictName": "Cuttack City",
+      "statename": "Odisha",
+      "Observer": "SHRI SALEEM AHMAD, WORKING PRESIDENT",
+      "mobile_no": "X_9845061890",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1841,
+      "DistrictName": "Deogarh ",
+      "statename": "Odisha",
+      "Observer": "SHRI. CHARAN SINGH SAPRA, WORKING PRESIDENT",
+      "mobile_no": "X_9892244223",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1842,
+      "DistrictName": "Dhenkanal ",
+      "statename": "Odisha",
+      "Observer": "SHRI DEAN KOSIKOSE, MP",
+      "mobile_no": "X_9447877369",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1843,
+      "DistrictName": "Gajapati ",
+      "statename": "Odisha",
+      "Observer": "SHRI N RAGUVEERA REDDY",
+      "mobile_no": "9135549999",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1844,
+      "DistrictName": "Ganjam East ",
+      "statename": "Odisha",
+      "Observer": "SHRI RAMLAL JAT, EX MINISTER",
+      "mobile_no": "X_9799111200",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1845,
+      "DistrictName": "Ganjam West",
+      "statename": "Odisha",
+      "Observer": "SHRI SACHIN NAIK, EX. AICC SECRETARY",
+      "mobile_no": "X_9423435630",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1846,
+      "DistrictName": "Jagatsinghpur ",
+      "statename": "Odisha",
+      "Observer": "SHRI M LIJU",
+      "mobile_no": "X_9446344957",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1847,
+      "DistrictName": "Jajpur ",
+      "statename": "Odisha",
+      "Observer": "SMT CHARULATA TOKAS",
+      "mobile_no": "X_9313050461",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1848,
+      "DistrictName": "Jharsuguda",
+      "statename": "Odisha",
+      "Observer": "MS SHOBHA OZA",
+      "mobile_no": "9911390501",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1849,
+      "DistrictName": "Kalahandi ",
+      "statename": "Odisha",
+      "Observer": "SHRI. SHAIK MASTAN WALI, EX. AICC SECRETARY",
+      "mobile_no": "9246487888",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1850,
+      "DistrictName": "Kandhamal ",
+      "statename": "Odisha",
+      "Observer": "SHRI PRAKASH JOSHI",
+      "mobile_no": "9311090389",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1851,
+      "DistrictName": "Kendrapara ",
+      "statename": "Odisha",
+      "Observer": "SHRI GOPINATH PALANIYAPPAN, AICC SECRETARY",
+      "mobile_no": "X_9443038744",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1852,
+      "DistrictName": "Keonjhar ",
+      "statename": "Odisha",
+      "Observer": "SHRI HASSAN MOULANA",
+      "mobile_no": "7900066666",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1853,
+      "DistrictName": "Khurda ",
+      "statename": "Odisha",
+      "Observer": "SHRI BIMAL SHAH, EX. MINISTER",
+      "mobile_no": "X_9825016352",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1854,
+      "DistrictName": "Koraput ",
+      "statename": "Odisha",
+      "Observer": "SHRI GANESH YADAV, AICC SECRETARY",
+      "mobile_no": "X_9819494949",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1855,
+      "DistrictName": "Malkangiri ",
+      "statename": "Odisha",
+      "Observer": "SHRI RAGHVENDRA SINGH, MLA",
+      "mobile_no": "X_9425223044",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1856,
+      "DistrictName": "Mayurbhanj East ",
+      "statename": "Odisha",
+      "Observer": "SHRI AHKILESH SHUKLA",
+      "mobile_no": "9305046756",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1857,
+      "DistrictName": "Mayurbhanj West ",
+      "statename": "Odisha",
+      "Observer": "SHRI NITIN KUMBALKAR, AICC JT. SECRETARY ",
+      "mobile_no": "X_9823013613",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1858,
+      "DistrictName": "Nawarangpur ",
+      "statename": "Odisha",
+      "Observer": "SHRI JETTI KUSUM KUMAR, EX. PCC WP",
+      "mobile_no": "X_9848016000",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1859,
+      "DistrictName": "Nayagarh ",
+      "statename": "Odisha",
+      "Observer": "SHRI MAHESH SHARMA, EX. PCC",
+      "mobile_no": "X_9824111362",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1860,
+      "DistrictName": "Nuapada ",
+      "statename": "Odisha",
+      "Observer": "SHRI MANOJ CHAUHAN, SECRETARY AICC",
+      "mobile_no": "X_9891438398",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1861,
+      "DistrictName": "Puri ",
+      "statename": "Odisha",
+      "Observer": "SHRI GC CHANDRASHEKHAR, MP",
+      "mobile_no": "9845004979",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1862,
+      "DistrictName": "Rayagada ",
+      "statename": "Odisha",
+      "Observer": "SHRI RIZWAN ARSHAD",
+      "mobile_no": "9845111995",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1863,
+      "DistrictName": "Rourkela ",
+      "statename": "Odisha",
+      "Observer": "DR. PALAK VERMA, AICC JNT. SECRETARY",
+      "mobile_no": "X_7600995555",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1864,
+      "DistrictName": "Sambalpur ",
+      "statename": "Odisha",
+      "Observer": "SHRI. INDRARAJ GURJAR, EX. MLA",
+      "mobile_no": "X_8302198355",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1865,
+      "DistrictName": "Subarnapur ",
+      "statename": "Odisha",
+      "Observer": "SHRI. AMIT SIHAG, EX MLA",
+      "mobile_no": "X_9876400585",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1866,
+      "DistrictName": "Sundargarh ",
+      "statename": "Odisha",
+      "Observer": "SHRI. SANJAY KAPOOR",
+      "mobile_no": "9412251451",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1867,
+      "DistrictName": "Amritsar Rural",
+      "statename": "Punjab",
+      "Observer": "DR. C.P JOSHI, FORMER SPEAKER",
+      "mobile_no": "9829066778",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1868,
+      "DistrictName": "Amritsar Urban",
+      "statename": "Punjab",
+      "Observer": "SHRI. C P MITTAL, EX. AICC SECRETARY",
+      "mobile_no": "9811008384",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1869,
+      "DistrictName": "Barnala",
+      "statename": "Punjab",
+      "Observer": "SHRI ASHOK SINGH, MP",
+      "mobile_no": "9752405589",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1870,
+      "DistrictName": "Bathinda Rural",
+      "statename": "Punjab",
+      "Observer": "SMT. MAMTA BHUPESH, EX. MINISTER",
+      "mobile_no": "9828914343",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1871,
+      "DistrictName": "Bathinda Urban",
+      "statename": "Punjab",
+      "Observer": "SHRI BALA BACCHAN, EX. MINISTER",
+      "mobile_no": "9993119999",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1872,
+      "DistrictName": "Faridkot",
+      "statename": "Punjab",
+      "Observer": "SHRI NADEEM JAVED",
+      "mobile_no": "7233888888",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1873,
+      "DistrictName": "Fatehgarh Sahib",
+      "statename": "Punjab",
+      "Observer": "SHRI SACHIN YADAV, EX. MINISTER",
+      "mobile_no": "6265861010",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1874,
+      "DistrictName": "Fazilka",
+      "statename": "Punjab",
+      "Observer": "DR. A. CHELLA KUMAR, MEMBER CWC",
+      "mobile_no": "9444071574",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1875,
+      "DistrictName": "Ferozepur",
+      "statename": "Punjab",
+      "Observer": "SHRI. VIVEK BANSAL, EX. MEMBER CWC",
+      "mobile_no": "X_9837082678",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1876,
+      "DistrictName": "Gurdaspur",
+      "statename": "Punjab",
+      "Observer": "SHRI BHARATSINH SOLANKI, EX. PCC",
+      "mobile_no": "9825043113",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1877,
+      "DistrictName": "Hoshiarpur",
+      "statename": "Punjab",
+      "Observer": "SHRI SURESH KUMAR",
+      "mobile_no": "9418063205",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1878,
+      "DistrictName": "Jalandhar Rural",
+      "statename": "Punjab",
+      "Observer": "SHRI BHUWAN KAPRI, DY-CLP",
+      "mobile_no": "9720755555",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1879,
+      "DistrictName": "Jalandhar Urban",
+      "statename": "Punjab",
+      "Observer": "SHRI RAJESH LILOTHIA, EX. CHIARMAN SC DEPT.",
+      "mobile_no": "X_9811100463",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1880,
+      "DistrictName": "Kapurthala",
+      "statename": "Punjab",
+      "Observer": "SHRI BHAJAN LAL JATAV, MP",
+      "mobile_no": "9784778861",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1881,
+      "DistrictName": "Khanna",
+      "statename": "Punjab",
+      "Observer": "SHRI R.S BALI, MLA",
+      "mobile_no": "9805355555",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1882,
+      "DistrictName": "Ludhiana Rural",
+      "statename": "Punjab",
+      "Observer": "DR. SHIKHA MEEL",
+      "mobile_no": "9610277286",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1883,
+      "DistrictName": "Ludhiana Urban",
+      "statename": "Punjab",
+      "Observer": "SMT. KRISHNA TIRATH",
+      "mobile_no": "9811392601",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1884,
+      "DistrictName": "Malerkotla",
+      "statename": "Punjab",
+      "Observer": "SHRI VIRENDER RATHORE, EX. AICC SECRETARY",
+      "mobile_no": "9996610000",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1885,
+      "DistrictName": "Mansa",
+      "statename": "Punjab",
+      "Observer": "SHRI ANIL CHAUDHARY, EX PCC PRESIDENT",
+      "mobile_no": "9811790445",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1886,
+      "DistrictName": "Moga",
+      "statename": "Punjab",
+      "Observer": "SHRI BP SINGH",
+      "mobile_no": "9810384335",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1887,
+      "DistrictName": "Mohali",
+      "statename": "Punjab",
+      "Observer": "SHRI MANOJ YADAV, AICC SECRETARY",
+      "mobile_no": "9899105464",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1888,
+      "DistrictName": "Muktsar",
+      "statename": "Punjab",
+      "Observer": "SHRI VIKAR RASOOL WANI, EX. PCC",
+      "mobile_no": "X_9906044484",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1889,
+      "DistrictName": "Pathankot",
+      "statename": "Punjab",
+      "Observer": "SHRI R.K OJHA, AICC SECRETARY",
+      "mobile_no": "9373114699",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1890,
+      "DistrictName": "Patiala Rural",
+      "statename": "Punjab",
+      "Observer": "SMT. MANISHA PAWAR, EX. MLA",
+      "mobile_no": "9414034716",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1891,
+      "DistrictName": "Patiala Urban",
+      "statename": "Punjab",
+      "Observer": "SHRI SANJAY DUTT",
+      "mobile_no": "9833331212",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1892,
+      "DistrictName": "Ropar",
+      "statename": "Punjab",
+      "Observer": "SHRI SUBHASH CHOPRA, EX. PCC",
+      "mobile_no": "9811036506",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1893,
+      "DistrictName": "Sangrur",
+      "statename": "Punjab",
+      "Observer": "SHRI JAGDISH JANGID, EX. MINISTER",
+      "mobile_no": "9818001800",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1894,
+      "DistrictName": "SBS Nagar",
+      "statename": "Punjab",
+      "Observer": "SHRI LALJI DESAI",
+      "mobile_no": "9409424344",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1894,
+      "DistrictName": "SBS Nagar",
+      "statename": "Punjab",
+      "Observer": "SHRI LALJI DESAI, PRESIDENT SEVADAL",
+      "mobile_no": "9727589344",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1895,
+      "DistrictName": "Tarn Taran",
+      "statename": "Punjab",
+      "Observer": "SHRI KULDEEP VATS, MLA",
+      "mobile_no": "7042050027",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1968,
+      "DistrictName": "AJMER RURAL",
+      "statename": "Rajasthan",
+      "Observer": "SHRI ASHOK TANWAR",
+      "mobile_no": "9013180222",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1969,
+      "DistrictName": "AJMER URBAN",
+      "statename": "Rajasthan",
+      "Observer": "SHRI ASHOK TANWAR",
+      "mobile_no": "9013180222",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1970,
+      "DistrictName": "ALWAR",
+      "statename": "Rajasthan",
+      "Observer": "SHRI SALEEM AHMAD",
+      "mobile_no": "9845061890",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1971,
+      "DistrictName": "BALOTRA",
+      "statename": "Rajasthan",
+      "Observer": "SHRI RAJESH TIWARI",
+      "mobile_no": "9425259577",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1972,
+      "DistrictName": "BANSWARA",
+      "statename": "Rajasthan",
+      "Observer": "SHRI LALJI DESAI, PRESIDENT SEVADAL",
+      "mobile_no": "9727589344",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1973,
+      "DistrictName": "BARAN",
+      "statename": "Rajasthan",
+      "Observer": "SHRI RAO DAN SINGH, EX. MINISTER",
+      "mobile_no": "9015300007",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1974,
+      "DistrictName": "BARMER",
+      "statename": "Rajasthan",
+      "Observer": "SHRI RAJESH TIWARI",
+      "mobile_no": "9425259577",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1975,
+      "DistrictName": "BEAWAR",
+      "statename": "Rajasthan",
+      "Observer": "SHRI SUKHDEV BHAGAT",
+      "mobile_no": "9431118023",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1976,
+      "DistrictName": "BHARATPUR",
+      "statename": "Rajasthan",
+      "Observer": "SHRI KEWAL SINGH PATHANIA",
+      "mobile_no": "9418034500",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1977,
+      "DistrictName": "BHILWARA RURAL",
+      "statename": "Rajasthan",
+      "Observer": "SHRI VIKAR RASOOL WANI",
+      "mobile_no": "9906044484",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1978,
+      "DistrictName": "BHILWARA URBAN",
+      "statename": "Rajasthan",
+      "Observer": "SHRI VIKAR RASOOL WANI",
+      "mobile_no": "9906044484",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1979,
+      "DistrictName": "BIKANER RURAL",
+      "statename": "Rajasthan",
+      "Observer": "SHRI RAJESH LILOTHIA, EX. CHIARMAN SC DEPT.",
+      "mobile_no": "9811100463",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1980,
+      "DistrictName": "BIKANER URBAN",
+      "statename": "Rajasthan",
+      "Observer": "SHRI RAJESH LILOTHIA, EX. CHIARMAN SC DEPT.",
+      "mobile_no": "9811100463",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1981,
+      "DistrictName": "BUNDI",
+      "statename": "Rajasthan",
+      "Observer": "SHRI JETTI KUSUM KUMAR",
+      "mobile_no": "9848016000",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1982,
+      "DistrictName": "CHITTORGARH",
+      "statename": "Rajasthan",
+      "Observer": "SUBHASHINI YADAV",
+      "mobile_no": "9971472121",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1983,
+      "DistrictName": "CHURU",
+      "statename": "Rajasthan",
+      "Observer": "SHRI SUBHASH CHOPRA, EX. PCC",
+      "mobile_no": "9811036506",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1984,
+      "DistrictName": "DAUSA",
+      "statename": "Rajasthan",
+      "Observer": "SHRI ANIL BHARDWAJ",
+      "mobile_no": "8826661417",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1985,
+      "DistrictName": "DEEDWANA-KUCHAMAN",
+      "statename": "Rajasthan",
+      "Observer": "DR. AMEE YAJNIK",
+      "mobile_no": "9825107727",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1986,
+      "DistrictName": "DEEG",
+      "statename": "Rajasthan",
+      "Observer": "SHRI KEWAL SINGH PATHANIA",
+      "mobile_no": "9418034500",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1987,
+      "DistrictName": "DHOLPUR",
+      "statename": "Rajasthan",
+      "Observer": "SHRI NADEEM JAVED",
+      "mobile_no": "7233888888",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1988,
+      "DistrictName": "DUNGARPUR",
+      "statename": "Rajasthan",
+      "Observer": "SHRI LALJI DESAI, PRESIDENT SEVADAL",
+      "mobile_no": "9727589344",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1989,
+      "DistrictName": "GANGANAGAR",
+      "statename": "Rajasthan",
+      "Observer": "SHRI KULJEET NAGRA",
+      "mobile_no": "9888000020",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1990,
+      "DistrictName": "HANUMANGARH",
+      "statename": "Rajasthan",
+      "Observer": "SHRI AMIT VIJ",
+      "mobile_no": "9357410009",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1991,
+      "DistrictName": "JAIPUR RURAL (EAST)",
+      "statename": "Rajasthan",
+      "Observer": "SHRI VIJAY INDER SINGLA",
+      "mobile_no": "9013180244",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1992,
+      "DistrictName": "JAIPUR RURAL (WEST)",
+      "statename": "Rajasthan",
+      "Observer": "SHRI VIJAY INDER SINGLA",
+      "mobile_no": "9013180244",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1993,
+      "DistrictName": "JAIPUR URBAN",
+      "statename": "Rajasthan",
+      "Observer": "SHRI GIDUGU RUDRA RAJU",
+      "mobile_no": "9848422023",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1994,
+      "DistrictName": "JAISALMER",
+      "statename": "Rajasthan",
+      "Observer": "SUSHANT MISHRA",
+      "mobile_no": "9871812333",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1995,
+      "DistrictName": "JALORE",
+      "statename": "Rajasthan",
+      "Observer": "SHRI PARESH DHANANI",
+      "mobile_no": "9426938007",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1996,
+      "DistrictName": "JHALAWAR",
+      "statename": "Rajasthan",
+      "Observer": "SHRI RAO DAN SINGH, EX. MINISTER",
+      "mobile_no": "9015300007",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1997,
+      "DistrictName": "JHUNJHUNU",
+      "statename": "Rajasthan",
+      "Observer": "CAPT. PRAVEEN DAWAR",
+      "mobile_no": "9810774281",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1998,
+      "DistrictName": "JODHPUR RURAL",
+      "statename": "Rajasthan",
+      "Observer": "SHRI YASHPAL ARYA",
+      "mobile_no": "9997196151",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1999,
+      "DistrictName": "JODHPUR URBAN",
+      "statename": "Rajasthan",
+      "Observer": "SUSHANT MISHRA",
+      "mobile_no": "9871812333",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2000,
+      "DistrictName": "KARAULI",
+      "statename": "Rajasthan",
+      "Observer": "SHRI NADEEM JAVED",
+      "mobile_no": "7233888888",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2001,
+      "DistrictName": "KHAIRTHAL-TIJARA",
+      "statename": "Rajasthan",
+      "Observer": "SHRI BHARATSINH SOLANKI, EX. PCC",
+      "mobile_no": "9825043113",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2002,
+      "DistrictName": "KOTA RURAL",
+      "statename": "Rajasthan",
+      "Observer": "SHRI JETTI KUSUM KUMAR",
+      "mobile_no": "9848016000",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2003,
+      "DistrictName": "KOTA URBAN",
+      "statename": "Rajasthan",
+      "Observer": "SHRI JETTI KUSUM KUMAR",
+      "mobile_no": "9848016000",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2004,
+      "DistrictName": "KOTPUTLI-BEHROR",
+      "statename": "Rajasthan",
+      "Observer": "SHRI BHARATSINH SOLANKI, EX. PCC",
+      "mobile_no": "9825043113",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2005,
+      "DistrictName": "NAGAUR",
+      "statename": "Rajasthan",
+      "Observer": "SHRI SHAKIR SANADI",
+      "mobile_no": "9958911667",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2006,
+      "DistrictName": "NEENKATHANA- SIKAR",
+      "statename": "Rajasthan",
+      "Observer": "SHRI SUKHDEV PANSE",
+      "mobile_no": "9164472337",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2007,
+      "DistrictName": "PALI",
+      "statename": "Rajasthan",
+      "Observer": "SMT. GEETA BHUKKAL",
+      "mobile_no": "9592111555",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2008,
+      "DistrictName": "PHALODI",
+      "statename": "Rajasthan",
+      "Observer": "SMT. GEETA BHUKKAL",
+      "mobile_no": "9592111555",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2009,
+      "DistrictName": "PRATAPGARH",
+      "statename": "Rajasthan",
+      "Observer": "SHRI AMIT SIHAG",
+      "mobile_no": "9876400585",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2010,
+      "DistrictName": "RAJSAMAND",
+      "statename": "Rajasthan",
+      "Observer": "SHRI SUKHDEV BHAGAT",
+      "mobile_no": "9431118023",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2011,
+      "DistrictName": "SALUMBER",
+      "statename": "Rajasthan",
+      "Observer": "SHRI AMIT SIHAG",
+      "mobile_no": "9876400585",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2012,
+      "DistrictName": "SAWAI MADHOPUR",
+      "statename": "Rajasthan",
+      "Observer": "SHRI RAJESH RATHORE",
+      "mobile_no": "9765577555",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2013,
+      "DistrictName": "SIKAR",
+      "statename": "Rajasthan",
+      "Observer": "SHRI SUKHDEV PANSE",
+      "mobile_no": "9164472337",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2014,
+      "DistrictName": "SIROHI",
+      "statename": "Rajasthan",
+      "Observer": "SHRI PARESH DHANANI",
+      "mobile_no": "9426938007",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2015,
+      "DistrictName": "TONK",
+      "statename": "Rajasthan",
+      "Observer": "SHRI RAJESH RATHORE",
+      "mobile_no": "9765577555",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2016,
+      "DistrictName": "UDAIPUR RURAL",
+      "statename": "Rajasthan",
+      "Observer": "SMT. YASHOMATI THAKUR",
+      "mobile_no": "7745081111",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2017,
+      "DistrictName": "UDAIPUR URBAN",
+      "statename": "Rajasthan",
+      "Observer": "SMT. YASHOMATI THAKUR",
+      "mobile_no": "7745081111",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2133,
+      "DistrictName": "Ariyalur",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI. SHARAT BACCHEGOWDA",
+      "mobile_no": "9535194999",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2134,
+      "DistrictName": "Avadi Corporation",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI B. M. SANDEEP",
+      "mobile_no": "9449076633",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2135,
+      "DistrictName": "Central Chennai East",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI N RAGUVEERA REDDY",
+      "mobile_no": "9135549999",
+      "Profiles": 3
+    },
+    {
+      "districtid": 2136,
+      "DistrictName": "Central Chennai West",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI N RAGUVEERA REDDY",
+      "mobile_no": "9135549999",
+      "Profiles": 2
+    },
+    {
+      "districtid": 2137,
+      "DistrictName": "Chengalpet North",
+      "statename": "Tamil Nadu",
+      "Observer": "SMT. GEETA BHUKKAL",
+      "mobile_no": "9592111555",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2138,
+      "DistrictName": "Chengelpet South",
+      "statename": "Tamil Nadu",
+      "Observer": "SMT. GEETA BHUKKAL",
+      "mobile_no": "9592111555",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2139,
+      "DistrictName": "Cuddalore Central",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI. K.B.R.NAIDU",
+      "mobile_no": "9560700817",
+      "Profiles": 1
+    },
+    {
+      "districtid": 2140,
+      "DistrictName": "Cuddalore South",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI. SHARAT BACCHEGOWDA",
+      "mobile_no": "9535194999",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2141,
+      "DistrictName": "Cuddalore West",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI. K.B.R.NAIDU",
+      "mobile_no": "9560700817",
+      "Profiles": 1
+    },
+    {
+      "districtid": 2142,
+      "DistrictName": "Dharmapuri",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI. IVAN DSOUZA",
+      "mobile_no": "9845085875",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2143,
+      "DistrictName": "Dindugal Corporation",
+      "statename": "Tamil Nadu",
+      "Observer": "Shri Venugopal Rao Harkara",
+      "mobile_no": "9703303333",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2144,
+      "DistrictName": "Dindugal East",
+      "statename": "Tamil Nadu",
+      "Observer": "Shri Venugopal Rao Harkara",
+      "mobile_no": "9703303333",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2145,
+      "DistrictName": "Dindugal West",
+      "statename": "Tamil Nadu",
+      "Observer": "Shri Venugopal Rao Harkara",
+      "mobile_no": "9703303333",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2146,
+      "DistrictName": "Erode Corporation",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI. J.R.LOBO",
+      "mobile_no": "9448375245",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2147,
+      "DistrictName": "Erode North",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI. J.R.LOBO",
+      "mobile_no": "9448375245",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2148,
+      "DistrictName": "Erode South",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI. J.R.LOBO",
+      "mobile_no": "9448375245",
+      "Profiles": 4
+    },
+    {
+      "districtid": 2149,
+      "DistrictName": "Kallakurichi",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI. AMIT VIJ",
+      "mobile_no": "9871400099",
+      "Profiles": 18
+    },
+    {
+      "districtid": 2150,
+      "DistrictName": "Kanchipuram",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI RAGHU SHARMA",
+      "mobile_no": "9829054019",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2151,
+      "DistrictName": "Kanyakumari Corporation",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI. ANIL BOSE",
+      "mobile_no": "8848612429",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2152,
+      "DistrictName": "Kanyakumari East",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI. ANIL BOSE",
+      "mobile_no": "8848612429",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2153,
+      "DistrictName": "Kanyakumari West",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI. ANIL BOSE",
+      "mobile_no": "8848612429",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2154,
+      "DistrictName": "Karur",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI SHAKIR SANADI",
+      "mobile_no": "9958911667",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2155,
+      "DistrictName": "Krishnagiri East",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI RIZWAN ARSHAD",
+      "mobile_no": "9845111995",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2156,
+      "DistrictName": "Krishnagiri West",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI RIZWAN ARSHAD",
+      "mobile_no": "9845111995",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2159,
+      "DistrictName": "Madurai Corporation",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI. ARUN YADAV",
+      "mobile_no": "9868180243",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2157,
+      "DistrictName": "Madurai North",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI. ARUN YADAV",
+      "mobile_no": "9868180243",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2158,
+      "DistrictName": "Madurai South",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI. AZMATULLAH HUSAINI",
+      "mobile_no": "9949607733",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2160,
+      "DistrictName": "Mayiladuthurai",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI. SARAT PATNAIK",
+      "mobile_no": "9439147444",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2161,
+      "DistrictName": "Nagapattinam",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI. SARAT PATNAIK",
+      "mobile_no": "9439147444",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2162,
+      "DistrictName": "Namakkal East",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI. BELLAIAH NAIK",
+      "mobile_no": "9848048504",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2163,
+      "DistrictName": "Namakkal West",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI. BELLAIAH NAIK",
+      "mobile_no": "9848048504",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2164,
+      "DistrictName": "Nilgiris",
+      "statename": "Tamil Nadu",
+      "Observer": "SMT. REHANAA CHISTI EX.CHAIRMAN MAHILA AYOG",
+      "mobile_no": "9414084133",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2165,
+      "DistrictName": "North Chennai East",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI RC KHUNTIA",
+      "mobile_no": "9810399295",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2166,
+      "DistrictName": "Northchennai West",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI RC KHUNTIA",
+      "mobile_no": "9810399295",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2167,
+      "DistrictName": "Perambalur",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI. SHARAT BACCHEGOWDA",
+      "mobile_no": "9535194999",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2168,
+      "DistrictName": "Pudukottai North",
+      "statename": "Tamil Nadu",
+      "Observer": "SMT. PUSHPA AMARNATH",
+      "mobile_no": "9448800345",
+      "Profiles": 3
+    },
+    {
+      "districtid": 2169,
+      "DistrictName": "Pudukottai South",
+      "statename": "Tamil Nadu",
+      "Observer": "SMT. PUSHPA AMARNATH",
+      "mobile_no": "9448800345",
+      "Profiles": 1
+    },
+    {
+      "districtid": 2170,
+      "DistrictName": "Ramnathapuram",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI. JAIPRAKASH HEGDE",
+      "mobile_no": "9448116809",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2171,
+      "DistrictName": "Ranipet",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI. J. D. SEELAM",
+      "mobile_no": "9868181113",
+      "Profiles": 5
+    },
+    {
+      "districtid": 2174,
+      "DistrictName": "Salem Corporation",
+      "statename": "Tamil Nadu",
+      "Observer": "MS SHOBHA OZA",
+      "mobile_no": "9911390501",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2172,
+      "DistrictName": "Salem East",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI. BALMOORI VENKAT",
+      "mobile_no": "7386722222",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2173,
+      "DistrictName": "Salem West",
+      "statename": "Tamil Nadu",
+      "Observer": "MS SHOBHA OZA",
+      "mobile_no": "9911390501",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2175,
+      "DistrictName": "Sivagangai",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI. NILESH CHATURVEDI",
+      "mobile_no": "9810775482",
+      "Profiles": 2
+    },
+    {
+      "districtid": 2178,
+      "DistrictName": "South Chennai Central",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI SALEEM AHMAD",
+      "mobile_no": "9845061890",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2176,
+      "DistrictName": "South Chennai East",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI SALEEM AHMAD",
+      "mobile_no": "9845061890",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2177,
+      "DistrictName": "South Chennai West",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI RAGHU SHARMA",
+      "mobile_no": "9829054019",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2179,
+      "DistrictName": "Tenkasi",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI. H. S. LUCKY",
+      "mobile_no": "9872511115",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2180,
+      "DistrictName": "Thanjavur Corporation",
+      "statename": "Tamil Nadu",
+      "Observer": "DR. NARESH KUMAR",
+      "mobile_no": "9650572345",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2181,
+      "DistrictName": "Thanjavur North",
+      "statename": "Tamil Nadu",
+      "Observer": "DR. NARESH KUMAR",
+      "mobile_no": "9650572345",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2182,
+      "DistrictName": "Thanjavur South",
+      "statename": "Tamil Nadu",
+      "Observer": "DR. NARESH KUMAR",
+      "mobile_no": "9650572345",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2183,
+      "DistrictName": "Theni",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI. AZMATULLAH HUSAINI",
+      "mobile_no": "9949607733",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2184,
+      "DistrictName": "Thiruvallur North",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI B. M. SANDEEP",
+      "mobile_no": "9449076633",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2185,
+      "DistrictName": "Thiruvallur South",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI B. M. SANDEEP",
+      "mobile_no": "9449076633",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2186,
+      "DistrictName": "Thiruvannamalai North",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI M NARAYAN SWAMY",
+      "mobile_no": "9945338822",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2187,
+      "DistrictName": "Thiruvannamalai South",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI M NARAYAN SWAMY",
+      "mobile_no": "9945338822",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2188,
+      "DistrictName": "Thoothukudi Corporation",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI. VIJAY SINGH",
+      "mobile_no": "9900701111",
+      "Profiles": 1
+    },
+    {
+      "districtid": 2189,
+      "DistrictName": "Thoothukudi North",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI. VIJAY SINGH",
+      "mobile_no": "9900701111",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2190,
+      "DistrictName": "Thoothukudi South",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI. VIJAY SINGH",
+      "mobile_no": "9900701111",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2192,
+      "DistrictName": "Tirunelveli Corporation",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI. SRINIVAS MANE",
+      "mobile_no": "8277378896",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2191,
+      "DistrictName": "Tirunelveli East",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI. SRINIVAS MANE",
+      "mobile_no": "8277378896",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2193,
+      "DistrictName": "Tirupattur",
+      "statename": "Tamil Nadu",
+      "Observer": "DR. C.VAMSHI KRISHNA",
+      "mobile_no": "9652442233",
+      "Profiles": 5
+    },
+    {
+      "districtid": 2194,
+      "DistrictName": "Tiruppur Corporation",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI ASHOK TANWAR",
+      "mobile_no": "9013180222",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2195,
+      "DistrictName": "Tiruppur North",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI ASHOK TANWAR",
+      "mobile_no": "9013180222",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2196,
+      "DistrictName": "Tiruppur South",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI ASHOK TANWAR",
+      "mobile_no": "9013180222",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2197,
+      "DistrictName": "Tiruvarur",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI PRAFULLA GUDADHE",
+      "mobile_no": "9822228497",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2198,
+      "DistrictName": "Trichy Corporation",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI VIJAY INDER SINGLA",
+      "mobile_no": "9013180244",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2199,
+      "DistrictName": "Trichy North",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI VIJAY INDER SINGLA",
+      "mobile_no": "9013180244",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2200,
+      "DistrictName": "Trichy South",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI SHAKIR SANADI",
+      "mobile_no": "9958911667",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2201,
+      "DistrictName": "Vellore Central",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI. MADHU YASHKI GOUD",
+      "mobile_no": "9989180339",
+      "Profiles": 2
+    },
+    {
+      "districtid": 2202,
+      "DistrictName": "Vellore Corporation",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI. MADHU YASHKI GOUD",
+      "mobile_no": "9989180339",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2203,
+      "DistrictName": "Villupuram Central",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI. BALMOORI VENKAT",
+      "mobile_no": "7386722222",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2204,
+      "DistrictName": "Villupuram North",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI. BALMOORI VENKAT",
+      "mobile_no": "7386722222",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2205,
+      "DistrictName": "Virudhunagar East",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI BISHWARANJAN MOHANTHY",
+      "mobile_no": "9937715270",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2206,
+      "DistrictName": "Virudhunagar West",
+      "statename": "Tamil Nadu",
+      "Observer": "SHRI BISHWARANJAN MOHANTHY",
+      "mobile_no": "9937715270",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2029,
+      "DistrictName": "Adilabad",
+      "statename": "Telangana",
+      "Observer": "SHRI AJAY SINGH",
+      "mobile_no": "7899999999",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2027,
+      "DistrictName": "Asifabad ",
+      "statename": "Telangana",
+      "Observer": "DR. NARESH KUMAR",
+      "mobile_no": "9650572345",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2053,
+      "DistrictName": "Badradri Kothagudem",
+      "statename": "Telangana",
+      "Observer": "SHRI JOHNSON ABRAHAM",
+      "mobile_no": "9447132221",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2046,
+      "DistrictName": "Bhongiri",
+      "statename": "Telangana",
+      "Observer": "SHRI SARAT RAUT",
+      "mobile_no": "9438061787",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2042,
+      "DistrictName": "Gadwal",
+      "statename": "Telangana",
+      "Observer": "SHRI V NARAYANSAMY",
+      "mobile_no": "9443233909",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2049,
+      "DistrictName": "Hanamkonda",
+      "statename": "Telangana",
+      "Observer": "SHRI NABAJYOTI PATNAIK",
+      "mobile_no": "9711995026",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2018,
+      "DistrictName": "Hyderabad",
+      "statename": "Telangana",
+      "Observer": "SHRI AMIN PATEL",
+      "mobile_no": "9820105761",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2034,
+      "DistrictName": "Jagitial",
+      "statename": "Telangana",
+      "Observer": "DR.K JAYAKUMAR",
+      "mobile_no": "9444020571",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2050,
+      "DistrictName": "Jangaon",
+      "statename": "Telangana",
+      "Observer": "SHRI DEBASIS PATNAIK",
+      "mobile_no": "9937220256",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2052,
+      "DistrictName": "Jayashankar Bhupalpalle",
+      "statename": "Telangana",
+      "Observer": "SHRI JOHNSON ABRAHAM",
+      "mobile_no": "9447132221",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2031,
+      "DistrictName": "Kamareddy",
+      "statename": "Telangana",
+      "Observer": "SHRI RAJPAL KHAROLA",
+      "mobile_no": "9412050935",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2038,
+      "DistrictName": "Karimnagar",
+      "statename": "Telangana",
+      "Observer": "SHRI SIRINIVAS MANE",
+      "mobile_no": "9590033000",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2037,
+      "DistrictName": "Karimnagar Corporation",
+      "statename": "Telangana",
+      "Observer": "SHRI SIRINIVAS MANE",
+      "mobile_no": "9590033000",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2020,
+      "DistrictName": "Khairathabad",
+      "statename": "Telangana",
+      "Observer": "SHRI SHAKTISINH GOHIL",
+      "mobile_no": "9824000852",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2054,
+      "DistrictName": "Khammam",
+      "statename": "Telangana",
+      "Observer": "SHRI K MAHENDRAN",
+      "mobile_no": "9884655222",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2055,
+      "DistrictName": "Khammam Corporation",
+      "statename": "Telangana",
+      "Observer": "SHRI K MAHENDRAN",
+      "mobile_no": "9884655222",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2056,
+      "DistrictName": "Mahabubabad",
+      "statename": "Telangana",
+      "Observer": "SHRI DEBASIS PATNAIK",
+      "mobile_no": "9937220256",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2043,
+      "DistrictName": "Mahabubnagar",
+      "statename": "Telangana",
+      "Observer": "SHRI M NARAYAN SWAMY",
+      "mobile_no": "9945338822",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2028,
+      "DistrictName": "Mancherial",
+      "statename": "Telangana",
+      "Observer": "DR. NARESH KUMAR",
+      "mobile_no": "9650572345",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2025,
+      "DistrictName": "Medak",
+      "statename": "Telangana",
+      "Observer": "KM. JYOTI RAUTELA",
+      "mobile_no": "9911757933",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2022,
+      "DistrictName": "Medchal Malkagiri",
+      "statename": "Telangana",
+      "Observer": "SMT. ANJALI NIMBALKAR, EX. MLA",
+      "mobile_no": "7829722876",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2051,
+      "DistrictName": "Mulugu ",
+      "statename": "Telangana",
+      "Observer": "SHRI JOHNSON ABRAHAM",
+      "mobile_no": "9447132221",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2040,
+      "DistrictName": "Nagar Kurnool",
+      "statename": "Telangana",
+      "Observer": "SHRI V NARAYANSAMY",
+      "mobile_no": "9443233909",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2047,
+      "DistrictName": "Nalgonda",
+      "statename": "Telangana",
+      "Observer": "SHRI BISHWARANJAN MOHANTHY",
+      "mobile_no": "9937715270",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2044,
+      "DistrictName": "Narayanpet",
+      "statename": "Telangana",
+      "Observer": "SHRI M NARAYAN SWAMY",
+      "mobile_no": "9945338822",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2030,
+      "DistrictName": "Nirmal",
+      "statename": "Telangana",
+      "Observer": "SHRI AJAY SINGH",
+      "mobile_no": "7899999999",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2033,
+      "DistrictName": "Nizamabad",
+      "statename": "Telangana",
+      "Observer": "SHRI RIZWAN ARSHAD",
+      "mobile_no": "9845111995",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2032,
+      "DistrictName": "Nizamabad Corporation ",
+      "statename": "Telangana",
+      "Observer": "SHRI RIZWAN ARSHAD",
+      "mobile_no": "9845111995",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2036,
+      "DistrictName": "Peddapalli",
+      "statename": "Telangana",
+      "Observer": "DR.K JAYAKUMAR",
+      "mobile_no": "9444020571",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2039,
+      "DistrictName": "Rajanna Sircilla",
+      "statename": "Telangana",
+      "Observer": "SHRI SIRINIVAS MANE",
+      "mobile_no": "9590033000",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2035,
+      "DistrictName": "Ramagundam Corporation",
+      "statename": "Telangana",
+      "Observer": "DR.K JAYAKUMAR",
+      "mobile_no": "9444020571",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2023,
+      "DistrictName": "Rangareddy",
+      "statename": "Telangana",
+      "Observer": "SHRI ROBERT BRUCE",
+      "mobile_no": "9442075300",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2024,
+      "DistrictName": "Sangareddy",
+      "statename": "Telangana",
+      "Observer": "SMT. SZARITA LAITPHLANG, AICC SECRETARY",
+      "mobile_no": "9862065493",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2019,
+      "DistrictName": "Secunderabad",
+      "statename": "Telangana",
+      "Observer": "DR. C.P JOSHI, FORMER SPEAKER",
+      "mobile_no": "9829066778",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2026,
+      "DistrictName": "Siddipet",
+      "statename": "Telangana",
+      "Observer": "KM. JYOTI RAUTELA",
+      "mobile_no": "9911757933",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2045,
+      "DistrictName": "Suryapet",
+      "statename": "Telangana",
+      "Observer": "SHRI SARAT RAUT",
+      "mobile_no": "9438061787",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2021,
+      "DistrictName": "Vikarabad",
+      "statename": "Telangana",
+      "Observer": "SHRI SURAJ SINGH THAKUR",
+      "mobile_no": "9773777707",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2041,
+      "DistrictName": "Wanaparthy",
+      "statename": "Telangana",
+      "Observer": "SHRI V NARAYANSAMY",
+      "mobile_no": "9443233909",
+      "Profiles": 0
+    },
+    {
+      "districtid": 2048,
+      "DistrictName": "Warangal",
+      "statename": "Telangana",
+      "Observer": "SHRI NABAJYOTI PATNAIK",
+      "mobile_no": "9711995026",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1896,
+      "DistrictName": "ALMORA",
+      "statename": "Uttarakhand",
+      "Observer": "SHRI. AMRUT THAKOR, MLA",
+      "mobile_no": "9099022183",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1897,
+      "DistrictName": "BAGESHWAR",
+      "statename": "Uttarakhand",
+      "Observer": "SHRI ROHIT CHAUDHARY",
+      "mobile_no": "X_9811310004",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1898,
+      "DistrictName": "CHAMOLI",
+      "statename": "Uttarakhand",
+      "Observer": "SMT. ARADHANA MISHRA MONA, CLP UP",
+      "mobile_no": "9935170000",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1899,
+      "DistrictName": "CHAMPAWAT",
+      "statename": "Uttarakhand",
+      "Observer": "SMT. SANGEETA BENIWAL, EX. MP CANDIDATE",
+      "mobile_no": "9414134567",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1908,
+      "DistrictName": "CITY HALDWANI",
+      "statename": "Uttarakhand",
+      "Observer": "CAPTAIN AJAY YADAV, EX. CHAIRMAN OBC DEPT",
+      "mobile_no": "9996665566",
+      "Profiles": 1
+    },
+    {
+      "districtid": 1919,
+      "DistrictName": "CITY KASHIPUR",
+      "statename": "Uttarakhand",
+      "Observer": "SHRI SHAKTISINH GOHIL",
+      "mobile_no": "9824000852",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1905,
+      "DistrictName": "CITY KOTDWAR",
+      "statename": "Uttarakhand",
+      "Observer": "MS SOFIA FIRDOUS",
+      "mobile_no": "9438671762",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1900,
+      "DistrictName": "CITY ROORKEE",
+      "statename": "Uttarakhand",
+      "Observer": "SHRI RAO NARENDER SINGH, EX. MINISTER",
+      "mobile_no": "9416940000",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1920,
+      "DistrictName": "CITY RUDRAPUR",
+      "statename": "Uttarakhand",
+      "Observer": "DR. NARESH KUMAR",
+      "mobile_no": "9650572345",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1901,
+      "DistrictName": "DEHRADUN CITY",
+      "statename": "Uttarakhand",
+      "Observer": "SHRI MANICKAM TAGORE, MP",
+      "mobile_no": "9811430799",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1902,
+      "DistrictName": "DEVPRYAG",
+      "statename": "Uttarakhand",
+      "Observer": "SMT. ANJALI NIMBALKAR, EX. MLA",
+      "mobile_no": "7829722876",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1913,
+      "DistrictName": "DIDIHAT",
+      "statename": "Uttarakhand",
+      "Observer": "DR. NITIN RAUT, EX. MINISTER",
+      "mobile_no": "9930925000",
+      "Profiles": 1
+    },
+    {
+      "districtid": 1903,
+      "DistrictName": "HARIDWAR CITY",
+      "statename": "Uttarakhand",
+      "Observer": "SHRI JAGDISH THAKOR, MEMBER CWC",
+      "mobile_no": "9825245330",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1904,
+      "DistrictName": "HARIDWAR RURAL",
+      "statename": "Uttarakhand",
+      "Observer": "SHRI. GIDUGU RUDRA RAJU, EX. PCC",
+      "mobile_no": "X_9848422023",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1906,
+      "DistrictName": "KOTDWAR",
+      "statename": "Uttarakhand",
+      "Observer": "SHRI VIKAS THAKRE, MLA",
+      "mobile_no": "X_9422808522",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1907,
+      "DistrictName": "NAINITAL",
+      "statename": "Uttarakhand",
+      "Observer": "SHRI SUKHDEV PANSE",
+      "mobile_no": "9425002499",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1910,
+      "DistrictName": "PACHWADOON",
+      "statename": "Uttarakhand",
+      "Observer": "SHRI B. M. SANDEEP",
+      "mobile_no": "9449076633",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1909,
+      "DistrictName": "PARWADOON",
+      "statename": "Uttarakhand",
+      "Observer": "SHRI B. M. SANDEEP",
+      "mobile_no": "9449076633",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1911,
+      "DistrictName": "PAURI GARHWAL",
+      "statename": "Uttarakhand",
+      "Observer": "SHRI RAHUL KASWAN, MP",
+      "mobile_no": "9560111599",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1912,
+      "DistrictName": "PITHORAGARH",
+      "statename": "Uttarakhand",
+      "Observer": "SHRI PRAFFULLA V GUDADHE, AICC SECRETARY",
+      "mobile_no": "X_9822228497",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1914,
+      "DistrictName": "PUROLA",
+      "statename": "Uttarakhand",
+      "Observer": "SHRI P.C SHARMA, EX MINISTER",
+      "mobile_no": "9425010011",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1915,
+      "DistrictName": "RANIKHET",
+      "statename": "Uttarakhand",
+      "Observer": "SMT. REHANAA CHISTI EX.CHAIRMAN MAHILA AYOG",
+      "mobile_no": "9414084133",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1916,
+      "DistrictName": "ROORKEE",
+      "statename": "Uttarakhand",
+      "Observer": "SHRI RAJESH TIWARI, AICC SECRETARY",
+      "mobile_no": "X_9425259577",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1917,
+      "DistrictName": "RUDRAPRYAG",
+      "statename": "Uttarakhand",
+      "Observer": "SHRI HIMMAT SINGH PATEL, EX. MLA",
+      "mobile_no": "9825012034",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1918,
+      "DistrictName": "TEHRI GARHWAL",
+      "statename": "Uttarakhand",
+      "Observer": "SHRI KULDEEP RATHORE, EX. HPCC PRESIDENT",
+      "mobile_no": "9418022000",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1921,
+      "DistrictName": "UDHAMSINGH NAGAR",
+      "statename": "Uttarakhand",
+      "Observer": "SHRI RAO DAN SINGH, EX. MINISTER",
+      "mobile_no": "9015300007",
+      "Profiles": 0
+    },
+    {
+      "districtid": 1922,
+      "DistrictName": "UTTARKASHI",
+      "statename": "Uttarakhand",
+      "Observer": "SHRI KULDEEP INDORA",
+      "mobile_no": "9414064546",
+      "Profiles": 0
+    }
+  ]
+}
