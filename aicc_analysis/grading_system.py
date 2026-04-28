@@ -98,52 +98,56 @@ def normalize_district_name(name):
 
 def build_daily_report_lookup(records):
     """
-    Daily reports are joined on mobile_no (perfect overlap with district_reports)
-    plus district name. Returns:
-      - by_mobile_dist: (mobile, normalized_district) -> record (exact)
-      - by_mobile: mobile -> list of records (for fuzzy fallback)
+    Daily reports are joined on mobile_no (perfect observer-id overlap with
+    district_reports) plus district name. Returns:
+      - by_mobile_raw: (mobile, raw_district_upper) -> record  (exact)
+      - by_mobile_norm: (mobile, normalized_district) -> [records]  (suffix-tolerant)
+      - by_mobile: mobile -> [records]  (diagnostics)
+    Multiple raw districts can normalize to the same key (e.g.,
+    'Virudhunagar East' and 'Virudhunagar West' both -> 'VIRUDHUNAGAR'),
+    so the normalized index keeps a list, and we only use it when the raw
+    lookup misses.
     """
-    by_mobile_dist = {}
+    by_mobile_raw = {}
+    by_mobile_norm = defaultdict(list)
     by_mobile = defaultdict(list)
     for r in records:
         mobile = (r.get("Mobile_No") or "").strip()
         if not mobile:
             continue
+        raw_dist = (r.get("District") or "").strip().upper()
+        if raw_dist:
+            by_mobile_raw[(mobile, raw_dist)] = r
         dist_norm = normalize_district_name(r.get("District") or "")
         if dist_norm:
-            by_mobile_dist[(mobile, dist_norm)] = r
+            by_mobile_norm[(mobile, dist_norm)].append(r)
         by_mobile[mobile].append(r)
-    return by_mobile_dist, by_mobile
+    return by_mobile_raw, by_mobile_norm, by_mobile
 
 
-def match_daily_report(mobile, district, by_mobile_dist, by_mobile):
-    """Match a district to its daily report using mobile_no as primary key.
-    1. Exact (mobile, normalized district) match
-    2. Substring match across same observer's daily records (same mobile)
-    3. If observer covers exactly one district in daily reports, use that
+def match_daily_report(mobile, district, by_mobile_raw, by_mobile_norm):
+    """Match a district to its daily report using mobile_no + district.
+    Strict — only returns a record whose district name actually matches:
+    1. Exact (mobile, raw district upper) match
+    2. Suffix-normalized match, only if exactly one candidate normalizes
+       to that key for this mobile (avoids ambiguous East/West/Rural/City
+       variants under one observer)
+    Returns None if the assigned district has no matching daily record;
+    callers treat this as zero daily activity at that district.
     """
     if not mobile:
         return None
     mobile = mobile.strip()
+    raw_dist = (district or "").strip().upper()
+    if raw_dist:
+        rec = by_mobile_raw.get((mobile, raw_dist))
+        if rec:
+            return rec
     dist_norm = normalize_district_name(district)
-
-    rec = by_mobile_dist.get((mobile, dist_norm))
-    if rec:
-        return rec
-
-    candidates = by_mobile.get(mobile, [])
-    if not candidates:
-        return None
-
     if dist_norm:
-        for r in candidates:
-            r_dist = normalize_district_name(r.get("District") or "")
-            if r_dist and (dist_norm in r_dist or r_dist in dist_norm):
-                return r
-
-    if len(candidates) == 1:
-        return candidates[0]
-
+        candidates = by_mobile_norm.get((mobile, dist_norm), [])
+        if len(candidates) == 1:
+            return candidates[0]
     return None
 
 
@@ -194,7 +198,7 @@ def main():
     pi_lookup = build_district_lookup(data["political_influencers"], "districtid")
 
     # Daily reports: join on mobile_no (254/254 unique mobiles overlap with district_reports)
-    daily_by_mobile_dist, daily_by_mobile = build_daily_report_lookup(data["daily_reports"])
+    daily_by_raw, daily_by_norm, _ = build_daily_report_lookup(data["daily_reports"])
 
     # --- Collect all district IDs ---
     all_district_ids = set()
@@ -216,7 +220,7 @@ def main():
         pn_rec = pn_lookup.get(did, {})
         mobile = dr_rec.get("mobile_no") or pn_rec.get("mobile_no") or ""
         district = dr_rec.get("DistrictName") or pn_rec.get("DistrictName") or ""
-        daily_rec = match_daily_report(mobile, district, daily_by_mobile_dist, daily_by_mobile)
+        daily_rec = match_daily_report(mobile, district, daily_by_raw, daily_by_norm)
         daily_values_by_district[did] = (daily_rec.get("Total", 0) or 0) if daily_rec else 0
 
     all_daily_totals = [daily_values_by_district[d] for d in all_district_ids]
@@ -226,9 +230,10 @@ def main():
     results = []
     for did in sorted(all_district_ids):
         dr_rec = dr_lookup.get(did, {})
-        observer = dr_rec.get("Observer", pn_lookup.get(did, {}).get("Observer", "UNKNOWN"))
-        district = dr_rec.get("DistrictName", pn_lookup.get(did, {}).get("DistrictName", "UNKNOWN"))
-        state = dr_rec.get("statename", pn_lookup.get(did, {}).get("statename", "UNKNOWN"))
+        pn_rec = pn_lookup.get(did, {})
+        observer = dr_rec.get("Observer") or pn_rec.get("Observer") or "UNKNOWN"
+        district = dr_rec.get("DistrictName") or pn_rec.get("DistrictName") or "UNKNOWN"
+        state = dr_rec.get("statename") or pn_rec.get("statename") or "UNKNOWN"
 
         # Raw values
         has_district_report = 1 if dr_rec.get("Profiles", 0) > 0 else 0
