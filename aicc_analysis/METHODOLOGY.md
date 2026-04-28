@@ -127,10 +127,61 @@ The 592 districts span **19 states + UTs**. Several large states are absent from
 
 - `grading_system.py` — scoring engine
 - `extract_candidates.py` — candidate-detail puller (requires `AICC_USERNAME` / `AICC_PASSWORD` env vars; see root `.env.example`)
+- `extract_district_analysis.py` — pulls per-district analysis (TypeId=29) and observer roster (TypeId=40, with `password`/`access_code` stripped on read)
+- `infer_observer_caste.py` — best-guess religion/caste inference from observer names (see "Observer-caste inference" section below)
 - `consolidated_district_grading.csv` — final grading output (592 rows)
 - `candidates_detailed.csv` — 2,413 candidate-level profiles
 - `all_timestamps.csv` — 9,104 per-record submission events (authoritative count source)
+- `district_analysis.csv` / `.json` — 558 per-district analysis records with caste percentages, political-faction text, etc.
+- `observers_master.csv` / `.json` — 360 observer roster records (passwords / access codes deliberately not captured)
+- `observers_inferred_caste.csv` — observer-level inferred religion + category with confidence tier
 - `*.json` — raw AICC API extracts
+
+---
+
+## Observer-caste inference
+
+**The AICC portal does not expose observer caste.** None of the seven endpoints we extract has a caste/category/religion field on the observer record. To answer the population-level question "what is the religion + caste mix of the observers?", `infer_observer_caste.py` does name-based inference and labels every guess with an explicit confidence tier.
+
+### Method
+
+1. **Religion (high confidence)** — match name tokens against curated Muslim, Sikh, and Christian first/last-name dictionaries. `SINGH` alone is treated as ambiguous (Rajput vs. Sikh) unless a second Sikh marker is present (e.g., `KAUR`, distinctive Punjabi first name, Sikh-only surname like `SANDHU`/`GILL`/`DHILLON`).
+
+2. **Hindu category — empirical** — for non-religious names, compute the surname's distribution of `Category` values across the 2,413 self-declared candidate records (the same population). If the surname has ≥5 candidates with ≥80% concentrated in one Category, label `HIGH_SURNAME`. If ≥2 candidates with ≥60% concentration, label `MEDIUM`. Otherwise drop through.
+
+3. **Hindu category — curated dict fallback** — for surnames not covered by candidates, use a conservative hand-curated dictionary (Sharma/Mishra/Tiwari/etc. → General; Yadav/Kurmi/Mahato → OBC; Munda/Tudu/Soren → ST; …). Only includes surnames with well-known nationally-consistent mappings; state-context-dependent surnames (`PATEL`, `MEENA`, `SINGH`, `THAKUR`) are deliberately omitted and remain `LOW_AMBIGUOUS`.
+
+4. **Generic-token stoplist** — `KUMAR`, `LAL`, `PRASAD`, `DEVI`, `CHANDRA`, `CHAND`, `NATH`, `BABU`, `BAI` carry no caste signal; if these are the last token, the inference falls back to the second-to-last token.
+
+5. **Deduplication** — observers registered under multiple name formats (e.g., `DR. PALAK VERMA` and `DR PALAK VERMA, AICC JNT. SECRETARY`) share a mobile number; the script collapses each `mobile_no` group to its highest-confidence record.
+
+### Confidence tiers
+
+| Tier | Method | Expected accuracy |
+|---|---|---|
+| `HIGH_RELIGION` | distinctive Muslim/Sikh/Christian token | ~95% |
+| `HIGH_SURNAME` | surname has ≥5 candidates, ≥80% in one Category | ~90% |
+| `MEDIUM` | ≥2 candidates with ≥60% concentration, OR curated-dict match | ~70–80% |
+| `LOW_AMBIGUOUS` | sparse, split, or unknown surname | uncertain — treat as no signal |
+
+### Validation
+
+8 observers also appear as DCC candidates in `candidates_detailed.csv` and have self-declared `Category` there. After deduplication, 7 unique observer–candidate ground-truth pairs. The script logs a per-observer comparison; current accuracy on this set is **5/7 = 71%**, with the failures concentrated in `LOW_AMBIGUOUS` rows (which by design we don't claim to know).
+
+### Coverage and distribution (340 unique observers, dummies removed)
+
+- **Coverage with non-empty inferred category:** 242 / 340 = **71%**
+- **Tier distribution:** 47 `HIGH_RELIGION` / 40 `HIGH_SURNAME` / 107 `MEDIUM` / 146 `LOW_AMBIGUOUS`
+- **Religion (best-guess):** Hindu 195 (57%) · Muslim 27 (8%) · Sikh 11 (3%) · Christian 9 (3%) · Unknown 98 (29%)
+- **Category (best-guess, among 242 categorised):** General 88 (36%) · OBC 76 (31%) · Minority 31 (13%) · Others 20 (8%) · SC 18 (7%) · ST 9 (4%)
+
+### Caveats — read before using
+
+> **This is inference, not identity.** The Caste/Category column in `observers_inferred_caste.csv` is *guessed from name patterns + the candidate-population training signal*. It is not self-declaration and some observers will identify differently than their name suggests.
+>
+> Use only for **population-level summaries** ("≥X% of HIGH-tier-categorised observers have General-coded surnames"). **Do not** attribute caste to individual observers in any public-facing deliverable; the per-observer rows are present so AICC can cross-check, not to be republished.
+>
+> When summarising, exclude `LOW_AMBIGUOUS` rows or report the share separately so consumers don't read a coin-flip as a measurement. Roughly 29% of observers couldn't be confidently categorised at all.
 
 ## Reproducibility
 
