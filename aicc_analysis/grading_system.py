@@ -44,7 +44,13 @@ GRADE_THRESHOLDS = {
 
 
 def load_data():
-    """Load all datasets from JSON files."""
+    """Load all datasets from JSON files plus per-record timestamps CSV.
+    Timestamps are the source of truth for counts: the summary 'Profiles'
+    field on the JSON endpoints is sometimes stale (verified against
+    candidates_detailed.csv and all_timestamps.csv — the summary endpoint
+    can lag the detailed endpoints by days). Timestamps gives accurate
+    per-district per-DataType counts.
+    """
     datasets = {}
     files = {
         "district_reports": "district_reports.json",
@@ -57,6 +63,13 @@ def load_data():
     for key, fname in files.items():
         with open(fname) as f:
             datasets[key] = json.load(f)["Table"]
+
+    # Build (state, district_name) -> {DataType: count} from timestamps
+    ts_counts = defaultdict(lambda: defaultdict(int))
+    with open("all_timestamps.csv") as f:
+        for r in csv.DictReader(f):
+            ts_counts[(r["State"], r["District"])][r["DataType"]] += 1
+    datasets["_ts_counts"] = ts_counts
     return datasets
 
 
@@ -154,14 +167,17 @@ def match_daily_report(mobile, district, by_mobile_raw, by_mobile_norm):
 def percentile_score(value, all_values):
     """
     Score a value relative to all values using percentile ranking (0-100).
-    Uses the standard mean-rank percentile formula.
+    Uses the standard mean-rank percentile formula, with a hard floor:
+    a value of 0 always scores 0 (no credit for "did nothing", regardless
+    of how many other districts also did nothing).
     """
+    if not value or value <= 0:
+        return 0
     if not all_values or max(all_values) == 0:
         return 0
-    sorted_vals = sorted(all_values)
-    n = len(sorted_vals)
-    count_below = sum(1 for v in sorted_vals if v < value)
-    count_equal = sum(1 for v in sorted_vals if v == value)
+    n = len(all_values)
+    count_below = sum(1 for v in all_values if v < value)
+    count_equal = sum(1 for v in all_values if v == value)
     percentile = ((count_below + 0.5 * count_equal) / n) * 100
     return min(percentile, 100)
 
@@ -196,8 +212,26 @@ def main():
     att_lookup = build_district_lookup(data["attachments"], "districtid")
     pl_lookup = build_district_lookup(data["potential_leaders"], "districtid")
     pi_lookup = build_district_lookup(data["political_influencers"], "districtid")
+    ts_counts = data["_ts_counts"]
 
-    # Daily reports: join on mobile_no (254/254 unique mobiles overlap with district_reports)
+    def authoritative_count(did, lookup, dtype):
+        """Return the per-record count from timestamps (source of truth),
+        falling back to summary Profiles if timestamps has no entry for
+        this (state, district). Both are non-negative integers.
+        """
+        rec = lookup.get(did, {})
+        st = rec.get("statename")
+        dn = rec.get("DistrictName")
+        ts = ts_counts.get((st, dn), {}).get(dtype, 0)
+        prof = rec.get("Profiles", 0) or 0
+        return max(ts, prof)
+
+    # Daily reports: join on mobile_no. The 'X_' prefix appears symmetrically
+    # in BOTH district_reports and daily_reports (49 mobiles, all matching),
+    # so exact mobile-string matching correctly handles them. Several
+    # observers appear twice in DR — once with bare mobile, once with X_
+    # mobile — covering different district assignments; treating them as
+    # separate keys is correct.
     daily_by_raw, daily_by_norm, _ = build_daily_report_lookup(data["daily_reports"])
 
     # --- Collect all district IDs ---
@@ -207,10 +241,11 @@ def main():
 
     # --- Extract raw values for percentile computation ---
     # All arrays use the same base: all_district_ids (592 districts)
-    all_pn = [pn_lookup.get(d, {}).get("Profiles", 0) for d in all_district_ids]
-    all_att = [att_lookup.get(d, {}).get("Profiles", 0) for d in all_district_ids]
-    all_pl = [pl_lookup.get(d, {}).get("Profiles", 0) for d in all_district_ids]
-    all_pi = [pi_lookup.get(d, {}).get("Profiles", 0) for d in all_district_ids]
+    # Counts come from timestamps (per-record) when available, else Profiles.
+    all_pn = [authoritative_count(d, pn_lookup, "Proposed_Name") for d in all_district_ids]
+    all_att = [authoritative_count(d, att_lookup, "Attachment") for d in all_district_ids]
+    all_pl = [authoritative_count(d, pl_lookup, "Potential_Leader") for d in all_district_ids]
+    all_pi = [authoritative_count(d, pi_lookup, "Political_Influencer") for d in all_district_ids]
 
     # First pass to resolve daily report values per district via mobile_no join,
     # then compute percentiles on the same 592-district base
@@ -235,12 +270,13 @@ def main():
         district = dr_rec.get("DistrictName") or pn_rec.get("DistrictName") or "UNKNOWN"
         state = dr_rec.get("statename") or pn_rec.get("statename") or "UNKNOWN"
 
-        # Raw values
-        has_district_report = 1 if dr_rec.get("Profiles", 0) > 0 else 0
-        proposed_count = pn_lookup.get(did, {}).get("Profiles", 0)
-        attachment_count = att_lookup.get(did, {}).get("Profiles", 0)
-        leader_count = pl_lookup.get(did, {}).get("Profiles", 0)
-        influencer_count = pi_lookup.get(did, {}).get("Profiles", 0)
+        # Raw values from timestamps (authoritative, falls back to Profiles)
+        dr_count = authoritative_count(did, dr_lookup, "District_Report")
+        has_district_report = 1 if dr_count > 0 else 0
+        proposed_count = authoritative_count(did, pn_lookup, "Proposed_Name")
+        attachment_count = authoritative_count(did, att_lookup, "Attachment")
+        leader_count = authoritative_count(did, pl_lookup, "Potential_Leader")
+        influencer_count = authoritative_count(did, pi_lookup, "Political_Influencer")
 
         # Daily report: use pre-computed matched value
         daily_total = daily_values_by_district[did]
