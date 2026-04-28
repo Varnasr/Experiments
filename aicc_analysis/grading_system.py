@@ -63,82 +63,86 @@ def load_data():
 def build_district_lookup(records, id_key="DistrictID"):
     """Build a district-id -> record lookup.
     When duplicates exist, prefer the record with Profiles > 0.
+    Records with null DistrictID are dropped and counted.
     """
     lookup = {}
+    dropped_null = 0
     for r in records:
         did = r.get(id_key) or r.get("districtid")
-        if did:
-            if did in lookup:
-                # Keep the record with more data (higher Profiles count)
-                existing = lookup[did].get("Profiles", 0)
-                new = r.get("Profiles", 0)
-                if new > existing:
-                    lookup[did] = r
-            else:
+        if not did:
+            dropped_null += 1
+            continue
+        if did in lookup:
+            existing = lookup[did].get("Profiles", 0)
+            new = r.get("Profiles", 0)
+            if new > existing:
                 lookup[did] = r
+        else:
+            lookup[did] = r
+    if dropped_null:
+        print(f"[build_district_lookup({id_key}): dropped {dropped_null} records with null id]")
     return lookup
 
 
 def normalize_district_name(name):
     """Normalize district name for fuzzy matching.
-    Strips 'City', 'Urban', 'Rural', 'East', 'West', 'North', 'South'
-    suffixes to match parent districts.
+    Strips suffixes ('City'/'Urban'/'Rural'/'Corporation'/cardinal directions)
+    that vary across data sources for the same parent district.
     """
     if not name:
         return ""
     n = name.strip().upper()
-    # Remove common suffixes that create mismatches
-    n = re.sub(r'\s+(CITY|URBAN|RURAL)\s*$', '', n)
+    n = re.sub(r'\s+(CITY|URBAN|RURAL|CORPORATION|EAST|WEST|NORTH|SOUTH)\s*$', '', n)
     return n.strip()
 
 
 def build_daily_report_lookup(records):
     """
-    Daily reports are keyed by observer name + district.
-    Build multiple lookup keys per record:
-      - exact (observer, district) match
-      - also index by observer alone for fallback
+    Daily reports are joined on mobile_no (perfect overlap with district_reports)
+    plus district name. Returns:
+      - by_mobile_dist: (mobile, normalized_district) -> record (exact)
+      - by_mobile: mobile -> list of records (for fuzzy fallback)
     """
-    lookup = {}
-    # Index by observer -> list of records for fallback matching
-    observer_records = defaultdict(list)
+    by_mobile_dist = {}
+    by_mobile = defaultdict(list)
     for r in records:
-        obs = (r.get("Observer") or "").strip().upper()
-        dist = (r.get("District") or "").strip().upper()
-        key = (obs, dist)
-        lookup[key] = r
-        observer_records[obs].append(r)
-    return lookup, observer_records
+        mobile = (r.get("Mobile_No") or "").strip()
+        if not mobile:
+            continue
+        dist_norm = normalize_district_name(r.get("District") or "")
+        if dist_norm:
+            by_mobile_dist[(mobile, dist_norm)] = r
+        by_mobile[mobile].append(r)
+    return by_mobile_dist, by_mobile
 
 
-def match_daily_report(observer, district, daily_lookup, observer_records):
-    """Match a district to its daily report using multi-level fallback:
-    1. Exact (observer, district) match
-    2. Normalized name match (strip 'City'/'Urban'/'Rural' suffix)
-    3. Substring match within same observer's records
+def match_daily_report(mobile, district, by_mobile_dist, by_mobile):
+    """Match a district to its daily report using mobile_no as primary key.
+    1. Exact (mobile, normalized district) match
+    2. Substring match across same observer's daily records (same mobile)
+    3. If observer covers exactly one district in daily reports, use that
     """
-    obs = observer.strip().upper()
-    dist = district.strip().upper()
+    if not mobile:
+        return None
+    mobile = mobile.strip()
+    dist_norm = normalize_district_name(district)
 
-    # Level 1: Exact match
-    rec = daily_lookup.get((obs, dist))
+    rec = by_mobile_dist.get((mobile, dist_norm))
     if rec:
         return rec
 
-    # Level 2: Normalized match (e.g., "Kurnool City" -> "Kurnool")
-    norm_dist = normalize_district_name(district)
-    if norm_dist != dist:
-        rec = daily_lookup.get((obs, norm_dist))
-        if rec:
-            return rec
+    candidates = by_mobile.get(mobile, [])
+    if not candidates:
+        return None
 
-    # Level 3: Substring match within same observer's records
-    obs_recs = observer_records.get(obs, [])
-    for r in obs_recs:
-        r_dist = (r.get("District") or "").strip().upper()
-        # Check if one is a substring of the other
-        if norm_dist and r_dist and (norm_dist in r_dist or r_dist in norm_dist):
-            return r
+    if dist_norm:
+        for r in candidates:
+            r_dist = normalize_district_name(r.get("District") or "")
+            if r_dist and (dist_norm in r_dist or r_dist in dist_norm):
+                return r
+
+    if len(candidates) == 1:
+        return candidates[0]
 
     return None
 
@@ -189,8 +193,8 @@ def main():
     pl_lookup = build_district_lookup(data["potential_leaders"], "districtid")
     pi_lookup = build_district_lookup(data["political_influencers"], "districtid")
 
-    # Daily reports: build both exact lookup and observer-indexed fallback
-    dr_daily_lookup, dr_observer_records = build_daily_report_lookup(data["daily_reports"])
+    # Daily reports: join on mobile_no (254/254 unique mobiles overlap with district_reports)
+    daily_by_mobile_dist, daily_by_mobile = build_daily_report_lookup(data["daily_reports"])
 
     # --- Collect all district IDs ---
     all_district_ids = set()
@@ -204,21 +208,18 @@ def main():
     all_pl = [pl_lookup.get(d, {}).get("Profiles", 0) for d in all_district_ids]
     all_pi = [pi_lookup.get(d, {}).get("Profiles", 0) for d in all_district_ids]
 
-    # Fix: First pass to resolve daily report values per district,
+    # First pass to resolve daily report values per district via mobile_no join,
     # then compute percentiles on the same 592-district base
     daily_values_by_district = {}
     for did in all_district_ids:
         dr_rec = dr_lookup.get(did, {})
-        observer = dr_rec.get("Observer", pn_lookup.get(did, {}).get("Observer", "UNKNOWN"))
-        district = dr_rec.get("DistrictName", pn_lookup.get(did, {}).get("DistrictName", "UNKNOWN"))
-        daily_rec = match_daily_report(observer, district, dr_daily_lookup, dr_observer_records)
+        pn_rec = pn_lookup.get(did, {})
+        mobile = dr_rec.get("mobile_no") or pn_rec.get("mobile_no") or ""
+        district = dr_rec.get("DistrictName") or pn_rec.get("DistrictName") or ""
+        daily_rec = match_daily_report(mobile, district, daily_by_mobile_dist, daily_by_mobile)
         daily_values_by_district[did] = (daily_rec.get("Total", 0) or 0) if daily_rec else 0
 
     all_daily_totals = [daily_values_by_district[d] for d in all_district_ids]
-
-    # Check sparsity: use binary scoring for parameters where >85% are zero
-    pi_zero_pct = sum(1 for v in all_pi if v == 0) / len(all_pi) if all_pi else 0
-    use_binary_influencers = pi_zero_pct > 0.85
 
     # --- Score each district ---
     daily_match_count = 0
@@ -247,11 +248,10 @@ def main():
         s_daily = percentile_score(daily_total, all_daily_totals)
         s_attachments = percentile_score(attachment_count, all_att)
         s_leaders = percentile_score(leader_count, all_pl)
-        # Fix: use binary scoring for influencers (91.6% zero — percentile is misleading)
-        if use_binary_influencers:
-            s_influencers = binary_score(influencer_count)
-        else:
-            s_influencers = percentile_score(influencer_count, all_pi)
+        # Influencers: pinned to binary scoring. The field is sparse by design
+        # (>90% zero in current data); percentile would award ~46 points to
+        # everyone with a zero value.
+        s_influencers = binary_score(influencer_count)
 
         # Weighted final score
         final_score = (
@@ -270,23 +270,23 @@ def main():
 
         results.append({
             "DistrictID": did,
-            "District": district,
             "State": state,
+            "District": district,
             "Observer": observer,
-            "DistrictReport": has_district_report,
-            "ProposedNames": proposed_count,
-            "DailyReports": daily_total,
-            "SupportingDocs": attachment_count,
-            "PotentialLeaders": leader_count,
-            "Influencers": influencer_count,
+            "Grade": grade,
+            "FinalScore": rounded_score,
+            "DistrictReport_Submitted": has_district_report,
+            "ProposedNames_Count": proposed_count,
+            "DailyReports_Count": daily_total,
+            "Attachments_Count": attachment_count,
+            "PotentialLeaders_Count": leader_count,
+            "Influencers_Count": influencer_count,
             "Score_DistrictReport": round(s_district_report, 1),
             "Score_ProposedNames": round(s_proposed, 1),
             "Score_DailyReports": round(s_daily, 1),
-            "Score_SupportingDocs": round(s_attachments, 1),
+            "Score_Attachments": round(s_attachments, 1),
             "Score_PotentialLeaders": round(s_leaders, 1),
             "Score_Influencers": round(s_influencers, 1),
-            "FinalScore": rounded_score,
-            "Grade": grade,
         })
 
     print(f"[Daily report matches: {daily_match_count}/{len(all_district_ids)} districts]")
@@ -372,32 +372,21 @@ def main():
     # ============================================================
     # EXPORT: Full results to CSV
     # ============================================================
-    csv_file = "grading_results.csv"
+    csv_file = "consolidated_district_grading.csv"
     fieldnames = [
-        "Grade", "FinalScore", "State", "District", "Observer",
-        "DistrictReport", "ProposedNames", "DailyReports",
-        "SupportingDocs", "PotentialLeaders", "Influencers",
+        "DistrictID", "State", "District", "Observer", "Grade", "FinalScore",
+        "DistrictReport_Submitted", "ProposedNames_Count", "DailyReports_Count",
+        "Attachments_Count", "PotentialLeaders_Count", "Influencers_Count",
         "Score_DistrictReport", "Score_ProposedNames", "Score_DailyReports",
-        "Score_SupportingDocs", "Score_PotentialLeaders", "Score_Influencers",
-        "DistrictID"
+        "Score_Attachments", "Score_PotentialLeaders", "Score_Influencers",
     ]
+    # Sort by DistrictID for stable diffs
+    results_for_csv = sorted(results, key=lambda x: x["DistrictID"])
     with open(csv_file, "w", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
-        writer.writerows(results)
+        writer.writerows(results_for_csv)
     print(f"\n[CSV exported: {csv_file} with {len(results)} records]")
-
-    # Export state summary
-    state_csv = "grading_state_summary.csv"
-    with open(state_csv, "w", newline="") as f:
-        writer = csv.writer(f)
-        writer.writerow(["State", "Total", "Grade_A", "Grade_B", "Grade_C", "Grade_D", "Avg_Score"])
-        for state in sorted(state_totals.keys()):
-            sg = state_grades[state]
-            state_scores = [r["FinalScore"] for r in results if r["State"] == state]
-            avg = statistics.mean(state_scores) if state_scores else 0
-            writer.writerow([state, state_totals[state], sg["A"], sg["B"], sg["C"], sg["D"], round(avg, 1)])
-    print(f"[CSV exported: {state_csv}]")
 
 
 if __name__ == "__main__":
