@@ -7,7 +7,10 @@ Outputs a flat CSV with key fields.
 
 import json
 import csv
+import os
+import sys
 import time
+import urllib.parse
 import urllib.request
 import http.cookiejar
 import re
@@ -21,12 +24,18 @@ def strip_html(text):
     return clean
 
 def main():
-    # Login
+    username = os.environ.get('AICC_USERNAME')
+    password = os.environ.get('AICC_PASSWORD')
+    if not username or not password:
+        print("ERROR: set AICC_USERNAME and AICC_PASSWORD environment variables.", file=sys.stderr)
+        sys.exit(2)
+
     cj = http.cookiejar.CookieJar()
     opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cj))
+    creds = urllib.parse.urlencode({'UserName': username, 'Password': password}).encode()
     req = urllib.request.Request(
         'https://aiccobservers.in/home/_ul12',
-        data=b'UserName=9885208187&Password=6666',
+        data=creds,
         headers={'Content-Type': 'application/x-www-form-urlencoded'}
     )
     opener.open(req)
@@ -44,7 +53,7 @@ def main():
 
     # Extract candidate details for each district
     all_candidates = []
-    errors = 0
+    failed = []  # (did, dname, last_error)
 
     for i, dist in enumerate(districts_with_data):
         did = dist['districtid']
@@ -52,12 +61,26 @@ def main():
         observer = dist.get('Observer', 'Unknown')
         state = dist.get('statename', 'Unknown')
 
+        url = f'https://aiccobservers.in/Home/_getMasters?TypeId=31&FilterId={did}&filterText=&Userid=437'
+        candidates = None
+        last_err = None
+        for attempt in range(3):
+            try:
+                resp = opener.open(url, timeout=30)
+                raw = json.loads(resp.read())
+                parsed = json.loads(raw['result'])
+                candidates = parsed.get('Table', [])
+                break
+            except Exception as e:
+                last_err = e
+                if attempt < 2:
+                    time.sleep(2 ** attempt)  # 1s, 2s
+        if candidates is None:
+            failed.append((did, dname, str(last_err)))
+            print(f"  Error on district {did} ({dname}) after 3 attempts: {last_err}")
+            continue
+
         try:
-            url = f'https://aiccobservers.in/Home/_getMasters?TypeId=31&FilterId={did}&filterText=&Userid=437'
-            resp = opener.open(url, timeout=30)
-            raw = json.loads(resp.read())
-            parsed = json.loads(raw['result'])
-            candidates = parsed.get('Table', [])
 
             for c in candidates:
                 all_candidates.append({
@@ -96,15 +119,19 @@ def main():
 
             if (i + 1) % 50 == 0:
                 print(f"  Processed {i+1}/{len(districts_with_data)} districts, {len(all_candidates)} candidates so far...")
-
         except Exception as e:
-            errors += 1
-            print(f"  Error on district {did} ({dname}): {e}")
-            if errors > 5:
-                time.sleep(2)
+            failed.append((did, dname, f"row-build error: {e}"))
+            print(f"  Row-build error on district {did} ({dname}): {e}")
 
     print(f"\nTotal candidates extracted: {len(all_candidates)}")
-    print(f"Errors: {errors}")
+    if failed:
+        print(f"WARNING: extraction incomplete. {len(failed)} districts failed:")
+        for did, dname, err in failed:
+            print(f"  did={did} {dname}: {err}")
+        with open('failed_districts.txt', 'w') as fh:
+            for did, dname, err in failed:
+                fh.write(f"{did}\t{dname}\t{err}\n")
+        print(f"  (logged to failed_districts.txt)")
 
     # Save full JSON
     with open('candidates_detailed.json', 'w') as f:
