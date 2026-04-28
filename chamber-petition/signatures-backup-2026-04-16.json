@@ -1,14 +1,5 @@
 [
   {
-    "id": "431d30d1-aa38-46b1-9b54-1ba96de76881",
-    "name": "Test",
-    "bar_id": "D/1234/D",
-    "aor_no": "1234",
-    "email": "test@test.com",
-    "phone": "9871777443",
-    "signed_at": "2025-12-27 17:44:09.738659+00"
-  },
-  {
     "id": "4f6b4d3d-8619-49c6-a832-e20e61058703",
     "name": "Devvrat devvrat",
     "bar_id": "D/1735/2003",
