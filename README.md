@@ -83,6 +83,21 @@ A Right to Care: Kashmiri Muslim and Other Tribes report (PDF), kept here for di
 
 ---
 
+### Datasets
+
+Registered-but-public microdata used across analyses. Each folder has a README documenting the source, access procedure, and suggested layout. Raw data is gitignored.
+
+**Directory:** `datasets/`
+
+| Folder | Dataset | Source | Period |
+|---|---|---|---|
+| `datasets/ihds-i-2004-05/` | India Human Development Survey, Round I | ICPSR 22626 | 2004–05 |
+| `datasets/ihds-ii-2011-12/` | India Human Development Survey, Round II | ICPSR 36151 | 2011–12 |
+| `datasets/nfhs-5-2019-21/` | National Family Health Survey, Round 5 | DHS Program | 2019–21 |
+| `datasets/plfs-2022-23/` | Periodic Labour Force Survey, unit-level | MoSPI | Jul 2022 – Jun 2023 |
+
+---
+
 ## How This Repo Works
 
 Projects in this repo follow a simple lifecycle:

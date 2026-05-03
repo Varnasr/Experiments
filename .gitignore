@@ -65,3 +65,10 @@ yarn-error.log*
 .nuxt/
 .serverless/
 .firebase/
+
+# Datasets — raw microdata is registered/licensed and not redistributed.
+# Keep folder structure and READMEs; ignore everything inside data/ and docs/.
+datasets/*/data/*
+datasets/*/docs/*
+!datasets/*/data/.gitkeep
+!datasets/*/docs/.gitkeep
