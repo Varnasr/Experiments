@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Experiments — Varna Sri Raman</title>
+    <meta name="description" content="Tech experiments by Varna Sri Raman — a development economist who likes to tinker.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #fafafa;
+            color: #1a1a2e;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Layout */
+        main { flex: 1; padding: 3rem 1.5rem 2rem; }
+        .container { max-width: 720px; margin: 0 auto; }
+
+        /* Header / intro */
+        .intro { margin-bottom: 2.5rem; }
+        h1 {
+            font-family: Georgia, serif;
+            font-size: 1.85rem;
+            margin-bottom: 0.5rem;
+        }
+        .intro p {
+            color: #4b5563;
+            font-size: 0.9375rem;
+            margin-bottom: 0.5rem;
+        }
+        .intro p:last-child { margin-bottom: 0; }
+
+        /* Section labels */
+        .section-label {
+            font-size: 0.6875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #9ca3af;
+            margin-bottom: 0.75rem;
+            margin-top: 2rem;
+        }
+        .section-label:first-of-type { margin-top: 0; }
+
+        /* Cards */
+        .card {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 0.75rem;
+            text-decoration: none;
+            display: block;
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+        .card:hover {
+            border-color: #1B6B4A;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .card h2 {
+            font-size: 1.0625rem;
+            color: #1a1a2e;
+            margin-bottom: 0.25rem;
+        }
+        .card p {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 0;
+        }
+        .card .tech {
+            margin-top: 0.5rem;
+            font-size: 0.75rem;
+            color: #9ca3af;
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-block;
+            font-size: 0.6875rem;
+            font-weight: 600;
+            padding: 1px 6px;
+            border-radius: 4px;
+            vertical-align: middle;
+            margin-left: 0.4rem;
+        }
+        .badge-ai { background: #f3eeff; color: #7C3AED; }
+        .badge-data { background: #e0f2fe; color: #0369a1; }
+        .badge-research { background: #fce7f3; color: #be185d; }
+        .badge-creative { background: #fef3c7; color: #b45309; }
+        .badge-tool { background: #d1fae5; color: #065f46; }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid #e5e7eb;
+            padding: 1.5rem;
+            text-align: center;
+            font-size: 0.8125rem;
+            color: #9ca3af;
+        }
+        footer a {
+            color: #1B6B4A;
+            text-decoration: none;
+        }
+        footer a:hover { text-decoration: underline; }
+        .footer-links { margin-bottom: 0.35rem; }
+        .footer-links a + a::before {
+            content: "\00b7";
+            margin: 0 0.5rem;
+            color: #d1d5db;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <div class="container">
+            <div class="intro">
+                <h1>Hi, I'm Varna.</h1>
+                <p>I'm a development economist and maker of all things at <a href="https://idealog.works" target="_blank" rel="noopener">Idealog Works</a>. This is where I keep my tech experiments — small tools, proof-of-concepts, and side projects built to scratch an itch or test an idea.</p>
+                <p>Not everything here is polished. That's the point.</p>
+            </div>
+
+            <p class="section-label">Data &amp; Visualisation</p>
+
+            <a class="card" href="https://howindialives.impactmojo.in" target="_blank" rel="noopener">
+                <h2>How India Lives <span class="badge badge-data">Data</span></h2>
+                <p>205 state-level choropleth maps showcasing India's diversity across demography, health, gender, economy, education, and environment. A pedagogical tool for understanding why India's states are so different — and why it matters for policy.</p>
+                <p class="tech">HTML &middot; CSS &middot; JavaScript</p>
+            </a>
+
+            <a class="card" href="https://someperspective.info" target="_blank" rel="noopener">
+                <h2>Some Perspective <span class="badge badge-data">Data</span></h2>
+                <p>Data-driven analysis of India's political economy (2014–2025) — policy impact, fiscal trends, and governance indicators with interactive visualisations.</p>
+                <p class="tech">HTML &middot; JavaScript &middot; Charts</p>
+            </a>
+
+            <a class="card" href="https://india-dev-indicators.netlify.app" target="_blank" rel="noopener">
+                <h2>India Development Indicators <span class="badge badge-data">Data</span></h2>
+                <p>Interactive dashboard tracking GDP, HDI, literacy, and infrastructure spending with Chart.js visualisations. Part of the ImpactMojo ecosystem.</p>
+                <p class="tech">HTML &middot; Chart.js</p>
+            </a>
+
+            <a class="card" href="https://varnasr.github.io/sdg-progress-tracker" target="_blank" rel="noopener">
+                <h2>SDG Progress Tracker <span class="badge badge-data">Data</span></h2>
+                <p>India's progress on all 17 UN Sustainable Development Goals — scores, trends, radar charts, and category breakdowns. Part of the ImpactMojo ecosystem.</p>
+                <p class="tech">JavaScript &middot; Charts</p>
+            </a>
+
+            <a class="card" href="https://github.com/Varnasr/adani-infra-db" target="_blank" rel="noopener">
+                <h2>Industry Conglomerates Database <span class="badge badge-data">Data</span></h2>
+                <p>Open-source geographic database of 325 major Adani and Ambani infrastructure projects (2001–2025) — searchable, filterable, with government support classification.</p>
+                <p class="tech">HTML &middot; JavaScript</p>
+            </a>
+
+            <p class="section-label">Research &amp; Analysis</p>
+
+            <a class="card" href="https://forindia.netlify.app" target="_blank" rel="noopener">
+                <h2>Bihar Electoral Analysis <span class="badge badge-research">Research</span></h2>
+                <p>Analysis of Bihar electoral roll anomalies — voter deletion patterns, demographic shifts, and election data integrity research.</p>
+                <p class="tech">HTML &middot; Data Analysis</p>
+            </a>
+
+            <a class="card" href="https://github.com/Varnasr/H-VSAINC" target="_blank" rel="noopener">
+                <h2>Hyderabad Voting Patterns <span class="badge badge-research">Research</span></h2>
+                <p>Analysis of Hyderabad voting patterns and public infrastructure (1999–2023) — comparing AIMIM constituencies vs others across 5 assembly seats, with party-wise vote share trends.</p>
+                <p class="tech">HTML &middot; Data Visualisation</p>
+            </a>
+
+            <a class="card" href="https://github.com/Varnasr/BiharParichay-Project" target="_blank" rel="noopener">
+                <h2>Bihar Parichay <span class="badge badge-research">Research</span></h2>
+                <p>Cost-optimised demographic classification system for Bihar — development economics research achieving 99% cost reduction through local mapping instead of API calls.</p>
+                <p class="tech">HTML &middot; JavaScript</p>
+            </a>
+
+            <a class="card" href="https://github.com/Varnasr/dev-case-studies" target="_blank" rel="noopener">
+                <h2>Development Case Studies <span class="badge badge-research">Research</span></h2>
+                <p>200 real development case studies from 117 countries — searchable, filterable, and fully cited. A reference library for practitioners and students.</p>
+                <p class="tech">JavaScript</p>
+            </a>
+
+            <a class="card" href="https://github.com/Varnasr/development-discourses" target="_blank" rel="noopener">
+                <h2>Development Discourses <span class="badge badge-research">Research</span></h2>
+                <p>A curated open-access library of 500+ research papers, books, and grey literature for development practitioners in South Asia.</p>
+                <p class="tech">JavaScript</p>
+            </a>
+
+            <p class="section-label">Tools</p>
+
+            <a class="card" href="court-translator/">
+                <h2>Court Petition Translator <span class="badge badge-ai">AI</span> <span class="badge badge-tool">Tool</span></h2>
+                <p>Translates Hindi Supreme Court and High Court petitions into formal legal English. Handles the legalese — <em>yaachikaakartha</em> becomes "Petitioner", <em>anuchhed</em> becomes "Article" — so the output reads like it was drafted in English.</p>
+                <p class="tech">Sarvam AI &middot; Llama 3.3 70B via Groq &middot; Netlify Functions</p>
+            </a>
+
+            <a class="card" href="https://github.com/Varnasr/CandidateDossier" target="_blank" rel="noopener">
+                <h2>Candidate Dossier Generator <span class="badge badge-tool">Tool</span></h2>
+                <p>CSV &rarr; LaTeX &rarr; PDF dossier generator. A privacy-first tool for creating uniform, masked candidate dossiers — useful for blind recruitment and evaluation panels.</p>
+                <p class="tech">LaTeX &middot; Netlify Functions</p>
+            </a>
+
+            <a class="card" href="https://therealmiddle.netlify.app" target="_blank" rel="noopener">
+                <h2>The Real Middle <span class="badge badge-data">Data</span> <span class="badge badge-tool">Tool</span></h2>
+                <p>Interactive game revealing where you really stand in India's income distribution. Think you're middle class? Most Indians overestimate their position — find out if you do too.</p>
+                <p class="tech">React &middot; JavaScript</p>
+            </a>
+
+            <a class="card" href="https://github.com/Varnasr/Experiments/tree/main/tools/drive-pdf-extractor" target="_blank" rel="noopener">
+                <h2>Drive PDF Extractor <span class="badge badge-tool">Tool</span></h2>
+                <p>Headless-browser CLI for downloading view-only Google Drive PDFs. Scrolls the Drive viewer, captures each page from the rendered canvas, and reassembles them into a fresh PDF — no Drive auth required.</p>
+                <p class="tech">Node &middot; Playwright &middot; jsPDF</p>
+            </a>
+
+            <a class="card" href="https://github.com/Varnasr/deveconomics-toolkit" target="_blank" rel="noopener">
+                <h2>Dev Economics Toolkit <span class="badge badge-tool">Tool</span></h2>
+                <p>11 interactive apps for development economics — impact evaluation, poverty analysis, programme design, and data exploration. Built for ImpactMojo.</p>
+                <p class="tech">R Shiny &middot; Python Shiny</p>
+            </a>
+
+            <p class="section-label">Creative</p>
+
+            <a class="card" href="Nilaya_Pothi/">
+                <h2>Nilaya E-Pothi <span class="badge badge-creative">Creative</span></h2>
+                <p>A small family library, kept in this house. A parchment-styled e-library with searchable catalogue, themed browsing, reading tracker, and a network map of books linked by themes, keywords, and authors.</p>
+                <p class="tech">HTML &middot; Tailwind &middot; D3 &middot; FlexSearch</p>
+            </a>
+
+            <a class="card" href="https://postheroic.world" target="_blank" rel="noopener">
+                <h2>The Very Last Superhero <span class="badge badge-creative">Creative</span></h2>
+                <p>A fully illustrated speculative fiction novel set in a climate-collapsed India, blending AI, memory, and resistance through the journey of a 14-year-old girl.</p>
+                <p class="tech">HTML &middot; Illustrated Web Novel</p>
+            </a>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-links">
+            <a href="https://github.com/Varnasr/Experiments">GitHub</a>
+            <a href="https://github.com/Varnasr/Experiments/blob/main/LICENSE">MIT License</a>
+            <a href="https://github.com/Varnasr/OpenStacks-for-Change">OpenStacks for Change</a>
+        </div>
+        <span>&copy; 2025 Varna Sri Raman</span>
+    </footer>
+</body>
+</html>
