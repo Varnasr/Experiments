@@ -1,0 +1,401 @@
+===========================================================
+  Build family library catalogue
+===========================================================
+
+Started: Tue May  5 09:18:40 IST 2026
+
+What this does:
+  - Walks the Library/ folder (auto-located)
+  - For each PDF: reads page 1 text, renders cover thumbnail
+  - Computes TF-IDF keywords across all PDFs
+  - Detects language, year, author from filenames
+  - Writes catalog.json + thumbnails/ in this folder
+
+First run installs pymupdf and scikit-learn (~30 sec).
+Then takes 15-30 minutes depending on Dropbox speed and PDF count.
+Subsequent runs skip already-rendered covers, so they're fast.
+
+Starting in 3 seconds...
+
+  WARNING: The script pymupdf is installed in '/Users/varna/Library/Python/3.13/bin' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+
+[notice] A new release of pip is available: 25.0.1 -> 26.1
+[notice] To update, run: pip3 install --upgrade pip
+  WARNING: The scripts f2py and numpy-config are installed in '/Users/varna/Library/Python/3.13/bin' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+
+[notice] A new release of pip is available: 25.0.1 -> 26.1
+[notice] To update, run: pip3 install --upgrade pip
+Installing pymupdf (one-time) ...
+Installing scikit-learn (one-time) ...
+Using script dir: /Users/varna/Library/CloudStorage/Dropbox/Family Room/Library/Catalogue
+Found library at: /Users/varna/Library/CloudStorage/Dropbox/Family Room/Library
+
+Walking Library/ ...
+Found 4232 files in themed folders
+
+Extracting page-1 text + rendering covers from PDFs ...
+MuPDF error: format error: No common ancestor in structure tree
+
+  100/4232  0.8/s  eta 5074s
+MuPDF error: format error: No default Layer config
+
+MuPDF error: format error: No default Layer config
+
+  200/4232  0.7/s  eta 6070s
+MuPDF error: format error: No common ancestor in structure tree
+
+  300/4232  0.6/s  eta 7135s
+  400/4232  0.5/s  eta 7091s
+  500/4232  0.5/s  eta 7500s
+MuPDF error: format error: No common ancestor in structure tree
+
+MuPDF error: format error: No common ancestor in structure tree
+
+===========================================================
+  Build family library catalogue
+===========================================================
+
+Started: Tue May  5 09:46:01 IST 2026
+
+What this does:
+  - Walks the Library/ folder (auto-located)
+  - For each PDF: reads page 1 text, renders cover thumbnail
+  - Computes TF-IDF keywords across all PDFs
+  - Detects language, year, author from filenames
+  - Writes catalog.json + thumbnails/ in this folder
+
+First run installs pymupdf and scikit-learn (~30 sec).
+Then takes 15-30 minutes depending on Dropbox speed and PDF count.
+Subsequent runs skip already-rendered covers, so they're fast.
+
+Starting in 3 seconds...
+
+Using script dir: /Users/varna/Library/CloudStorage/Dropbox/Family Room/Library/Catalogue
+Found library at: /Users/varna/Library/CloudStorage/Dropbox/Family Room/Library
+
+Walking Library/ ...
+Found 4232 files in themed folders
+
+Extracting page-1 text + rendering covers from PDFs ...
+  50/4232  8.1/s  eta 517s  (size-skipped 1, timeouts 0)
+  100/4232  16.1/s  eta 257s  (size-skipped 1, timeouts 0)
+  150/4232  18.3/s  eta 223s  (size-skipped 1, timeouts 0)
+MuPDF error: format error: No default Layer config
+
+  200/4232  16.3/s  eta 247s  (size-skipped 2, timeouts 0)
+  250/4232  16.6/s  eta 239s  (size-skipped 2, timeouts 0)
+  300/4232  16.0/s  eta 246s  (size-skipped 2, timeouts 0)
+  350/4232  13.6/s  eta 285s  (size-skipped 3, timeouts 0)
+  400/4232  12.6/s  eta 304s  (size-skipped 3, timeouts 0)
+  450/4232  12.5/s  eta 301s  (size-skipped 4, timeouts 0)
+  500/4232  12.2/s  eta 306s  (size-skipped 4, timeouts 0)
+  550/4232  11.7/s  eta 316s  (size-skipped 5, timeouts 0)
+  600/4232  11.9/s  eta 305s  (size-skipped 5, timeouts 0)
+  650/4232  8.2/s  eta 438s  (size-skipped 6, timeouts 0)
+  700/4232  4.2/s  eta 841s  (size-skipped 6, timeouts 0)
+  750/4232  2.7/s  eta 1278s  (size-skipped 7, timeouts 0)
+MuPDF error: format error: No common ancestor in structure tree
+
+  800/4232  1.9/s  eta 1808s  (size-skipped 10, timeouts 0)
+MuPDF error: format error: No common ancestor in structure tree
+
+  850/4232  1.4/s  eta 2459s  (size-skipped 10, timeouts 0)
+MuPDF error: format error: No common ancestor in structure tree
+
+  900/4232  1.3/s  eta 2596s  (size-skipped 11, timeouts 0)
+  950/4232  1.1/s  eta 2899s  (size-skipped 12, timeouts 0)
+  1000/4232  1.1/s  eta 3014s  (size-skipped 12, timeouts 0)
+  1050/4232  1.0/s  eta 3057s  (size-skipped 15, timeouts 0)
+  1100/4232  0.9/s  eta 3443s  (size-skipped 15, timeouts 0)
+  1150/4232  0.8/s  eta 3721s  (size-skipped 16, timeouts 0)
+  1200/4232  0.8/s  eta 3727s  (size-skipped 16, timeouts 0)
+  1250/4232  0.8/s  eta 3519s  (size-skipped 16, timeouts 0)
+  1300/4232  0.9/s  eta 3327s  (size-skipped 16, timeouts 0)
+  1350/4232  0.9/s  eta 3149s  (size-skipped 16, timeouts 0)
+  1400/4232  0.9/s  eta 2984s  (size-skipped 16, timeouts 0)
+  1450/4232  1.0/s  eta 2830s  (size-skipped 16, timeouts 0)
+  1500/4232  1.0/s  eta 2687s  (size-skipped 16, timeouts 0)
+  1550/4232  1.1/s  eta 2553s  (size-skipped 16, timeouts 0)
+  1600/4232  1.1/s  eta 2427s  (size-skipped 16, timeouts 0)
+  1650/4232  1.1/s  eta 2309s  (size-skipped 16, timeouts 0)
+  1700/4232  1.2/s  eta 2197s  (size-skipped 16, timeouts 0)
+  1750/4232  1.2/s  eta 2093s  (size-skipped 16, timeouts 0)
+  1800/4232  1.2/s  eta 1993s  (size-skipped 16, timeouts 0)
+  1850/4232  1.3/s  eta 1900s  (size-skipped 16, timeouts 0)
+  1900/4232  1.3/s  eta 1811s  (size-skipped 16, timeouts 0)
+  1950/4232  1.3/s  eta 1727s  (size-skipped 16, timeouts 0)
+  2000/4232  1.4/s  eta 1647s  (size-skipped 16, timeouts 0)
+  2050/4232  1.4/s  eta 1571s  (size-skipped 16, timeouts 0)
+  2100/4232  1.4/s  eta 1498s  (size-skipped 16, timeouts 0)
+  2150/4232  1.4/s  eta 1482s  (size-skipped 16, timeouts 0)
+  2200/4232  1.4/s  eta 1503s  (size-skipped 17, timeouts 0)
+MuPDF error: syntax error: invalid key in dict
+
+MuPDF error: syntax error: invalid key in dict
+
+MuPDF error: syntax error: invalid key in dict
+
+MuPDF error: syntax error: invalid key in dict
+
+MuPDF error: syntax error: invalid key in dict
+
+  2250/4232  1.3/s  eta 1508s  (size-skipped 17, timeouts 0)
+  2300/4232  1.3/s  eta 1491s  (size-skipped 18, timeouts 0)
+  2350/4232  1.3/s  eta 1472s  (size-skipped 21, timeouts 0)
+  2400/4232  1.2/s  eta 1472s  (size-skipped 21, timeouts 0)
+  2450/4232  1.2/s  eta 1479s  (size-skipped 22, timeouts 0)
+  2500/4232  1.2/s  eta 1452s  (size-skipped 22, timeouts 0)
+  2550/4232  1.2/s  eta 1414s  (size-skipped 22, timeouts 0)
+  2600/4232  1.2/s  eta 1409s  (size-skipped 22, timeouts 0)
+MuPDF error: format error: No default Layer config
+
+MuPDF error: format error: No default Layer config
+
+  2650/4232  1.1/s  eta 1390s  (size-skipped 22, timeouts 0)
+  2700/4232  1.1/s  eta 1380s  (size-skipped 22, timeouts 0)
+  2750/4232  1.1/s  eta 1351s  (size-skipped 25, timeouts 0)
+  2800/4232  1.1/s  eta 1326s  (size-skipped 27, timeouts 0)
+  2850/4232  1.1/s  eta 1289s  (size-skipped 29, timeouts 0)
+  2900/4232  1.1/s  eta 1253s  (size-skipped 29, timeouts 0)
+MuPDF error: format error: No common ancestor in structure tree
+
+  2950/4232  1.1/s  eta 1216s  (size-skipped 30, timeouts 0)
+  3000/4232  1.0/s  eta 1184s  (size-skipped 31, timeouts 0)
+  3050/4232  1.0/s  eta 1163s  (size-skipped 31, timeouts 0)
+  3100/4232  1.0/s  eta 1130s  (size-skipped 31, timeouts 0)
+  3150/4232  1.0/s  eta 1093s  (size-skipped 34, timeouts 0)
+  3200/4232  1.0/s  eta 1054s  (size-skipped 34, timeouts 0)
+  3250/4232  1.0/s  eta 1015s  (size-skipped 35, timeouts 0)
+  3300/4232  1.0/s  eta 973s  (size-skipped 36, timeouts 0)
+  3350/4232  0.9/s  eta 943s  (size-skipped 38, timeouts 0)
+MuPDF error: format error: No common ancestor in structure tree
+
+MuPDF error: format error: No common ancestor in structure tree
+
+MuPDF error: format error: No common ancestor in structure tree
+
+MuPDF error: format error: No common ancestor in structure tree
+
+  3400/4232  0.9/s  eta 910s  (size-skipped 38, timeouts 0)
+MuPDF error: format error: No common ancestor in structure tree
+
+MuPDF error: format error: No common ancestor in structure tree
+
+  3450/4232  0.9/s  eta 864s  (size-skipped 38, timeouts 0)
+  3500/4232  0.9/s  eta 820s  (size-skipped 38, timeouts 0)
+  3550/4232  0.9/s  eta 771s  (size-skipped 38, timeouts 0)
+MuPDF error: format error: No common ancestor in structure tree
+
+  3600/4232  0.9/s  eta 722s  (size-skipped 38, timeouts 0)
+MuPDF error: format error: No common ancestor in structure tree
+
+  3650/4232  0.9/s  eta 681s  (size-skipped 38, timeouts 0)
+  3700/4232  0.8/s  eta 638s  (size-skipped 38, timeouts 0)
+MuPDF error: format error: No default Layer config
+
+MuPDF error: format error: No default Layer config
+
+MuPDF error: syntax error: expected object number
+
+MuPDF error: syntax error: expected object number
+
+  3750/4232  0.8/s  eta 591s  (size-skipped 38, timeouts 0)
+  3800/4232  0.8/s  eta 549s  (size-skipped 38, timeouts 0)
+  3850/4232  0.8/s  eta 498s  (size-skipped 38, timeouts 0)
+  3900/4232  0.7/s  eta 448s  (size-skipped 40, timeouts 0)
+MuPDF error: format error: No common ancestor in structure tree
+
+MuPDF error: format error: No common ancestor in structure tree
+
+  3950/4232  0.7/s  eta 388s  (size-skipped 43, timeouts 0)
+MuPDF error: format error: No common ancestor in structure tree
+
+========
+Director exception handler, message is:
+Director error: <class '__main__.TimeoutError_'>: 
+Traceback (most recent call last):
+    /Users/varna/Library/Python/3.13/lib/python/site-packages/pymupdf/mupdf.py:64917:_print(): def _print( self, message):
+    /Users/varna/Library/Python/3.13/lib/python/site-packages/pymupdf/mupdf.py:50789:fz_open_document(): return _mupdf.fz_open_document(filename)
+    /Users/varna/Library/Python/3.13/lib/python/site-packages/pymupdf/__init__.py:3009:__init__(): doc = mupdf.fz_open_document(filename)
+    build_catalogue.py:119:_do_text_snippet(): doc = fitz.open(path)
+    build_catalogue.py:89:with_timeout(): return fn(*args, **kwargs)
+    build_catalogue.py:131:safe_text_snippet(): return with_timeout(PER_FILE_TIMEOUT, _do_text_snippet, path, max_chars)
+    build_catalogue.py:245:main(): snippet = safe_text_snippet(e['abs'])
+    build_catalogue.py:339:<module>(): main()
+    /Users/varna/Library/Python/3.13/lib/python/site-packages/pymupdf/mupdf.py:64917:_print(): def _print( self, message):
+    build_catalogue.py:81:timeout_handler(): raise TimeoutError_()
+Exception was from C++/Python callback:
+    virtual void SwigDirector_DiagnosticCallback::_print(const char *)
+
+========
+DiagnosticCallback[warning]::s_print() ignoring exception from _print(): Director error: <class '__main__.TimeoutError_'>: 
+Traceback (most recent call last):
+    /Users/varna/Library/Python/3.13/lib/python/site-packages/pymupdf/mupdf.py:64917:_print(): def _print( self, message):
+    /Users/varna/Library/Python/3.13/lib/python/site-packages/pymupdf/mupdf.py:50789:fz_open_document(): return _mupdf.fz_open_document(filename)
+    /Users/varna/Library/Python/3.13/lib/python/site-packages/pymupdf/__init__.py:3009:__init__(): doc = mupdf.fz_open_document(filename)
+    build_catalogue.py:119:_do_text_snippet(): doc = fitz.open(path)
+    build_catalogue.py:89:with_timeout(): return fn(*args, **kwargs)
+    build_catalogue.py:131:safe_text_snippet(): return with_timeout(PER_FILE_TIMEOUT, _do_text_snippet, path, max_chars)
+    build_catalogue.py:245:main(): snippet = safe_text_snippet(e['abs'])
+    build_catalogue.py:339:<module>(): main()
+    /Users/varna/Library/Python/3.13/lib/python/site-packages/pymupdf/mupdf.py:64917:_print(): def _print( self, message):
+    build_catalogue.py:81:timeout_handler(): raise TimeoutError_()
+Exception was from C++/Python callback:
+    virtual void SwigDirector_DiagnosticCallback::_print(const char *)
+
+========
+Director exception handler, message is:
+Director error: <class '__main__.TimeoutError_'>: 
+Traceback (most recent call last):
+    /Users/varna/Library/Python/3.13/lib/python/site-packages/pymupdf/mupdf.py:64917:_print(): def _print( self, message):
+    /Users/varna/Library/Python/3.13/lib/python/site-packages/pymupdf/mupdf.py:50789:fz_open_document(): return _mupdf.fz_open_document(filename)
+    /Users/varna/Library/Python/3.13/lib/python/site-packages/pymupdf/__init__.py:3009:__init__(): doc = mupdf.fz_open_document(filename)
+    build_catalogue.py:119:_do_text_snippet(): doc = fitz.open(path)
+    build_catalogue.py:89:with_timeout(): return fn(*args, **kwargs)
+    build_catalogue.py:131:safe_text_snippet(): return with_timeout(PER_FILE_TIMEOUT, _do_text_snippet, path, max_chars)
+    build_catalogue.py:245:main(): snippet = safe_text_snippet(e['abs'])
+    build_catalogue.py:339:<module>(): main()
+    /Users/varna/Library/Python/3.13/lib/python/site-packages/pymupdf/mupdf.py:64917:_print(): def _print( self, message):
+    build_catalogue.py:81:timeout_handler(): raise TimeoutError_()
+Exception was from C++/Python callback:
+    virtual void SwigDirector_DiagnosticCallback::_print(const char *)
+
+========
+DiagnosticCallback[error]::s_print() ignoring exception from _print(): Director error: <class '__main__.TimeoutError_'>: 
+Traceback (most recent call last):
+    /Users/varna/Library/Python/3.13/lib/python/site-packages/pymupdf/mupdf.py:64917:_print(): def _print( self, message):
+    /Users/varna/Library/Python/3.13/lib/python/site-packages/pymupdf/mupdf.py:50789:fz_open_document(): return _mupdf.fz_open_document(filename)
+    /Users/varna/Library/Python/3.13/lib/python/site-packages/pymupdf/__init__.py:3009:__init__(): doc = mupdf.fz_open_document(filename)
+    build_catalogue.py:119:_do_text_snippet(): doc = fitz.open(path)
+    build_catalogue.py:89:with_timeout(): return fn(*args, **kwargs)
+    build_catalogue.py:131:safe_text_snippet(): return with_timeout(PER_FILE_TIMEOUT, _do_text_snippet, path, max_chars)
+    build_catalogue.py:245:main(): snippet = safe_text_snippet(e['abs'])
+    build_catalogue.py:339:<module>(): main()
+    /Users/varna/Library/Python/3.13/lib/python/site-packages/pymupdf/mupdf.py:64917:_print(): def _print( self, message):
+    build_catalogue.py:81:timeout_handler(): raise TimeoutError_()
+Exception was from C++/Python callback:
+    virtual void SwigDirector_DiagnosticCallback::_print(const char *)
+
+  4000/4232  0.7/s  eta 332s  (size-skipped 45, timeouts 0)
+MuPDF error: format error: No common ancestor in structure tree
+
+  4050/4232  0.7/s  eta 263s  (size-skipped 48, timeouts 0)
+  4100/4232  0.7/s  eta 192s  (size-skipped 50, timeouts 0)
+MuPDF error: format error: No common ancestor in structure tree
+
+MuPDF error: format error: No common ancestor in structure tree
+
+MuPDF error: format error: No common ancestor in structure tree
+
+  4150/4232  0.7/s  eta 120s  (size-skipped 51, timeouts 0)
+MuPDF error: format error: non-page object in page tree
+
+MuPDF error: format error: non-page object in page tree
+
+  4200/4232  0.7/s  eta 47s  (size-skipped 51, timeouts 0)
+
+Computing TF-IDF keywords across PDF corpus ...
+
+DONE in 6191s
+  Files catalogued: 4232
+  PDFs with covers: 2708
+  Themes: 22
+  Files skipped for size (> 50 MB): 52
+  Files timed out (> 30 s): 0
+
+Output: /Users/varna/Library/CloudStorage/Dropbox/Family Room/Library/Catalogue/catalog.json
+
+Python exited with code: 0
+Done: Tue May  5 11:29:24 IST 2026
+
+When done, double-click:  index.html
+(opens in your default browser)
+
+Press Enter to close...===========================================================
+  Build Nilaya E-Pothi catalogue
+===========================================================
+
+Started: Tue May  5 13:33:23 IST 2026
+
+OCR tools missing: tesseract poppler
+
+Installing OCR tools via Homebrew (one-time, takes ~2-5 minutes)...
+These let the script extract text from scanned PDFs.
+
+==> Downloading https://ghcr.io/v2/homebrew/portable-ruby/portable-ruby/blobs/sha256:45cea656cc5b5f5b53a9d4fc9e6c88d3a29b3aac862d1a55f1c70df534df5636
+#=#=#                                                                           ##O#- #                                                                                                                                                     0.4%######                                                                      8.3%###########                                                                15.3%##############                                                             19.8%###############                                                            21.2%#####################                                                      29.3%##########################                                                 36.5%#################################                                          45.7%#######################################                                    54.0%#############################################                              62.9%#####################################################                      73.7%############################################################               83.0%#####################################################################      95.0%######################################################################### 100.0%
+==> Pouring portable-ruby-3.4.4.el_capitan.bottle.tar.gz
+==> Auto-updating Homebrew...
+Adjust how often this is run with HOMEBREW_AUTO_UPDATE_SECS or disable with
+HOMEBREW_NO_AUTO_UPDATE. Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
+==> Downloading https://ghcr.io/v2/homebrew/core/portable-ruby/blobs/sha256:f2bc4c3b081b09d7dcca97a8b8c5e102116e6ba68a5c118d6d961cf33b3162ec
+#=#=#                                                                           ##O#- #                                                                                                                                                     0.3%####                                                                        6.5%#########                                                                  13.6%#############                                                              19.0%###################                                                        27.3%#########################                                                  34.9%###############################                                            43.1%#####################################                                      51.2%###########################################                                59.9%#################################################                          67.3%########################################################                   77.0%##############################################################             85.6%####################################################################       94.4%######################################################################### 100.0%
+==> Pouring portable-ruby-4.0.3.catalina.bottle.tar.gz
+==> Homebrew collects anonymous analytics.
+Read the analytics documentation (and how to opt-out) here:
+  https://docs.brew.sh/Analytics
+No analytics have been recorded yet (nor will be during this `brew` run).
+
+==> Homebrew is run entirely by unpaid volunteers. Please consider donating:
+  https://github.com/Homebrew/brew#donations
+
+Error: Failed to link all completions, docs and manpages:
+  Permission denied @ rb_file_s_symlink - (../../../Homebrew/manpages/README.md, /usr/local/share/man/man1/README.md)
+Error: The following directories are not writable by your user:
+/usr/local/share/doc
+/usr/local/share/man
+/usr/local/share/man/man1
+
+You should change the ownership of these directories to your user.
+  sudo chown -R varna /usr/local/share/doc /usr/local/share/man /usr/local/share/man/man1
+
+And make sure that your user has write permission.
+  chmod u+w /usr/local/share/doc /usr/local/share/man /usr/local/share/man/man1
+
+⚠️  OCR install reported issues. Continuing without OCR — text-based PDFs will still work.
+
+What this does:
+  - Walks the Library/ folder (auto-located)
+  - PDFs: reads page 1-3 text, renders cover, OCR fallback for scans
+  - EPUBs: reads first chapter text + extracts cover image
+  - Detects language, year, author from filenames
+  - Computes TF-IDF keywords across all books
+  - Writes catalog.js + thumbnails/ in this folder
+
+Python deps (pymupdf, scikit-learn) auto-install on first run.
+Re-runs use a cache so they only process new/changed files.
+
+Starting in 3 seconds...
+
+Using script dir: /Users/varna/Library/CloudStorage/Dropbox/Family Room/Library/Catalogue
+Found library at: /Users/varna/Library/CloudStorage/Dropbox/Family Room/Library
+OCR available: False
+
+Walking Library/ ...
+Found 4232 files
+Resuming — 4232 files already processed.
+
+Processing files ...
+
+Computing TF-IDF keywords ...
+
+DONE in 9s
+  Files catalogued: 4232
+  Files with covers: 2708
+  Files with snippets: 1543
+  OCR-rescued: 0
+  Themes: 22
+  Files skipped for size: 0
+  Files timed out: 0
+
+Output: /Users/varna/Library/CloudStorage/Dropbox/Family Room/Library/Catalogue/catalog.json
+
+Python exited with code: 0
+Done: Tue May  5 13:38:12 IST 2026
+
+When done, double-click:  index.html
+(opens in your default browser)
+
+Press Enter to close...
