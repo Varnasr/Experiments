@@ -1,242 +1,1252 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Experiments — Varna Sri Raman</title>
-    <meta name="description" content="Tech experiments by Varna Sri Raman — a development economist who likes to tinker.">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background: #fafafa;
-            color: #1a1a2e;
-            line-height: 1.6;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
+<meta charset="UTF-8">
+<title>Nilaya E-Pothi</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script>
+  (function () {
+    const stored = localStorage.getItem('pothi_theme');
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const useDark = stored ? stored === 'dark' : prefersDark;
+    if (useDark) document.documentElement.classList.add('dark');
+  })();
+</script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config = { darkMode: 'class' };</script>
+<script src="https://cdn.jsdelivr.net/npm/flexsearch@0.7.43/dist/flexsearch.bundle.min.js"></script>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="catalog.js"></script>
+<style>
+  :root {
+    --bg: #f5ecd9;            /* warm parchment */
+    --bg-tint: #ede0c4;
+    --surface: #fcf6e8;       /* cream card */
+    --surface-2: #efe4ce;
+    --ink: #1f2820;            /* dark forest ink */
+    --ink-soft: #5a5547;
+    --ink-muted: #8a826e;
+    --border: #d9c9a4;
+    --line: #c9b890;
+    --accent: #c2581c;         /* terracotta */
+    --accent-soft: #f1d9c6;
+    --accent-deep: #1a3d2c;    /* deep forest */
+    --gold: #b8860b;
+    --link: #c2581c;
+    --paper-noise: rgba(0,0,0,0.015);
+  }
+  html.dark {
+    --bg: #14110d;
+    --bg-tint: #1a1814;
+    --surface: #1f1c17;
+    --surface-2: #2a261f;
+    --ink: #f0e6d0;
+    --ink-soft: #b8aa8a;
+    --ink-muted: #897e60;
+    --border: #3a342a;
+    --line: #4d4434;
+    --accent: #e09060;
+    --accent-soft: #3a2820;
+    --accent-deep: #5fa180;
+    --gold: #d4a847;
+    --link: #e09060;
+    --paper-noise: rgba(255,255,255,0.02);
+  }
+  /* Subtle paper texture */
+  html, body {
+    background-color: var(--bg);
+    color: var(--ink);
+  }
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-image:
+      radial-gradient(circle at 50% 0%, var(--bg-tint) 0%, transparent 50%),
+      repeating-linear-gradient(0deg, transparent 0 2px, var(--paper-noise) 2px 3px),
+      repeating-linear-gradient(90deg, transparent 0 2px, var(--paper-noise) 2px 3px);
+    background-attachment: fixed;
+    line-height: 1.55;
+  }
+  .font-serif { font-family: 'Fraunces', 'Cormorant Garamond', Georgia, serif; font-optical-sizing: auto; }
+  .font-display { font-family: 'Fraunces', serif; font-variation-settings: "opsz" 144; }
 
-        /* Layout */
-        main { flex: 1; padding: 3rem 1.5rem 2rem; }
-        .container { max-width: 720px; margin: 0 auto; }
+  /* Surfaces */
+  .surface { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; }
+  .surface-2 { background: var(--surface-2); border-radius: 10px; }
+  .ink { color: var(--ink); }
+  .ink-soft { color: var(--ink-soft); }
+  .ink-muted { color: var(--ink-muted); }
+  .border-soft { border-color: var(--border); }
 
-        /* Header / intro */
-        .intro { margin-bottom: 2.5rem; }
-        h1 {
-            font-family: Georgia, serif;
-            font-size: 1.85rem;
-            margin-bottom: 0.5rem;
-        }
-        .intro p {
-            color: #4b5563;
-            font-size: 0.9375rem;
-            margin-bottom: 0.5rem;
-        }
-        .intro p:last-child { margin-bottom: 0; }
+  /* Inputs */
+  .input-base {
+    background: var(--surface); color: var(--ink); border: 1px solid var(--border);
+    border-radius: 10px; padding: 9px 14px; font-size: 14px;
+    transition: all 0.18s;
+  }
+  .input-base:focus {
+    outline: 2px solid var(--accent); outline-offset: -1px;
+    border-color: var(--accent);
+  }
+  .input-base:hover { border-color: var(--ink-muted); }
 
-        /* Section labels */
-        .section-label {
-            font-size: 0.6875rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: #9ca3af;
-            margin-bottom: 0.75rem;
-            margin-top: 2rem;
-        }
-        .section-label:first-of-type { margin-top: 0; }
+  /* Buttons */
+  .btn {
+    background: var(--surface); color: var(--ink); border: 1px solid var(--border);
+    border-radius: 10px; padding: 9px 16px; font-size: 14px; font-weight: 500;
+    cursor: pointer; transition: all 0.18s;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .btn:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-1px); }
+  .btn-primary {
+    background: var(--accent); color: white; border-color: var(--accent);
+    box-shadow: 0 2px 8px rgba(194,88,28,0.25);
+  }
+  .btn-primary:hover { background: #a64915; border-color: #a64915; color: white; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(194,88,28,0.35); }
+  .btn-ghost {
+    background: transparent; border: 1px solid transparent;
+  }
+  .btn-ghost:hover { background: var(--surface-2); border-color: var(--border); }
+  .btn-icon { padding: 8px; min-width: 38px; justify-content: center; }
 
-        /* Cards */
-        .card {
-            background: #fff;
-            border: 1px solid #e5e7eb;
-            border-radius: 10px;
-            padding: 1.25rem 1.5rem;
-            margin-bottom: 0.75rem;
-            text-decoration: none;
-            display: block;
-            transition: border-color 0.15s, box-shadow 0.15s;
-        }
-        .card:hover {
-            border-color: #1B6B4A;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-        }
-        .card h2 {
-            font-size: 1.0625rem;
-            color: #1a1a2e;
-            margin-bottom: 0.25rem;
-        }
-        .card p {
-            font-size: 0.875rem;
-            color: #6b7280;
-            margin-bottom: 0;
-        }
-        .card .tech {
-            margin-top: 0.5rem;
-            font-size: 0.75rem;
-            color: #9ca3af;
-        }
+  /* Pills */
+  .pill {
+    display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 11px;
+    background: var(--accent-soft); color: var(--accent); margin-right: 6px; margin-bottom: 4px;
+    font-weight: 500; letter-spacing: 0.01em;
+  }
+  .pill-status-reading { background: #fef3c7; color: #92400e; }
+  .pill-status-read { background: #d1fae5; color: #065f46; }
+  .pill-status-toread { background: #dbeafe; color: #1e40af; }
+  .pill-status-abandoned { background: #fee2e2; color: #991b1b; }
+  html.dark .pill-status-reading { background: #4b3407; color: #fcd34d; }
+  html.dark .pill-status-read { background: #064e3b; color: #6ee7b7; }
+  html.dark .pill-status-toread { background: #1e3a5f; color: #93c5fd; }
+  html.dark .pill-status-abandoned { background: #4c1717; color: #fca5a5; }
 
-        /* Badges */
-        .badge {
-            display: inline-block;
-            font-size: 0.6875rem;
-            font-weight: 600;
-            padding: 1px 6px;
-            border-radius: 4px;
-            vertical-align: middle;
-            margin-left: 0.4rem;
-        }
-        .badge-ai { background: #f3eeff; color: #7C3AED; }
-        .badge-data { background: #e0f2fe; color: #0369a1; }
-        .badge-research { background: #fce7f3; color: #be185d; }
-        .badge-creative { background: #fef3c7; color: #b45309; }
-        .badge-tool { background: #d1fae5; color: #065f46; }
+  /* Cards */
+  .book-card {
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .book-card:hover {
+    transform: translateY(-4px) rotate(-0.25deg);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+    border-color: var(--accent);
+  }
+  html.dark .book-card:hover { box-shadow: 0 12px 30px rgba(0,0,0,0.5); }
+  .cover-thumb {
+    width: 100%; aspect-ratio: 3/4; object-fit: cover;
+    background: var(--surface-2); display: block;
+    border-bottom: 1px solid var(--border);
+  }
+  .cover-placeholder {
+    width: 100%; aspect-ratio: 3/4;
+    background: linear-gradient(135deg, var(--accent-soft) 0%, var(--surface-2) 100%);
+    display: flex; align-items: center; justify-content: center;
+    padding: 14px; text-align: center;
+    font-family: 'Fraunces', serif; font-size: 0.95rem; font-weight: 500;
+    color: var(--ink-soft); line-height: 1.25;
+    border-bottom: 1px solid var(--border);
+  }
 
-        /* Footer */
-        footer {
-            border-top: 1px solid #e5e7eb;
-            padding: 1.5rem;
-            text-align: center;
-            font-size: 0.8125rem;
-            color: #9ca3af;
-        }
-        footer a {
-            color: #1B6B4A;
-            text-decoration: none;
-        }
-        footer a:hover { text-decoration: underline; }
-        .footer-links { margin-bottom: 0.35rem; }
-        .footer-links a + a::before {
-            content: "\00b7";
-            margin: 0 0.5rem;
-            color: #d1d5db;
-        }
-    </style>
+  /* Rows */
+  .row-item {
+    transition: background 0.12s, padding-left 0.15s;
+    cursor: pointer; padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+  }
+  .row-item:last-child { border-bottom: none; }
+  .row-item:hover { background: var(--surface-2); padding-left: 22px; }
+
+  /* Tabs */
+  .tab {
+    padding: 10px 4px; font-size: 14px; font-weight: 500; cursor: pointer;
+    color: var(--ink-muted); border-bottom: 2px solid transparent;
+    transition: all 0.15s; margin-right: 24px;
+    font-family: 'Inter', sans-serif;
+  }
+  .tab:hover { color: var(--ink); }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* Details/summary */
+  details > summary { cursor: pointer; user-select: none; list-style: none; }
+  details > summary::-webkit-details-marker { display: none; }
+  details > summary::marker { display: none; }
+  details > summary:before {
+    content: '▸'; display: inline-block; width: 1.4em;
+    transition: transform 0.2s; color: var(--accent); font-size: 0.85em;
+  }
+  details[open] > summary:before { transform: rotate(90deg); }
+
+  /* Graph */
+  #graph svg { background: var(--surface-2); border-radius: 14px; cursor: grab; }
+  #graph svg:active { cursor: grabbing; }
+  .node circle { stroke: var(--surface); stroke-width: 1.5px; cursor: pointer; transition: all 0.15s; }
+  .node circle:hover { stroke-width: 2.5px; }
+  .link { stroke: var(--ink-muted); stroke-opacity: 0.18; }
+
+  /* Modal */
+  .modal-overlay {
+    background: rgba(20,15,10,0.55); backdrop-filter: blur(6px);
+  }
+  html.dark .modal-overlay { background: rgba(0,0,0,0.7); }
+  .modal-card {
+    background: var(--surface); color: var(--ink); border-radius: 18px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.35);
+    border: 1px solid var(--border);
+  }
+
+  /* Stats */
+  .stat-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 22px 22px 18px;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
+  .bar-row { margin-bottom: 10px; }
+  .bar-track { background: var(--surface-2); border-radius: 999px; height: 8px; overflow: hidden; border: 1px solid var(--border); }
+  .bar-fill { background: linear-gradient(90deg, var(--accent), #d97a55); height: 100%; border-radius: 999px; transition: width 0.5s ease; }
+  .bar-fill-2 { background: linear-gradient(90deg, var(--accent-deep), var(--gold)); }
+
+  /* Hero */
+  .hero {
+    background: linear-gradient(135deg, var(--surface) 0%, var(--surface-2) 100%);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 32px 36px;
+    position: relative; overflow: hidden;
+  }
+  .hero::after {
+    content: ''; position: absolute; right: -50px; top: -50px;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, var(--accent-soft) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 2.5rem; line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .hero-tagline {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--ink-soft);
+    margin-top: 8px;
+  }
+
+  /* Section headings */
+  .section-h {
+    font-family: 'Fraunces', serif; font-weight: 600;
+    font-size: 1.3rem; letter-spacing: -0.01em;
+    color: var(--ink);
+    display: flex; align-items: baseline; gap: 12px;
+  }
+  .section-h::after {
+    content: ''; flex: 1; height: 1px;
+    background: linear-gradient(90deg, var(--line), transparent);
+  }
+
+  /* Featured book card */
+  .featured {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    display: flex; gap: 24px;
+    align-items: flex-start;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+  }
+  .featured:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(0,0,0,0.10); }
+  .featured-cover {
+    width: 130px; flex-shrink: 0;
+    aspect-ratio: 3/4; object-fit: cover;
+    border-radius: 6px; box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+  }
+  .featured-cover-placeholder {
+    width: 130px; flex-shrink: 0;
+    aspect-ratio: 3/4;
+    background: linear-gradient(135deg, var(--accent-soft), var(--surface-2));
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    text-align: center; padding: 14px;
+    font-family: 'Fraunces', serif;
+    color: var(--ink-soft); font-size: 0.85rem;
+  }
+
+  /* Theme cards */
+  .theme-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+    cursor: pointer;
+    transition: all 0.18s;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .theme-card:hover {
+    border-color: var(--accent);
+    background: var(--surface);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+  }
+  .theme-card .name {
+    font-family: 'Fraunces', serif; font-weight: 600;
+    font-size: 0.95rem; color: var(--ink);
+  }
+  .theme-card .count {
+    color: var(--ink-muted); font-size: 0.85rem; font-weight: 500;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 12px; height: 12px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 6px; border: 3px solid var(--bg); }
+  ::-webkit-scrollbar-thumb:hover { background: var(--ink-muted); }
+
+  /* Empty state */
+  .empty {
+    text-align: center; padding: 48px 24px;
+    color: var(--ink-muted);
+    font-family: 'Fraunces', serif; font-style: italic;
+  }
+
+  /* Decorative ornament */
+  .ornament {
+    text-align: center; color: var(--ink-muted);
+    font-family: 'Fraunces', serif; font-size: 1.3rem;
+    margin: 28px 0; letter-spacing: 0.5em;
+    user-select: none;
+  }
+</style>
 </head>
 <body>
-    <main>
-        <div class="container">
-            <div class="intro">
-                <h1>Hi, I'm Varna.</h1>
-                <p>I'm a development economist and maker of all things at <a href="https://idealog.works" target="_blank" rel="noopener">Idealog Works</a>. This is where I keep my tech experiments — small tools, proof-of-concepts, and side projects built to scratch an itch or test an idea.</p>
-                <p>Not everything here is polished. That's the point.</p>
-            </div>
 
-            <p class="section-label">Data &amp; Visualisation</p>
+<!-- Sticky top bar -->
+<div class="sticky top-0 z-30 backdrop-blur" style="background: color-mix(in srgb, var(--bg) 85%, transparent); border-bottom: 1px solid var(--border);">
+  <div class="max-w-7xl mx-auto px-5 py-3 flex items-center gap-3 flex-wrap">
+    <div class="flex items-baseline gap-2 mr-auto">
+      <span class="font-display text-xl font-bold tracking-tight">Nilaya E-Pothi</span>
+      <span class="text-xs ink-muted font-serif italic hidden sm:inline">निलय · पोथी</span>
+    </div>
+    <input id="search-input" type="text" placeholder="Search the library…" class="input-base flex-1 max-w-md min-w-[180px]">
+    <select id="user-select" class="input-base"></select>
+    <button id="add-user-btn" class="btn btn-ghost text-xs" title="Add a family member">+</button>
+    <button id="theme-toggle" class="btn btn-icon" title="Toggle dark mode" aria-label="Toggle dark mode">
+      <span class="theme-light">☀️</span>
+      <span class="theme-dark hidden">🌙</span>
+    </button>
+  </div>
+  <!-- Tabs row -->
+  <div class="max-w-7xl mx-auto px-5 flex border-soft overflow-x-auto" style="border-top: 1px solid var(--border);">
+    <button class="tab active" data-tab="browse">Browse</button>
+    <button class="tab" data-tab="reading">My reading</button>
+    <button class="tab" data-tab="stats">Stats</button>
+    <button class="tab" data-tab="graph">Graph</button>
+    <button class="tab" data-tab="recent">Recently added</button>
+  </div>
+</div>
 
-            <a class="card" href="https://howindialives.impactmojo.in" target="_blank" rel="noopener">
-                <h2>How India Lives <span class="badge badge-data">Data</span></h2>
-                <p>205 state-level choropleth maps showcasing India's diversity across demography, health, gender, economy, education, and environment. A pedagogical tool for understanding why India's states are so different — and why it matters for policy.</p>
-                <p class="tech">HTML &middot; CSS &middot; JavaScript</p>
-            </a>
+<div class="max-w-7xl mx-auto px-5 py-8">
 
-            <a class="card" href="https://someperspective.info" target="_blank" rel="noopener">
-                <h2>Some Perspective <span class="badge badge-data">Data</span></h2>
-                <p>Data-driven analysis of India's political economy (2014–2025) — policy impact, fiscal trends, and governance indicators with interactive visualisations.</p>
-                <p class="tech">HTML &middot; JavaScript &middot; Charts</p>
-            </a>
+  <!-- BROWSE TAB -->
+  <section id="tab-browse" class="tab-pane">
+    <!-- Hero -->
+    <div class="hero mb-7">
+      <div class="relative z-10">
+        <div class="ink-muted text-xs uppercase tracking-widest font-medium mb-2">Welcome to</div>
+        <h1 class="hero-title">Nilaya E-Pothi</h1>
+        <p class="hero-tagline">A small family library, kept in this house.</p>
+        <p id="hero-meta" class="text-sm ink-soft mt-4"></p>
+      </div>
+    </div>
 
-            <a class="card" href="https://india-dev-indicators.netlify.app" target="_blank" rel="noopener">
-                <h2>India Development Indicators <span class="badge badge-data">Data</span></h2>
-                <p>Interactive dashboard tracking GDP, HDI, literacy, and infrastructure spending with Chart.js visualisations. Part of the ImpactMojo ecosystem.</p>
-                <p class="tech">HTML &middot; Chart.js</p>
-            </a>
+    <!-- Featured book -->
+    <div class="mb-7">
+      <h2 class="section-h mb-4"><span>📖 Tonight's pick</span></h2>
+      <div id="featured-container"></div>
+    </div>
 
-            <a class="card" href="https://varnasr.github.io/sdg-progress-tracker" target="_blank" rel="noopener">
-                <h2>SDG Progress Tracker <span class="badge badge-data">Data</span></h2>
-                <p>India's progress on all 17 UN Sustainable Development Goals — scores, trends, radar charts, and category breakdowns. Part of the ImpactMojo ecosystem.</p>
-                <p class="tech">JavaScript &middot; Charts</p>
-            </a>
+    <!-- Theme tiles -->
+    <div class="mb-7">
+      <h2 class="section-h mb-4"><span>📚 Browse by theme</span></h2>
+      <div id="theme-tiles" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3"></div>
+    </div>
 
-            <a class="card" href="https://github.com/Varnasr/adani-infra-db" target="_blank" rel="noopener">
-                <h2>Industry Conglomerates Database <span class="badge badge-data">Data</span></h2>
-                <p>Open-source geographic database of 325 major Adani and Ambani infrastructure projects (2001–2025) — searchable, filterable, with government support classification.</p>
-                <p class="tech">HTML &middot; JavaScript</p>
-            </a>
+    <div class="ornament">❦ ❦ ❦</div>
 
-            <p class="section-label">Research &amp; Analysis</p>
-
-            <a class="card" href="https://forindia.netlify.app" target="_blank" rel="noopener">
-                <h2>Bihar Electoral Analysis <span class="badge badge-research">Research</span></h2>
-                <p>Analysis of Bihar electoral roll anomalies — voter deletion patterns, demographic shifts, and election data integrity research.</p>
-                <p class="tech">HTML &middot; Data Analysis</p>
-            </a>
-
-            <a class="card" href="https://github.com/Varnasr/H-VSAINC" target="_blank" rel="noopener">
-                <h2>Hyderabad Voting Patterns <span class="badge badge-research">Research</span></h2>
-                <p>Analysis of Hyderabad voting patterns and public infrastructure (1999–2023) — comparing AIMIM constituencies vs others across 5 assembly seats, with party-wise vote share trends.</p>
-                <p class="tech">HTML &middot; Data Visualisation</p>
-            </a>
-
-            <a class="card" href="https://github.com/Varnasr/BiharParichay-Project" target="_blank" rel="noopener">
-                <h2>Bihar Parichay <span class="badge badge-research">Research</span></h2>
-                <p>Cost-optimised demographic classification system for Bihar — development economics research achieving 99% cost reduction through local mapping instead of API calls.</p>
-                <p class="tech">HTML &middot; JavaScript</p>
-            </a>
-
-            <a class="card" href="https://github.com/Varnasr/dev-case-studies" target="_blank" rel="noopener">
-                <h2>Development Case Studies <span class="badge badge-research">Research</span></h2>
-                <p>200 real development case studies from 117 countries — searchable, filterable, and fully cited. A reference library for practitioners and students.</p>
-                <p class="tech">JavaScript</p>
-            </a>
-
-            <a class="card" href="https://github.com/Varnasr/development-discourses" target="_blank" rel="noopener">
-                <h2>Development Discourses <span class="badge badge-research">Research</span></h2>
-                <p>A curated open-access library of 500+ research papers, books, and grey literature for development practitioners in South Asia.</p>
-                <p class="tech">JavaScript</p>
-            </a>
-
-            <p class="section-label">Tools</p>
-
-            <a class="card" href="court-translator/">
-                <h2>Court Petition Translator <span class="badge badge-ai">AI</span> <span class="badge badge-tool">Tool</span></h2>
-                <p>Translates Hindi Supreme Court and High Court petitions into formal legal English. Handles the legalese — <em>yaachikaakartha</em> becomes "Petitioner", <em>anuchhed</em> becomes "Article" — so the output reads like it was drafted in English.</p>
-                <p class="tech">Sarvam AI &middot; Llama 3.3 70B via Groq &middot; Netlify Functions</p>
-            </a>
-
-            <a class="card" href="https://github.com/Varnasr/CandidateDossier" target="_blank" rel="noopener">
-                <h2>Candidate Dossier Generator <span class="badge badge-tool">Tool</span></h2>
-                <p>CSV &rarr; LaTeX &rarr; PDF dossier generator. A privacy-first tool for creating uniform, masked candidate dossiers — useful for blind recruitment and evaluation panels.</p>
-                <p class="tech">LaTeX &middot; Netlify Functions</p>
-            </a>
-
-            <a class="card" href="https://therealmiddle.netlify.app" target="_blank" rel="noopener">
-                <h2>The Real Middle <span class="badge badge-data">Data</span> <span class="badge badge-tool">Tool</span></h2>
-                <p>Interactive game revealing where you really stand in India's income distribution. Think you're middle class? Most Indians overestimate their position — find out if you do too.</p>
-                <p class="tech">React &middot; JavaScript</p>
-            </a>
-
-            <a class="card" href="https://github.com/Varnasr/Experiments/tree/main/tools/drive-pdf-extractor" target="_blank" rel="noopener">
-                <h2>Drive PDF Extractor <span class="badge badge-tool">Tool</span></h2>
-                <p>Headless-browser CLI for downloading view-only Google Drive PDFs. Scrolls the Drive viewer, captures each page from the rendered canvas, and reassembles them into a fresh PDF — no Drive auth required.</p>
-                <p class="tech">Node &middot; Playwright &middot; jsPDF</p>
-            </a>
-
-            <a class="card" href="https://github.com/Varnasr/deveconomics-toolkit" target="_blank" rel="noopener">
-                <h2>Dev Economics Toolkit <span class="badge badge-tool">Tool</span></h2>
-                <p>11 interactive apps for development economics — impact evaluation, poverty analysis, programme design, and data exploration. Built for ImpactMojo.</p>
-                <p class="tech">R Shiny &middot; Python Shiny</p>
-            </a>
-
-            <p class="section-label">Creative</p>
-
-            <a class="card" href="https://postheroic.world" target="_blank" rel="noopener">
-                <h2>The Very Last Superhero <span class="badge badge-creative">Creative</span></h2>
-                <p>A fully illustrated speculative fiction novel set in a climate-collapsed India, blending AI, memory, and resistance through the journey of a 14-year-old girl.</p>
-                <p class="tech">HTML &middot; Illustrated Web Novel</p>
-            </a>
+    <!-- Filters and results -->
+    <div class="surface p-5 mb-5" style="border-radius: 16px;">
+      <div class="flex flex-wrap gap-3 items-end">
+        <div>
+          <label class="block text-xs ink-muted mb-1.5 font-medium uppercase tracking-wide">Theme</label>
+          <select id="theme-filter" class="input-base">
+            <option value="">All themes</option>
+          </select>
         </div>
-    </main>
-
-    <footer>
-        <div class="footer-links">
-            <a href="https://github.com/Varnasr/Experiments">GitHub</a>
-            <a href="https://github.com/Varnasr/Experiments/blob/main/LICENSE">MIT License</a>
-            <a href="https://github.com/Varnasr/OpenStacks-for-Change">OpenStacks for Change</a>
+        <div>
+          <label class="block text-xs ink-muted mb-1.5 font-medium uppercase tracking-wide">Sub-theme</label>
+          <select id="sub-filter" class="input-base">
+            <option value="">All</option>
+          </select>
         </div>
-        <span>&copy; 2025 Varna Sri Raman</span>
-    </footer>
+        <div>
+          <label class="block text-xs ink-muted mb-1.5 font-medium uppercase tracking-wide">Type</label>
+          <select id="ext-filter" class="input-base">
+            <option value="">All</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs ink-muted mb-1.5 font-medium uppercase tracking-wide">Language</label>
+          <select id="lang-filter" class="input-base">
+            <option value="">All</option>
+            <option value="en">English</option>
+            <option value="hi">Hindi</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs ink-muted mb-1.5 font-medium uppercase tracking-wide">Sort</label>
+          <select id="sort-by" class="input-base">
+            <option value="name">Name (A→Z)</option>
+            <option value="theme">Theme</option>
+            <option value="size">Size</option>
+            <option value="mtime">Recently added</option>
+            <option value="year">Year</option>
+          </select>
+        </div>
+        <div class="flex-1"></div>
+        <button id="random-btn" class="btn-primary btn">🎲 Surprise me</button>
+        <button id="view-toggle" class="btn">Grid view</button>
+        <button id="clear-filters" class="btn btn-ghost">Clear</button>
+      </div>
+      <div id="result-count" class="text-xs ink-muted mt-3 italic"></div>
+    </div>
+
+    <div id="results"></div>
+  </section>
+
+  <!-- MY READING TAB -->
+  <section id="tab-reading" class="tab-pane hidden">
+    <div class="mb-6">
+      <h2 class="hero-title text-3xl mb-1" id="reading-greeting">Your reading</h2>
+      <p class="hero-tagline">Track what you've read, what you're reading, what you're saving.</p>
+    </div>
+    <div class="space-y-4">
+      <details open class="surface p-5">
+        <summary class="section-h"><span>📖 Currently reading <span id="count-reading" class="ink-muted text-sm font-normal ml-2"></span></span></summary>
+        <div id="list-reading" class="mt-4"></div>
+      </details>
+      <details open class="surface p-5">
+        <summary class="section-h"><span>📚 To read <span id="count-toread" class="ink-muted text-sm font-normal ml-2"></span></span></summary>
+        <div id="list-toread" class="mt-4"></div>
+      </details>
+      <details class="surface p-5">
+        <summary class="section-h"><span>✅ Read <span id="count-read" class="ink-muted text-sm font-normal ml-2"></span></span></summary>
+        <div id="list-read" class="mt-4"></div>
+      </details>
+      <details class="surface p-5">
+        <summary class="section-h"><span>🚫 Set aside <span id="count-abandoned" class="ink-muted text-sm font-normal ml-2"></span></span></summary>
+        <div id="list-abandoned" class="mt-4"></div>
+      </details>
+    </div>
+  </section>
+
+  <!-- STATS TAB -->
+  <section id="tab-stats" class="tab-pane hidden">
+    <div class="mb-6">
+      <h2 class="hero-title text-3xl mb-1">By the numbers</h2>
+      <p class="hero-tagline">A view of the whole library.</p>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-7" id="stat-cards"></div>
+    <div class="surface p-6 mb-5">
+      <h2 class="section-h mb-5"><span>Files per theme</span></h2>
+      <div id="theme-bars"></div>
+    </div>
+    <div class="surface p-6">
+      <h2 class="section-h mb-5"><span>File-type breakdown</span></h2>
+      <div id="ext-bars"></div>
+    </div>
+  </section>
+
+  <!-- GRAPH TAB -->
+  <section id="tab-graph" class="tab-pane hidden">
+    <div class="mb-6">
+      <h2 class="hero-title text-3xl mb-1">The library, mapped</h2>
+      <p class="hero-tagline">Books that share themes, keywords, or authors are drawn together.</p>
+    </div>
+    <div class="surface p-5">
+      <div class="flex items-center justify-between mb-4 flex-wrap gap-3">
+        <div class="flex items-center gap-3 text-xs ink-muted flex-wrap">
+          <label>Show
+            <select id="graph-limit" class="input-base text-xs ml-1">
+              <option value="150">150 books</option>
+              <option value="300" selected>300 books</option>
+              <option value="500">500 books</option>
+              <option value="800">800 books</option>
+            </select>
+          </label>
+          <label>Connect by
+            <select id="graph-mode" class="input-base text-xs ml-1">
+              <option value="theme-kw" selected>Same theme + shared keyword</option>
+              <option value="kw">Shared keywords only</option>
+              <option value="author">Same author</option>
+              <option value="theme">Same theme</option>
+            </select>
+          </label>
+        </div>
+      </div>
+      <div id="graph"></div>
+      <p class="text-xs ink-muted mt-3 italic">Drag nodes to rearrange. Hover for the title. Click to open. Scroll inside the graph to zoom.</p>
+    </div>
+  </section>
+
+  <!-- RECENT TAB -->
+  <section id="tab-recent" class="tab-pane hidden">
+    <div class="mb-6">
+      <h2 class="hero-title text-3xl mb-1">Recently added</h2>
+      <p class="hero-tagline">The newest arrivals on the shelves.</p>
+    </div>
+    <div class="surface p-5">
+      <div id="list-recent"></div>
+    </div>
+  </section>
+
+  <footer class="text-center ink-muted text-xs mt-12 pb-4 italic">
+    <div class="ornament">⁂</div>
+    <p>Nilaya E-Pothi · the family e-library</p>
+  </footer>
+</div>
+
+<!-- Book detail modal -->
+<div id="modal" class="hidden fixed inset-0 z-50 flex items-start md:items-center justify-center p-4 modal-overlay overflow-y-auto">
+  <div class="modal-card max-w-3xl w-full p-7 my-8 max-h-[92vh] overflow-y-auto">
+    <div class="flex justify-between items-start mb-5 gap-4">
+      <div class="flex-1">
+        <h2 id="modal-title" class="hero-title text-2xl"></h2>
+        <p id="modal-subtitle" class="text-sm ink-soft mt-1"></p>
+      </div>
+      <button id="modal-close" class="btn btn-ghost btn-icon !text-2xl">×</button>
+    </div>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+'use strict';
+
+let CATALOG = null;
+let SEARCH = null;
+let CURRENT_VIEW = 'list';
+const STATE_KEY = 'pothi_state_v1';
+const NOTES_KEY = 'pothi_notes_v1';
+const THEME_KEY = 'pothi_theme';
+const FEATURED_KEY = 'pothi_featured_today';
+let state = loadState();
+let notes = loadNotes();
+let activeUser = state.activeUser || 'Varna';
+
+function loadState() {
+  try {
+    const s = JSON.parse(localStorage.getItem(STATE_KEY) || '{}');
+    if (!s.users) s.users = ['Varna', 'Papri', 'Kundendu', 'Agastya'];
+    if (!s.byUser) s.byUser = {};
+    return s;
+  } catch { return {users: ['Varna'], byUser: {}}; }
+}
+function saveState() { localStorage.setItem(STATE_KEY, JSON.stringify(state)); }
+function loadNotes() { try { return JSON.parse(localStorage.getItem(NOTES_KEY) || '{}'); } catch { return {}; } }
+function saveNotes() { localStorage.setItem(NOTES_KEY, JSON.stringify(notes)); }
+function userBucket(u) { if (!state.byUser[u]) state.byUser[u] = {}; return state.byUser[u]; }
+function getStatus(id) { return userBucket(activeUser)[id] || null; }
+function setStatus(id, status) {
+  const b = userBucket(activeUser);
+  if (status) b[id] = status; else delete b[id];
+  saveState();
+}
+
+// Theme
+function applyTheme(t) {
+  if (t === 'dark') document.documentElement.classList.add('dark');
+  else document.documentElement.classList.remove('dark');
+  document.querySelector('.theme-light').classList.toggle('hidden', t === 'dark');
+  document.querySelector('.theme-dark').classList.toggle('hidden', t !== 'dark');
+}
+function setupTheme() {
+  const stored = localStorage.getItem(THEME_KEY);
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  applyTheme(stored ? stored : (prefersDark ? 'dark' : 'light'));
+  document.getElementById('theme-toggle').addEventListener('click', () => {
+    const isDark = document.documentElement.classList.contains('dark');
+    const next = isDark ? 'light' : 'dark';
+    localStorage.setItem(THEME_KEY, next);
+    applyTheme(next);
+    GRAPH_RENDERED = false;
+    if (document.querySelector('.tab.active').dataset.tab === 'graph') renderGraph();
+  });
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    if (!localStorage.getItem(THEME_KEY)) applyTheme(e.matches ? 'dark' : 'light');
+  });
+}
+
+// Filename cleanup
+const ID_RE = /^[A-F0-9a-f]{8}[\s_-][A-F0-9a-f]{4}[\s_-][A-F0-9a-f]{4}[\s_-][A-F0-9a-f]{4}[\s_-][A-F0-9a-f]{12}/;
+const ISBN_RE = /\b97[89]\d{10}\b/g;
+const TRAILING_HASH = /\s+[a-f0-9]{32,}.*$/i;
+const ZLIB_TAG = /\(z[ -]?lib(\.org)?\)|\(pdfdrive(\.com)?\)|libgen\.\w+|@\w+(?:[ _]\w+)?\s*[\-_]/gi;
+const TIMESTAMP = /[ _\-]\d{12,15}\b/;
+
+function cleanName(filename) {
+  let s = filename;
+  s = s.replace(/\.[a-z0-9]{2,5}$/i, '');
+  s = s.replace(ZLIB_TAG, ' ');
+  s = s.replace(ISBN_RE, ' ');
+  s = s.replace(/^\d{4}-\d{2}-\d{2}\s*-\s*/, '');
+  s = s.replace(/\s+oceanofpdf\.com\s+/gi, ' ');
+  s = s.replace(/\s+anna['']s\s+archive\s*/gi, ' ');
+  s = s.replace(/\s+routledge\s+handbooks\s+in\s+\w+/gi, '');
+  s = s.replace(TRAILING_HASH, '');
+  s = s.replace(TIMESTAMP, '');
+  s = s.replace(/_+/g, ' ');
+  s = s.replace(/\s+/g, ' ').trim();
+  s = s.replace(/[\s\-_,;:]+$/, '');
+  if (s.length > 4 && s === s.toUpperCase() && /[A-Z]/.test(s)) {
+    s = s.toLowerCase().replace(/(^|\s)\S/g, c => c.toUpperCase());
+  }
+  return s || filename;
+}
+
+// Theme icons (emoji shortcuts for browse-by-theme tiles)
+const THEME_ICONS = {
+  'Literature & Fiction': '📜',
+  'Data & Tech': '💻',
+  'Self Help': '🌱',
+  'Society & Culture': '🌍',
+  'Research Methods': '🔬',
+  'Reference & Skills': '📘',
+  'Health & Fitness': '🩺',
+  'Politics & Policy': '🏛️',
+  'Economics': '📊',
+  'Business & Leadership': '💼',
+  'Personal Finance': '💰',
+  'History': '📜',
+  'Psychology & Cognition': '🧠',
+  'Education': '🎓',
+  'Memoir & Biography': '✍️',
+  'Writing & Communication': '🖋️',
+  'Bookmarks': '🔖',
+  'Marketing & Sales': '📣',
+  'Arts & Design': '🎨',
+  'Law': '⚖️',
+  'Philosophy & Religion': '🕊️',
+  'To Read': '📚',
+};
+
+async function loadCatalog() {
+  if (typeof window.CATALOG !== 'undefined' && window.CATALOG) {
+    CATALOG = window.CATALOG;
+  } else {
+    try {
+      const res = await fetch('catalog.json');
+      CATALOG = await res.json();
+    } catch (e) {
+      document.getElementById('hero-meta').textContent =
+        'Could not load catalog. Run "Build catalogue.command" first.';
+      return;
+    }
+  }
+  const dt = new Date(CATALOG.generated_at * 1000).toLocaleDateString(undefined, {month: 'long', day: 'numeric', year: 'numeric'});
+  document.getElementById('hero-meta').textContent =
+    `${CATALOG.total.toLocaleString()} files across ${Object.keys(CATALOG.themes).length} themes · last refreshed ${dt}`;
+  for (const f of CATALOG.files) f._clean = cleanName(f.name);
+  buildSearchIndex();
+  populateFilters();
+  populateUserSelect();
+  renderHero();
+  renderThemeTiles();
+  refresh();
+  renderStats();
+}
+
+function buildSearchIndex() {
+  SEARCH = new FlexSearch.Document({
+    document: { id: 'id', index: ['_clean', 'name', 'theme', 'sub', 'author', 'keywords', 'snippet'], store: false },
+    tokenize: 'forward',
+  });
+  for (const f of CATALOG.files) SEARCH.add(f);
+}
+
+function searchIds(q) {
+  if (!q || !q.trim()) return null;
+  const r = SEARCH.search(q, {limit: 1500, enrich: false});
+  const ids = new Set();
+  for (const fieldRes of r) for (const id of fieldRes.result) ids.add(id);
+  return ids;
+}
+
+function populateFilters() {
+  const themes = Object.keys(CATALOG.themes).sort();
+  const themeSel = document.getElementById('theme-filter');
+  for (const t of themes) {
+    const opt = document.createElement('option');
+    opt.value = t; opt.textContent = `${t} (${CATALOG.themes[t].total})`;
+    themeSel.appendChild(opt);
+  }
+  const exts = new Set();
+  for (const f of CATALOG.files) if (f.ext) exts.add(f.ext);
+  const extSel = document.getElementById('ext-filter');
+  for (const e of [...exts].sort()) {
+    const opt = document.createElement('option');
+    opt.value = e; opt.textContent = e.replace('.', '').toUpperCase();
+    extSel.appendChild(opt);
+  }
+  themeSel.addEventListener('change', () => { populateSubFilter(); refresh(); });
+}
+
+function populateSubFilter() {
+  const theme = document.getElementById('theme-filter').value;
+  const subSel = document.getElementById('sub-filter');
+  subSel.innerHTML = '<option value="">All</option>';
+  if (!theme) return;
+  const subs = CATALOG.themes[theme].subs;
+  for (const s of Object.keys(subs).sort()) {
+    if (s === '(root)') continue;
+    const opt = document.createElement('option');
+    opt.value = s; opt.textContent = `${s} (${subs[s]})`;
+    subSel.appendChild(opt);
+  }
+}
+
+function getFiltered() {
+  const q = document.getElementById('search-input').value.trim();
+  const theme = document.getElementById('theme-filter').value;
+  const sub = document.getElementById('sub-filter').value;
+  const ext = document.getElementById('ext-filter').value;
+  const lang = document.getElementById('lang-filter').value;
+  const sortBy = document.getElementById('sort-by').value;
+
+  const searchHits = searchIds(q);
+  let result = CATALOG.files.filter(f => {
+    if (searchHits && !searchHits.has(f.id)) return false;
+    if (theme && f.theme !== theme) return false;
+    if (sub && f.sub !== sub) return false;
+    if (ext && f.ext !== ext) return false;
+    if (lang && f.lang !== lang) return false;
+    return true;
+  });
+
+  if (sortBy === 'name') result.sort((a,b) => a._clean.localeCompare(b._clean));
+  else if (sortBy === 'theme') result.sort((a,b) => (a.theme+a.sub).localeCompare(b.theme+b.sub));
+  else if (sortBy === 'size') result.sort((a,b) => b.size - a.size);
+  else if (sortBy === 'mtime') result.sort((a,b) => b.mtime - a.mtime);
+  else if (sortBy === 'year') result.sort((a,b) => (b.year||0) - (a.year||0));
+
+  return result;
+}
+
+function refresh() {
+  const filtered = getFiltered();
+  document.getElementById('result-count').textContent = `${filtered.length.toLocaleString()} files`;
+  const out = document.getElementById('results');
+  out.innerHTML = '';
+  if (CURRENT_VIEW === 'grid') {
+    out.className = 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4';
+    for (const f of filtered.slice(0, 240)) out.appendChild(renderCard(f));
+  } else {
+    out.className = 'surface';
+    for (const f of filtered.slice(0, 240)) out.appendChild(renderRow(f));
+  }
+  if (filtered.length > 240) {
+    const more = document.createElement('div');
+    more.className = 'text-center text-xs ink-muted p-5 italic';
+    more.textContent = `Showing first 240 of ${filtered.length.toLocaleString()}. Refine filters to narrow.`;
+    out.appendChild(more);
+  }
+}
+
+function fmtSize(n) {
+  if (n < 1024) return n + ' B';
+  if (n < 1024*1024) return Math.round(n/1024) + ' KB';
+  return (n/1024/1024).toFixed(1) + ' MB';
+}
+function fileUrl(f) { return 'file://' + encodeURI(f.abs); }
+function escapeHtml(s) {
+  if (s == null) return '';
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
+}
+
+function renderCard(f) {
+  const card = document.createElement('div');
+  card.className = 'book-card';
+  const cover = f.has_cover
+    ? `<img class="cover-thumb" src="thumbnails/${f.id}.jpg" alt="" loading="lazy">`
+    : `<div class="cover-placeholder">${escapeHtml(f._clean.slice(0, 70))}</div>`;
+  const status = getStatus(f.id);
+  const statusPill = status ? `<span class="pill pill-status-${status}">${statusLabel(status)}</span>` : '';
+  card.innerHTML = `
+    ${cover}
+    <div class="p-3">
+      <div class="text-sm font-serif font-semibold leading-snug line-clamp-2" title="${escapeHtml(f._clean)}">${escapeHtml(f._clean)}</div>
+      <div class="text-[10px] ink-muted mt-1.5 uppercase tracking-wider font-medium">${escapeHtml(f.theme)}</div>
+      <div class="mt-2">${statusPill}</div>
+    </div>`;
+  card.addEventListener('click', () => openModal(f));
+  return card;
+}
+
+function renderRow(f) {
+  const row = document.createElement('div');
+  row.className = 'row-item flex items-start gap-4';
+  const status = getStatus(f.id);
+  const statusPill = status ? `<span class="pill pill-status-${status}">${statusLabel(status)}</span>` : '';
+  const langPill = f.lang === 'hi' ? '<span class="pill">हिं</span>' : '';
+  const yearStr = f.year ? `<span class="text-xs ink-muted ml-2">· ${f.year}</span>` : '';
+  const authorStr = f.author ? `<span class="text-xs ink-soft">${escapeHtml(f.author)}</span>` : '';
+  const kws = (f.keywords||[]).slice(0,4).map(k => `<span class="pill">${escapeHtml(k)}</span>`).join('');
+  // Mini cover thumbnail
+  const mini = f.has_cover
+    ? `<img src="thumbnails/${f.id}.jpg" class="w-12 h-16 object-cover rounded shadow-sm flex-shrink-0" loading="lazy" alt="">`
+    : `<div class="w-12 h-16 rounded flex-shrink-0" style="background: linear-gradient(135deg, var(--accent-soft), var(--surface-2)); display: flex; align-items: center; justify-content: center; font-family: 'Fraunces', serif; font-size: 0.6rem; padding: 4px; text-align: center; color: var(--ink-muted);">${escapeHtml(f._clean.slice(0, 18))}</div>`;
+  row.innerHTML = `
+    ${mini}
+    <div class="flex-1 min-w-0">
+      <div class="font-serif font-semibold text-base leading-snug" title="${escapeHtml(f._clean)}">${escapeHtml(f._clean)}${yearStr}</div>
+      <div class="text-xs ink-muted mt-1"><span class="font-medium">${escapeHtml(f.theme)}</span>${f.sub ? ' › ' + escapeHtml(f.sub) : ''} · ${f.ext.replace('.','').toUpperCase()} · ${fmtSize(f.size)}${authorStr ? ' · ' + authorStr : ''}</div>
+      <div class="mt-2">${statusPill}${langPill}${kws}</div>
+    </div>`;
+  row.addEventListener('click', () => openModal(f));
+  return row;
+}
+
+function statusLabel(s) {
+  return ({toread: 'To read', reading: 'Reading', read: 'Read', abandoned: 'Set aside'})[s] || s;
+}
+
+function noSnippetReason(f) {
+  if (f.ext === '.epub' && !f.snippet) return `No preview yet — re-run the catalogue builder for epub support.`;
+  if (f.ext === '.pdf' && f.size > 100 * 1024 * 1024) return `No preview — file is over 100 MB so the catalogue skipped it.`;
+  if (f.ext !== '.pdf' && f.ext !== '.epub') return `No preview — ${f.ext.replace('.','').toUpperCase()} files don't get text extraction.`;
+  return `No preview available — this PDF may be a scan, encrypted, or have no text on its first pages.`;
+}
+
+// Hero: featured (random) book of the day
+function renderHero() {
+  const cont = document.getElementById('featured-container');
+  // Pick a "featured" — random but stable per day per user
+  const today = new Date().toISOString().slice(0, 10);
+  const stored = JSON.parse(localStorage.getItem(FEATURED_KEY) || '{}');
+  let f;
+  if (stored.date === today && stored.id) {
+    f = CATALOG.files.find(x => x.id === stored.id);
+  }
+  if (!f) {
+    // Pick from books with cover and snippet for visual richness
+    const candidates = CATALOG.files.filter(x => x.has_cover && x.snippet);
+    if (candidates.length > 0) {
+      f = candidates[Math.floor(Math.random() * candidates.length)];
+      localStorage.setItem(FEATURED_KEY, JSON.stringify({date: today, id: f.id}));
+    } else {
+      f = CATALOG.files[Math.floor(Math.random() * CATALOG.files.length)];
+    }
+  }
+  if (!f) return;
+  const cover = f.has_cover
+    ? `<img src="thumbnails/${f.id}.jpg" class="featured-cover" alt="">`
+    : `<div class="featured-cover-placeholder">${escapeHtml(f._clean.slice(0, 50))}</div>`;
+  const snippetPreview = f.snippet ? f.snippet.slice(0, 240) + (f.snippet.length > 240 ? '…' : '') : '';
+  cont.innerHTML = `
+    <div class="featured" id="featured">
+      ${cover}
+      <div class="flex-1 min-w-0">
+        <div class="text-xs ink-muted uppercase tracking-widest mb-1">${escapeHtml(f.theme)}${f.sub ? ' · ' + escapeHtml(f.sub) : ''}</div>
+        <h3 class="font-serif font-semibold text-xl leading-tight">${escapeHtml(f._clean)}</h3>
+        ${f.author ? `<p class="ink-soft text-sm mt-1">${escapeHtml(f.author)}${f.year ? ' · ' + f.year : ''}</p>` : (f.year ? `<p class="ink-soft text-sm mt-1">${f.year}</p>` : '')}
+        ${snippetPreview ? `<p class="font-serif italic mt-3 text-sm ink-soft leading-relaxed">${escapeHtml(snippetPreview)}</p>` : ''}
+        <div class="mt-3">
+          <button class="btn-primary btn text-sm" onclick="event.stopPropagation(); openModal(CATALOG.files.find(x=>x.id==='${f.id}'))">Open this book</button>
+          <button class="btn text-sm" onclick="event.stopPropagation(); rerollFeatured()">Pick another</button>
+        </div>
+      </div>
+    </div>`;
+  document.getElementById('featured').addEventListener('click', () => openModal(f));
+}
+
+function rerollFeatured() {
+  localStorage.removeItem(FEATURED_KEY);
+  renderHero();
+}
+
+// Theme tiles
+function renderThemeTiles() {
+  const cont = document.getElementById('theme-tiles');
+  const themes = Object.entries(CATALOG.themes).sort((a,b) => b[1].total - a[1].total);
+  cont.innerHTML = '';
+  for (const [t, info] of themes) {
+    const icon = THEME_ICONS[t] || '📖';
+    const tile = document.createElement('div');
+    tile.className = 'theme-card';
+    tile.innerHTML = `
+      <div class="flex items-center gap-3 min-w-0">
+        <span class="text-2xl flex-shrink-0">${icon}</span>
+        <span class="name truncate">${escapeHtml(t)}</span>
+      </div>
+      <span class="count flex-shrink-0">${info.total}</span>`;
+    tile.addEventListener('click', () => {
+      document.getElementById('theme-filter').value = t;
+      populateSubFilter();
+      refresh();
+      // scroll down to results
+      document.getElementById('results').scrollIntoView({behavior:'smooth', block:'start'});
+    });
+    cont.appendChild(tile);
+  }
+}
+
+function openModal(f) {
+  document.getElementById('modal-title').textContent = f._clean;
+  const subtitle = [
+    f.author,
+    f.year,
+    `${f.theme}${f.sub ? ' › ' + f.sub : ''}`,
+  ].filter(Boolean).join(' · ');
+  document.getElementById('modal-subtitle').textContent = subtitle;
+
+  const status = getStatus(f.id) || '';
+  const note = notes[f.id] || '';
+  const cover = f.has_cover
+    ? `<img src="thumbnails/${f.id}.jpg" class="w-44 mr-5 mb-3 float-left rounded-lg shadow-lg" alt="">`
+    : '';
+  const meta = [
+    `<span class="ink-muted">File:</span> <span class="text-xs">${escapeHtml(f.name)}</span>`,
+    `<span class="ink-muted">Type:</span> ${f.ext.replace('.','').toUpperCase()} · ${fmtSize(f.size)}`,
+    f.lang === 'hi' ? `<span class="ink-muted">Language:</span> Hindi` : null,
+    `<span class="ink-muted">Modified:</span> ${new Date(f.mtime * 1000).toLocaleDateString()}`,
+  ].filter(Boolean).map(s => `<div>${s}</div>`).join('');
+  const kws = (f.keywords||[]).map(k => `<span class="pill">${escapeHtml(k)}</span>`).join(' ');
+  const snippet = f.snippet
+    ? `<div class="mt-5 clear-both">
+        <div class="text-xs ink-muted uppercase tracking-widest font-medium mb-2">From the first page</div>
+        <p class="font-serif text-base italic leading-relaxed ink">${escapeHtml(f.snippet)}</p>
+      </div>`
+    : `<div class="mt-5 clear-both text-sm ink-muted italic font-serif">${noSnippetReason(f)}</div>`;
+
+  document.getElementById('modal-body').innerHTML = `
+    <div>${cover}<div class="text-sm leading-relaxed space-y-1">${meta}</div></div>
+    ${kws ? `<div class="mt-3 clear-both">${kws}</div>` : ''}
+    ${snippet}
+    <div class="mt-6 clear-both flex flex-wrap gap-2">
+      <a href="${fileUrl(f)}" target="_blank" class="btn-primary btn">📖 Open file</a>
+    </div>
+    <hr class="my-6 border-soft">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-xs ink-muted mb-1.5 font-medium uppercase tracking-wide">Status (${escapeHtml(activeUser)})</label>
+        <select id="modal-status" class="input-base w-full">
+          <option value="">— not set —</option>
+          <option value="toread" ${status==='toread'?'selected':''}>📚 To read</option>
+          <option value="reading" ${status==='reading'?'selected':''}>📖 Currently reading</option>
+          <option value="read" ${status==='read'?'selected':''}>✅ Read</option>
+          <option value="abandoned" ${status==='abandoned'?'selected':''}>🚫 Set aside</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-xs ink-muted mb-1.5 font-medium uppercase tracking-wide">Last modified</label>
+        <div class="input-base bg-transparent text-sm ink-muted">${new Date(f.mtime * 1000).toLocaleDateString()}</div>
+      </div>
+    </div>
+    <div class="mt-3">
+      <label class="block text-xs ink-muted mb-1.5 font-medium uppercase tracking-wide">Notes (shared across family)</label>
+      <textarea id="modal-notes" rows="4" placeholder="Quotes, recommendations, why you flagged this…" class="input-base w-full font-serif">${escapeHtml(note)}</textarea>
+    </div>
+    <div class="mt-5 text-right flex gap-2 justify-end">
+      <button id="modal-cancel" class="btn">Cancel</button>
+      <button id="modal-save" class="btn-primary btn">Save</button>
+    </div>
+  `;
+  document.getElementById('modal').classList.remove('hidden');
+  document.getElementById('modal-save').onclick = () => {
+    const newStatus = document.getElementById('modal-status').value;
+    const newNote = document.getElementById('modal-notes').value.trim();
+    setStatus(f.id, newStatus);
+    if (newNote) notes[f.id] = newNote; else delete notes[f.id];
+    saveNotes();
+    closeModal();
+    refresh();
+    renderReading();
+  };
+  document.getElementById('modal-cancel').onclick = closeModal;
+}
+function closeModal() { document.getElementById('modal').classList.add('hidden'); }
+
+function renderReading() {
+  document.getElementById('reading-greeting').textContent = `${activeUser}'s reading`;
+  const buckets = {toread: [], reading: [], read: [], abandoned: []};
+  const b = userBucket(activeUser);
+  for (const f of CATALOG.files) {
+    if (b[f.id] && buckets[b[f.id]]) buckets[b[f.id]].push(f);
+  }
+  for (const [k, files] of Object.entries(buckets)) {
+    const c = document.getElementById('count-' + (k === 'toread' ? 'toread' : k));
+    if (c) c.textContent = `(${files.length})`;
+    const out = document.getElementById('list-' + (k === 'toread' ? 'toread' : k));
+    if (out) {
+      out.innerHTML = '';
+      out.className = 'surface-2';
+      if (files.length === 0) {
+        out.innerHTML = '<div class="empty">Nothing here yet.</div>';
+      } else {
+        for (const f of files) out.appendChild(renderRow(f));
+      }
+    }
+  }
+}
+
+function renderStats() {
+  if (!CATALOG) return;
+  const stats = document.getElementById('stat-cards');
+  const totalSize = CATALOG.files.reduce((s,f) => s+f.size, 0);
+  const hindiCount = CATALOG.files.filter(f => f.lang === 'hi').length;
+  const withCovers = CATALOG.files.filter(f => f.has_cover).length;
+  const withSnippets = CATALOG.files.filter(f => f.snippet).length;
+  const cards = [
+    ['Total files', CATALOG.total.toLocaleString()],
+    ['Themes', Object.keys(CATALOG.themes).length],
+    ['Total size', (totalSize/1024/1024/1024).toFixed(1) + ' GB'],
+    ['Indexed text', withSnippets.toLocaleString()],
+  ];
+  stats.innerHTML = cards.map(([l,v]) =>
+    `<div class="stat-card">
+      <div class="text-3xl font-serif font-bold">${v}</div>
+      <div class="text-xs ink-muted mt-1.5 uppercase tracking-widest font-medium">${l}</div>
+    </div>`).join('');
+
+  const tBars = document.getElementById('theme-bars');
+  const themes = Object.entries(CATALOG.themes).sort((a,b) => b[1].total - a[1].total);
+  const max = Math.max(...themes.map(t => t[1].total));
+  tBars.innerHTML = themes.map(([t, info]) => {
+    const w = (info.total / max * 100).toFixed(1);
+    return `<div class="bar-row">
+      <div class="flex justify-between text-sm mb-1.5"><span class="font-serif font-medium">${escapeHtml(t)}</span><span class="ink-muted text-xs font-medium">${info.total}</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:${w}%"></div></div>
+    </div>`;
+  }).join('');
+
+  const eBars = document.getElementById('ext-bars');
+  const extCounts = {};
+  for (const f of CATALOG.files) extCounts[f.ext||'(none)'] = (extCounts[f.ext||'(none)']||0)+1;
+  const exts = Object.entries(extCounts).sort((a,b) => b[1]-a[1]);
+  const eMax = Math.max(...exts.map(e => e[1]));
+  eBars.innerHTML = exts.map(([e, n]) => {
+    const w = (n / eMax * 100).toFixed(1);
+    return `<div class="bar-row">
+      <div class="flex justify-between text-sm mb-1.5"><span class="font-serif font-medium">${escapeHtml(e.replace('.','').toUpperCase()||'NONE')}</span><span class="ink-muted text-xs font-medium">${n}</span></div>
+      <div class="bar-track"><div class="bar-fill bar-fill-2" style="width:${w}%"></div></div>
+    </div>`;
+  }).join('');
+}
+
+function renderRecent() {
+  const sorted = [...CATALOG.files].sort((a,b) => b.mtime - a.mtime).slice(0, 80);
+  const out = document.getElementById('list-recent');
+  out.innerHTML = '';
+  out.className = '';
+  for (const f of sorted) out.appendChild(renderRow(f));
+}
+
+let GRAPH_RENDERED = false;
+function renderGraph() {
+  const container = document.getElementById('graph');
+  container.innerHTML = '';
+  const limit = parseInt(document.getElementById('graph-limit').value);
+  const mode = document.getElementById('graph-mode').value;
+
+  let candidates = CATALOG.files.filter(f => f.keywords && f.keywords.length >= 2);
+  if (mode === 'author') candidates = CATALOG.files.filter(f => f.author);
+  candidates = candidates
+    .sort((a,b) => (b.keywords?.length||0) - (a.keywords?.length||0))
+    .slice(0, limit);
+
+  if (candidates.length < 2) {
+    container.innerHTML = '<div class="empty">Not enough metadata to draw a graph in this mode.</div>';
+    return;
+  }
+
+  const links = [];
+  for (let i = 0; i < candidates.length; i++) {
+    const a = candidates[i];
+    const aKw = new Set(a.keywords || []);
+    for (let j = i+1; j < candidates.length; j++) {
+      const b = candidates[j];
+      let connect = false, weight = 1;
+      if (mode === 'theme-kw') {
+        if (a.theme === b.theme) {
+          let shared = 0;
+          for (const k of (b.keywords||[])) if (aKw.has(k)) shared++;
+          if (shared >= 1) { connect = true; weight = shared; }
+        }
+      } else if (mode === 'kw') {
+        let shared = 0;
+        for (const k of (b.keywords||[])) if (aKw.has(k)) shared++;
+        if (shared >= 2) { connect = true; weight = shared; }
+      } else if (mode === 'author') {
+        if (a.author && a.author === b.author) { connect = true; weight = 5; }
+      } else if (mode === 'theme') {
+        if (a.theme === b.theme) { connect = true; weight = 1; }
+      }
+      if (connect) links.push({source: a.id, target: b.id, value: weight});
+    }
+  }
+
+  const themeColours = {};
+  // Custom warmer palette
+  const palette = [
+    '#c2581c', '#1a3d2c', '#b8860b', '#8e7cc3', '#6c8ebf',
+    '#a85f3f', '#5a7c5e', '#c9a85a', '#876b94', '#5e7090',
+    '#d97a55', '#3a6b4d', '#e0b056', '#a087b3', '#7a93b3',
+    '#9c4d2e', '#476d52', '#bfa057', '#776085', '#506885',
+  ];
+  Object.keys(CATALOG.themes).sort().forEach((t,i) => themeColours[t] = palette[i % palette.length]);
+
+  const W = container.clientWidth || 900;
+  const H = Math.max(560, Math.min(800, window.innerHeight - 280));
+
+  const svg = d3.select('#graph').append('svg').attr('width', W).attr('height', H).attr('viewBox', `0 0 ${W} ${H}`);
+  const g = svg.append('g');
+  svg.call(d3.zoom().scaleExtent([0.2, 5]).on('zoom', (e) => g.attr('transform', e.transform)));
+
+  const sim = d3.forceSimulation(candidates)
+    .force('link', d3.forceLink(links).id(d => d.id).distance(28).strength(0.4))
+    .force('charge', d3.forceManyBody().strength(-18))
+    .force('collide', d3.forceCollide().radius(6))
+    .force('x', d3.forceX(W/2).strength(0.05))
+    .force('y', d3.forceY(H/2).strength(0.05))
+    .force('center', d3.forceCenter(W/2, H/2));
+
+  const link = g.append('g').attr('class','links').selectAll('line')
+    .data(links).enter().append('line').attr('class','link');
+
+  const node = g.append('g').attr('class','nodes').selectAll('g')
+    .data(candidates).enter().append('g').attr('class','node');
+
+  node.append('circle')
+    .attr('r', 4.5)
+    .attr('fill', d => themeColours[d.theme] || '#888')
+    .on('click', (e,d) => openModal(d))
+    .call(d3.drag()
+      .on('start', (e,d) => { if (!e.active) sim.alphaTarget(0.3).restart(); d.fx = d.x; d.fy = d.y; })
+      .on('drag', (e,d) => { d.fx = e.x; d.fy = e.y; })
+      .on('end', (e,d) => { if (!e.active) sim.alphaTarget(0); d.fx = null; d.fy = null; }))
+    .append('title').text(d => `${d._clean}\n[${d.theme}${d.sub?' › '+d.sub:''}]`);
+
+  sim.on('tick', () => {
+    link.attr('x1', d => d.source.x).attr('y1', d => d.source.y)
+        .attr('x2', d => d.target.x).attr('y2', d => d.target.y);
+    node.attr('transform', d => `translate(${d.x},${d.y})`);
+  });
+
+  const legend = svg.append('g').attr('transform', `translate(14, 14)`);
+  const themesUsed = [...new Set(candidates.map(c => c.theme))].sort();
+  themesUsed.forEach((t, i) => {
+    const row = legend.append('g').attr('transform', `translate(0, ${i*16})`);
+    row.append('circle').attr('r', 4).attr('cx', 6).attr('cy', 6).attr('fill', themeColours[t]);
+    row.append('text').attr('x', 16).attr('y', 10).attr('font-size', '11px').attr('fill', 'currentColor').text(t);
+  });
+
+  GRAPH_RENDERED = true;
+}
+
+function populateUserSelect() {
+  const sel = document.getElementById('user-select');
+  sel.innerHTML = '';
+  for (const u of state.users) {
+    const opt = document.createElement('option');
+    opt.value = u; opt.textContent = u;
+    if (u === activeUser) opt.selected = true;
+    sel.appendChild(opt);
+  }
+  sel.addEventListener('change', e => {
+    activeUser = e.target.value;
+    state.activeUser = activeUser;
+    saveState();
+    refresh();
+    renderReading();
+  });
+  document.getElementById('add-user-btn').addEventListener('click', () => {
+    const u = prompt('Family member name:');
+    if (u && !state.users.includes(u)) {
+      state.users.push(u);
+      saveState();
+      populateUserSelect();
+    }
+  });
+}
+
+function setupTabs() {
+  document.querySelectorAll('.tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.tab-pane').forEach(p => p.classList.add('hidden'));
+      const tab = btn.dataset.tab;
+      document.getElementById('tab-' + tab).classList.remove('hidden');
+      window.scrollTo({top: 0, behavior: 'smooth'});
+      if (tab === 'reading') renderReading();
+      if (tab === 'recent') renderRecent();
+      if (tab === 'graph') {
+        GRAPH_RENDERED = false;
+        renderGraph();
+      }
+    });
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  setupTheme();
+  loadCatalog();
+  setupTabs();
+  document.getElementById('search-input').addEventListener('input', refresh);
+  document.getElementById('sub-filter').addEventListener('change', refresh);
+  document.getElementById('ext-filter').addEventListener('change', refresh);
+  document.getElementById('lang-filter').addEventListener('change', refresh);
+  document.getElementById('sort-by').addEventListener('change', refresh);
+  document.getElementById('clear-filters').addEventListener('click', () => {
+    document.getElementById('search-input').value = '';
+    document.getElementById('theme-filter').value = '';
+    populateSubFilter();
+    document.getElementById('ext-filter').value = '';
+    document.getElementById('lang-filter').value = '';
+    refresh();
+  });
+  document.getElementById('view-toggle').addEventListener('click', (e) => {
+    CURRENT_VIEW = CURRENT_VIEW === 'list' ? 'grid' : 'list';
+    e.target.textContent = CURRENT_VIEW === 'list' ? 'Grid view' : 'List view';
+    refresh();
+  });
+  document.getElementById('random-btn').addEventListener('click', () => {
+    const filtered = getFiltered();
+    if (filtered.length === 0) return;
+    openModal(filtered[Math.floor(Math.random() * filtered.length)]);
+  });
+  document.getElementById('modal-close').addEventListener('click', closeModal);
+  document.getElementById('modal').addEventListener('click', (e) => {
+    if (e.target.id === 'modal') closeModal();
+  });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+  document.getElementById('graph-limit').addEventListener('change', () => { GRAPH_RENDERED = false; renderGraph(); });
+  document.getElementById('graph-mode').addEventListener('change', () => { GRAPH_RENDERED = false; renderGraph(); });
+});
+
+window.openModal = openModal;
+window.rerollFeatured = rerollFeatured;
+</script>
+
 </body>
 </html>
