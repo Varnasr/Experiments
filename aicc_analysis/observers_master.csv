@@ -21,6 +21,7 @@ id,mobile_no,role,Name,alt_mobile_no,email,state_id,assigned_district,has_report
 282,9811294884M,M,DR. RAGINI NAYAK,,,14,,0,2026-04-16T00:00:00,Madhya Pradesh
 570,9811294884,M,DR. RAGINI NAYAK,,,4,,0,,Bihar
 358,9610277286,M,DR. SHIKHA MEEL,,,21,,1,,Punjab
+604,7777777777,M,Dr. Shivkumar Dahariya,,,7,,0,,Gujarat
 263,9582970176M,M,Dr. Sirivella Prasad,,,14,,0,2026-04-16T00:00:00,Madhya Pradesh
 553,9425392490,M,DR. VIJAY LAKSHMI SADHO,,,19,,0,,Nagaland
 498,9444020571,M,DR.K JAYAKUMAR,,,25,,1,,Telangana
@@ -35,11 +36,24 @@ id,mobile_no,role,Name,alt_mobile_no,email,state_id,assigned_district,has_report
 510,8700260827,M,MS. AMBA PRASAD,9631966902,,,,0,,
 280,9414180006M,M,MS. DIVYA MADERNA,,,14,,0,2026-04-16T00:00:00,Madhya Pradesh
 318,X_8989252684,M,"MS. HINA KAWARE, EX. DY-SPEAKER",,,11,,1,,Jharkhand
+610,4444444443,M,Ms. Meenakshi Natrajan,,,7,,0,,Gujarat
+606,9999999999,M,Ms. Praniti Shinde,,,7,,0,,Gujarat
 517,9444141925,M,MS. R.SUDHA,,,,,0,,
 564,9122124426,M,MS. SHWETA SINGH,,,4,,0,,Bihar
 292,9137391129,H,Prof. Varsha Gaikwad,,,8,0,0,2026-04-27T00:00:00,Haryana
 312,9829210065,H,Rita Choudhary,,,8,0,0,2026-04-27T00:00:00,Haryana
 435,X_9878742779,M,SAPNA KAPOOR,,,11,,1,,Jharkhand
+602,5555555555,M,Sh. Amin Kagzi,,,7,,0,,Gujarat
+605,8888888888,M,Sh. Arjun Singh Bamaniya,,,7,,0,,Gujarat
+609,3333333332,M,Sh. Aslam Seikh,,,7,,0,,Gujarat
+600,3333333333,M,Sh. Babulal Nagar,,,7,,0,,Gujarat
+611,5555555554,M,Sh. Balasaheb Thorat,,,7,,0,,Gujarat
+599,2222222222,M,Sh. Balram Naik,,,7,,0,,Gujarat
+603,6666666666,M,Sh. Girish Chodankar,,,7,,0,,Gujarat
+608,2222222221,M,Sh. Harish Choudhary,,,7,,0,,Gujarat
+598,1111111100,M,Sh. Imran Masood,,,7,,0,,Gujarat
+607,1111111110,M,Sh. Pradeep Narwal,,,7,,0,,Gujarat
+601,4444444444,M,Sh. Priyavrat Singh,,,7,,0,,Gujarat
 243,9435115864M,M,Shri Abdul Khaleque,7002433353,,14,,0,2026-04-16T00:00:00,Madhya Pradesh
 334,X_7002433353,M,"SHRI ABDUL KHALEQUE, EX. MP",,,11,,1,,Jharkhand
 261,9873500001M,M,Shri Abhishek Dutt,,,14,,0,2026-04-16T00:00:00,Madhya Pradesh
