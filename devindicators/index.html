@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Content Security Policy -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://code.iconify.design https://api.iconify.design https://api.simplesvg.com https://api.unisvg.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://www.google-analytics.com; connect-src 'self' https://api.worldbank.org https://api.iconify.design https://api.simplesvg.com https://api.unisvg.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com; frame-ancestors 'none'; base-uri 'self';">
+
+<!-- Google Analytics (anonymised) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JRCMEB9TBW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-JRCMEB9TBW', { anonymize_ip: true });
+</script>
+
+<!-- SEO -->
+<meta name="description" content="India Development Indicators — interactive dashboard tracking GDP, health, education, infrastructure and digital access using live World Bank Open Data. An ImpactMojo project.">
+<meta property="og:title" content="India Development Indicators | ImpactMojo">
+<meta property="og:description" content="Interactive dashboard tracking India's progress across economic, health, education and digital indicators — powered by the World Bank API.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://devindicators.impactmojo.in/">
+
+<title>India Development Indicators | ImpactMojo</title>
+
+<!-- Inline SVG favicon -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230EA5E9'/><text x='16' y='22' text-anchor='middle' font-family='Inter,sans-serif' font-size='18' font-weight='700' fill='%23ffffff'>I</text></svg>">
+<meta name="theme-color" content="#0EA5E9">
+
+<!-- Fonts (Amaranth + Inter + JetBrains Mono — ImpactMojo system) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amaranth:wght@400;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://code.iconify.design/iconify-icon/2.3.0/iconify-icon.min.js"></script>
+
+<style>
+:root, [data-theme="dark"] {
+    --bg: #0c0c0f;
+    --surface: #141418;
+    --surface-2: #1c1c22;
+    --surface-3: #26262e;
+    --border: rgba(255,255,255,.08);
+    --grid: rgba(148,163,184,0.12);
+    --text: #e4e4ec;
+    --text-dim: #9898a8;
+    --text-muted: #5c5c6e;
+    --accent: #0EA5E9;
+    --accent-2: #6366F1;
+    --accent-green: #10B981;
+    --accent-amber: #F59E0B;
+    --accent-red: #EF4444;
+    --accent-pink: #EC4899;
+    --accent-cyan: #22D3EE;
+    --accent-violet: #A78BFA;
+    --header-bg: rgba(15, 23, 42, 0.95);
+    --hero-grad: linear-gradient(135deg, #1e3a5f 0%, #0c0c0f 100%);
+    --shadow: 0 8px 24px rgba(0,0,0,.35);
+    --radius: 12px;
+    --radius-sm: 8px;
+    --font-body: 'Amaranth', 'Inter', system-ui, sans-serif;
+    --font-heading: 'Inter', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+}
+
+[data-theme="light"] {
+    --bg: #f8fafc;
+    --surface: #ffffff;
+    --surface-2: #f1f5f9;
+    --surface-3: #e2e8f0;
+    --border: rgba(15,23,42,.10);
+    --grid: rgba(100,116,139,0.18);
+    --text: #0f172a;
+    --text-dim: #475569;
+    --text-muted: #64748b;
+    --accent: #0284c7;
+    --accent-2: #4f46e5;
+    --accent-green: #059669;
+    --accent-amber: #d97706;
+    --accent-red: #dc2626;
+    --accent-pink: #db2777;
+    --accent-cyan: #0891b2;
+    --accent-violet: #7c3aed;
+    --header-bg: rgba(255, 255, 255, 0.92);
+    --hero-grad: linear-gradient(135deg, #e0f2fe 0%, #f8fafc 100%);
+    --shadow: 0 4px 12px rgba(15,23,42,.08);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+    transition: background 0.2s, color 0.2s;
+}
+
+h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); font-weight: 700; }
+code, pre, .mono { font-family: var(--font-mono); }
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ── ImpactMojo Header ──────────────────────────────────────── */
+.im-header {
+    background: var(--header-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 100;
+}
+.nav-container {
+    max-width: 1280px; margin: 0 auto; padding: 0 1.25rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px; gap: 1rem;
+}
+.logo-link { display: flex; align-items: center; gap: 0.65rem; text-decoration: none; color: var(--text); }
+.logo-mark { width: 38px; height: 38px; border-radius: 9px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); display: grid; place-items: center; font-weight: 800; color: white; font-size: 0.9rem; font-family: var(--font-heading); }
+.logo-text { font-family: var(--font-heading); font-weight: 700; font-size: 0.95rem; line-height: 1.2; }
+.logo-text small { color: var(--text-dim); font-weight: 500; font-size: 0.72rem; display: block; margin-top: 1px; }
+
+.nav-links { display: flex; gap: 0.25rem; align-items: center; list-style: none; }
+.nav-links > li > a, .nav-links > li > .nav-trigger {
+    display: inline-flex; align-items: center; gap: 0.25rem;
+    padding: 0.45rem 0.75rem; font-size: 0.85rem; font-weight: 500;
+    color: var(--text-dim); border-radius: 8px;
+    font-family: var(--font-heading); cursor: pointer;
+    background: none; border: none;
+    transition: color 0.15s, background 0.15s;
+}
+.nav-links > li > a:hover, .nav-links > li > .nav-trigger:hover { color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, transparent); text-decoration: none; }
+.has-dropdown { position: relative; }
+.dropdown-menu {
+    position: absolute; top: 100%; left: 0;
+    min-width: 200px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 0.4rem; list-style: none; box-shadow: var(--shadow);
+    opacity: 0; visibility: hidden; transform: translateY(8px);
+    transition: opacity 0.15s, transform 0.15s, visibility 0s 0.15s;
+}
+.has-dropdown:hover .dropdown-menu, .has-dropdown:focus-within .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); transition: opacity 0.15s, transform 0.15s; }
+.dropdown-menu li a { display: block; padding: 0.55rem 0.75rem; color: var(--text-dim); font-size: 0.85rem; border-radius: 6px; }
+.dropdown-menu li a:hover { background: color-mix(in srgb, var(--accent) 12%, transparent); color: var(--accent); text-decoration: none; }
+
+.nav-actions { display: flex; gap: 0.4rem; align-items: center; }
+.btn-icon, .btn-ghost {
+    background: transparent; color: var(--text-dim);
+    border: 1px solid var(--border); border-radius: 8px;
+    padding: 0.45rem 0.75rem; font-size: 0.8rem; font-weight: 500;
+    font-family: var(--font-heading); cursor: pointer;
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    transition: all 0.15s;
+}
+.btn-icon { padding: 0.45rem 0.55rem; }
+.btn-ghost:hover, .btn-icon:hover { color: var(--accent); border-color: var(--accent); }
+.btn-icon iconify-icon, .btn-ghost iconify-icon { font-size: 1rem; }
+.theme-toggle .icon-light, .theme-toggle .icon-dark { display: none; }
+[data-theme="dark"] .theme-toggle .icon-light { display: inline; }
+[data-theme="light"] .theme-toggle .icon-dark { display: inline; }
+
+.mobile-menu-toggle { display: none; background: none; border: 1px solid var(--border); border-radius: 8px; width: 38px; height: 38px; cursor: pointer; color: var(--text-dim); }
+.mobile-menu-toggle iconify-icon { font-size: 1.25rem; vertical-align: middle; }
+
+/* ── Hero ─────────────────────────────────────────────────── */
+.hero {
+    background: var(--hero-grad);
+    border-bottom: 1px solid var(--border);
+    padding: 2.5rem 1.5rem 2rem;
+    text-align: center;
+}
+.hero h1 { font-size: 2.25rem; line-height: 1.15; margin-bottom: 0.4rem; }
+.hero h1 span { color: var(--accent); }
+.hero p { color: var(--text-dim); font-size: 1rem; max-width: 680px; margin: 0 auto; }
+.badge {
+    display: inline-flex; align-items: center; gap: 0.35rem;
+    background: color-mix(in srgb, var(--accent) 18%, transparent);
+    color: var(--accent);
+    border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+    padding: 0.25rem 0.85rem; border-radius: 999px;
+    font-size: 0.78rem; margin-top: 0.85rem; font-family: var(--font-heading);
+}
+
+main { max-width: 1280px; margin: 0 auto; padding: 1.5rem; }
+
+/* ── Controls ─────────────────────────────────────────────── */
+.controls {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 0.65rem;
+    margin-bottom: 1.5rem; padding: 0.9rem 1rem;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius);
+}
+.controls label { font-size: 0.82rem; color: var(--text-dim); font-family: var(--font-heading); display: inline-flex; align-items: center; gap: 0.4rem; }
+.controls select {
+    background: var(--bg); color: var(--text);
+    border: 1px solid var(--border); border-radius: 6px;
+    padding: 0.35rem 0.55rem; font-size: 0.82rem;
+    font-family: var(--font-heading); cursor: pointer;
+}
+.spacer { flex: 1; }
+
+/* ── KPI Cards ────────────────────────────────────────────── */
+.section-title {
+    display: flex; align-items: center; gap: 0.55rem;
+    font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700;
+    color: var(--text); margin: 1.75rem 0 1rem; padding-bottom: 0.55rem;
+    border-bottom: 1px solid var(--border);
+}
+.section-title iconify-icon { color: var(--accent); font-size: 1.3rem; }
+.section-title small { color: var(--text-muted); font-weight: 400; font-size: 0.8rem; margin-left: auto; font-family: var(--font-body); }
+
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0.85rem;
+}
+.kpi-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.1rem 1.15rem;
+    display: flex; flex-direction: column; gap: 0.5rem;
+    position: relative; overflow: hidden;
+}
+.kpi-card::before {
+    content: ''; position: absolute; left: 0; right: 0; bottom: 0;
+    height: 3px; background: var(--kpi-color, var(--accent));
+    opacity: 0.7;
+}
+.kpi-icon {
+    width: 36px; height: 36px; border-radius: 9px;
+    display: grid; place-items: center;
+    background: var(--kpi-bg, color-mix(in srgb, var(--accent) 14%, transparent));
+    color: var(--kpi-color, var(--accent));
+    font-size: 1.15rem;
+}
+.kpi-label { font-size: 0.78rem; color: var(--text-dim); font-family: var(--font-heading); font-weight: 500; }
+.kpi-value { font-size: 1.65rem; font-weight: 700; color: var(--text); font-family: var(--font-heading); line-height: 1; }
+.kpi-trend { font-size: 0.78rem; color: var(--text-muted); font-family: var(--font-heading); }
+.kpi-trend.up { color: var(--accent-green); }
+.kpi-trend.down { color: var(--accent-red); }
+
+/* ── Charts ───────────────────────────────────────────────── */
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: 1.25rem;
+}
+.charts-grid.two-col { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+.chart-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.15rem 1.25rem 1.35rem;
+}
+.chart-card.span-2 { grid-column: span 2; }
+@media (max-width: 880px) { .chart-card.span-2 { grid-column: auto; } }
+.chart-card-head { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; margin-bottom: 0.85rem; }
+.chart-card-head h3 { font-size: 0.95rem; color: var(--text); margin: 0; display: inline-flex; align-items: center; gap: 0.4rem; font-weight: 600; }
+.chart-card-head h3 iconify-icon { color: var(--accent); font-size: 1.1rem; }
+.chart-actions { display: flex; gap: 0.25rem; }
+.chart-actions button {
+    background: transparent; color: var(--text-muted);
+    border: 1px solid var(--border); border-radius: 6px;
+    padding: 0.18rem 0.5rem; font-size: 0.7rem; font-family: var(--font-heading);
+    cursor: pointer; font-weight: 500;
+    transition: color 0.15s, border-color 0.15s;
+}
+.chart-actions button:hover:not(:disabled) { color: var(--accent); border-color: var(--accent); }
+.chart-actions button:disabled { opacity: 0.4; cursor: not-allowed; }
+.chart-wrap { position: relative; width: 100%; height: 280px; }
+.chart-wrap.tall { height: 360px; }
+.chart-empty { display: flex; align-items: center; justify-content: center; height: 100%; color: var(--text-muted); font-size: 0.85rem; text-align: center; padding: 1rem; }
+
+/* ── Timeline ─────────────────────────────────────────────── */
+.timeline { position: relative; padding-left: 1.5rem; }
+.timeline::before {
+    content: ''; position: absolute; left: 0.45rem; top: 0.5rem; bottom: 0.5rem;
+    width: 2px; background: var(--border);
+}
+.timeline-item { position: relative; padding-bottom: 1.5rem; }
+.timeline-item::before {
+    content: ''; position: absolute; left: -1.4rem; top: 0.45rem;
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--accent); border: 3px solid var(--bg);
+    box-shadow: 0 0 0 1px var(--border);
+}
+.timeline-year {
+    font-family: var(--font-mono); font-size: 0.72rem; font-weight: 600;
+    color: var(--accent); display: inline-block; padding: 0.1rem 0.5rem;
+    background: color-mix(in srgb, var(--accent) 14%, transparent);
+    border-radius: 4px; margin-bottom: 0.3rem;
+}
+.timeline-item h4 { font-family: var(--font-heading); font-size: 0.95rem; margin-bottom: 0.25rem; color: var(--text); }
+.timeline-item p { font-size: 0.85rem; color: var(--text-dim); }
+
+/* ── Insights ─────────────────────────────────────────────── */
+.insights {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 0.85rem;
+}
+.insight {
+    background: var(--surface); border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 0.95rem 1.15rem; font-size: 0.88rem; line-height: 1.55;
+}
+.insight strong { color: var(--accent); font-family: var(--font-heading); }
+
+/* ── Footer ───────────────────────────────────────────────── */
+.im-footer {
+    margin-top: 3rem; padding: 2rem 1.5rem;
+    border-top: 1px solid var(--border);
+    text-align: center; color: var(--text-dim); font-size: 0.85rem;
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0.6rem;
+}
+.im-footer iconify-icon { color: var(--accent); font-size: 1.1rem; }
+.im-footer .sep { color: var(--text-muted); }
+
+/* ── Loading / error ──────────────────────────────────────── */
+.loading { text-align: center; padding: 3rem 1rem; color: var(--text-dim); }
+.loading-spinner {
+    display: inline-block; width: 36px; height: 36px;
+    border: 3px solid var(--border); border-top-color: var(--accent);
+    border-radius: 50%; animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.error-msg {
+    background: color-mix(in srgb, var(--accent-red) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent-red) 35%, transparent);
+    color: var(--accent-red); padding: 1.25rem; border-radius: var(--radius);
+    text-align: center; display: none; margin-bottom: 1.5rem;
+}
+.error-msg button {
+    margin-top: 0.7rem; background: var(--accent-red); color: white;
+    border: none; padding: 0.5rem 1rem; border-radius: 6px;
+    font-size: 0.85rem; font-family: var(--font-heading); cursor: pointer; font-weight: 600;
+}
+
+.toast {
+    position: fixed; bottom: 1.5rem; left: 50%;
+    transform: translateX(-50%) translateY(120%);
+    background: var(--surface); color: var(--text);
+    border: 1px solid var(--border); padding: 0.55rem 1rem;
+    border-radius: var(--radius-sm); font-size: 0.85rem;
+    z-index: 1000; box-shadow: var(--shadow);
+    transition: transform 0.25s ease; pointer-events: none;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* ── Mobile ───────────────────────────────────────────────── */
+@media (max-width: 880px) {
+    .nav-links { display: none; position: fixed; top: 64px; left: 0; right: 0; background: var(--surface); border-bottom: 1px solid var(--border); flex-direction: column; padding: 0.75rem; gap: 0.25rem; }
+    .nav-links.open { display: flex; }
+    .nav-links > li { width: 100%; }
+    .nav-links > li > a, .nav-links > li > .nav-trigger { width: 100%; justify-content: space-between; }
+    .has-dropdown .dropdown-menu { position: static; opacity: 1; visibility: visible; transform: none; box-shadow: none; padding: 0 0 0 1rem; max-height: 0; overflow: hidden; transition: max-height 0.2s; border: none; }
+    .has-dropdown.open .dropdown-menu { max-height: 400px; }
+    .mobile-menu-toggle { display: inline-grid; place-items: center; }
+}
+@media (max-width: 600px) {
+    .hero h1 { font-size: 1.5rem; }
+    .charts-grid, .charts-grid.two-col { grid-template-columns: 1fr; }
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .insights { grid-template-columns: 1fr; }
+    .controls { flex-direction: column; align-items: stretch; }
+    .controls .spacer { display: none; }
+    .nav-actions .btn-ghost span { display: none; }
+}
+
+@media print {
+    .im-header, .controls, .chart-actions, .toast, .nav-actions { display: none !important; }
+    body { background: white !important; color: black !important; }
+    .chart-card, .kpi-card, .insight, .timeline-item { break-inside: avoid; }
+    section, .chart-card, .kpi-card { page-break-inside: avoid; }
+    .hero { background: white !important; padding: 1rem 0 !important; }
+    .hero h1, .hero h1 span, .badge, .kpi-value, .insight strong, .section-title, .chart-card h3 { color: black !important; }
+    .badge { background: white !important; border-color: #ccc !important; }
+    .chart-wrap { height: 220px; }
+    .im-footer a { color: black !important; }
+}
+</style>
+</head>
+<body>
+
+<noscript>
+<div style="background:#fef2f2;border:1px solid #fecaca;color:#991b1b;padding:1rem;text-align:center;font-family:system-ui,sans-serif;">
+This dashboard renders interactive charts with JavaScript. Please enable JavaScript or visit
+<a href="https://data.worldbank.org/country/india">data.worldbank.org/country/india</a> for the underlying data.
+</div>
+</noscript>
+
+<!-- ── ImpactMojo Standard Header ──────────────────────────── -->
+<header class="im-header" role="banner">
+    <nav class="nav-container" aria-label="Main navigation">
+        <a class="logo-link" href="https://www.impactmojo.in" target="_blank" rel="noopener">
+            <div class="logo-mark" aria-hidden="true">IM</div>
+            <div class="logo-text">ImpactMojo<small>Development Know-How</small></div>
+        </a>
+
+        <ul class="nav-links" id="navLinks">
+            <li><a href="https://www.impactmojo.in" target="_blank" rel="noopener">Home</a></li>
+            <li class="has-dropdown">
+                <button class="nav-trigger" type="button" onclick="toggleDropdown(this)" aria-expanded="false">Learn
+                    <iconify-icon icon="mdi:chevron-down" aria-hidden="true"></iconify-icon>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="https://www.impactmojo.in/courses.html" target="_blank" rel="noopener">Courses</a></li>
+                    <li><a href="https://www.impactmojo.in/labs.html" target="_blank" rel="noopener">Labs</a></li>
+                    <li><a href="https://www.impactmojo.in/games.html" target="_blank" rel="noopener">Games</a></li>
+                    <li><a href="https://www.impactmojo.in/handouts.html" target="_blank" rel="noopener">Handouts</a></li>
+                    <li><a href="https://www.impactmojo.in/catalog.html" target="_blank" rel="noopener">Catalog</a></li>
+                    <li><a href="https://www.impactmojo.in/premium.html" target="_blank" rel="noopener">Premium</a></li>
+                </ul>
+            </li>
+            <li class="has-dropdown">
+                <button class="nav-trigger" type="button" onclick="toggleDropdown(this)" aria-expanded="false">Specials
+                    <iconify-icon icon="mdi:chevron-down" aria-hidden="true"></iconify-icon>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="https://www.impactmojo.in/live-projects.html" target="_blank" rel="noopener">Live Projects</a></li>
+                    <li><a href="https://www.impactmojo.in/impactlex/" target="_blank" rel="noopener">ImpactLex</a></li>
+                    <li><a href="https://www.impactmojo.in/devdiscourses.html" target="_blank" rel="noopener">DevDiscourses</a></li>
+                    <li><a href="https://www.impactmojo.in/dataverse.html" target="_blank" rel="noopener">Dataverse</a></li>
+                </ul>
+            </li>
+            <li class="has-dropdown">
+                <button class="nav-trigger" type="button" onclick="toggleDropdown(this)" aria-expanded="false">Services
+                    <iconify-icon icon="mdi:chevron-down" aria-hidden="true"></iconify-icon>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="https://www.impactmojo.in/coaching.html" target="_blank" rel="noopener">Coaching</a></li>
+                    <li><a href="https://www.impactmojo.in/workshops.html" target="_blank" rel="noopener">Workshops</a></li>
+                </ul>
+            </li>
+            <li class="has-dropdown">
+                <button class="nav-trigger" type="button" onclick="toggleDropdown(this)" aria-expanded="false">About
+                    <iconify-icon icon="mdi:chevron-down" aria-hidden="true"></iconify-icon>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="https://www.impactmojo.in/about.html" target="_blank" rel="noopener">About ImpactMojo</a></li>
+                    <li><a href="https://www.impactmojo.in/team.html" target="_blank" rel="noopener">Our Team</a></li>
+                    <li><a href="https://www.impactmojo.in/contact.html" target="_blank" rel="noopener">Contact</a></li>
+                </ul>
+            </li>
+            <li><a href="https://www.impactmojo.in/blog.html" target="_blank" rel="noopener">Blog</a></li>
+            <li><a href="https://www.impactmojo.in/podcast.html" target="_blank" rel="noopener">Podcast</a></li>
+        </ul>
+
+        <div class="nav-actions">
+            <button class="btn-icon theme-toggle" id="themeToggle" type="button" aria-label="Toggle colour theme">
+                <iconify-icon class="icon-light" icon="mdi:weather-sunny" aria-hidden="true"></iconify-icon>
+                <iconify-icon class="icon-dark" icon="mdi:weather-night" aria-hidden="true"></iconify-icon>
+            </button>
+            <a class="btn-ghost" href="https://www.impactmojo.in/live-projects.html" target="_blank" rel="noopener">
+                <iconify-icon icon="mdi:arrow-left" aria-hidden="true"></iconify-icon>
+                <span>Live Projects</span>
+            </a>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle" type="button" aria-label="Toggle menu" aria-controls="navLinks" aria-expanded="false">
+                <iconify-icon icon="mdi:menu" aria-hidden="true"></iconify-icon>
+            </button>
+        </div>
+    </nav>
+</header>
+
+<!-- ── Hero ─────────────────────────────────────────────────── -->
+<section class="hero">
+    <h1>India <span>Development Indicators</span></h1>
+    <p>Tracking India's progress across economic growth, health, education, infrastructure and digital access — with live data from the World Bank Open Data API.</p>
+    <div class="badge" id="rangeBadge"><iconify-icon icon="mdi:database-outline" aria-hidden="true"></iconify-icon> World Bank Open Data · 2000–2024</div>
+</section>
+
+<main>
+
+<!-- Controls -->
+<div class="controls" role="region" aria-label="Dashboard controls">
+    <label><iconify-icon icon="mdi:calendar-range" aria-hidden="true"></iconify-icon> From <select id="startYear" aria-label="Start year"></select></label>
+    <label>To <select id="endYear" aria-label="End year"></select></label>
+    <div class="spacer"></div>
+    <button class="btn-ghost" id="copyLink" type="button">
+        <iconify-icon icon="mdi:link-variant" aria-hidden="true"></iconify-icon><span>Copy link</span>
+    </button>
+    <button class="btn-ghost" id="printBtn" type="button">
+        <iconify-icon icon="mdi:printer-outline" aria-hidden="true"></iconify-icon><span>Print</span>
+    </button>
+</div>
+
+<div class="loading" id="loadingState" role="status" aria-live="polite">
+    <div class="loading-spinner" aria-hidden="true"></div>
+    <p style="margin-top:0.85rem">Loading World Bank data…</p>
+</div>
+
+<div class="error-msg" id="errorMsg" role="alert">
+    <p>Failed to load data from the World Bank API.</p>
+    <button id="retryBtn" type="button">Retry</button>
+</div>
+
+<div id="dashboardContent" style="display:none">
+
+<!-- ── KPIs ─────────────────────────────────────────────────── -->
+<div class="section-title"><iconify-icon icon="mdi:view-dashboard-outline"></iconify-icon>Key Performance Indicators</div>
+<div class="kpi-grid" id="kpiGrid"></div>
+
+<!-- ── Economic Growth ──────────────────────────────────────── -->
+<div class="section-title"><iconify-icon icon="mdi:chart-line"></iconify-icon>Economic Growth</div>
+<div class="charts-grid">
+    <div class="chart-card">
+        <div class="chart-card-head">
+            <h3><iconify-icon icon="mdi:trending-up"></iconify-icon> GDP Growth Rate (annual %)</h3>
+            <div class="chart-actions" data-chart="chartGdpGrowth" data-name="gdp-growth"><button class="dl-csv" type="button">CSV</button><button class="dl-png" type="button">PNG</button></div>
+        </div>
+        <div class="chart-wrap"><canvas id="chartGdpGrowth"></canvas></div>
+    </div>
+    <div class="chart-card">
+        <div class="chart-card-head">
+            <h3><iconify-icon icon="mdi:cash-multiple"></iconify-icon> GDP per Capita (current USD)</h3>
+            <div class="chart-actions" data-chart="chartGdpPc" data-name="gdp-per-capita"><button class="dl-csv" type="button">CSV</button><button class="dl-png" type="button">PNG</button></div>
+        </div>
+        <div class="chart-wrap"><canvas id="chartGdpPc"></canvas></div>
+    </div>
+    <div class="chart-card">
+        <div class="chart-card-head">
+            <h3><iconify-icon icon="mdi:chart-donut"></iconify-icon> Sector Contribution to GDP</h3>
+            <div class="chart-actions" data-chart="chartSector" data-name="sector-share"><button class="dl-csv" type="button">CSV</button><button class="dl-png" type="button">PNG</button></div>
+        </div>
+        <div class="chart-wrap"><canvas id="chartSector"></canvas></div>
+    </div>
+</div>
+
+<!-- ── Health & Education ─────────────────────────────────── -->
+<div class="section-title"><iconify-icon icon="mdi:heart-pulse"></iconify-icon>Health &amp; Education</div>
+<div class="charts-grid">
+    <div class="chart-card">
+        <div class="chart-card-head">
+            <h3><iconify-icon icon="mdi:human-male-female-child"></iconify-icon> Life Expectancy &amp; Infant Mortality</h3>
+            <div class="chart-actions" data-chart="chartHealth" data-name="health"><button class="dl-csv" type="button">CSV</button><button class="dl-png" type="button">PNG</button></div>
+        </div>
+        <div class="chart-wrap"><canvas id="chartHealth"></canvas></div>
+    </div>
+    <div class="chart-card">
+        <div class="chart-card-head">
+            <h3><iconify-icon icon="mdi:book-open-variant"></iconify-icon> Adult Literacy Rate (%)</h3>
+            <div class="chart-actions" data-chart="chartLiteracy" data-name="literacy"><button class="dl-csv" type="button">CSV</button><button class="dl-png" type="button">PNG</button></div>
+        </div>
+        <div class="chart-wrap"><canvas id="chartLiteracy"></canvas></div>
+    </div>
+</div>
+
+<!-- ── Infrastructure & Digital ─────────────────────────────── -->
+<div class="section-title"><iconify-icon icon="mdi:wifi"></iconify-icon>Infrastructure &amp; Digital Access</div>
+<div class="charts-grid">
+    <div class="chart-card">
+        <div class="chart-card-head">
+            <h3><iconify-icon icon="mdi:lightning-bolt"></iconify-icon> Electricity &amp; Internet Access</h3>
+            <div class="chart-actions" data-chart="chartAccess" data-name="access"><button class="dl-csv" type="button">CSV</button><button class="dl-png" type="button">PNG</button></div>
+        </div>
+        <div class="chart-wrap"><canvas id="chartAccess"></canvas></div>
+    </div>
+    <div class="chart-card">
+        <div class="chart-card-head">
+            <h3><iconify-icon icon="mdi:office-building-outline"></iconify-icon> Capital Infrastructure Spending (Union Budget 2024-25, ₹ trillion)</h3>
+            <div class="chart-actions" data-chart="chartInfra" data-name="infra-spending"><button class="dl-csv" type="button">CSV</button><button class="dl-png" type="button">PNG</button></div>
+        </div>
+        <div class="chart-wrap"><canvas id="chartInfra"></canvas></div>
+    </div>
+</div>
+
+<!-- ── State HDI ────────────────────────────────────────────── -->
+<div class="section-title"><iconify-icon icon="mdi:map-marker-outline"></iconify-icon>State-wise HDI<small>UNDP Sub-national Human Development Index (latest)</small></div>
+<div class="charts-grid">
+    <div class="chart-card span-2">
+        <div class="chart-card-head">
+            <h3><iconify-icon icon="mdi:medal-outline"></iconify-icon> Top 10 Indian States &amp; UTs by HDI</h3>
+            <div class="chart-actions" data-chart="chartHdi" data-name="state-hdi"><button class="dl-csv" type="button">CSV</button><button class="dl-png" type="button">PNG</button></div>
+        </div>
+        <div class="chart-wrap tall"><canvas id="chartHdi"></canvas></div>
+    </div>
+</div>
+
+<!-- ── Environment & Employment ────────────────────────────── -->
+<div class="section-title"><iconify-icon icon="mdi:leaf"></iconify-icon>Environment &amp; Employment</div>
+<div class="charts-grid">
+    <div class="chart-card">
+        <div class="chart-card-head">
+            <h3><iconify-icon icon="mdi:molecule-co2"></iconify-icon> CO₂ Emissions per Capita (metric tons)</h3>
+            <div class="chart-actions" data-chart="chartCo2" data-name="co2"><button class="dl-csv" type="button">CSV</button><button class="dl-png" type="button">PNG</button></div>
+        </div>
+        <div class="chart-wrap"><canvas id="chartCo2"></canvas></div>
+    </div>
+    <div class="chart-card">
+        <div class="chart-card-head">
+            <h3><iconify-icon icon="mdi:account-multiple-outline"></iconify-icon> Unemployment Rate (%)</h3>
+            <div class="chart-actions" data-chart="chartUnemp" data-name="unemployment"><button class="dl-csv" type="button">CSV</button><button class="dl-png" type="button">PNG</button></div>
+        </div>
+        <div class="chart-wrap"><canvas id="chartUnemp"></canvas></div>
+    </div>
+</div>
+
+<!-- ── Insights ─────────────────────────────────────────────── -->
+<div class="section-title"><iconify-icon icon="mdi:lightbulb-outline"></iconify-icon>Key Insights</div>
+<div class="insights" id="insightsGrid"></div>
+
+<!-- ── Policy Timeline ──────────────────────────────────────── -->
+<div class="section-title"><iconify-icon icon="mdi:timeline-outline"></iconify-icon>Development Policy Timeline<small>Major initiatives, 2014–2024</small></div>
+<div class="timeline" id="timeline"></div>
+
+</div><!-- /dashboardContent -->
+</main>
+
+<!-- ── Footer ───────────────────────────────────────────────── -->
+<footer class="im-footer">
+    <iconify-icon icon="mdi:airplane" aria-hidden="true"></iconify-icon>
+    <span>An ImpactMojo Project</span>
+    <span class="sep">|</span>
+    <span>&copy; <span id="copyrightYear"></span> <a href="https://www.impactmojo.in" target="_blank" rel="noopener">ImpactMojo</a></span>
+    <span class="sep">|</span>
+    <span>Live data: <a href="https://data.worldbank.org" target="_blank" rel="noopener">World Bank</a>, <a href="https://hdr.undp.org" target="_blank" rel="noopener">UNDP</a>, <a href="https://www.indiabudget.gov.in" target="_blank" rel="noopener">Union Budget</a></span>
+    <span class="sep">|</span>
+    <a href="https://www.impactmojo.in/live-projects.html" target="_blank" rel="noopener">More Live Projects</a>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+// ─── CONFIG ─────────────────────────────────────────────────────────────
+const BASE = 'https://api.worldbank.org/v2/country/IND/indicator/';
+const FETCH_TIMEOUT_MS = 15000;
+const CACHE_TTL_MS = 60 * 60 * 1000;
+const CACHE_PREFIX = 'idi:v2:';
+const MIN_YEAR = 1990;
+const MAX_YEAR = new Date().getFullYear();
+const DEFAULT_START = 2000;
+const DEFAULT_END = Math.min(MAX_YEAR, 2024);
+
+const INDICATORS = {
+    gdpPc:        { code: 'NY.GDP.PCAP.CD',    label: 'GDP per Capita',         unit: '$' },
+    gdpGrowth:    { code: 'NY.GDP.MKTP.KD.ZG', label: 'GDP Growth',             unit: '%' },
+    population:   { code: 'SP.POP.TOTL',       label: 'Population',             unit: '' },
+    life:         { code: 'SP.DYN.LE00.IN',    label: 'Life Expectancy',        unit: 'yr' },
+    infant:       { code: 'SP.DYN.IMRT.IN',    label: 'Infant Mortality',       unit: '/1k' },
+    literacy:     { code: 'SE.ADT.LITR.ZS',    label: 'Adult Literacy',         unit: '%' },
+    electricity:  { code: 'EG.ELC.ACCS.ZS',    label: 'Electricity Access',     unit: '%' },
+    internet:     { code: 'IT.NET.USER.ZS',    label: 'Internet Users',         unit: '%' },
+    co2:          { code: 'EN.ATM.CO2E.PC',    label: 'CO₂ per Capita',     unit: 't' },
+    unemployment: { code: 'SL.UEM.TOTL.ZS',    label: 'Unemployment',           unit: '%' },
+    sectorAgri:   { code: 'NV.AGR.TOTL.ZS',    label: 'Agriculture % GDP',     unit: '%' },
+    sectorInd:    { code: 'NV.IND.TOTL.ZS',    label: 'Industry % GDP',         unit: '%' },
+    sectorSrv:    { code: 'NV.SRV.TOTL.ZS',    label: 'Services % GDP',         unit: '%' }
+};
+
+// Hardcoded data — these don't have free public APIs
+// Source: India Union Budget 2024-25 (Capital Outlay, ₹ trillion). Approximate.
+const INFRA_SPENDING = {
+    labels: ['Roads', 'Railways', 'Defence Capex', 'Renewable Energy', 'Urban (PMAY)', 'Telecom', 'Ports & Shipping'],
+    values: [2.78, 2.65, 1.72, 0.92, 0.84, 0.75, 0.34]
+};
+
+// Source: UNDP Sub-national HDI (Global Data Lab) — latest available (2022).
+const STATE_HDI = {
+    states: ['Kerala', 'Goa', 'Delhi', 'Mizoram', 'Punjab', 'Sikkim', 'Tamil Nadu', 'Himachal Pradesh', 'Maharashtra', 'Haryana'],
+    values: [0.782, 0.766, 0.760, 0.733, 0.725, 0.722, 0.720, 0.717, 0.711, 0.706]
+};
+
+// HDI for India (UNDP HDR 2023-24) — keeps as static KPI since no free API
+const NATIONAL_HDI = { value: 0.644, year: 2022, rank: '134/193' };
+
+const TIMELINE = [
+    { year: '2014', title: 'Make in India',                  desc: 'Flagship campaign to lift the manufacturing share of GDP and attract foreign investment across 25 priority sectors.' },
+    { year: '2015', title: 'Digital India',                  desc: 'Programme to expand broadband access, e-governance and digital literacy as foundations of a knowledge economy.' },
+    { year: '2015', title: 'Smart Cities Mission',           desc: 'Selection of 100 cities for urban-renewal investment in core infrastructure, mobility and citizen services.' },
+    { year: '2016', title: 'Demonetisation',                 desc: 'Withdrawal of ₹500 and ₹1,000 notes — declared aim was curbing illicit cash; downstream effect was a sharp push toward digital payments.' },
+    { year: '2017', title: 'Goods &amp; Services Tax',           desc: 'GST consolidated state and central indirect taxes into a single national market for goods and services.' },
+    { year: '2019', title: 'Jal Jeevan Mission',             desc: 'Drive to deliver tap-water connections to every rural household by 2024.' },
+    { year: '2020', title: 'National Education Policy',      desc: 'NEP 2020 — first comprehensive overhaul of the education system in 34 years.' },
+    { year: '2020', title: 'Aatmanirbhar Bharat',            desc: 'Self-reliance package (₹20 lakh crore) launched during the COVID-19 shock, mixing relief, credit and structural reform.' },
+    { year: '2022', title: '5G Rollout',                     desc: 'India launched 5G services with one of the fastest national rollouts globally, targeting full geographic coverage.' },
+    { year: '2023', title: 'Chandrayaan-3',                  desc: 'India became the first country to land near the lunar south pole — a milestone for the civil space programme.' },
+    { year: '2023', title: 'UPI &gt; 10B txns/month',           desc: 'Unified Payments Interface cemented India as the global leader in real-time digital payments.' },
+    { year: '2024', title: 'Semiconductor Push',             desc: 'Approvals for multiple domestic chip-fabrication plants under the Semiconductor Mission.' }
+];
+
+const fmt = {
+    dollar: v => '$' + Math.round(v).toLocaleString(),
+    percent: v => v.toFixed(1) + '%',
+    decimal: v => v.toFixed(1),
+    decimal2: v => v.toFixed(2),
+    big: v => {
+        const abs = Math.abs(v);
+        if (abs >= 1e9) return (v/1e9).toFixed(2) + 'B';
+        if (abs >= 1e6) return (v/1e6).toFixed(1) + 'M';
+        if (abs >= 1e3) return (v/1e3).toFixed(1) + 'K';
+        return v.toFixed(0);
+    }
+};
+
+// ─── STATE ──────────────────────────────────────────────────────────────
+const state = {
+    startYear: DEFAULT_START,
+    endYear: DEFAULT_END,
+    theme: null, // resolved during init
+    data: null
+};
+const chartRegistry = {};
+
+// ─── URL state ──────────────────────────────────────────────────────────
+function readStateFromURL() {
+    const p = new URLSearchParams(window.location.search);
+    const s = parseInt(p.get('start'), 10);
+    const e = parseInt(p.get('end'), 10);
+    const t = p.get('theme');
+    if (Number.isFinite(s) && s >= MIN_YEAR && s <= MAX_YEAR) state.startYear = s;
+    if (Number.isFinite(e) && e >= MIN_YEAR && e <= MAX_YEAR) state.endYear = e;
+    if (state.endYear < state.startYear) state.endYear = state.startYear;
+    if (t === 'dark' || t === 'light') {
+        state.theme = t;
+    } else {
+        let stored = null;
+        try { stored = localStorage.getItem('idi.theme'); } catch (_) {}
+        if (stored === 'dark' || stored === 'light') {
+            state.theme = stored;
+        } else {
+            state.theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        }
+    }
+}
+
+function writeStateToURL() {
+    const p = new URLSearchParams();
+    p.set('start', state.startYear);
+    p.set('end', state.endYear);
+    p.set('theme', state.theme);
+    window.history.replaceState(null, '', window.location.pathname + '?' + p.toString());
+}
+
+// ─── Cache ──────────────────────────────────────────────────────────────
+function cacheGet(code, s, e) {
+    try {
+        const raw = sessionStorage.getItem(CACHE_PREFIX + code + ':' + s + ':' + e);
+        if (!raw) return null;
+        const o = JSON.parse(raw);
+        if (Date.now() - o.t > CACHE_TTL_MS) return null;
+        return o.d;
+    } catch (_) { return null; }
+}
+function cacheSet(code, s, e, data) {
+    try { sessionStorage.setItem(CACHE_PREFIX + code + ':' + s + ':' + e, JSON.stringify({ t: Date.now(), d: data })); } catch (_) {}
+}
+
+// ─── Fetch ──────────────────────────────────────────────────────────────
+async function fetchIndicator(code, s, e) {
+    const cached = cacheGet(code, s, e);
+    if (cached) return cached;
+    const url = BASE + code + '?format=json&per_page=200&date=' + s + ':' + e;
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), FETCH_TIMEOUT_MS);
+    try {
+        const res = await fetch(url, { signal: ctrl.signal });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const json = await res.json();
+        if (!Array.isArray(json) || !json[1]) return [];
+        const out = json[1]
+            .filter(d => d && d.value !== null && d.value !== undefined)
+            .map(d => ({ year: d.date, value: d.value }))
+            .sort((a, b) => Number(a.year) - Number(b.year));
+        cacheSet(code, s, e, out);
+        return out;
+    } finally {
+        clearTimeout(timer);
+    }
+}
+
+async function loadAll(s, e) {
+    const keys = Object.keys(INDICATORS);
+    const settled = await Promise.allSettled(keys.map(k => fetchIndicator(INDICATORS[k].code, s, e)));
+    const data = {};
+    let any = false;
+    settled.forEach((r, i) => {
+        const v = r.status === 'fulfilled' ? r.value : [];
+        data[keys[i]] = v;
+        if (v.length) any = true;
+        if (r.status === 'rejected') console.warn('Failed: ' + keys[i], r.reason);
+    });
+    if (!any) throw new Error('All indicator requests failed');
+    return data;
+}
+
+// ─── Chart helpers ──────────────────────────────────────────────────────
+function readVar(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+
+function baseScales(opts) {
+    opts = opts || {};
+    const axis = readVar('--text-dim');
+    const grid = readVar('--grid');
+    return {
+        x: { ticks: { color: axis, maxTicksLimit: opts.maxTicks || 10 }, grid: { color: grid }, beginAtZero: !!opts.xZero },
+        y: { ticks: { color: axis, callback: opts.yCallback }, grid: { color: grid }, beginAtZero: opts.yZero !== false }
+    };
+}
+
+function destroyChart(id) {
+    if (chartRegistry[id]) { chartRegistry[id].destroy(); delete chartRegistry[id]; }
+}
+
+function ensureCanvas(id) {
+    const card = document.querySelector('[data-chart="' + id + '"]')?.closest('.chart-card');
+    const wrap = card ? card.querySelector('.chart-wrap') : null;
+    if (!wrap) return null;
+    if (!document.getElementById(id)) wrap.innerHTML = '<canvas id="' + id + '"></canvas>';
+    return document.getElementById(id);
+}
+
+function setActionsEnabled(id, on) {
+    const grp = document.querySelector('[data-chart="' + id + '"]');
+    if (grp) grp.querySelectorAll('button').forEach(b => b.disabled = !on);
+}
+
+function showEmpty(id, msg) {
+    const card = document.querySelector('[data-chart="' + id + '"]')?.closest('.chart-card');
+    const wrap = card ? card.querySelector('.chart-wrap') : null;
+    if (wrap) wrap.innerHTML = '<div class="chart-empty">' + (msg || 'No data available for this range') + '</div>';
+    setActionsEnabled(id, false);
+}
+
+function makeLine(id, datasets, labels, fmtFn) {
+    const c = ensureCanvas(id);
+    if (!c) return;
+    if (!labels.length) return showEmpty(id);
+    destroyChart(id);
+    const axis = readVar('--text-dim');
+    chartRegistry[id] = new Chart(c.getContext('2d'), {
+        type: 'line',
+        data: { labels: labels, datasets: datasets },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            interaction: { intersect: false, mode: 'index' },
+            plugins: {
+                legend: { display: datasets.length > 1, labels: { color: axis, font: { family: readVar('--font-heading'), size: 11 } } },
+                tooltip: { callbacks: { label: c => c.dataset.label + ': ' + (fmtFn ? fmtFn(c.parsed.y) : c.parsed.y.toFixed(2)) } }
+            },
+            scales: baseScales({ yZero: false })
+        }
+    });
+    setActionsEnabled(id, true);
+}
+
+function makeBar(id, labels, values, color, fmtFn, opts) {
+    opts = opts || {};
+    const c = ensureCanvas(id);
+    if (!c) return;
+    if (!labels.length) return showEmpty(id);
+    destroyChart(id);
+    chartRegistry[id] = new Chart(c.getContext('2d'), {
+        type: 'bar',
+        data: { labels: labels, datasets: [{ label: opts.label || 'Value', data: values, backgroundColor: color, borderRadius: 6, barThickness: opts.barThickness, maxBarThickness: opts.maxBarThickness || 30 }] },
+        options: {
+            indexAxis: opts.horizontal ? 'y' : 'x',
+            responsive: true, maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: { callbacks: { label: c => (fmtFn ? fmtFn(c.parsed[opts.horizontal ? 'x' : 'y']) : c.parsed[opts.horizontal ? 'x' : 'y']) } }
+            },
+            scales: baseScales({ yZero: !opts.horizontal, xZero: !!opts.horizontal, yCallback: opts.horizontal ? undefined : fmtFn })
+        }
+    });
+    setActionsEnabled(id, true);
+}
+
+function makeDoughnut(id, labels, values, colors, fmtFn) {
+    const c = ensureCanvas(id);
+    if (!c) return;
+    if (!labels.length) return showEmpty(id);
+    destroyChart(id);
+    const axis = readVar('--text-dim');
+    chartRegistry[id] = new Chart(c.getContext('2d'), {
+        type: 'doughnut',
+        data: { labels: labels, datasets: [{ data: values, backgroundColor: colors, borderColor: readVar('--surface'), borderWidth: 2 }] },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            cutout: '62%',
+            plugins: {
+                legend: { position: 'right', labels: { color: axis, font: { family: readVar('--font-heading'), size: 11 }, boxWidth: 12, padding: 10 } },
+                tooltip: { callbacks: { label: c => c.label + ': ' + (fmtFn ? fmtFn(c.parsed) : c.parsed.toFixed(1)) } }
+            }
+        }
+    });
+    setActionsEnabled(id, true);
+}
+
+// ─── KPI rendering ──────────────────────────────────────────────────────
+function trend(series) {
+    if (!series || series.length < 2) return null;
+    const a = series[0].value, b = series[series.length - 1].value;
+    return { delta: b - a, pct: a !== 0 ? ((b/a) - 1) * 100 : 0 };
+}
+
+function renderKPIs(data) {
+    const cards = [];
+    const gdp = data.gdpPc.length ? data.gdpPc[data.gdpPc.length - 1].value : null;
+    const gdpT = trend(data.gdpPc);
+    cards.push({ icon: 'mdi:cash-multiple', label: 'GDP per Capita', value: gdp != null ? '$' + Math.round(gdp).toLocaleString() : '—', trend: gdpT && gdp != null ? '+' + gdpT.pct.toFixed(0) + '% over period' : null, dir: gdpT && gdpT.delta > 0 ? 'up' : 'down', color: 'accent', bg: 'accent' });
+
+    const grLast = data.gdpGrowth.length ? data.gdpGrowth[data.gdpGrowth.length - 1] : null;
+    cards.push({ icon: 'mdi:trending-up', label: 'GDP Growth (latest)', value: grLast ? grLast.value.toFixed(1) + '%' : '—', trend: grLast ? 'in ' + grLast.year : null, color: 'accent-green', bg: 'accent-green' });
+
+    const popLast = data.population.length ? data.population[data.population.length - 1] : null;
+    cards.push({ icon: 'mdi:account-group', label: 'Population', value: popLast ? fmt.big(popLast.value) : '—', trend: popLast ? 'in ' + popLast.year : null, color: 'accent-2', bg: 'accent-2' });
+
+    cards.push({ icon: 'mdi:heart-outline', label: 'HDI', value: NATIONAL_HDI.value.toFixed(3), trend: 'rank ' + NATIONAL_HDI.rank + ' (' + NATIONAL_HDI.year + ')', color: 'accent-amber', bg: 'accent-amber' });
+
+    const litLast = data.literacy.length ? data.literacy[data.literacy.length - 1] : null;
+    cards.push({ icon: 'mdi:book-open-page-variant', label: 'Adult Literacy', value: litLast ? litLast.value.toFixed(1) + '%' : '—', trend: litLast ? 'in ' + litLast.year : null, color: 'accent-pink', bg: 'accent-pink' });
+
+    const lifeLast = data.life.length ? data.life[data.life.length - 1] : null;
+    cards.push({ icon: 'mdi:clock-outline', label: 'Life Expectancy', value: lifeLast ? lifeLast.value.toFixed(1) + ' yr' : '—', trend: lifeLast ? 'in ' + lifeLast.year : null, color: 'accent-cyan', bg: 'accent-cyan' });
+
+    const grid = document.getElementById('kpiGrid');
+    grid.innerHTML = cards.map(c => `
+        <div class="kpi-card" style="--kpi-color:var(--${c.color});--kpi-bg:color-mix(in srgb, var(--${c.bg}) 14%, transparent)">
+            <div class="kpi-icon"><iconify-icon icon="${c.icon}" aria-hidden="true"></iconify-icon></div>
+            <div class="kpi-label">${c.label}</div>
+            <div class="kpi-value">${c.value}</div>
+            ${c.trend ? `<div class="kpi-trend ${c.dir||''}">${c.trend}</div>` : ''}
+        </div>
+    `).join('');
+}
+
+// ─── Insights ───────────────────────────────────────────────────────────
+function renderInsights(data) {
+    const out = [];
+    if (data.gdpPc.length >= 2) {
+        const a = data.gdpPc[0], b = data.gdpPc[data.gdpPc.length - 1];
+        const g = ((b.value/a.value - 1) * 100).toFixed(0);
+        out.push(`<strong>GDP per capita</strong> grew ${g}% from $${Math.round(a.value).toLocaleString()} (${a.year}) to $${Math.round(b.value).toLocaleString()} (${b.year}).`);
+    }
+    if (data.life.length >= 2) {
+        const a = data.life[0], b = data.life[data.life.length - 1];
+        out.push(`<strong>Life expectancy</strong> rose ${(b.value-a.value).toFixed(1)} years over the period — from ${a.value.toFixed(1)} (${a.year}) to ${b.value.toFixed(1)} (${b.year}).`);
+    }
+    if (data.infant.length >= 2) {
+        const a = data.infant[0], b = data.infant[data.infant.length - 1];
+        const drop = ((1 - b.value/a.value) * 100).toFixed(0);
+        out.push(`<strong>Infant mortality</strong> declined ${drop}%, from ${a.value.toFixed(0)} to ${b.value.toFixed(0)} per 1,000 live births.`);
+    }
+    if (data.internet.length) {
+        const b = data.internet[data.internet.length - 1];
+        out.push(`<strong>Internet penetration</strong> reached ${b.value.toFixed(1)}% by ${b.year}, driven by affordable mobile data and the Digital India programme.`);
+    }
+    if (data.electricity.length) {
+        const b = data.electricity[data.electricity.length - 1];
+        out.push(`<strong>Electricity access</strong> stood at ${b.value.toFixed(1)}% by ${b.year} — Saubhagya (2017) was pivotal for last-mile household electrification.`);
+    }
+    if (data.sectorSrv.length) {
+        const b = data.sectorSrv[data.sectorSrv.length - 1];
+        out.push(`<strong>Services dominate</strong> the economy, contributing ${b.value.toFixed(1)}% of GDP in ${b.year} — a structural shift from agriculture-led growth.`);
+    }
+    const grid = document.getElementById('insightsGrid');
+    grid.innerHTML = out.length ? out.map(t => `<div class="insight">${t}</div>`).join('') : '<div class="insight">No insights available for the selected range.</div>';
+}
+
+// ─── Timeline ───────────────────────────────────────────────────────────
+function renderTimeline() {
+    document.getElementById('timeline').innerHTML = TIMELINE.map(t => `
+        <div class="timeline-item">
+            <span class="timeline-year">${t.year}</span>
+            <h4>${t.title}</h4>
+            <p>${t.desc}</p>
+        </div>
+    `).join('');
+}
+
+// ─── Render all ─────────────────────────────────────────────────────────
+function renderAll(data) {
+    renderKPIs(data);
+
+    // GDP Growth (line, single)
+    makeLine('chartGdpGrowth',
+        [{ label: 'GDP Growth', data: data.gdpGrowth.map(d => d.value), borderColor: readVar('--accent-green'), backgroundColor: 'rgba(16,185,129,0.18)', fill: true, tension: 0.3, pointRadius: 2, borderWidth: 2 }],
+        data.gdpGrowth.map(d => d.year), fmt.percent);
+
+    // GDP per Capita (line, single)
+    makeLine('chartGdpPc',
+        [{ label: 'GDP per capita', data: data.gdpPc.map(d => d.value), borderColor: readVar('--accent'), backgroundColor: 'rgba(14,165,233,0.18)', fill: true, tension: 0.3, pointRadius: 2, borderWidth: 2 }],
+        data.gdpPc.map(d => d.year), fmt.dollar);
+
+    // Sector contribution (doughnut, latest year)
+    const sectorLatest = ['sectorAgri','sectorInd','sectorSrv'].map(k => data[k].length ? data[k][data[k].length - 1] : null);
+    if (sectorLatest.every(x => x)) {
+        makeDoughnut('chartSector',
+            ['Agriculture', 'Industry', 'Services'],
+            sectorLatest.map(x => x.value),
+            [readVar('--accent-green'), readVar('--accent-amber'), readVar('--accent')],
+            fmt.percent);
+    } else {
+        showEmpty('chartSector');
+    }
+
+    // Health (multi-line: life + infant; dual-axis would be ideal but keep simple)
+    const lifeLabels = data.life.map(d => d.year);
+    const infantByYear = new Map(data.infant.map(d => [d.year, d.value]));
+    const healthLabels = lifeLabels.filter(y => infantByYear.has(y));
+    if (healthLabels.length) {
+        makeLine('chartHealth',
+            [
+                { label: 'Life Expectancy (yr)', data: healthLabels.map(y => data.life.find(d => d.year === y).value), borderColor: readVar('--accent-cyan'), backgroundColor: 'rgba(34,211,238,0.15)', fill: false, tension: 0.3, pointRadius: 2, borderWidth: 2, yAxisID: 'y' },
+                { label: 'Infant Mortality (/1k)', data: healthLabels.map(y => infantByYear.get(y)), borderColor: readVar('--accent-red'), backgroundColor: 'rgba(239,68,68,0.15)', fill: false, tension: 0.3, pointRadius: 2, borderWidth: 2, yAxisID: 'y' }
+            ],
+            healthLabels, fmt.decimal);
+    } else {
+        showEmpty('chartHealth');
+    }
+
+    // Literacy (line, single)
+    makeLine('chartLiteracy',
+        [{ label: 'Adult Literacy', data: data.literacy.map(d => d.value), borderColor: readVar('--accent-pink'), backgroundColor: 'rgba(236,72,153,0.15)', fill: true, tension: 0.3, pointRadius: 2, borderWidth: 2 }],
+        data.literacy.map(d => d.year), fmt.percent);
+
+    // Access (multi-line: electricity + internet)
+    const elecLabels = data.electricity.map(d => d.year);
+    const intByYear = new Map(data.internet.map(d => [d.year, d.value]));
+    const accLabels = elecLabels.filter(y => intByYear.has(y));
+    if (accLabels.length) {
+        makeLine('chartAccess',
+            [
+                { label: 'Electricity (% pop.)', data: accLabels.map(y => data.electricity.find(d => d.year === y).value), borderColor: readVar('--accent-amber'), backgroundColor: 'rgba(245,158,11,0.15)', fill: false, tension: 0.3, pointRadius: 2, borderWidth: 2 },
+                { label: 'Internet (% pop.)', data: accLabels.map(y => intByYear.get(y)), borderColor: readVar('--accent-2'), backgroundColor: 'rgba(99,102,241,0.15)', fill: false, tension: 0.3, pointRadius: 2, borderWidth: 2 }
+            ],
+            accLabels, fmt.percent);
+    } else {
+        showEmpty('chartAccess');
+    }
+
+    // Infrastructure (vertical bar — hardcoded budget data)
+    makeBar('chartInfra', INFRA_SPENDING.labels, INFRA_SPENDING.values, readVar('--accent-2'), v => '₹' + v.toFixed(2) + 'T', { label: 'Capex (₹ trillion)' });
+
+    // State HDI (horizontal bar — hardcoded UNDP)
+    makeBar('chartHdi', STATE_HDI.states, STATE_HDI.values, readVar('--accent'), v => v.toFixed(3), { label: 'HDI', horizontal: true, maxBarThickness: 22 });
+
+    // CO2 (line)
+    makeLine('chartCo2',
+        [{ label: 'CO₂ per capita (t)', data: data.co2.map(d => d.value), borderColor: readVar('--accent-red'), backgroundColor: 'rgba(239,68,68,0.15)', fill: true, tension: 0.3, pointRadius: 2, borderWidth: 2 }],
+        data.co2.map(d => d.year), fmt.decimal2);
+
+    // Unemployment (line)
+    makeLine('chartUnemp',
+        [{ label: 'Unemployment', data: data.unemployment.map(d => d.value), borderColor: readVar('--accent-violet'), backgroundColor: 'rgba(167,139,250,0.15)', fill: true, tension: 0.3, pointRadius: 2, borderWidth: 2 }],
+        data.unemployment.map(d => d.year), fmt.percent);
+
+    renderInsights(data);
+    document.getElementById('rangeBadge').innerHTML = `<iconify-icon icon="mdi:database-outline" aria-hidden="true"></iconify-icon> World Bank Open Data · ${state.startYear}–${state.endYear}`;
+}
+
+// ─── Export (CSV / PNG) ─────────────────────────────────────────────────
+function chartCSV(id) {
+    const ch = chartRegistry[id];
+    if (!ch) return null;
+    const labels = ch.data.labels;
+    const sets = ch.data.datasets;
+    const head = ['label'].concat(sets.map(s => s.label || 'value'));
+    const rows = labels.map((lab, i) => [lab].concat(sets.map(s => s.data[i] != null ? s.data[i] : '')));
+    return [head.join(',')].concat(rows.map(r => r.join(','))).join('\n');
+}
+function downloadCSV(id, name) {
+    const csv = chartCSV(id);
+    if (!csv) return;
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+    triggerDownload(URL.createObjectURL(blob), name + '_' + state.startYear + '-' + state.endYear + '.csv');
+    showToast('CSV downloaded');
+}
+function downloadPNG(id, name) {
+    const ch = chartRegistry[id];
+    if (!ch) return;
+    const bg = readVar('--surface');
+    const src = ch.canvas;
+    const off = document.createElement('canvas');
+    off.width = src.width; off.height = src.height;
+    const ctx = off.getContext('2d');
+    ctx.fillStyle = bg || '#1c1c22';
+    ctx.fillRect(0, 0, off.width, off.height);
+    ctx.drawImage(src, 0, 0);
+    triggerDownload(off.toDataURL('image/png'), name + '_' + state.startYear + '-' + state.endYear + '.png');
+    showToast('PNG downloaded');
+}
+function triggerDownload(href, filename) {
+    const a = document.createElement('a');
+    a.href = href; a.download = filename;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    if (href.startsWith('blob:')) setTimeout(() => URL.revokeObjectURL(href), 1000);
+}
+
+// ─── UI helpers ─────────────────────────────────────────────────────────
+let toastTimer;
+function showToast(msg) {
+    const el = document.getElementById('toast');
+    el.textContent = msg; el.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove('show'), 1800);
+}
+
+function applyTheme(theme) {
+    state.theme = theme;
+    document.documentElement.setAttribute('data-theme', theme);
+    try { localStorage.setItem('idi.theme', theme); } catch (_) {}
+    if (state.data) renderAll(state.data);
+    writeStateToURL();
+}
+
+function populateYearSelect(id, selected) {
+    const sel = document.getElementById(id);
+    sel.innerHTML = '';
+    for (let y = MAX_YEAR; y >= MIN_YEAR; y--) {
+        const o = document.createElement('option');
+        o.value = y; o.textContent = y;
+        if (y === selected) o.selected = true;
+        sel.appendChild(o);
+    }
+}
+
+function setLoading(on) {
+    document.getElementById('loadingState').style.display = on ? 'block' : 'none';
+    if (on) document.getElementById('errorMsg').style.display = 'none';
+}
+function setError(on) {
+    document.getElementById('errorMsg').style.display = on ? 'block' : 'none';
+    document.getElementById('loadingState').style.display = 'none';
+    if (on) document.getElementById('dashboardContent').style.display = 'none';
+}
+
+// ─── Mobile menu / dropdowns ────────────────────────────────────────────
+function toggleDropdown(btn) {
+    if (window.innerWidth > 880) return;
+    const li = btn.closest('.has-dropdown');
+    if (!li) return;
+    const open = li.classList.toggle('open');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+document.addEventListener('click', e => {
+    if (!e.target.closest('.im-header')) document.querySelectorAll('.has-dropdown.open').forEach(li => li.classList.remove('open'));
+});
+
+// ─── Orchestration ──────────────────────────────────────────────────────
+async function loadAndRender() {
+    setLoading(true);
+    try {
+        state.data = await loadAll(state.startYear, state.endYear);
+        renderAll(state.data);
+        document.getElementById('dashboardContent').style.display = 'block';
+        setLoading(false);
+        writeStateToURL();
+    } catch (err) {
+        console.error('Load failed:', err);
+        setError(true);
+    }
+}
+
+function wireEvents() {
+    document.getElementById('themeToggle').addEventListener('click', () => applyTheme(state.theme === 'dark' ? 'light' : 'dark'));
+
+    document.getElementById('startYear').addEventListener('change', e => {
+        state.startYear = parseInt(e.target.value, 10);
+        if (state.endYear < state.startYear) { state.endYear = state.startYear; populateYearSelect('endYear', state.endYear); }
+        loadAndRender();
+    });
+    document.getElementById('endYear').addEventListener('change', e => {
+        state.endYear = parseInt(e.target.value, 10);
+        if (state.endYear < state.startYear) { state.startYear = state.endYear; populateYearSelect('startYear', state.startYear); }
+        loadAndRender();
+    });
+
+    document.getElementById('retryBtn').addEventListener('click', loadAndRender);
+    document.getElementById('printBtn').addEventListener('click', () => window.print());
+
+    document.getElementById('copyLink').addEventListener('click', async () => {
+        writeStateToURL();
+        try { await navigator.clipboard.writeText(window.location.href); showToast('Link copied'); }
+        catch (_) { showToast(window.location.href); }
+    });
+
+    document.querySelectorAll('.chart-actions').forEach(grp => {
+        const id = grp.dataset.chart, name = grp.dataset.name;
+        const csv = grp.querySelector('.dl-csv'), png = grp.querySelector('.dl-png');
+        if (csv) csv.addEventListener('click', () => downloadCSV(id, name));
+        if (png) png.addEventListener('click', () => downloadPNG(id, name));
+    });
+
+    document.getElementById('mobileMenuToggle').addEventListener('click', e => {
+        const nav = document.getElementById('navLinks');
+        const open = nav.classList.toggle('open');
+        e.currentTarget.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+
+    // Respect device theme changes if user hasn't set a manual preference
+    if (window.matchMedia) {
+        window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', e => {
+            try {
+                if (!localStorage.getItem('idi.theme')) applyTheme(e.matches ? 'light' : 'dark');
+            } catch (_) {}
+        });
+    }
+}
+
+// ─── Init ───────────────────────────────────────────────────────────────
+function init() {
+    document.getElementById('copyrightYear').textContent = new Date().getFullYear();
+    readStateFromURL();
+    document.documentElement.setAttribute('data-theme', state.theme);
+    populateYearSelect('startYear', state.startYear);
+    populateYearSelect('endYear', state.endYear);
+    renderTimeline();
+    wireEvents();
+    loadAndRender();
+}
+init();
+</script>
+</body>
+</html>
