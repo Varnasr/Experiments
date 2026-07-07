@@ -240,7 +240,7 @@ This dashboard renders interactive charts with JavaScript. Please enable JavaScr
 <section class="hero">
     <h1>India <span>Climate Emissions</span></h1>
     <p>Greenhouse-gas emissions across India — sourced live from <a href="https://climatetrace.org" target="_blank" rel="noopener">Climate TRACE</a>'s satellite-verified, facility-level inventory. Multi-year totals, gas composition, and the country's biggest emitting plants.</p>
-    <div class="badge"><iconify-icon icon="mdi:satellite-variant"></iconify-icon> Climate TRACE API v6 · 2020–2024</div>
+    <div class="badge"><iconify-icon icon="mdi:satellite-variant" aria-hidden="true"></iconify-icon> Climate TRACE API v6 · <span id="badgeRange">latest inventory</span></div>
 </section>
 
 <main>
@@ -257,7 +257,7 @@ This dashboard renders interactive charts with JavaScript. Please enable JavaScr
 
 <div id="dashboardContent" style="display:none">
 
-<div class="section-title"><iconify-icon icon="mdi:view-dashboard-outline"></iconify-icon>Headline (<span id="latestYearLabel">2024</span>)</div>
+<div class="section-title"><iconify-icon icon="mdi:view-dashboard-outline"></iconify-icon>Headline (<span id="latestYearLabel"></span>)</div>
 <div class="kpi-grid" id="kpiGrid"></div>
 
 <div class="section-title"><iconify-icon icon="mdi:chart-line"></iconify-icon>Multi-Year Trend</div>
@@ -267,7 +267,7 @@ This dashboard renders interactive charts with JavaScript. Please enable JavaScr
             <h3><iconify-icon icon="mdi:trending-up"></iconify-icon> Total CO₂e &amp; CO₂ (Bt, 100-yr GWP)</h3>
             <div class="chart-actions" data-chart="chartTrend" data-name="emissions-trend"><button class="dl-csv">CSV</button><button class="dl-png">PNG</button></div>
         </div>
-        <div class="chart-wrap"><canvas id="chartTrend"></canvas></div>
+        <div class="chart-wrap" data-alt="Line chart of India's total CO₂-equivalent and CO₂ emissions in billion tonnes across recent years, from Climate TRACE."><canvas id="chartTrend" role="img" aria-label="Line chart of India's total CO₂-equivalent and CO₂ emissions in billion tonnes across recent years, from Climate TRACE."></canvas></div>
     </div>
 </div>
 
@@ -278,14 +278,14 @@ This dashboard renders interactive charts with JavaScript. Please enable JavaScr
             <h3><iconify-icon icon="mdi:chart-donut"></iconify-icon> Share by gas (latest year, in CO₂e)</h3>
             <div class="chart-actions" data-chart="chartGas" data-name="gas-share"><button class="dl-csv">CSV</button><button class="dl-png">PNG</button></div>
         </div>
-        <div class="chart-wrap"><canvas id="chartGas"></canvas></div>
+        <div class="chart-wrap" data-alt="Doughnut chart of India's latest-year emissions split into CO₂, methane and nitrous oxide, all expressed in CO₂-equivalent."><canvas id="chartGas" role="img" aria-label="Doughnut chart of India's latest-year emissions split into CO₂, methane and nitrous oxide, all expressed in CO₂-equivalent."></canvas></div>
     </div>
     <div class="chart-card">
         <div class="chart-card-head">
             <h3><iconify-icon icon="mdi:earth"></iconify-icon> India's share of world emissions</h3>
             <div class="chart-actions" data-chart="chartGlobal" data-name="india-vs-world"><button class="dl-csv">CSV</button><button class="dl-png">PNG</button></div>
         </div>
-        <div class="chart-wrap"><canvas id="chartGlobal"></canvas></div>
+        <div class="chart-wrap" data-alt="Bar chart of India's share of world emissions for CO₂, methane, nitrous oxide and total CO₂-equivalent, in percent."><canvas id="chartGlobal" role="img" aria-label="Bar chart of India's share of world emissions for CO₂, methane, nitrous oxide and total CO₂-equivalent, in percent."></canvas></div>
     </div>
 </div>
 
@@ -296,14 +296,14 @@ This dashboard renders interactive charts with JavaScript. Please enable JavaScr
             <h3><iconify-icon icon="mdi:lightning-bolt"></iconify-icon> Top 10 power plants</h3>
             <div class="chart-actions" data-chart="chartPower" data-name="top-power-plants"><button class="dl-csv">CSV</button><button class="dl-png">PNG</button></div>
         </div>
-        <div class="chart-wrap tall"><canvas id="chartPower"></canvas></div>
+        <div class="chart-wrap tall" data-alt="Horizontal bar chart of India's top 10 power plants ranked by CO₂-equivalent emissions."><canvas id="chartPower" role="img" aria-label="Horizontal bar chart of India's top 10 power plants ranked by CO₂-equivalent emissions."></canvas></div>
     </div>
     <div class="chart-card span-2">
         <div class="chart-card-head">
             <h3><iconify-icon icon="mdi:hammer-wrench"></iconify-icon> Top 10 steel plants</h3>
             <div class="chart-actions" data-chart="chartSteel" data-name="top-steel-plants"><button class="dl-csv">CSV</button><button class="dl-png">PNG</button></div>
         </div>
-        <div class="chart-wrap tall"><canvas id="chartSteel"></canvas></div>
+        <div class="chart-wrap tall" data-alt="Horizontal bar chart of India's top 10 iron-and-steel plants ranked by CO₂-equivalent emissions."><canvas id="chartSteel" role="img" aria-label="Horizontal bar chart of India's top 10 iron-and-steel plants ranked by CO₂-equivalent emissions."></canvas></div>
     </div>
 </div>
 
@@ -314,7 +314,7 @@ This dashboard renders interactive charts with JavaScript. Please enable JavaScr
 </main>
 
 <footer class="im-footer">
-    <iconify-icon icon="mdi:airplane"></iconify-icon>
+    <iconify-icon icon="mdi:earth" aria-hidden="true"></iconify-icon>
     <span>An ImpactMojo Project</span>
     <span class="sep">|</span>
     <span>&copy; <span id="copyrightYear"></span> <a href="https://www.impactmojo.in" target="_blank" rel="noopener">ImpactMojo</a></span>
@@ -328,8 +328,11 @@ This dashboard renders interactive charts with JavaScript. Please enable JavaScr
 
 <script>
 const API = 'https://api.climatetrace.org/v6';
-const YEARS = [2020, 2021, 2022, 2023, 2024];
-const LATEST = 2024;
+// Rolling window: Climate TRACE publishes annual inventories with a ~1-year lag,
+// so the previous calendar year is the newest complete year available. This keeps
+// the dashboard current automatically instead of freezing on a hardcoded year.
+const LATEST = new Date().getFullYear() - 1;
+const YEARS = Array.from({ length: 6 }, (_, i) => LATEST - 5 + i);
 const FETCH_TIMEOUT_MS = 15000;
 const CACHE_PREFIX = 'ct:v1:';
 const CACHE_TTL_MS = 60 * 60 * 1000;
@@ -376,16 +379,31 @@ async function fetchYearTotals() {
 }
 function zero() { return { co2: 0, ch4: 0, n2o: 0, co2e_100yr: 0, co2e_20yr: 0, world: null, rank: null }; }
 
-async function fetchTopAssets(sector, limit) {
-    const url = `${API}/assets?countries=IND&sectors=${sector}&limit=${limit}&sortBy=co2e_100yr&sortOrder=desc&since=${LATEST}&to=${LATEST}`;
+async function fetchTopAssets(subsector, limit) {
+    // Use `subsectors` (not `sectors`): the v6 assets endpoint ignores the coarse
+    // `sectors` filter and leaks other subsectors into the result. Fetch a generous
+    // pool then sort/slice client-side — the endpoint doesn't reliably honour
+    // sortBy/sortOrder, so we rank by emissions ourselves.
+    const url = `${API}/assets?countries=IND&subsectors=${subsector}&limit=${limit * 6}&sortBy=co2e_100yr&sortOrder=desc&since=${LATEST}&to=${LATEST}`;
     try {
         const json = await fetchJSON(url);
         const list = Array.isArray(json) ? json : (json.assets || json.data || []);
-        return list.map(a => ({
-            name: a.Name || a.name || 'Unnamed',
-            co2e: (a.Emissions && (a.Emissions.co2e_100yr || a.Emissions.co2)) || a.co2e_100yr || a.co2e || 0,
-            owner: a.Owner || a.owner || ''
-        })).filter(a => a.co2e);
+        return list.map(a => {
+            // v6 assets shape: emissions live in EmissionsSummary[{Gas, EmissionsQuantity}] (tonnes).
+            const es = Array.isArray(a.EmissionsSummary) ? a.EmissionsSummary : [];
+            const row = es.find(e => e.Gas === 'co2e_100yr') || es[0] || {};
+            let co2e = row.EmissionsQuantity ?? a.co2e_100yr ?? a.co2e ?? 0;
+            co2e = typeof co2e === 'number' ? co2e : (parseFloat(co2e) || 0);
+            const owner = (Array.isArray(a.Owners) && a.Owners[0] && a.Owners[0].CompanyName) || a.Owner || a.owner || '';
+            return {
+                name: a.Name || a.name || 'Unnamed',
+                co2e,
+                owner,
+                assetType: a.AssetType || a.Sector || ''
+            };
+        }).filter(a => a.co2e > 0)
+          .sort((x, y) => y.co2e - x.co2e)
+          .slice(0, limit);
     } catch (_) { return []; }
 }
 
@@ -394,7 +412,10 @@ function ensureCanvas(id) {
     const card = document.querySelector('[data-chart="' + id + '"]')?.closest('.chart-card');
     const wrap = card?.querySelector('.chart-wrap');
     if (!wrap) return null;
-    if (!document.getElementById(id)) wrap.innerHTML = '<canvas id="' + id + '"></canvas>';
+    if (!document.getElementById(id)) {
+        const alt = (wrap.getAttribute('data-alt') || '').replace(/"/g, '&quot;');
+        wrap.innerHTML = '<canvas id="' + id + '" role="img" aria-label="' + alt + '"></canvas>';
+    }
     return document.getElementById(id);
 }
 function setActionsEnabled(id, on) {
@@ -483,25 +504,42 @@ function renderKPIs(d) {
     document.getElementById('latestYearLabel').textContent = latest.year;
 }
 
+// Split a year's total CO₂e (100-yr) into CO₂ / CH₄ / N₂O components that SUM to the
+// reported total. CO₂ maps 1:1 (GWP=1); the remainder is apportioned between CH₄ and
+// N₂O by their AR6 GWP-100-weighted masses (~29.8 CH₄, ~273 N₂O). This keeps the gas
+// doughnut and the methane-share insight consistent with the headline KPI.
+function gasCo2e(latest) {
+    const co2 = latest.co2 || 0;
+    const rem = Math.max(0, (latest.co2e_100yr || 0) - co2);
+    const ch4w = (latest.ch4 || 0) * 29.8, n2ow = (latest.n2o || 0) * 273;
+    const wsum = ch4w + n2ow || 1;
+    return { co2, ch4: rem * ch4w / wsum, n2o: rem * n2ow / wsum };
+}
+
 function renderInsights(d) {
     const out = [];
-    const totals = d.totals;
-    if (totals.length >= 2) {
-        const a = totals[0], b = totals[totals.length - 1];
-        const pct = ((b.co2e_100yr / a.co2e_100yr - 1) * 100).toFixed(0);
-        out.push(`<strong>Total CO₂e</strong> rose ${pct}% from ${a.year} (${fmt.bt(a.co2e_100yr)}) to ${b.year} (${fmt.bt(b.co2e_100yr)}). India's emissions trajectory remains structural — driven by power, industry and transport scaling with the economy.`);
+    // Only compare years that actually returned data — a failed fetch yields 0 and
+    // would otherwise produce "rose Infinity%" or spurious swings.
+    const nz = d.totals.filter(t => t.co2e_100yr > 0);
+    if (nz.length >= 2) {
+        const a = nz[0], b = nz[nz.length - 1];
+        const change = (b.co2e_100yr / a.co2e_100yr - 1) * 100;
+        const verb = change >= 0 ? 'rose' : 'fell';
+        out.push(`<strong>Total CO₂e</strong> ${verb} ${Math.abs(change).toFixed(0)}% from ${a.year} (${fmt.bt(a.co2e_100yr)}) to ${b.year} (${fmt.bt(b.co2e_100yr)}). India's emissions trajectory remains structural — driven by power, industry and transport scaling with the economy.`);
     }
-    const latest = totals[totals.length - 1];
+    const latest = nz.length ? nz[nz.length - 1] : d.totals[d.totals.length - 1];
     if (latest.world?.co2e_100yr) {
         const sharePct = ((latest.co2e_100yr / latest.world.co2e_100yr) * 100).toFixed(1);
-        out.push(`<strong>India contributes ${sharePct}%</strong> of global GHG emissions in ${latest.year} — ranked #${latest.rank} after China and the United States. Per-capita emissions remain well below the OECD average despite the absolute total.`);
+        const rankTxt = latest.rank ? `, the world's #${latest.rank} emitter by total CO₂e` : '';
+        out.push(`<strong>India contributes ${sharePct}%</strong> of global GHG emissions in ${latest.year}${rankTxt}. Per-capita emissions remain well below the OECD average despite the absolute total.`);
     }
     if (latest.co2 && latest.ch4) {
-        const ch4Co2eShare = ((latest.ch4 * 28) / latest.co2e_100yr * 100).toFixed(0);
-        out.push(`<strong>Methane is significant</strong> — at the 100-yr GWP factor, CH₄ accounts for roughly ${ch4Co2eShare}% of India's CO₂e total, reflecting a large agriculture and waste footprint.`);
+        const ch4Co2eShare = (gasCo2e(latest).ch4 / latest.co2e_100yr * 100).toFixed(0);
+        out.push(`<strong>Methane is significant</strong> — on a 100-yr GWP basis, CH₄ accounts for roughly ${ch4Co2eShare}% of India's CO₂e total, reflecting a large agriculture and waste footprint.`);
     }
     if (d.power.length) {
-        out.push(`<strong>Power dominates</strong> the largest-emitter list — ${d.power.length} of the top ranked are coal-fired thermal plants, mostly state-owned NTPC and ULTRA-MEGA projects.`);
+        const coal = d.power.filter(a => /coal/i.test(a.assetType)).length;
+        out.push(`<strong>Power dominates</strong> the largest-emitter list — ${coal} of the top ${d.power.length} are coal-fired thermal plants, many operated by NTPC and other state utilities.`);
     }
     document.getElementById('insightsGrid').innerHTML = out.length ? out.map(t => `<div class="insight">${t}</div>`).join('') : '<div class="insight">Insights unavailable.</div>';
 }
@@ -517,11 +555,10 @@ function renderAll(d) {
         ], labels, fmt.bt);
 
     const latest = d.totals[d.totals.length - 1];
-    const ch4Co2e = latest.ch4 * 28;
-    const n2oCo2e = latest.n2o * 265;
+    const gas = gasCo2e(latest);
     makeDoughnut('chartGas',
         ['CO₂', 'CH₄ (in CO₂e)', 'N₂O (in CO₂e)'],
-        [latest.co2, ch4Co2e, n2oCo2e],
+        [gas.co2, gas.ch4, gas.n2o],
         [readVar('--accent-2'), readVar('--accent-amber'), readVar('--accent-purple')],
         v => fmt.bt(v));
 
@@ -620,8 +657,8 @@ async function load() {
     try {
         const [totals, power, steel] = await Promise.all([
             fetchYearTotals(),
-            fetchTopAssets('power', 10),
-            fetchTopAssets('manufacturing-steel', 10)
+            fetchTopAssets('electricity-generation', 10),
+            fetchTopAssets('iron-and-steel', 10)
         ]);
         state.data = { totals, power, steel };
         renderAll(state.data);
@@ -636,6 +673,8 @@ async function load() {
 
 function init() {
     document.getElementById('copyrightYear').textContent = new Date().getFullYear();
+    const badge = document.getElementById('badgeRange');
+    if (badge) badge.textContent = YEARS[0] + '–' + LATEST;
     state.theme = resolveTheme();
     document.documentElement.setAttribute('data-theme', state.theme);
 

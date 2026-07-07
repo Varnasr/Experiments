@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Adani Group Infrastructure Database (2001-2025)</title>
+    <title>Adani Group Infrastructure Database (2000-2025)</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -386,10 +386,10 @@
 </head>
 <body>
     <div class="top-bar">
-        <div class="logo-section">
+        <a href="index.html" class="logo-section" style="text-decoration:none" title="Back to database hub">
             <div class="logo-icon">A</div>
             <div class="logo-text">Adani <span>Infra DB</span></div>
-        </div>
+        </a>
         <button class="info-btn" onclick="showDisclaimer()">ℹ️</button>
     </div>
     
@@ -434,7 +434,7 @@
                             <button class="timeline-btn reset-btn" id="resetBtn">↺</button>
                         </div>
                     </div>
-                    <input type="range" id="yearSlider" min="2001" max="2025" value="2025">
+                    <input type="range" id="yearSlider" min="2000" max="2025" value="2025">
                 </div>
             </div>
             
@@ -466,7 +466,7 @@
         <div class="modal-box">
             <div class="modal-header">
                 <h2>Adani Infrastructure Database</h2>
-                <p>325 Projects · 48 Locations · 2001-2025</p>
+                <p>325 Projects · 48 Locations · 2000-2025</p>
             </div>
             <div class="modal-body">
                 <div class="highlight-stat">
@@ -652,7 +652,7 @@
                 this.textContent = '▶ Play';
                 playing = false;
             } else {
-                currentYear = 2001;
+                currentYear = 2000;
                 document.getElementById('yearSlider').value = currentYear;
                 this.textContent = '⏸ Pause';
                 playing = true;
