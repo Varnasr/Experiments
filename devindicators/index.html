@@ -404,7 +404,7 @@ This dashboard renders interactive charts with JavaScript. Please enable JavaScr
         <ul class="nav-links" id="navLinks">
             <li><a href="https://www.impactmojo.in" target="_blank" rel="noopener">Home</a></li>
             <li class="has-dropdown">
-                <button class="nav-trigger" type="button" onclick="toggleDropdown(this)" aria-expanded="false">Showcase <iconify-icon icon="mdi:chevron-down"></iconify-icon></button>
+                <button class="nav-trigger" type="button" onclick="toggleDropdown(this)" aria-expanded="false">Showcase <iconify-icon icon="mdi:chevron-down" aria-hidden="true"></iconify-icon></button>
                 <ul class="dropdown-menu">
                     <li><a href="https://www.impactmojo.in/live-projects.html" target="_blank" rel="noopener">All Live Projects</a></li>
                     <li><a href="https://sdgtracker.impactmojo.in" target="_blank" rel="noopener">SDG Tracker</a></li>
@@ -412,10 +412,6 @@ This dashboard renders interactive charts with JavaScript. Please enable JavaScr
                     <li><a href="https://industrygroups.impactmojo.in" target="_blank" rel="noopener">Industry Groups</a></li>
                     <li><a href="https://howindialives.impactmojo.in" target="_blank" rel="noopener">How India Lives</a></li>
                 </ul>
-            </li>
-            <li><a href="https://www.impactmojo.in/blog.html" target="_blank" rel="noopener">Blog</a></li>
-            <li><a href="https://www.impactmojo.in/podcast.html" target="_blank" rel="noopener">Podcast</a></li>
-        </ul>
             </li>
             <li class="has-dropdown">
                 <button class="nav-trigger" type="button" onclick="toggleDropdown(this)" aria-expanded="false">Specials
@@ -471,7 +467,7 @@ This dashboard renders interactive charts with JavaScript. Please enable JavaScr
 <section class="hero">
     <h1>India <span>Development Indicators</span></h1>
     <p>Tracking India's progress across economic growth, health, education, infrastructure and digital access — with live data from the World Bank Open Data API.</p>
-    <div class="badge" id="rangeBadge"><iconify-icon icon="mdi:database-outline" aria-hidden="true"></iconify-icon> World Bank Open Data · 2000–2024</div>
+    <div class="badge" id="rangeBadge"><iconify-icon icon="mdi:database-outline" aria-hidden="true"></iconify-icon> World Bank Open Data · 2000–present</div>
 </section>
 
 <main>
@@ -513,21 +509,21 @@ This dashboard renders interactive charts with JavaScript. Please enable JavaScr
             <h3><iconify-icon icon="mdi:trending-up"></iconify-icon> GDP Growth Rate (annual %)</h3>
             <div class="chart-actions" data-chart="chartGdpGrowth" data-name="gdp-growth"><button class="dl-csv" type="button">CSV</button><button class="dl-png" type="button">PNG</button></div>
         </div>
-        <div class="chart-wrap"><canvas id="chartGdpGrowth"></canvas></div>
+        <div class="chart-wrap" data-alt="Line chart of India's annual GDP growth rate, in percent, over the selected years, from live World Bank data."><canvas id="chartGdpGrowth" role="img" aria-label="Line chart of India's annual GDP growth rate, in percent, over the selected years, from live World Bank data."></canvas></div>
     </div>
     <div class="chart-card">
         <div class="chart-card-head">
             <h3><iconify-icon icon="mdi:cash-multiple"></iconify-icon> GDP per Capita (current USD)</h3>
             <div class="chart-actions" data-chart="chartGdpPc" data-name="gdp-per-capita"><button class="dl-csv" type="button">CSV</button><button class="dl-png" type="button">PNG</button></div>
         </div>
-        <div class="chart-wrap"><canvas id="chartGdpPc"></canvas></div>
+        <div class="chart-wrap" data-alt="Line chart of India's GDP per capita in current US dollars over the selected years, from live World Bank data."><canvas id="chartGdpPc" role="img" aria-label="Line chart of India's GDP per capita in current US dollars over the selected years, from live World Bank data."></canvas></div>
     </div>
     <div class="chart-card">
         <div class="chart-card-head">
             <h3><iconify-icon icon="mdi:chart-donut"></iconify-icon> Sector Contribution to GDP</h3>
             <div class="chart-actions" data-chart="chartSector" data-name="sector-share"><button class="dl-csv" type="button">CSV</button><button class="dl-png" type="button">PNG</button></div>
         </div>
-        <div class="chart-wrap"><canvas id="chartSector"></canvas></div>
+        <div class="chart-wrap" data-alt="Doughnut chart showing agriculture, industry and services shares of India's GDP for the latest available year."><canvas id="chartSector" role="img" aria-label="Doughnut chart showing agriculture, industry and services shares of India's GDP for the latest available year."></canvas></div>
     </div>
 </div>
 
@@ -539,14 +535,14 @@ This dashboard renders interactive charts with JavaScript. Please enable JavaScr
             <h3><iconify-icon icon="mdi:human-male-female-child"></iconify-icon> Life Expectancy &amp; Infant Mortality</h3>
             <div class="chart-actions" data-chart="chartHealth" data-name="health"><button class="dl-csv" type="button">CSV</button><button class="dl-png" type="button">PNG</button></div>
         </div>
-        <div class="chart-wrap"><canvas id="chartHealth"></canvas></div>
+        <div class="chart-wrap" data-alt="Multi-line chart of India's life expectancy and infant mortality rate over the selected years."><canvas id="chartHealth" role="img" aria-label="Multi-line chart of India's life expectancy and infant mortality rate over the selected years."></canvas></div>
     </div>
     <div class="chart-card">
         <div class="chart-card-head">
             <h3><iconify-icon icon="mdi:book-open-variant"></iconify-icon> Adult Literacy Rate (%)</h3>
             <div class="chart-actions" data-chart="chartLiteracy" data-name="literacy"><button class="dl-csv" type="button">CSV</button><button class="dl-png" type="button">PNG</button></div>
         </div>
-        <div class="chart-wrap"><canvas id="chartLiteracy"></canvas></div>
+        <div class="chart-wrap" data-alt="Line chart of India's adult literacy rate, in percent, over the selected years."><canvas id="chartLiteracy" role="img" aria-label="Line chart of India's adult literacy rate, in percent, over the selected years."></canvas></div>
     </div>
 </div>
 
@@ -558,14 +554,14 @@ This dashboard renders interactive charts with JavaScript. Please enable JavaScr
             <h3><iconify-icon icon="mdi:lightning-bolt"></iconify-icon> Electricity &amp; Internet Access</h3>
             <div class="chart-actions" data-chart="chartAccess" data-name="access"><button class="dl-csv" type="button">CSV</button><button class="dl-png" type="button">PNG</button></div>
         </div>
-        <div class="chart-wrap"><canvas id="chartAccess"></canvas></div>
+        <div class="chart-wrap" data-alt="Multi-line chart of the share of India's population with electricity access and with internet access over the selected years."><canvas id="chartAccess" role="img" aria-label="Multi-line chart of the share of India's population with electricity access and with internet access over the selected years."></canvas></div>
     </div>
     <div class="chart-card">
         <div class="chart-card-head">
             <h3><iconify-icon icon="mdi:office-building-outline"></iconify-icon> Capital Infrastructure Spending (Union Budget 2024-25, ₹ trillion)</h3>
             <div class="chart-actions" data-chart="chartInfra" data-name="infra-spending"><button class="dl-csv" type="button">CSV</button><button class="dl-png" type="button">PNG</button></div>
         </div>
-        <div class="chart-wrap"><canvas id="chartInfra"></canvas></div>
+        <div class="chart-wrap" data-alt="Bar chart of India's capital infrastructure spending by sector from the Union Budget 2024-25, in rupees trillion."><canvas id="chartInfra" role="img" aria-label="Bar chart of India's capital infrastructure spending by sector from the Union Budget 2024-25, in rupees trillion."></canvas></div>
     </div>
 </div>
 
@@ -577,7 +573,7 @@ This dashboard renders interactive charts with JavaScript. Please enable JavaScr
             <h3><iconify-icon icon="mdi:medal-outline"></iconify-icon> Top 10 Indian States &amp; UTs by HDI</h3>
             <div class="chart-actions" data-chart="chartHdi" data-name="state-hdi"><button class="dl-csv" type="button">CSV</button><button class="dl-png" type="button">PNG</button></div>
         </div>
-        <div class="chart-wrap tall"><canvas id="chartHdi"></canvas></div>
+        <div class="chart-wrap tall" data-alt="Horizontal bar chart ranking the top 10 Indian states and union territories by Human Development Index."><canvas id="chartHdi" role="img" aria-label="Horizontal bar chart ranking the top 10 Indian states and union territories by Human Development Index."></canvas></div>
     </div>
 </div>
 
@@ -589,14 +585,14 @@ This dashboard renders interactive charts with JavaScript. Please enable JavaScr
             <h3><iconify-icon icon="mdi:molecule-co2"></iconify-icon> CO₂ Emissions per Capita (metric tons)</h3>
             <div class="chart-actions" data-chart="chartCo2" data-name="co2"><button class="dl-csv" type="button">CSV</button><button class="dl-png" type="button">PNG</button></div>
         </div>
-        <div class="chart-wrap"><canvas id="chartCo2"></canvas></div>
+        <div class="chart-wrap" data-alt="Line chart of India's carbon-dioxide emissions per capita, in metric tons, over the selected years."><canvas id="chartCo2" role="img" aria-label="Line chart of India's carbon-dioxide emissions per capita, in metric tons, over the selected years."></canvas></div>
     </div>
     <div class="chart-card">
         <div class="chart-card-head">
             <h3><iconify-icon icon="mdi:account-multiple-outline"></iconify-icon> Unemployment Rate (%)</h3>
             <div class="chart-actions" data-chart="chartUnemp" data-name="unemployment"><button class="dl-csv" type="button">CSV</button><button class="dl-png" type="button">PNG</button></div>
         </div>
-        <div class="chart-wrap"><canvas id="chartUnemp"></canvas></div>
+        <div class="chart-wrap" data-alt="Line chart of India's unemployment rate, in percent, over the selected years."><canvas id="chartUnemp" role="img" aria-label="Line chart of India's unemployment rate, in percent, over the selected years."></canvas></div>
     </div>
 </div>
 
@@ -605,7 +601,7 @@ This dashboard renders interactive charts with JavaScript. Please enable JavaScr
 <div class="insights" id="insightsGrid"></div>
 
 <!-- ── Policy Timeline ──────────────────────────────────────── -->
-<div class="section-title"><iconify-icon icon="mdi:timeline-outline"></iconify-icon>Development Policy Timeline<small>Major initiatives, 2014–2024</small></div>
+<div class="section-title"><iconify-icon icon="mdi:timeline-outline"></iconify-icon>Development Policy Timeline<small>Major initiatives, 2014–2025</small></div>
 <div class="timeline" id="timeline"></div>
 
 </div><!-- /dashboardContent -->
@@ -634,7 +630,10 @@ const CACHE_PREFIX = 'idi:v2:';
 const MIN_YEAR = 1990;
 const MAX_YEAR = new Date().getFullYear();
 const DEFAULT_START = 2000;
-const DEFAULT_END = Math.min(MAX_YEAR, 2024);
+// Rolling default so the dashboard never freezes on a hardcoded year. World Bank
+// data lags ~1 year, so default to the previous calendar year; null trailing
+// years are dropped gracefully by the fetch layer.
+const DEFAULT_END = MAX_YEAR - 1;
 
 const INDICATORS = {
     gdpPc:        { code: 'NY.GDP.PCAP.CD',    label: 'GDP per Capita',         unit: '$' },
@@ -665,8 +664,8 @@ const STATE_HDI = {
     values: [0.782, 0.766, 0.760, 0.733, 0.725, 0.722, 0.720, 0.717, 0.711, 0.706]
 };
 
-// HDI for India (UNDP HDR 2023-24) — keeps as static KPI since no free API
-const NATIONAL_HDI = { value: 0.644, year: 2022, rank: '134/193' };
+// HDI for India (UNDP Human Development Report 2025, 2023 data) — static KPI, no free API
+const NATIONAL_HDI = { value: 0.685, year: 2023, rank: '130/193' };
 
 const TIMELINE = [
     { year: '2014', title: 'Make in India',                  desc: 'Flagship campaign to lift the manufacturing share of GDP and attract foreign investment across 25 priority sectors.' },
@@ -680,7 +679,8 @@ const TIMELINE = [
     { year: '2022', title: '5G Rollout',                     desc: 'India launched 5G services with one of the fastest national rollouts globally, targeting full geographic coverage.' },
     { year: '2023', title: 'Chandrayaan-3',                  desc: 'India became the first country to land near the lunar south pole — a milestone for the civil space programme.' },
     { year: '2023', title: 'UPI &gt; 10B txns/month',           desc: 'Unified Payments Interface cemented India as the global leader in real-time digital payments.' },
-    { year: '2024', title: 'Semiconductor Push',             desc: 'Approvals for multiple domestic chip-fabrication plants under the Semiconductor Mission.' }
+    { year: '2024', title: 'Semiconductor Push',             desc: 'Approvals for multiple domestic chip-fabrication plants under the Semiconductor Mission.' },
+    { year: '2025', title: 'Union Budget 2025-26',           desc: 'Record capital-expenditure outlay of ₹11.21 lakh crore (~3.1% of GDP), alongside a new-regime income-tax overhaul that made annual income up to ₹12 lakh effectively tax-free.' }
 ];
 
 const fmt = {
@@ -809,7 +809,10 @@ function ensureCanvas(id) {
     const card = document.querySelector('[data-chart="' + id + '"]')?.closest('.chart-card');
     const wrap = card ? card.querySelector('.chart-wrap') : null;
     if (!wrap) return null;
-    if (!document.getElementById(id)) wrap.innerHTML = '<canvas id="' + id + '"></canvas>';
+    if (!document.getElementById(id)) {
+        const alt = (wrap.getAttribute('data-alt') || '').replace(/"/g, '&quot;');
+        wrap.innerHTML = '<canvas id="' + id + '" role="img" aria-label="' + alt + '"></canvas>';
+    }
     return document.getElementById(id);
 }
 
