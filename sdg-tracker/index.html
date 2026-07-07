@@ -254,7 +254,7 @@ This dashboard renders interactive charts with JavaScript. Please enable JavaScr
             <h3><iconify-icon icon="mdi:vector-link"></iconify-icon> Sankey: Categories &rarr; Status</h3>
             <div class="chart-actions" data-chart="chartSankey" data-name="category-status-sankey"><button class="dl-png">PNG</button></div>
         </div>
-        <div class="chart-wrap tall"><canvas id="chartSankey"></canvas></div>
+        <div class="chart-wrap tall"><canvas id="chartSankey" role="img" aria-label="Sankey diagram flowing India's SDG goal categories (People, Prosperity, Planet, Peace, Partnership) into on-track, stagnating and off-track outcomes."></canvas></div>
     </div>
 </div>
 
@@ -265,14 +265,14 @@ This dashboard renders interactive charts with JavaScript. Please enable JavaScr
             <h3><iconify-icon icon="mdi:trending-up"></iconify-icon> SDG Index Score (2018–2024)</h3>
             <div class="chart-actions" data-chart="chartIndex" data-name="index-trend"><button class="dl-csv">CSV</button><button class="dl-png">PNG</button></div>
         </div>
-        <div class="chart-wrap"><canvas id="chartIndex"></canvas></div>
+        <div class="chart-wrap"><canvas id="chartIndex" role="img" aria-label="Line chart of India's composite SDG India Index score rising from 57 in 2018 to 71 in the 2023-24 edition."></canvas></div>
     </div>
     <div class="chart-card">
         <div class="chart-card-head">
             <h3><iconify-icon icon="mdi:sort-descending"></iconify-icon> Goals ranked by score</h3>
             <div class="chart-actions" data-chart="chartGoalRank" data-name="goal-ranking"><button class="dl-csv">CSV</button><button class="dl-png">PNG</button></div>
         </div>
-        <div class="chart-wrap tall"><canvas id="chartGoalRank"></canvas></div>
+        <div class="chart-wrap tall"><canvas id="chartGoalRank" role="img" aria-label="Horizontal bar chart ranking all 17 SDGs by India's score, from Affordable Energy (96) at the top to Gender Equality (49) at the bottom."></canvas></div>
     </div>
 </div>
 
@@ -282,19 +282,19 @@ This dashboard renders interactive charts with JavaScript. Please enable JavaScr
 </main>
 
 <footer class="im-footer">
-    <iconify-icon icon="mdi:airplane"></iconify-icon>
+    <iconify-icon icon="mdi:earth" aria-hidden="true"></iconify-icon>
     <span>An ImpactMojo Project</span>
     <span class="sep">|</span>
     <span>&copy; <span id="copyrightYear"></span> <a href="https://www.impactmojo.in" target="_blank" rel="noopener">ImpactMojo</a></span>
     <span class="sep">|</span>
-    <span>Source: <a href="https://www.niti.gov.in/sdg-india-index" target="_blank" rel="noopener">NITI Aayog SDG India Index</a> &middot; <a href="https://sdgindex.org" target="_blank" rel="noopener">UN SDR</a></span>
+    <span>Source: <a href="https://www.niti.gov.in/reports-sdg" target="_blank" rel="noopener">NITI Aayog SDG India Index 2023-24</a> &middot; <a href="https://sdgindex.org" target="_blank" rel="noopener">UN SDR</a></span>
     <span class="sep">|</span>
     <a href="https://www.impactmojo.in/live-projects.html" target="_blank" rel="noopener">More Live Projects</a>
 </footer>
 
 <script>
 const sdgData = [
-  { num: 1,  name: "No Poverty",                 score: 48, status: "off-track",   color: "#E5243B", icon: "mdi:home-outline" },
+  { num: 1,  name: "No Poverty",                 score: 72, status: "on-track",    color: "#E5243B", icon: "mdi:home-outline" },
   { num: 2,  name: "Zero Hunger",                score: 52, status: "off-track",   color: "#DDA63A", icon: "mdi:silverware-fork-knife" },
   { num: 3,  name: "Good Health",                score: 78, status: "on-track",    color: "#4C9F38", icon: "mdi:heart-outline" },
   { num: 4,  name: "Quality Education",          score: 61, status: "stagnating",  color: "#C5192D", icon: "mdi:school-outline" },
@@ -488,16 +488,16 @@ function renderInsights() {
     const total = yearlyIndex[yearlyIndex.length - 1].score;
     const start = yearlyIndex[0];
     const end = yearlyIndex[yearlyIndex.length - 1];
-    out.push(`<strong>India's SDG Index</strong> rose from ${start.score} (${start.year}) to ${end.score} (${end.year}) — an absolute gain of ${(end.score - start.score).toFixed(1)} points across 7 years of NITI Aayog measurement.`);
+    out.push(`<strong>India's SDG Index</strong> rose from ${start.score} (${start.year}) to ${end.score} (${end.year}) — an absolute gain of ${(end.score - start.score).toFixed(1)} points across ${yearlyIndex.length} editions of NITI Aayog measurement.`);
 
     const top = [...sdgData].sort((a, b) => b.score - a.score).slice(0, 3);
     out.push(`<strong>Strongest goals:</strong> ${top.map(g => `Goal ${g.num} (${g.name.replace(/&amp;/g,'&')}, ${g.score})`).join(', ')}. Energy access, sanitation and climate-action investments anchor the top of the table.`);
 
     const bottom = [...sdgData].sort((a, b) => a.score - b.score).slice(0, 3);
-    out.push(`<strong>Weakest goals:</strong> ${bottom.map(g => `Goal ${g.num} (${g.name.replace(/&amp;/g,'&')}, ${g.score})`).join(', ')}. Hunger, gender, partnerships and poverty remain India's most stubborn under-performers.`);
+    out.push(`<strong>Weakest goals:</strong> ${bottom.map(g => `Goal ${g.num} (${g.name.replace(/&amp;/g,'&')}, ${g.score})`).join(', ')}. Gender, hunger and partnerships remain India's most stubborn under-performers.`);
 
     const peopleOff = categories.find(c => c.name === 'People').goals.filter(n => sdgData[n - 1].status === 'off-track').length;
-    if (peopleOff >= 2) out.push(`<strong>People-cluster lag:</strong> ${peopleOff} of 5 goals in the People cluster (poverty, hunger, gender) are off-track — the social-sector gap remains the single biggest drag on India's SDG performance.`);
+    if (peopleOff >= 2) out.push(`<strong>People-cluster lag:</strong> ${peopleOff} of 5 goals in the People cluster (hunger, gender) are off-track — the social-sector gap remains a persistent drag on India's SDG performance.`);
 
     document.getElementById('insightsGrid').innerHTML = out.map(t => `<div class="insight">${t}</div>`).join('');
 }
