@@ -46,7 +46,49 @@
     }
 
     button, input, select { font: inherit; color: inherit; }
-    button { cursor: pointer; }
+    button { cursor: pointer; touch-action: manipulation; }
+
+    /* line-art illustrations (OpenMoji black) */
+    .li {
+      display: inline-block;
+      height: 1.55em; width: auto;
+      vertical-align: -0.34em;
+      margin: 0 .04em;
+    }
+
+    .li-big { height: 84px; vertical-align: middle; }
+
+    .q-prompt .li { height: 1.9em; vertical-align: -0.55em; }
+
+    .ghost-img { height: 130px; opacity: .3; }
+
+    .draw-box {
+      display: grid; place-items: center;
+      min-height: 120px; margin-top: 8px;
+      border: 2px dashed #a9bfce; border-radius: 14px;
+      color: #8aa2b3; font-weight: 800; font-size: .85rem;
+      background: #fbfdfe;
+    }
+
+    .trace-box {
+      margin-top: 6px; padding: 6px 10px 0;
+      border-radius: 12px; background: #fbfdfe;
+      border: 1px solid #e3ebf1;
+    }
+
+    .trace-text {
+      display: block;
+      font-size: 3.1rem; line-height: 1.25;
+      font-weight: 800; letter-spacing: .12em;
+      color: #c3cfda;
+      border-bottom: 2px solid #9fb4c4;
+      overflow-wrap: anywhere;
+    }
+
+    .write-line { height: 52px; border-bottom: 2px solid #c9d6e0; }
+    .write-line:last-child { border-bottom-color: #9fb4c4; }
+
+    .trace-hint { margin: 8px 0 0; font-size: .95rem; font-weight: 800; color: #486f87; }
 
     button:focus-visible, input:focus-visible, select:focus-visible {
       outline: 3px solid var(--ink);
@@ -423,6 +465,33 @@
       pointer-events: none;
     }
 
+    /* ---------- mobile ---------- */
+    @media (max-width: 640px) {
+      html { -webkit-text-size-adjust: 100%; }
+
+      .page-header { padding: 18px 0 12px; }
+      .page-header .subtitle { font-size: .88rem; }
+
+      .panel { padding: 16px; border-radius: 20px; }
+
+      /* 16px+ inputs stop iOS zoom-on-focus; 44px+ targets are comfortably tappable */
+      .field, .q-input, .meta input { font-size: 16px; }
+      .seg { min-height: 44px; font-size: .9rem; }
+      .btn-ghost, .btn-soft, .btn-check, .btn-save { min-height: 46px; }
+
+      .check-bar { padding: 12px; }
+      .check-bar .btn-check, .check-bar .btn-soft { width: 100%; justify-content: center; }
+      #score-line { flex-basis: 100%; text-align: center; }
+
+      .meta { flex: 1 1 100%; min-width: 0; }
+      .q-prompt { font-size: 1.18rem; }
+      .trace-text { font-size: 2.5rem; }
+      .stats-row { gap: 6px; }
+      .stat-tile .num { font-size: 1.25rem; }
+      .stat-tile .lbl { font-size: .58rem; }
+      .save-box .btn-save { width: 100%; justify-content: center; }
+    }
+
     /* ---------- print ---------- */
     @media print {
       body { background: #fff !important; background-image: none !important; }
@@ -574,6 +643,7 @@
           <footer class="sheet-foot">
             <span>Little steps make big learning 🌈</span>
             <span id="skill-note"></span>
+            <span class="no-print" style="flex-basis:100%;font-weight:600;font-size:.7rem;">Line drawings: <a href="https://openmoji.org" target="_blank" rel="noopener" style="color:inherit;">OpenMoji</a> (CC BY-SA 4.0)</span>
           </footer>
         </div>
       </article>
@@ -620,6 +690,39 @@
       let s = "";
       for (let i = 1; i <= n; i++) s += e + (i % 5 === 0 ? "  " : " ");
       return s.trim();
+    }
+
+    /* Render text with emoji swapped for OpenMoji black line drawings.
+       Falls back to the plain emoji character (img alt) if the CDN is unreachable. */
+    const OMOJI_CDN = "https://cdn.jsdelivr.net/npm/openmoji@15.1.0/black/svg/";
+    const EMOJI_RE = /\p{Extended_Pictographic}\uFE0F?(?:\u200D\p{Extended_Pictographic}\uFE0F?)*/gu;
+
+    function omojiSrc(emoji) {
+      const hex = [...emoji]
+        .filter(ch => ch !== "\uFE0F")
+        .map(ch => ch.codePointAt(0).toString(16).toUpperCase().padStart(4, "0"))
+        .join("-");
+      return OMOJI_CDN + hex + ".svg";
+    }
+
+    function lineArt(emoji, cls) {
+      const img = document.createElement("img");
+      img.src = omojiSrc(emoji);
+      img.alt = emoji;
+      img.className = cls || "li";
+      img.loading = "lazy";
+      return img;
+    }
+
+    function renderRich(el, text) {
+      el.replaceChildren();
+      let last = 0;
+      for (const m of String(text).matchAll(EMOJI_RE)) {
+        if (m.index > last) el.appendChild(document.createTextNode(text.slice(last, m.index)));
+        el.appendChild(lineArt(m[0]));
+        last = m.index + m[0].length;
+      }
+      if (last < String(text).length) el.appendChild(document.createTextNode(String(text).slice(last)));
     }
 
     function build(count, factory) {
@@ -750,6 +853,39 @@
       ["walk and run","legs","feet","leg"],["hold and catch","hands","hand"],["chew food","teeth","tooth"],["clap","hands","hand"]
     ];
 
+    const BLENDS = [
+      ["⭐","star","st"],["🐸","frog","fr"],["🌳","tree","tr"],["🚩","flag","fl"],
+      ["🥁","drum","dr"],["🐍","snake","sn"],["✈️","plane","pl"],["🍇","grapes","gr"],
+      ["🦀","crab","cr"],["🕐","clock","cl"],["🥄","spoon","sp"],["🦢","swan","sw"],
+      ["🖌️","brush","br"],["🛷","sled","sl"],["🥛","glass","gl"],["🙂","smile","sm"]
+    ];
+
+    const LETTER_HINTS = {
+      A:"🍎 apple", B:"⚽ ball", C:"🐱 cat", D:"🐶 dog", E:"🥚 egg", F:"🐟 fish",
+      G:"🐐 goat", H:"🎩 hat", I:"🍦 ice cream", J:"🏺 jug", K:"🪁 kite", L:"🦁 lion",
+      M:"🌙 moon", N:"🥅 net", O:"🦉 owl", P:"🐷 pig", Q:"👸 queen", R:"💍 ring",
+      S:"☀️ sun", T:"🌳 tree", U:"☂️ umbrella", V:"🚐 van", W:"🕸️ web", X:"📦 box",
+      Y:"🪀 yo-yo", Z:"🦓 zebra"
+    };
+
+    const SIGHT_DOLCH = ["a","I","the","and","see","can","we","my","go","is","it","in","at","to","up","look","like","big","red","run","play","you","come","said","not"];
+
+    const HINDI_TRACE = [
+      ["अ"],["आ","🥭 आम"],["इ"],["ई"],["उ","🦉 उल्लू"],["ऊ","🧶 ऊन"],
+      ["ए"],["ऐ","👓 ऐनक"],["ओ"],["औ"],["अं"],["अः"],
+      ["क","🪷 कमल"],["ख","🐰 खरगोश"],["ग","🐮 गाय"],["घ","🏠 घर"],
+      ["च","🌙 चाँद"],["छ","☂️ छाता"],["ज","✈️ जहाज़"],["झ","🚩 झंडा"],
+      ["ट","🍅 टमाटर"],["ठ"],["ड"],["त","🍉 तरबूज़"],["द"],["न","🛶 नाव"],
+      ["प","🪁 पतंग"],["फ","🍎 फल"],["ब","🦆 बतख"],["भ","🐻 भालू"],["म","🐟 मछली"],
+      ["य"],["र"],["ल"],["व"],["श","🦁 शेर"],["स","🌞 सूरज"],["ह","🐘 हाथी"]
+    ];
+
+    const DRAW_BANK = [
+      ["☀️","sun"],["⚽","ball"],["🌳","tree"],["🏠","house"],["🐟","fish"],["⭐","star"],
+      ["🌸","flower"],["🥤","cup"],["🪁","kite"],["🛶","boat"],["🍎","apple"],["🎈","balloon"],
+      ["🌙","moon"],["🚌","bus"],["☂️","umbrella"],["🐱","cat"],["🦋","butterfly"],["🐠","fish"]
+    ];
+
     const ANIMALS = [
       ["baby","🐶 A baby dog is called a…","puppy","pup"],
       ["baby","🐱 A baby cat is called a…","kitten"],
@@ -814,6 +950,99 @@
         prompt: e + " " + w,
         question: "Which vowel is hiding inside?",
         answer: (w.match(/[aeiou]/) || ["a"])[0], accept: []
+      }))
+    };
+
+    A["blends"] = {
+      label: "Blends (st, fr, tr…)", title: "Blend Builders",
+      instruction: "Say the word slowly. Which TWO letters does it start with?",
+      skill: "Skill: consonant blends",
+      gen: (n) => fromBank(BLENDS, n, ([e, w, blend]) => ({
+        prompt: e + " " + w,
+        question: "Which two letters start the word?",
+        answer: blend, accept: [w]
+      }))
+    };
+
+    A["trace-letters"] = {
+      label: "Trace the letters", title: "Letter Tracing",
+      instruction: "Trace each letter with your finger first, then with a pencil. Say its sound as you write!",
+      skill: "Skill: letter formation (English)",
+      gen: (n) => {
+        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+        return sample(letters, n).map(L => ({
+          type: "trace",
+          trace: L + " " + L.toLowerCase(),
+          hint: LETTER_HINTS[L] ? LETTER_HINTS[L] + " starts with " + L : "",
+          prompt: "Trace: " + L + " " + L.toLowerCase(),
+          question: "Trace, then write it two more times on the lines.",
+          answer: "practice task"
+        }));
+      }
+    };
+
+    A["trace-words"] = {
+      label: "Trace the words", title: "Word Tracing",
+      instruction: "Trace each word, read it out loud, then write it again on the lines.",
+      skill: "Skill: word formation, sight words & CVC",
+      gen: (n, d) => {
+        const cvc = CVC.map(w => w[1]);
+        const bank = d === "easy" ? SIGHT_DOLCH.filter(w => w.length <= 2).concat(cvc)
+          : d === "medium" ? SIGHT_DOLCH.filter(w => w.length === 3).concat(cvc)
+          : SIGHT_DOLCH.filter(w => w.length >= 3);
+        return sample(bank, n).map(w => ({
+          type: "trace",
+          trace: w,
+          hint: "",
+          prompt: "Trace: " + w,
+          question: "Trace it, read it out loud, then write it two more times.",
+          answer: "practice task"
+        }));
+      }
+    };
+
+    A["hindi-trace"] = {
+      label: "अक्षर लिखो (tracing)", title: "हिंदी अक्षर लिखो",
+      instruction: "अक्षर पर उँगली फेरो, फिर पेंसिल से लिखो। बोलते हुए लिखो!",
+      skill: "Skill: letter formation (Hindi)",
+      gen: (n, d) => {
+        const bank = d === "easy" ? HINDI_TRACE.slice(0, 12)
+          : d === "medium" ? HINDI_TRACE.slice(12, 26)
+          : HINDI_TRACE.slice(26);
+        return sample(bank, n).map(([ak, hint]) => ({
+          type: "trace",
+          trace: ak + " " + ak + " " + ak,
+          hint: hint ? hint + " — " + ak + " से" : "",
+          prompt: "Trace: " + ak,
+          question: "पहले उँगली से, फिर पेंसिल से नीचे की पंक्तियों में लिखो।",
+          answer: "practice task"
+        }));
+      }
+    };
+
+    A["copy-drawing"] = {
+      label: "Copy the drawing", title: "Little Artist: Copy It!",
+      instruction: "Look at the drawing carefully, then draw your own copy in the box.",
+      skill: "Skill: drawing simple objects & pencil control",
+      gen: (n) => fromBank(DRAW_BANK, n, ([e, label]) => ({
+        type: "draw",
+        img: e, imgLabel: label,
+        prompt: "Draw a " + label,
+        question: "Copy the " + label + " into the box. Take your time!",
+        answer: "practice task"
+      }))
+    };
+
+    A["finish-picture"] = {
+      label: "Finish the picture", title: "Finish the Picture",
+      instruction: "The picture is very faint! Trace over the light lines to finish it, then colour it in.",
+      skill: "Skill: tracing, pencil control & observation",
+      gen: (n) => fromBank(DRAW_BANK, n, ([e, label]) => ({
+        type: "finish",
+        img: e, imgLabel: label,
+        prompt: "Finish the " + label,
+        question: "Trace over the faint " + label + " to finish it, then colour it.",
+        answer: "practice task"
       }))
     };
 
@@ -1165,11 +1394,48 @@
       }))
     };
 
+    /* ---------- tricky-ones store (retention) ---------- */
+    const TRICKY_KEY = "kundendu-tricky";
+    const loadTricky = () => { try { return JSON.parse(localStorage.getItem(TRICKY_KEY)) || []; } catch (e) { return []; } };
+    const saveTricky = list => { try { localStorage.setItem(TRICKY_KEY, JSON.stringify(list.slice(-60))); } catch (e) {} };
+    const trickyId = q => q.prompt + "|" + q.question;
+
+    function rememberMiss(q) {
+      if (q.check || q.type) return; // only questions that can be re-checked from stored data
+      const list = loadTricky();
+      if (list.some(t => trickyId(t) === trickyId(q))) return;
+      list.push({ prompt: q.prompt, question: q.question, answer: q.answer, accept: q.accept || [] });
+      saveTricky(list);
+    }
+
+    function forgetMiss(q) {
+      if (q.check || q.type) return;
+      saveTricky(loadTricky().filter(t => trickyId(t) !== trickyId(q)));
+    }
+
+    A["tricky-review"] = {
+      label: "🧠 My tricky ones", title: "My Tricky Ones",
+      instruction: "These are questions Kundendu found hard before. Let's beat them this time!",
+      skill: "Skill: remembering what we practised",
+      gen: (n) => {
+        const list = shuffle(loadTricky()).slice(0, n);
+        if (!list.length) return [{
+          type: "info",
+          prompt: "", question: "", answer: "",
+          text: "No tricky questions saved yet! Do any worksheet and press “Check my answers” — questions that need more practice will collect here automatically. 💪"
+        }];
+        return list.map(t => ({ prompt: t.prompt, question: t.question, answer: t.answer, accept: t.accept || [] }));
+      }
+    };
+
     /* ================= concepts ================= */
     const CONCEPTS = [
       { id: "english-phonics", label: "English · Sounds & phonics", emoji: "🔤", accent: "#e96f4c", accentDeep: "#c85436",
-        activities: ["beginning-sounds", "ending-sounds", "cvc-builder", "vowel-spot"],
+        activities: ["beginning-sounds", "ending-sounds", "cvc-builder", "vowel-spot", "blends"],
         tip: "Say each sound out loud together — stretch words slowly like a rubber band: c…a…t. Hearing the sounds matters more than neat writing." },
+      { id: "handwriting", label: "Handwriting & drawing", emoji: "✍️", accent: "#b07d2e", accentDeep: "#8a6122",
+        activities: ["trace-letters", "trace-words", "hindi-trace", "copy-drawing", "finish-picture"],
+        tip: "These sheets work best printed. Keep sessions short and happy — five careful letters beat twenty rushed ones. Finger-tracing before pencil really helps." },
       { id: "english-reading", label: "English · Reading & words", emoji: "📚", accent: "#3f7ea5", accentDeep: "#2d6284",
         activities: ["rhyme-hunt", "sentence-jumble", "sight-words", "opposites"],
         tip: "Read the question aloud first, then let Kundendu try alone. Celebrate brave guesses — that's how readers grow." },
@@ -1187,14 +1453,17 @@
         tip: "Go on a shape hunt at home after the worksheet — find circles, squares and triangles in the kitchen!" },
       { id: "evs", label: "EVS · My world", emoji: "🌍", accent: "#b7455f", accentDeep: "#933349",
         activities: ["living-sort", "helpers", "my-body", "animal-world"],
-        tip: "Connect answers to real life: point out helpers on the street, animals in books, and talk about what living things need." }
+        tip: "Connect answers to real life: point out helpers on the street, animals in books, and talk about what living things need." },
+      { id: "review", label: "Review · My tricky ones", emoji: "🧠", accent: "#526980", accentDeep: "#3d4f61",
+        activities: ["tricky-review"], noMix: true,
+        tip: "Questions Kundendu misses are collected here automatically. A quick round of these every few days is the best trick for retention — little and often beats long and rare." }
     ];
 
     // Mixed-practice pseudo-activity for every subject.
-    CONCEPTS.forEach(c => {
+    CONCEPTS.filter(c => !c.noMix).forEach(c => {
       const mixId = "mix-" + c.id;
       const baseActivities = c.activities.slice();
-      const shortLabel = c.label.split("·")[1].trim();
+      const shortLabel = (c.label.split("·")[1] || c.label).trim();
       A[mixId] = {
         label: "🎲 Mixed practice", title: "Mixed Practice: " + shortLabel,
         instruction: "A little bit of everything — read each question carefully!",
@@ -1297,7 +1566,7 @@
       const c = currentConcept();
       document.documentElement.style.setProperty("--accent", c.accent);
       document.documentElement.style.setProperty("--accent-deep", c.accentDeep);
-      $("ws-sticker").textContent = c.emoji;
+      $("ws-sticker").replaceChildren(lineArt(c.emoji));
     }
 
     function populateActivities() {
@@ -1337,9 +1606,64 @@
         const num = document.createElement("span");
         num.className = "q-num"; num.textContent = i + 1;
 
+        if (q.type === "info") {
+          const msg = document.createElement("p");
+          msg.className = "q-prompt";
+          msg.style.fontSize = "1.05rem";
+          msg.textContent = q.text;
+          card.append(num, msg);
+          grid.appendChild(card);
+          return;
+        }
+
+        if (q.type === "trace") {
+          const text = document.createElement("p");
+          text.className = "q-text";
+          text.textContent = q.question;
+
+          const box = document.createElement("div");
+          box.className = "trace-box";
+          const t = document.createElement("span");
+          t.className = "trace-text";
+          t.textContent = q.trace;
+          box.appendChild(t);
+          box.appendChild(Object.assign(document.createElement("div"), { className: "write-line" }));
+          box.appendChild(Object.assign(document.createElement("div"), { className: "write-line" }));
+
+          card.append(num, text, box);
+          if (q.hint) {
+            const h = document.createElement("p");
+            h.className = "trace-hint";
+            renderRich(h, q.hint);
+            card.appendChild(h);
+          }
+          grid.appendChild(card);
+          return;
+        }
+
+        if (q.type === "draw" || q.type === "finish") {
+          const text = document.createElement("p");
+          text.className = "q-text";
+          text.textContent = q.question;
+
+          const pic = document.createElement("p");
+          pic.style.cssText = "margin:6px 0 0;text-align:center;";
+          pic.appendChild(lineArt(q.img, q.type === "finish" ? "li ghost-img" : "li li-big"));
+
+          card.append(num, text, pic);
+          if (q.type === "draw") {
+            const box = document.createElement("div");
+            box.className = "draw-box";
+            box.textContent = "✏️ Your turn — draw it here!";
+            card.appendChild(box);
+          }
+          grid.appendChild(card);
+          return;
+        }
+
         const prompt = document.createElement("p");
         prompt.className = "q-prompt";
-        prompt.textContent = q.prompt;
+        renderRich(prompt, q.prompt);
 
         const text = document.createElement("label");
         text.className = "q-text";
@@ -1368,7 +1692,7 @@
       keyList.replaceChildren();
       currentQuestions.forEach(q => {
         const li = document.createElement("li");
-        li.textContent = q.answer;
+        li.textContent = q.type ? "— (practice task, no single answer)" : q.answer;
         keyList.appendChild(li);
       });
 
@@ -1385,9 +1709,12 @@
     }
 
     function checkAnswers(silent) {
-      let right = 0, answered = 0;
+      let right = 0, answered = 0, checkable = 0;
       currentQuestions.forEach((q, i) => {
+        if (q.type) return; // trace/draw/info cards are pencil tasks, not checkable
+        checkable++;
         const input = $("ans-" + i);
+        if (!input) return;
         const card = input.closest(".q-card");
         const fb = $("fb-" + i);
         const result = isCorrect(q, input.value);
@@ -1400,19 +1727,23 @@
         answered++;
         if (result) {
           right++;
+          forgetMiss(q);
           card.classList.add("ok");
           if (!silent) { fb.textContent = "✓ Well done!"; fb.classList.add("good"); }
         } else {
+          rememberMiss(q);
           card.classList.add("bad");
           if (!silent) { fb.textContent = "✗ Have another try"; fb.classList.add("wrong"); }
         }
       });
 
-      const score = { right, total: currentQuestions.length, answered };
+      const score = { right, total: checkable, answered };
 
       if (!silent) {
         const line = $("score-line");
-        if (!answered) {
+        if (!checkable) {
+          line.textContent = "This is a pencil-and-paper sheet — nothing to check on screen. Print it and get drawing! ✏️";
+        } else if (!answered) {
           line.textContent = "Write some answers first, then press check! ✏️";
         } else if (right === score.total) {
           line.textContent = "Score: " + right + " out of " + score.total + " 🌟🌟🌟 Superstar!";
@@ -1436,13 +1767,26 @@
         ""
       ];
       currentQuestions.forEach((q, i) => {
+        if (q.type === "info") { lines.push((i + 1) + ". " + q.text); lines.push(""); return; }
+        if (q.type === "trace") {
+          lines.push((i + 1) + ". " + q.question);
+          lines.push("   " + q.trace + "   ______________   ______________");
+          lines.push("");
+          return;
+        }
+        if (q.type === "draw" || q.type === "finish") {
+          lines.push((i + 1) + ". " + q.question);
+          lines.push("   [ drawing box ]");
+          lines.push("");
+          return;
+        }
         lines.push((i + 1) + ". " + q.prompt.replace(/\n/g, "  "));
         lines.push("   " + q.question + "  ______________________");
         lines.push("");
       });
       if (withKey) {
         lines.push("--- Answer key ---");
-        currentQuestions.forEach((q, i) => lines.push((i + 1) + ". " + q.answer));
+        currentQuestions.forEach((q, i) => lines.push((i + 1) + ". " + (q.type ? "practice task" : q.answer)));
       }
       lines.push("", currentActivity.skill, "Little steps make big learning.");
       return lines.join("\n");
@@ -1454,14 +1798,30 @@
 
     function exportWord() {
       const withKey = document.body.classList.contains("show-answers");
-      const qHtml = currentQuestions.map((q, i) =>
-        '<div style="border:1px solid #bbb;border-radius:10px;padding:12px;margin:10px 0;page-break-inside:avoid;">' +
-        "<p style='font-weight:bold;font-size:15px;margin:0 0 6px;'>" + (i + 1) + ". " + escapeHtml(q.prompt).replace(/\n/g, "<br>") + "</p>" +
-        "<p style='margin:0 0 10px;color:#444;'>" + escapeHtml(q.question) + "</p>" +
-        "<p style='margin:0;'>Answer: ____________________________</p>" +
-        "</div>").join("");
+      const qHtml = currentQuestions.map((q, i) => {
+        let bodyHtml;
+        if (q.type === "info") {
+          bodyHtml = "<p style='margin:0;'>" + escapeHtml(q.text) + "</p>";
+        } else if (q.type === "trace") {
+          bodyHtml = "<p style='margin:0 0 10px;color:#444;'>" + escapeHtml(q.question) + "</p>" +
+            "<p style='font-size:34px;color:#bbb;letter-spacing:4px;margin:0;border-bottom:1px solid #333;'>" + escapeHtml(q.trace) + "</p>" +
+            "<p style='margin:26px 0 0;border-bottom:1px solid #999;'>&nbsp;</p>" +
+            "<p style='margin:26px 0 0;border-bottom:1px solid #999;'>&nbsp;</p>";
+        } else if (q.type === "draw" || q.type === "finish") {
+          bodyHtml = "<p style='margin:0 0 10px;color:#444;'>" + escapeHtml(q.question) + "</p>" +
+            "<div style='border:1px dashed #999;height:130px;'></div>";
+        } else {
+          bodyHtml = "<p style='font-weight:bold;font-size:15px;margin:0 0 6px;'>" + escapeHtml(q.prompt).replace(/\n/g, "<br>") + "</p>" +
+            "<p style='margin:0 0 10px;color:#444;'>" + escapeHtml(q.question) + "</p>" +
+            "<p style='margin:0;'>Answer: ____________________________</p>";
+          return '<div style="border:1px solid #bbb;border-radius:10px;padding:12px;margin:10px 0;page-break-inside:avoid;">' +
+            "<p style='font-weight:bold;margin:0 0 4px;'>" + (i + 1) + ".</p>" + bodyHtml + "</div>";
+        }
+        return '<div style="border:1px solid #bbb;border-radius:10px;padding:12px;margin:10px 0;page-break-inside:avoid;">' +
+          "<p style='font-weight:bold;margin:0 0 4px;'>" + (i + 1) + ".</p>" + bodyHtml + "</div>";
+      }).join("");
       const keyHtml = withKey
-        ? "<h3>Answer key</h3><ol>" + currentQuestions.map(q => "<li>" + escapeHtml(q.answer) + "</li>").join("") + "</ol>"
+        ? "<h3>Answer key</h3><ol>" + currentQuestions.map(q => "<li>" + escapeHtml(q.type ? "practice task" : q.answer) + "</li>").join("") + "</ol>"
         : "";
       const html = "<!doctype html><html><head><meta charset='utf-8'></head>" +
         "<body style='font-family:Arial,sans-serif;color:#2b3550;padding:24px;'>" +
@@ -1558,7 +1918,7 @@
     $("retry-btn").addEventListener("click", generate);
 
     $("surprise-btn").addEventListener("click", () => {
-      const c = pick(CONCEPTS);
+      const c = pick(CONCEPTS.filter(x => !x.noMix));
       conceptSelect.value = c.id;
       populateActivities();
       activitySelect.value = pick(c.activities);
