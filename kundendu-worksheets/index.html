@@ -6,6 +6,12 @@
   <title>Kundendu's Worksheet Studio · Class 1 CBSE</title>
   <meta name="description" content="A playful Class 1 CBSE worksheet generator — English, Hindi, Maths and EVS practice with fresh questions every time, answer checking, and printable sheets.">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✏️</text></svg>">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#f6ecd9">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Worksheets">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
@@ -571,6 +577,7 @@
         <button id="pdf-btn" type="button" class="btn-ghost">🖨️ Print / save as PDF</button>
         <button id="word-btn" type="button" class="btn-ghost">📄 Download for Word</button>
         <button id="docs-btn" type="button" class="btn-ghost">📋 Copy for Google Docs</button>
+        <button id="install-btn" type="button" class="btn-ghost" hidden>📲 Install as an app</button>
         <p id="status-message" aria-live="polite"></p>
       </section>
 
@@ -1983,6 +1990,34 @@
       backendReady = !!(r && r.isOk);
       if (!backendReady) setStatus("Practice history is unavailable right now.");
     }).catch(() => { backendReady = false; });
+
+    /* ---------- PWA: offline cache + install ---------- */
+    if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+      navigator.serviceWorker.register("sw.js").catch(() => {});
+    }
+
+    let installPrompt = null;
+    window.addEventListener("beforeinstallprompt", e => {
+      e.preventDefault();
+      installPrompt = e;
+      $("install-btn").hidden = false;
+    });
+
+    $("install-btn").addEventListener("click", async () => {
+      if (!installPrompt) return;
+      installPrompt.prompt();
+      const choice = await installPrompt.userChoice;
+      if (choice && choice.outcome === "accepted") {
+        setStatus("Installed! Look for the Worksheets icon on the home screen. 🎉");
+      }
+      installPrompt = null;
+      $("install-btn").hidden = true;
+    });
+
+    window.addEventListener("appinstalled", () => {
+      $("install-btn").hidden = true;
+      setStatus("Installed! The app now works even without internet. 🎉");
+    });
   </script>
 </body>
 </html>
