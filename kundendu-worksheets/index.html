@@ -188,6 +188,43 @@
 
     .practise-next { margin: 10px 0 0; font-size: .82rem; font-weight: 800; color: #8a5a18; }
 
+    /* ---------- NCERT book resources ---------- */
+    .books summary {
+      cursor: pointer; font-weight: 800; font-size: .9rem;
+      color: #4a6076; list-style: none;
+    }
+
+    .books summary::before { content: "▸ "; }
+    .books[open] summary::before { content: "▾ "; }
+
+    .book-block { margin-top: 12px; }
+
+    .book-block .book-title {
+      display: flex; align-items: baseline; justify-content: space-between; gap: 8px;
+      margin: 0 0 6px; font-size: .84rem; font-weight: 800;
+    }
+
+    .book-block .book-title a {
+      flex: 0 0 auto; font-size: .72rem; font-weight: 800;
+      color: var(--blue-dark); text-decoration: none;
+      border: 1px solid #b8ceda; border-radius: 999px; padding: 2px 9px;
+      background: #fff;
+    }
+
+    .book-block .book-title a:hover { background: var(--sky); }
+
+    .chap-list { display: flex; flex-wrap: wrap; gap: 4px; }
+
+    .chap {
+      padding: 2px 8px; border-radius: 999px;
+      background: #fffdf6; border: 1px solid #e3d5b3;
+      font-size: .7rem; font-weight: 700; color: #4a6076;
+    }
+
+    .chap.poem { background: #fdeef4; border-color: #efc3d4; }
+
+    .books-note { margin: 10px 0 0; font-size: .74rem; font-weight: 700; color: var(--muted); }
+
     /* ---------- badges ---------- */
     #badge-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
 
@@ -785,6 +822,52 @@
           <summary>Progress insights</summary>
           <div id="insight-rows"></div>
           <p class="practise-next" id="practise-next"></p>
+        </details>
+        <details class="books" style="margin-top:10px;">
+          <summary>His NCERT books 📚</summary>
+
+          <div class="book-block">
+            <p class="book-title">🇬🇧 English — Mridang <a href="https://ncert.nic.in/textbook.php?aemr1=0-9" target="_blank" rel="noopener">Open book ↗</a></p>
+            <div class="chap-list">
+              <span class="chap poem">🎵 Two Little Hands</span><span class="chap">Greetings</span>
+              <span class="chap poem">🎵 Picture Time</span><span class="chap">The Cap-seller and the Monkeys</span>
+              <span class="chap poem">🎵 A Farm</span><span class="chap">Fun with Pictures</span>
+              <span class="chap">The Food We Eat</span><span class="chap poem">🎵 The Four Seasons</span>
+              <span class="chap">Anandi's Rainbow</span>
+            </div>
+          </div>
+
+          <div class="book-block">
+            <p class="book-title">🪔 हिंदी — सारंगी <a href="https://ncert.nic.in/textbook.php?ahsr1=0-21" target="_blank" rel="noopener">Open book ↗</a></p>
+            <div class="chap-list">
+              <span class="chap poem">🎵 झूला</span><span class="chap">आम की कहानी</span>
+              <span class="chap poem">🎵 आम की टोकरी</span><span class="chap">पत्ते ही पत्ते</span>
+              <span class="chap poem">🎵 पकौड़ी</span><span class="chap poem">🎵 छुक-छुक गाड़ी</span>
+              <span class="chap">रसोईघर</span><span class="chap poem">🎵 चूहो! म्याऊँ सो रही है</span>
+              <span class="chap">बंदर और गिलहरी</span><span class="chap">पगड़ी</span>
+              <span class="chap">पतंग</span><span class="chap">गेंद-बल्ला</span>
+              <span class="chap poem">🎵 बंदर गया खेत में भाग</span><span class="chap">एक बुढ़िया</span>
+              <span class="chap">मैं भी…</span><span class="chap">लालू और पीलू</span>
+              <span class="chap poem">🎵 चकई के चकदुम</span><span class="chap">छोटी का कमाल</span>
+              <span class="chap poem">🎵 चार चने</span><span class="chap">भगदड़</span>
+              <span class="chap">हलीम चला चाँद पर</span>
+            </div>
+          </div>
+
+          <div class="book-block">
+            <p class="book-title">🔢 Maths — Joyful Mathematics <a href="https://ncert.nic.in/textbook.php?aejm1=0-13" target="_blank" rel="noopener">Open book ↗</a></p>
+            <div class="chap-list">
+              <span class="chap">Finding the Furry Cat! (pre-number)</span><span class="chap">What is Long? What is Round? (shapes)</span>
+              <span class="chap">Mango Treat (1–9)</span><span class="chap">Making 10 (10–20)</span>
+              <span class="chap">How Many? (add &amp; subtract)</span><span class="chap">Vegetable Farm (up to 20)</span>
+              <span class="chap">Lina's Family (measurement)</span><span class="chap">Fun with Numbers (21–99)</span>
+              <span class="chap">Utsav (patterns)</span><span class="chap">How do I Spend my Day? (time)</span>
+              <span class="chap">How Many Times? (multiplication)</span><span class="chap">How Much Can We Spend? (money)</span>
+              <span class="chap">So Many Toys (data)</span>
+            </div>
+          </div>
+
+          <p class="books-note">Free official copies on ncert.nic.in. 🎵 = poem — open the book, then use <strong>➕ Add his poem</strong> (Poems &amp; rhymes subject) to type its words in for practice. Every app subject maps to these chapters.</p>
         </details>
       </section>
     </aside>
