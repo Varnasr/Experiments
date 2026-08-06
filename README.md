@@ -66,6 +66,17 @@ Methodology, data, and grading outputs for evaluating AICC-appointed District Ob
 
 ---
 
+### Kundendu's Worksheet Studio
+
+A playful Class 1 CBSE worksheet generator for a young learner. Covers English (phonics, reading, grammar), Hindi (वर्ण, शब्द, गिनती, विलोम), Maths (number sense, add/subtract, shapes & patterns), and EVS — 36 activity types in all. Every worksheet is freshly randomised, with three difficulty levels, 4–10 questions per sheet, on-screen answer checking (with confetti for perfect scores), a printable answer key, Word/Google Docs export, and a local practice-history tracker.
+
+**Directory:** `kundendu-worksheets/`
+**Stage:** Active
+
+Single dependency-free HTML file — open `kundendu-worksheets/index.html` or visit it on the deployed site.
+
+---
+
 ### Drive PDF Extractor
 
 A small Node + Playwright tool that captures view-only Google Drive PDFs (the kind you can read but not download) and writes them out as a normal PDF.
@@ -114,6 +125,8 @@ Experiments/
 │   ├── candidates_detailed.csv
 │   ├── all_timestamps.csv
 │   └── *.json                          # raw source extracts
+├── kundendu-worksheets/
+│   └── index.html                      # Class 1 CBSE worksheet generator
 ├── tools/
 │   └── drive-pdf-extractor/            # view-only Drive PDF capture
 ├── netlify/

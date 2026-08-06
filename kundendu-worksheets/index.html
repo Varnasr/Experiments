@@ -1,0 +1,1628 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kundendu's Worksheet Studio · Class 1 CBSE</title>
+  <meta name="description" content="A playful Class 1 CBSE worksheet generator — English, Hindi, Maths and EVS practice with fresh questions every time, answer checking, and printable sheets.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✏️</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #2b3550;
+      --accent: #e96f4c;
+      --accent-deep: #d05a38;
+      --blue: #3f7ea5;
+      --blue-dark: #2d6284;
+      --sky: #eaf5fb;
+      --yellow: #f8c64f;
+      --cream: #fff9ec;
+      --line: #d6c3a0;
+      --mint: #e6f6ec;
+      --green: #1e7d46;
+      --red: #c23d2c;
+      --muted: #5b7185;
+      --card-border: #c9d8e2;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { width: 100%; margin: 0; }
+
+    body {
+      min-height: 100vh;
+      color: var(--ink);
+      font-family: "Nunito", system-ui, sans-serif;
+      background-color: #f6ecd9;
+      background-image:
+        radial-gradient(circle at 8% 12%, rgba(248,198,79,.25) 0 140px, transparent 141px),
+        radial-gradient(circle at 94% 8%, rgba(63,126,165,.14) 0 170px, transparent 171px),
+        radial-gradient(circle at 88% 90%, rgba(233,111,76,.12) 0 160px, transparent 161px),
+        radial-gradient(#dfcba8 1.15px, transparent 1.15px);
+      background-size: 100% 100%, 100% 100%, 100% 100%, 18px 18px;
+      overflow-x: hidden;
+    }
+
+    button, input, select { font: inherit; color: inherit; }
+    button { cursor: pointer; }
+
+    button:focus-visible, input:focus-visible, select:focus-visible {
+      outline: 3px solid var(--ink);
+      outline-offset: 2px;
+    }
+
+    .frame { width: 100%; max-width: 1220px; margin: 0 auto; padding: 0 16px; }
+
+    .display { font-family: "Baloo 2", "Nunito", sans-serif; }
+
+    /* ---------- header ---------- */
+    .page-header { padding: 28px 0 20px; }
+
+    .header-row {
+      display: flex; flex-wrap: wrap; align-items: flex-end;
+      justify-content: space-between; gap: 16px;
+    }
+
+    .brand-badge {
+      display: inline-grid; place-items: center;
+      width: 52px; height: 52px; border-radius: 17px;
+      background: linear-gradient(135deg, #f8c64f, #f7db7d);
+      font-size: 27px;
+      box-shadow: 0 4px 0 rgba(83,60,26,.20);
+      transform: rotate(-4deg);
+    }
+
+    .kicker {
+      font-size: .72rem; font-weight: 800; letter-spacing: .17em;
+      text-transform: uppercase; color: var(--accent-deep);
+    }
+
+    .page-header h1 {
+      margin: 4px 0 0;
+      font-size: clamp(2rem, 4.8vw, 3.1rem);
+      line-height: 1.02;
+      letter-spacing: -.01em;
+    }
+
+    .page-header h1 .swash { color: var(--accent); }
+
+    .page-header .subtitle {
+      max-width: 470px; margin: 0;
+      font-size: .95rem; line-height: 1.6;
+      color: var(--muted); font-weight: 600;
+    }
+
+    /* ---------- layout ---------- */
+    .layout {
+      display: grid; gap: 22px; align-items: start;
+      grid-template-columns: 318px minmax(0, 1fr);
+      padding-bottom: 52px;
+    }
+
+    @media (max-width: 980px) { .layout { grid-template-columns: minmax(0, 1fr); } }
+
+    /* ---------- control panel ---------- */
+    .panel {
+      position: sticky; top: 14px;
+      background: var(--cream);
+      border: 1px solid #dbc8a3;
+      border-radius: 24px;
+      padding: 22px;
+      box-shadow: 0 16px 38px rgba(83,60,26,.15);
+    }
+
+    @media (max-width: 980px) { .panel { position: static; } }
+
+    .panel h2 { margin: 0 0 16px; font-size: 1.3rem; }
+
+    .control { margin-bottom: 14px; }
+
+    .control-label {
+      display: block; margin-bottom: 6px;
+      font-size: .7rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase;
+      color: #6b5b3a;
+    }
+
+    .field {
+      width: 100%; min-height: 2.85rem; padding: .6rem .75rem;
+      border: 2px solid var(--line); border-radius: 13px;
+      background: #fffdf8; color: var(--ink); font-weight: 700;
+      transition: border-color .15s ease, box-shadow .15s ease;
+    }
+
+    .field:hover { border-color: #85acc2; }
+    .field:focus { border-color: var(--blue); outline: none; box-shadow: 0 0 0 4px rgba(63,126,165,.13); }
+
+    .seg-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+    .seg-row.four { grid-template-columns: repeat(4, 1fr); }
+
+    .seg {
+      padding: .52rem .25rem; border: 2px solid var(--line); border-radius: 12px;
+      background: #fffdf8; font-weight: 800; font-size: .84rem; text-align: center;
+      transition: all .14s ease;
+    }
+
+    .seg:hover { border-color: #85acc2; transform: translateY(-1px); }
+
+    .seg[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
+
+    .btn-primary {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%; padding: .9rem 1rem; margin-top: 6px;
+      border: 0; border-radius: 15px;
+      background: linear-gradient(135deg, var(--accent), #f08a63);
+      color: #fff; font-weight: 800; font-size: 1.05rem;
+      font-family: "Baloo 2", sans-serif;
+      box-shadow: 0 4px 0 var(--accent-deep);
+      transition: transform .12s ease, box-shadow .12s ease;
+    }
+
+    .btn-primary:hover { transform: translateY(-1px); }
+    .btn-primary:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--accent-deep); }
+
+    .btn-surprise {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%; padding: .62rem 1rem; margin-top: 8px;
+      border: 2px dashed #c9a86a; border-radius: 13px;
+      background: #fff6df; font-weight: 800; font-size: .92rem;
+      transition: all .14s ease;
+    }
+
+    .btn-surprise:hover { background: #ffefc7; transform: rotate(-.6deg) scale(1.01); }
+
+    .panel-section { margin-top: 18px; padding-top: 16px; border-top: 1px dashed #d8c69f; }
+    .panel-section h3 { margin: 0 0 10px; font-size: 1.02rem; }
+
+    .btn-ghost {
+      display: flex; align-items: center; gap: 8px;
+      width: 100%; padding: .62rem .8rem; margin-bottom: 7px;
+      border: 2px solid #b8ceda; border-radius: 12px;
+      background: #fff; font-weight: 700; font-size: .9rem; text-align: left;
+      transition: all .14s ease;
+    }
+
+    .btn-ghost:hover { background: var(--sky); border-color: #76a5bd; transform: translateY(-1px); }
+
+    #status-message { min-height: 1.1rem; margin: 8px 0 0; font-size: .78rem; font-weight: 700; color: var(--muted); }
+
+    .tip-text { margin: 0; font-size: .87rem; line-height: 1.6; color: #4a6076; font-weight: 600; }
+
+    /* ---------- worksheet paper ---------- */
+    .paper {
+      position: relative; overflow: hidden;
+      background-color: #fff;
+      background-image: linear-gradient(to bottom, transparent 31px, #eef2f5 32px);
+      background-size: 100% 32px;
+      border-radius: 12px;
+      box-shadow: 0 24px 60px rgba(83,60,26,.20);
+    }
+
+    .paper::before {
+      content: ""; position: absolute; top: 0; bottom: 0; left: 44px;
+      border-left: 2px solid rgba(233,111,76,.30); pointer-events: none;
+    }
+
+    .paper::after {
+      content: ""; position: absolute; top: 0; left: 0; right: 0; height: 10px;
+      background: linear-gradient(90deg, var(--accent), var(--yellow), var(--blue), var(--accent));
+      opacity: .85;
+    }
+
+    .paper-inner { position: relative; z-index: 1; min-width: 0; padding: 34px 36px 36px 66px; }
+
+    @media (max-width: 640px) {
+      .paper::before { left: 22px; }
+      .paper-inner { padding: 24px 16px 26px 40px; }
+    }
+
+    .sheet-head {
+      display: flex; flex-wrap: wrap; gap: 14px 24px;
+      align-items: flex-start; justify-content: space-between;
+      padding-bottom: 16px; border-bottom: 3px solid var(--ink);
+    }
+
+    .sheet-head .left { min-width: 0; flex: 1 1 320px; display: flex; gap: 14px; align-items: flex-start; }
+
+    #ws-sticker {
+      flex: 0 0 auto; display: grid; place-items: center;
+      width: 54px; height: 54px; margin-top: 4px;
+      border-radius: 16px; font-size: 28px;
+      background: color-mix(in srgb, var(--accent) 14%, #fff);
+      border: 2px solid color-mix(in srgb, var(--accent) 38%, #fff);
+      transform: rotate(3deg);
+    }
+
+    .sheet-tag {
+      margin: 0 0 3px; font-size: .66rem; font-weight: 800;
+      letter-spacing: .18em; text-transform: uppercase;
+      color: var(--accent-deep);
+    }
+
+    #ws-title { margin: 0; font-size: clamp(1.55rem, 3.4vw, 2.25rem); line-height: 1.08; overflow-wrap: anywhere; }
+
+    #ws-instruction { margin: 6px 0 0; font-weight: 700; color: #486f87; overflow-wrap: anywhere; }
+
+    .meta { flex: 0 1 220px; min-width: 200px; font-size: .9rem; line-height: 2.1; }
+
+    .meta label { display: flex; align-items: baseline; gap: 6px; font-weight: 800; }
+
+    .meta input {
+      flex: 1; min-width: 0; border: 0; border-bottom: 2px solid var(--ink);
+      background: transparent; padding: 0 4px 2px; font-weight: 700;
+    }
+
+    .meta input:focus { outline: none; border-bottom-color: var(--accent); }
+
+    /* ---------- questions ---------- */
+    .q-grid { display: grid; gap: 16px; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 20px; }
+
+    @media (max-width: 700px) { .q-grid { grid-template-columns: minmax(0, 1fr); } }
+
+    .q-card {
+      min-width: 0; padding: 16px 15px 12px; position: relative;
+      background: #fff; border: 2px solid var(--card-border); border-radius: 18px;
+      box-shadow: 0 3px 0 rgba(43,53,80,.06);
+      animation: rise .3s ease both;
+      transition: border-color .2s ease, background .2s ease;
+    }
+
+    .q-card.ok { border-color: #6fc492; background: #f2fbf5; }
+    .q-card.bad { border-color: #e59a8c; background: #fff5f2; }
+
+    .q-num {
+      position: absolute; top: -13px; left: 13px;
+      display: inline-grid; place-items: center;
+      min-width: 27px; height: 27px; padding: 0 8px; border-radius: 999px;
+      background: var(--accent); color: #fff; font-size: .82rem; font-weight: 800;
+      font-family: "Baloo 2", sans-serif;
+      box-shadow: 0 2px 0 rgba(43,53,80,.18);
+    }
+
+    .q-prompt {
+      margin: 6px 0 6px; font-size: 1.28rem; font-weight: 700; line-height: 1.45;
+      overflow-wrap: anywhere; font-family: "Baloo 2", "Nunito", sans-serif;
+      white-space: pre-line;
+    }
+
+    .q-text { display: block; margin: 0 0 4px; font-size: .88rem; font-weight: 700; color: #486f87; overflow-wrap: anywhere; }
+
+    .q-input {
+      width: 100%; min-width: 0; min-height: 2.35rem; padding: .4rem .15rem;
+      border: 0; border-bottom: 2px solid var(--ink);
+      background: transparent; font-weight: 800; font-size: 1.08rem;
+    }
+
+    .q-input:focus { outline: none; border-bottom-color: var(--accent); box-shadow: 0 3px 0 color-mix(in srgb, var(--accent) 18%, transparent); }
+
+    .q-feedback { min-height: 1rem; margin: 6px 0 0; font-size: .8rem; font-weight: 800; }
+    .q-feedback.good { color: var(--green); }
+    .q-feedback.wrong { color: var(--red); }
+    .q-feedback.empty { color: var(--muted); }
+
+    .q-answer { display: none; margin: 4px 0 0; font-size: .84rem; font-weight: 800; color: var(--blue-dark); }
+    body.show-answers .q-answer { display: block; }
+
+    @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+    .challenge {
+      margin-top: 18px; padding: 13px 15px; border-radius: 14px;
+      background: #fff4cf; border: 2px solid #f2dfa0;
+      font-size: .92rem; font-weight: 800;
+    }
+
+    /* ---------- check bar ---------- */
+    .check-bar {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
+      margin-top: 18px; padding: 14px; border-radius: 18px;
+      background: var(--sky); border: 2px solid #b9d6e6;
+    }
+
+    .btn-check {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: .72rem 1.25rem; border: 0; border-radius: 13px;
+      background: var(--ink); color: #fff; font-weight: 800;
+      font-family: "Baloo 2", sans-serif; font-size: 1rem;
+      box-shadow: 0 3px 0 #141c30;
+      transition: transform .12s ease;
+    }
+
+    .btn-check:hover { transform: translateY(-1px); }
+    .btn-check:active { transform: translateY(2px); box-shadow: none; }
+
+    .btn-soft {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: .66rem 1rem; border: 2px solid #9dbfd2; border-radius: 13px;
+      background: #fff; font-weight: 800; font-size: .9rem;
+    }
+
+    .btn-soft:hover { background: #f2f9fc; }
+
+    #score-line { flex: 1 1 180px; min-width: 0; margin: 0; font-weight: 800; font-size: 1rem; }
+
+    /* ---------- answer key ---------- */
+    #answer-key { display: none; margin-top: 18px; padding: 16px 18px; border-radius: 18px; background: var(--mint); border: 2px solid #a9d6bb; }
+    body.show-answers #answer-key { display: block; }
+    #answer-key h3 { margin: 0 0 8px; font-size: 1.05rem; }
+    #answer-key ol { margin: 0; padding-left: 20px; font-size: .92rem; line-height: 1.85; font-weight: 700; }
+
+    /* ---------- stats + history ---------- */
+    .stats-row {
+      display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 10px;
+      margin-top: 18px;
+    }
+
+    @media (max-width: 480px) { .stats-row { grid-template-columns: repeat(3, minmax(0,1fr)); gap: 6px; } }
+
+    .stat-tile {
+      padding: 12px 8px; border-radius: 16px; text-align: center;
+      border: 2px solid #e3d5b3; background: #fffdf6;
+    }
+
+    .stat-tile .num { display: block; font-size: 1.5rem; line-height: 1.1; font-family: "Baloo 2", sans-serif; font-weight: 800; }
+    .stat-tile .lbl { display: block; margin-top: 2px; font-size: .68rem; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); }
+
+    .save-box {
+      display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between;
+      margin-top: 14px; padding: 16px; border-radius: 18px;
+      background: #eff9f1; border: 2px solid #b8d4c2;
+    }
+
+    .save-box .txt { flex: 1 1 260px; min-width: 0; }
+    .save-box h3 { margin: 0; font-size: 1.02rem; }
+    .save-box p { margin: 4px 0 0; font-size: .85rem; color: #47695a; font-weight: 600; }
+
+    .btn-save {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: .75rem 1.2rem; border: 0; border-radius: 13px;
+      background: var(--green); color: #fff; font-weight: 800;
+      font-family: "Baloo 2", sans-serif;
+      box-shadow: 0 3px 0 #14522e;
+    }
+
+    .btn-save:disabled { opacity: .55; cursor: not-allowed; }
+
+    .history { margin-top: 14px; padding: 16px; border-radius: 18px; background: #f8fcfe; border: 1px solid #bfd0da; }
+
+    .history-head { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; }
+    .history-head h3 { margin: 0; font-size: 1.02rem; }
+    .history-head .actions { display: flex; gap: 8px; align-items: center; }
+
+    #saved-count {
+      padding: 3px 12px; border-radius: 999px;
+      background: var(--sky); color: var(--blue-dark); font-size: .74rem; font-weight: 800;
+    }
+
+    .btn-tiny {
+      padding: 3px 10px; border: 1px solid #c8b4b0; border-radius: 999px;
+      background: #fff; font-size: .72rem; font-weight: 800; color: #a04b3c;
+    }
+
+    .btn-tiny:hover { background: #fdf1ee; }
+
+    .attempt-row {
+      display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; justify-content: space-between;
+      padding: 9px 2px; border-bottom: 1px dashed #c4d4de; font-size: .87rem;
+    }
+
+    .attempt-row:last-child { border-bottom: 0; }
+    .attempt-row .a-title { font-weight: 800; min-width: 0; overflow-wrap: anywhere; }
+    .attempt-row .a-score { font-weight: 800; color: var(--blue-dark); }
+    .attempt-row .a-date { font-size: .76rem; font-weight: 700; color: var(--muted); }
+
+    .sheet-foot {
+      display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between;
+      margin-top: 26px; padding-top: 14px; border-top: 1px solid #bfd0da;
+      font-size: .78rem; font-weight: 800; color: var(--muted);
+    }
+
+    /* ---------- confetti ---------- */
+    #confetti-canvas {
+      position: fixed; inset: 0; z-index: 99;
+      pointer-events: none;
+    }
+
+    /* ---------- print ---------- */
+    @media print {
+      body { background: #fff !important; background-image: none !important; }
+      .no-print { display: none !important; }
+      .frame { max-width: none; padding: 0; }
+      .layout { display: block; padding: 0; }
+      .paper { border-radius: 0; box-shadow: none; background-image: none; }
+      .paper::before, .paper::after { display: none; }
+      .paper-inner { padding: 4mm 2mm; }
+      #ws-sticker { border-color: #999; background: #fff; }
+      .q-grid { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; }
+      .q-card { break-inside: avoid; border-color: #999; box-shadow: none; }
+      .q-num { background: #333; box-shadow: none; }
+      .q-input { border-bottom-color: #333; }
+      .q-feedback { display: none; }
+      .challenge { border-color: #bbb; background: #fff; }
+      #answer-key { break-inside: avoid; border-color: #999; background: #fff; }
+      @page { size: A4 portrait; margin: 12mm; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="confetti-canvas" width="0" height="0" aria-hidden="true"></canvas>
+
+  <header class="page-header no-print">
+    <div class="frame header-row">
+      <div>
+        <div style="display:flex;align-items:center;gap:13px;margin-bottom:6px;">
+          <span class="brand-badge" aria-hidden="true">✏️</span>
+          <span class="kicker">Class 1 · CBSE · Learn &amp; Play</span>
+        </div>
+        <h1 class="display">Kundendu's <span class="swash">Worksheet Studio</span></h1>
+      </div>
+      <p class="subtitle">Pick a subject and an activity, choose how tricky it should be, and press <strong>Make my worksheet</strong>. Every sheet is freshly made with new questions — check answers on screen, earn stars, or print it out.</p>
+    </div>
+  </header>
+
+  <main class="frame layout">
+    <!-- ============ CONTROLS ============ -->
+    <aside class="panel no-print" aria-label="Worksheet controls">
+      <h2 class="display">Build a worksheet</h2>
+
+      <div class="control">
+        <label class="control-label" for="concept-select">Subject &amp; topic</label>
+        <select id="concept-select" class="field"></select>
+      </div>
+
+      <div class="control">
+        <label class="control-label" for="activity-select">Activity</label>
+        <select id="activity-select" class="field"></select>
+      </div>
+
+      <div class="control">
+        <span class="control-label" id="diff-label">How tricky?</span>
+        <div class="seg-row" role="group" aria-labelledby="diff-label">
+          <button type="button" class="seg" data-diff="easy" aria-pressed="true">🌱 Easy</button>
+          <button type="button" class="seg" data-diff="medium" aria-pressed="false">🌿 Medium</button>
+          <button type="button" class="seg" data-diff="tricky" aria-pressed="false">🌳 Tricky</button>
+        </div>
+      </div>
+
+      <div class="control">
+        <span class="control-label" id="count-label">How many questions?</span>
+        <div class="seg-row four" role="group" aria-labelledby="count-label">
+          <button type="button" class="seg" data-count="4" aria-pressed="false">4</button>
+          <button type="button" class="seg" data-count="6" aria-pressed="true">6</button>
+          <button type="button" class="seg" data-count="8" aria-pressed="false">8</button>
+          <button type="button" class="seg" data-count="10" aria-pressed="false">10</button>
+        </div>
+      </div>
+
+      <button id="generate-btn" type="button" class="btn-primary">✨ Make my worksheet</button>
+      <button id="surprise-btn" type="button" class="btn-surprise">🎲 Surprise me!</button>
+
+      <section class="panel-section" aria-label="Export">
+        <h3 class="display">Print &amp; share</h3>
+        <button id="pdf-btn" type="button" class="btn-ghost">🖨️ Print / save as PDF</button>
+        <button id="word-btn" type="button" class="btn-ghost">📄 Download for Word</button>
+        <button id="docs-btn" type="button" class="btn-ghost">📋 Copy for Google Docs</button>
+        <p id="status-message" aria-live="polite"></p>
+      </section>
+
+      <section class="panel-section" aria-label="Tip for grown-ups">
+        <h3 class="display">For grown-ups 💛</h3>
+        <p class="tip-text" id="grownup-tip"></p>
+      </section>
+    </aside>
+
+    <!-- ============ WORKSHEET ============ -->
+    <section aria-label="Generated worksheet" style="min-width:0;">
+      <article class="paper">
+        <div class="paper-inner">
+          <div class="sheet-head">
+            <div class="left">
+              <span id="ws-sticker" aria-hidden="true">🔤</span>
+              <div style="min-width:0;">
+                <p class="sheet-tag">Kundendu's Class 1 CBSE Worksheet</p>
+                <h2 id="ws-title" class="display"></h2>
+                <p id="ws-instruction"></p>
+              </div>
+            </div>
+            <div class="meta">
+              <label>Name: <input id="student-name" value="Kundendu" aria-label="Student name"></label>
+              <label>Date: <input id="ws-date" aria-label="Worksheet date"></label>
+            </div>
+          </div>
+
+          <div id="q-area" aria-live="polite"></div>
+
+          <div class="challenge">⭐ Star challenge: when you finish, tell a grown-up one new thing you learned today!</div>
+
+          <div class="check-bar no-print">
+            <button id="check-btn" type="button" class="btn-check">✅ Check my answers</button>
+            <button id="retry-btn" type="button" class="btn-soft">🔁 New questions</button>
+            <button id="key-btn" type="button" class="btn-soft">👀 Show answers</button>
+            <p id="score-line"></p>
+          </div>
+
+          <section id="answer-key" aria-label="Answer key">
+            <h3 class="display">🔑 Answer key</h3>
+            <ol id="answer-key-list"></ol>
+          </section>
+
+          <div class="stats-row no-print" aria-label="Practice statistics">
+            <div class="stat-tile"><span class="num" id="stat-sheets">0</span><span class="lbl">Worksheets</span></div>
+            <div class="stat-tile"><span class="num" id="stat-stars">0</span><span class="lbl">Stars earned</span></div>
+            <div class="stat-tile"><span class="num" id="stat-perfect">0</span><span class="lbl">Perfect scores</span></div>
+          </div>
+
+          <section class="save-box no-print" aria-label="Save progress">
+            <div class="txt">
+              <h3 class="display">Save today's practice</h3>
+              <p>Keeps the worksheet name, score and date on this device, so you can watch Kundendu's progress grow.</p>
+            </div>
+            <button id="save-btn" type="button" class="btn-save">💾 Save my score</button>
+          </section>
+
+          <section class="history no-print" aria-label="Saved practice history">
+            <div class="history-head">
+              <h3 class="display">Practice history</h3>
+              <div class="actions">
+                <span id="saved-count" aria-live="polite">0 saved</span>
+                <button id="clear-btn" type="button" class="btn-tiny" hidden>Clear</button>
+              </div>
+            </div>
+            <div id="history-list"></div>
+          </section>
+
+          <footer class="sheet-foot">
+            <span>Little steps make big learning 🌈</span>
+            <span id="skill-note"></span>
+          </footer>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <script>
+    "use strict";
+
+    /* ================= helpers ================= */
+    const $ = id => document.getElementById(id);
+    const rand = n => Math.floor(Math.random() * n);
+    const between = (lo, hi) => lo + rand(hi - lo + 1);
+    const pick = arr => arr[rand(arr.length)];
+
+    function shuffle(arr) {
+      const a = arr.slice();
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = rand(i + 1);
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    const sample = (arr, n) => shuffle(arr).slice(0, Math.min(n, arr.length));
+
+    const ONES = ["zero","one","two","three","four","five","six","seven","eight","nine","ten",
+      "eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen"];
+    const TENS = ["","","twenty","thirty","forty","fifty","sixty","seventy","eighty","ninety"];
+
+    function numWord(n) {
+      if (n < 20) return ONES[n];
+      const t = TENS[Math.floor(n / 10)], o = n % 10;
+      return o ? t + "-" + ONES[o] : t;
+    }
+
+    const numAccept = n => n <= 20 ? [ONES[n]] : [numWord(n)];
+
+    const norm = s => String(s == null ? "" : s).toLowerCase()
+      .replace(/[.।!?,'"“”‘’]/g, " ").replace(/\s+/g, " ").trim();
+    const tight = s => norm(s).replace(/[-\s]/g, "");
+
+    function emojiRow(e, n) {
+      let s = "";
+      for (let i = 1; i <= n; i++) s += e + (i % 5 === 0 ? "  " : " ");
+      return s.trim();
+    }
+
+    function build(count, factory) {
+      const out = [], seen = new Set();
+      let guard = 0;
+      while (out.length < count && guard < 500) {
+        guard++;
+        const q = factory();
+        if (!q) continue;
+        const k = q.prompt + "|" + q.question;
+        if (seen.has(k)) continue;
+        seen.add(k);
+        out.push(q);
+      }
+      return out;
+    }
+
+    const fromBank = (bank, count, map) => sample(bank, count).map(map);
+
+    /* ================= word banks ================= */
+    const WORDS = [
+      ["☀️","sun"],["🐱","cat"],["🐶","dog"],["🚌","bus"],["🖊️","pen"],["🎩","hat"],
+      ["🥤","cup"],["🐷","pig"],["🛏️","bed"],["🦊","fox"],["🪵","log"],["🥅","net"],
+      ["🐀","rat"],["🚐","van"],["🕸️","web"],["🗺️","map"],["🐟","fish"],["⭐","star"],
+      ["🌙","moon"],["🌳","tree"],["🦁","lion"],["🐐","goat"],["💍","ring"],["🪁","kite"],
+      ["🦆","duck"],["🍎","apple"],["⚽","ball"],["🥭","mango"],["🐸","frog"],["🐮","cow"],["🐝","bee"]
+    ];
+
+    const CVC = WORDS.filter(w => w[1].length === 3);
+
+    const RHYMES = [
+      ["🐱","cat","hat","bus"],["🐶","dog","log","cup"],["🌙","moon","spoon","star"],
+      ["🐝","bee","tree","fish"],["⭐","star","car","net"],["🎂","cake","snake","bird"],
+      ["🐭","mouse","house","lion"],["🐐","goat","boat","duck"],["🤴","king","ring","frog"],
+      ["🌃","night","light","goat"],["🔔","bell","shell","kite"],["🐛","bug","rug","pen"],
+      ["🐔","hen","pen","cow"],["🐸","frog","dog","sun"]
+    ];
+
+    const SENTENCES = [
+      "I can play", "I see a bird", "The ball is red", "Kundendu likes mangoes",
+      "We go to school", "The sun is hot", "My dog can run", "I like to read",
+      "The cat sat down", "Birds fly in the sky", "Mum makes hot rotis", "We love our family"
+    ];
+
+    const SIGHT = [
+      ["___ am six years old.", "I", "He", "I"],
+      ["We ___ to school every day.", "go", "goes", "go"],
+      ["She ___ a red kite.", "has", "have", "has"],
+      ["I see ___ elephant.", "a", "an", "an"],
+      ["This is ___ ball.", "a", "an", "a"],
+      ["The cats ___ sleeping.", "is", "are", "are"],
+      ["He ___ my best friend.", "is", "are", "is"],
+      ["I ___ two eyes.", "have", "has", "have"],
+      ["The dog ___ very fast.", "runs", "run", "runs"],
+      ["___ moon shines at night.", "The", "A", "The"]
+    ];
+
+    const OPPOSITES = [
+      ["big","small"],["hot","cold"],["up","down"],["day","night"],["happy","sad"],
+      ["fast","slow"],["tall","short"],["open","shut","closed"],["wet","dry"],["in","out"],
+      ["old","new"],["soft","hard"],["full","empty"],["near","far"]
+    ];
+
+    const HINDI_FIRST = [
+      ["🥭","आम","आ"],["🦉","उल्लू","उ"],["🧶","ऊन","ऊ"],["👓","ऐनक","ऐ"],
+      ["🏠","घर","घ"],["🪷","कमल","क"],["🖊️","कलम","क"],["🐟","मछली","म"],
+      ["🪁","पतंग","प"],["🛶","नाव","न"],["🐮","गाय","ग"],["✈️","जहाज़","ज","जहाज"],
+      ["🍉","तरबूज़","त","तरबूज"],["🦆","बतख","ब","बत्तख"],["🍎","फल","फ"],["🌞","सूरज","स"]
+    ];
+
+    const HINDI_WORDS = [
+      ["🥭","आम"],["🐟","मछली"],["🌸","फूल"],["🐮","गाय"],["🏠","घर"],
+      ["🌙","चाँद","चांद"],["⭐","तारा"],["🍌","केला"],["🐘","हाथी"],["🦋","तितली"],
+      ["🛶","नाव"],["🌳","पेड़","पेड"],["📖","किताब"],["🍎","सेब"],["🪁","पतंग"]
+    ];
+
+    const HINDI_NUMS = [
+      [1,"एक"],[2,"दो"],[3,"तीन"],[4,"चार"],[5,"पाँच","पांच"],[6,"छह","छः","छे"],
+      [7,"सात"],[8,"आठ"],[9,"नौ"],[10,"दस"],[11,"ग्यारह"],[12,"बारह"],[13,"तेरह"],
+      [14,"चौदह"],[15,"पंद्रह","पन्द्रह"],[16,"सोलह"],[17,"सत्रह"],[18,"अठारह","अट्ठारह"],
+      [19,"उन्नीस"],[20,"बीस"]
+    ];
+
+    const HINDI_OPP = [
+      ["दिन","रात"],["छोटा","बड़ा","बडा"],["ऊपर","नीचे"],["अंदर","बाहर"],
+      ["आगे","पीछे"],["ठंडा","गरम","गर्म"],["खुश","दुखी","उदास"],["नया","पुराना"],["पास","दूर"]
+    ];
+
+    const COUNT_EMOJI = ["🍎","⭐","🎈","🌸","🐠","🦋","🍪","⚽","🐞","🌻"];
+
+    const STORY_NAMES = ["Kundendu","Kundendu","Meera","Arjun","Diya","Ravi"];
+    const STORY_ITEMS = [["🎈","balloons"],["🥭","mangoes"],["⚪","marbles"],["✏️","pencils"],["🌸","flowers"],["🪁","kites"],["🍪","biscuits"],["📚","books"]];
+
+    const SHAPES = [
+      ["🔵","circle"],["🔺","triangle"],["🟩","square"],["⭐","star"],["❤️","heart"],["🔷","diamond"]
+    ];
+
+    const SHAPE_FACTS = [
+      ["triangle","sides",3],["triangle","corners",3],["square","sides",4],["square","corners",4],
+      ["rectangle","sides",4],["rectangle","corners",4],["circle","sides",0],["circle","corners",0]
+    ];
+
+    const PATTERN_SETS = [["A","B"],["X","O"],["1","2"],["A","B","C"],["1","2","3"],["C","D"]];
+
+    const LIVING = [
+      ["🐶","dog",true],["🚗","car",false],["🌱","plant",true],["⚽","ball",false],
+      ["🌳","tree",true],["🪨","rock",false],["🐟","fish",true],["🪑","chair",false],
+      ["🐦","bird",true],["🥤","cup",false],["🦋","butterfly",true],["🚌","bus",false],
+      ["🌸","flower",true],["🥄","spoon",false],["🐮","cow",true],["🪁","kite",false]
+    ];
+
+    const HELPERS = [
+      ["Helps us when we are sick","doctor","nurse"],
+      ["Puts out fires","firefighter","fireman"],
+      ["Teaches children at school","teacher"],
+      ["Keeps people safe","police officer","policeman","police"],
+      ["Grows food in the fields","farmer"],
+      ["Brings letters to our home","postman","mailman","postwoman"],
+      ["Cooks tasty food","cook","chef"],
+      ["Cuts and styles hair","barber","hairdresser"],
+      ["Takes care of our teeth","dentist"],
+      ["Stitches our clothes","tailor"],
+      ["Flies an aeroplane","pilot"]
+    ];
+
+    const BODY = [
+      ["see","eyes","eye"],["hear","ears","ear"],["smell things","nose"],["taste food","tongue"],
+      ["walk and run","legs","feet","leg"],["hold and catch","hands","hand"],["chew food","teeth","tooth"],["clap","hands","hand"]
+    ];
+
+    const ANIMALS = [
+      ["baby","🐶 A baby dog is called a…","puppy","pup"],
+      ["baby","🐱 A baby cat is called a…","kitten"],
+      ["baby","🐮 A baby cow is called a…","calf"],
+      ["baby","🐔 A baby hen is called a…","chick"],
+      ["baby","🦁 A baby lion is called a…","cub"],
+      ["baby","🐑 A baby sheep is called a…","lamb"],
+      ["home","🐦 A bird lives in a…","nest"],
+      ["home","🐝 A bee lives in a…","hive","beehive"],
+      ["home","🦁 A lion lives in a…","den"],
+      ["home","🐶 A pet dog sleeps in a…","kennel"],
+      ["home","🐴 A horse lives in a…","stable"],
+      ["home","🐰 A rabbit lives in a…","burrow","hole"],
+      ["sound","🐶 A dog says…","woof","bark","bow wow","barks"],
+      ["sound","🐱 A cat says…","meow","mew"],
+      ["sound","🐮 A cow says…","moo","moos"],
+      ["sound","🦁 A lion…","roars","roar"],
+      ["sound","🦆 A duck says…","quack","quacks"]
+    ];
+
+    /* ================= activities ================= */
+    const A = {};
+
+    A["beginning-sounds"] = {
+      label: "Beginning sounds", title: "Sound Detective",
+      instruction: "Say each word out loud. Which letter does it begin with?",
+      skill: "Skill: beginning sounds & careful listening",
+      gen: (n) => fromBank(WORDS, n, ([e, w]) => ({
+        prompt: e + " " + w,
+        question: "Which letter does it begin with?",
+        answer: w[0], accept: []
+      }))
+    };
+
+    A["ending-sounds"] = {
+      label: "Ending sounds", title: "Last-Sound Hunt",
+      instruction: "Say each word slowly. Which letter does it end with?",
+      skill: "Skill: ending sounds",
+      gen: (n) => fromBank(WORDS, n, ([e, w]) => ({
+        prompt: e + " " + w,
+        question: "Which letter does it end with?",
+        answer: w[w.length - 1], accept: []
+      }))
+    };
+
+    A["cvc-builder"] = {
+      label: "CVC word builder", title: "CVC Word Builder",
+      instruction: "Look, say, stretch — then write the missing letter.",
+      skill: "Skill: phonics, blending & spelling",
+      gen: (n) => fromBank(CVC, n, ([e, w]) => {
+        const i = rand(3);
+        const shown = w.split("").map((ch, k) => k === i ? "_" : ch).join(" ");
+        return { prompt: e + "  " + shown, question: "Write the missing letter.", answer: w[i], accept: [w] };
+      })
+    };
+
+    A["vowel-spot"] = {
+      label: "Spot the vowel", title: "Spot the Vowel",
+      instruction: "Every word hides a vowel: a, e, i, o or u. Find it!",
+      skill: "Skill: vowels inside words",
+      gen: (n) => fromBank(CVC, n, ([e, w]) => ({
+        prompt: e + " " + w,
+        question: "Which vowel is hiding inside?",
+        answer: (w.match(/[aeiou]/) || ["a"])[0], accept: []
+      }))
+    };
+
+    A["rhyme-hunt"] = {
+      label: "Rhyming words", title: "Rhyming Word Hunt",
+      instruction: "Say the word, then choose the word that rhymes with it.",
+      skill: "Skill: hearing ending sounds",
+      gen: (n) => fromBank(RHYMES, n, ([e, w, good, bad]) => {
+        const opts = shuffle([good, bad]);
+        return { prompt: e + " " + w + " — " + opts[0] + " or " + opts[1] + "?", question: "Write the rhyming word.", answer: good, accept: [] };
+      })
+    };
+
+    A["sentence-jumble"] = {
+      label: "Sentence jumble", title: "Sentence Builder",
+      instruction: "The word tiles are mixed up! Write the sentence in the right order.",
+      skill: "Skill: sentence order & capital letters",
+      gen: (n) => fromBank(SENTENCES, n, s => {
+        const words = s.split(" ");
+        let mixed;
+        do { mixed = shuffle(words); } while (mixed.join(" ") === s && words.length > 1);
+        return { prompt: mixed.join(" · ") + " ·", question: "Write the sentence correctly.", answer: s + ".", accept: [s] };
+      })
+    };
+
+    A["sight-words"] = {
+      label: "Fill the blank", title: "Fill in the Blank",
+      instruction: "Choose the correct word from the brackets and write it in.",
+      skill: "Skill: sight words & simple grammar",
+      gen: (n) => fromBank(SIGHT, n, ([s, o1, o2, ans]) => ({
+        prompt: s + "  ( " + o1 + " / " + o2 + " )",
+        question: "Write the correct word.", answer: ans, accept: []
+      }))
+    };
+
+    A["opposites"] = {
+      label: "Opposites", title: "Opposite Words",
+      instruction: "Write the opposite of each word.",
+      skill: "Skill: opposites & vocabulary",
+      gen: (n) => fromBank(OPPOSITES, n, ([w, ans, ...more]) => ({
+        prompt: w, question: "What is the opposite of “" + w + "”?", answer: ans, accept: more
+      }))
+    };
+
+    A["hindi-first-letter"] = {
+      label: "पहला अक्षर लिखो", title: "पहला अक्षर लिखो",
+      instruction: "चित्र देखो, शब्द बोलो, और पहला अक्षर लिखो।",
+      skill: "Skill: हिंदी वर्ण पहचान",
+      gen: (n) => fromBank(HINDI_FIRST, n, ([e, w, ans, ...more]) => ({
+        prompt: e + " " + w, question: "पहला अक्षर लिखो।", answer: ans, accept: more
+      }))
+    };
+
+    A["hindi-picture-word"] = {
+      label: "चित्र से शब्द", title: "चित्र से शब्द",
+      instruction: "चित्र देखो और शब्द लिखो। संकेत: पहला अक्षर दिया है।",
+      skill: "Skill: हिंदी शब्दावली",
+      gen: (n) => fromBank(HINDI_WORDS, n, ([e, w, ...more]) => ({
+        prompt: e + "  ( " + w[0] + " ___ )",
+        question: "चित्र का नाम लिखो।", answer: w, accept: more
+      }))
+    };
+
+    A["hindi-numbers"] = {
+      label: "गिनती के शब्द", title: "गिनती के शब्द",
+      instruction: "संख्या को हिंदी शब्दों में लिखो।",
+      skill: "Skill: हिंदी में गिनती",
+      gen: (n, d) => {
+        const bank = d === "easy" ? HINDI_NUMS.slice(0, 10) : HINDI_NUMS;
+        return fromBank(bank, n, ([num, ans, ...more]) => ({
+          prompt: String(num), question: "इस संख्या को शब्दों में लिखो।", answer: ans, accept: more
+        }));
+      }
+    };
+
+    A["hindi-opposites"] = {
+      label: "उल्टे शब्द", title: "उल्टे शब्द (विलोम)",
+      instruction: "हर शब्द का उल्टा शब्द लिखो।",
+      skill: "Skill: विलोम शब्द",
+      gen: (n) => fromBank(HINDI_OPP, n, ([w, ans, ...more]) => ({
+        prompt: w, question: "“" + w + "” का उल्टा शब्द लिखो।", answer: ans, accept: more
+      }))
+    };
+
+    A["counting"] = {
+      label: "Count the objects", title: "Counting Fun",
+      instruction: "Count carefully and write the number.",
+      skill: "Skill: counting objects",
+      gen: (n, d) => {
+        const range = d === "easy" ? [3, 9] : d === "medium" ? [8, 15] : [12, 20];
+        return build(n, () => {
+          const num = between(range[0], range[1]);
+          const e = pick(COUNT_EMOJI);
+          return { prompt: emojiRow(e, num), question: "How many can you count?", answer: String(num), accept: numAccept(num) };
+        });
+      }
+    };
+
+    A["neighbours"] = {
+      label: "Before, after, between", title: "Number Neighbours",
+      instruction: "Think about the number line, then write the answer.",
+      skill: "Skill: number order",
+      gen: (n, d) => {
+        const hi = d === "easy" ? 20 : d === "medium" ? 50 : 99;
+        return build(n, () => {
+          const kind = pick(["after", "before", "between"]);
+          if (kind === "after") {
+            const x = between(1, hi - 1);
+            return { prompt: x + " , ___", question: "What comes just after " + x + "?", answer: String(x + 1), accept: numAccept(x + 1) };
+          }
+          if (kind === "before") {
+            const x = between(2, hi);
+            return { prompt: "___ , " + x, question: "What comes just before " + x + "?", answer: String(x - 1), accept: numAccept(x - 1) };
+          }
+          const x = between(2, hi - 1);
+          return { prompt: (x - 1) + " , ___ , " + (x + 1), question: "Which number comes in between?", answer: String(x), accept: numAccept(x) };
+        });
+      }
+    };
+
+    A["compare"] = {
+      label: "Bigger or smaller", title: "Bigger or Smaller?",
+      instruction: "Look at both numbers, then write your answer.",
+      skill: "Skill: comparing numbers",
+      gen: (n, d) => {
+        const hi = d === "easy" ? 20 : d === "medium" ? 50 : 99;
+        return build(n, () => {
+          let a = between(1, hi), b = between(1, hi);
+          if (a === b) return null;
+          const bigger = rand(2) === 0;
+          const ans = bigger ? Math.max(a, b) : Math.min(a, b);
+          return {
+            prompt: a + "   or   " + b,
+            question: "Which number is " + (bigger ? "bigger" : "smaller") + "?",
+            answer: String(ans), accept: numAccept(ans)
+          };
+        });
+      }
+    };
+
+    A["tens-ones"] = {
+      label: "Tens and ones", title: "Tens & Ones Houses",
+      instruction: "Break each number into tens and ones (example: 34 → 3 tens and 4 ones).",
+      skill: "Skill: place value",
+      gen: (n, d) => {
+        const range = d === "easy" ? [11, 30] : d === "medium" ? [21, 60] : [41, 99];
+        return build(n, () => {
+          const num = between(range[0], range[1]);
+          const t = Math.floor(num / 10), o = num % 10;
+          return {
+            prompt: String(num),
+            question: "How many tens and ones? (write like: 3 tens and 4 ones)",
+            answer: t + " tens and " + o + (o === 1 ? " one" : " ones"),
+            check: v => {
+              const nums = (String(v).match(/\d+/g) || []).map(Number);
+              return nums.length >= 2 && nums[0] === t && nums[1] === o;
+            }
+          };
+        });
+      }
+    };
+
+    A["number-names"] = {
+      label: "Number names", title: "Number Names",
+      instruction: "Write each number in words.",
+      skill: "Skill: number names",
+      gen: (n, d) => {
+        const range = d === "easy" ? [1, 10] : d === "medium" ? [1, 20] : [21, 99];
+        return build(n, () => {
+          const num = between(range[0], range[1]);
+          const w = numWord(num);
+          return { prompt: String(num), question: "Write this number in words.", answer: w, check: v => tight(v) === tight(w) };
+        });
+      }
+    };
+
+    A["addition"] = {
+      label: "Addition sums", title: "Addition Stars",
+      instruction: "Add the numbers and write the answer.",
+      skill: "Skill: addition",
+      gen: (n, d) => build(n, () => {
+        let a, b;
+        if (d === "easy") { a = between(1, 8); b = between(1, Math.min(9, 10 - a)); }
+        else if (d === "medium") { a = between(2, 15); b = between(1, Math.min(18 - a, 15)); }
+        else { const t1 = between(1, 7), t2 = between(1, 8 - t1), o1 = between(0, 9), o2 = between(0, 9 - o1); a = t1 * 10 + o1; b = t2 * 10 + o2; }
+        if (b < 1) return null;
+        const q = { prompt: a + " + " + b + " = ___", question: "Write the answer.", answer: String(a + b), accept: numAccept(a + b) };
+        if (d === "easy") q.prompt = emojiRow("🔴", a) + "  +  " + emojiRow("🔵", b) + "\n" + a + " + " + b + " = ___";
+        return q;
+      })
+    };
+
+    A["subtraction"] = {
+      label: "Subtraction sums", title: "Take-Away Time",
+      instruction: "Take away and write what is left.",
+      skill: "Skill: subtraction",
+      gen: (n, d) => build(n, () => {
+        let a, b;
+        if (d === "easy") { a = between(2, 10); b = between(1, a - 1); }
+        else if (d === "medium") { a = between(5, 20); b = between(1, a - 1); }
+        else { const t = between(1, 9), o1 = between(1, 9); a = t * 10 + o1; b = between(1, o1); }
+        return { prompt: a + " − " + b + " = ___", question: "Write the answer.", answer: String(a - b), accept: numAccept(a - b) };
+      })
+    };
+
+    A["missing-number"] = {
+      label: "Missing numbers", title: "Find the Missing Number",
+      instruction: "What number hides in the box? Write it in.",
+      skill: "Skill: missing numbers in sums",
+      gen: (n, d) => {
+        const hi = d === "easy" ? 10 : d === "medium" ? 20 : 50;
+        return build(n, () => {
+          const add = rand(2) === 0;
+          if (add) {
+            const c = between(4, hi), a = between(1, c - 1);
+            return { prompt: a + " + ▢ = " + c, question: "What number goes in the box?", answer: String(c - a), accept: numAccept(c - a) };
+          }
+          const a = between(4, hi), b = between(1, a - 1);
+          return { prompt: a + " − ▢ = " + (a - b), question: "What number goes in the box?", answer: String(b), accept: numAccept(b) };
+        });
+      }
+    };
+
+    A["number-bonds"] = {
+      label: "Number bonds", title: "Number Bond Rockets",
+      instruction: "Write TWO numbers that add up to the big number (like 3 + 4 for 7).",
+      skill: "Skill: number bonds",
+      gen: (n, d) => {
+        const range = d === "easy" ? [4, 9] : d === "medium" ? [8, 12] : [11, 20];
+        return build(n, () => {
+          const whole = between(range[0], range[1]);
+          const ex = between(1, whole - 1);
+          return {
+            prompt: "🚀 " + whole,
+            question: "Write two numbers that make " + whole + ".",
+            answer: "any pair that makes " + whole + " (e.g. " + ex + " + " + (whole - ex) + ")",
+            check: v => {
+              const nums = (String(v).match(/\d+/g) || []).map(Number);
+              return nums.length === 2 && nums[0] + nums[1] === whole;
+            }
+          };
+        });
+      }
+    };
+
+    A["story-sums"] = {
+      label: "Story sums", title: "Story Sums",
+      instruction: "Read each little story, then write the answer.",
+      skill: "Skill: maths in real life",
+      gen: (n, d) => {
+        const hi = d === "easy" ? 9 : d === "medium" ? 18 : 20;
+        return build(n, () => {
+          const name = pick(STORY_NAMES), [e, item] = pick(STORY_ITEMS);
+          const add = rand(2) === 0;
+          if (add) {
+            const a = between(2, hi - 2), b = between(1, hi - a);
+            return {
+              prompt: e + " " + name + " has " + a + " " + item + " and gets " + b + " more.",
+              question: "How many " + item + " are there now?",
+              answer: String(a + b), accept: numAccept(a + b)
+            };
+          }
+          const a = between(3, hi), b = between(1, a - 1);
+          return {
+            prompt: e + " " + name + " has " + a + " " + item + ". " + b + " are given away.",
+            question: "How many " + item + " are left?",
+            answer: String(a - b), accept: numAccept(a - b)
+          };
+        });
+      }
+    };
+
+    A["shape-names"] = {
+      label: "Name the shape", title: "Shape Spotter",
+      instruction: "Look at each shape and write its name.",
+      skill: "Skill: naming shapes",
+      gen: (n) => fromBank(SHAPES, n, ([e, name]) => ({
+        prompt: e, question: "What shape is this?", answer: name, accept: []
+      }))
+    };
+
+    A["shape-facts"] = {
+      label: "Sides and corners", title: "Sides & Corners",
+      instruction: "Think about each shape, then write the number.",
+      skill: "Skill: properties of shapes",
+      gen: (n) => fromBank(SHAPE_FACTS, n, ([shape, what, ans]) => ({
+        prompt: shape,
+        question: "How many " + what + " does a " + shape + " have?",
+        answer: String(ans), accept: numAccept(ans)
+      }))
+    };
+
+    A["patterns"] = {
+      label: "What comes next?", title: "Pattern Party",
+      instruction: "Look at the pattern and write what comes next.",
+      skill: "Skill: patterns & thinking",
+      gen: (n, d) => build(n, () => {
+        const tokens = pick(PATTERN_SETS);
+        let unit;
+        if (tokens.length === 3) unit = tokens;
+        else unit = pick(d === "easy" ? [[0,1]] : [[0,1],[0,0,1],[0,1,1]]).map(i => tokens[i]);
+        const seq = [];
+        for (let i = 0; i < 7; i++) seq.push(unit[i % unit.length]);
+        return {
+          prompt: seq.slice(0, 6).join("  ") + "  ___",
+          question: "What comes next in the pattern?",
+          answer: seq[6], accept: []
+        };
+      })
+    };
+
+    A["living-sort"] = {
+      label: "Living or non-living", title: "Living or Non-Living?",
+      instruction: "Write “living” or “non-living” for each one.",
+      skill: "Skill: living & non-living things",
+      gen: (n) => fromBank(LIVING, n, ([e, w, isLiving]) => ({
+        prompt: e + " " + w,
+        question: "Is it living or non-living?",
+        answer: isLiving ? "living" : "non-living",
+        accept: isLiving ? [] : ["non living", "nonliving", "not living"]
+      }))
+    };
+
+    A["helpers"] = {
+      label: "Community helpers", title: "Community Helper Match",
+      instruction: "Read the clue and write which helper it is.",
+      skill: "Skill: people who help us",
+      gen: (n) => fromBank(HELPERS, n, ([clue, ans, ...more]) => ({
+        prompt: clue + ".", question: "Which community helper is this?", answer: ans, accept: more
+      }))
+    };
+
+    A["my-body"] = {
+      label: "My amazing body", title: "My Amazing Body",
+      instruction: "Which body part do we use? Write it in.",
+      skill: "Skill: parts of the body",
+      gen: (n) => fromBank(BODY, n, ([verb, ans, ...more]) => ({
+        prompt: "We use them to " + verb + ".",
+        question: "Which body part is this?", answer: ans, accept: more
+      }))
+    };
+
+    A["animal-world"] = {
+      label: "Animal world", title: "Animal World",
+      instruction: "Animal babies, homes and sounds — write the answer!",
+      skill: "Skill: animals around us",
+      gen: (n) => fromBank(ANIMALS, n, ([kind, q, ans, ...more]) => ({
+        prompt: q, question: kind === "sound" ? "Write the sound." : "Write the word.", answer: ans, accept: more
+      }))
+    };
+
+    /* ================= concepts ================= */
+    const CONCEPTS = [
+      { id: "english-phonics", label: "English · Sounds & phonics", emoji: "🔤", accent: "#e96f4c", accentDeep: "#c85436",
+        activities: ["beginning-sounds", "ending-sounds", "cvc-builder", "vowel-spot"],
+        tip: "Say each sound out loud together — stretch words slowly like a rubber band: c…a…t. Hearing the sounds matters more than neat writing." },
+      { id: "english-reading", label: "English · Reading & words", emoji: "📚", accent: "#3f7ea5", accentDeep: "#2d6284",
+        activities: ["rhyme-hunt", "sentence-jumble", "sight-words", "opposites"],
+        tip: "Read the question aloud first, then let Kundendu try alone. Celebrate brave guesses — that's how readers grow." },
+      { id: "hindi", label: "Hindi · वर्ण और शब्द", emoji: "🪔", accent: "#a3599c", accentDeep: "#84437e",
+        activities: ["hindi-first-letter", "hindi-picture-word", "hindi-numbers", "hindi-opposites"],
+        tip: "बोलकर अभ्यास कराएँ — पहले शब्द बोलें, फिर लिखें। Typing Hindi is tricky, so writing answers on a printed sheet works best." },
+      { id: "maths-numbers", label: "Maths · Number sense", emoji: "🔢", accent: "#1e7d46", accentDeep: "#14522e",
+        activities: ["counting", "neighbours", "compare", "tens-ones", "number-names"],
+        tip: "Use real things — spoons, blocks, toys — to count alongside the worksheet. Fingers are allowed and encouraged!" },
+      { id: "maths-operations", label: "Maths · Add & subtract", emoji: "➕", accent: "#d98324", accentDeep: "#b0651a",
+        activities: ["addition", "subtraction", "missing-number", "number-bonds", "story-sums"],
+        tip: "Start on Easy and only move up when it feels fun. Drawing circles for each number is a great strategy at this age." },
+      { id: "maths-shapes", label: "Maths · Shapes & patterns", emoji: "🔷", accent: "#0e7490", accentDeep: "#0a5468",
+        activities: ["shape-names", "shape-facts", "patterns"],
+        tip: "Go on a shape hunt at home after the worksheet — find circles, squares and triangles in the kitchen!" },
+      { id: "evs", label: "EVS · My world", emoji: "🌍", accent: "#b7455f", accentDeep: "#933349",
+        activities: ["living-sort", "helpers", "my-body", "animal-world"],
+        tip: "Connect answers to real life: point out helpers on the street, animals in books, and talk about what living things need." }
+    ];
+
+    // Mixed-practice pseudo-activity for every subject.
+    CONCEPTS.forEach(c => {
+      const mixId = "mix-" + c.id;
+      const baseActivities = c.activities.slice();
+      const shortLabel = c.label.split("·")[1].trim();
+      A[mixId] = {
+        label: "🎲 Mixed practice", title: "Mixed Practice: " + shortLabel,
+        instruction: "A little bit of everything — read each question carefully!",
+        skill: "Skill: a bit of everything",
+        gen: (n, d) => {
+          let qs = [];
+          baseActivities.forEach(id => { qs = qs.concat(A[id].gen(Math.ceil(n / baseActivities.length) + 1, d)); });
+          return shuffle(qs).slice(0, n);
+        }
+      };
+      c.activities = c.activities.concat(mixId);
+    });
+
+    /* ================= state ================= */
+    let difficulty = "easy";
+    let qCount = 6;
+    let currentQuestions = [];
+    let currentActivity = null;
+
+    /* ================= data backend (local storage; Canva SDK if present) ================= */
+    const backend = (() => {
+      if (typeof window !== "undefined" && window.dataSdk) return window.dataSdk;
+      const KEY = "kundendu-worksheet-attempts";
+      let handler = null;
+      const load = () => { try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch (e) { return []; } };
+      return {
+        __isLocal: true,
+        async init(h) { handler = h; try { h.onDataChanged(load()); } catch (e) {} return { isOk: true }; },
+        async create(rec) {
+          try {
+            const all = load();
+            all.push(Object.assign({}, rec, { __backendId: "local-" + Date.now() + "-" + rand(99999) }));
+            localStorage.setItem(KEY, JSON.stringify(all));
+            if (handler) handler.onDataChanged(load());
+            return { isOk: true };
+          } catch (e) { return { isOk: false }; }
+        },
+        async clear() {
+          try { localStorage.removeItem(KEY); if (handler) handler.onDataChanged([]); return { isOk: true }; }
+          catch (e) { return { isOk: false }; }
+        }
+      };
+    })();
+
+    let backendReady = false;
+
+    /* ================= confetti ================= */
+    function throwConfetti() {
+      const canvas = $("confetti-canvas");
+      const ctx = canvas.getContext("2d");
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      const colors = ["#e96f4c", "#f8c64f", "#3f7ea5", "#1e7d46", "#a3599c", "#0e7490"];
+      const bits = Array.from({ length: 140 }, () => ({
+        x: Math.random() * canvas.width,
+        y: -20 - Math.random() * canvas.height * 0.4,
+        w: 6 + Math.random() * 6,
+        h: 8 + Math.random() * 8,
+        vy: 2.2 + Math.random() * 3.4,
+        vx: -1.4 + Math.random() * 2.8,
+        rot: Math.random() * Math.PI,
+        vr: -0.12 + Math.random() * 0.24,
+        color: colors[rand(colors.length)]
+      }));
+      const started = performance.now();
+      function frame(now) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        bits.forEach(b => {
+          b.x += b.vx; b.y += b.vy; b.rot += b.vr;
+          ctx.save();
+          ctx.translate(b.x, b.y);
+          ctx.rotate(b.rot);
+          ctx.fillStyle = b.color;
+          ctx.fillRect(-b.w / 2, -b.h / 2, b.w, b.h);
+          ctx.restore();
+        });
+        if (now - started < 2600) requestAnimationFrame(frame);
+        else { ctx.clearRect(0, 0, canvas.width, canvas.height); canvas.width = canvas.height = 0; }
+      }
+      requestAnimationFrame(frame);
+    }
+
+    /* ================= UI wiring ================= */
+    const conceptSelect = $("concept-select");
+    const activitySelect = $("activity-select");
+    const qArea = $("q-area");
+    const statusMsg = $("status-message");
+
+    CONCEPTS.forEach(c => {
+      const o = document.createElement("option");
+      o.value = c.id; o.textContent = c.label;
+      conceptSelect.appendChild(o);
+    });
+
+    function currentConcept() {
+      return CONCEPTS.find(c => c.id === conceptSelect.value) || CONCEPTS[0];
+    }
+
+    function applyTheme() {
+      const c = currentConcept();
+      document.documentElement.style.setProperty("--accent", c.accent);
+      document.documentElement.style.setProperty("--accent-deep", c.accentDeep);
+      $("ws-sticker").textContent = c.emoji;
+    }
+
+    function populateActivities() {
+      activitySelect.replaceChildren();
+      currentConcept().activities.forEach(id => {
+        const o = document.createElement("option");
+        o.value = id; o.textContent = A[id].label;
+        activitySelect.appendChild(o);
+      });
+      activitySelect.value = currentConcept().activities[0];
+      $("grownup-tip").textContent = currentConcept().tip;
+    }
+
+    function setStatus(msg) { statusMsg.textContent = msg; }
+
+    /* ---------- generate & render ---------- */
+    function generate() {
+      applyTheme();
+      currentActivity = A[activitySelect.value];
+      currentQuestions = currentActivity.gen(qCount, difficulty);
+      document.body.classList.remove("show-answers");
+      $("key-btn").textContent = "👀 Show answers";
+      $("score-line").textContent = "";
+
+      $("ws-title").textContent = currentActivity.title;
+      $("ws-instruction").textContent = currentActivity.instruction;
+      $("skill-note").textContent = currentActivity.skill;
+
+      const grid = document.createElement("div");
+      grid.className = "q-grid";
+
+      currentQuestions.forEach((q, i) => {
+        const card = document.createElement("div");
+        card.className = "q-card";
+        card.style.animationDelay = (i * 40) + "ms";
+
+        const num = document.createElement("span");
+        num.className = "q-num"; num.textContent = i + 1;
+
+        const prompt = document.createElement("p");
+        prompt.className = "q-prompt";
+        prompt.textContent = q.prompt;
+
+        const text = document.createElement("label");
+        text.className = "q-text";
+        text.htmlFor = "ans-" + i;
+        text.textContent = q.question;
+
+        const input = document.createElement("input");
+        input.className = "q-input"; input.type = "text";
+        input.id = "ans-" + i; input.autocomplete = "off";
+        input.setAttribute("aria-label", "Answer for question " + (i + 1));
+
+        const fb = document.createElement("p");
+        fb.className = "q-feedback"; fb.id = "fb-" + i;
+
+        const rev = document.createElement("p");
+        rev.className = "q-answer";
+        rev.textContent = "Answer: " + q.answer;
+
+        card.append(num, prompt, text, input, fb, rev);
+        grid.appendChild(card);
+      });
+
+      qArea.replaceChildren(grid);
+
+      const keyList = $("answer-key-list");
+      keyList.replaceChildren();
+      currentQuestions.forEach(q => {
+        const li = document.createElement("li");
+        li.textContent = q.answer;
+        keyList.appendChild(li);
+      });
+
+      setStatus("");
+    }
+
+    /* ---------- checking ---------- */
+    function isCorrect(q, value) {
+      const v = norm(value);
+      if (!v) return null;
+      if (q.check) return !!q.check(value);
+      const good = [q.answer].concat(q.accept || []);
+      return good.some(a => norm(a) === v || tight(a) === tight(value));
+    }
+
+    function checkAnswers(silent) {
+      let right = 0, answered = 0;
+      currentQuestions.forEach((q, i) => {
+        const input = $("ans-" + i);
+        const card = input.closest(".q-card");
+        const fb = $("fb-" + i);
+        const result = isCorrect(q, input.value);
+        card.classList.remove("ok", "bad");
+        fb.classList.remove("good", "wrong", "empty");
+        if (result === null) {
+          if (!silent) { fb.textContent = "Not answered yet"; fb.classList.add("empty"); }
+          return;
+        }
+        answered++;
+        if (result) {
+          right++;
+          card.classList.add("ok");
+          if (!silent) { fb.textContent = "✓ Well done!"; fb.classList.add("good"); }
+        } else {
+          card.classList.add("bad");
+          if (!silent) { fb.textContent = "✗ Have another try"; fb.classList.add("wrong"); }
+        }
+      });
+
+      const score = { right, total: currentQuestions.length, answered };
+
+      if (!silent) {
+        const line = $("score-line");
+        if (!answered) {
+          line.textContent = "Write some answers first, then press check! ✏️";
+        } else if (right === score.total) {
+          line.textContent = "Score: " + right + " out of " + score.total + " 🌟🌟🌟 Superstar!";
+          throwConfetti();
+        } else {
+          const cheer = right >= Math.ceil(score.total * 0.7) ? " ⭐⭐ Great work!" :
+            right >= Math.ceil(score.total * 0.4) ? " ⭐ Good trying!" : " 💪 Keep practising!";
+          line.textContent = "Score: " + right + " out of " + score.total + cheer;
+        }
+      }
+      return score;
+    }
+
+    /* ---------- exports ---------- */
+    function plainText(withKey) {
+      const lines = [
+        "Kundendu's Class 1 CBSE Worksheet",
+        currentActivity.title + "  (" + difficulty + ")",
+        currentActivity.instruction,
+        "Name: " + $("student-name").value + "    Date: " + $("ws-date").value,
+        ""
+      ];
+      currentQuestions.forEach((q, i) => {
+        lines.push((i + 1) + ". " + q.prompt.replace(/\n/g, "  "));
+        lines.push("   " + q.question + "  ______________________");
+        lines.push("");
+      });
+      if (withKey) {
+        lines.push("--- Answer key ---");
+        currentQuestions.forEach((q, i) => lines.push((i + 1) + ". " + q.answer));
+      }
+      lines.push("", currentActivity.skill, "Little steps make big learning.");
+      return lines.join("\n");
+    }
+
+    function escapeHtml(s) {
+      return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+
+    function exportWord() {
+      const withKey = document.body.classList.contains("show-answers");
+      const qHtml = currentQuestions.map((q, i) =>
+        '<div style="border:1px solid #bbb;border-radius:10px;padding:12px;margin:10px 0;page-break-inside:avoid;">' +
+        "<p style='font-weight:bold;font-size:15px;margin:0 0 6px;'>" + (i + 1) + ". " + escapeHtml(q.prompt).replace(/\n/g, "<br>") + "</p>" +
+        "<p style='margin:0 0 10px;color:#444;'>" + escapeHtml(q.question) + "</p>" +
+        "<p style='margin:0;'>Answer: ____________________________</p>" +
+        "</div>").join("");
+      const keyHtml = withKey
+        ? "<h3>Answer key</h3><ol>" + currentQuestions.map(q => "<li>" + escapeHtml(q.answer) + "</li>").join("") + "</ol>"
+        : "";
+      const html = "<!doctype html><html><head><meta charset='utf-8'></head>" +
+        "<body style='font-family:Arial,sans-serif;color:#2b3550;padding:24px;'>" +
+        "<h1 style='font-family:Georgia,serif;margin:0;'>Kundendu's Class 1 CBSE Worksheet</h1>" +
+        "<h2 style='font-family:Georgia,serif;margin:8px 0 2px;'>" + escapeHtml(currentActivity.title) + "</h2>" +
+        "<p style='margin:2px 0;'>" + escapeHtml(currentActivity.instruction) + "</p>" +
+        "<p style='margin:2px 0 14px;'>Name: " + escapeHtml($("student-name").value) + " &nbsp;&nbsp; Date: " + escapeHtml($("ws-date").value) + "</p>" +
+        qHtml + keyHtml +
+        "<p><strong>" + escapeHtml(currentActivity.skill) + "</strong></p>" +
+        "</body></html>";
+
+      const safe = currentActivity.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "worksheet";
+      const blob = new Blob(["﻿", html], { type: "application/msword" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url; a.download = "kundendu-" + safe + ".doc";
+      document.body.appendChild(a); a.click(); a.remove();
+      URL.revokeObjectURL(url);
+      setStatus("Word file downloaded" + (withKey ? " (with answer key)." : "."));
+    }
+
+    async function copyForDocs() {
+      const text = plainText(document.body.classList.contains("show-answers"));
+      try {
+        await navigator.clipboard.writeText(text);
+        setStatus("Copied! Opening a new Google Doc — just paste it there.");
+      } catch (e) {
+        setStatus("Could not copy automatically — select the worksheet text and copy it by hand.");
+      }
+      window.open("https://docs.new", "_blank", "noopener,noreferrer");
+    }
+
+    /* ---------- saving & stats ---------- */
+    let savedAttempts = [];
+
+    function renderAttempts(records) {
+      savedAttempts = records.slice().sort((a, b) => new Date(b.submitted_at) - new Date(a.submitted_at));
+      $("saved-count").textContent = savedAttempts.length + " saved";
+      $("clear-btn").hidden = !(backend.__isLocal && savedAttempts.length);
+
+      $("stat-sheets").textContent = savedAttempts.length;
+      $("stat-stars").textContent = savedAttempts.reduce((s, r) => s + (Number(r.score) || 0), 0);
+      $("stat-perfect").textContent = savedAttempts.filter(r => Number(r.score) === Number(r.total) && r.total).length;
+
+      const list = $("history-list");
+      list.replaceChildren();
+      if (!savedAttempts.length) {
+        const p = document.createElement("p");
+        p.style.cssText = "font-size:.85rem;color:var(--muted);margin:10px 0 0;font-weight:600;";
+        p.textContent = "Nothing saved yet — finish a worksheet and press Save my score.";
+        list.appendChild(p);
+        return;
+      }
+      savedAttempts.slice(0, 10).forEach(r => {
+        const row = document.createElement("div");
+        row.className = "attempt-row";
+        const t = document.createElement("span");
+        t.className = "a-title";
+        t.textContent = r.worksheet_type + (r.difficulty ? " · " + r.difficulty : "");
+        const s = document.createElement("span");
+        s.className = "a-score";
+        s.textContent = r.score + "/" + r.total;
+        const d = document.createElement("span");
+        d.className = "a-date";
+        d.textContent = new Date(r.submitted_at).toLocaleDateString("en-GB");
+        row.append(t, s, d);
+        list.appendChild(row);
+      });
+    }
+
+    async function saveAttempt() {
+      if (!backendReady) { setStatus("Saving is not available right now — please try again shortly."); return; }
+      const score = checkAnswers(true);
+      if (!score.answered) { setStatus("Write at least one answer before saving."); return; }
+      const btn = $("save-btn");
+      btn.disabled = true;
+      setStatus("Saving…");
+      const result = await backend.create({
+        worksheet_type: currentActivity.title,
+        difficulty: difficulty,
+        score: score.right,
+        total: score.total,
+        submitted_at: new Date().toISOString()
+      });
+      btn.disabled = false;
+      setStatus(result.isOk ? "Saved! Score " + score.right + "/" + score.total + " added to practice history. 🎉"
+                            : "Could not save — please try again.");
+    }
+
+    /* ---------- events ---------- */
+    conceptSelect.addEventListener("change", () => { populateActivities(); generate(); });
+    activitySelect.addEventListener("change", generate);
+    $("generate-btn").addEventListener("click", generate);
+    $("retry-btn").addEventListener("click", generate);
+
+    $("surprise-btn").addEventListener("click", () => {
+      const c = pick(CONCEPTS);
+      conceptSelect.value = c.id;
+      populateActivities();
+      activitySelect.value = pick(c.activities);
+      generate();
+      setStatus("Surprise! A " + A[activitySelect.value].label.replace("🎲 ", "") + " worksheet appeared. 🎲");
+    });
+
+    document.querySelectorAll("[data-diff]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        difficulty = btn.dataset.diff;
+        document.querySelectorAll("[data-diff]").forEach(b => b.setAttribute("aria-pressed", b === btn ? "true" : "false"));
+        generate();
+      });
+    });
+
+    document.querySelectorAll("[data-count]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        qCount = Number(btn.dataset.count);
+        document.querySelectorAll("[data-count]").forEach(b => b.setAttribute("aria-pressed", b === btn ? "true" : "false"));
+        generate();
+      });
+    });
+
+    $("check-btn").addEventListener("click", () => checkAnswers(false));
+
+    $("key-btn").addEventListener("click", () => {
+      const show = document.body.classList.toggle("show-answers");
+      $("key-btn").textContent = show ? "🙈 Hide answers" : "👀 Show answers";
+    });
+
+    $("pdf-btn").addEventListener("click", () => {
+      setStatus("Choose “Save as PDF” in the print window.");
+      window.print();
+    });
+
+    $("word-btn").addEventListener("click", exportWord);
+    $("docs-btn").addEventListener("click", copyForDocs);
+    $("save-btn").addEventListener("click", saveAttempt);
+
+    $("clear-btn").addEventListener("click", async () => {
+      if (!backend.clear) return;
+      if (!window.confirm("Clear all saved practice history? This cannot be undone.")) return;
+      await backend.clear();
+      setStatus("Practice history cleared.");
+    });
+
+    $("student-name").addEventListener("change", () => {
+      try { localStorage.setItem("kundendu-student-name", $("student-name").value); } catch (e) {}
+    });
+
+    /* ---------- init ---------- */
+    $("ws-date").value = new Date().toLocaleDateString("en-GB");
+    try {
+      const savedName = localStorage.getItem("kundendu-student-name");
+      if (savedName) $("student-name").value = savedName;
+    } catch (e) {}
+
+    populateActivities();
+    generate();
+
+    backend.init({ onDataChanged: renderAttempts }).then(r => {
+      backendReady = !!(r && r.isOk);
+      if (!backendReady) setStatus("Practice history is unavailable right now.");
+    }).catch(() => { backendReady = false; });
+  </script>
+</body>
+</html>
