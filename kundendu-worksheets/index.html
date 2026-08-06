@@ -35,6 +35,8 @@
 
     * { box-sizing: border-box; }
 
+    [hidden] { display: none !important; }
+
     html, body { width: 100%; margin: 0; }
 
     body {
@@ -95,6 +97,197 @@
     .write-line:last-child { border-bottom-color: #9fb4c4; }
 
     .trace-hint { margin: 8px 0 0; font-size: .95rem; font-weight: 800; color: #486f87; }
+
+    /* ---------- sound / speaker ---------- */
+    .say-btn {
+      position: absolute; top: 10px; right: 10px;
+      display: inline-grid; place-items: center;
+      width: 34px; height: 34px; border-radius: 999px;
+      border: 2px solid #c9d8e2; background: #fff;
+      font-size: 15px; line-height: 1;
+      transition: transform .12s ease, border-color .12s ease;
+    }
+
+    .say-btn:hover { transform: scale(1.08); border-color: var(--accent); }
+    .say-btn.talking { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, #fff); }
+
+    .dictate-hero {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      margin: 10px 0 4px; padding: 18px 12px;
+      border-radius: 14px; border: 2px dashed #c9d8e2; background: #fbfdfe;
+      font-weight: 800; color: #486f87; font-size: .95rem;
+      cursor: pointer; transition: background .15s ease;
+    }
+
+    .dictate-hero:hover { background: #f1f8fc; }
+    .dictate-hero .big { font-size: 28px; }
+
+    /* ---------- stroke animation + on-screen tracing ---------- */
+    .trace-tools { display: flex; gap: 8px; margin-top: 8px; }
+
+    .chip-btn {
+      padding: .32rem .7rem; border: 2px solid #c9d8e2; border-radius: 999px;
+      background: #fff; font-size: .78rem; font-weight: 800;
+    }
+
+    .chip-btn:hover { border-color: var(--accent); }
+    .chip-btn[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
+
+    .stroke-stage { display: none; margin-top: 8px; text-align: center; }
+    .stroke-stage.open { display: block; }
+    .stroke-stage svg { width: 110px; height: 110px; }
+
+    .trace-canvas-wrap { display: none; margin-top: 8px; position: relative; }
+    .trace-canvas-wrap.open { display: block; }
+
+    .trace-canvas {
+      width: 100%; height: 150px; display: block;
+      border: 2px dashed #c9d8e2; border-radius: 12px;
+      background: #fdfefe; touch-action: none; cursor: crosshair;
+    }
+
+    /* ---------- Today's 5 ---------- */
+    .btn-daily {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%; padding: .7rem 1rem; margin-bottom: 12px;
+      border: 0; border-radius: 14px;
+      background: linear-gradient(135deg, #3f7ea5, #5b9cc2);
+      color: #fff; font-weight: 800; font-size: .96rem;
+      font-family: "Baloo 2", sans-serif;
+      box-shadow: 0 3px 0 #2d6284;
+      transition: transform .12s ease;
+    }
+
+    .btn-daily:hover { transform: translateY(-1px); }
+
+    /* ---------- nudge ---------- */
+    .nudge-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: .5rem .9rem; border: 2px solid #f2dfa0; border-radius: 999px;
+      background: #fff4cf; font-weight: 800; font-size: .84rem;
+      animation: rise .3s ease both;
+    }
+
+    .nudge-btn:hover { background: #ffedb3; }
+
+    /* ---------- insights ---------- */
+    .insights summary {
+      cursor: pointer; font-weight: 800; font-size: .9rem;
+      color: #4a6076; list-style: none;
+    }
+
+    .insights summary::before { content: "▸ "; }
+    .insights[open] summary::before { content: "▾ "; }
+
+    .insight-row { display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: .78rem; font-weight: 800; }
+    .insight-row .lbl { flex: 0 0 92px; min-width: 0; overflow-wrap: anywhere; }
+
+    .insight-bar { flex: 1; height: 10px; border-radius: 999px; background: #eee3c8; overflow: hidden; }
+    .insight-bar > span { display: block; height: 100%; border-radius: 999px; background: var(--green); }
+    .insight-row .pct { flex: 0 0 38px; text-align: right; color: var(--muted); }
+
+    .practise-next { margin: 10px 0 0; font-size: .82rem; font-weight: 800; color: #8a5a18; }
+
+    /* ---------- badges ---------- */
+    #badge-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+
+    .badge-chip {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 3px 10px; border-radius: 999px;
+      background: #fff4cf; border: 1px solid #f2dfa0;
+      font-size: .72rem; font-weight: 800;
+    }
+
+    /* ---------- flashcards ---------- */
+    #flash-overlay[hidden] { display: none; }
+
+    #flash-overlay {
+      position: fixed; inset: 0; z-index: 60;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 14px; padding: 16px;
+      background: rgba(246, 236, 217, .97);
+      backdrop-filter: blur(3px);
+    }
+
+    .flash-top {
+      position: absolute; top: 12px; left: 16px; right: 12px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    #flash-progress { font-weight: 800; font-size: .9rem; color: var(--muted); }
+
+    #flash-exit {
+      width: 40px; height: 40px; border-radius: 999px;
+      border: 2px solid #c9b68a; background: #fff; font-weight: 800; font-size: 1rem;
+    }
+
+    .flash-card {
+      width: min(92vw, 560px);
+      min-height: min(52dvh, 360px);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 12px; padding: 26px 22px; position: relative;
+      background: #fff; border-radius: 26px;
+      border: 2px solid #e3d5b3;
+      box-shadow: 0 18px 50px rgba(83,60,26,.22);
+      cursor: pointer; text-align: center;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .flash-word {
+      font-family: "Baloo 2", "Nunito", sans-serif;
+      font-size: clamp(1.9rem, 7vw, 3.2rem);
+      font-weight: 800; line-height: 1.25;
+      letter-spacing: .02em; overflow-wrap: anywhere;
+    }
+
+    .flash-sub { font-size: clamp(.9rem, 3vw, 1.1rem); font-weight: 700; color: #486f87; }
+
+    .flash-card .li { height: clamp(64px, 16dvh, 110px); vertical-align: middle; }
+
+    .flash-answer { color: var(--green); }
+
+    .flash-hint { margin: 0; font-size: .82rem; font-weight: 800; color: var(--muted); }
+
+    .flash-actions { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+
+    .flash-actions button {
+      padding: .8rem 1.3rem; border: 0; border-radius: 14px;
+      font-weight: 800; font-size: 1rem; font-family: "Baloo 2", sans-serif;
+    }
+
+    #flash-again { background: #fff4cf; border: 2px solid #f2dfa0; }
+    #flash-got { background: var(--green); color: #fff; box-shadow: 0 3px 0 #14522e; }
+
+    @media (orientation: landscape) and (max-height: 540px) {
+      .page-header { padding: 10px 0 8px; }
+      .page-header h1 { font-size: 1.7rem; }
+      .page-header .subtitle { display: none; }
+      .panel { position: static; }
+      #flash-overlay { flex-direction: row; flex-wrap: wrap; align-content: center; gap: 10px; }
+      .flash-card { min-height: min(72dvh, 300px); padding: 16px; }
+      .flash-card .li { height: clamp(48px, 26dvh, 90px); }
+      .flash-word { font-size: clamp(1.5rem, 5.5vh, 2.4rem); }
+      .flash-hint { flex-basis: 100%; text-align: center; }
+    }
+
+    /* ---------- weekly pack (print only) ---------- */
+    #pack-root { display: none; }
+
+    body.packing #pack-root { display: block; }
+
+    @media print {
+      body.packing > header, body.packing > main { display: none !important; }
+      body.packing #pack-root { display: block; }
+      .pack-page { page-break-after: always; padding: 0 2mm; }
+      .pack-page:last-child { page-break-after: auto; }
+      .pack-page h2 { font-family: "Baloo 2", sans-serif; border-bottom: 3px solid #2b3550; padding-bottom: 6px; }
+      .pack-q { border: 1px solid #999; border-radius: 10px; padding: 10px 12px; margin: 10px 0; break-inside: avoid; }
+      .pack-q .pq-prompt { font-weight: 800; font-size: 1.05rem; margin: 0 0 4px; }
+      .pack-q .pq-line { border-bottom: 2px solid #333; height: 34px; }
+      .pack-q .pq-tracetext { font-size: 2.6rem; color: #bbb; letter-spacing: .12em; border-bottom: 2px solid #333; }
+      .pack-q .pq-drawbox { border: 2px dashed #999; height: 150px; border-radius: 10px; margin-top: 6px; }
+      .pack-key { font-size: .9rem; line-height: 1.9; }
+    }
 
     button:focus-visible, input:focus-visible, select:focus-visible {
       outline: 3px solid var(--ink);
@@ -540,6 +733,8 @@
     <aside class="panel no-print" aria-label="Worksheet controls">
       <h2 class="display">Build a worksheet</h2>
 
+      <button id="daily-btn" type="button" class="btn-daily">⭐ Today's 5 — tiny daily practice</button>
+
       <div class="control">
         <label class="control-label" for="concept-select">Subject &amp; topic</label>
         <select id="concept-select" class="field"></select>
@@ -571,12 +766,14 @@
 
       <button id="generate-btn" type="button" class="btn-primary">✨ Make my worksheet</button>
       <button id="surprise-btn" type="button" class="btn-surprise">🎲 Surprise me!</button>
+      <button id="add-poem-btn" type="button" class="btn-ghost" style="margin-top:8px;" hidden>➕ Add his poem</button>
 
       <section class="panel-section" aria-label="Export">
         <h3 class="display">Print &amp; share</h3>
         <button id="pdf-btn" type="button" class="btn-ghost">🖨️ Print / save as PDF</button>
         <button id="word-btn" type="button" class="btn-ghost">📄 Download for Word</button>
         <button id="docs-btn" type="button" class="btn-ghost">📋 Copy for Google Docs</button>
+        <button id="pack-btn" type="button" class="btn-ghost">🗂️ Print a weekly pack</button>
         <button id="install-btn" type="button" class="btn-ghost" hidden>📲 Install as an app</button>
         <p id="status-message" aria-live="polite"></p>
       </section>
@@ -584,6 +781,11 @@
       <section class="panel-section" aria-label="Tip for grown-ups">
         <h3 class="display">For grown-ups 💛</h3>
         <p class="tip-text" id="grownup-tip"></p>
+        <details class="insights" id="insights-box" style="margin-top:12px;">
+          <summary>Progress insights</summary>
+          <div id="insight-rows"></div>
+          <p class="practise-next" id="practise-next"></p>
+        </details>
       </section>
     </aside>
 
@@ -612,9 +814,11 @@
 
           <div class="check-bar no-print">
             <button id="check-btn" type="button" class="btn-check">✅ Check my answers</button>
+            <button id="flash-btn" type="button" class="btn-soft">🃏 Flashcards</button>
             <button id="retry-btn" type="button" class="btn-soft">🔁 New questions</button>
             <button id="key-btn" type="button" class="btn-soft">👀 Show answers</button>
             <p id="score-line"></p>
+            <span id="nudge-slot"></span>
           </div>
 
           <section id="answer-key" aria-label="Answer key">
@@ -622,10 +826,11 @@
             <ol id="answer-key-list"></ol>
           </section>
 
-          <div class="stats-row no-print" aria-label="Practice statistics">
+          <div class="stats-row no-print" style="grid-template-columns:repeat(4,minmax(0,1fr));" aria-label="Practice statistics">
             <div class="stat-tile"><span class="num" id="stat-sheets">0</span><span class="lbl">Worksheets</span></div>
             <div class="stat-tile"><span class="num" id="stat-stars">0</span><span class="lbl">Stars earned</span></div>
             <div class="stat-tile"><span class="num" id="stat-perfect">0</span><span class="lbl">Perfect scores</span></div>
+            <div class="stat-tile"><span class="num" id="stat-streak">0</span><span class="lbl">Day streak 🔥</span></div>
           </div>
 
           <section class="save-box no-print" aria-label="Save progress">
@@ -645,6 +850,7 @@
               </div>
             </div>
             <div id="history-list"></div>
+            <div id="badge-row" aria-label="Badges earned"></div>
           </section>
 
           <footer class="sheet-foot">
@@ -656,6 +862,33 @@
       </article>
     </section>
   </main>
+
+  <div id="pack-root" aria-hidden="true"></div>
+
+  <dialog id="poem-dialog" style="max-width:480px;width:92vw;border:2px solid #dbc8a3;border-radius:20px;padding:20px;background:var(--cream);">
+    <h3 class="display" style="margin:0 0 4px;">📜 Kundendu's poems</h3>
+    <p style="margin:0 0 12px;font-size:.84rem;color:var(--muted);font-weight:600;">Type or paste a poem from his NCERT book. It stays on this device only.</p>
+    <div id="poem-list" style="margin-bottom:12px;"></div>
+    <input id="poem-title" class="field" placeholder="Poem title (e.g. Two Little Hands)" style="margin-bottom:8px;">
+    <textarea id="poem-text" class="field" rows="6" placeholder="Type the poem here, one line per line…" style="resize:vertical;font-family:inherit;"></textarea>
+    <div style="display:flex;gap:8px;margin-top:12px;justify-content:flex-end;">
+      <button id="poem-cancel" type="button" class="btn-soft">Close</button>
+      <button id="poem-save" type="button" class="btn-check">💾 Save poem</button>
+    </div>
+  </dialog>
+
+  <div id="flash-overlay" hidden role="dialog" aria-label="Flashcards">
+    <div class="flash-top">
+      <span id="flash-progress"></span>
+      <button id="flash-exit" type="button" aria-label="Close flashcards">✕</button>
+    </div>
+    <div class="flash-card" id="flash-card" tabindex="0" aria-live="polite"></div>
+    <p class="flash-hint" id="flash-hint">Tap the card to see the answer</p>
+    <div class="flash-actions" id="flash-actions" hidden>
+      <button id="flash-again" type="button">🔁 Practise again</button>
+      <button id="flash-got" type="button">😃 Got it!</button>
+    </div>
+  </div>
 
   <script>
     "use strict";
@@ -732,6 +965,146 @@
       if (last < String(text).length) el.appendChild(document.createTextNode(String(text).slice(last)));
     }
 
+    /* ---------- text-to-speech ---------- */
+    const ttsOK = "speechSynthesis" in window;
+
+    function speak(text, lang, onEnd) {
+      if (!ttsOK || !text) { if (onEnd) onEnd(); return; }
+      try {
+        speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = lang || "en-IN";
+        u.rate = 0.82;
+        u.onend = () => { if (onEnd) onEnd(); };
+        speechSynthesis.speak(u);
+      } catch (e) { if (onEnd) onEnd(); }
+    }
+
+    // Turn a question prompt into something worth hearing.
+    function speakable(q) {
+      if (q.say) return q.say;
+      return String(q.prompt)
+        .replace(EMOJI_RE, " ")
+        .replace(/\+/g, " plus ").replace(/[−-]/g, " minus ").replace(/[=▢_·—]/g, " ")
+        .replace(/\s+/g, " ").trim();
+    }
+
+    /* ---------- uppercase letter strokes (school order, 100×100 grid) ---------- */
+    const STROKES = {
+      A: [[[15,90],[50,10]],[[50,10],[85,90]],[[30,58],[70,58]]],
+      B: [[[22,10],[22,90]],[[22,10],[58,10],[73,20],[73,34],[58,48],[22,48]],[[22,48],[62,48],[78,60],[78,76],[62,90],[22,90]]],
+      C: [[[80,26],[64,12],[44,10],[26,20],[16,40],[16,60],[26,80],[44,90],[64,88],[80,74]]],
+      D: [[[22,10],[22,90]],[[22,10],[54,10],[74,24],[81,50],[74,76],[54,90],[22,90]]],
+      E: [[[74,10],[22,10],[22,90],[74,90]],[[22,50],[64,50]]],
+      F: [[[74,10],[22,10],[22,90]],[[22,50],[64,50]]],
+      G: [[[80,26],[62,11],[38,11],[20,28],[15,52],[21,76],[43,90],[66,87],[80,72],[80,56],[56,56]]],
+      H: [[[22,10],[22,90]],[[78,10],[78,90]],[[22,50],[78,50]]],
+      I: [[[32,10],[68,10]],[[50,10],[50,90]],[[32,90],[68,90]]],
+      J: [[[70,10],[70,68],[60,86],[42,90],[29,81],[26,68]]],
+      K: [[[22,10],[22,90]],[[78,12],[24,54]],[[42,42],[80,90]]],
+      L: [[[24,10],[24,90],[76,90]]],
+      M: [[[16,90],[16,10],[50,62],[84,10],[84,90]]],
+      N: [[[22,90],[22,10],[78,90],[78,10]]],
+      O: [[[50,10],[29,17],[16,38],[16,62],[29,83],[50,90],[71,83],[84,62],[84,38],[71,17],[50,10]]],
+      P: [[[22,10],[22,90]],[[22,10],[58,10],[76,22],[76,38],[58,52],[22,52]]],
+      Q: [[[50,10],[29,17],[16,38],[16,62],[29,83],[50,90],[71,83],[84,62],[84,38],[71,17],[50,10]],[[60,66],[85,92]]],
+      R: [[[22,10],[22,90]],[[22,10],[58,10],[76,22],[76,38],[58,52],[22,52]],[[44,52],[80,90]]],
+      S: [[[77,21],[59,10],[37,10],[24,22],[28,38],[46,48],[63,56],[75,67],[71,82],[54,90],[32,90],[21,79]]],
+      T: [[[16,10],[84,10]],[[50,10],[50,90]]],
+      U: [[[22,10],[22,64],[31,84],[50,90],[69,84],[78,64],[78,10]]],
+      V: [[[16,10],[50,90],[84,10]]],
+      W: [[[11,10],[30,90],[50,32],[70,90],[89,10]]],
+      X: [[[19,10],[81,90]],[[81,10],[19,90]]],
+      Y: [[[16,10],[50,52]],[[84,10],[50,52],[50,90]]],
+      Z: [[[19,10],[81,10],[19,90],[81,90]]]
+    };
+
+    function buildStrokeSVG(letter) {
+      const strokes = STROKES[letter];
+      if (!strokes) return null;
+      const NS = "http://www.w3.org/2000/svg";
+      const svg = document.createElementNS(NS, "svg");
+      svg.setAttribute("viewBox", "0 0 100 100");
+      const mk = (pts, cls) => {
+        const p = document.createElementNS(NS, "polyline");
+        p.setAttribute("points", pts.map(pt => pt.join(",")).join(" "));
+        p.setAttribute("fill", "none");
+        p.setAttribute("stroke-linecap", "round");
+        p.setAttribute("stroke-linejoin", "round");
+        p.setAttribute("stroke-width", "9");
+        p.setAttribute("stroke", cls === "ghost" ? "#dde6ec" : "var(--accent)");
+        return p;
+      };
+      strokes.forEach(s => svg.appendChild(mk(s, "ghost")));
+      const anim = strokes.map(s => { const p = mk(s, "ink"); svg.appendChild(p); return p; });
+      svg.__play = () => {
+        let delay = 0;
+        anim.forEach(p => {
+          const len = p.getTotalLength();
+          p.style.transition = "none";
+          p.style.strokeDasharray = len;
+          p.style.strokeDashoffset = len;
+          void p.getBoundingClientRect();
+          p.style.transition = "stroke-dashoffset " + (len * 14) + "ms ease " + delay + "ms";
+          p.style.strokeDashoffset = "0";
+          delay += len * 14 + 220;
+        });
+      };
+      return svg;
+    }
+
+    /* ---------- on-screen finger tracing ---------- */
+    function attachTraceCanvas(wrap, ghostText) {
+      const canvas = document.createElement("canvas");
+      canvas.className = "trace-canvas";
+      wrap.appendChild(canvas);
+      const clear = document.createElement("button");
+      clear.type = "button";
+      clear.className = "chip-btn";
+      clear.textContent = "🧽 Clear";
+      clear.style.cssText = "position:absolute;top:8px;right:8px;";
+      wrap.appendChild(clear);
+
+      function paintGhost() {
+        const r = wrap.getBoundingClientRect();
+        canvas.width = Math.max(260, r.width) * 2;
+        canvas.height = 300;
+        canvas.style.height = "150px";
+        const ctx = canvas.getContext("2d");
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "#dfe8ee";
+        ctx.font = "800 " + Math.min(200, canvas.width / (ghostText.length * 0.62)) + "px 'Baloo 2', sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(ghostText, canvas.width / 2, canvas.height / 2 + 8);
+        ctx.strokeStyle = "#e96f4c";
+        ctx.lineWidth = 7;
+        ctx.lineCap = ctx.lineJoin = "round";
+      }
+
+      let drawing = false;
+      const pos = e => {
+        const r = canvas.getBoundingClientRect();
+        return [(e.clientX - r.left) * (canvas.width / r.width), (e.clientY - r.top) * (canvas.height / r.height)];
+      };
+      canvas.addEventListener("pointerdown", e => {
+        drawing = true;
+        canvas.setPointerCapture(e.pointerId);
+        const ctx = canvas.getContext("2d");
+        const [x, y] = pos(e);
+        ctx.beginPath(); ctx.moveTo(x, y);
+      });
+      canvas.addEventListener("pointermove", e => {
+        if (!drawing) return;
+        const ctx = canvas.getContext("2d");
+        const [x, y] = pos(e);
+        ctx.lineTo(x, y); ctx.stroke();
+      });
+      canvas.addEventListener("pointerup", () => { drawing = false; });
+      clear.addEventListener("click", paintGhost);
+      requestAnimationFrame(paintGhost);
+    }
+
     function build(count, factory) {
       const out = [], seen = new Set();
       let guard = 0;
@@ -771,7 +1144,8 @@
     const SENTENCES = [
       "I can play", "I see a bird", "The ball is red", "Kundendu likes mangoes",
       "We go to school", "The sun is hot", "My dog can run", "I like to read",
-      "The cat sat down", "Birds fly in the sky", "Mum makes hot rotis", "We love our family"
+      "The cat sat down", "Birds fly in the sky", "Ma makes hot rotis", "We love our family",
+      "We fly kites on the roof", "Nani tells me a story"
     ];
 
     const SIGHT = [
@@ -821,7 +1195,7 @@
     const COUNT_EMOJI = ["🍎","⭐","🎈","🌸","🐠","🦋","🍪","⚽","🐞","🌻"];
 
     const STORY_NAMES = ["Kundendu","Kundendu","Meera","Arjun","Diya","Ravi"];
-    const STORY_ITEMS = [["🎈","balloons"],["🥭","mangoes"],["⚪","marbles"],["✏️","pencils"],["🌸","flowers"],["🪁","kites"],["🍪","biscuits"],["📚","books"]];
+    const STORY_ITEMS = [["🎈","balloons"],["🥭","mangoes"],["⚪","marbles"],["✏️","pencils"],["🌸","flowers"],["🪁","kites"],["🍪","biscuits"],["📚","books"],["🍬","toffees"],["🪔","diyas"]];
 
     const SHAPES = [
       ["🔵","circle"],["🔺","triangle"],["🟩","square"],["⭐","star"],["❤️","heart"],["🔷","diamond"]
@@ -852,7 +1226,8 @@
       ["Cuts and styles hair","barber","hairdresser"],
       ["Takes care of our teeth","dentist"],
       ["Stitches our clothes","tailor"],
-      ["Flies an aeroplane","pilot"]
+      ["Flies an aeroplane","pilot"],
+      ["Drives the auto-rickshaw","auto driver","driver","auto-rickshaw driver","rickshaw driver","auto rickshaw driver"]
     ];
 
     const BODY = [
@@ -887,10 +1262,110 @@
       ["य"],["र"],["ल"],["व"],["श","🦁 शेर"],["स","🌞 सूरज"],["ह","🐘 हाथी"]
     ];
 
+    const STORIES = [
+      ["The cat sat on a mat. The cat is big.", "Who sat on the mat?", "cat", "the cat", "a cat"],
+      ["I see a red bus. The bus can go fast.", "What colour is the bus?", "red"],
+      ["A hen is in the pen. The hen has ten eggs.", "How many eggs does the hen have?", "ten", "10"],
+      ["The dog dug in the mud. The dog got wet.", "Where did the dog dig?", "mud", "in the mud", "the mud"],
+      ["Kundendu has a kite. The kite is up in the sky.", "What does Kundendu have?", "kite", "a kite"],
+      ["The sun is hot. We sip cold milk.", "What do we sip?", "milk", "cold milk"],
+      ["A fox sits on a log. A bug sits on the fox.", "Who sits on the log?", "fox", "the fox", "a fox"],
+      ["Ma has a red pen. I can see the pen.", "Who has a pen?", "ma", "mum", "mom", "mother"],
+      ["We run to the big tree. The tree has a nest.", "What is in the tree?", "nest", "a nest"],
+      ["The bee is on a red flower. The bee can buzz.", "Where is the bee?", "flower", "on a flower", "on the flower", "on a red flower"],
+      ["Papa and I hop and run. It is fun to play.", "What is fun?", "to play", "play", "playing"],
+      ["Ma makes hot rotis. Kundendu eats one roti.", "What does Ma make?", "rotis", "roti", "hot rotis"],
+      ["We ride in an auto. The auto can zip and beep.", "What do we ride in?", "auto", "an auto", "the auto"],
+      ["Nani tells me a story at night. I love Nani.", "Who tells the story?", "nani", "my nani"],
+      ["The peacock dances in the rain. It has a big tail.", "Who dances in the rain?", "peacock", "the peacock", "a peacock"]
+    ];
+
+    const HINDI_MATRA = [
+      ["🍌","क_ला","केला"],["📖","क_ताब","किताब"],["🌸","फ_ल","फूल"],["🦚","म_र","मोर"],
+      ["🦁","श_र","शेर"],["🪔","द_या","दीया","दिया"],["🧵","ध_गा","धागा"],["🌙","च_ँद","चाँद","चांद"],
+      ["🐭","च_हा","चूहा"],["🍵","च_य","चाय"],["🐘","हाथ_","हाथी"],["🛶","न_व","नाव"],
+      ["⭐","त_रा","तारा"],["🏫","स्क_ल","स्कूल"]
+    ];
+
+    const MEASURE = [
+      ["🚌 bus  or  ✏️ pencil","Which one is longer?","bus","the bus"],
+      ["🐘 elephant  or  🐭 mouse","Which one is heavier?","elephant","the elephant"],
+      ["🦒 giraffe  or  🐐 goat","Which one is taller?","giraffe","the giraffe"],
+      ["🪶 feather  or  🪨 rock","Which one is lighter?","feather","the feather"],
+      ["🐜 ant  or  🐘 elephant","Which one is smaller?","ant","the ant"],
+      ["🥤 cup  or  🪣 bucket","Which one holds more water?","bucket","the bucket"],
+      ["🧵 thread  or  🪢 rope","Which one is thicker?","rope","the rope"],
+      ["🏠 house  or  ⛺ tent","Which one is bigger?","house","the house"],
+      ["🚲 cycle  or  ✈️ aeroplane","Which one is faster?","aeroplane","plane","the aeroplane"],
+      ["🌳 tree  or  🌱 plant","Which one is taller?","tree","the tree"]
+    ];
+
+    const DAYS = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+
+    const TIME_FACTS = [
+      ["🌅","The sun rises in the ___ . (morning / night)","morning"],
+      ["🌙","We see the moon and stars at ___ . (night / morning)","night"],
+      ["🍱","We eat lunch in the ___ . (afternoon / night)","afternoon"],
+      ["🪥","We brush our teeth after waking up in the ___ . (morning / afternoon)","morning"],
+      ["😴","We sleep at ___ . (night / afternoon)","night"],
+      ["📅","How many days are there in one week?","7","seven"],
+      ["🗓️","How many months are there in one year?","12","twelve"]
+    ];
+
+    const ODD_ONE_OUT = [
+      ["🍎 🍌 🥭 🚗","car","the car","a car"],
+      ["🐶 🐱 🐮 🌸","flower","the flower"],
+      ["✏️ 📏 📚 🐟","fish","the fish"],
+      ["🔵 🔺 🟩 🥭","mango","the mango"],
+      ["🚌 🚗 🛺 🍪","biscuit","the biscuit","cookie"],
+      ["👁️ 👂 👃 ⚽","ball","the ball"],
+      ["🥕 🥔 🍅 ⭐","star","the star"],
+      ["☀️ 🌙 ⭐ 🐔","hen","the hen"],
+      ["🪁 🎈 ⚽ 🐘","elephant","the elephant"],
+      ["🐟 🦆 🛶 🌳","tree","the tree"],
+      ["🍬 🍪 🥭 📏","ruler","the ruler","scale"],
+      ["🔊 🎵 🥁 🪑","chair","the chair"]
+    ];
+
+    const RIDDLES = [
+      ["I have four legs. I say moo. Who am I?","cow","a cow"],
+      ["I am yellow and long. Monkeys love me!","banana","a banana"],
+      ["I shine at night and change my shape.","moon","the moon"],
+      ["I have wings and I make sweet honey.","bee","a bee","honeybee"],
+      ["I am round. You kick me and I fly!","ball","a ball","football"],
+      ["I fall from the clouds. Plants drink me.","rain","water"],
+      ["I have a long trunk and big ears.","elephant","an elephant"],
+      ["I go tick-tock and show you the time.","clock","a clock","watch"],
+      ["I am called the king of the jungle.","lion","a lion"],
+      ["You write with me. I have a sharp tip.","pencil","a pencil","pen"],
+      ["I have three wheels and carry people. Beep beep!","auto","auto-rickshaw","rickshaw","an auto","auto rickshaw"],
+      ["I dance in the rain with my beautiful tail.","peacock","a peacock"],
+      ["I am white. You drink me to grow strong.","milk"],
+      ["I have pages and tell you stories.","book","a book"]
+    ];
+
+    const RHYME_FILL = [
+      ["Twinkle Twinkle","Twinkle, twinkle, little ___ ,\nhow I wonder what you are!","star"],
+      ["Twinkle Twinkle","Up above the world so high,\nlike a diamond in the ___ .","sky"],
+      ["Baa Baa Black Sheep","Baa, baa, black sheep,\nhave you any ___ ?","wool"],
+      ["Humpty Dumpty","Humpty Dumpty sat on a ___ ,\nHumpty Dumpty had a great fall.","wall"],
+      ["Jack and Jill","Jack and Jill went up the ___\nto fetch a pail of water.","hill"],
+      ["Jack and Jill","Jack and Jill went up the hill\nto fetch a pail of ___ .","water"],
+      ["Rain Rain Go Away","Rain, rain, go away,\ncome again another ___ .","day"],
+      ["Row Your Boat","Row, row, row your ___\ngently down the stream.","boat"],
+      ["One Two Buckle My Shoe","One, two, buckle my ___ ;\nthree, four, shut the door.","shoe"],
+      ["Chubby Cheeks","Chubby cheeks, dimple ___ ,\nrosy lips, teeth within.","chin"],
+      ["मछली जल की रानी","मछली जल की रानी है,\nजीवन उसका ___ है।","पानी"],
+      ["मछली जल की रानी","हाथ लगाओ डर जाएगी,\nबाहर निकालो ___ जाएगी।","मर"]
+    ];
+
+    const COINS_HINT = "🪙 coins: ₹1, ₹2, ₹5, ₹10";
+
     const DRAW_BANK = [
       ["☀️","sun"],["⚽","ball"],["🌳","tree"],["🏠","house"],["🐟","fish"],["⭐","star"],
       ["🌸","flower"],["🥤","cup"],["🪁","kite"],["🛶","boat"],["🍎","apple"],["🎈","balloon"],
-      ["🌙","moon"],["🚌","bus"],["☂️","umbrella"],["🐱","cat"],["🦋","butterfly"],["🐠","fish"]
+      ["🌙","moon"],["🚌","bus"],["☂️","umbrella"],["🐱","cat"],["🦋","butterfly"],
+      ["🥭","mango"],["🐘","elephant"],["🦚","peacock"],["🪔","diya"],["🛺","auto-rickshaw"]
     ];
 
     const ANIMALS = [
@@ -1053,6 +1528,39 @@
       }))
     };
 
+    A["dictation"] = {
+      label: "🔊 Listen & write", title: "Listening Ears",
+      instruction: "Press the speaker, listen carefully, and write the word you hear.",
+      skill: "Skill: listening & spelling (dictation)",
+      gen: (n, d) => {
+        if (!ttsOK) return [{ type: "info", prompt: "", question: "", answer: "",
+          text: "This device cannot speak out loud, so dictation is unavailable here. Try it in Chrome or Edge on a phone, tablet or computer with sound. 🔊" }];
+        const cvc = CVC.map(w => w[1]);
+        const bank = d === "easy" ? cvc
+          : d === "medium" ? cvc.concat(SIGHT_DOLCH.filter(w => w.length >= 2))
+          : SIGHT_DOLCH.filter(w => w.length >= 3).concat(["fish","star","tree","frog","ring","duck"]);
+        return sample(bank, n).map(w => ({
+          type: "dictate",
+          say: w,
+          prompt: "🔊 Listen…",
+          question: "Write the word you hear.",
+          answer: w, accept: []
+        }));
+      }
+    };
+
+    A["mini-stories"] = {
+      label: "📖 Mini stories", title: "Little Reader Stories",
+      instruction: "Read the little story out loud, then answer the question.",
+      skill: "Skill: reading & understanding",
+      gen: (n) => fromBank(STORIES, n, ([story, q, ans, ...more]) => ({
+        prompt: story,
+        say: story,
+        question: q,
+        answer: ans, accept: more
+      }))
+    };
+
     A["rhyme-hunt"] = {
       label: "Rhyming words", title: "Rhyming Word Hunt",
       instruction: "Say the word, then choose the word that rhymes with it.",
@@ -1133,6 +1641,22 @@
         prompt: w, question: "“" + w + "” का उल्टा शब्द लिखो।", answer: ans, accept: more
       }))
     };
+
+    A["hindi-matra"] = {
+      label: "मात्रा लगाओ", title: "मात्रा लगाओ",
+      instruction: "चित्र देखो, सही मात्रा लगाओ और पूरा शब्द लिखो।",
+      skill: "Skill: मात्राएँ",
+      gen: (n) => fromBank(HINDI_MATRA, n, ([e, shown, ans, ...more]) => ({
+        prompt: e + "  " + shown,
+        say: ans,
+        question: "सही मात्रा लगाकर पूरा शब्द लिखो।",
+        answer: ans, accept: more
+      }))
+    };
+
+    // Hindi activities speak in Hindi
+    ["hindi-first-letter","hindi-picture-word","hindi-numbers","hindi-opposites","hindi-matra","hindi-trace"]
+      .forEach(id => { if (A[id]) A[id].lang = "hi-IN"; });
 
     A["counting"] = {
       label: "Count the objects", title: "Counting Fun",
@@ -1322,6 +1846,123 @@
       }
     };
 
+    A["measure"] = {
+      label: "Long, heavy, tall", title: "Measure It!",
+      instruction: "Think about each pair and write your answer.",
+      skill: "Skill: comparing length, weight & size",
+      gen: (n) => fromBank(MEASURE, n, ([pair, q, ans, ...more]) => ({
+        prompt: pair, question: q, answer: ans, accept: more
+      }))
+    };
+
+    A["money"] = {
+      label: "Rupees & coins", title: "My Little Shop",
+      instruction: "Use your rupee coins (₹1, ₹2, ₹5, ₹10) and write the answer.",
+      skill: "Skill: money — counting rupees",
+      gen: (n, d) => build(n, () => {
+        const kind = pick(d === "easy" ? ["add", "add", "make"] : ["add", "make", "change"]);
+        if (kind === "add") {
+          const coins = d === "easy" ? [1, 2, 5] : [1, 2, 5, 10];
+          const a = pick(coins), b = pick(coins);
+          return { prompt: "🪙 ₹" + a + " + 🪙 ₹" + b + " = ?", question: "How many rupees in all?",
+            answer: "₹" + (a + b), accept: [String(a + b), numWord(a + b), (a + b) + " rupees"] };
+        }
+        if (kind === "make") {
+          const target = pick(d === "easy" ? [3, 4, 6, 7] : [7, 11, 12, 15]);
+          const ex1 = target > 10 ? 10 : target > 5 ? 5 : 2;
+          return { prompt: "🛍️ Make ₹" + target + "   (" + COINS_HINT + ")",
+            question: "Write two coins that make ₹" + target + ".",
+            answer: "e.g. ₹" + ex1 + " + ₹" + (target - ex1),
+            check: v => { const nums = (String(v).match(/\d+/g) || []).map(Number);
+              return nums.length === 2 && nums[0] + nums[1] === target && nums.every(x => [1,2,5,10].includes(x)); } };
+        }
+        const price = between(2, 9);
+        return { prompt: "🍬 A toffee costs ₹" + price + ". You give ₹10.",
+          question: "How many rupees do you get back?",
+          answer: "₹" + (10 - price), accept: [String(10 - price), numWord(10 - price), (10 - price) + " rupees"] };
+      })
+    };
+
+    A["time-days"] = {
+      label: "Days & time", title: "My Day, My Week",
+      instruction: "Think about your day and your week, then write the answer.",
+      skill: "Skill: time — days of the week & parts of the day",
+      gen: (n) => build(n, () => {
+        if (rand(2) === 0) {
+          const [e, q, ans, ...more] = pick(TIME_FACTS);
+          return { prompt: e + " " + q, question: "Write the answer.", answer: ans, accept: more };
+        }
+        const i = between(0, 6);
+        const after = rand(2) === 0;
+        const ans = after ? DAYS[(i + 1) % 7] : DAYS[(i + 6) % 7];
+        return { prompt: "📅 " + DAYS[i],
+          question: "Which day comes just " + (after ? "after" : "before") + " " + DAYS[i] + "?",
+          answer: ans, accept: [] };
+      })
+    };
+
+    A["odd-one-out"] = {
+      label: "Odd one out", title: "Odd One Out",
+      instruction: "Look carefully. One thing does not belong with the others — write which one!",
+      skill: "Skill: sorting & thinking",
+      gen: (n) => fromBank(ODD_ONE_OUT, n, ([row, ans, ...more]) => ({
+        prompt: row, question: "Which one does not belong?", answer: ans, accept: more
+      }))
+    };
+
+    A["riddles"] = {
+      label: "Riddles", title: "Riddle Time",
+      instruction: "Read each riddle out loud (or press 🔊), think hard, and write the answer!",
+      skill: "Skill: listening, clues & critical thinking",
+      gen: (n) => fromBank(RIDDLES, n, ([riddle, ans, ...more]) => ({
+        prompt: "🤔 " + riddle, say: riddle, question: "Who or what am I?", answer: ans, accept: more
+      }))
+    };
+
+    A["rhyme-fill"] = {
+      label: "Rhymes: missing word", title: "Sing & Fill the Rhyme",
+      instruction: "Sing the rhyme out loud and write the missing word.",
+      skill: "Skill: rhymes, rhythm & memory",
+      gen: (n) => fromBank(RHYME_FILL, n, ([title, lines, ans, ...more]) => ({
+        prompt: "🎵 " + title + "\n" + lines,
+        say: lines.replace("___", "hmm"),
+        question: "Write the missing word.",
+        answer: ans, accept: more,
+        lang: /[अ-ह]/.test(lines) ? "hi-IN" : undefined
+      }))
+    };
+
+    /* ---------- My NCERT poems (parent-added, stored on device) ---------- */
+    const POEM_KEY = "kundendu-poems";
+    const loadPoems = () => { try { return JSON.parse(localStorage.getItem(POEM_KEY)) || []; } catch (e) { return []; } };
+    const savePoems = p => { try { localStorage.setItem(POEM_KEY, JSON.stringify(p)); } catch (e) {} };
+
+    A["my-poems"] = {
+      label: "📜 My NCERT poems", title: "My Poem Practice",
+      instruction: "Press 🔊 to hear each line, say it out loud, and write the missing word.",
+      skill: "Skill: poem revision & memory",
+      gen: (n) => {
+        const poems = loadPoems();
+        if (!poems.length) return [{ type: "info", prompt: "", question: "", answer: "",
+          text: "Add Kundendu's poems from his NCERT book first — press “➕ Add his poem” in the side panel. They stay on this device, and the app will turn them into read-along and missing-word practice. 📜" }];
+        const qs = [];
+        shuffle(poems).forEach(poem => {
+          const lines = poem.text.split(/\n+/).map(l => l.trim()).filter(l => l.split(/\s+/).length >= 3);
+          shuffle(lines).slice(0, 3).forEach(line => {
+            const words = line.split(/\s+/);
+            const cand = words.map((w, i) => [w.replace(/[^\p{L}]/gu, ""), i]).filter(([w]) => w.length >= 3);
+            if (!cand.length) return;
+            const [word, idx] = pick(cand);
+            const shown = words.map((w, i) => i === idx ? "___" : w).join(" ");
+            qs.push({ prompt: "📜 " + poem.title + "\n" + shown, say: line,
+              lang: /[अ-ह]/.test(line) ? "hi-IN" : undefined,
+              question: "Write the missing word.", answer: word, accept: [] });
+          });
+        });
+        return shuffle(qs).slice(0, n);
+      }
+    };
+
     A["shape-names"] = {
       label: "Name the shape", title: "Shape Spotter",
       instruction: "Look at each shape and write its name.",
@@ -1407,47 +2048,70 @@
     const saveTricky = list => { try { localStorage.setItem(TRICKY_KEY, JSON.stringify(list.slice(-60))); } catch (e) {} };
     const trickyId = q => q.prompt + "|" + q.question;
 
+    // Leitner boxes: a miss lands in box 1 (due now). Each correct answer moves it up
+    // a box and pushes the due date out (1 → 3 → 7 days); above box 3 it graduates out.
+    const BOX_DAYS = [0, 1, 3, 7];
+    const DAY = 24 * 60 * 60 * 1000;
+
     function rememberMiss(q) {
       if (q.check || q.type) return; // only questions that can be re-checked from stored data
       const list = loadTricky();
-      if (list.some(t => trickyId(t) === trickyId(q))) return;
-      list.push({ prompt: q.prompt, question: q.question, answer: q.answer, accept: q.accept || [] });
+      const hit = list.find(t => trickyId(t) === trickyId(q));
+      if (hit) { hit.box = 1; hit.due = Date.now(); }
+      else list.push({ prompt: q.prompt, question: q.question, answer: q.answer, accept: q.accept || [], say: q.say || "", lang: q.lang || "", box: 1, due: Date.now() });
       saveTricky(list);
     }
 
     function forgetMiss(q) {
       if (q.check || q.type) return;
-      saveTricky(loadTricky().filter(t => trickyId(t) !== trickyId(q)));
+      const list = loadTricky();
+      const hit = list.find(t => trickyId(t) === trickyId(q));
+      if (!hit) return;
+      hit.box = (hit.box || 1) + 1;
+      if (hit.box > 3) saveTricky(list.filter(t => t !== hit));
+      else { hit.due = Date.now() + BOX_DAYS[hit.box] * DAY; saveTricky(list); }
     }
+
+    function dueTricky() {
+      const now = Date.now();
+      return loadTricky().filter(t => (t.due || 0) <= now);
+    }
+
+    const trickyToQuestion = t => ({
+      prompt: t.prompt, question: t.question, answer: t.answer,
+      accept: t.accept || [], say: t.say || undefined, lang: t.lang || undefined
+    });
 
     A["tricky-review"] = {
       label: "🧠 My tricky ones", title: "My Tricky Ones",
       instruction: "These are questions Kundendu found hard before. Let's beat them this time!",
       skill: "Skill: remembering what we practised",
       gen: (n) => {
-        const list = shuffle(loadTricky()).slice(0, n);
+        const due = shuffle(dueTricky());
+        const rest = shuffle(loadTricky().filter(t => !due.includes(t)));
+        const list = due.concat(rest).slice(0, n);
         if (!list.length) return [{
           type: "info",
           prompt: "", question: "", answer: "",
-          text: "No tricky questions saved yet! Do any worksheet and press “Check my answers” — questions that need more practice will collect here automatically. 💪"
+          text: "No tricky questions saved yet! Do any worksheet and press “Check my answers” — questions that need more practice will collect here automatically, and come back on the right day. 💪"
         }];
-        return list.map(t => ({ prompt: t.prompt, question: t.question, answer: t.answer, accept: t.accept || [] }));
+        return list.map(trickyToQuestion);
       }
     };
 
     /* ================= concepts ================= */
     const CONCEPTS = [
       { id: "english-phonics", label: "English · Sounds & phonics", emoji: "🔤", accent: "#e96f4c", accentDeep: "#c85436",
-        activities: ["beginning-sounds", "ending-sounds", "cvc-builder", "vowel-spot", "blends"],
+        activities: ["beginning-sounds", "ending-sounds", "cvc-builder", "vowel-spot", "blends", "dictation"],
         tip: "Say each sound out loud together — stretch words slowly like a rubber band: c…a…t. Hearing the sounds matters more than neat writing." },
       { id: "handwriting", label: "Handwriting & drawing", emoji: "✍️", accent: "#b07d2e", accentDeep: "#8a6122",
         activities: ["trace-letters", "trace-words", "hindi-trace", "copy-drawing", "finish-picture"],
         tip: "These sheets work best printed. Keep sessions short and happy — five careful letters beat twenty rushed ones. Finger-tracing before pencil really helps." },
       { id: "english-reading", label: "English · Reading & words", emoji: "📚", accent: "#3f7ea5", accentDeep: "#2d6284",
-        activities: ["rhyme-hunt", "sentence-jumble", "sight-words", "opposites"],
+        activities: ["rhyme-hunt", "sentence-jumble", "sight-words", "opposites", "mini-stories"],
         tip: "Read the question aloud first, then let Kundendu try alone. Celebrate brave guesses — that's how readers grow." },
       { id: "hindi", label: "Hindi · वर्ण और शब्द", emoji: "🪔", accent: "#a3599c", accentDeep: "#84437e",
-        activities: ["hindi-first-letter", "hindi-picture-word", "hindi-numbers", "hindi-opposites"],
+        activities: ["hindi-first-letter", "hindi-picture-word", "hindi-numbers", "hindi-opposites", "hindi-matra"],
         tip: "बोलकर अभ्यास कराएँ — पहले शब्द बोलें, फिर लिखें। Typing Hindi is tricky, so writing answers on a printed sheet works best." },
       { id: "maths-numbers", label: "Maths · Number sense", emoji: "🔢", accent: "#1e7d46", accentDeep: "#14522e",
         activities: ["counting", "neighbours", "compare", "tens-ones", "number-names"],
@@ -1458,6 +2122,15 @@
       { id: "maths-shapes", label: "Maths · Shapes & patterns", emoji: "🔷", accent: "#0e7490", accentDeep: "#0a5468",
         activities: ["shape-names", "shape-facts", "patterns"],
         tip: "Go on a shape hunt at home after the worksheet — find circles, squares and triangles in the kitchen!" },
+      { id: "maths-mmt", label: "Maths · Measure, money & time", emoji: "⏰", accent: "#7059b5", accentDeep: "#57438f",
+        activities: ["measure", "money", "time-days"],
+        tip: "Play shop with real coins, compare real things at home (which dabba is heavier?), and say the days of the week at breakfast." },
+      { id: "poems", label: "Poems & rhymes", emoji: "🎵", accent: "#c2557d", accentDeep: "#9c3f61",
+        activities: ["rhyme-fill", "my-poems"],
+        tip: "Add the poems from his NCERT book with “Add his poem” — singing a line, then hiding one word, is a lovely memory trick. Actions with hands help too!" },
+      { id: "thinking", label: "Thinking games", emoji: "🧩", accent: "#4c7f2f", accentDeep: "#3a6123",
+        activities: ["odd-one-out", "riddles"],
+        tip: "Let him explain WHY the odd one doesn't belong — the reason matters more than the answer. Any sensible reason counts!" },
       { id: "evs", label: "EVS · My world", emoji: "🌍", accent: "#b7455f", accentDeep: "#933349",
         activities: ["living-sort", "helpers", "my-body", "animal-world"],
         tip: "Connect answers to real life: point out helpers on the street, animals in books, and talk about what living things need." },
@@ -1585,15 +2258,67 @@
       });
       activitySelect.value = currentConcept().activities[0];
       $("grownup-tip").textContent = currentConcept().tip;
+      $("add-poem-btn").hidden = currentConcept().id !== "poems";
     }
+
+    /* ---------- poem manager ---------- */
+    function renderPoemList() {
+      const list = $("poem-list");
+      list.replaceChildren();
+      loadPoems().forEach((p, i) => {
+        const row = document.createElement("div");
+        row.style.cssText = "display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px dashed #d8c69f;font-weight:800;font-size:.88rem;";
+        const t = document.createElement("span");
+        t.textContent = "📜 " + p.title;
+        const del = document.createElement("button");
+        del.type = "button"; del.className = "btn-tiny"; del.textContent = "Remove";
+        del.addEventListener("click", () => {
+          const poems = loadPoems(); poems.splice(i, 1); savePoems(poems); renderPoemList();
+        });
+        row.append(t, del);
+        list.appendChild(row);
+      });
+    }
+
+    $("add-poem-btn").addEventListener("click", () => { renderPoemList(); $("poem-dialog").showModal(); });
+    $("poem-cancel").addEventListener("click", () => { $("poem-dialog").close(); generate(); });
+    $("poem-save").addEventListener("click", () => {
+      const title = $("poem-title").value.trim() || "My poem";
+      const text = $("poem-text").value.trim();
+      if (text.split(/\s+/).length < 6) { $("poem-text").focus(); return; }
+      const poems = loadPoems();
+      poems.push({ title, text });
+      savePoems(poems);
+      $("poem-title").value = ""; $("poem-text").value = "";
+      renderPoemList();
+    });
 
     function setStatus(msg) { statusMsg.textContent = msg; }
 
     /* ---------- generate & render ---------- */
+    function addSpeaker(card, q) {
+      if (!ttsOK) return;
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "say-btn no-print";
+      btn.textContent = "🔊";
+      btn.setAttribute("aria-label", "Read this question out loud");
+      btn.addEventListener("click", () => {
+        btn.classList.add("talking");
+        speak(speakable(q), q.lang || (currentActivity && currentActivity.lang), () => btn.classList.remove("talking"));
+      });
+      card.appendChild(btn);
+    }
+
     function generate() {
       applyTheme();
-      currentActivity = A[activitySelect.value];
-      currentQuestions = currentActivity.gen(qCount, difficulty);
+      renderWorksheet(A[activitySelect.value], null);
+    }
+
+    function renderWorksheet(activity, presetQuestions) {
+      currentActivity = activity;
+      currentQuestions = presetQuestions || activity.gen(qCount, difficulty);
+      $("nudge-slot").replaceChildren();
       document.body.classList.remove("show-answers");
       $("key-btn").textContent = "👀 Show answers";
       $("score-line").textContent = "";
@@ -1644,6 +2369,75 @@
             renderRich(h, q.hint);
             card.appendChild(h);
           }
+
+          // on-screen tools: stroke-order animation (uppercase letters) + finger tracing
+          const tools = document.createElement("div");
+          tools.className = "trace-tools no-print";
+          const letter = q.trace.trim()[0];
+          let stage = null;
+          if (STROKES[letter]) {
+            const watch = document.createElement("button");
+            watch.type = "button"; watch.className = "chip-btn";
+            watch.textContent = "▶ Watch";
+            stage = document.createElement("div");
+            stage.className = "stroke-stage no-print";
+            const svg = buildStrokeSVG(letter);
+            stage.appendChild(svg);
+            watch.addEventListener("click", () => {
+              stage.classList.add("open");
+              requestAnimationFrame(() => svg.__play());
+            });
+            tools.appendChild(watch);
+          }
+          const traceBtn = document.createElement("button");
+          traceBtn.type = "button"; traceBtn.className = "chip-btn";
+          traceBtn.textContent = "✏️ Trace here";
+          traceBtn.setAttribute("aria-pressed", "false");
+          const wrap = document.createElement("div");
+          wrap.className = "trace-canvas-wrap no-print";
+          let canvasReady = false;
+          traceBtn.addEventListener("click", () => {
+            const open = wrap.classList.toggle("open");
+            traceBtn.setAttribute("aria-pressed", String(open));
+            if (open && !canvasReady) { attachTraceCanvas(wrap, q.trace.trim().split(/\s+/)[0]); canvasReady = true; }
+          });
+          tools.appendChild(traceBtn);
+          card.appendChild(tools);
+          if (stage) card.appendChild(stage);
+          card.appendChild(wrap);
+          if (ttsOK && q.hint) addSpeaker(card, { say: q.hint.replace(EMOJI_RE, " ").trim(), lang: q.lang });
+          grid.appendChild(card);
+          return;
+        }
+
+        if (q.type === "dictate") {
+          const hero = document.createElement("button");
+          hero.type = "button";
+          hero.className = "dictate-hero";
+          hero.innerHTML = "";
+          const big = document.createElement("span"); big.className = "big"; big.textContent = "🔊";
+          const lbl = document.createElement("span"); lbl.textContent = "Tap to hear the word";
+          hero.append(big, lbl);
+          hero.addEventListener("click", () => speak(q.say, q.lang || currentActivity.lang));
+
+          const text = document.createElement("label");
+          text.className = "q-text";
+          text.htmlFor = "ans-" + i;
+          text.textContent = q.question;
+
+          const input = document.createElement("input");
+          input.className = "q-input"; input.type = "text";
+          input.id = "ans-" + i; input.autocomplete = "off";
+          input.setAttribute("aria-label", "Answer for question " + (i + 1));
+
+          const fb = document.createElement("p");
+          fb.className = "q-feedback"; fb.id = "fb-" + i;
+
+          const rev = document.createElement("p");
+          rev.className = "q-answer";
+          rev.textContent = "Answer: " + q.answer;
+
+          card.append(num, hero, text, input, fb, rev);
           grid.appendChild(card);
           return;
         }
@@ -1690,6 +2484,7 @@
         rev.textContent = "Answer: " + q.answer;
 
         card.append(num, prompt, text, input, fb, rev);
+        addSpeaker(card, q);
         grid.appendChild(card);
       });
 
@@ -1699,7 +2494,7 @@
       keyList.replaceChildren();
       currentQuestions.forEach(q => {
         const li = document.createElement("li");
-        li.textContent = q.type ? "— (practice task, no single answer)" : q.answer;
+        li.textContent = (q.type && q.type !== "dictate") ? "— (practice task, no single answer)" : q.answer;
         keyList.appendChild(li);
       });
 
@@ -1718,7 +2513,7 @@
     function checkAnswers(silent) {
       let right = 0, answered = 0, checkable = 0;
       currentQuestions.forEach((q, i) => {
-        if (q.type) return; // trace/draw/info cards are pencil tasks, not checkable
+        if (q.type && q.type !== "dictate") return; // trace/draw/info cards are pencil tasks, not checkable
         checkable++;
         const input = $("ans-" + i);
         if (!input) return;
@@ -1760,8 +2555,56 @@
             right >= Math.ceil(score.total * 0.4) ? " ⭐ Good trying!" : " 💪 Keep practising!";
           line.textContent = "Score: " + right + " out of " + score.total + cheer;
         }
+        if (answered) afterCheck(score);
       }
       return score;
+    }
+
+    /* ---------- adaptive nudges + personal best ---------- */
+    const PROG_KEY = "kundendu-progress";
+    const loadProg = () => { try { return JSON.parse(localStorage.getItem(PROG_KEY)) || {}; } catch (e) { return {}; } };
+    const saveProg = p => { try { localStorage.setItem(PROG_KEY, JSON.stringify(p)); } catch (e) {} };
+
+    function afterCheck(score) {
+      const key = (activitySelect.value || currentActivity.title) + "|" + difficulty;
+      const prog = loadProg();
+      const entry = prog[key] || { last: [], best: 0 };
+      const ratio = score.right / score.total;
+
+      // personal best
+      if (score.right > (entry.best || 0)) {
+        entry.best = score.right;
+        if (score.right >= 2) $("score-line").textContent += " 🎉 New personal best!";
+      }
+
+      entry.last = (entry.last || []).concat(ratio).slice(-2);
+      prog[key] = entry;
+      saveProg(prog);
+
+      // one gentle suggestion at a time, only when the signal is strong
+      const slot = $("nudge-slot");
+      slot.replaceChildren();
+      const DIFFS = ["easy", "medium", "tricky"];
+      const di = DIFFS.indexOf(difficulty);
+      let label = null, action = null;
+      if (entry.last.length === 2 && entry.last.every(r => r === 1) && di < 2) {
+        label = "Feeling strong! Try " + (di === 0 ? "🌿 Medium" : "🌳 Tricky") + "?";
+        action = DIFFS[di + 1];
+      } else if (entry.last.length === 2 && entry.last.every(r => r < 0.4) && di > 0) {
+        label = "Let's warm up on " + (di === 2 ? "🌿 Medium" : "🌱 Easy") + " first";
+        action = DIFFS[di - 1];
+      }
+      if (label) {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "nudge-btn";
+        btn.textContent = label;
+        btn.addEventListener("click", () => {
+          const seg = document.querySelector('[data-diff="' + action + '"]');
+          if (seg) seg.click();
+        });
+        slot.appendChild(btn);
+      }
     }
 
     /* ---------- exports ---------- */
@@ -1793,7 +2636,7 @@
       });
       if (withKey) {
         lines.push("--- Answer key ---");
-        currentQuestions.forEach((q, i) => lines.push((i + 1) + ". " + (q.type ? "practice task" : q.answer)));
+        currentQuestions.forEach((q, i) => lines.push((i + 1) + ". " + ((q.type && q.type !== "dictate") ? "practice task" : q.answer)));
       }
       lines.push("", currentActivity.skill, "Little steps make big learning.");
       return lines.join("\n");
@@ -1828,7 +2671,7 @@
           "<p style='font-weight:bold;margin:0 0 4px;'>" + (i + 1) + ".</p>" + bodyHtml + "</div>";
       }).join("");
       const keyHtml = withKey
-        ? "<h3>Answer key</h3><ol>" + currentQuestions.map(q => "<li>" + escapeHtml(q.type ? "practice task" : q.answer) + "</li>").join("") + "</ol>"
+        ? "<h3>Answer key</h3><ol>" + currentQuestions.map(q => "<li>" + escapeHtml((q.type && q.type !== "dictate") ? "practice task" : q.answer) + "</li>").join("") + "</ol>"
         : "";
       const html = "<!doctype html><html><head><meta charset='utf-8'></head>" +
         "<body style='font-family:Arial,sans-serif;color:#2b3550;padding:24px;'>" +
@@ -1861,6 +2704,123 @@
       window.open("https://docs.new", "_blank", "noopener,noreferrer");
     }
 
+    /* ---------- Today's 5 ---------- */
+    const DAILY_POOL = ["beginning-sounds","ending-sounds","cvc-builder","vowel-spot","blends","rhyme-hunt","sight-words","opposites","mini-stories","hindi-first-letter","hindi-numbers","hindi-opposites","hindi-matra","counting","neighbours","compare","addition","subtraction","missing-number","story-sums","shape-names","shape-facts","patterns","living-sort","helpers","my-body","animal-world","measure","money","time-days","odd-one-out","riddles","rhyme-fill"];
+
+    function todaysFive() {
+      applyTheme();
+      const qs = shuffle(dueTricky()).slice(0, 2).map(trickyToQuestion);
+      const pool = shuffle(DAILY_POOL);
+      let pi = 0;
+      while (qs.length < 5 && pi < pool.length) {
+        const got = A[pool[pi++]].gen(1, difficulty);
+        if (got.length && !got[0].type) qs.push(got[0]);
+      }
+      renderWorksheet({
+        title: "Today's Five",
+        subjectLabel: "Daily Five",
+        instruction: "Five little questions — a tiny bit of practice makes a big difference!",
+        skill: "Skill: a little of everything, every day",
+        gen: () => qs
+      }, qs);
+      setStatus(dueTricky().length ? "Today's Five includes questions that were tricky before. 💪" : "");
+    }
+
+    /* ---------- flashcards (multisensory drill: see it, hear it, say it) ---------- */
+    let flashQueue = [], flashIdx = 0, flashFlipped = false;
+
+    function flashRenderFront(q) {
+      const card = $("flash-card");
+      card.replaceChildren();
+      if (q.type === "dictate") {
+        const big = document.createElement("div"); big.className = "flash-word"; big.textContent = "🔊";
+        const sub = document.createElement("p"); sub.className = "flash-sub"; sub.textContent = "Listen… what word is it?";
+        card.append(big, sub);
+      } else {
+        const w = document.createElement("div"); w.className = "flash-word";
+        renderRich(w, q.prompt);
+        const sub = document.createElement("p"); sub.className = "flash-sub"; sub.textContent = q.question;
+        card.append(w, sub);
+      }
+      $("flash-hint").textContent = "Tap the card to see the answer";
+      $("flash-actions").hidden = true;
+      $("flash-progress").textContent = (flashIdx + 1) + " / " + flashQueue.length;
+      speak(q.type === "dictate" ? q.say : speakable(q), q.lang || (currentActivity && currentActivity.lang));
+    }
+
+    function flashRenderBack(q) {
+      const card = $("flash-card");
+      card.replaceChildren();
+      const w = document.createElement("div"); w.className = "flash-word flash-answer";
+      w.textContent = q.answer;
+      const sub = document.createElement("p"); sub.className = "flash-sub"; sub.textContent = "Say it out loud together!";
+      card.append(w, sub);
+      $("flash-hint").textContent = "";
+      $("flash-actions").hidden = false;
+      speak(String(q.answer), q.lang || (currentActivity && currentActivity.lang));
+    }
+
+    function flashShow() {
+      if (flashIdx >= flashQueue.length) {
+        const card = $("flash-card");
+        card.replaceChildren();
+        const w = document.createElement("div"); w.className = "flash-word"; w.textContent = "⭐ All done!";
+        const sub = document.createElement("p"); sub.className = "flash-sub";
+        sub.textContent = flashQueue.length + " flashcards practised. Wonderful focus!";
+        card.append(w, sub);
+        $("flash-hint").textContent = "";
+        $("flash-actions").hidden = true;
+        $("flash-progress").textContent = "🎉";
+        throwConfetti();
+        return;
+      }
+      flashFlipped = false;
+      flashRenderFront(flashQueue[flashIdx]);
+    }
+
+    function startFlashcards() {
+      const qs = currentQuestions.filter(q => !q.type || q.type === "dictate");
+      if (!qs.length) { setStatus("This sheet is pencil practice — make a question worksheet for flashcards."); return; }
+      flashQueue = shuffle(qs);
+      flashIdx = 0;
+      $("flash-overlay").hidden = false;
+      document.body.style.overflow = "hidden";
+      flashShow();
+      $("flash-card").focus();
+    }
+
+    function exitFlashcards() {
+      $("flash-overlay").hidden = true;
+      document.body.style.overflow = "";
+      if (ttsOK) try { speechSynthesis.cancel(); } catch (e) {}
+    }
+
+    $("flash-btn").addEventListener("click", startFlashcards);
+    $("flash-exit").addEventListener("click", exitFlashcards);
+
+    $("flash-card").addEventListener("click", () => {
+      if (flashIdx >= flashQueue.length) return;
+      if (!flashFlipped) { flashFlipped = true; flashRenderBack(flashQueue[flashIdx]); }
+    });
+
+    $("flash-got").addEventListener("click", () => {
+      forgetMiss(flashQueue[flashIdx]);
+      flashIdx++;
+      flashShow();
+    });
+
+    $("flash-again").addEventListener("click", () => {
+      const q = flashQueue[flashIdx];
+      rememberMiss(q);
+      flashQueue.push(q); // comes around again this session
+      flashIdx++;
+      flashShow();
+    });
+
+    document.addEventListener("keydown", e => {
+      if (e.key === "Escape" && !$("flash-overlay").hidden) exitFlashcards();
+    });
+
     /* ---------- saving & stats ---------- */
     let savedAttempts = [];
 
@@ -1872,6 +2832,7 @@
       $("stat-sheets").textContent = savedAttempts.length;
       $("stat-stars").textContent = savedAttempts.reduce((s, r) => s + (Number(r.score) || 0), 0);
       $("stat-perfect").textContent = savedAttempts.filter(r => Number(r.score) === Number(r.total) && r.total).length;
+      renderExtras(savedAttempts);
 
       const list = $("history-list");
       list.replaceChildren();
@@ -1899,6 +2860,157 @@
       });
     }
 
+    /* ---------- streak, badges & grown-up insights ---------- */
+    function dayKey(d) { const x = new Date(d); return x.getFullYear() + "-" + (x.getMonth() + 1) + "-" + x.getDate(); }
+
+    function computeStreak(records) {
+      const days = new Set(records.map(r => dayKey(r.submitted_at)));
+      if (!days.size) return 0;
+      let streak = 0;
+      let cursor = new Date();
+      if (!days.has(dayKey(cursor))) cursor = new Date(cursor.getTime() - DAY); // streak survives until today is missed
+      while (days.has(dayKey(cursor))) { streak++; cursor = new Date(cursor.getTime() - DAY); }
+      return streak;
+    }
+
+    function renderExtras(records) {
+      const streak = computeStreak(records);
+      $("stat-streak").textContent = streak;
+
+      // badges — a small shelf, earned quietly
+      const stars = records.reduce((s, r) => s + (Number(r.score) || 0), 0);
+      const perfect = records.filter(r => Number(r.score) === Number(r.total) && r.total).length;
+      const badges = [];
+      if (perfect >= 1) badges.push("🌟 First perfect score");
+      if (records.length >= 10) badges.push("📚 10 worksheets");
+      if (records.length >= 25) badges.push("🏅 25 worksheets");
+      if (stars >= 100) badges.push("💯 100 stars");
+      if (streak >= 3) badges.push("🔥 3-day streak");
+      if (streak >= 7) badges.push("🏆 7-day streak");
+      const shelf = $("badge-row");
+      shelf.replaceChildren();
+      badges.forEach(b => {
+        const chip = document.createElement("span");
+        chip.className = "badge-chip";
+        chip.textContent = b;
+        shelf.appendChild(chip);
+      });
+
+      // per-subject accuracy over the recent past
+      const bySubject = {};
+      records.slice(0, 40).forEach(r => {
+        if (!r.total) return;
+        const key = r.subject || "Earlier practice";
+        (bySubject[key] = bySubject[key] || { right: 0, total: 0 }).right += Number(r.score) || 0;
+        bySubject[key].total += Number(r.total) || 0;
+      });
+      const rows = $("insight-rows");
+      rows.replaceChildren();
+      const entries = Object.entries(bySubject).filter(([, v]) => v.total >= 3)
+        .map(([k, v]) => [k, Math.round(100 * v.right / v.total), v.total])
+        .sort((a, b) => a[1] - b[1]);
+      if (!entries.length) {
+        const p = document.createElement("p");
+        p.style.cssText = "font-size:.8rem;color:var(--muted);font-weight:600;margin:8px 0 0;";
+        p.textContent = "Save a few scores and insights will appear here.";
+        rows.appendChild(p);
+        $("practise-next").textContent = "";
+        return;
+      }
+      entries.forEach(([label, pct]) => {
+        const row = document.createElement("div");
+        row.className = "insight-row";
+        const l = document.createElement("span"); l.className = "lbl"; l.textContent = label;
+        const bar = document.createElement("span"); bar.className = "insight-bar";
+        const fill = document.createElement("span"); fill.style.width = pct + "%";
+        if (pct < 50) fill.style.background = "#d98324";
+        bar.appendChild(fill);
+        const p = document.createElement("span"); p.className = "pct"; p.textContent = pct + "%";
+        row.append(l, bar, p);
+        rows.appendChild(row);
+      });
+      const weakest = entries[0];
+      $("practise-next").textContent = weakest[1] < 80
+        ? "💡 Practise next: " + weakest[0] + " (" + weakest[1] + "% recently)"
+        : "🌈 Everything looks strong — keep the daily fives going!";
+    }
+
+    /* ---------- weekly printable pack ---------- */
+    function buildPack() {
+      const root = $("pack-root");
+      root.replaceChildren();
+      const sections = [
+        ["English · Phonics", pick(["beginning-sounds","cvc-builder","blends"])],
+        ["English · Reading", pick(["rhyme-hunt","sight-words","mini-stories","rhyme-fill"])],
+        ["Hindi", pick(["hindi-first-letter","hindi-picture-word","hindi-matra"])],
+        ["Maths", pick(["counting","addition","subtraction","story-sums","neighbours","measure","money","time-days"])],
+        ["EVS & Thinking", pick(["living-sort","helpers","animal-world","odd-one-out","riddles"])],
+        ["Handwriting", "trace-letters"],
+        ["Drawing", "copy-drawing"]
+      ];
+      const keyLines = [];
+      sections.forEach(([secTitle, actId]) => {
+        const act = A[actId];
+        const qs = act.gen(secTitle === "Handwriting" || secTitle === "Drawing" ? 4 : 6, difficulty);
+        const page = document.createElement("section");
+        page.className = "pack-page";
+        const h = document.createElement("h2");
+        h.textContent = secTitle + " — " + act.title;
+        const meta = document.createElement("p");
+        meta.textContent = act.instruction + "   ·   Name: ______________   Date: ______________";
+        page.append(h, meta);
+        qs.forEach((q, i) => {
+          const box = document.createElement("div");
+          box.className = "pack-q";
+          const pr = document.createElement("p");
+          pr.className = "pq-prompt";
+          if (q.type === "trace") {
+            renderRich(pr, (i + 1) + ". " + (q.hint || "Trace and write:"));
+            const tt = document.createElement("p"); tt.className = "pq-tracetext"; tt.textContent = q.trace;
+            const l1 = document.createElement("div"); l1.className = "pq-line";
+            box.append(pr, tt, l1);
+            keyLines.push(null);
+          } else if (q.type === "draw" || q.type === "finish") {
+            pr.textContent = (i + 1) + ". " + q.question;
+            const pic = document.createElement("p");
+            pic.appendChild(lineArt(q.img, q.type === "finish" ? "li ghost-img" : "li li-big"));
+            const db = document.createElement("div"); db.className = "pq-drawbox";
+            box.append(pr, pic, db);
+            keyLines.push(null);
+          } else if (q.type === "info" || q.type === "dictate") {
+            return; // not printable
+          } else {
+            renderRich(pr, (i + 1) + ". " + q.prompt.replace(/\n/g, "  "));
+            const qt = document.createElement("p"); qt.textContent = q.question;
+            const line = document.createElement("div"); line.className = "pq-line";
+            box.append(pr, qt, line);
+            keyLines.push(secTitle + " Q" + (i + 1) + ": " + q.answer);
+          }
+          page.appendChild(box);
+        });
+        root.appendChild(page);
+      });
+      const keyPage = document.createElement("section");
+      keyPage.className = "pack-page pack-key";
+      const kh = document.createElement("h2");
+      kh.textContent = "🔑 Answer key (for grown-ups)";
+      keyPage.appendChild(kh);
+      keyLines.filter(Boolean).forEach(k => {
+        const p = document.createElement("p"); p.style.margin = "2px 0"; p.textContent = k;
+        keyPage.appendChild(p);
+      });
+      root.appendChild(keyPage);
+    }
+
+    function printPack() {
+      buildPack();
+      document.body.classList.add("packing");
+      setStatus("Building this week's pack — choose “Save as PDF” or print it.");
+      const cleanup = () => { document.body.classList.remove("packing"); $("pack-root").replaceChildren(); window.removeEventListener("afterprint", cleanup); };
+      window.addEventListener("afterprint", cleanup);
+      setTimeout(() => window.print(), 350);
+    }
+
     async function saveAttempt() {
       if (!backendReady) { setStatus("Saving is not available right now — please try again shortly."); return; }
       const score = checkAnswers(true);
@@ -1908,6 +3020,7 @@
       setStatus("Saving…");
       const result = await backend.create({
         worksheet_type: currentActivity.title,
+        subject: currentActivity.subjectLabel || currentConcept().label.split("·")[0].trim(),
         difficulty: difficulty,
         score: score.right,
         total: score.total,
@@ -1964,6 +3077,8 @@
     $("word-btn").addEventListener("click", exportWord);
     $("docs-btn").addEventListener("click", copyForDocs);
     $("save-btn").addEventListener("click", saveAttempt);
+    $("daily-btn").addEventListener("click", todaysFive);
+    $("pack-btn").addEventListener("click", printPack);
 
     $("clear-btn").addEventListener("click", async () => {
       if (!backend.clear) return;
