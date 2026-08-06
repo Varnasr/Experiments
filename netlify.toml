@@ -11,4 +11,26 @@
     X-Frame-Options = "DENY"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://unpkg.com https://code.iconify.design https://api.iconify.design https://api.simplesvg.com https://api.unisvg.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://www.google-analytics.com https://*.basemaps.cartocdn.com https://licensebuttons.net; connect-src 'self' https://varnasr-experiments.netlify.app https://api.worldbank.org https://api.climatetrace.org https://api.iconify.design https://api.simplesvg.com https://api.unisvg.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://unpkg.com https://tessdata.projectnaptha.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com; worker-src 'self' blob:; object-src 'none'; frame-ancestors 'none'; base-uri 'self'"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://unpkg.com https://code.iconify.design https://api.iconify.design https://api.simplesvg.com https://api.unisvg.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://cdn.jsdelivr.net https://www.google-analytics.com https://*.basemaps.cartocdn.com https://licensebuttons.net; connect-src 'self' https://varnasr-experiments.netlify.app https://api.worldbank.org https://api.climatetrace.org https://api.iconify.design https://api.simplesvg.com https://api.unisvg.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://unpkg.com https://tessdata.projectnaptha.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com; worker-src 'self' blob:; object-src 'none'; frame-ancestors 'none'; base-uri 'self'"
+
+# ---- littlek.in: serve the worksheet app at the domain root ----
+# www → apex
+[[redirects]]
+  from = "https://www.littlek.in/*"
+  to = "https://littlek.in/:splat"
+  status = 301
+  force = true
+
+# normalise direct /kundendu-worksheets/ links so the rewrite below can't double-prefix
+[[redirects]]
+  from = "https://littlek.in/kundendu-worksheets/*"
+  to = "https://littlek.in/:splat"
+  status = 301
+  force = true
+
+# rewrite (not redirect): littlek.in/* serves kundendu-worksheets/* — the app owns the domain root
+[[redirects]]
+  from = "https://littlek.in/*"
+  to = "https://littlek.in/kundendu-worksheets/:splat"
+  status = 200
+  force = true
