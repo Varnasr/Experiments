@@ -21,16 +21,11 @@
   status = 301
   force = true
 
-# normalise direct /kundendu-worksheets/ links so the rewrite below can't double-prefix
-[[redirects]]
-  from = "https://littlek.in/kundendu-worksheets/*"
-  to = "https://littlek.in/:splat"
-  status = 301
-  force = true
-
-# rewrite (not redirect): littlek.in/* serves kundendu-worksheets/* — the app owns the domain root
+# rewrite (not redirect): littlek.in/* serves kundendu-worksheets/* — the app owns the domain root.
+# Relative `to` is Netlify's documented hostname-rewrite form; an absolute same-host `to`
+# re-enters rule processing and loops.
 [[redirects]]
   from = "https://littlek.in/*"
-  to = "https://littlek.in/kundendu-worksheets/:splat"
+  to = "/kundendu-worksheets/:splat"
   status = 200
   force = true
