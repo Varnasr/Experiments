@@ -590,11 +590,11 @@
 
     /* ---------- stats + history ---------- */
     .stats-row {
-      display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 10px;
+      display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 10px;
       margin-top: 18px;
     }
 
-    @media (max-width: 480px) { .stats-row { grid-template-columns: repeat(3, minmax(0,1fr)); gap: 6px; } }
+    @media (max-width: 520px) { .stats-row { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 8px; } }
 
     .stat-tile {
       padding: 12px 8px; border-radius: 16px; text-align: center;
@@ -826,8 +826,8 @@
             <ol id="answer-key-list"></ol>
           </section>
 
-          <div class="stats-row no-print" style="grid-template-columns:repeat(4,minmax(0,1fr));" aria-label="Practice statistics">
-            <div class="stat-tile"><span class="num" id="stat-sheets">0</span><span class="lbl">Worksheets</span></div>
+          <div class="stats-row no-print" aria-label="Practice statistics">
+            <div class="stat-tile"><span class="num" id="stat-sheets">0</span><span class="lbl">Sheets done</span></div>
             <div class="stat-tile"><span class="num" id="stat-stars">0</span><span class="lbl">Stars earned</span></div>
             <div class="stat-tile"><span class="num" id="stat-perfect">0</span><span class="lbl">Perfect scores</span></div>
             <div class="stat-tile"><span class="num" id="stat-streak">0</span><span class="lbl">Day streak 🔥</span></div>
