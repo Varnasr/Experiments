@@ -73,7 +73,7 @@ A playful Class 1 CBSE worksheet generator for a young learner. Covers English (
 **Directory:** `kundendu-worksheets/`
 **Stage:** Active
 
-Single dependency-free HTML file — open `kundendu-worksheets/index.html` or visit it on the deployed site.
+Installable PWA — add it to a phone or tablet home screen and it works fully offline after the first visit. Single dependency-free HTML file plus a small service worker; open `kundendu-worksheets/index.html` or visit it on the deployed site.
 
 ---
 
