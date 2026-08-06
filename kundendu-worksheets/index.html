@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kundendu's Worksheet Studio · Class 1 CBSE</title>
+  <title>Kundendu's Learn &amp; Play · Class 1 CBSE</title>
   <meta name="description" content="A playful Class 1 CBSE worksheet generator — English, Hindi, Maths and EVS practice with fresh questions every time, answer checking, and printable sheets.">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✏️</text></svg>">
   <link rel="manifest" href="manifest.webmanifest">
@@ -11,7 +11,7 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="Worksheets">
+  <meta name="apple-mobile-web-app-title" content="Learn & Play">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
@@ -37,18 +37,27 @@
 
     [hidden] { display: none !important; }
 
+    html { scroll-behavior: smooth; }
+
+    ::selection { background: rgba(248,198,79,.45); }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+      html { scroll-behavior: auto; }
+    }
+
     html, body { width: 100%; margin: 0; }
 
     body {
       min-height: 100vh;
       color: var(--ink);
       font-family: "Nunito", system-ui, sans-serif;
-      background-color: #f6ecd9;
+      background-color: #f7eedd;
       background-image:
-        radial-gradient(circle at 8% 12%, rgba(248,198,79,.25) 0 140px, transparent 141px),
-        radial-gradient(circle at 94% 8%, rgba(63,126,165,.14) 0 170px, transparent 171px),
-        radial-gradient(circle at 88% 90%, rgba(233,111,76,.12) 0 160px, transparent 161px),
-        radial-gradient(#dfcba8 1.15px, transparent 1.15px);
+        radial-gradient(circle at 8% 12%, rgba(248,198,79,.18) 0 150px, transparent 151px),
+        radial-gradient(circle at 94% 8%, rgba(63,126,165,.10) 0 180px, transparent 181px),
+        radial-gradient(circle at 88% 90%, rgba(233,111,76,.09) 0 170px, transparent 171px),
+        radial-gradient(rgba(223,203,168,.55) 1.1px, transparent 1.1px);
       background-size: 100% 100%, 100% 100%, 100% 100%, 18px 18px;
       overflow-x: hidden;
     }
@@ -348,8 +357,14 @@
       width: 52px; height: 52px; border-radius: 17px;
       background: linear-gradient(135deg, #f8c64f, #f7db7d);
       font-size: 27px;
-      box-shadow: 0 4px 0 rgba(83,60,26,.20);
+      box-shadow: 0 4px 0 rgba(83,60,26,.18);
       transform: rotate(-4deg);
+      animation: bob 4.5s ease-in-out infinite;
+    }
+
+    @keyframes bob {
+      0%, 100% { transform: rotate(-4deg) translateY(0); }
+      50% { transform: rotate(-3deg) translateY(-4px); }
     }
 
     .kicker {
@@ -386,9 +401,9 @@
       position: sticky; top: 14px;
       background: var(--cream);
       border: 1px solid #dbc8a3;
-      border-radius: 24px;
+      border-radius: 26px;
       padding: 22px;
-      box-shadow: 0 16px 38px rgba(83,60,26,.15);
+      box-shadow: 0 18px 44px rgba(83,60,26,.11);
     }
 
     @media (max-width: 980px) { .panel { position: static; } }
@@ -405,7 +420,7 @@
 
     .field {
       width: 100%; min-height: 2.85rem; padding: .6rem .75rem;
-      border: 2px solid var(--line); border-radius: 13px;
+      border: 2px solid var(--line); border-radius: 14px;
       background: #fffdf8; color: var(--ink); font-weight: 700;
       transition: border-color .15s ease, box-shadow .15s ease;
     }
@@ -417,7 +432,7 @@
     .seg-row.four { grid-template-columns: repeat(4, 1fr); }
 
     .seg {
-      padding: .52rem .25rem; border: 2px solid var(--line); border-radius: 12px;
+      padding: .52rem .25rem; border: 2px solid var(--line); border-radius: 999px;
       background: #fffdf8; font-weight: 800; font-size: .84rem; text-align: center;
       transition: all .14s ease;
     }
@@ -433,7 +448,7 @@
       background: linear-gradient(135deg, var(--accent), #f08a63);
       color: #fff; font-weight: 800; font-size: 1.05rem;
       font-family: "Baloo 2", sans-serif;
-      box-shadow: 0 4px 0 var(--accent-deep);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.35), 0 4px 0 var(--accent-deep);
       transition: transform .12s ease, box-shadow .12s ease;
     }
 
@@ -471,21 +486,21 @@
     .paper {
       position: relative; overflow: hidden;
       background-color: #fff;
-      background-image: linear-gradient(to bottom, transparent 31px, #eef2f5 32px);
+      background-image: linear-gradient(to bottom, transparent 31px, #f0f4f7 32px);
       background-size: 100% 32px;
-      border-radius: 12px;
-      box-shadow: 0 24px 60px rgba(83,60,26,.20);
+      border-radius: 16px;
+      box-shadow: 0 28px 64px rgba(83,60,26,.15);
     }
 
     .paper::before {
       content: ""; position: absolute; top: 0; bottom: 0; left: 44px;
-      border-left: 2px solid rgba(233,111,76,.30); pointer-events: none;
+      border-left: 2px solid rgba(233,111,76,.20); pointer-events: none;
     }
 
     .paper::after {
       content: ""; position: absolute; top: 0; left: 0; right: 0; height: 10px;
       background: linear-gradient(90deg, var(--accent), var(--yellow), var(--blue), var(--accent));
-      opacity: .85;
+      opacity: .55;
     }
 
     .paper-inner { position: relative; z-index: 1; min-width: 0; padding: 34px 36px 36px 66px; }
@@ -540,13 +555,21 @@
 
     .q-card {
       min-width: 0; padding: 16px 15px 12px; position: relative;
-      background: #fff; border: 2px solid var(--card-border); border-radius: 18px;
-      box-shadow: 0 3px 0 rgba(43,53,80,.06);
+      background: #fff; border: 2px solid #d3dfe8; border-radius: 20px;
+      box-shadow: 0 3px 0 rgba(43,53,80,.05);
       animation: rise .3s ease both;
-      transition: border-color .2s ease, background .2s ease;
+      transition: border-color .2s ease, background .2s ease, transform .18s ease, box-shadow .18s ease;
     }
 
-    .q-card.ok { border-color: #6fc492; background: #f2fbf5; }
+    .q-card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(43,53,80,.08); }
+
+    .q-card.ok { border-color: #6fc492; background: #f2fbf5; animation: pop .35s ease; }
+
+    @keyframes pop {
+      0% { transform: scale(1); }
+      45% { transform: scale(1.025); }
+      100% { transform: scale(1); }
+    }
     .q-card.bad { border-color: #e59a8c; background: #fff5f2; }
 
     .q-num {
@@ -555,7 +578,7 @@
       min-width: 27px; height: 27px; padding: 0 8px; border-radius: 999px;
       background: var(--accent); color: #fff; font-size: .82rem; font-weight: 800;
       font-family: "Baloo 2", sans-serif;
-      box-shadow: 0 2px 0 rgba(43,53,80,.18);
+      box-shadow: 0 0 0 4px #fff, 0 3px 0 4px rgba(43,53,80,.10);
     }
 
     .q-prompt {
@@ -586,7 +609,7 @@
 
     .challenge {
       margin-top: 18px; padding: 13px 15px; border-radius: 14px;
-      background: #fff4cf; border: 2px solid #f2dfa0;
+      background: #fff7d9; border: 2px solid #f4e4ac;
       font-size: .92rem; font-weight: 800;
     }
 
@@ -594,7 +617,7 @@
     .check-bar {
       display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
       margin-top: 18px; padding: 14px; border-radius: 18px;
-      background: var(--sky); border: 2px solid #b9d6e6;
+      background: #edf6fb; border: 2px solid #c4ddeb;
     }
 
     .btn-check {
@@ -634,9 +657,12 @@
     @media (max-width: 520px) { .stats-row { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 8px; } }
 
     .stat-tile {
-      padding: 12px 8px; border-radius: 16px; text-align: center;
-      border: 2px solid #e3d5b3; background: #fffdf6;
+      padding: 12px 8px; border-radius: 18px; text-align: center;
+      border: 2px solid #eadfc2; background: #fffdf6;
+      transition: transform .15s ease;
     }
+
+    .stat-tile:hover { transform: translateY(-2px); }
 
     .stat-tile .num { display: block; font-size: 1.5rem; line-height: 1.1; font-family: "Baloo 2", sans-serif; font-weight: 800; }
     .stat-tile .lbl { display: block; margin-top: 2px; font-size: .68rem; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); }
@@ -685,6 +711,7 @@
     }
 
     .attempt-row:last-child { border-bottom: 0; }
+    .attempt-row:hover { background: #f2f9fd; border-radius: 8px; }
     .attempt-row .a-title { font-weight: 800; min-width: 0; overflow-wrap: anywhere; }
     .attempt-row .a-score { font-weight: 800; color: var(--blue-dark); }
     .attempt-row .a-date { font-size: .76rem; font-weight: 700; color: var(--muted); }
@@ -759,7 +786,7 @@
           <span class="brand-badge" aria-hidden="true">✏️</span>
           <span class="kicker">Class 1 · CBSE · Learn &amp; Play</span>
         </div>
-        <h1 class="display">Kundendu's <span class="swash">Worksheet Studio</span></h1>
+        <h1 class="display">Kundendu's <span class="swash">Learn &amp; Play</span></h1>
       </div>
       <p class="subtitle">Pick a subject and an activity, choose how tricky it should be, and press <strong>Make my worksheet</strong>. Every sheet is freshly made with new questions — check answers on screen, earn stars, or print it out.</p>
     </div>
@@ -3181,7 +3208,12 @@
       if (savedName) $("student-name").value = savedName;
     } catch (e) {}
 
+    // A different activity greets him on every visit — practice never looks stale.
+    const startActivity = pick(DAILY_POOL);
+    const startConcept = CONCEPTS.find(c => c.activities.includes(startActivity)) || CONCEPTS[0];
+    conceptSelect.value = startConcept.id;
     populateActivities();
+    activitySelect.value = startActivity;
     generate();
 
     backend.init({ onDataChanged: renderAttempts }).then(r => {

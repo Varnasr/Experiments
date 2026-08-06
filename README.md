@@ -66,7 +66,7 @@ Methodology, data, and grading outputs for evaluating AICC-appointed District Ob
 
 ---
 
-### Kundendu's Worksheet Studio
+### Kundendu's Learn & Play
 
 A playful Class 1 CBSE worksheet generator for a young learner. Covers English (phonics, reading, grammar), Hindi (वर्ण, शब्द, गिनती, विलोम), Maths (number sense, add/subtract, shapes & patterns), and EVS — 36 activity types in all. Every worksheet is freshly randomised, with three difficulty levels, 4–10 questions per sheet, on-screen answer checking (with confetti for perfect scores), a printable answer key, Word/Google Docs export, and a local practice-history tracker.
 
