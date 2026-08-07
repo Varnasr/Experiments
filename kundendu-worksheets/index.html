@@ -488,6 +488,49 @@
     .btn-surprise:hover { background: #ffefc7; transform: rotate(-.6deg) scale(1.01); }
 
     .panel-section { margin-top: 18px; padding-top: 16px; border-top: 1px dashed #d8c69f; }
+    .gu-drawer .panel-section:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
+
+    /* ---------- grown-ups drawer ---------- */
+    .gu-btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: .5rem .95rem; border: 2px solid #d9c69e; border-radius: 999px;
+      background: #fffdf6; font-weight: 800; font-size: .82rem;
+      transition: all .15s ease;
+    }
+
+    .gu-btn:hover { border-color: var(--accent); transform: translateY(-1px); }
+
+    .gu-backdrop {
+      position: fixed; inset: 0; z-index: 68;
+      background: rgba(43,53,80,.32);
+      opacity: 0; pointer-events: none; transition: opacity .22s ease;
+    }
+
+    .gu-backdrop.open { opacity: 1; pointer-events: auto; }
+
+    .gu-drawer {
+      position: fixed; top: 0; right: 0; bottom: 0; z-index: 69;
+      width: min(92vw, 390px);
+      padding: 20px 22px 30px;
+      overflow-y: auto; overscroll-behavior: contain;
+      background: var(--cream);
+      border-left: 1px solid #dbc8a3;
+      box-shadow: -16px 0 44px rgba(83,60,26,.18);
+      transform: translateX(102%);
+      transition: transform .26s ease;
+    }
+
+    .gu-drawer.open { transform: translateX(0); }
+
+    .gu-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
+    .gu-head h2 { margin: 0; font-size: 1.2rem; }
+
+    #gu-close {
+      width: 38px; height: 38px; border-radius: 999px;
+      border: 2px solid #d9c69e; background: #fff; font-weight: 800;
+    }
+
+    @media (prefers-reduced-motion: reduce) { .gu-drawer, .gu-backdrop { transition: none; } }
     .panel-section h3 { margin: 0 0 10px; font-size: 1.02rem; }
 
     .btn-ghost {
@@ -810,7 +853,10 @@
         </div>
         <h1 class="display">Kundendu's <span class="swash">Learn &amp; Play</span></h1>
       </div>
-      <p class="subtitle">Pick a subject and an activity, choose how tricky it should be, and press <strong>Make my worksheet</strong>. Every sheet is freshly made with new questions — check answers on screen, earn stars, or print it out.</p>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:10px;">
+        <button id="gu-open" type="button" class="gu-btn">👪 For grown-ups</button>
+        <p class="subtitle">Pick a subject and an activity, choose how tricky it should be, and press <strong>Make my worksheet</strong>. Every sheet is freshly made with new questions — check answers on screen, earn stars, or print it out.</p>
+      </div>
     </div>
   </header>
 
@@ -852,73 +898,8 @@
 
       <button id="generate-btn" type="button" class="btn-primary">✨ Make my worksheet</button>
       <button id="surprise-btn" type="button" class="btn-surprise">🎲 Surprise me!</button>
-      <button id="add-poem-btn" type="button" class="btn-ghost" style="margin-top:8px;" hidden>➕ Add his poem</button>
 
-      <section class="panel-section" aria-label="Export">
-        <h3 class="display">Print &amp; share</h3>
-        <button id="pdf-btn" type="button" class="btn-ghost">🖨️ Print / save as PDF</button>
-        <button id="word-btn" type="button" class="btn-ghost">📄 Download for Word</button>
-        <button id="docs-btn" type="button" class="btn-ghost">📋 Copy for Google Docs</button>
-        <button id="pack-btn" type="button" class="btn-ghost">🗂️ Print a weekly pack</button>
-        <button id="install-btn" type="button" class="btn-ghost" hidden>📲 Install as an app</button>
-        <p id="status-message" aria-live="polite"></p>
-      </section>
 
-      <section class="panel-section" aria-label="Tip for grown-ups">
-        <h3 class="display">For grown-ups 💛</h3>
-        <p class="tip-text" id="grownup-tip"></p>
-        <details class="insights" id="insights-box" style="margin-top:12px;">
-          <summary>Progress insights</summary>
-          <div id="insight-rows"></div>
-          <p class="practise-next" id="practise-next"></p>
-        </details>
-        <details class="books" style="margin-top:10px;">
-          <summary>His NCERT books 📚</summary>
-
-          <div class="book-block">
-            <p class="book-title">🇬🇧 English — Mridang <a href="https://ncert.nic.in/textbook.php?aemr1=0-9" target="_blank" rel="noopener">Open book ↗</a></p>
-            <div class="chap-list">
-              <span class="chap poem">🎵 Two Little Hands</span><span class="chap">Greetings</span>
-              <span class="chap poem">🎵 Picture Time</span><span class="chap">The Cap-seller and the Monkeys</span>
-              <span class="chap poem">🎵 A Farm</span><span class="chap">Fun with Pictures</span>
-              <span class="chap">The Food We Eat</span><span class="chap poem">🎵 The Four Seasons</span>
-              <span class="chap">Anandi's Rainbow</span>
-            </div>
-          </div>
-
-          <div class="book-block">
-            <p class="book-title">🪔 हिंदी — सारंगी <a href="https://ncert.nic.in/textbook.php?ahsr1=0-21" target="_blank" rel="noopener">Open book ↗</a></p>
-            <div class="chap-list">
-              <span class="chap poem">🎵 झूला</span><span class="chap">आम की कहानी</span>
-              <span class="chap poem">🎵 आम की टोकरी</span><span class="chap">पत्ते ही पत्ते</span>
-              <span class="chap poem">🎵 पकौड़ी</span><span class="chap poem">🎵 छुक-छुक गाड़ी</span>
-              <span class="chap">रसोईघर</span><span class="chap poem">🎵 चूहो! म्याऊँ सो रही है</span>
-              <span class="chap">बंदर और गिलहरी</span><span class="chap">पगड़ी</span>
-              <span class="chap">पतंग</span><span class="chap">गेंद-बल्ला</span>
-              <span class="chap poem">🎵 बंदर गया खेत में भाग</span><span class="chap">एक बुढ़िया</span>
-              <span class="chap">मैं भी…</span><span class="chap">लालू और पीलू</span>
-              <span class="chap poem">🎵 चकई के चकदुम</span><span class="chap">छोटी का कमाल</span>
-              <span class="chap poem">🎵 चार चने</span><span class="chap">भगदड़</span>
-              <span class="chap">हलीम चला चाँद पर</span>
-            </div>
-          </div>
-
-          <div class="book-block">
-            <p class="book-title">🔢 Maths — Joyful Mathematics <a href="https://ncert.nic.in/textbook.php?aejm1=0-13" target="_blank" rel="noopener">Open book ↗</a></p>
-            <div class="chap-list">
-              <span class="chap">Finding the Furry Cat! (pre-number)</span><span class="chap">What is Long? What is Round? (shapes)</span>
-              <span class="chap">Mango Treat (1–9)</span><span class="chap">Making 10 (10–20)</span>
-              <span class="chap">How Many? (add &amp; subtract)</span><span class="chap">Vegetable Farm (up to 20)</span>
-              <span class="chap">Lina's Family (measurement)</span><span class="chap">Fun with Numbers (21–99)</span>
-              <span class="chap">Utsav (patterns)</span><span class="chap">How do I Spend my Day? (time)</span>
-              <span class="chap">How Many Times? (multiplication)</span><span class="chap">How Much Can We Spend? (money)</span>
-              <span class="chap">So Many Toys (data)</span>
-            </div>
-          </div>
-
-          <p class="books-note">Free official copies on ncert.nic.in. 🎵 = poem — open the book, then use <strong>➕ Add his poem</strong> (Poems &amp; rhymes subject) to type its words in for practice. Every app subject maps to these chapters.</p>
-        </details>
-      </section>
     </aside>
 
     <!-- ============ WORKSHEET ============ -->
@@ -994,6 +975,84 @@
       </article>
     </section>
   </main>
+
+  <div id="gu-backdrop" class="gu-backdrop no-print"></div>
+  <aside id="gu-drawer" class="gu-drawer no-print" role="dialog" aria-label="For grown-ups">
+    <div class="gu-head">
+      <h2 class="display">For grown-ups 💛</h2>
+      <button id="gu-close" type="button" aria-label="Close">✕</button>
+    </div>
+      <section class="panel-section" aria-label="Export">
+        <h3 class="display">Print &amp; share</h3>
+        <button id="pdf-btn" type="button" class="btn-ghost">🖨️ Print / save as PDF</button>
+        <button id="word-btn" type="button" class="btn-ghost">📄 Download for Word</button>
+        <button id="docs-btn" type="button" class="btn-ghost">📋 Copy for Google Docs</button>
+        <button id="pack-btn" type="button" class="btn-ghost">🗂️ Print a weekly pack</button>
+        <button id="install-btn" type="button" class="btn-ghost" hidden>📲 Install as an app</button>
+        <p id="status-message" aria-live="polite"></p>
+      </section>
+
+      <section class="panel-section" aria-label="Tip for grown-ups">
+        <h3 class="display">For grown-ups 💛</h3>
+        <p class="tip-text" id="grownup-tip"></p>
+        <details class="insights" id="insights-box" style="margin-top:12px;">
+          <summary>Progress insights</summary>
+          <div id="insight-rows"></div>
+          <p class="practise-next" id="practise-next"></p>
+        </details>
+        <details class="books" style="margin-top:10px;">
+          <summary>His NCERT books 📚</summary>
+
+          <div class="book-block">
+            <p class="book-title">🇬🇧 English — Mridang <a href="https://ncert.nic.in/textbook.php?aemr1=0-9" target="_blank" rel="noopener">Open book ↗</a></p>
+            <div class="chap-list">
+              <span class="chap poem">🎵 Two Little Hands</span><span class="chap">Greetings</span>
+              <span class="chap poem">🎵 Picture Time</span><span class="chap">The Cap-seller and the Monkeys</span>
+              <span class="chap poem">🎵 A Farm</span><span class="chap">Fun with Pictures</span>
+              <span class="chap">The Food We Eat</span><span class="chap poem">🎵 The Four Seasons</span>
+              <span class="chap">Anandi's Rainbow</span>
+            </div>
+          </div>
+
+          <div class="book-block">
+            <p class="book-title">🪔 हिंदी — सारंगी <a href="https://ncert.nic.in/textbook.php?ahsr1=0-21" target="_blank" rel="noopener">Open book ↗</a></p>
+            <div class="chap-list">
+              <span class="chap poem">🎵 झूला</span><span class="chap">आम की कहानी</span>
+              <span class="chap poem">🎵 आम की टोकरी</span><span class="chap">पत्ते ही पत्ते</span>
+              <span class="chap poem">🎵 पकौड़ी</span><span class="chap poem">🎵 छुक-छुक गाड़ी</span>
+              <span class="chap">रसोईघर</span><span class="chap poem">🎵 चूहो! म्याऊँ सो रही है</span>
+              <span class="chap">बंदर और गिलहरी</span><span class="chap">पगड़ी</span>
+              <span class="chap">पतंग</span><span class="chap">गेंद-बल्ला</span>
+              <span class="chap poem">🎵 बंदर गया खेत में भाग</span><span class="chap">एक बुढ़िया</span>
+              <span class="chap">मैं भी…</span><span class="chap">लालू और पीलू</span>
+              <span class="chap poem">🎵 चकई के चकदुम</span><span class="chap">छोटी का कमाल</span>
+              <span class="chap poem">🎵 चार चने</span><span class="chap">भगदड़</span>
+              <span class="chap">हलीम चला चाँद पर</span>
+            </div>
+          </div>
+
+          <div class="book-block">
+            <p class="book-title">🔢 Maths — Joyful Mathematics <a href="https://ncert.nic.in/textbook.php?aejm1=0-13" target="_blank" rel="noopener">Open book ↗</a></p>
+            <div class="chap-list">
+              <span class="chap">Finding the Furry Cat! (pre-number)</span><span class="chap">What is Long? What is Round? (shapes)</span>
+              <span class="chap">Mango Treat (1–9)</span><span class="chap">Making 10 (10–20)</span>
+              <span class="chap">How Many? (add &amp; subtract)</span><span class="chap">Vegetable Farm (up to 20)</span>
+              <span class="chap">Lina's Family (measurement)</span><span class="chap">Fun with Numbers (21–99)</span>
+              <span class="chap">Utsav (patterns)</span><span class="chap">How do I Spend my Day? (time)</span>
+              <span class="chap">How Many Times? (multiplication)</span><span class="chap">How Much Can We Spend? (money)</span>
+              <span class="chap">So Many Toys (data)</span>
+            </div>
+          </div>
+
+          <p class="books-note">Free official copies on ncert.nic.in. 🎵 = poem — open the book, then use <strong>➕ Add his poem</strong> (Poems &amp; rhymes subject) to type its words in for practice. Every app subject maps to these chapters.</p>
+        </details>
+      </section>
+
+      <section class="panel-section" aria-label="Poems">
+        <h3 class="display">His poems</h3>
+        <button id="add-poem-btn" type="button" class="btn-ghost">➕ Add his poem (from his NCERT book)</button>
+      </section>
+  </aside>
 
   <button id="ready-pill" type="button" class="ready-pill no-print" hidden>✨ Worksheet ready — tap to see it!</button>
 
@@ -2427,7 +2486,6 @@
       });
       activitySelect.value = currentConcept().activities[0];
       $("grownup-tip").textContent = currentConcept().tip;
-      $("add-poem-btn").hidden = currentConcept().id !== "poems";
     }
 
     /* ---------- poem manager ---------- */
@@ -2448,6 +2506,17 @@
         list.appendChild(row);
       });
     }
+
+    function setDrawer(open) {
+      $("gu-drawer").classList.toggle("open", open);
+      $("gu-backdrop").classList.toggle("open", open);
+    }
+    $("gu-open").addEventListener("click", () => setDrawer(true));
+    $("gu-close").addEventListener("click", () => setDrawer(false));
+    $("gu-backdrop").addEventListener("click", () => setDrawer(false));
+    document.addEventListener("keydown", e => {
+      if (e.key === "Escape" && $("gu-drawer").classList.contains("open")) setDrawer(false);
+    });
 
     $("add-poem-btn").addEventListener("click", () => { renderPoemList(); $("poem-dialog").showModal(); });
     $("poem-cancel").addEventListener("click", () => { $("poem-dialog").close(); generate(); });
