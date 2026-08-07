@@ -120,6 +120,28 @@
     .say-btn:hover { transform: scale(1.08); border-color: var(--accent); }
     .say-btn.talking { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, #fff); }
 
+    /* cards with a speaker keep their text clear of the button */
+    .q-card.has-say .q-prompt,
+    .q-card.has-say .q-text { padding-right: 42px; }
+
+    .dictate-hero.talking { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, #fff); }
+
+    /* mobile: floating "worksheet ready" pill */
+    .ready-pill {
+      position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%);
+      z-index: 55; padding: .72rem 1.25rem; border: 0; border-radius: 999px;
+      background: linear-gradient(135deg, var(--accent), #f08a63);
+      color: #fff; font-weight: 800; font-size: .92rem;
+      font-family: "Baloo 2", sans-serif;
+      box-shadow: 0 8px 24px rgba(83,60,26,.35), 0 3px 0 var(--accent-deep);
+      animation: pillUp .3s ease both;
+      white-space: nowrap;
+    }
+
+    @keyframes pillUp { from { opacity: 0; transform: translate(-50%, 16px); } to { opacity: 1; transform: translate(-50%, 0); } }
+
+    @media (min-width: 981px) { .ready-pill { display: none !important; } }
+
     .dictate-hero {
       display: flex; align-items: center; justify-content: center; gap: 10px;
       margin: 10px 0 4px; padding: 18px 12px;
@@ -973,6 +995,8 @@
     </section>
   </main>
 
+  <button id="ready-pill" type="button" class="ready-pill no-print" hidden>✨ Worksheet ready — tap to see it!</button>
+
   <div id="pack-root" aria-hidden="true"></div>
 
   <dialog id="poem-dialog" style="max-width:480px;width:92vw;border:2px solid #dbc8a3;border-radius:20px;padding:20px;background:var(--cream);">
@@ -1078,15 +1102,50 @@
     /* ---------- text-to-speech ---------- */
     const ttsOK = "speechSynthesis" in window;
 
+    // On-device voices start almost instantly; network voices cause the long pause.
+    let voiceCache = {};
+    function pickVoice(lang) {
+      try {
+        if (voiceCache[lang] !== undefined) return voiceCache[lang];
+        const voices = speechSynthesis.getVoices();
+        if (!voices.length) return null; // not cached — try again next time
+        const base = lang.split("-")[0].toLowerCase();
+        const cand = voices.filter(v => v.lang && v.lang.toLowerCase().replace("_","-").startsWith(base));
+        const v = cand.find(x => x.localService && x.lang.toLowerCase().replace("_","-") === lang.toLowerCase())
+              || cand.find(x => x.localService)
+              || cand[0] || null;
+        voiceCache[lang] = v;
+        return v;
+      } catch (e) { return null; }
+    }
+
+    if (ttsOK) {
+      try {
+        speechSynthesis.getVoices();
+        speechSynthesis.onvoiceschanged = () => { voiceCache = {}; speechSynthesis.getVoices(); };
+      } catch (e) {}
+      // Prime the speech engine on the first tap so the first real playback is quick.
+      document.addEventListener("pointerdown", function primeTTS() {
+        try {
+          const u = new SpeechSynthesisUtterance(" ");
+          u.volume = 0;
+          speechSynthesis.speak(u);
+        } catch (e) {}
+      }, { once: true });
+    }
+
     function speak(text, lang, onEnd) {
       if (!ttsOK || !text) { if (onEnd) onEnd(); return; }
       try {
         speechSynthesis.cancel();
         const u = new SpeechSynthesisUtterance(text);
         u.lang = lang || "en-IN";
+        const v = pickVoice(u.lang);
+        if (v) u.voice = v;
         u.rate = 0.82;
         u.onend = () => { if (onEnd) onEnd(); };
         speechSynthesis.speak(u);
+        speechSynthesis.resume(); // Android sometimes starts paused
       } catch (e) { if (onEnd) onEnd(); }
     }
 
@@ -2418,6 +2477,34 @@
         speak(speakable(q), q.lang || (currentActivity && currentActivity.lang), () => btn.classList.remove("talking"));
       });
       card.appendChild(btn);
+      card.classList.add("has-say");
+    }
+
+    /* On phones the worksheet sits below the controls — take him to it. */
+    function scrollToSheet() {
+      const paper = document.querySelector(".paper");
+      if (!paper) return;
+      paper.scrollIntoView({
+        behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+        block: "start"
+      });
+      $("ready-pill").hidden = true;
+    }
+
+    function sheetInView() {
+      const paper = document.querySelector(".paper");
+      return paper && paper.getBoundingClientRect().top < window.innerHeight * 0.5;
+    }
+
+    let pillTimer = null;
+    function announceReady(autoScroll) {
+      if (window.innerWidth > 980) return; // side-by-side layout: sheet already visible
+      if (autoScroll) { scrollToSheet(); return; }
+      if (sheetInView()) return;
+      const pill = $("ready-pill");
+      pill.hidden = false;
+      clearTimeout(pillTimer);
+      pillTimer = setTimeout(() => { pill.hidden = true; }, 8000);
     }
 
     function generate() {
@@ -2528,7 +2615,10 @@
           const big = document.createElement("span"); big.className = "big"; big.textContent = "🔊";
           const lbl = document.createElement("span"); lbl.textContent = "Tap to hear the word";
           hero.append(big, lbl);
-          hero.addEventListener("click", () => speak(q.say, q.lang || currentActivity.lang));
+          hero.addEventListener("click", () => {
+            hero.classList.add("talking");
+            speak(q.say, q.lang || currentActivity.lang, () => hero.classList.remove("talking"));
+          });
 
           const text = document.createElement("label");
           text.className = "q-text";
@@ -2833,6 +2923,7 @@
         skill: "Skill: a little of everything, every day",
         gen: () => qs
       }, qs);
+      announceReady(true);
       setStatus(dueTricky().length ? "Today's Five includes questions that were tricky before. 💪" : "");
     }
 
@@ -3142,10 +3233,15 @@
     }
 
     /* ---------- events ---------- */
-    conceptSelect.addEventListener("change", () => { populateActivities(); generate(); });
-    activitySelect.addEventListener("change", generate);
-    $("generate-btn").addEventListener("click", generate);
+    conceptSelect.addEventListener("change", () => { populateActivities(); generate(); announceReady(false); });
+    activitySelect.addEventListener("change", () => { generate(); announceReady(false); });
+    $("generate-btn").addEventListener("click", () => { generate(); announceReady(true); });
     $("retry-btn").addEventListener("click", generate);
+
+    $("ready-pill").addEventListener("click", scrollToSheet);
+    window.addEventListener("scroll", () => {
+      if (!$("ready-pill").hidden && sheetInView()) $("ready-pill").hidden = true;
+    }, { passive: true });
 
     $("surprise-btn").addEventListener("click", () => {
       const c = pick(CONCEPTS.filter(x => !x.noMix));
@@ -3153,6 +3249,7 @@
       populateActivities();
       activitySelect.value = pick(c.activities);
       generate();
+      announceReady(true);
       setStatus("Surprise! A " + A[activitySelect.value].label.replace("🎲 ", "") + " worksheet appeared. 🎲");
     });
 
@@ -3161,6 +3258,7 @@
         difficulty = btn.dataset.diff;
         document.querySelectorAll("[data-diff]").forEach(b => b.setAttribute("aria-pressed", b === btn ? "true" : "false"));
         generate();
+        announceReady(false);
       });
     });
 
