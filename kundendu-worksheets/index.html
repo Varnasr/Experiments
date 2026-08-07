@@ -1959,6 +1959,9 @@
       }))
     };
 
+    const DEVANAGARI_DIGITS = "०१२३४५६७८९";
+    const toDevanagari = n => String(n).split("").map(d => DEVANAGARI_DIGITS[+d] !== undefined ? DEVANAGARI_DIGITS[+d] : d).join("");
+
     A["hindi-numbers"] = {
       label: "गिनती के शब्द", title: "गिनती के शब्द",
       instruction: "संख्या को हिंदी शब्दों में लिखो।",
@@ -1966,7 +1969,10 @@
       gen: (n, d) => {
         const bank = d === "easy" ? HINDI_NUMS.slice(0, 10) : HINDI_NUMS;
         return fromBank(bank, n, ([num, ans, ...more]) => ({
-          prompt: String(num), question: "इस संख्या को शब्दों में लिखो।", answer: ans, accept: more
+          prompt: toDevanagari(num) + " (" + num + ")",
+          say: toDevanagari(num), // spoken in Hindi — "छह", never "six"
+          question: "इस संख्या को शब्दों में लिखो।",
+          answer: ans, accept: more
         }));
       }
     };
