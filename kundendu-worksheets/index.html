@@ -1264,6 +1264,9 @@
         .replace(/\s*\/\s*/g, " or ").replace(/[()]/g, " ")
         .replace(/\s+/g, " ").trim();
       const question = q.question ? String(q.question).replace(/\(.*?\)/g, "").trim() : "";
+      // Picture-only prompts (shapes, counting rows) must not be described —
+      // and never send a dangling '. ' that the voice mangles.
+      if (!main) return question;
       return question ? main + ". " + question : main;
     }
 
@@ -1591,18 +1594,18 @@
     ];
 
     const ODD_ONE_OUT = [
-      ["🍎 🍌 🥭 🚗","car","the car","a car"],
-      ["🐶 🐱 🐮 🌸","flower","the flower"],
-      ["✏️ 📏 📚 🐟","fish","the fish"],
-      ["🔵 🔺 🟩 🥭","mango","the mango"],
-      ["🚌 🚗 🛺 🍪","biscuit","the biscuit","cookie"],
-      ["👁️ 👂 👃 ⚽","ball","the ball"],
-      ["🥕 🥔 🍅 ⭐","star","the star"],
-      ["☀️ 🌙 ⭐ 🐔","hen","the hen"],
-      ["🪁 🎈 ⚽ 🐘","elephant","the elephant"],
-      ["🐟 🦆 🛶 🌳","tree","the tree"],
-      ["🍬 🍪 🥭 📏","ruler","the ruler","scale"],
-      ["🔊 🎵 🥁 🪑","chair","the chair"]
+      ["🍎 🍌 🥭 🚗","apple, banana, mango, car","car","the car","a car"],
+      ["🐶 🐱 🐮 🌸","dog, cat, cow, flower","flower","the flower"],
+      ["✏️ 📏 📚 🐟","pencil, ruler, book, fish","fish","the fish"],
+      ["🔵 🔺 🟩 🥭","circle, triangle, square, mango","mango","the mango"],
+      ["🚌 🚗 🛺 🍪","bus, car, auto, biscuit","biscuit","the biscuit","cookie"],
+      ["👁️ 👂 👃 ⚽","eye, ear, nose, ball","ball","the ball"],
+      ["🥕 🥔 🍅 ⭐","carrot, potato, tomato, star","star","the star"],
+      ["☀️ 🌙 ⭐ 🐔","sun, moon, star, hen","hen","the hen"],
+      ["🪁 🎈 ⚽ 🐘","kite, balloon, ball, elephant","elephant","the elephant"],
+      ["🐟 🦆 🛶 🌳","fish, duck, boat, tree","tree","the tree"],
+      ["🍬 🍪 🥭 📏","toffee, biscuit, mango, ruler","ruler","the ruler","scale"],
+      ["🔊 🎵 🥁 🪑","speaker, music, drum, chair","chair","the chair"]
     ];
 
     const RIDDLES = [
@@ -2336,8 +2339,8 @@
       label: "Odd one out", title: "Odd One Out",
       instruction: "Look carefully. One thing does not belong with the others — write which one!",
       skill: "Skill: sorting & thinking",
-      gen: (n) => fromBank(ODD_ONE_OUT, n, ([row, ans, ...more]) => ({
-        prompt: row, question: "Which one does not belong?", answer: ans, accept: more
+      gen: (n) => fromBank(ODD_ONE_OUT, n, ([row, say, ans, ...more]) => ({
+        prompt: row, say: say, question: "Which one does not belong?", answer: ans, accept: more
       }))
     };
 
