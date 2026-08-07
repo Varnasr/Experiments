@@ -1243,6 +1243,7 @@
     function speak(text, lang, onEnd) {
       if (!text) { if (onEnd) onEnd(); return; }
       lang = lang || "en-IN";
+      if (lang.startsWith("en")) text = applySayFixes(text);
       if (ttsOK) { try { speechSynthesis.cancel(); } catch (e) {} }
       // tiny words ("I", "a", single letters) trip up online TTS — the device voice says them right
       const tiny = lang.startsWith("en") && text.trim().length <= 2 && ttsOK;
@@ -1255,6 +1256,15 @@
       }
       speakLocal(text, lang, onEnd);
     }
+
+    // Words the online voice mispronounces → respellings used ONLY for speech.
+    // Display text is never changed. Add entries as mispronunciations are reported.
+    const SAY_FIXES = [
+      [/\bliving\b/gi, "livving"],
+      [/\bnon-livving\b/gi, "non livving"],
+      [/\blives\b/gi, "livs"],
+      [/\blive\b/gi, "liv"]
+    ];
 
     // Make any text pleasant to hear: symbols become words, blanks become "hmm",
     // emoji vanish (pictures are never described), hyphenated words stay whole.
@@ -1275,10 +1285,16 @@
         .replace(/\s+/g, " ").trim();
     }
 
+    function applySayFixes(text) {
+      let t = String(text);
+      SAY_FIXES.forEach(([re, sub]) => { t = t.replace(re, sub); });
+      return t;
+    }
+
     // Turn a question into something worth hearing: the prompt AND the question line.
     function speakable(q) {
       const main = q.say !== undefined ? String(q.say) : sayable(q.prompt);
-      const question = q.question ? sayable(q.question) : "";
+      const question = q.sayQuestion !== undefined ? String(q.sayQuestion) : (q.question ? sayable(q.question) : "");
       // Picture-only prompts (shapes, counting rows) speak only the question.
       if (!main.trim()) return question;
       return question ? (main + ". " + question).replace(/\.\s*\./g, ".") : main;
@@ -2499,8 +2515,9 @@
       gen: (n) => fromBank(LIVING, n, ([e, w, isLiving]) => ({
         prompt: e + " " + w,
         question: "Is it living or non-living?",
+        sayQuestion: "Is it alive, or not alive?",
         answer: isLiving ? "living" : "non-living",
-        accept: isLiving ? [] : ["non living", "nonliving", "not living"]
+        accept: isLiving ? ["alive"] : ["non living", "nonliving", "not living", "not alive"]
       }))
     };
 
