@@ -1038,6 +1038,15 @@
         </details>
       </section>
 
+      <section class="panel-section" aria-label="Voice">
+        <h3 class="display">Reading voice</h3>
+        <div class="seg-row" style="grid-template-columns:1fr 1fr;" role="group" aria-label="Voice choice">
+          <button type="button" class="seg" data-voice="sarvam" aria-pressed="true">🇮🇳 Indian (online)</button>
+          <button type="button" class="seg" data-voice="device" aria-pressed="false">📱 Device voice</button>
+        </div>
+        <p class="tip-text" style="margin-top:8px;font-size:.78rem;">If a word sounds odd in one voice, try the other — the device voice also works offline.</p>
+      </section>
+
       <section class="panel-section" aria-label="Poems">
         <h3 class="display">His poems</h3>
         <button id="add-poem-btn" type="button" class="btn-ghost">➕ Add his poem (from his NCERT book)</button>
@@ -1220,11 +1229,22 @@
       await a.play();
     }
 
+    let voicePref = "sarvam";
+    try { voicePref = localStorage.getItem("kundendu-voice") || "sarvam"; } catch (e) {}
+
+    function setVoicePref(v) {
+      voicePref = v;
+      try { localStorage.setItem("kundendu-voice", v); } catch (e) {}
+      document.querySelectorAll("[data-voice]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.voice === v)));
+    }
+
     function speak(text, lang, onEnd) {
       if (!text) { if (onEnd) onEnd(); return; }
       lang = lang || "en-IN";
       if (ttsOK) { try { speechSynthesis.cancel(); } catch (e) {} }
-      if (!sarvamDown && navigator.onLine !== false) {
+      // tiny words ("I", "a", single letters) trip up online TTS — the device voice says them right
+      const tiny = lang.startsWith("en") && text.trim().length <= 2 && ttsOK;
+      if (voicePref !== "device" && !tiny && !sarvamDown && navigator.onLine !== false) {
         speakSarvam(text, lang, onEnd).catch(() => {
           sarvamDown = true; // one failure → device voice for the rest of the session
           speakLocal(text, lang, onEnd);
@@ -1614,6 +1634,63 @@
     ];
 
     const COINS_HINT = "🪙 coins: ₹1, ₹2, ₹5, ₹10";
+
+    const SPATIAL = [
+      ["🍎 The apple is ___ the basket. (inside / under)","inside","in"],
+      ["🐦 The bird flies ___ the tree. (above / below)","above","over"],
+      ["🐕 The dog sleeps ___ the bed. (under / on)","under","below"],
+      ["📚 The book is ___ the table. (on / under)","on","on top","on top of"],
+      ["🎈 The balloon floats ___ into the sky. (up / down)","up"],
+      ["👟 We wear shoes ___ our feet. (on / in)","on"],
+      ["🐠 Fish live ___ the water. (in / on)","in","inside"],
+      ["🌳 The roots of a tree are ___ the ground. (below / above)","below","under"],
+      ["🚪 We knock ___ the door. (on / under)","on"],
+      ["🧢 A cap goes ___ your head. (on / in)","on"],
+      ["🚂 The tunnel goes ___ the mountain. (through / above)","through"],
+      ["🐒 The monkey jumped ___ the wall. (over / in)","over","above"]
+    ];
+
+    const DATA_ITEMS = [["⭐","star","stars"],["⚽","ball","balls"],["🥭","mango","mangoes"],["🌸","flower","flowers"],["🐠","fish","fish"],["🪁","kite","kites"]];
+
+    const GREETINGS = [
+      ["🍬 Someone gives you a sweet.","What do you say? (thank you / sorry)","thank you","thanks"],
+      ["😯 You step on someone's toe by mistake.","What do you say? (sorry / thank you)","sorry"],
+      ["🌅 You meet your teacher in the morning.","What do you say? (good morning / good night)","good morning"],
+      ["🌙 You are going to sleep.","What do you say? (good night / good morning)","good night"],
+      ["💧 You want someone to pass the water.","Which magic word do you use? (please / bye)","please"],
+      ["👋 Your friend is going home.","What do you say? (goodbye / good morning)","goodbye","bye","bye bye"],
+      ["🤧 You sneeze near others.","What do you say? (excuse me / hello)","excuse me"],
+      ["😊 Someone says thank you to YOU.","What do you say? (welcome / sorry)","welcome","you are welcome","you're welcome"],
+      ["📞 You answer the telephone.","What do you say? (hello / good night)","hello","hi"],
+      ["🚪 You want to come into the classroom.","What do you ask? (may I come in / go away)","may i come in","may i come in please"]
+    ];
+
+    const SEASONS = [
+      ["🥶 In which season do we wear sweaters and caps?","winter"],
+      ["🥵 In which season do we eat ice cream and drink lots of water?","summer"],
+      ["🌧️ In which season do we carry an umbrella every day?","monsoon","rainy","rainy season"],
+      ["🥭 Mangoes come in which season?","summer"],
+      ["☔ What do we carry so we don't get wet in the rain?","umbrella","raincoat"],
+      ["❄️ Which season is the coldest?","winter"],
+      ["🌸 In which season do lots of flowers bloom?","spring"],
+      ["🌈 We see a rainbow after the ___ . (rain / snow)","rain"],
+      ["👕 In summer we wear light ___ clothes. (cotton / woollen)","cotton"],
+      ["🧥 In winter we wear warm ___ clothes. (woollen / cotton)","woollen","woolen","wool"]
+    ];
+
+    const FAMILY = [
+      ["👵 Your mother's mother is your ___","nani","naani"],
+      ["👵 Your father's mother is your ___","dadi","daadi"],
+      ["👴 Your father's father is your ___","dada","daada"],
+      ["👴 Your mother's father is your ___","nana","naana"],
+      ["👦 Your parents' son is your ___","brother","bhai","bhaiya"],
+      ["👧 Your parents' daughter is your ___","sister","didi","behen"],
+      ["👨 Your father's brother is your ___","chacha","uncle","tau","taya"],
+      ["👩 Your mother's sister is your ___","mausi","aunt","maasi","masi"],
+      ["👩 Your father's sister is your ___","bua","aunt","buaji"],
+      ["👨 Your mother's brother is your ___","mama","uncle","mamu"],
+      ["👨‍👩‍👦 Mother, father and children together are a ___","family","parivar","परिवार"]
+    ];
 
     const DRAW_BANK = [
       ["☀️","sun"],["⚽","ball"],["🌳","tree"],["🏠","house"],["🐟","fish"],["⭐","star"],
@@ -2123,6 +2200,52 @@
       }
     };
 
+    A["multiply"] = {
+      label: "Equal groups (×)", title: "Groups of Fun",
+      instruction: "Count the groups. Every group has the same number — how many in all?",
+      skill: "Skill: early multiplication (equal groups)",
+      gen: (n, d) => {
+        const ks = d === "easy" ? [2] : d === "medium" ? [2, 3] : [2, 3, 4, 5];
+        return build(n, () => {
+          const k = pick(ks), g = between(2, d === "easy" ? 4 : 5);
+          const e = pick(COUNT_EMOJI);
+          const groups = Array.from({ length: g }, () => e.repeat(k)).join("   ");
+          return {
+            prompt: groups + "\n" + g + " groups of " + k,
+            question: "How many in all?",
+            answer: String(g * k), accept: numAccept(g * k).concat([g + " x " + k, k + " x " + g])
+          };
+        });
+      }
+    };
+
+    A["data-count"] = {
+      label: "So many toys (data)", title: "So Many Toys!",
+      instruction: "Look carefully at the whole collection before you answer.",
+      skill: "Skill: counting and comparing a collection (data handling)",
+      gen: (n, d) => build(n, () => {
+        const items = sample(DATA_ITEMS, 3);
+        const counts = shuffle(d === "easy" ? [2, 3, 4] : [3, 4, 6]);
+        let row = [];
+        items.forEach(([e], i) => { for (let k = 0; k < counts[i]; k++) row.push(e); });
+        row = shuffle(row).join(" ");
+        if (d !== "easy" && rand(2) === 0) {
+          const maxI = counts.indexOf(Math.max(...counts));
+          return {
+            prompt: row,
+            question: "Which one is there the MOST of?",
+            answer: items[maxI][1], accept: [items[maxI][2]]
+          };
+        }
+        const i = rand(3);
+        return {
+          prompt: row,
+          question: "How many " + items[i][2] + " " + (items[i][1] === "fish" ? "are" : "can you count") + "?",
+          answer: String(counts[i]), accept: numAccept(counts[i])
+        };
+      })
+    };
+
     A["story-sums"] = {
       label: "Story sums", title: "Story Sums",
       instruction: "Read each little story, then write the answer.",
@@ -2267,6 +2390,15 @@
       }
     };
 
+    A["spatial"] = {
+      label: "Where is it?", title: "Where Is It?",
+      instruction: "Think about where things are — choose the right position word.",
+      skill: "Skill: position words (inside, on, under, above…)",
+      gen: (n) => fromBank(SPATIAL, n, ([p, ans, ...more]) => ({
+        prompt: p, question: "Write the correct word.", answer: ans, accept: more
+      }))
+    };
+
     A["shape-names"] = {
       label: "Name the shape", title: "Shape Spotter",
       instruction: "Look at each shape and write its name.",
@@ -2304,6 +2436,33 @@
           answer: seq[6], accept: []
         };
       })
+    };
+
+    A["greetings"] = {
+      label: "Good words", title: "Magic Words & Greetings",
+      instruction: "Kind words make everyone smile. What do you say?",
+      skill: "Skill: greetings & polite words",
+      gen: (n) => fromBank(GREETINGS, n, ([scene, q, ans, ...more]) => ({
+        prompt: scene, question: q, answer: ans, accept: more
+      }))
+    };
+
+    A["seasons"] = {
+      label: "Seasons & weather", title: "The Four Seasons",
+      instruction: "Think about hot days, cold days and rainy days!",
+      skill: "Skill: seasons & weather",
+      gen: (n) => fromBank(SEASONS, n, ([q, ans, ...more]) => ({
+        prompt: q, question: "Write the answer.", answer: ans, accept: more
+      }))
+    };
+
+    A["family"] = {
+      label: "My family", title: "My Lovely Family",
+      instruction: "Who is who in the family? Write the word you use at home!",
+      skill: "Skill: family relations",
+      gen: (n) => fromBank(FAMILY, n, ([q, ans, ...more]) => ({
+        prompt: q, question: "Write the family word.", answer: ans, accept: more
+      }))
     };
 
     A["living-sort"] = {
@@ -2412,7 +2571,7 @@
         activities: ["trace-letters", "trace-words", "hindi-trace", "copy-drawing", "finish-picture"],
         tip: "These sheets work best printed. Keep sessions short and happy — five careful letters beat twenty rushed ones. Finger-tracing before pencil really helps." },
       { id: "english-reading", label: "English · Reading & words", emoji: "📚", accent: "#3f7ea5", accentDeep: "#2d6284",
-        activities: ["rhyme-hunt", "sentence-jumble", "sight-words", "opposites", "mini-stories"],
+        activities: ["rhyme-hunt", "sentence-jumble", "sight-words", "opposites", "mini-stories", "greetings"],
         tip: "Read the question aloud first, then let Kundendu try alone. Celebrate brave guesses — that's how readers grow." },
       { id: "hindi", label: "Hindi · वर्ण और शब्द", emoji: "🪔", accent: "#a3599c", accentDeep: "#84437e",
         activities: ["hindi-first-letter", "hindi-picture-word", "hindi-numbers", "hindi-opposites", "hindi-matra"],
@@ -2421,13 +2580,13 @@
         activities: ["counting", "bundles", "skip-counting", "neighbours", "compare", "tens-ones", "number-names"],
         tip: "Use real things — spoons, blocks, toys — to count alongside the worksheet. Fingers are allowed and encouraged!" },
       { id: "maths-operations", label: "Maths · Add & subtract", emoji: "➕", accent: "#d98324", accentDeep: "#b0651a",
-        activities: ["addition", "subtraction", "missing-number", "number-bonds", "story-sums"],
+        activities: ["addition", "subtraction", "missing-number", "number-bonds", "multiply", "story-sums"],
         tip: "Start on Easy and only move up when it feels fun. Drawing circles for each number is a great strategy at this age." },
       { id: "maths-shapes", label: "Maths · Shapes & patterns", emoji: "🔷", accent: "#0e7490", accentDeep: "#0a5468",
-        activities: ["shape-names", "shape-facts", "patterns"],
+        activities: ["shape-names", "shape-facts", "patterns", "spatial"],
         tip: "Go on a shape hunt at home after the worksheet — find circles, squares and triangles in the kitchen!" },
       { id: "maths-mmt", label: "Maths · Measure, money & time", emoji: "⏰", accent: "#7059b5", accentDeep: "#57438f",
-        activities: ["measure", "money", "time-days"],
+        activities: ["measure", "money", "time-days", "data-count"],
         tip: "Play shop with real coins, compare real things at home (which dabba is heavier?), and say the days of the week at breakfast." },
       { id: "poems", label: "Poems & rhymes", emoji: "🎵", accent: "#c2557d", accentDeep: "#9c3f61",
         activities: ["rhyme-fill", "my-poems"],
@@ -2436,7 +2595,7 @@
         activities: ["odd-one-out", "riddles"],
         tip: "Let him explain WHY the odd one doesn't belong — the reason matters more than the answer. Any sensible reason counts!" },
       { id: "evs", label: "EVS · My world", emoji: "🌍", accent: "#b7455f", accentDeep: "#933349",
-        activities: ["living-sort", "helpers", "my-body", "animal-world"],
+        activities: ["living-sort", "helpers", "my-body", "animal-world", "seasons", "family"],
         tip: "Connect answers to real life: point out helpers on the street, animals in books, and talk about what living things need." },
       { id: "review", label: "Review · My tricky ones", emoji: "🧠", accent: "#526980", accentDeep: "#3d4f61",
         activities: ["tricky-review"], noMix: true,
@@ -2593,6 +2752,14 @@
     document.addEventListener("keydown", e => {
       if (e.key === "Escape" && $("gu-drawer").classList.contains("open")) setDrawer(false);
     });
+
+    document.querySelectorAll("[data-voice]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        setVoicePref(btn.dataset.voice);
+        speak(btn.dataset.voice === "device" ? "Hello! I am the device voice." : "Namaste! I am the Indian voice.", "en-IN");
+      });
+    });
+    setVoicePref(voicePref);
 
     $("add-poem-btn").addEventListener("click", () => { renderPoemList(); $("poem-dialog").showModal(); });
     $("poem-cancel").addEventListener("click", () => { $("poem-dialog").close(); generate(); });
@@ -3058,7 +3225,7 @@
     }
 
     /* ---------- Today's 5 ---------- */
-    const DAILY_POOL = ["beginning-sounds","ending-sounds","cvc-builder","vowel-spot","blends","rhyme-hunt","sight-words","opposites","mini-stories","hindi-first-letter","hindi-numbers","hindi-opposites","hindi-matra","counting","neighbours","compare","addition","subtraction","missing-number","story-sums","shape-names","shape-facts","patterns","living-sort","helpers","my-body","animal-world","measure","money","time-days","odd-one-out","riddles","rhyme-fill"];
+    const DAILY_POOL = ["beginning-sounds","ending-sounds","cvc-builder","vowel-spot","blends","rhyme-hunt","sight-words","opposites","mini-stories","hindi-first-letter","hindi-numbers","hindi-opposites","hindi-matra","counting","neighbours","compare","addition","subtraction","missing-number","story-sums","shape-names","shape-facts","patterns","living-sort","helpers","my-body","animal-world","measure","money","time-days","odd-one-out","riddles","rhyme-fill","spatial","multiply","data-count","greetings","seasons","family"];
 
     function todaysFive() {
       applyTheme();
@@ -3295,10 +3462,10 @@
       root.replaceChildren();
       const sections = [
         ["English · Phonics", pick(["beginning-sounds","cvc-builder","blends"])],
-        ["English · Reading", pick(["rhyme-hunt","sight-words","mini-stories","rhyme-fill"])],
+        ["English · Reading", pick(["rhyme-hunt","sight-words","mini-stories","rhyme-fill","greetings"])],
         ["Hindi", pick(["hindi-first-letter","hindi-picture-word","hindi-matra"])],
-        ["Maths", pick(["counting","bundles","skip-counting","addition","subtraction","story-sums","neighbours","measure","money","time-days"])],
-        ["EVS & Thinking", pick(["living-sort","helpers","animal-world","odd-one-out","riddles"])],
+        ["Maths", pick(["counting","bundles","skip-counting","addition","subtraction","multiply","story-sums","neighbours","measure","money","time-days","spatial","data-count"])],
+        ["EVS & Thinking", pick(["living-sort","helpers","animal-world","odd-one-out","riddles","seasons","family"])],
         ["Handwriting", "trace-letters"],
         ["Drawing", "copy-drawing"]
       ];

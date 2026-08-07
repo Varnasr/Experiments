@@ -2,7 +2,7 @@
    Precaches the app shell; caches line-art SVGs and fonts as they are used,
    so the app keeps working fully offline after the first visit. */
 
-const VERSION = "kws-v6";
+const VERSION = "kws-v7";
 const SHELL_CACHE = VERSION + "-shell";
 const RUNTIME_CACHE = VERSION + "-runtime";
 
