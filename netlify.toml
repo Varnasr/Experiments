@@ -21,13 +21,6 @@
   status = 301
   force = true
 
-# functions must escape the catch-all rewrite below
-[[redirects]]
-  from = "https://littlek.in/.netlify/*"
-  to = "https://varnasr-experiments.netlify.app/.netlify/:splat"
-  status = 200
-  force = true
-
 # rewrite (not redirect): littlek.in/* serves kundendu-worksheets/* — the app owns the domain root.
 # Relative `to` is Netlify's documented hostname-rewrite form; an absolute same-host `to`
 # re-enters rule processing and loops.
