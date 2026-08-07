@@ -2,7 +2,7 @@
    Precaches the app shell; caches line-art SVGs and fonts as they are used,
    so the app keeps working fully offline after the first visit. */
 
-const VERSION = "kws-v5";
+const VERSION = "kws-v6";
 const SHELL_CACHE = VERSION + "-shell";
 const RUNTIME_CACHE = VERSION + "-runtime";
 
@@ -40,6 +40,19 @@ self.addEventListener("fetch", event => {
   const request = event.request;
   if (request.method !== "GET") return;
   const url = new URL(request.url);
+
+  // TTS audio is immutable per text+lang: cache-first keeps repeat words instant.
+  if (url.origin === self.location.origin && url.pathname.includes("/.netlify/functions/tts")) {
+    event.respondWith(
+      caches.open(RUNTIME_CACHE).then(cache =>
+        cache.match(request).then(hit => hit || fetch(request).then(response => {
+          if (response.ok) cache.put(request, response.clone());
+          return response;
+        }))
+      )
+    );
+    return;
+  }
 
   // App shell: network-first so updates arrive, cache fallback so offline works.
   if (url.origin === self.location.origin) {
