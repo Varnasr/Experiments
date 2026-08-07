@@ -1256,18 +1256,32 @@
       speakLocal(text, lang, onEnd);
     }
 
+    // Make any text pleasant to hear: symbols become words, blanks become "hmm",
+    // emoji vanish (pictures are never described), hyphenated words stay whole.
+    function sayable(text) {
+      return String(text)
+        .replace(EMOJI_RE, " ")
+        .replace(/…/g, " ")
+        .replace(/₹\s*/g, " rupees ")
+        .replace(/\+/g, " plus ")
+        .replace(/−/g, " minus ")
+        .replace(/(\d)\s*-\s*(\d)/g, "$1 minus $2")
+        .replace(/▢/g, " box ")
+        .replace(/=/g, " equals ")
+        .replace(/_+/g, " hmm ")
+        .replace(/[·—│]/g, " ")
+        .replace(/\s*\/\s*/g, " or ").replace(/[()]/g, " ")
+        .replace(/\s+\./g, ".").replace(/\.{2,}/g, ".")
+        .replace(/\s+/g, " ").trim();
+    }
+
     // Turn a question into something worth hearing: the prompt AND the question line.
     function speakable(q) {
-      const main = q.say || String(q.prompt)
-        .replace(EMOJI_RE, " ")
-        .replace(/\+/g, " plus ").replace(/[−-]/g, " minus ").replace(/[=▢_·—]/g, " ")
-        .replace(/\s*\/\s*/g, " or ").replace(/[()]/g, " ")
-        .replace(/\s+/g, " ").trim();
-      const question = q.question ? String(q.question).replace(/\(.*?\)/g, "").trim() : "";
-      // Picture-only prompts (shapes, counting rows) must not be described —
-      // and never send a dangling '. ' that the voice mangles.
-      if (!main) return question;
-      return question ? main + ". " + question : main;
+      const main = q.say !== undefined ? String(q.say) : sayable(q.prompt);
+      const question = q.question ? sayable(q.question) : "";
+      // Picture-only prompts (shapes, counting rows) speak only the question.
+      if (!main.trim()) return question;
+      return question ? (main + ". " + question).replace(/\.\s*\./g, ".") : main;
     }
 
     /* ---------- uppercase letter strokes (school order, 100×100 grid) ---------- */
@@ -1499,11 +1513,11 @@
     const HELPERS = [
       ["Helps us when we are sick","doctor","nurse"],
       ["Puts out fires","firefighter","fireman"],
-      ["Teaches children at school","teacher"],
+      ["Helps children learn at school","teacher"],
       ["Keeps people safe","police officer","policeman","police"],
       ["Grows food in the fields","farmer"],
       ["Brings letters to our home","postman","mailman","postwoman"],
-      ["Cooks tasty food","cook","chef"],
+      ["Makes yummy food in the kitchen","cook","chef"],
       ["Cuts and styles hair","barber","hairdresser"],
       ["Takes care of our teeth","dentist"],
       ["Stitches our clothes","tailor"],
@@ -1758,7 +1772,7 @@
       gen: (n) => fromBank(CVC, n, ([e, w]) => {
         const i = rand(3);
         const shown = w.split("").map((ch, k) => k === i ? "_" : ch).join(" ");
-        return { prompt: e + "  " + shown, question: "Write the missing letter.", answer: w[i], accept: [w] };
+        return { prompt: e + "  " + shown, say: w, question: "Write the missing letter.", answer: w[i], accept: [w] };
       })
     };
 
@@ -2080,7 +2094,7 @@
           }
           return {
             prompt: emojiRow("🌾", t) + (oo ? "   " + emojiRow("🥢", oo) : ""),
-            question: "Each 🌾 = 10 sticks. How many sticks in all?",
+            question: "Every bundle has 10 sticks. How many sticks in all?",
             answer: String(t * 10 + oo), accept: numAccept(t * 10 + oo)
           };
         });
@@ -2253,7 +2267,7 @@
         const i = rand(3);
         return {
           prompt: row,
-          question: "How many " + items[i][2] + " " + (items[i][1] === "fish" ? "are" : "can you count") + "?",
+          question: "How many " + items[i][2] + (items[i][1] === "fish" ? " are there?" : " can you count?"),
           answer: String(counts[i]), accept: numAccept(counts[i])
         };
       })
