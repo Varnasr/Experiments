@@ -126,21 +126,6 @@
 
     .dictate-hero.talking { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, #fff); }
 
-    /* mobile: floating "worksheet ready" pill */
-    .ready-pill {
-      position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%);
-      z-index: 55; padding: .72rem 1.25rem; border: 0; border-radius: 999px;
-      background: linear-gradient(135deg, var(--accent), #f08a63);
-      color: #fff; font-weight: 800; font-size: .92rem;
-      font-family: "Baloo 2", sans-serif;
-      box-shadow: 0 8px 24px rgba(83,60,26,.35), 0 3px 0 var(--accent-deep);
-      animation: pillUp .3s ease both;
-      white-space: nowrap;
-    }
-
-    @keyframes pillUp { from { opacity: 0; transform: translate(-50%, 16px); } to { opacity: 1; transform: translate(-50%, 0); } }
-
-    @media (min-width: 981px) { .ready-pill { display: none !important; } }
 
     .dictate-hero {
       display: flex; align-items: center; justify-content: center; gap: 10px;
@@ -472,6 +457,11 @@
       font-family: "Baloo 2", sans-serif;
       box-shadow: inset 0 1px 0 rgba(255,255,255,.35), 0 4px 0 var(--accent-deep);
       transition: transform .12s ease, box-shadow .12s ease;
+    }
+
+    .btn-primary.is-ready {
+      background: linear-gradient(135deg, var(--green), #3d9f68);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.3), 0 4px 0 #14522e;
     }
 
     .btn-primary:hover { transform: translateY(-1px); }
@@ -1054,8 +1044,6 @@
       </section>
   </aside>
 
-  <button id="ready-pill" type="button" class="ready-pill no-print" hidden>✨ Worksheet ready — tap to see it!</button>
-
   <div id="pack-root" aria-hidden="true"></div>
 
   <dialog id="poem-dialog" style="max-width:480px;width:92vw;border:2px solid #dbc8a3;border-radius:20px;padding:20px;background:var(--cream);">
@@ -1193,7 +1181,7 @@
       }, { once: true });
     }
 
-    function speak(text, lang, onEnd) {
+    function speakLocal(text, lang, onEnd) {
       if (!ttsOK || !text) { if (onEnd) onEnd(); return; }
       try {
         speechSynthesis.cancel();
@@ -1206,6 +1194,44 @@
         speechSynthesis.speak(u);
         speechSynthesis.resume(); // Android sometimes starts paused
       } catch (e) { if (onEnd) onEnd(); }
+    }
+
+    /* Sarvam AI (Bulbul) speaks with a natural Indian voice in English and Hindi.
+       Served via our own Netlify function; falls back to the device voice when
+       offline, on GitHub Pages, or if the service ever fails. */
+    const TTS_ENDPOINT = "/.netlify/functions/tts";
+    const sarvamCache = new Map();
+    let sarvamDown = false;
+    let currentAudio = null;
+
+    async function speakSarvam(text, lang, onEnd) {
+      const key = lang + "|" + text;
+      let url = sarvamCache.get(key);
+      if (!url) {
+        const r = await fetch(TTS_ENDPOINT + "?lang=" + encodeURIComponent(lang) + "&text=" + encodeURIComponent(text));
+        if (!r.ok) throw new Error("tts " + r.status);
+        url = URL.createObjectURL(await r.blob());
+        sarvamCache.set(key, url);
+      }
+      if (currentAudio) { try { currentAudio.pause(); } catch (e) {} }
+      const a = new Audio(url);
+      currentAudio = a;
+      a.onended = () => { if (onEnd) onEnd(); };
+      await a.play();
+    }
+
+    function speak(text, lang, onEnd) {
+      if (!text) { if (onEnd) onEnd(); return; }
+      lang = lang || "en-IN";
+      if (ttsOK) { try { speechSynthesis.cancel(); } catch (e) {} }
+      if (!sarvamDown && navigator.onLine !== false) {
+        speakSarvam(text, lang, onEnd).catch(() => {
+          sarvamDown = true; // one failure → device voice for the rest of the session
+          speakLocal(text, lang, onEnd);
+        });
+        return;
+      }
+      speakLocal(text, lang, onEnd);
     }
 
     // Turn a question prompt into something worth hearing.
@@ -1942,6 +1968,56 @@
       }
     };
 
+    A["bundles"] = {
+      label: "Bundles & sticks", title: "Bundles of Ten",
+      instruction: "Every bundle 🌾 has 10 sticks. Count the bundles and the loose sticks 🥢, then answer.",
+      skill: "Skill: counting in tens with bundles & sticks",
+      gen: (n, d) => {
+        const tMax = d === "easy" ? 3 : d === "medium" ? 6 : 9;
+        return build(n, () => {
+          const t = between(1, tMax), oo = between(0, 9);
+          if (d !== "easy" && rand(2) === 0) {
+            const num = t * 10 + oo;
+            return {
+              prompt: "🌾 Make " + num + " with bundles and sticks!",
+              question: "How many bundles of 10, and how many loose sticks? (write like: 3 bundles and 4 sticks)",
+              answer: t + " bundles and " + oo + (oo === 1 ? " stick" : " sticks"),
+              check: v => {
+                const nums = (String(v).match(/\d+/g) || []).map(Number);
+                return nums.length >= 2 && nums[0] === t && nums[1] === oo;
+              }
+            };
+          }
+          return {
+            prompt: emojiRow("🌾", t) + (oo ? "   " + emojiRow("🥢", oo) : ""),
+            question: "Each 🌾 = 10 sticks. How many sticks in all?",
+            answer: String(t * 10 + oo), accept: numAccept(t * 10 + oo)
+          };
+        });
+      }
+    };
+
+    A["skip-counting"] = {
+      label: "Counting in 10s", title: "Jump Counting",
+      instruction: "Count in jumps like a kangaroo and write the missing number!",
+      skill: "Skill: skip counting",
+      gen: (n, d) => {
+        const steps = d === "easy" ? [10] : d === "medium" ? [10, 5] : [10, 5, 2];
+        return build(n, () => {
+          const step = pick(steps);
+          const maxStart = step === 10 ? 50 : step === 5 ? 25 : 10;
+          const start = step * between(1, Math.max(1, Math.floor(maxStart / step)));
+          const seq = [start, start + step, start + step * 2, start + step * 3];
+          const ans = start + step * 4;
+          return {
+            prompt: "🦘 " + seq.join(" , ") + " , ___",
+            question: "What number comes next?",
+            answer: String(ans), accept: numAccept(ans)
+          };
+        });
+      }
+    };
+
     A["tens-ones"] = {
       label: "Tens and ones", title: "Tens & Ones Houses",
       instruction: "Break each number into tens and ones (example: 34 → 3 tens and 4 ones).",
@@ -2342,7 +2418,7 @@
         activities: ["hindi-first-letter", "hindi-picture-word", "hindi-numbers", "hindi-opposites", "hindi-matra"],
         tip: "बोलकर अभ्यास कराएँ — पहले शब्द बोलें, फिर लिखें। Typing Hindi is tricky, so writing answers on a printed sheet works best." },
       { id: "maths-numbers", label: "Maths · Number sense", emoji: "🔢", accent: "#1e7d46", accentDeep: "#14522e",
-        activities: ["counting", "neighbours", "compare", "tens-ones", "number-names"],
+        activities: ["counting", "bundles", "skip-counting", "neighbours", "compare", "tens-ones", "number-names"],
         tip: "Use real things — spoons, blocks, toys — to count alongside the worksheet. Fingers are allowed and encouraged!" },
       { id: "maths-operations", label: "Maths · Add & subtract", emoji: "➕", accent: "#d98324", accentDeep: "#b0651a",
         activities: ["addition", "subtraction", "missing-number", "number-bonds", "story-sums"],
@@ -2557,7 +2633,7 @@
         behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
         block: "start"
       });
-      $("ready-pill").hidden = true;
+      setMakeReady(false);
     }
 
     function sheetInView() {
@@ -2565,15 +2641,23 @@
       return paper && paper.getBoundingClientRect().top < window.innerHeight * 0.5;
     }
 
-    let pillTimer = null;
+    /* The Make button itself becomes the "worksheet ready" signpost. */
+    let makeReady = false, readyTimer = null;
+    function setMakeReady(on) {
+      if (makeReady === on) return;
+      makeReady = on;
+      const b = $("generate-btn");
+      b.textContent = on ? "⬇ Worksheet ready — tap to see it!" : "✨ Make my worksheet";
+      b.classList.toggle("is-ready", on);
+      clearTimeout(readyTimer);
+      if (on) readyTimer = setTimeout(() => setMakeReady(false), 12000);
+    }
+
     function announceReady(autoScroll) {
       if (window.innerWidth > 980) return; // side-by-side layout: sheet already visible
       if (autoScroll) { scrollToSheet(); return; }
       if (sheetInView()) return;
-      const pill = $("ready-pill");
-      pill.hidden = false;
-      clearTimeout(pillTimer);
-      pillTimer = setTimeout(() => { pill.hidden = true; }, 8000);
+      setMakeReady(true);
     }
 
     function generate() {
@@ -3213,7 +3297,7 @@
         ["English · Phonics", pick(["beginning-sounds","cvc-builder","blends"])],
         ["English · Reading", pick(["rhyme-hunt","sight-words","mini-stories","rhyme-fill"])],
         ["Hindi", pick(["hindi-first-letter","hindi-picture-word","hindi-matra"])],
-        ["Maths", pick(["counting","addition","subtraction","story-sums","neighbours","measure","money","time-days"])],
+        ["Maths", pick(["counting","bundles","skip-counting","addition","subtraction","story-sums","neighbours","measure","money","time-days"])],
         ["EVS & Thinking", pick(["living-sort","helpers","animal-world","odd-one-out","riddles"])],
         ["Handwriting", "trace-letters"],
         ["Drawing", "copy-drawing"]
@@ -3304,12 +3388,15 @@
     /* ---------- events ---------- */
     conceptSelect.addEventListener("change", () => { populateActivities(); generate(); announceReady(false); });
     activitySelect.addEventListener("change", () => { generate(); announceReady(false); });
-    $("generate-btn").addEventListener("click", () => { generate(); announceReady(true); });
+    $("generate-btn").addEventListener("click", () => {
+      if (makeReady) { scrollToSheet(); return; } // second tap = go to the sheet
+      generate();
+      announceReady(true);
+    });
     $("retry-btn").addEventListener("click", generate);
 
-    $("ready-pill").addEventListener("click", scrollToSheet);
     window.addEventListener("scroll", () => {
-      if (!$("ready-pill").hidden && sheetInView()) $("ready-pill").hidden = true;
+      if (makeReady && sheetInView()) setMakeReady(false);
     }, { passive: true });
 
     $("surprise-btn").addEventListener("click", () => {
