@@ -117,6 +117,8 @@
       transition: transform .12s ease, border-color .12s ease;
     }
 
+    .say-btn.say-inline { position: static; vertical-align: middle; margin-left: 8px; width: 30px; height: 30px; font-size: 13px; }
+
     .say-btn:hover { transform: scale(1.08); border-color: var(--accent); }
     .say-btn.talking { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, #fff); }
 
@@ -902,7 +904,7 @@
               <div style="min-width:0;">
                 <p class="sheet-tag">Kundendu's Class 1 CBSE Worksheet</p>
                 <h2 id="ws-title" class="display"></h2>
-                <p id="ws-instruction"></p>
+                <p id="ws-instruction" style="display:inline;"></p><button id="ws-say" type="button" class="say-btn say-inline no-print" aria-label="Read the instructions out loud" hidden>🔊</button>
               </div>
             </div>
             <div class="meta">
@@ -1254,13 +1256,15 @@
       speakLocal(text, lang, onEnd);
     }
 
-    // Turn a question prompt into something worth hearing.
+    // Turn a question into something worth hearing: the prompt AND the question line.
     function speakable(q) {
-      if (q.say) return q.say;
-      return String(q.prompt)
+      const main = q.say || String(q.prompt)
         .replace(EMOJI_RE, " ")
         .replace(/\+/g, " plus ").replace(/[−-]/g, " minus ").replace(/[=▢_·—]/g, " ")
+        .replace(/\s*\/\s*/g, " or ").replace(/[()]/g, " ")
         .replace(/\s+/g, " ").trim();
+      const question = q.question ? String(q.question).replace(/\(.*?\)/g, "").trim() : "";
+      return question ? main + ". " + question : main;
     }
 
     /* ---------- uppercase letter strokes (school order, 100×100 grid) ---------- */
@@ -2842,6 +2846,7 @@
 
       $("ws-title").textContent = currentActivity.title;
       $("ws-instruction").textContent = currentActivity.instruction;
+      $("ws-say").hidden = false;
       $("skill-note").textContent = currentActivity.skill;
 
       const grid = document.createElement("div");
@@ -3591,6 +3596,12 @@
         document.querySelectorAll("[data-count]").forEach(b => b.setAttribute("aria-pressed", b === btn ? "true" : "false"));
         generate();
       });
+    });
+
+    $("ws-say").addEventListener("click", () => {
+      const b = $("ws-say");
+      b.classList.add("talking");
+      speak(currentActivity.title + ". " + currentActivity.instruction, currentActivity.lang, () => b.classList.remove("talking"));
     });
 
     $("check-btn").addEventListener("click", () => checkAnswers(false));
