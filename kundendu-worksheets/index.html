@@ -243,6 +243,24 @@
 
     .books-note { margin: 10px 0 0; font-size: .74rem; font-weight: 700; color: var(--muted); }
 
+    /* ---------- stickers ---------- */
+    #sticker-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .sticker-item { height: 44px; padding: 5px; background: #fff; border: 2px solid #eadfc2; border-radius: 12px; }
+
+    .btn-boss {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%; padding: .6rem 1rem; margin-bottom: 12px;
+      border: 2px solid #e3c34d; border-radius: 14px;
+      background: #fff4cf; font-weight: 800; font-size: .9rem;
+    }
+
+    .btn-boss:hover { background: #ffedb3; transform: translateY(-1px); }
+
+    /* read-to-me pages */
+    .book-line { font-family: "Baloo 2", sans-serif; font-size: 1.45rem; line-height: 1.7; font-weight: 700; }
+    .book-line .w { border-radius: 6px; padding: 0 2px; }
+    .book-line .w.hl { background: var(--yellow); }
+
     /* ---------- badges ---------- */
     #badge-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
 
@@ -858,6 +876,7 @@
       <h2 class="display">Build a worksheet</h2>
 
       <button id="daily-btn" type="button" class="btn-daily">⭐ Today's 5 — tiny daily practice</button>
+      <button id="boss-btn" type="button" class="btn-boss">🏆 Boss level — beat this week's wins!</button>
 
       <div class="control">
         <label class="control-label" for="concept-select">Subject &amp; topic</label>
@@ -956,6 +975,8 @@
             </div>
             <div id="history-list"></div>
             <div id="badge-row" aria-label="Badges earned"></div>
+            <h3 class="display" style="margin:14px 0 0;font-size:.95rem;">Sticker book 🏅</h3>
+            <div id="sticker-row" aria-label="Animal stickers earned"></div>
           </section>
 
           <footer class="sheet-foot">
@@ -1056,7 +1077,22 @@
           <button id="remind-btn" type="button" class="btn-ghost" style="margin-bottom:0;">📅 Add daily reminder</button>
         </div>
         <p class="tip-text" style="font-size:.78rem;margin-bottom:10px;">Downloads a calendar event that rings every day at this time — open it and tap “Add” on the phone.</p>
+        <div style="display:flex;gap:8px;margin-bottom:8px;">
+          <button id="push-btn" type="button" class="btn-ghost" style="margin-bottom:0;">🔔 Notify on this phone (beta)</button>
+          <button id="push-off-btn" type="button" class="btn-tiny" style="align-self:center;" hidden>Turn off</button>
+        </div>
+        <p class="tip-text" style="font-size:.78rem;margin-bottom:10px;">Sends a phone notification at roughly the chosen time. On iPhone, install the app to the home screen first.</p>
         <button id="share-btn" type="button" class="btn-ghost">📤 Share progress</button>
+        <button id="report-btn" type="button" class="btn-ghost">🩺 Print progress report (for teachers)</button>
+        <button id="stickerprint-btn" type="button" class="btn-ghost">🖨️ Print sticker colouring page</button>
+      </section>
+
+      <section class="panel-section" aria-label="Backup">
+        <h3 class="display">Backup &amp; restore</h3>
+        <button id="backup-btn" type="button" class="btn-ghost">⬇️ Save a backup file</button>
+        <button id="restore-btn" type="button" class="btn-ghost">⬆️ Restore from backup</button>
+        <input id="restore-file" type="file" accept="application/json,.json" hidden>
+        <p class="tip-text" style="font-size:.78rem;">Saves his history, tricky words, stickers and poems to a file — restore it on a new phone and nothing is lost.</p>
       </section>
 
       <section class="panel-section" aria-label="Poems">
@@ -1692,6 +1728,10 @@
 
     const COINS_HINT = "🪙 coins: ₹1, ₹2, ₹5, ₹10";
 
+    const HINDI_DICT = [["आम"],["घर"],["नाव"],["गाय"],["फूल"],["चाँद","चांद"],["तारा"],["केला"],["मछली"],["हाथी"],["तितली"],["किताब"],["पेड़","पेड"],["सेब"],["पानी"],["दूध"],["रोटी"],["माला"],["कमल"],["सूरज"]];
+
+    const STICKER_POOL = ["🦁","🐘","🦒","🦚","🐼","🦋","🐬","🐢","🦜","🦉","🐨","🦘","🐙","🦀","🐸","🦩","🐯","🦓","🐰","🦄"];
+
     const SPATIAL = [
       ["🍎 The apple is ___ the basket. (inside / under)","inside","in"],
       ["🐦 The bird flies ___ the tree. (above / below)","above","over"],
@@ -2054,6 +2094,21 @@
       }))
     };
 
+    A["hindi-dictation"] = {
+      label: "🔊 सुनो और लिखो", title: "सुनो और लिखो",
+      instruction: "स्पीकर दबाओ, ध्यान से सुनो, और शब्द लिखो।",
+      skill: "Skill: सुनना और लिखना (श्रुतलेख)",
+      gen: (n) => {
+        if (!ttsOK && navigator.onLine === false) return [{ type: "info", prompt: "", question: "", answer: "",
+          text: "इस समय आवाज़ उपलब्ध नहीं है — इंटरनेट से जुड़कर फिर कोशिश करो। 🔊" }];
+        return fromBank(HINDI_DICT, n, ([w, ...more]) => ({
+          type: "dictate", say: w, lang: "hi-IN",
+          prompt: "🔊 सुनो…", question: "जो शब्द सुना, वही लिखो।",
+          answer: w, accept: more
+        }));
+      }
+    };
+
     A["hindi-matra"] = {
       label: "मात्रा लगाओ", title: "मात्रा लगाओ",
       instruction: "चित्र देखो, सही मात्रा लगाओ और पूरा शब्द लिखो।",
@@ -2067,7 +2122,7 @@
     };
 
     // Hindi activities speak in Hindi
-    ["hindi-first-letter","hindi-picture-word","hindi-numbers","hindi-opposites","hindi-matra","hindi-trace"]
+    ["hindi-first-letter","hindi-picture-word","hindi-numbers","hindi-opposites","hindi-matra","hindi-trace","hindi-dictation"]
       .forEach(id => { if (A[id]) A[id].lang = "hi-IN"; });
 
     A["counting"] = {
@@ -2427,6 +2482,22 @@
       }))
     };
 
+    A["read-to-me"] = {
+      label: "📖 Read to me", title: "My Little Book",
+      instruction: "Press 🔊 on each page — the words light up as they are read. Read along out loud!",
+      skill: "Skill: read-along fluency",
+      gen: (n) => {
+        const [story, q, ans, ...more] = pick(STORIES);
+        const pages = story.match(/[^.!?]+[.!?]/g) || [story];
+        const qs = pages.map((line, i) => ({
+          type: "readpage", text: line.trim(), page: i + 1, total: pages.length,
+          prompt: line.trim(), question: "Read along!", answer: "practice task"
+        }));
+        qs.push({ prompt: story, say: story, question: q, answer: ans, accept: more });
+        return qs;
+      }
+    };
+
     A["rhyme-fill"] = {
       label: "Rhymes: missing word", title: "Sing & Fill the Rhyme",
       instruction: "Sing the rhyme out loud and write the missing word.",
@@ -2653,10 +2724,10 @@
         activities: ["trace-letters", "trace-numbers", "trace-words", "hindi-trace", "copy-drawing", "finish-picture"],
         tip: "These sheets work best printed. Keep sessions short and happy — five careful letters beat twenty rushed ones. Finger-tracing before pencil really helps." },
       { id: "english-reading", label: "English · Reading & words", emoji: "📚", accent: "#3f7ea5", accentDeep: "#2d6284",
-        activities: ["rhyme-hunt", "sentence-jumble", "sight-words", "opposites", "mini-stories", "greetings"],
+        activities: ["rhyme-hunt", "sentence-jumble", "sight-words", "opposites", "mini-stories", "read-to-me", "greetings"],
         tip: "Read the question aloud first, then let Kundendu try alone. Celebrate brave guesses — that's how readers grow." },
       { id: "hindi", label: "Hindi · वर्ण और शब्द", emoji: "🪔", accent: "#a3599c", accentDeep: "#84437e",
-        activities: ["hindi-first-letter", "hindi-picture-word", "hindi-numbers", "hindi-opposites", "hindi-matra"],
+        activities: ["hindi-first-letter", "hindi-picture-word", "hindi-numbers", "hindi-opposites", "hindi-matra", "hindi-dictation"],
         tip: "बोलकर अभ्यास कराएँ — पहले शब्द बोलें, फिर लिखें। Typing Hindi is tricky, so writing answers on a printed sheet works best." },
       { id: "maths-numbers", label: "Maths · Number sense", emoji: "🔢", accent: "#1e7d46", accentDeep: "#14522e",
         activities: ["counting", "bundles", "skip-counting", "neighbours", "compare", "tens-ones", "number-names"],
@@ -2835,6 +2906,177 @@
       if (e.key === "Escape" && $("gu-drawer").classList.contains("open")) setDrawer(false);
     });
 
+    /* ---------- progress report for teachers / ORKIDS ---------- */
+    function printReport() {
+      const root = $("pack-root");
+      root.replaceChildren();
+      const page = document.createElement("section");
+      page.className = "pack-page pack-key";
+      const cutoff = Date.now() - 14 * DAY;
+      const recent = savedAttempts.filter(r => new Date(r.submitted_at).getTime() >= cutoff);
+      const h = document.createElement("h2");
+      h.textContent = "Practice report — " + ($("student-name").value || "Kundendu");
+      const meta = document.createElement("p");
+      meta.textContent = "Last 14 days · generated " + new Date().toLocaleDateString("en-GB") + " · littlek.in";
+      page.append(h, meta);
+
+      const bySubj = {};
+      recent.forEach(r => {
+        if (!r.total) return;
+        const k = r.subject || "Other";
+        (bySubj[k] = bySubj[k] || { right: 0, total: 0, n: 0 });
+        bySubj[k].right += Number(r.score) || 0; bySubj[k].total += Number(r.total) || 0; bySubj[k].n++;
+      });
+      const t1 = document.createElement("h2"); t1.textContent = "Skills practised";
+      page.appendChild(t1);
+      if (!Object.keys(bySubj).length) {
+        const p = document.createElement("p"); p.textContent = "No saved practice in the last 14 days.";
+        page.appendChild(p);
+      } else {
+        Object.entries(bySubj).sort((a, b) => (a[1].right / a[1].total) - (b[1].right / b[1].total)).forEach(([k, v]) => {
+          const p = document.createElement("p");
+          p.style.margin = "3px 0";
+          p.textContent = k + " — " + v.n + " worksheet" + (v.n === 1 ? "" : "s") + ", " + Math.round(100 * v.right / v.total) + "% correct (" + v.right + "/" + v.total + ")";
+          page.appendChild(p);
+        });
+      }
+
+      const t2 = document.createElement("h2"); t2.textContent = "Still finding tricky (needs more practice)";
+      page.appendChild(t2);
+      const tricky = loadTricky().slice(0, 12);
+      if (!tricky.length) {
+        const p = document.createElement("p"); p.textContent = "Nothing pending in the review deck — all cleared!";
+        page.appendChild(p);
+      } else tricky.forEach(t => {
+        const p = document.createElement("p"); p.style.margin = "3px 0";
+        p.textContent = "• " + t.prompt.replace(/\n/g, " ") + " — " + t.question + " (answer: " + t.answer + ")";
+        page.appendChild(p);
+      });
+
+      const t3 = document.createElement("h2"); t3.textContent = "Notes";
+      page.appendChild(t3);
+      for (let i = 0; i < 4; i++) { const l = document.createElement("div"); l.className = "pq-line"; l.style.margin = "14px 0"; page.appendChild(l); }
+
+      root.appendChild(page);
+      document.body.classList.add("packing");
+      const cleanup = () => { document.body.classList.remove("packing"); root.replaceChildren(); window.removeEventListener("afterprint", cleanup); };
+      window.addEventListener("afterprint", cleanup);
+      setTimeout(() => window.print(), 300);
+    }
+    $("report-btn").addEventListener("click", printReport);
+
+    /* ---------- sticker colouring page ---------- */
+    $("stickerprint-btn").addEventListener("click", () => {
+      const list = loadStickers();
+      if (!list.length) { setStatus("No stickers yet — a perfect score wins the first one!"); return; }
+      const root = $("pack-root");
+      root.replaceChildren();
+      const page = document.createElement("section");
+      page.className = "pack-page";
+      const h = document.createElement("h2");
+      h.textContent = ($("student-name").value || "Kundendu") + "'s sticker book — colour them in!";
+      page.appendChild(h);
+      const wrap = document.createElement("div");
+      wrap.style.cssText = "display:flex;flex-wrap:wrap;gap:26px;justify-content:center;padding-top:10mm;";
+      list.forEach(x => wrap.appendChild(lineArt(x.e, "li ghost-img")));
+      page.appendChild(wrap);
+      root.appendChild(page);
+      document.body.classList.add("packing");
+      const cleanup = () => { document.body.classList.remove("packing"); root.replaceChildren(); window.removeEventListener("afterprint", cleanup); };
+      window.addEventListener("afterprint", cleanup);
+      setTimeout(() => window.print(), 300);
+    });
+
+    /* ---------- backup & restore ---------- */
+    const BACKUP_KEYS = ["kundendu-worksheet-attempts","kundendu-tricky","kundendu-wins","kundendu-stickers","kundendu-poems","kundendu-progress","kundendu-student-name","kundendu-voice"];
+
+    $("backup-btn").addEventListener("click", () => {
+      const data = { app: "kundendu-learn-and-play", version: 1, saved_at: new Date().toISOString() };
+      BACKUP_KEYS.forEach(k => { try { data[k] = localStorage.getItem(k); } catch (e) {} });
+      const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 1)], { type: "application/json" }));
+      const a = document.createElement("a");
+      a.href = url; a.download = "kundendu-backup-" + new Date().toISOString().slice(0, 10) + ".json";
+      document.body.appendChild(a); a.click(); a.remove();
+      URL.revokeObjectURL(url);
+      setStatus("Backup saved — keep the file somewhere safe (email it to yourself!).");
+    });
+
+    $("restore-btn").addEventListener("click", () => $("restore-file").click());
+    $("restore-file").addEventListener("change", async e => {
+      const f = e.target.files && e.target.files[0];
+      if (!f) return;
+      try {
+        const data = JSON.parse(await f.text());
+        if (data.app !== "kundendu-learn-and-play") throw new Error("wrong file");
+        if (!window.confirm("Restore this backup? It replaces the practice data on this device.")) return;
+        BACKUP_KEYS.forEach(k => { if (typeof data[k] === "string") try { localStorage.setItem(k, data[k]); } catch (err) {} });
+        location.reload();
+      } catch (err) {
+        setStatus("That file doesn't look like a Kundendu backup.");
+      }
+    });
+
+    /* ---------- push notifications (beta) ---------- */
+    const VAPID_PUBLIC = "BF-pgOwiGgg8lhczfdyo71ov8Gb-OiJ7NkIJc5jvg-z-k7YbES66dZRpZ88MFzJgklwcvdZulyqEQ-ufNLjv9gs";
+
+    function b64ToBytes(base64) {
+      const pad = "=".repeat((4 - base64.length % 4) % 4);
+      const raw = atob((base64 + pad).replace(/-/g, "+").replace(/_/g, "/"));
+      return Uint8Array.from([...raw].map(ch => ch.charCodeAt(0)));
+    }
+
+    async function refreshPushButtons() {
+      try {
+        if (!("serviceWorker" in navigator) || !("PushManager" in window)) return;
+        const reg = await navigator.serviceWorker.ready;
+        const sub = await reg.pushManager.getSubscription();
+        $("push-off-btn").hidden = !sub;
+        $("push-btn").textContent = sub ? "🔔 Notifications are ON" : "🔔 Notify on this phone (beta)";
+      } catch (e) {}
+    }
+
+    $("push-btn").addEventListener("click", async () => {
+      if (!("serviceWorker" in navigator) || !("PushManager" in window) || !window.Notification) {
+        setStatus("This browser can't do notifications — the calendar reminder above works everywhere.");
+        return;
+      }
+      try {
+        const perm = await Notification.requestPermission();
+        if (perm !== "granted") { setStatus("Notifications were not allowed on this phone."); return; }
+        const reg = await navigator.serviceWorker.ready;
+        const sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64ToBytes(VAPID_PUBLIC) });
+        const t = ($("remind-time").value || "17:00").split(":");
+        const local = new Date(); local.setHours(Number(t[0]), Number(t[1]) || 0, 0, 0);
+        const r = await fetch("/.netlify/functions/push-subscribe", {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ subscription: sub.toJSON(), utcHour: local.getUTCHours() })
+        });
+        setStatus(r.ok ? "Done! A reminder will arrive around " + ($("remind-time").value || "17:00") + " every day. 🔔"
+                       : "Could not register on the server — the calendar reminder still works.");
+        refreshPushButtons();
+      } catch (e) {
+        setStatus("Notification setup failed here — use the calendar reminder instead.");
+      }
+    });
+
+    $("push-off-btn").addEventListener("click", async () => {
+      try {
+        const reg = await navigator.serviceWorker.ready;
+        const sub = await reg.pushManager.getSubscription();
+        if (sub) {
+          await fetch("/.netlify/functions/push-subscribe", {
+            method: "POST", headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ unsubscribe: true, endpoint: sub.endpoint })
+          }).catch(() => {});
+          await sub.unsubscribe();
+        }
+        setStatus("Daily notifications turned off.");
+        refreshPushButtons();
+      } catch (e) {}
+    });
+
+    refreshPushButtons();
+
     $("remind-btn").addEventListener("click", () => {
       const t = ($("remind-time").value || "17:00").replace(":", "") + "00";
       const today = new Date();
@@ -2975,6 +3217,21 @@
 
         const num = document.createElement("span");
         num.className = "q-num"; num.textContent = i + 1;
+        // quiz-master peek: a grown-up can press-and-hold the number badge to see the answer
+        if (!q.type || q.type === "dictate") {
+          num.style.cursor = "pointer";
+          num.setAttribute("title", "Press and hold to peek (for grown-ups)");
+          num.addEventListener("pointerdown", ev => {
+            ev.preventDefault();
+            const rev = num.parentElement.querySelector(".q-answer");
+            if (rev) rev.style.display = "block";
+          });
+          ["pointerup", "pointerleave", "pointercancel"].forEach(evName =>
+            num.addEventListener(evName, () => {
+              const rev = num.parentElement.querySelector(".q-answer");
+              if (rev && !document.body.classList.contains("show-answers")) rev.style.display = "";
+            }));
+        }
 
         if (q.type === "info") {
           const msg = document.createElement("p");
@@ -2982,6 +3239,42 @@
           msg.style.fontSize = "1.05rem";
           msg.textContent = q.text;
           card.append(num, msg);
+          grid.appendChild(card);
+          return;
+        }
+
+        if (q.type === "readpage") {
+          const pg = document.createElement("p");
+          pg.className = "q-text";
+          pg.textContent = "Page " + q.page + " of " + q.total;
+          const line = document.createElement("p");
+          line.className = "book-line";
+          const spans = q.text.split(/\s+/).map(w => {
+            const sp = document.createElement("span");
+            sp.className = "w"; sp.textContent = w;
+            line.appendChild(sp);
+            line.appendChild(document.createTextNode(" "));
+            return sp;
+          });
+          const play = document.createElement("button");
+          play.type = "button"; play.className = "chip-btn no-print";
+          play.textContent = "🔊 Read to me";
+          let reading = false;
+          play.addEventListener("click", () => {
+            if (reading) return;
+            reading = true;
+            play.setAttribute("aria-pressed", "true");
+            let k = 0;
+            const step = () => {
+              spans.forEach(sp => sp.classList.remove("hl"));
+              if (k >= spans.length) { reading = false; play.setAttribute("aria-pressed", "false"); return; }
+              const sp = spans[k++];
+              sp.classList.add("hl");
+              speak(sp.textContent.replace(/[^\p{L}']/gu, ""), q.lang || (currentActivity && currentActivity.lang), step);
+            };
+            step();
+          });
+          card.append(num, pg, line, play);
           grid.appendChild(card);
           return;
         }
@@ -3154,7 +3447,7 @@
     function checkAnswers(silent) {
       let right = 0, answered = 0, checkable = 0;
       currentQuestions.forEach((q, i) => {
-        if (q.type && q.type !== "dictate") return; // trace/draw/info cards are pencil tasks, not checkable
+        if (q.type && q.type !== "dictate") return; // trace/draw/read/info cards are not checkable
         checkable++;
         const input = $("ans-" + i);
         if (!input) return;
@@ -3171,6 +3464,7 @@
         if (result) {
           right++;
           forgetMiss(q);
+          if (!silent) rememberWin(q);
           card.classList.add("ok");
           if (!silent) { fb.textContent = "✓ Well done!"; fb.classList.add("good"); }
         } else {
@@ -3191,6 +3485,10 @@
         } else if (right === score.total) {
           line.textContent = "Score: " + right + " out of " + score.total + " 🌟🌟🌟 Superstar!";
           throwConfetti();
+          if (score.total >= 4) {
+            const st = awardSticker();
+            if (st) line.textContent += " New sticker won: " + st;
+          }
         } else {
           const cheer = right >= Math.ceil(score.total * 0.7) ? " ⭐⭐ Great work!" :
             right >= Math.ceil(score.total * 0.4) ? " ⭐ Good trying!" : " 💪 Keep practising!";
@@ -3199,6 +3497,52 @@
         if (answered) afterCheck(score);
       }
       return score;
+    }
+
+    /* ---------- wins (boss level) + stickers ---------- */
+    const WINS_KEY = "kundendu-wins";
+    const loadWins = () => { try { return JSON.parse(localStorage.getItem(WINS_KEY)) || []; } catch (e) { return []; } };
+    const saveWins = list => { try { localStorage.setItem(WINS_KEY, JSON.stringify(list.slice(-200))); } catch (e) {} };
+
+    function rememberWin(q) {
+      if (q.check || (q.type && q.type !== "dictate")) return;
+      const list = loadWins();
+      const k = q.prompt + "|" + q.question;
+      if (list.some(w => w.prompt + "|" + w.question === k)) return;
+      list.push({ prompt: q.prompt, question: q.question, answer: q.answer, accept: q.accept || [], say: q.say, lang: q.lang, at: Date.now() });
+      saveWins(list);
+    }
+
+    const STICKER_KEY = "kundendu-stickers";
+    const loadStickers = () => { try { return JSON.parse(localStorage.getItem(STICKER_KEY)) || []; } catch (e) { return []; } };
+
+    function awardSticker() {
+      const list = loadStickers();
+      const today = dayKey(Date.now());
+      const dedupe = currentActivity.title + "|" + today;
+      if (list.some(x => x.k === dedupe)) return null;
+      const owned = new Set(list.map(x => x.e));
+      const fresh = STICKER_POOL.filter(e => !owned.has(e));
+      const e = pick(fresh.length ? fresh : STICKER_POOL);
+      list.push({ e, k: dedupe, at: Date.now() });
+      try { localStorage.setItem(STICKER_KEY, JSON.stringify(list)); } catch (err) {}
+      renderStickers();
+      return e;
+    }
+
+    function renderStickers() {
+      const shelf = $("sticker-row");
+      if (!shelf) return;
+      const list = loadStickers();
+      shelf.replaceChildren();
+      if (!list.length) {
+        const p = document.createElement("p");
+        p.style.cssText = "font-size:.82rem;color:var(--muted);font-weight:600;margin:6px 0 0;";
+        p.textContent = "Get a perfect score to win your first animal sticker!";
+        shelf.appendChild(p);
+        return;
+      }
+      list.forEach(x => shelf.appendChild(lineArt(x.e, "li sticker-item")));
     }
 
     /* ---------- adaptive nudges + personal best ---------- */
@@ -3259,6 +3603,7 @@
       ];
       currentQuestions.forEach((q, i) => {
         if (q.type === "info") { lines.push((i + 1) + ". " + q.text); lines.push(""); return; }
+        if (q.type === "readpage") { lines.push((i + 1) + ". Read out loud: " + q.text); lines.push(""); return; }
         if (q.type === "trace") {
           lines.push((i + 1) + ". " + q.question);
           lines.push("   " + q.trace + "   ______________   ______________");
@@ -3462,6 +3807,23 @@
     document.addEventListener("keydown", e => {
       if (e.key === "Escape" && !$("flash-overlay").hidden) exitFlashcards();
     });
+
+    /* ---------- boss level: this week's wins, remixed ---------- */
+    function bossLevel() {
+      applyTheme();
+      const weekAgo = Date.now() - 7 * DAY;
+      const wins = shuffle(loadWins().filter(w => (w.at || 0) >= weekAgo)).slice(0, 10);
+      const qs = wins.length ? wins.map(w => ({ prompt: w.prompt, question: w.question, answer: w.answer, accept: w.accept || [], say: w.say, lang: w.lang }))
+        : [{ type: "info", prompt: "", question: "", answer: "", text: "The boss level is made from questions Kundendu got RIGHT this week — play some worksheets first, then come back to beat your own wins! 🏆" }];
+      renderWorksheet({
+        title: "Boss Level!",
+        subjectLabel: "Boss level",
+        instruction: "Every question here is one you already beat this week. Show it who's boss — again!",
+        skill: "Skill: remembering this week's learning",
+        gen: () => qs
+      }, qs);
+      announceReady(true);
+    }
 
     /* ---------- saving & stats ---------- */
     let savedAttempts = [];
@@ -3736,6 +4098,7 @@
     $("docs-btn").addEventListener("click", copyForDocs);
     $("save-btn").addEventListener("click", saveAttempt);
     $("daily-btn").addEventListener("click", todaysFive);
+    $("boss-btn").addEventListener("click", bossLevel);
     $("pack-btn").addEventListener("click", printPack);
 
     $("clear-btn").addEventListener("click", async () => {
