@@ -797,6 +797,13 @@
       font-size: .78rem; font-weight: 800; color: var(--muted);
     }
 
+    /* quiz-master mode: the kid can't reveal answers, only the quiz master's press-and-hold works */
+    body.quizmode #key-btn { display: none !important; }
+    body.quizmode.show-answers .q-answer { display: none; }
+
+    #quiz-hint { display: none; flex-basis: 100%; font-size: .78rem; font-weight: 800; color: var(--blue-dark); }
+    body.quizmode #quiz-hint { display: block; }
+
     /* ---------- confetti ---------- */
     #confetti-canvas {
       position: fixed; inset: 0; z-index: 99;
@@ -943,6 +950,7 @@
             <button id="key-btn" type="button" class="btn-soft">👀 Show answers</button>
             <p id="score-line"></p>
             <span id="nudge-slot"></span>
+            <span id="quiz-hint">🎙️ Quiz-master mode: press &amp; hold a question's number to check its answer.</span>
           </div>
 
           <section id="answer-key" aria-label="Answer key">
@@ -1079,6 +1087,7 @@
         <p class="tip-text" style="font-size:.78rem;margin-bottom:10px;">Downloads a calendar event that rings every day at this time — open it and tap “Add” on the phone.</p>
         <div style="display:flex;gap:8px;margin-bottom:8px;">
           <button id="push-btn" type="button" class="btn-ghost" style="margin-bottom:0;">🔔 Notify on this phone (beta)</button>
+          <button id="push-test-btn" type="button" class="btn-tiny" style="align-self:center;" hidden>Send test</button>
           <button id="push-off-btn" type="button" class="btn-tiny" style="align-self:center;" hidden>Turn off</button>
         </div>
         <p class="tip-text" style="font-size:.78rem;margin-bottom:10px;">Sends a phone notification at roughly the chosen time. On iPhone, install the app to the home screen first.</p>
@@ -1093,6 +1102,12 @@
         <button id="restore-btn" type="button" class="btn-ghost">⬆️ Restore from backup</button>
         <input id="restore-file" type="file" accept="application/json,.json" hidden>
         <p class="tip-text" style="font-size:.78rem;">Saves his history, tricky words, stickers and poems to a file — restore it on a new phone and nothing is lost.</p>
+      </section>
+
+      <section class="panel-section" aria-label="Two-player quiz">
+        <h3 class="display">Two-player quiz 🎙️</h3>
+        <button id="quiz-btn" type="button" class="btn-ghost" aria-pressed="false">🎙️ Quiz-master mode: OFF</button>
+        <p class="tip-text" style="font-size:.78rem;">For a sibling or grown-up to run the quiz: hides the Show-answers button, and only pressing-and-holding a question's number badge reveals its answer.</p>
       </section>
 
       <section class="panel-section" aria-label="Poems">
@@ -1645,6 +1660,33 @@
       ["We ride in an auto. The auto can zip and beep.", "What do we ride in?", "auto", "an auto", "the auto"],
       ["Nani tells me a story at night. I love Nani.", "Who tells the story?", "nani", "my nani"],
       ["The peacock dances in the rain. It has a big tail.", "Who dances in the rain?", "peacock", "the peacock", "a peacock"]
+    ];
+
+    const BOOKS = [
+      { title: "The Red Kite", pages: [
+          "Kundendu has a red kite.", "The wind lifts it up, up, up!", "It zips past a big green tree.",
+          "A crow flaps along next to it.", "Ma claps from the roof.", "The kite lands back in his hands."
+        ], qs: [["What colour is the kite?","red"], ["Who claps from the roof?","ma","mum","mother"]] },
+      { title: "The Little Auto", pages: [
+          "Raju has a small green auto.", "It can zip down the busy lane.", "Beep beep! Move, little dog!",
+          "The dog hops in for a ride.", "They stop at the mango stall.", "One mango for Raju, one for the dog!"
+        ], qs: [["What colour is the auto?","green"], ["What do they buy at the stall?","mango","mangoes","a mango"]] },
+      { title: "Rain, Rain!", pages: [
+          "Drip, drop! Here comes the rain.", "Meera runs out with her umbrella.", "A frog hops in the wet mud.",
+          "A peacock dances near the wall.", "Splash, splash go Meera's feet.", "Rainy days are so much fun!"
+        ], qs: [["Who dances near the wall?","peacock","the peacock","a peacock"], ["What does Meera take out?","umbrella","her umbrella","an umbrella"]] },
+      { title: "The Lost Cap", pages: [
+          "Dadu cannot find his cap.", "Is it under the bed? No!", "Is it on the shelf? No!",
+          "Kundendu looks in the big pot.", "The cat is asleep on the cap!", "Silly cat, laughs Dadu."
+        ], qs: [["Who is asleep on the cap?","cat","the cat"], ["Whose cap is lost?","dadu","dadu's","grandfather"]] },
+      { title: "Ten Hot Rotis", pages: [
+          "Ma makes ten hot rotis.", "Papa eats two with dal.", "Nani eats one with sabzi.",
+          "Kundendu eats two with ghee.", "The pup begs for a little bite.", "How many rotis are left? Five!"
+        ], qs: [["How many rotis does Ma make?","ten","10"], ["Who begs for a bite?","pup","the pup","dog","puppy"]] },
+      { title: "The School Bus", pages: [
+          "The big yellow bus honks at six.", "Anaya hops in with her bag.", "The bus rolls past the milk stall.",
+          "It stops at the red school gate.", "All the kids sing on the way.", "School time is here — hop out!"
+        ], qs: [["What colour is the bus?","yellow"], ["When does the bus honk?","six","at six","6"]] }
     ];
 
     const HINDI_MATRA = [
@@ -2487,13 +2529,14 @@
       instruction: "Press 🔊 on each page — the words light up as they are read. Read along out loud!",
       skill: "Skill: read-along fluency",
       gen: (n) => {
-        const [story, q, ans, ...more] = pick(STORIES);
-        const pages = story.match(/[^.!?]+[.!?]/g) || [story];
-        const qs = pages.map((line, i) => ({
-          type: "readpage", text: line.trim(), page: i + 1, total: pages.length,
-          prompt: line.trim(), question: "Read along!", answer: "practice task"
+        const book = pick(BOOKS);
+        const qs = book.pages.map((line, i) => ({
+          type: "readpage", text: line, book: book.title, page: i + 1, total: book.pages.length,
+          prompt: line, question: "Read along!", answer: "practice task"
         }));
-        qs.push({ prompt: story, say: story, question: q, answer: ans, accept: more });
+        book.qs.forEach(([q, ans, ...more]) => {
+          qs.push({ prompt: "📖 " + book.title + " — think back!", say: q, question: q, answer: ans, accept: more });
+        });
         return qs;
       }
     };
@@ -3031,6 +3074,7 @@
         const reg = await navigator.serviceWorker.ready;
         const sub = await reg.pushManager.getSubscription();
         $("push-off-btn").hidden = !sub;
+        $("push-test-btn").hidden = !sub;
         $("push-btn").textContent = sub ? "🔔 Notifications are ON" : "🔔 Notify on this phone (beta)";
       } catch (e) {}
     }
@@ -3057,6 +3101,19 @@
       } catch (e) {
         setStatus("Notification setup failed here — use the calendar reminder instead.");
       }
+    });
+
+    $("push-test-btn").addEventListener("click", async () => {
+      try {
+        const reg = await navigator.serviceWorker.ready;
+        const sub = await reg.pushManager.getSubscription();
+        if (!sub) return;
+        const r = await fetch("/.netlify/functions/push-subscribe", {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ test: true, subscription: sub.toJSON() })
+        });
+        setStatus(r.ok ? "Test sent — a notification should pop up right now! 🔔" : "Test failed — tell Claude!");
+      } catch (e) { setStatus("Test failed on this device."); }
     });
 
     $("push-off-btn").addEventListener("click", async () => {
@@ -3122,6 +3179,17 @@
       });
     });
     setVoicePref(voicePref);
+
+    function setQuizMode(on) {
+      document.body.classList.toggle("quizmode", on);
+      if (on) { document.body.classList.remove("show-answers"); $("key-btn").textContent = "👀 Show answers"; }
+      const b = $("quiz-btn");
+      b.setAttribute("aria-pressed", String(on));
+      b.textContent = on ? "🎙️ Quiz-master mode: ON" : "🎙️ Quiz-master mode: OFF";
+      try { localStorage.setItem("kundendu-quiz", on ? "1" : ""); } catch (e) {}
+    }
+    $("quiz-btn").addEventListener("click", () => setQuizMode(!document.body.classList.contains("quizmode")));
+    try { if (localStorage.getItem("kundendu-quiz") === "1") setQuizMode(true); } catch (e) {}
 
     $("add-poem-btn").addEventListener("click", () => { renderPoemList(); $("poem-dialog").showModal(); });
     $("poem-cancel").addEventListener("click", () => { $("poem-dialog").close(); generate(); });
@@ -3246,7 +3314,7 @@
         if (q.type === "readpage") {
           const pg = document.createElement("p");
           pg.className = "q-text";
-          pg.textContent = "Page " + q.page + " of " + q.total;
+          pg.textContent = (q.book ? "📖 " + q.book + " · " : "") + "page " + q.page + " of " + q.total;
           const line = document.createElement("p");
           line.className = "book-line";
           const spans = q.text.split(/\s+/).map(w => {
