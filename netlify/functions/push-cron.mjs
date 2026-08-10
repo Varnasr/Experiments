@@ -1,11 +1,11 @@
-// Runs hourly (schedule in netlify.toml). Sends the daily practice
-// notification to every subscription whose chosen hour matches now (UTC).
-const { getStore } = require("@netlify/blobs");
-const webpush = require("web-push");
+// Runs hourly. Sends the daily practice notification to every subscription
+// whose chosen hour matches now (UTC).
+import { getStore } from "@netlify/blobs";
+import webpush from "web-push";
 
-exports.handler = async () => {
+export default async () => {
   const pub = process.env.VAPID_PUBLIC_KEY, priv = process.env.VAPID_PRIVATE_KEY;
-  if (!pub || !priv) return { statusCode: 503, body: "no vapid keys" };
+  if (!pub || !priv) return new Response("no vapid keys", { status: 503 });
   webpush.setVapidDetails("mailto:varna.sr@gmail.com", pub, priv);
 
   const hour = new Date().getUTCHours();
@@ -27,5 +27,7 @@ exports.handler = async () => {
       if (e.statusCode === 404 || e.statusCode === 410) { await store.delete(b.key); cleaned++; }
     }
   }
-  return { statusCode: 200, body: JSON.stringify({ hour, sent, cleaned }) };
+  return Response.json({ hour, sent, cleaned });
 };
+
+export const config = { schedule: "0 * * * *" };

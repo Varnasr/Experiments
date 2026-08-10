@@ -8,9 +8,6 @@
 [functions]
   node_bundler = "esbuild"
 
-[functions."push-cron"]
-  schedule = "0 * * * *"
-
 [[headers]]
   for = "/*"
   [headers.values]
