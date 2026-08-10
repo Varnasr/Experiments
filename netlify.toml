@@ -5,6 +5,12 @@
 [build.environment]
   NODE_VERSION = "18"
 
+[functions]
+  node_bundler = "esbuild"
+
+[functions."push-cron"]
+  schedule = "0 * * * *"
+
 [[headers]]
   for = "/*"
   [headers.values]
