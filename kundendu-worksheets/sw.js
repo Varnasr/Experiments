@@ -2,7 +2,7 @@
    Precaches the app shell; caches line-art SVGs and fonts as they are used,
    so the app keeps working fully offline after the first visit. */
 
-const VERSION = "kws-v12";
+const VERSION = "kws-v13";
 const SHELL_CACHE = VERSION + "-shell";
 const RUNTIME_CACHE = VERSION + "-runtime";
 
@@ -86,4 +86,24 @@ self.addEventListener("fetch", event => {
       )
     );
   }
+});
+
+self.addEventListener("push", event => {
+  let data = { title: "⭐ Today's 5 time!", body: "Five little questions — little and often wins!", url: "./" };
+  try { data = Object.assign(data, event.data.json()); } catch (e) {}
+  event.waitUntil(self.registration.showNotification(data.title, {
+    body: data.body,
+    icon: "./icons/icon-192.png",
+    badge: "./icons/icon-192.png",
+    data: { url: data.url }
+  }));
+});
+
+self.addEventListener("notificationclick", event => {
+  event.notification.close();
+  const url = (event.notification.data && event.notification.data.url) || "./";
+  event.waitUntil(clients.matchAll({ type: "window", includeUncontrolled: true }).then(list => {
+    for (const c of list) { if ("focus" in c) return c.focus(); }
+    return clients.openWindow(url);
+  }));
 });
