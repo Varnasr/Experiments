@@ -1049,6 +1049,16 @@
         <p class="tip-text" style="margin-top:8px;font-size:.78rem;">If a word sounds odd in one voice, try the other — the device voice also works offline.</p>
       </section>
 
+      <section class="panel-section" aria-label="Reminders and sharing">
+        <h3 class="display">Daily reminder &amp; sharing</h3>
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
+          <input id="remind-time" type="time" value="17:00" class="field" style="flex:0 0 118px;min-height:2.5rem;padding:.4rem .6rem;">
+          <button id="remind-btn" type="button" class="btn-ghost" style="margin-bottom:0;">📅 Add daily reminder</button>
+        </div>
+        <p class="tip-text" style="font-size:.78rem;margin-bottom:10px;">Downloads a calendar event that rings every day at this time — open it and tap “Add” on the phone.</p>
+        <button id="share-btn" type="button" class="btn-ghost">📤 Share progress</button>
+      </section>
+
       <section class="panel-section" aria-label="Poems">
         <h3 class="display">His poems</h3>
         <button id="add-poem-btn" type="button" class="btn-ghost">➕ Add his poem (from his NCERT book)</button>
@@ -1327,7 +1337,17 @@
       W: [[[11,10],[30,90],[50,32],[70,90],[89,10]]],
       X: [[[19,10],[81,90]],[[81,10],[19,90]]],
       Y: [[[16,10],[50,52]],[[84,10],[50,52],[50,90]]],
-      Z: [[[19,10],[81,10],[19,90],[81,90]]]
+      Z: [[[19,10],[81,10],[19,90],[81,90]]],
+      "0": [[[50,10],[30,18],[20,40],[20,60],[30,82],[50,90],[70,82],[80,60],[80,40],[70,18],[50,10]]],
+      "1": [[[38,22],[55,10],[55,90]]],
+      "2": [[[26,30],[33,14],[50,10],[67,16],[71,32],[61,50],[30,78],[25,90],[77,90]]],
+      "3": [[[28,18],[45,10],[64,14],[71,28],[61,44],[47,48],[63,54],[73,68],[65,84],[45,91],[28,83]]],
+      "4": [[[60,10],[22,62],[80,62]],[[60,10],[60,90]]],
+      "5": [[[72,10],[30,10],[27,45],[45,40],[62,44],[72,58],[70,76],[56,89],[36,90],[25,80]]],
+      "6": [[[64,12],[42,22],[28,44],[25,66],[35,84],[55,90],[70,82],[74,66],[64,52],[46,50],[30,60]]],
+      "7": [[[22,10],[78,10],[45,90]]],
+      "8": [[[50,48],[32,38],[28,22],[42,10],[58,10],[72,22],[68,38],[50,48],[30,60],[28,78],[44,91],[56,91],[72,78],[70,60],[50,48]]],
+      "9": [[[70,36],[62,18],[44,11],[28,20],[26,38],[36,50],[54,52],[70,44],[70,36],[70,64],[58,88]]]
     };
 
     function buildStrokeSVG(letter) {
@@ -1846,6 +1866,24 @@
           hint: "",
           prompt: "Trace: " + w,
           question: "Trace it, read it out loud, then write it two more times.",
+          answer: "practice task"
+        }));
+      }
+    };
+
+    A["trace-numbers"] = {
+      label: "Trace the numbers", title: "Number Tracing",
+      instruction: "Trace each number with your finger first, then with a pencil. Count out loud as you write!",
+      skill: "Skill: number formation",
+      gen: (n, d) => {
+        const digits = d === "easy" ? "0123456789".split("") : [];
+        const bank = digits.length ? digits : build(n, () => ({ v: String(between(10, d === "medium" ? 30 : 99)) })).map(x => x.v);
+        return sample(digits.length ? digits : bank, n).map(v => ({
+          type: "trace",
+          trace: v + " " + v + " " + v,
+          hint: v.length === 1 ? emojiRow(pick(COUNT_EMOJI), Math.max(1, Number(v))) + "  = " + v : "",
+          prompt: "Trace: " + v,
+          question: "Trace the number, say it out loud, then write it on the lines.",
           answer: "practice task"
         }));
       }
@@ -2612,7 +2650,7 @@
         activities: ["beginning-sounds", "ending-sounds", "cvc-builder", "vowel-spot", "blends", "dictation"],
         tip: "Say each sound out loud together — stretch words slowly like a rubber band: c…a…t. Hearing the sounds matters more than neat writing." },
       { id: "handwriting", label: "Handwriting & drawing", emoji: "✍️", accent: "#b07d2e", accentDeep: "#8a6122",
-        activities: ["trace-letters", "trace-words", "hindi-trace", "copy-drawing", "finish-picture"],
+        activities: ["trace-letters", "trace-numbers", "trace-words", "hindi-trace", "copy-drawing", "finish-picture"],
         tip: "These sheets work best printed. Keep sessions short and happy — five careful letters beat twenty rushed ones. Finger-tracing before pencil really helps." },
       { id: "english-reading", label: "English · Reading & words", emoji: "📚", accent: "#3f7ea5", accentDeep: "#2d6284",
         activities: ["rhyme-hunt", "sentence-jumble", "sight-words", "opposites", "mini-stories", "greetings"],
@@ -2795,6 +2833,44 @@
     $("gu-backdrop").addEventListener("click", () => setDrawer(false));
     document.addEventListener("keydown", e => {
       if (e.key === "Escape" && $("gu-drawer").classList.contains("open")) setDrawer(false);
+    });
+
+    $("remind-btn").addEventListener("click", () => {
+      const t = ($("remind-time").value || "17:00").replace(":", "") + "00";
+      const today = new Date();
+      const ymd = today.getFullYear() + String(today.getMonth() + 1).padStart(2, "0") + String(today.getDate()).padStart(2, "0");
+      const ics = [
+        "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//littlek//learnandplay//EN",
+        "BEGIN:VEVENT",
+        "UID:todays-five@littlek.in",
+        "DTSTART:" + ymd + "T" + t,
+        "RRULE:FREQ=DAILY",
+        "SUMMARY:⭐ Kundendu's Today's 5 — five little questions!",
+        "DESCRIPTION:Open https://littlek.in and tap Today's 5. Little and often beats long and rare!",
+        "URL:https://littlek.in",
+        "BEGIN:VALARM", "TRIGGER:PT0M", "ACTION:DISPLAY",
+        "DESCRIPTION:⭐ Time for Today's 5 on littlek.in!",
+        "END:VALARM",
+        "END:VEVENT", "END:VCALENDAR"
+      ].join("\r\n");
+      const url = URL.createObjectURL(new Blob([ics], { type: "text/calendar" }));
+      const a = document.createElement("a");
+      a.href = url; a.download = "kundendu-daily-practice.ics";
+      document.body.appendChild(a); a.click(); a.remove();
+      URL.revokeObjectURL(url);
+      setStatus("Reminder downloaded — open it and add it to the phone's calendar. ⏰");
+    });
+
+    $("share-btn").addEventListener("click", async () => {
+      const n = savedAttempts.length;
+      const stars = savedAttempts.reduce((x, r) => x + (Number(r.score) || 0), 0);
+      const streak = computeStreak(savedAttempts);
+      const text = "⭐ Kundendu's practice on littlek.in\n" +
+        "📚 Worksheets done: " + n + "\n⭐ Stars earned: " + stars + "\n🔥 Day streak: " + streak + "\n" +
+        "Little steps make big learning! https://littlek.in";
+      if (navigator.share) { try { await navigator.share({ text }); return; } catch (e) {} }
+      try { await navigator.clipboard.writeText(text); setStatus("Progress copied — paste it anywhere (WhatsApp, SMS…)."); }
+      catch (e) { setStatus("Could not share on this device."); }
     });
 
     document.querySelectorAll("[data-voice]").forEach(btn => {
@@ -3511,7 +3587,7 @@
         ["Hindi", pick(["hindi-first-letter","hindi-picture-word","hindi-matra"])],
         ["Maths", pick(["counting","bundles","skip-counting","addition","subtraction","multiply","story-sums","neighbours","measure","money","time-days","spatial","data-count"])],
         ["EVS & Thinking", pick(["living-sort","helpers","animal-world","odd-one-out","riddles","seasons","family"])],
-        ["Handwriting", "trace-letters"],
+        ["Handwriting", pick(["trace-letters","trace-numbers"])],
         ["Drawing", "copy-drawing"]
       ];
       const keyLines = [];
