@@ -77,6 +77,19 @@ Installable PWA — add it to a phone or tablet home screen and it works fully o
 
 ---
 
+### WhoGaveTheOrder.in
+
+A citizen-led public accountability platform. One question, asked systematically: when state power is used against citizens, who authorised it?
+
+**Directory:** `whogavetheorder/`
+**Stage:** Prototype
+
+Built as a structured evidence archive rather than a campaign site. Eleven pages over a relational content model (incident → claim → evidence → source; incident → question → authority → evidence → answer state), a six-state evidence grammar applied to every statement on the site, a chain-of-command map that keeps *has authority* and *is evidenced to have authorised this action* as two separate claims, a searchable evidence library with permanent IDs, citizen submission via Netlify Forms with a review workflow, and an editorial console with integrity checks and a record composer.
+
+It ships deliberately empty of factual assertions: the three investigations exist as shells with every factual field reading `UNKNOWN`, because a claim without a source ID must not render as a fact — including in the seed data. See `whogavetheorder/README.md` for the content model and the pre-launch checklist.
+
+---
+
 ### Drive PDF Extractor
 
 A small Node + Playwright tool that captures view-only Google Drive PDFs (the kind you can read but not download) and writes them out as a normal PDF.
@@ -127,6 +140,11 @@ Experiments/
 │   └── *.json                          # raw source extracts
 ├── kundendu-worksheets/
 │   └── index.html                      # Class 1 CBSE worksheet generator
+├── whogavetheorder/
+│   ├── index.html                      # homepage + 10 more pages
+│   ├── data/                           # taxonomy, record store, layout samples
+│   ├── assets/                         # design system, model, ui, page controllers
+│   └── README.md                       # content model and pre-launch checklist
 ├── tools/
 │   └── drive-pdf-extractor/            # view-only Drive PDF capture
 ├── netlify/
