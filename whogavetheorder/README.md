@@ -87,6 +87,7 @@ Incident → Question → Authority → Evidence → Answer state
 ```
 whogavetheorder/
 ├── SOURCING.md        # where the evidence actually comes from. Read this second.
+├── RESEARCH-PROMPT.md # reusable prompt for building the source map, per incident
 ├── data/
 │   ├── taxonomy.js    # every controlled vocabulary + site config. Start here.
 │   ├── records.js     # the record store. Add real content here.
@@ -164,7 +165,9 @@ period passed in silence, which the Act treats as a refusal and which opens the 
 The gap list on `submit.html#missing` gains a column from this: every open question shows either its
 filed application and clock, or **Not yet requested**.
 
-See [SOURCING.md](SOURCING.md) for what to ask each office for, and where to file.
+See [SOURCING.md](SOURCING.md) for what to ask each office for, and where to file, and
+[RESEARCH-PROMPT.md](RESEARCH-PROMPT.md) for the reusable prompt that builds that map for a new
+incident.
 
 ---
 
