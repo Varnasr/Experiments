@@ -20,55 +20,71 @@
   pages.home = function () {
     var counts = model.counts();
 
-    /* The three-column fact frame — the defining device of the brand.
-       Each column reports a real count. Before launch, two of them read zero,
-       and that is the honest state of the archive. */
+    /* The hero states, in plain language, what this site is about — using the
+       archive's own records rather than a hand-written summary, so the front
+       page cannot drift from what the data actually says. Each line carries the
+       state of the record behind it. */
+    var lines = model.incidents.map(function (inc) {
+      if (inc.dateState === 'UNKNOWN' || !inc.date) { return null; }
+      return '<li>' +
+        '<span class="hero__fact">Police used force against students at <strong>' +
+        ui.esc(inc.place) + '</strong> on <strong>' + ui.esc(inc.date) + '</strong>.</span> ' +
+        ui.chip(inc.dateState) +
+      '</li>';
+    }).filter(Boolean);
+
+    var orders = model.orders.length;
+
+    ui.mount('[data-region="hero-facts"]',
+      '<ul class="hero__list">' +
+        lines.join('') +
+        '<li><span class="hero__fact"><strong>' +
+          (orders ? orders + ' order' + (orders === 1 ? '' : 's') + ' located.' : 'No order authorising it has been located.') +
+        '</strong></span> ' + ui.chip(orders ? 'VERIFIED' : 'UNKNOWN') + '</li>' +
+      '</ul>' +
+      (lines.length === 0
+        ? '<p class="small" style="margin-top:0.75rem">No incident date has been established yet.</p>'
+        : ''));
+
+    ui.mount('[data-region="incident-cards"]',
+      model.incidents.map(ui.incidentCard).join(''));
+
+    ui.mount('[data-region="counts"]',
+      '<div><b>' + counts.evidence + '</b><span>Evidence items</span></div>' +
+      '<div><b>' + counts.sources + '</b><span>Sources</span></div>' +
+      '<div><b>' + counts.open + '</b><span>Open questions</span></div>' +
+      '<div><b>' + counts.orders + '</b><span>Orders located</span></div>' +
+      '<div><b>' + counts.responses + '</b><span>Official responses</span></div>');
+
+    ui.mount('[data-region="wanted"]',
+      WGO.WANTED.map(function (w) { return '<li>' + ui.plainChip(w) + '</li>'; }).join(''));
+
+    /* These regions only exist on pages that still carry them; ui.mount is a
+       no-op where the node is absent. */
     ui.mount('[data-region="frame"]',
       '<div class="frame__col">' +
         '<p class="kicker">What we know</p>' +
         '<span class="frame__count">' + counts.known + '</span>' +
         '<h3>Established facts</h3>' +
-        '<p>Statements supported by primary evidence held in this archive, each one click from its source.</p>' +
-        (counts.known === 0
-          ? '<p class="small" style="margin-top:0.75rem">Nothing established yet.</p>'
-          : '<a class="small" href="evidence.html">Read the evidence &rarr;</a>') +
+        '<p>Statements supported by primary evidence held in this archive.</p>' +
       '</div>' +
       '<div class="frame__col">' +
         '<p class="kicker">What we don\'t know</p>' +
         '<span class="frame__count">' + counts.open + '</span>' +
         '<h3>Open questions</h3>' +
-        '<p>Questions the documentary record does not answer. Each one names a document somebody could find.</p>' +
-        '<a class="small" href="investigations.html">See the open questions &rarr;</a>' +
+        '<p>Questions the documentary record does not answer.</p>' +
       '</div>' +
       '<div class="frame__col">' +
         '<p class="kicker">What the government says</p>' +
         '<span class="frame__count">' + counts.responses + '</span>' +
         '<h3>Official responses</h3>' +
         '<p>Statements, explanations and denials on the record, reproduced in full.</p>' +
-        (counts.responses === 0
-          ? '<p class="small" style="margin-top:0.75rem">None recorded yet. We will publish them as they are made.</p>'
-          : '<a class="small" href="response.html">Compare the accounts &rarr;</a>') +
       '</div>');
 
-    ui.mount('[data-region="incident-cards"]',
-      model.incidents.map(ui.incidentCard).join(''));
-
-    ui.mount('[data-region="counts"]',
-      '<div><b>' + counts.incidents + '</b><span>Incidents open</span></div>' +
-      '<div><b>' + counts.questions + '</b><span>Questions asked</span></div>' +
-      '<div><b>' + counts.answered + '</b><span>Answered</span></div>' +
-      '<div><b>' + counts.evidence + '</b><span>Evidence items</span></div>' +
-      '<div><b>' + counts.orders + '</b><span>Orders located</span></div>');
-
-    /* Evidence-state legend, generated from the taxonomy so the definitions on
-       the page can never fall out of step with the labels in the data. */
     ui.mount('[data-region="legend"]',
       Object.keys(WGO.EVIDENCE_STATES).map(function (key) {
         return '<div>' + ui.chip(key) + '<p>' + ui.esc(WGO.EVIDENCE_STATES[key].definition) + '</p></div>';
       }).join(''));
-
-    ui.mount('[data-region="wanted"]',
-      WGO.WANTED.map(function (w) { return '<li>' + ui.plainChip(w) + '</li>'; }).join(''));
   };
 
   /* ======================================================================= *
