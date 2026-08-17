@@ -174,6 +174,92 @@
   };
 
   /* ======================================================================= *
+     WALKTHROUGH — how to read the archive
+     ----------------------------------------------------------------------- *
+     Explains how to read the record. It does not explain what happened, and
+     must not start to: the archive holds documents and claim states, and a
+     walkthrough that drifted into narrative would break the site's one rule.
+     ======================================================================= */
+
+  var WALKTHROUGH_STEPS = [
+    { n: '01', id: 'step-1', title: 'This archive asks one question',
+      blurb: 'Who authorised the use of force. Not whether it happened, and not whether it was justified.' },
+    { n: '02', id: 'step-2', title: 'Most of it says UNKNOWN, and that is the finding',
+      blurb: 'Empty fields are a statement about the archive, not a page that failed to load.' },
+    { n: '03', id: 'step-3', title: 'Every statement carries one of six labels',
+      blurb: 'The six words that carry the site’s credibility, and what each one requires.' },
+    { n: '04', id: 'step-4', title: 'Holding an office is not evidence of giving an order',
+      blurb: 'Two claims the chain of command keeps apart, and why nobody is named.' },
+    { n: '05', id: 'step-5', title: 'Where every claim comes from',
+      blurb: 'Incident to claim to evidence to source. No page may skip a link.' },
+    { n: '06', id: 'step-6', title: 'What it does not establish matters as much',
+      blurb: 'Every record writes down its own limit. That is how an archive avoids overreaching.' },
+    { n: '07', id: 'step-7', title: 'Open questions, and the clock on each one',
+      blurb: 'The gap list, and what happens when a public office does not reply.' },
+    { n: '08', id: 'step-8', title: 'How to check our work',
+      blurb: 'Public integrity checks, a public edit history, and a correction route.' },
+    { n: '09', id: 'step-9', title: 'What you can do',
+      blurb: 'Send a document, file a request, or add your own published work.' }
+  ];
+
+  /* The three audiences, layered over the same nine steps rather than
+     duplicated into three explainers that would drift apart. */
+  var WALKTHROUGH_LANES = [
+    { key: 'visitor',  label: 'Just looking',        steps: ['step-1', 'step-2', 'step-3', 'step-4'] },
+    { key: 'holder',   label: 'I might have something', steps: ['step-2', 'step-6', 'step-7', 'step-9'] },
+    { key: 'reporter', label: 'Journalist or lawyer', steps: ['step-3', 'step-5', 'step-6', 'step-8'] }
+  ];
+
+  pages.walkthrough = function () {
+    ui.mount('[data-region="contents"]',
+      '<div class="grid grid--3">' + WALKTHROUGH_STEPS.map(function (s) {
+        return '<a class="card" href="#' + s.id + '" data-step="' + s.id + '">' +
+          '<p class="section-number">' + s.n + '</p>' +
+          '<h3 style="font-size:1rem;margin:0.3rem 0 0.3rem">' + ui.esc(s.title) + '</h3>' +
+          '<p class="small">' + ui.esc(s.blurb) + '</p>' +
+        '</a>';
+      }).join('') + '</div>');
+
+    ui.mount('[data-region="states"]',
+      Object.keys(WGO.EVIDENCE_STATES).map(function (key) {
+        return '<div>' + ui.chip(key) + '<p>' + ui.esc(WGO.EVIDENCE_STATES[key].definition) + '</p></div>';
+      }).join(''));
+
+    var lanes = document.querySelector('[data-region="lanes"]');
+    if (!lanes) { return; }
+    lanes.innerHTML = WALKTHROUGH_LANES.map(function (l) {
+      return '<button class="filter-chip" type="button" aria-pressed="false" data-lane="' + l.key + '">' +
+        ui.esc(l.label) + '</button>';
+    }).join('') +
+      '<button class="filter-chip" type="button" aria-pressed="true" data-lane="all">Everything</button>';
+
+    lanes.addEventListener('click', function (event) {
+      var btn = event.target.closest('.filter-chip');
+      if (!btn) { return; }
+      var lane = btn.getAttribute('data-lane');
+
+      Array.prototype.forEach.call(lanes.querySelectorAll('.filter-chip'), function (b) {
+        b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+      });
+
+      var picked = lane === 'all'
+        ? null
+        : (WALKTHROUGH_LANES.filter(function (l) { return l.key === lane; })[0] || {}).steps;
+
+      /* Dim rather than hide: a reader following one lane can still see that
+         the other steps exist, and nothing becomes unreachable. */
+      Array.prototype.forEach.call(document.querySelectorAll('[data-step]'), function (card) {
+        var on = !picked || picked.indexOf(card.getAttribute('data-step')) !== -1;
+        card.style.opacity = on ? '' : '0.35';
+      });
+      WALKTHROUGH_STEPS.forEach(function (s) {
+        var el = document.getElementById(s.id);
+        if (el) { el.style.opacity = (!picked || picked.indexOf(s.id) !== -1) ? '' : '0.35'; }
+      });
+    });
+  };
+
+  /* ======================================================================= *
      INVESTIGATIONS INDEX (+ map)
      ======================================================================= */
 
