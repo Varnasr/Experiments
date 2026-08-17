@@ -21,9 +21,14 @@ Plus field-discipline checks that follow directly from CLAUDE.md:
 """
 
 import json
+import pathlib
 import re
 import sys
 from collections import Counter, defaultdict
+
+# Resolve data files against this script rather than the working directory, so
+# the validator runs the same from anywhere in the repo.
+HERE = pathlib.Path(__file__).resolve().parent
 
 STATES = {"VERIFIED", "CORROBORATED", "REPORTED", "DISPUTED", "UNVERIFIED", "UNKNOWN"}
 SOURCE_TYPES = {"primary", "secondary", "tertiary"}
@@ -43,7 +48,7 @@ def observe(check, record_id, detail):
 
 
 def load(name):
-    with open(name) as fh:
+    with open(HERE / name) as fh:
         return json.load(fh)
 
 
