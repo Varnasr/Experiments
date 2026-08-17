@@ -16,18 +16,14 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://unpkg.com https://code.iconify.design https://api.iconify.design https://api.simplesvg.com https://api.unisvg.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://cdn.jsdelivr.net https://www.google-analytics.com https://*.basemaps.cartocdn.com https://licensebuttons.net; connect-src 'self' https://varnasr-experiments.netlify.app https://api.worldbank.org https://api.climatetrace.org https://api.iconify.design https://api.simplesvg.com https://api.unisvg.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://unpkg.com https://tessdata.projectnaptha.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com; worker-src 'self' blob:; media-src 'self' blob: data:; object-src 'none'; frame-ancestors 'none'; base-uri 'self'"
 
-# ---- whogavetheorder: the source map is committed, not published ----
-# sourcemap/ holds the research behind the archive, including the filing queue:
-# which office is about to be written to, on what deadline, and where no court
-# has ordered preservation. That is the project's working strategy and the
-# offices it concerns should not be able to read it off the website.
-#
-# It stays in git for the audit trail. force = true so the rule intercepts even
-# though the files are physically present in the publish directory.
+# ---- whogavetheorder moved to its own repository and site ----
+# Graduated out of this sandbox on 17 August 2026 to Varnasr/WhoGaveTheOrder,
+# serving from whogavetheorder.netlify.app. 301 rather than 302: the move is
+# permanent, and anything already shared should follow it for good.
 [[redirects]]
-  from = "/whogavetheorder/sourcemap/*"
-  to = "/whogavetheorder/"
-  status = 404
+  from = "/whogavetheorder/*"
+  to = "https://whogavetheorder.netlify.app/:splat"
+  status = 301
   force = true
 
 # ---- littlek.in: serve the worksheet app at the domain root ----
