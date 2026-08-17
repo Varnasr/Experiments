@@ -208,6 +208,86 @@ for t in sorted(fq, key=lambda x: x['sequence']):
     })
 
 
+# --- 8. office <- framework assignment ---------------------------------------
+# THE EDITORIAL JUDGEMENT. Which provision binds which office is a reading, not
+# a lookup, so every assignment carries its reason. Two rules govern it:
+#
+#   1. A provision is assigned to the office that the provision itself names or
+#      empowers. Where the text names the District Magistrate, it goes to the
+#      District Magistrate and not to the police officer who acts on it.
+#   2. A commissionerate and a district are not the same structure. In a
+#      commissionerate the Commissioner concentrates powers that a district
+#      splits between the DM and the SP, so the same subject matter lands on
+#      different offices depending on jurisdiction.
+#
+# PREC-* records are deliberately excluded: they document how other archives
+# were built, which is methodology, not the statutory basis of an office.
+OFFICE_FRAMEWORK = {
+    'OFC-0001': [  # Union Ministry of Home Affairs
+        ('LAW-DEL-001', 'Delhi Police is a Union-administered force; the Act constituting its powers is the framework the ministry administers.'),
+    ],
+    'OFC-0002': [  # State Home Department
+        ('LAW-CMD-001', 'Whether any state police statute imposes command responsibility is unresolved, and the home department is where such a provision would sit.'),
+        ('MAN-BIH-001', 'The police manual is issued under state government authority, which makes the home department its custodian.'),
+        ('MAN-MAH-001', 'As above, for Maharashtra.'),
+    ],
+    'OFC-0003': [  # Director General of Police
+        ('GUI-NHRC-001', 'The NHRC instruction directs District Magistrates and Superintendents of Police to report; the DGP is the force-wide channel through which that reporting is enforced.'),
+        ('GUI-NHRC-003', 'The 48-hour reporting requirement for deaths during police action binds the force, not an individual district.'),
+    ],
+    'OFC-0004': [  # Commissioner of Police (commissionerate cities incl. Delhi)
+        ('LAW-DEL-001', 'Delhi Police Act ss.28 to 30: regulation of public places, directions to the public, and the power to prohibit certain acts.'),
+        ('LAW-DEL-002', 'Delhi Police Act s.31(3) and (4) names the Commissioner of Police as the office that may prohibit an assembly by promulgated notification.'),
+        ('LAW-MAH-001', 'Maharashtra Police Act s.37 and the enforcement provisions at ss.70 and 71.'),
+        ('LAW-MAH-002', 'Maharashtra Police Act ss.36 and 37 name the Commissioner or the District Magistrate; in a commissionerate the power sits here.'),
+        ('MAN-DEL-001', 'Whether Delhi Police standing orders on crowd control exist as a discrete published document is unresolved.'),
+    ],
+    'OFC-0005': [  # District Magistrate
+        ('LAW-BNSS-003', 'The amended s.149 names the District Magistrate, or another Executive Magistrate authorised in writing, as the office that may requisition armed force.'),
+        ('LAW-BNSS-005', 'BNSS s.163, urgent cases of nuisance or apprehended danger, is an executive magistrate power.'),
+        ('LAW-BNSS-006', 'BNSS s.196 governs magisterial inquiry into a death, which is a magistrate function.'),
+        ('LAW-MAH-002', 'Outside a commissionerate the same Maharashtra Police Act powers sit with the District Magistrate.'),
+        ('GUI-NHRC-002', 'The two-month reporting requirement covers the magisterial inquiry report, which this office produces.'),
+        ('GUI-NHRC-004', 'The 1997 NHRC procedure was addressed to Chief Ministers and operates through district administration.'),
+    ],
+    'OFC-0006': [  # Superintendent / Deputy Commissioner of Police (district)
+        ('LAW-BIH-001', 'Bihar Police Act s.66 regulates public meetings and processions through the district police structure.'),
+        ('LAW-BIH-002', 'The citation of the Bihar Police Act is itself disputed and is recorded as such.'),
+        ('GUI-NHRC-001', 'The NHRC instruction names Superintendents of Police as reporting officers.'),
+    ],
+    'OFC-0007': [  # Officer commanding the deployment on site
+        ('LAW-BNSS-001', 'BNSS s.148 places dispersal by civil force with the officer commanding at the scene.'),
+        ('LAW-BNSS-002', 'The CrPC to BNSS mapping is recorded so pre-2024 material can be read against the current provisions.'),
+    ],
+    'OFC-0008': [  # Field personnel and units deployed
+        ('LAW-BNSS-004', 'BNSS s.149(3) binds the armed forces officer acting on a requisition to use as little force as is consistent with dispersing the assembly.'),
+        ('LAW-BNSS-001', 'BNSS s.150 empowers certain armed force officers to disperse an assembly; s.151 concerns protection for acts done in good faith.'),
+    ],
+}
+
+office_basis = {}
+framework_by_id = {f['id']: f for f in framework_records}
+missing_refs = []
+for office_id, entries in OFFICE_FRAMEWORK.items():
+    rows = []
+    for fid, reason in entries:
+        if fid not in framework_by_id:
+            missing_refs.append((office_id, fid))
+            continue
+        f = framework_by_id[fid]
+        rows.append({
+            'frameworkId': fid,
+            'text': f['text'],
+            'confidence': f['confidence'],
+            'sourceIds': f['sourceIds'],
+            'why': reason,
+        })
+    office_basis[office_id] = rows
+
+# Methodology precedents: about how other archives were built, not about an
+# office's powers. Kept separate so they cannot leak into a statutory claim.
+precedents = [f for f in framework_records if f['id'].startswith('PREC-')]
+
 # --- write -------------------------------------------------------------------
 out = SITE / 'data' / 'records.generated.js'
 with open(out, 'w') as fh:
@@ -220,6 +300,8 @@ with open(out, 'w') as fh:
     fh.write('WGO.importedFramework = ' + js(framework_records) + ';\n\n')
     fh.write('WGO.importedQuestions = ' + js(question_records) + ';\n\n')
     fh.write('WGO.importedFilings = ' + js(filing_records) + ';\n\n')
+    fh.write('WGO.importedOfficeBasis = ' + js(office_basis) + ';\n\n')
+    fh.write('WGO.importedPrecedents = ' + js(precedents) + ';\n\n')
     fh.write('WGO.importedIncidentFacts = ' + js({
         k: {'dates': sorted(set(v['dates'])), 'places': sorted(set(v['places'])),
             'evidenceIds': v['items'], 'state': sorted(v['state'])}
@@ -232,6 +314,12 @@ print(f'external   {len(external_records):>4}   (existing_documentation)')
 print(f'framework  {len(framework_records):>4}   (statute, manual, guideline, precedent)')
 print(f'questions  {len(question_records):>4}')
 print(f'filings    {len(filing_records):>4}')
+print(f'precedents {len(precedents):>4}   (methodology, not statutory basis)')
+print(f'\noffice assignments:')
+for k in sorted(office_basis):
+    print(f'  {k}  {len(office_basis[k]):>2} provision(s)')
+if missing_refs:
+    print('\nMISSING framework refs:', missing_refs)
 print(f'\nincident facts recovered:')
 for k, v in incident_updates.items():
     print(f'  {k}: dates={sorted(set(v["dates"]))} places={sorted(set(v["places"]))[:2]}')

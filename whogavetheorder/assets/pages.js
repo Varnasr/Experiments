@@ -405,11 +405,30 @@
         '</div>' +
 
         '<h4>Statutory or administrative responsibility</h4>' +
-        (office.statutoryBasis && office.statutoryBasis.length
-          ? '<ul>' + office.statutoryBasis.map(function (basis) {
+        (function () {
+          /* Imported provisions first, each with the reason it was assigned to
+             this office. Assignment is a reading of the provision, not a
+             lookup, so the reasoning is shown rather than hidden. */
+          var imported = (WGO.importedOfficeBasis || {})[office.id] || [];
+          var hand = office.statutoryBasis || [];
+          if (!imported.length && !hand.length) {
+            return '<p class="small">Not mapped.</p>';
+          }
+          return '<ul>' +
+            imported.map(function (b) {
+              return '<li>' + ui.esc(b.text) +
+                '<div class="row" style="margin-top:0.35rem">' +
+                  ui.chip(b.confidence) + ui.idChip(b.frameworkId) + ui.sourceLine(b.sourceIds) +
+                '</div>' +
+                '<p class="small" style="margin-top:0.3rem"><em>Why this office:</em> ' +
+                  ui.esc(b.why) + '</p>' +
+              '</li>';
+            }).join('') +
+            hand.map(function (basis) {
               return '<li>' + ui.esc(basis.text) + ' ' + ui.sourceLine(basis.sourceIds) + '</li>';
-            }).join('') + '</ul>'
-          : '<p class="small">Not mapped.</p>') +
+            }).join('') +
+          '</ul>';
+        })() +
 
         '<h4>What we know</h4>' +
         (office.whatWeKnow && office.whatWeKnow.length

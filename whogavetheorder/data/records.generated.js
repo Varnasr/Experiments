@@ -1778,6 +1778,320 @@ WGO.importedFilings = [
   }
 ];
 
+WGO.importedOfficeBasis = {
+  "OFC-0001": [
+    {
+      "frameworkId": "LAW-DEL-001",
+      "text": "Delhi Police Act 1978 (Act 34 of 1978): s.28 power to make regulations for regulating traffic and preservation of order in public places; s.29 power to give directions to the public; s.30 power to prohibit certain acts for prevention of disorder; s.31 police to provide against disorder at places of public amusement or public assembly or meeting; s.33 issue of order of prevention of riot; s.113 penalties for contravention of orders under ss.29 to 34.",
+      "confidence": "VERIFIED",
+      "sourceIds": [
+        "SRC-0016"
+      ],
+      "why": "Delhi Police is a Union-administered force; the Act constituting its powers is the framework the ministry administers."
+    }
+  ],
+  "OFC-0002": [
+    {
+      "frameworkId": "LAW-CMD-001",
+      "text": "Whether any of the three state police statutes contains a provision on command responsibility, meaning an officer's liability for force used by subordinates under his direction.",
+      "confidence": "UNKNOWN",
+      "sourceIds": [],
+      "why": "Whether any state police statute imposes command responsibility is unresolved, and the home department is where such a provision would sit."
+    },
+    {
+      "frameworkId": "MAN-BIH-001",
+      "text": "The Bihar Police Manual exists and has been judicially discussed, including whether it has statutory character, its preface indicating issue by and with the authority of the State Government under ss.7 and 12 of the Police Act 1861, with specific rules including 1185A and 1186 referred to in litigation.",
+      "confidence": "UNVERIFIED",
+      "sourceIds": [
+        "SRC-0022"
+      ],
+      "why": "The police manual is issued under state government authority, which makes the home department its custodian."
+    },
+    {
+      "frameworkId": "MAN-MAH-001",
+      "text": "Whether the Maharashtra Police Manual is published, partially published, or obtainable only by RTI.",
+      "confidence": "UNKNOWN",
+      "sourceIds": [],
+      "why": "As above, for Maharashtra."
+    }
+  ],
+  "OFC-0003": [
+    {
+      "frameworkId": "GUI-NHRC-001",
+      "text": "NHRC 1993 instruction, letter from the Secretary General to Chief Secretaries of all States and Union Territories, directing District Magistrates and Superintendents of Police of every district to report custodial deaths and rapes to the Secretary General within 24 hours of occurrence or of coming to know of them.",
+      "confidence": "VERIFIED",
+      "sourceIds": [
+        "SRC-0023"
+      ],
+      "why": "The NHRC instruction directs District Magistrates and Superintendents of Police to report; the DGP is the force-wide channel through which that reporting is enforced."
+    },
+    {
+      "frameworkId": "GUI-NHRC-003",
+      "text": "NHRC mandates that all deaths during police action, including encounters, be reported within 48 hours.",
+      "confidence": "VERIFIED",
+      "sourceIds": [
+        "SRC-0025"
+      ],
+      "why": "The 48-hour reporting requirement for deaths during police action binds the force, not an individual district."
+    }
+  ],
+  "OFC-0004": [
+    {
+      "frameworkId": "LAW-DEL-001",
+      "text": "Delhi Police Act 1978 (Act 34 of 1978): s.28 power to make regulations for regulating traffic and preservation of order in public places; s.29 power to give directions to the public; s.30 power to prohibit certain acts for prevention of disorder; s.31 police to provide against disorder at places of public amusement or public assembly or meeting; s.33 issue of order of prevention of riot; s.113 penalties for contravention of orders under ss.29 to 34.",
+      "confidence": "VERIFIED",
+      "sourceIds": [
+        "SRC-0016"
+      ],
+      "why": "Delhi Police Act ss.28 to 30: regulation of public places, directions to the public, and the power to prohibit certain acts."
+    },
+    {
+      "frameworkId": "LAW-DEL-002",
+      "text": "Delhi Police Act s.31(3) and (4): the Commissioner of Police may by publicly promulgated notification prohibit any assembly or procession for such time as he considers necessary for preservation of public order; no such notification remains in force more than fifteen days, extendable by the Administrator by gazette order for a further period not exceeding six months.",
+      "confidence": "REPORTED",
+      "sourceIds": [
+        "SRC-0017"
+      ],
+      "why": "Delhi Police Act s.31(3) and (4) names the Commissioner of Police as the office that may prohibit an assembly by promulgated notification."
+    },
+    {
+      "frameworkId": "LAW-MAH-001",
+      "text": "Maharashtra Police Act 1951 (Bombay Act 22 of 1951): s.37 power to prohibit certain acts for prevention of disorder; s.38 music, sound or noise; s.70 enforcement of orders issued under ss.37, 38 or 39; s.71 duty of police to see orders under ss.43, 55, 56, 57 are carried out; s.135 penalty for contravention of directions under ss.37, 39 or 40.",
+      "confidence": "VERIFIED",
+      "sourceIds": [
+        "SRC-0018"
+      ],
+      "why": "Maharashtra Police Act s.37 and the enforcement provisions at ss.70 and 71."
+    },
+    {
+      "frameworkId": "LAW-MAH-002",
+      "text": "Maharashtra Police Act ss.33, 36, 39, 41: s.33 general regulation including processions and assemblies; ss.36 and 37 immediate threats to public peace, with the Commissioner or District Magistrate able to prohibit an assembly or procession for a period; s.39 order on public roads; s.41 stopping and dispersing an assembly or procession that breaches licence conditions under s.33.",
+      "confidence": "REPORTED",
+      "sourceIds": [
+        "SRC-0019"
+      ],
+      "why": "Maharashtra Police Act ss.36 and 37 name the Commissioner or the District Magistrate; in a commissionerate the power sits here."
+    },
+    {
+      "frameworkId": "MAN-DEL-001",
+      "text": "Whether Delhi Police standing orders on crowd control exist as a discrete document, under what title, and whether they are published.",
+      "confidence": "UNKNOWN",
+      "sourceIds": [],
+      "why": "Whether Delhi Police standing orders on crowd control exist as a discrete published document is unresolved."
+    }
+  ],
+  "OFC-0005": [
+    {
+      "frameworkId": "LAW-BNSS-003",
+      "text": "Textual change at s.149: 'any such assembly' replaced by 'any assembly referred to in sub-section (1) of section 148'; 'Executive Magistrate of the highest rank' replaced by 'District Magistrate or any other Executive Magistrate authorised by him'; in sub-section (2) 'Magistrate' replaced by 'Executive Magistrate'. Sections 148 and 150 unchanged from CrPC. In s.151, 'military' replaced by 'army'.",
+      "confidence": "VERIFIED",
+      "sourceIds": [
+        "SRC-0011"
+      ],
+      "why": "The amended s.149 names the District Magistrate, or another Executive Magistrate authorised in writing, as the office that may requisition armed force."
+    },
+    {
+      "frameworkId": "LAW-BNSS-005",
+      "text": "BNSS s.163 is the provision on urgent cases of nuisance or apprehended danger, replacing CrPC s.144, located in Chapter XI Part C.",
+      "confidence": "VERIFIED",
+      "sourceIds": [
+        "SRC-0010"
+      ],
+      "why": "BNSS s.163, urgent cases of nuisance or apprehended danger, is an executive magistrate power."
+    },
+    {
+      "frameworkId": "LAW-BNSS-006",
+      "text": "BNSS s.196 governs inquiry by a Magistrate into cause of death, replacing CrPC s.176 including s.176(1A). s.196(2) is triggered by death or disappearance, or alleged rape, in police custody or other custody authorised by a Magistrate or Court.",
+      "confidence": "REPORTED",
+      "sourceIds": [
+        "SRC-0014",
+        "SRC-0015"
+      ],
+      "why": "BNSS s.196 governs magisterial inquiry into a death, which is a magistrate function."
+    },
+    {
+      "frameworkId": "LAW-MAH-002",
+      "text": "Maharashtra Police Act ss.33, 36, 39, 41: s.33 general regulation including processions and assemblies; ss.36 and 37 immediate threats to public peace, with the Commissioner or District Magistrate able to prohibit an assembly or procession for a period; s.39 order on public roads; s.41 stopping and dispersing an assembly or procession that breaches licence conditions under s.33.",
+      "confidence": "REPORTED",
+      "sourceIds": [
+        "SRC-0019"
+      ],
+      "why": "Outside a commissionerate the same Maharashtra Police Act powers sit with the District Magistrate."
+    },
+    {
+      "frameworkId": "GUI-NHRC-002",
+      "text": "NHRC fresh guidelines requiring all reports including post-mortem, videograph and magisterial inquiry report to be sent within two months of the incident, with post-mortem reports in a proforma designed by the Commission.",
+      "confidence": "VERIFIED",
+      "sourceIds": [
+        "SRC-0024"
+      ],
+      "why": "The two-month reporting requirement covers the magisterial inquiry report, which this office produces."
+    },
+    {
+      "frameworkId": "GUI-NHRC-004",
+      "text": "Following complaint 234 (1 to 6)/93-94, Justice M.N. Venkatachaliah as NHRC Chairperson wrote to all Chief Ministers on 29 March 1997 recommending the procedure to be followed in cases of encounter deaths.",
+      "confidence": "VERIFIED",
+      "sourceIds": [
+        "SRC-0023"
+      ],
+      "why": "The 1997 NHRC procedure was addressed to Chief Ministers and operates through district administration."
+    }
+  ],
+  "OFC-0006": [
+    {
+      "frameworkId": "LAW-BIH-001",
+      "text": "Bihar Police Act 2007 s.66, regulation of public meetings and processions: the organiser must give written intimation to the Station House Officer of the concerned police station; an officer of at least Assistant or Deputy Superintendent rank may give directions for the conduct of meetings and processions on public roads and decide route and time.",
+      "confidence": "VERIFIED",
+      "sourceIds": [
+        "SRC-0020"
+      ],
+      "why": "Bihar Police Act s.66 regulates public meetings and processions through the district police structure."
+    },
+    {
+      "frameworkId": "LAW-BIH-002",
+      "text": "Whether the Bihar Police Act 2007 is Bihar Act 1 of 2007 or Bihar Act 7 of 2007.",
+      "confidence": "DISPUTED",
+      "sourceIds": [
+        "SRC-0020",
+        "SRC-0021"
+      ],
+      "why": "The citation of the Bihar Police Act is itself disputed and is recorded as such."
+    },
+    {
+      "frameworkId": "GUI-NHRC-001",
+      "text": "NHRC 1993 instruction, letter from the Secretary General to Chief Secretaries of all States and Union Territories, directing District Magistrates and Superintendents of Police of every district to report custodial deaths and rapes to the Secretary General within 24 hours of occurrence or of coming to know of them.",
+      "confidence": "VERIFIED",
+      "sourceIds": [
+        "SRC-0023"
+      ],
+      "why": "The NHRC instruction names Superintendents of Police as reporting officers."
+    }
+  ],
+  "OFC-0007": [
+    {
+      "frameworkId": "LAW-BNSS-001",
+      "text": "BNSS 2023 Chapter XI Part A, Unlawful Assemblies: s.148 dispersal of assembly by use of civil force; s.149 use of armed forces to disperse assembly; s.150 power of certain armed force officers to disperse assembly; s.151 protection against prosecution for acts done under ss.148, 149 and 150.",
+      "confidence": "VERIFIED",
+      "sourceIds": [
+        "SRC-0010",
+        "SRC-0011",
+        "SRC-0012"
+      ],
+      "why": "BNSS s.148 places dispersal by civil force with the officer commanding at the scene."
+    },
+    {
+      "frameworkId": "LAW-BNSS-002",
+      "text": "CrPC to BNSS mapping: 129 to 148, 130 to 149, 131 to 150, 132 to 151. All incidents in this archive postdate 1 July 2024, so BNSS governs and there is no CrPC overlay. Mapping is recorded only for reading pre-2024 material.",
+      "confidence": "VERIFIED",
+      "sourceIds": [
+        "SRC-0012",
+        "SRC-0011"
+      ],
+      "why": "The CrPC to BNSS mapping is recorded so pre-2024 material can be read against the current provisions."
+    }
+  ],
+  "OFC-0008": [
+    {
+      "frameworkId": "LAW-BNSS-004",
+      "text": "BNSS s.149(3) requires the armed forces officer to obey the requisition using as little force, and doing as little injury to person and property, as may be consistent with dispersing the assembly.",
+      "confidence": "REPORTED",
+      "sourceIds": [
+        "SRC-0013"
+      ],
+      "why": "BNSS s.149(3) binds the armed forces officer acting on a requisition to use as little force as is consistent with dispersing the assembly."
+    },
+    {
+      "frameworkId": "LAW-BNSS-001",
+      "text": "BNSS 2023 Chapter XI Part A, Unlawful Assemblies: s.148 dispersal of assembly by use of civil force; s.149 use of armed forces to disperse assembly; s.150 power of certain armed force officers to disperse assembly; s.151 protection against prosecution for acts done under ss.148, 149 and 150.",
+      "confidence": "VERIFIED",
+      "sourceIds": [
+        "SRC-0010",
+        "SRC-0011",
+        "SRC-0012"
+      ],
+      "why": "BNSS s.150 empowers certain armed force officers to disperse an assembly; s.151 concerns protection for acts done in good faith."
+    }
+  ]
+};
+
+WGO.importedPrecedents = [
+  {
+    "id": "PREC-001",
+    "text": "Bellingcat and Forensic Architecture identified, verified and archived over 1,000 incidents of police violence against protesters across the United States since May 2020, visualised using TimeMap, a Forensic Architecture platform mapping incidents in space and time. They limited the published dataset to media already having at least 5,000 views, so as not to amplify imagery that had not been widely seen.",
+    "confidence": "VERIFIED",
+    "sourceIds": [
+      "SRC-0027"
+    ],
+    "category": "precedent",
+    "jurisdiction": "external",
+    "note": "TRANSFERABLE: the 5,000-view threshold is a deliberately adopted ethics constraint, directly applicable to this archive's amplification problem."
+  },
+  {
+    "id": "PREC-002",
+    "text": "Method used with Cerosetenta in Colombia: geolocation and chronolocation of protest video, establishing where and when a video was taken to give it evidentiary power, including by finding other videos of the same event and building a time sequence, then archiving all video after verification.",
+    "confidence": "VERIFIED",
+    "sourceIds": [
+      "SRC-0028"
+    ],
+    "category": "precedent",
+    "jurisdiction": "external",
+    "note": "Depends on volume of citizen footage."
+  },
+  {
+    "id": "PREC-003",
+    "text": "The Polis Project tracked 15 custodial death cases in India and reported two operational obstacles: court documents are not easily available on online government portals, being either not uploaded or not accessible; and victims' names are spelt differently across English-language news reports, which makes tracking hard. They also reflect on working on a politically charged project in an environment where holding the State accountable has become dangerous and difficult.",
+    "confidence": "VERIFIED",
+    "sourceIds": [
+      "SRC-0029"
+    ],
+    "category": "precedent",
+    "jurisdiction": "india",
+    "note": "BUILD INTO DESIGN NOW: expect holes in the eCourts route and design for absence rather than treating it as failure. Search multiple transliterations of every name, especially in Bihar."
+  },
+  {
+    "id": "PREC-004",
+    "text": "The DOTO Database is a common documentation platform for civil society to report hate crime incidents across India, documenting verifiable incidents of targeted violence as reported in English and Urdu media as well as fact-finding and civil society reports, combining crowd-sourcing with its own investigative and editorial teams.",
+    "confidence": "REPORTED",
+    "sourceIds": [
+      "SRC-0030"
+    ],
+    "category": "precedent",
+    "jurisdiction": "india",
+    "note": "Tertiary source. What pressure it has faced is UNKNOWN."
+  },
+  {
+    "id": "PREC-005",
+    "text": "Status of Policing in India Report 2025, Common Cause and CSDS, on police torture and accountability. Survey-based with an explicit methodological note on social desirability bias.",
+    "confidence": "VERIFIED",
+    "sourceIds": [
+      "SRC-0031"
+    ],
+    "category": "precedent",
+    "jurisdiction": "india",
+    "note": "Not a primary-document archive, but the closest systematic Indian evidence base, and its bibliography is a route to earlier fact-finding."
+  },
+  {
+    "id": "PREC-006",
+    "text": "Moyukh Chatterjee, 'Archives as the Infrastructure of Anti-Muslim Violence in India' (2023), a reading of over 100 police First Information Reports from the 2002 Gujarat pogrom, proposing a compositional approach to legal archives of violence.",
+    "confidence": "VERIFIED",
+    "sourceIds": [
+      "SRC-0032"
+    ],
+    "category": "precedent",
+    "jurisdiction": "india",
+    "note": "Paywalled. Academic rather than operational, but directly on what an FIR archive can and cannot show."
+  },
+  {
+    "id": "PREC-007",
+    "text": "Any documented instance of an Indian accountability archive facing a takedown notice, defamation suit, criminal complaint, or source exposure.",
+    "confidence": "UNKNOWN",
+    "sourceIds": [],
+    "category": "precedent",
+    "jurisdiction": "india",
+    "note": "Only the Polis Project's general reflection at PREC-003 was found, and that is a reflection rather than an account of a particular incident. Treat the absence as a failure to find, not as evidence that it has not happened."
+  }
+];
+
 WGO.importedIncidentFacts = {
   "INC-0001": {
     "dates": [
