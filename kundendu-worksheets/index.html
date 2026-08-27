@@ -837,6 +837,203 @@
       .save-box .btn-save { width: 100%; justify-content: center; }
     }
 
+
+    /* ---------- the course (scope & sequence) ---------- */
+    .btn-course {
+      display: block; width: 100%; margin-bottom: 9px;
+      padding: .78rem .9rem;
+      border: 0; border-radius: 15px;
+      background: linear-gradient(135deg, #5b8c3e, #3f6a2a);
+      color: #fff; font-family: "Baloo 2", cursive; font-size: 1rem; font-weight: 700;
+      box-shadow: 0 7px 17px rgba(63,106,42,.3);
+      transition: transform .14s ease, box-shadow .14s ease;
+    }
+
+    .btn-course:hover { transform: translateY(-2px); box-shadow: 0 11px 24px rgba(63,106,42,.36); }
+
+    #course-card { display: grid; gap: 7px; margin: 4px 0 12px; }
+
+    .cc-row {
+      display: flex; align-items: center; gap: 10px;
+      width: 100%; padding: .5rem .6rem;
+      border: 1px solid #dbc8a3; border-left: 4px solid var(--tab, #999);
+      border-radius: 12px; background: #fff; text-align: left;
+      transition: background .14s ease, transform .14s ease;
+    }
+
+    .cc-row:hover { background: var(--sky); transform: translateX(2px); }
+    .cc-emo { font-size: 1.2rem; flex: none; }
+    .cc-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; }
+    .cc-text strong { font-size: .84rem; }
+    .cc-next { font-size: .7rem; font-weight: 700; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .cc-bar { display: block; height: 5px; margin-top: 3px; border-radius: 4px; background: #e8dcc4; overflow: hidden; }
+    .cc-fill { display: block; height: 100%; border-radius: 4px; transition: width .3s ease; }
+
+    .course-backdrop {
+      position: fixed; inset: 0; z-index: 70;
+      background: rgba(43,53,80,.38);
+      opacity: 0; pointer-events: none; transition: opacity .22s ease;
+    }
+
+    .course-backdrop.open { opacity: 1; pointer-events: auto; }
+
+    .course-sheet {
+      position: fixed; z-index: 71;
+      left: 50%; top: 50%;
+      width: min(94vw, 780px); max-height: 88dvh;
+      display: flex; flex-direction: column;
+      padding: 0; overflow: hidden;
+      background: var(--cream);
+      border: 1px solid #dbc8a3; border-radius: 26px;
+      box-shadow: 0 26px 70px rgba(83,60,26,.28);
+      transform: translate(-50%, -46%) scale(.97);
+      opacity: 0; pointer-events: none;
+      transition: opacity .22s ease, transform .22s ease;
+    }
+
+    .course-sheet.open { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1); }
+
+    @media (prefers-reduced-motion: reduce) { .course-sheet, .course-backdrop { transition: none; } }
+
+    .course-bar {
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      padding: 16px 20px 10px; border-bottom: 1px solid #e5d6b8;
+    }
+
+    .course-bar h2 { margin: 0; font-size: 1.16rem; }
+
+    #course-close {
+      flex: none; width: 34px; height: 34px;
+      border: 1px solid #cbb894; border-radius: 50%;
+      background: #fff; font-size: .95rem; font-weight: 700;
+    }
+
+    #course-close:hover { background: var(--sky); }
+
+    #course-tabs {
+      display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 7px;
+      padding: 11px 20px; border-bottom: 1px solid #e5d6b8;
+    }
+
+    .course-tab {
+      display: flex; flex-direction: column; align-items: center; gap: 1px;
+      padding: .5rem .3rem;
+      border: 2px solid #ddcdb0; border-radius: 13px;
+      background: #fff; text-align: center;
+      transition: all .14s ease;
+    }
+
+    .course-tab:hover { border-color: var(--tab); }
+    .course-tab.on { border-color: var(--tab); background: color-mix(in srgb, var(--tab) 12%, #fff); }
+    .t-emo { font-size: 1.15rem; }
+    .t-lab { font-size: .74rem; font-weight: 800; line-height: 1.15; }
+    .t-sub { font-size: .64rem; font-weight: 700; color: var(--muted); }
+
+    .course-body { overflow-y: auto; overscroll-behavior: contain; padding: 14px 20px 22px; }
+
+    #course-head {
+      display: flex; align-items: center; justify-content: space-between; gap: 14px;
+      padding: 12px 14px; margin-bottom: 11px;
+      border: 1px solid #e0cfae; border-left: 5px solid var(--path, #999);
+      border-radius: 16px; background: #fff;
+    }
+
+    #course-head h3 { margin: 0 0 2px; font-size: 1.05rem; }
+    #course-head p { margin: 0; font-size: .78rem; font-weight: 600; color: var(--muted); }
+
+    .ring {
+      flex: none; display: grid; place-items: center;
+      width: 52px; height: 52px; border-radius: 50%;
+    }
+
+    .ring-in {
+      display: grid; place-items: center;
+      width: 40px; height: 40px; border-radius: 50%;
+      background: #fff; font-size: .7rem; font-weight: 800;
+    }
+
+    .btn-course-go {
+      display: block; width: 100%; margin-bottom: 13px;
+      padding: .72rem .9rem;
+      border: 0; border-radius: 14px;
+      color: #fff; font-family: "Baloo 2", cursive; font-size: .96rem; font-weight: 700;
+      text-align: left;
+      box-shadow: 0 6px 15px rgba(83,60,26,.2);
+    }
+
+    .btn-course-go:hover { filter: brightness(1.07); }
+
+    .mod { margin-bottom: 8px; border: 1px solid #e0cfae; border-radius: 15px; background: #fff; overflow: hidden; }
+    .mod-done { background: #f4fbf6; border-color: #bfe0cb; }
+
+    .mod > summary {
+      display: flex; align-items: center; gap: 10px;
+      padding: .62rem .8rem; cursor: pointer; list-style: none;
+    }
+
+    .mod > summary::-webkit-details-marker { display: none; }
+    .mod > summary:hover { background: var(--sky); }
+    .mod-emo { font-size: 1.15rem; flex: none; }
+    .mod-text { display: flex; flex-direction: column; gap: 1px; min-width: 0; flex: 1; }
+    .mod-text strong { font-size: .88rem; }
+    .mod-blurb { font-size: .7rem; font-weight: 600; color: var(--muted); }
+    .mod-count {
+      flex: none; padding: .16rem .5rem; border-radius: 20px;
+      background: #efe4cd; font-size: .68rem; font-weight: 800; color: var(--muted);
+    }
+    .mod-count.full { background: #cdeeda; color: #14522e; }
+
+    .les {
+      display: flex; align-items: flex-start; gap: 9px;
+      width: 100%; padding: .5rem .8rem .5rem 1.4rem;
+      border: 0; border-top: 1px solid #f0e6d2;
+      background: transparent; text-align: left;
+      transition: background .12s ease;
+    }
+
+    .les:hover { background: var(--sky); }
+    .les-mark { flex: none; font-size: .82rem; width: 18px; padding-top: 2px; }
+    .les-text { display: flex; flex-direction: column; gap: 1px; min-width: 0; flex: 1; }
+    .les-text strong { font-size: .82rem; }
+    .les-rule { font-size: .69rem; font-weight: 600; color: var(--muted); line-height: 1.35; }
+    .les-meta { flex: none; font-size: .66rem; font-weight: 800; color: var(--muted); padding-top: 2px; }
+    .les-done .les-text strong { color: #14522e; }
+    .les-next { background: #fff7e3; }
+    .les-next .les-text strong { color: var(--accent-deep); }
+    .les-locked { opacity: .5; }
+    .les-locked:hover { opacity: .85; }
+
+    body.course-open { overflow: hidden; }
+
+    /* the rule, restated for the grown-up, above the questions */
+    #lesson-note-slot:empty { display: none; }
+
+    .lesson-note {
+      display: block; padding: 10px 13px; margin: 0 0 14px;
+      border: 1px dashed #c9b78f; border-radius: 14px;
+      background: #fffaf0;
+    }
+
+    .lesson-note strong { display: block; font-size: .74rem; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); margin-bottom: 3px; }
+    .lesson-note p { margin: 0; font-size: .82rem; font-weight: 600; line-height: 1.45; }
+
+    .lesson-won {
+      display: block; padding: 10px 13px; margin: 12px 0 0;
+      border: 1px solid #bfe0cb; border-radius: 14px; background: #f0fbf4;
+    }
+
+    .lesson-won p { margin: 0 0 7px; font-size: .84rem; font-weight: 700; color: #14522e; }
+
+    @media (max-width: 620px) {
+      #course-tabs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .course-sheet { width: 96vw; max-height: 90dvh; }
+    }
+
+    @media print {
+      .course-backdrop, .course-sheet, .btn-course, #course-card { display: none !important; }
+      .lesson-note { border-color: #999; background: #fff; }
+    }
+
     /* ---------- print ---------- */
     @media print {
       body { background: #fff !important; background-image: none !important; }
@@ -881,6 +1078,9 @@
     <!-- ============ CONTROLS ============ -->
     <aside class="panel no-print" aria-label="Worksheet controls">
       <h2 class="display">Build a worksheet</h2>
+
+      <button id="course-btn" type="button" class="btn-course">🎓 The course — learn it in order</button>
+      <div id="course-card" aria-label="Course progress"></div>
 
       <button id="daily-btn" type="button" class="btn-daily">⭐ Today's 5 — tiny daily practice</button>
       <button id="boss-btn" type="button" class="btn-boss">🏆 Boss level — beat this week's wins!</button>
@@ -939,6 +1139,8 @@
             </div>
           </div>
 
+          <div id="lesson-note-slot"></div>
+
           <div id="q-area" aria-live="polite"></div>
 
           <div class="challenge">⭐ Star challenge: when you finish, tell a grown-up one new thing you learned today!</div>
@@ -996,6 +1198,20 @@
       </article>
     </section>
   </main>
+
+  <div id="course-backdrop" class="course-backdrop no-print"></div>
+  <div id="course-sheet" class="course-sheet no-print" role="dialog" aria-label="The course" aria-modal="true">
+    <div class="course-bar">
+      <h2 class="display">🎓 The course</h2>
+      <button id="course-close" type="button" aria-label="Close the course">✕</button>
+    </div>
+    <div id="course-tabs" role="group" aria-label="Choose a subject path"></div>
+    <div class="course-body">
+      <div id="course-head"></div>
+      <div id="course-continue"></div>
+      <div id="course-modules"></div>
+    </div>
+  </div>
 
   <div id="gu-backdrop" class="gu-backdrop no-print"></div>
   <aside id="gu-drawer" class="gu-drawer no-print" role="dialog" aria-label="For grown-ups">
@@ -2816,6 +3032,1599 @@
       c.activities = c.activities.concat(mixId);
     });
 
+
+    /* =================================================================
+       COURSE: a structured scope & sequence
+       -----------------------------------------------------------------
+       The activity picker above is a buffet — useful, but it lets a
+       child meet blends before he is sure of single sounds. This is the
+       other half: an ordered path. Each subject is a list of modules,
+       each module a short list of lessons, each lesson a rule stated in
+       plain language plus a generator scoped to exactly that rule.
+       Lessons unlock in order; a lesson passes at 80%.
+       ================================================================= */
+
+    /* ---------- picture cues ---------- */
+    const EMO = {
+      am:"🍡",at:"🦇",an:"🥫",ap:"🗺️",ad:"😢",ag:"👜",cat:"🐱",hat:"🎩",mat:"🧘",rat:"🐀",bat:"🦇",
+      sat:"🪑",pat:"👋",fan:"🪭",can:"🥫",man:"👨",pan:"🍳",van:"🚐",ran:"🏃",map:"🗺️",cap:"🧢",
+      tap:"🚰",nap:"😴",lap:"🦵",bag:"👜",tag:"🏷️",wag:"🐕",dad:"👨",sad:"😢",bad:"👎",mad:"😠",
+      bin:"🗑️",pin:"📌",tin:"🥫",win:"🏆",fin:"🐟",sit:"🪑",hit:"🏏",fit:"💪",bit:"🍪",pit:"🕳️",
+      lip:"👄",rip:"✂️",tip:"👆",zip:"🤐",dip:"🥣",big:"🐘",pig:"🐷",dig:"⛏️",fig:"🌰",wig:"👱",
+      dog:"🐶",log:"🪵",fog:"🌫️",jog:"🏃",hog:"🐗",box:"📦",fox:"🦊",ox:"🐂",pot:"🍲",hot:"🔥",
+      dot:"⚫",cot:"🛏️",top:"🔝",mop:"🧹",hop:"🐰",pop:"🎈",mom:"👩",sun:"☀️",bun:"🍞",run:"🏃",
+      fun:"🎉",gun:"💧",cup:"🥤",pup:"🐕",up:"⬆️",bus:"🚌",mud:"💧",bug:"🐛",rug:"🧶",jug:"🏺",
+      hug:"🤗",cut:"✂️",nut:"🌰",hut:"🛖",but:"🤔",bed:"🛏️",red:"🔴",leg:"🦵",egg:"🥚",pen:"🖊️",
+      hen:"🐔",ten:"🔟",men:"👬",net:"🥅",wet:"💦",jet:"✈️",pet:"🐕",get:"🤲",web:"🕸️",
+      ship:"🚢",shop:"🏪",fish:"🐟",shell:"🐚",sheep:"🐑",shed:"🏚️",chip:"🍟",chin:"😀",chat:"💬",
+      chick:"🐤",cheese:"🧀",bench:"🪑",thin:"📏",thumb:"👍",bath:"🛁",moth:"🦋",teeth:"🦷",
+      king:"👑",ring:"💍",wing:"🪽",song:"🎵",sing:"🎤",duck:"🦆",sock:"🧦",rock:"🪨",lock:"🔒",
+      clock:"🕐",stop:"🛑",star:"⭐",stem:"🌱",step:"🪜",swim:"🏊",snake:"🐍",spoon:"🥄",
+      frog:"🐸",flag:"🚩",plum:"🍑",plate:"🍽️",clap:"👏",crab:"🦀",drum:"🥁",dress:"👗",
+      tree:"🌳",train:"🚂",truck:"🚚",grapes:"🍇",green:"🟢",bread:"🍞",brush:"🖌️",
+      hand:"✋",sand:"🏖️",band:"🎸",tent:"⛺",nest:"🪹",lamp:"💡",jump:"🦘",milk:"🥛",belt:"🩹",
+      cake:"🎂",gate:"🚪",game:"🎮",name:"📛",face:"😀",lake:"🏞️",tape:"📼",cave:"🕳️",
+      bike:"🚲",kite:"🪁",line:"📏",nine:"9️⃣",time:"⏰",five:"5️⃣",rice:"🍚",smile:"😄",
+      bone:"🦴",nose:"👃",rose:"🌹",note:"🎵",home:"🏠",rope:"🪢",stone:"🪨",
+      cube:"🧊",tube:"🧪",flute:"🪈",mule:"🐴",
+      bee:"🐝",feet:"🦶",sheep2:"🐑",queen:"👑",green2:"🟢",seed:"🌱",tea:"🍵",leaf:"🍃",
+      sea:"🌊",peach:"🍑",beach:"🏖️",meat:"🍖",moon:"🌙",spoon2:"🥄",boot:"👢",broom:"🧹",zoo:"🦁",
+      book:"📖",foot:"🦶",cook:"👨‍🍳",wood:"🪵",rain:"🌧️",train2:"🚂",nail:"💅",tail:"🐕",
+      snail:"🐌",paint:"🎨",day:"☀️",play:"🎪",tray:"🍽️",hay:"🌾",boat:"⛵",coat:"🧥",goat:"🐐",
+      road:"🛣️",soap:"🧼",toast:"🍞",cow:"🐮",crown:"👑",owl:"🦉",flower:"🌸",
+      hopping:"🐰",running:"🏃",jumping:"🦘",cats:"🐱",dogs:"🐶",jumped:"🦘"
+    };
+    const em = w => EMO[w] || "";
+    const cue = w => (EMO[w] ? EMO[w] + " " : "") + w;
+
+    /* ---------- lesson question factories ----------
+       Each returns a gen(n) in the shape renderWorksheet already knows. */
+
+    const lsFirst = words => n => sample(words, n).map(w => ({
+      prompt: cue(w), say: w,
+      question: "Which letter does it begin with?", answer: w[0], accept: []
+    }));
+
+    const lsLast = words => n => sample(words, n).map(w => ({
+      prompt: cue(w), say: w,
+      question: "Which letter does it end with?", answer: w[w.length - 1], accept: []
+    }));
+
+    const lsMiddle = words => n => sample(words, n).map(w => ({
+      prompt: cue(w), say: w,
+      question: "Which vowel is in the middle?", answer: w[1], accept: []
+    }));
+
+    // hide one letter — position picked by rule, so the lesson stays on target
+    const lsMissing = (words, where) => n => sample(words, n).map(w => {
+      const i = where === "first" ? 0
+        : where === "last" ? w.length - 1
+        : where === "middle" ? Math.floor(w.length / 2)
+        : rand(w.length);
+      const shown = w.split("").map((c, k) => k === i ? "_" : c).join(" ");
+      return {
+        prompt: (em(w) ? em(w) + "  " : "") + shown, say: w,
+        question: "Write the missing letter.", answer: w[i], accept: [w]
+      };
+    });
+
+    // sound it out, then read it — the core blending drill
+    const lsBlend = words => n => sample(words, n).map(w => ({
+      prompt: w.split("").join(" · "), say: w,
+      question: "Push the sounds together. What is the word?",
+      answer: w, accept: []
+    }));
+
+    const lsDictate = words => n => {
+      if (!ttsOK) return [{ type: "info", prompt: "", question: "", answer: "",
+        text: "This device cannot speak out loud, so listening lessons need a device with sound. Everything else in this module works fine. 🔊" }];
+      return sample(words, n).map(w => ({
+        type: "dictate", say: w, prompt: "🔊 Listen…",
+        question: "Write the word you hear.", answer: w, accept: []
+      }));
+    };
+
+    // sort into two buckets — "which family does it belong to?"
+    const lsSort = (groups, ask) => n => {
+      const flat = [];
+      groups.forEach(([label, words]) => words.forEach(w => flat.push([w, label])));
+      return sample(flat, n).map(([w, label]) => ({
+        prompt: cue(w), say: w,
+        question: ask || ("Which group? (" + groups.map(g => g[0]).join(" or ") + ")"),
+        answer: label, accept: []
+      }));
+    };
+
+    // read a decodable sentence, answer one question about it
+    const lsSentence = rows => n => sample(rows, n).map(([s, q, a, ...more]) => ({
+      prompt: s, say: s, question: q, answer: a, accept: more
+    }));
+
+    // trace, using the tracing machinery the handwriting activities already use
+    const lsTrace = (items, label) => n => sample(items, n).map(t => ({
+      type: "trace", trace: t, say: t,
+      prompt: t, question: label || ("Trace, then write " + t + " on your own."),
+      answer: "practice task"
+    }));
+
+    // a decodable reader: word-by-word read-along, then comprehension
+    const lsBook = books => () => {
+      const book = pick(books);
+      const qs = book.pages.map((line, i) => ({
+        type: "readpage", text: line, book: book.title, page: i + 1, total: book.pages.length,
+        prompt: line, question: "Read along!", answer: "practice task"
+      }));
+      (book.qs || []).forEach(([q, a, ...more]) => {
+        qs.push({ prompt: "📖 " + book.title + " — think back!", say: q, question: q, answer: a, accept: more });
+      });
+      return qs;
+    };
+
+    // plain question/answer rows, for maths and content subjects
+    const lsAsk = rows => n => sample(rows, n).map(([p, q, a, ...more]) => ({
+      prompt: p, say: sayable(p), question: q, answer: a, accept: more
+    }));
+
+    // build from a live function rather than a fixed bank
+    const lsMake = factory => (n, d) => build(n, () => factory(d));
+
+    /* ================= PHONICS: banks ================= */
+    // Word families, in the order a synthetic-phonics programme introduces them.
+    const FAM = {
+      at:["cat","hat","mat","rat","bat","sat","pat"],
+      an:["can","man","pan","ran","fan","van"],
+      ap:["map","cap","tap","nap","lap"],
+      ag:["bag","tag","wag"],
+      ad:["dad","sad","bad","mad"],
+      in:["bin","pin","tin","win","fin"],
+      it:["sit","hit","fit","bit","pit"],
+      ip:["lip","rip","tip","zip","dip"],
+      ig:["big","pig","dig","fig","wig"],
+      og:["dog","log","fog","jog","hog"],
+      ot:["pot","hot","dot","cot"],
+      op:["top","mop","hop","pop"],
+      ox:["box","fox"],
+      un:["sun","bun","run","fun"],
+      up:["cup","pup"],
+      ug:["bug","rug","jug","hug"],
+      ut:["cut","nut","hut"],
+      ed:["bed","red"],
+      en:["pen","hen","ten","men"],
+      et:["net","wet","jet","pet","get"],
+      eg:["leg","peg"]
+    };
+    const famWords = (...keys) => keys.reduce((a, k) => a.concat(FAM[k] || []), []);
+
+    // Letter sets, in teaching order (s a t p i n first — it makes words fastest).
+    const SETS = [
+      ["s","a","t","p","i","n"],
+      ["c","k","e","h","r"],
+      ["m","d","g","o"],
+      ["u","l","f","b"],
+      ["j","z","w","v"],
+      ["y","x","q"]
+    ];
+    const SET_WORDS = {
+      s:["sun","sit","sad"], a:["ant","apple","axe"], t:["top","ten","tap"],
+      p:["pen","pig","pot"], i:["ink","igloo","in"], n:["net","nut","nap"],
+      c:["cat","cup","cot"], k:["kite","key","king"], e:["egg","elephant","end"],
+      h:["hat","hen","hot"], r:["rat","red","run"], m:["map","mat","mud"],
+      d:["dog","dad","dig"], g:["goat","gate","gum"], o:["ox","orange","otter"],
+      u:["up","umbrella","under"], l:["leg","lip","log"], f:["fan","fish","fig"],
+      b:["bat","bus","bed"], j:["jug","jam","jet"], z:["zip","zoo","zebra"],
+      w:["web","wig","wet"], v:["van","vet","violin"], y:["yak","yes","yellow"],
+      x:["box","fox","six"], q:["queen","quilt","quick"]
+    };
+    const wordsForSet = set => set.reduce((a, l) => a.concat(SET_WORDS[l] || []), []);
+
+    const DIGRAPH = {
+      sh:["ship","shop","fish","shell","sheep","shed"],
+      ch:["chip","chin","chat","chick","bench","much"],
+      th:["thin","thumb","bath","moth","this","with"],
+      ng:["king","ring","wing","song","sing","long"],
+      ck:["duck","sock","rock","lock","clock","kick"]
+    };
+    const BLEND_START = ["stop","star","stem","step","swim","snap","spin","skip",
+      "frog","flag","plum","clap","crab","drum","glad","grab","trip","twin","black","bring"];
+    const BLEND_END = ["hand","sand","band","tent","nest","lamp","jump","milk","belt","best","fast","gift"];
+
+    const MAGIC_E = {
+      a_e:["cake","gate","game","name","face","lake","tape","cave","late","made"],
+      i_e:["bike","kite","line","nine","time","five","rice","smile","ride","side"],
+      o_e:["bone","nose","rose","note","home","rope","stone","hole"],
+      u_e:["cube","tube","flute","mule","june","rule"]
+    };
+    const TEAM = {
+      ee:["bee","feet","see","queen","seed","tree","green","week"],
+      ea:["tea","leaf","sea","peach","beach","meat","eat","read"],
+      oo_long:["moon","spoon","boot","broom","zoo","food","soon","room"],
+      oo_short:["book","foot","cook","wood","look","good"],
+      ai:["rain","nail","tail","snail","paint","wait","train"],
+      ay:["day","play","tray","hay","say","way"],
+      oa:["boat","coat","goat","road","soap","toast"],
+      ow:["cow","crown","owl","flower","down","now"]
+    };
+
+    // Dolch-style tricky words, in frequency order — these do not decode, they are learned by sight.
+    const TRICKY_WORDS = [
+      ["a","I","the","to"], ["and","see","we","go"], ["is","it","in","at"],
+      ["up","my","can","look"], ["like","big","red","run"],
+      ["play","you","come","said"], ["was","are","they","have"],
+      ["one","two","there","where"]
+    ];
+
+    /* decodable readers — each only uses sounds taught by that stage */
+    const READERS = {
+      cvc_a: [{
+        title: "The Fat Cat",
+        pages: ["A cat sat.", "The cat sat on a mat.", "A rat ran!", "The cat ran at the rat.", "The rat is in a bag.", "The cat had a nap."],
+        qs: [["Where did the cat sit?","mat","on a mat","on the mat"], ["Who ran first?","rat","the rat"]]
+      }, {
+        title: "Dad and the Map",
+        pages: ["Dad has a map.", "The map is in the van.", "Dad can tap the map.", "Sam has a cap.", "Sam and Dad ran.", "What a fun day!"],
+        qs: [["Where is the map?","van","in the van"], ["What does Sam have?","cap","a cap"]]
+      }],
+      cvc_all: [{
+        title: "The Big Red Bus",
+        pages: ["A big red bus.", "Ten men get on the bus.", "The bus is hot.", "A dog sat on a rug.", "The pup can run.", "Stop! The bus is here."],
+        qs: [["What colour is the bus?","red"], ["How many men get on?","ten","10"]]
+      }, {
+        title: "Pip the Pup",
+        pages: ["Pip is a pup.", "Pip can dig in the mud.", "Pip digs up a nut.", "A bug is on the nut!", "Pip runs to his bed.", "Pip had fun."],
+        qs: [["What does Pip dig up?","nut","a nut"], ["What is on the nut?","bug","a bug"]]
+      }],
+      digraph: [{
+        title: "The Ship and the Fish",
+        pages: ["A ship is on the sea.", "A fish swims up.", "The fish is thin.", "A chick sits on the ship.", "The chick and the fish chat.", "The ship sails on."],
+        qs: [["Who sits on the ship?","chick","the chick"], ["What is the fish like?","thin"]]
+      }],
+      blend: [{
+        title: "The Frog and the Drum",
+        pages: ["A frog sat on a stump.", "He had a small drum.", "Bang! went the drum.", "The birds took a jump.", "Stop, said the frog.", "Let us sing a song."],
+        qs: [["What did the frog have?","drum","a drum","a small drum"], ["What did the birds do?","jump","took a jump"]]
+      }],
+      magic_e: [{
+        title: "The Kite and the Lake",
+        pages: ["Jane made a kite.", "She ran to the lake.", "The kite rose up.", "It flew like a bird.", "Then came the rain.", "Jane came home with a smile."],
+        qs: [["What did Jane make?","kite","a kite"], ["Where did she run?","lake","to the lake"]]
+      }],
+      teams: [{
+        title: "Rain on the Road",
+        pages: ["The rain fell on the road.", "A goat stood by a tree.", "A snail went slow.", "The green leaf was wet.", "Soon the sun came out.", "What a bright day!"],
+        qs: [["Which animal went slow?","snail","the snail"], ["What came out at the end?","sun","the sun"]]
+      }]
+    };
+
+    /* ================= PHONICS: modules ================= */
+    const PHONICS_MODULES = [
+      {
+        id: "p1", title: "Listening ears", emoji: "👂",
+        blurb: "Sounds before letters. Nothing is written yet — this is all done with the ears.",
+        lessons: [
+          { id: "p1a", title: "The first sound", rule: "Every word starts with a sound. Say the word, then say just the very first bit of it.",
+            note: "Stretch the word out: sssun. Do not say 'ess' — say the sound 'sss'. Letter names come later; sounds come first.",
+            gen: lsFirst(["sun","cat","dog","map","pen","tin","bag","net","van","hat","fish","rug"]) },
+          { id: "p1b", title: "The last sound", rule: "Words end with a sound too. Say the word slowly and catch the very last bit.",
+            note: "Say the word, then whisper only the end: ca-t. The last sound is the hardest one for children to hear — go slowly.",
+            gen: lsLast(["cat","dog","bus","pen","map","tin","bag","sun","cup","hat","net","pig"]) },
+          { id: "p1c", title: "Count the sounds", rule: "Clap once for every sound you hear. 'cat' has three: c - a - t.",
+            note: "Clap it together first, then let him try alone. Sounds, not letters: 'ship' has three sounds even though it has four letters.",
+            gen: lsMake(() => { const w = pick(["cat","dog","sun","map","bus","pen","hat","fish","ship","tree","frog","cup"]);
+              const count = w === "fish" || w === "ship" ? 3 : w === "tree" ? 3 : w === "frog" ? 4 : w.length;
+              return { prompt: cue(w), say: w, question: "How many sounds do you hear?", answer: String(count), accept: numAccept(count) }; }) },
+          { id: "p1d", title: "Push them together", rule: "If I say the sounds one by one, you push them together into a word. c - a - t makes cat!",
+            note: "This is blending — the single most important skill in learning to read. Press 🔊 and let him answer out loud before writing.",
+            gen: lsBlend(famWords("at","an","ap","in","it")) },
+          { id: "p1e", title: "Words that rhyme", rule: "Rhyming words end the same way. cat and hat rhyme. cat and dog do not.",
+            note: "Sing it, do not explain it. Say 'cat, hat, mat…' and let him add the next one, even a nonsense one.",
+            gen: lsMake(() => { const key = pick(["at","an","in","it","op","ug"]);
+              const fam = FAM[key]; const two = sample(fam, 2); const odd = pick(famWords(key === "at" ? "og" : "at"));
+              const opts = shuffle(two.concat([odd]));
+              return { prompt: opts.join("   ·   "), say: opts.join(", "), question: "Which word does NOT rhyme?", answer: odd, accept: [] }; }) }
+        ]
+      },
+      {
+        id: "p2", title: "First letters: s a t p i n", emoji: "🔤",
+        blurb: "Six letters, chosen because they already make more words than any other six.",
+        lessons: [
+          { id: "p2a", title: "s, a and t", rule: "s says sss like a snake. a says a like in apple. t says t like a tap.",
+            note: "Show the letter, say the sound, trace it in the air. Three letters is plenty for one day.",
+            gen: lsFirst(wordsForSet(["s","a","t"])) },
+          { id: "p2b", title: "p, i and n", rule: "p says p like a popping bubble. i says i like in ink. n says nnn like a plane.",
+            note: "Go back over s, a, t first for one minute before adding these. Little and often.",
+            gen: lsFirst(wordsForSet(["p","i","n"])) },
+          { id: "p2c", title: "Write the sound you hear", rule: "When you hear a sound, you can write the letter for it.",
+            note: "Say only the sound, never the letter name. If he writes it backwards, that is completely normal at this age.",
+            gen: lsMake(() => { const l = pick(SETS[0]); const w = pick(SET_WORDS[l]);
+              return { prompt: cue(w), say: w, question: "Write the letter for the first sound.", answer: l, accept: [] }; }) },
+          { id: "p2d", title: "Trace s a t p i n", rule: "Now we make the letters with a pencil. Start at the top and go down.",
+            note: "This one is best printed. Finger-trace on the page before picking up a pencil.",
+            gen: lsTrace(SETS[0], "Trace it, then write it twice on your own.") }
+        ]
+      },
+      {
+        id: "p3", title: "First words to read", emoji: "📖",
+        blurb: "Six letters is enough to read real words. This is where reading actually begins.",
+        lessons: [
+          { id: "p3a", title: "The -at family", rule: "Change the first sound and you get a whole family: cat, hat, mat, sat.",
+            note: "Write 'at' and add one letter in front at a time. Seeing the family change is the lightbulb moment.",
+            gen: lsMissing(FAM.at, "first") },
+          { id: "p3b", title: "The -an and -ap families", rule: "Same trick, new endings: can, man, pan — and map, cap, tap.",
+            note: "Ask him to invent a silly one too (zap, vap). Nonsense words prove he is decoding, not remembering.",
+            gen: lsMissing(famWords("an","ap"), "first") },
+          { id: "p3c", title: "The -in, -it and -ip families", rule: "Now with i in the middle: pin, sit, lip.",
+            note: "If he mixes up a and i, hold up two fingers — 'a' is the big open mouth, 'i' is the small smile.",
+            gen: lsMissing(famWords("in","it","ip"), "first") },
+          { id: "p3d", title: "Sound it out and read it", rule: "Look at each letter, say its sound, then push them together.",
+            note: "Let him be slow. Speed comes from repetition, never from being hurried.",
+            gen: lsBlend(famWords("at","an","ap","in","it","ip")) },
+          { id: "p3e", title: "My first book", rule: "You know enough sounds to read a whole book. Let's read it together.",
+            note: "Press 🔊 on each page and read along. Then let him read it alone — the second reading is where the confidence lands.",
+            gen: lsBook(READERS.cvc_a) }
+        ]
+      },
+      {
+        id: "p4", title: "More letters: c k e h r m d g o", emoji: "✏️",
+        blurb: "The next two sets, which unlock the o and e words.",
+        lessons: [
+          { id: "p4a", title: "c, k, e, h and r", rule: "c and k both say k. e says e like in egg. h is a breath. r growls.",
+            note: "c and k sounding the same is confusing and honest — tell him both letters share one sound.",
+            gen: lsFirst(wordsForSet(SETS[1])) },
+          { id: "p4b", title: "m, d, g and o", rule: "m hums, d taps, g gulps, o says o like in ox.",
+            note: "b and d get swapped by nearly every child. Do not correct it sharply — it fades on its own.",
+            gen: lsFirst(wordsForSet(SETS[2])) },
+          { id: "p4c", title: "Words with o and e", rule: "New vowels make new words: dog, pot, hop — and pen, bed, net.",
+            note: "The middle vowel is the tricky part. Ask 'what does your mouth do in the middle?'",
+            gen: lsMissing(famWords("og","ot","op","ed","en","et"), "middle") },
+          { id: "p4d", title: "Which vowel is hiding?", rule: "Every one of these words hides a vowel in the middle: a, e, i, o or u.",
+            note: "Say the word slowly and hold the middle sound long — caaat. Hearing it is the whole skill.",
+            gen: lsMiddle(famWords("at","in","og","ed","un","ot","it","en")) },
+          { id: "p4e", title: "Trace the new letters", rule: "Nine more letters to make with a pencil.",
+            note: "Print this one. Two or three careful letters beat a whole page of rushed ones.",
+            gen: lsTrace(SETS[1].concat(SETS[2])) }
+        ]
+      },
+      {
+        id: "p5", title: "The last letters", emoji: "🔡",
+        blurb: "u l f b, then j z w v, then y x q. Now the whole alphabet is his.",
+        lessons: [
+          { id: "p5a", title: "u, l, f and b", rule: "u says u like in up. l is a long lick. f is a windy sound. b bounces.",
+            note: "Now every short vowel is covered — a, e, i, o, u. That is the full set.",
+            gen: lsFirst(wordsForSet(SETS[3])) },
+          { id: "p5b", title: "j, z, w and v", rule: "j jumps, z buzzes, w is a wobble, v is a buzzy fff.",
+            note: "These letters are rarer, so they need more repeats. Play I-spy with them around the house.",
+            gen: lsFirst(wordsForSet(SETS[4])) },
+          { id: "p5c", title: "y, x and q", rule: "y says y at the start. x says ks at the END of a word — box, fox, six. q always brings u with it.",
+            note: "x is the odd one: it is almost never at the start. Point that out — children love a rule-breaker.",
+            gen: lsFirst(wordsForSet(SETS[5])) },
+          { id: "p5d", title: "Listen and write", rule: "Now you can write any short word you hear.",
+            note: "Say the word twice, then wait. Do not spell it for him — let him stretch it out himself.",
+            gen: lsDictate(famWords("at","in","og","un","ed","ot","ug","et")) },
+          { id: "p5e", title: "A book with all the sounds", rule: "You know every letter sound now. Read this one all by yourself.",
+            note: "Try letting him read it with no help at all first, then go back over any word that stuck.",
+            gen: lsBook(READERS.cvc_all) }
+        ]
+      },
+      {
+        id: "p6", title: "All five short vowels", emoji: "🎯",
+        blurb: "Mixing a, e, i, o, u together — the point where CVC reading becomes automatic.",
+        lessons: [
+          { id: "p6a", title: "a or i?", rule: "These two get muddled most. cat has a. sit has i.",
+            note: "Exaggerate your mouth. 'a' opens wide, 'i' is a little smile. Let him watch your face.",
+            gen: lsSort([["a", famWords("at","an","ap")], ["i", famWords("in","it","ip")]], "Does it have a or i in the middle?") },
+          { id: "p6b", title: "o or u?", rule: "hop has o. cup has u.",
+            note: "Round your lips for o, and drop your jaw for u. Physical cues work better than explanation.",
+            gen: lsSort([["o", famWords("og","ot","op")], ["u", famWords("un","up","ug","ut")]], "Does it have o or u in the middle?") },
+          { id: "p6c", title: "All five mixed up", rule: "Any vowel can hide in the middle. Listen hard and pick the right one.",
+            note: "This is the big test of the last five modules. If it wobbles, go back to p6a for a few days — that is not a failure.",
+            gen: lsMissing(famWords("at","in","og","un","ed","ot","ug","et","ap","ip"), "middle") },
+          { id: "p6d", title: "Write the whole word", rule: "No letters given this time. Listen and write the whole thing.",
+            note: "Full dictation. Praise a good attempt with one wrong letter as loudly as a perfect one.",
+            gen: lsDictate(famWords("at","an","in","it","og","ot","un","ug","ed","et")) }
+        ]
+      },
+      {
+        id: "p7", title: "Two letters, one sound", emoji: "🤝",
+        blurb: "sh, ch, th, ng, ck — where two letters team up and make a single new sound.",
+        lessons: [
+          { id: "p7a", title: "sh and ch", rule: "s and h together say sh, like asking for quiet. c and h together say ch, like a train.",
+            note: "This is a real leap: two letters, one sound. Cover one letter and show that neither says it alone.",
+            gen: lsSort([["sh", DIGRAPH.sh], ["ch", DIGRAPH.ch]], "Does it have sh or ch?") },
+          { id: "p7b", title: "th and ng", rule: "th puts your tongue between your teeth. ng hums at the end — king, ring, song.",
+            note: "th needs the tongue to poke out. Let him look in a mirror; it is genuinely hard to feel otherwise.",
+            gen: lsSort([["th", DIGRAPH.th], ["ng", DIGRAPH.ng]], "Does it have th or ng?") },
+          { id: "p7c", title: "ck at the end", rule: "At the end of a short word, k is usually spelt ck — duck, sock, rock.",
+            note: "A spelling rule, not a reading one. It only ever comes after a short vowel, and never at the start.",
+            gen: lsMissing(DIGRAPH.ck.map(w => w), "last") },
+          { id: "p7d", title: "Read the sh-ch-th words", rule: "Sound them out — but remember the team makes one sound, not two.",
+            note: "If he says 's-h-i-p' as four sounds, put your finger over 'sh' and say 'this bit is one sound'.",
+            gen: lsBlend(DIGRAPH.sh.concat(DIGRAPH.ch, DIGRAPH.th)) },
+          { id: "p7e", title: "The ship book", rule: "A whole book full of the new team sounds.",
+            note: "Point to each sh and ch as you meet it. Naming the pattern out loud helps it stick.",
+            gen: lsBook(READERS.digraph) }
+        ]
+      },
+      {
+        id: "p8", title: "Sounds that slide together", emoji: "🎿",
+        blurb: "Blends — st, fr, tr, and endings like -nd, -mp. Both sounds are still there.",
+        lessons: [
+          { id: "p8a", title: "Blends at the start", rule: "In stop you hear s AND t. Both sounds stay — they just slide together fast.",
+            note: "The difference from sh: in 'sh' one sound replaces two, in 'st' both survive. Stretch it: sss-top.",
+            gen: lsMissing(BLEND_START, "first") },
+          { id: "p8b", title: "Read the sliding words", rule: "Say each sound, then speed it up until it slides.",
+            note: "Slow first, then fast. Never fast first.",
+            gen: lsBlend(BLEND_START) },
+          { id: "p8c", title: "Blends at the end", rule: "Words can end with two sounds too: hand, jump, nest, milk.",
+            note: "End blends are harder to hear than start ones. Hold the last bit long: han-d.",
+            gen: lsLast(BLEND_END) },
+          { id: "p8d", title: "Listen and write the blends", rule: "Two sounds at the start means two letters. Write them both.",
+            note: "Dropping one letter of a blend (writing 'sop' for 'stop') is the classic slip. Say it slowly, twice.",
+            gen: lsDictate(BLEND_START.concat(BLEND_END)) },
+          { id: "p8e", title: "The frog book", rule: "Read a book full of blends.",
+            note: "By now he should be reading more smoothly than sounding out. If not, that is fine — keep going.",
+            gen: lsBook(READERS.blend) }
+        ]
+      },
+      {
+        id: "p9", title: "Magic e", emoji: "✨",
+        blurb: "The e on the end says nothing — but it makes the vowel say its own name.",
+        lessons: [
+          { id: "p9a", title: "cap becomes cape", rule: "Add an e to the end and the middle vowel says its NAME. cap → cape. Magic!",
+            note: "Show the pair side by side: cap/cape, kit/kite, hop/hope. The pairs make the rule obvious in a way explaining cannot.",
+            gen: lsMake(() => { const pairs = [["cap","cape"],["kit","kite"],["hop","hope"],["tap","tape"],["can","cane"],["pin","pine"],["not","note"],["cub","cube"],["mad","made"],["rid","ride"]];
+              const [a, b] = pick(pairs);
+              return { prompt: a + "  +  e  =  ?", say: a + " plus e", question: "Add magic e. What is the new word?", answer: b, accept: [] }; }) },
+          { id: "p9b", title: "a_e and i_e", rule: "cake, gate, name — and bike, kite, five.",
+            note: "The e is silent but it is doing all the work. Children love calling it the bossy e.",
+            gen: lsSort([["a_e", MAGIC_E.a_e], ["i_e", MAGIC_E.i_e]], "Is the middle sound a or i?") },
+          { id: "p9c", title: "o_e and u_e", rule: "bone, nose, home — and cube, tube, flute.",
+            note: "u_e is rare. Do not linger on it; meeting it a few times is enough at this stage.",
+            gen: lsSort([["o_e", MAGIC_E.o_e], ["u_e", MAGIC_E.u_e]], "Is the middle sound o or u?") },
+          { id: "p9d", title: "Read the magic e words", rule: "See the e on the end? Then the vowel says its name.",
+            note: "Teach the habit of glancing at the end of the word first. That one habit fixes most magic-e errors.",
+            gen: lsBlend(MAGIC_E.a_e.concat(MAGIC_E.i_e, MAGIC_E.o_e)) },
+          { id: "p9e", title: "The kite book", rule: "A book where magic e is everywhere.",
+            note: "Ask him to find and point at three magic e words after reading. Hunting is more fun than drilling.",
+            gen: lsBook(READERS.magic_e) }
+        ]
+      },
+      {
+        id: "p10", title: "Vowels working in pairs", emoji: "👫",
+        blurb: "ee, ea, oo, ai, ay, oa, ow — 'when two vowels go walking, the first does the talking'.",
+        lessons: [
+          { id: "p10a", title: "ee and ea", rule: "Both say ee. bee, tree, feet — and tea, leaf, sea.",
+            note: "Two spellings, one sound. Which one to use is memory, not logic — so read lots and worry about spelling later.",
+            gen: lsSort([["ee", TEAM.ee], ["ea", TEAM.ea]], "Is it spelt ee or ea?") },
+          { id: "p10b", title: "oo — long and short", rule: "oo has two jobs. Long in moon and spoon. Short in book and foot.",
+            note: "Say both out loud and let him choose by ear. There is no rule — only listening.",
+            gen: lsSort([["long oo", TEAM.oo_long], ["short oo", TEAM.oo_short]], "Long oo (moon) or short oo (book)?") },
+          { id: "p10c", title: "ai and ay", rule: "Both say ay. ai goes in the middle — rain, nail. ay goes at the end — day, play.",
+            note: "This one IS a real rule and it almost always holds. Worth saying out loud a few times.",
+            gen: lsSort([["ai", TEAM.ai], ["ay", TEAM.ay]], "Is it spelt ai or ay?") },
+          { id: "p10d", title: "oa and ow", rule: "oa says oh — boat, goat, road. ow can say ow like cow, or oh like snow.",
+            note: "ow is genuinely ambiguous. Tell him to try both and pick the one that sounds like a real word.",
+            gen: lsSort([["oa", TEAM.oa], ["ow", TEAM.ow]], "Is it spelt oa or ow?") },
+          { id: "p10e", title: "The rainy road book", rule: "Read a book full of vowel pairs.",
+            note: "He is reading properly now. Let him choose whether to read aloud or quietly.",
+            gen: lsBook(READERS.teams) }
+        ]
+      },
+      {
+        id: "p11", title: "Tricky words", emoji: "🪄",
+        blurb: "The words that break the rules. These are learned by sight, not sounded out.",
+        lessons: TRICKY_WORDS.slice(0, 6).map((grp, i) => ({
+          id: "p11" + "abcdef"[i], title: "Tricky set " + (i + 1) + ": " + grp.join(", "),
+          rule: "These four do not follow the rules. Look at them, say them, and remember them.",
+          note: "Do not sound these out — it will only confuse. Flash the word, say it, move on. Three quick rounds a day beats one long one.",
+          gen: lsDictate(grp)
+        }))
+      },
+      {
+        id: "p12", title: "Longer words", emoji: "🚂",
+        blurb: "Endings and two-syllable words — the bridge to reading anything.",
+        lessons: [
+          { id: "p12a", title: "Adding -s", rule: "One cat, two cats. Add s to mean more than one.",
+            note: "Point out that s sometimes sounds like z (dogs). Say it, do not explain it.",
+            gen: lsMake(() => { const w = pick(["cat","dog","pig","cup","hat","bug","pen","van","bed","nut"]);
+              return { prompt: cue(w), say: w, question: "Write the word for MORE than one.", answer: w + "s", accept: [] }; }) },
+          { id: "p12b", title: "Adding -ing", rule: "jump becomes jumping. The word keeps going.",
+            note: "For short words with one vowel the last letter doubles (hop → hopping). Mention it once; do not drill it yet.",
+            gen: lsMake(() => { const pairs = [["jump","jumping"],["read","reading"],["sing","singing"],["play","playing"],["look","looking"],["eat","eating"],["go","going"],["sit","sitting"],["run","running"],["hop","hopping"]];
+              const [a, b] = pick(pairs);
+              return { prompt: a + "  +  ing", say: a, question: "Add -ing. What is the word?", answer: b, accept: [] }; }) },
+          { id: "p12c", title: "Two claps, two syllables", rule: "Long words break into beats. rab-bit has two. el-e-phant has three.",
+            note: "Clap it or tap it on the table. Chin on the hand works too — one drop of the jaw per syllable.",
+            gen: lsMake(() => { const rows = [["rabbit",2],["elephant",3],["tiger",2],["banana",3],["pencil",2],["butterfly",3],["monkey",2],["umbrella",3],["garden",2],["crocodile",3],["window",2],["tomato",3]];
+              const [w, c] = pick(rows);
+              return { prompt: cue(w), say: w, question: "How many syllables (claps)?", answer: String(c), accept: numAccept(c) }; }) },
+          { id: "p12d", title: "Read anything", rule: "Two sounds, two syllables, magic e, vowel teams — you know them all now.",
+            note: "The last lesson of the phonics path. From here, the job is simply reading real books, every day.",
+            gen: lsBlend(["rabbit","pencil","garden","basket","picnic","sunset","carpet","muffin","tennis","napkin"]) }
+        ]
+      }
+    ];
+
+    /* ================= MATHS: modules (CBSE Class 1 order) ================= */
+    const countRow = (n, e) => emojiRow(e, n);
+    const COUNTABLE = ["🍎","⭐","🐟","🌸","🎈","🚗","🐝","🍌","🪁","🐤"];
+
+    const MATHS_MODULES = [
+      {
+        id: "m1", title: "Numbers 1 to 9", emoji: "1️⃣",
+        blurb: "Counting real things, one by one, and writing the number.",
+        lessons: [
+          { id: "m1a", title: "Count and say", rule: "Touch each thing once and say one number for each. The last number you say is how many there are.",
+            note: "Touching while counting matters more than saying it fast. If he counts the same one twice, slow him down and start again.",
+            gen: lsMake(() => { const n = between(1, 9), e = pick(COUNTABLE);
+              return { prompt: countRow(n, e), say: "How many?", question: "How many are there?", answer: String(n), accept: numAccept(n) }; }) },
+          { id: "m1b", title: "Write the number", rule: "Every amount has a number you can write: 1, 2, 3, 4, 5, 6, 7, 8, 9.",
+            note: "Numbers written backwards are completely normal now. Show the right way, do not rub out his.",
+            gen: lsTrace(["1","2","3","4","5","6","7","8","9"], "Trace the number, then write it twice.") },
+          { id: "m1c", title: "One more", rule: "One more means the very next number. After 4 comes 5.",
+            note: "Count on fingers. 'One more' is the foundation of addition — it is worth going slowly here.",
+            gen: lsMake(() => { const n = between(1, 8);
+              return { prompt: "🔢 " + n, say: n + ". What is one more?", question: "What is one more than " + n + "?", answer: String(n + 1), accept: numAccept(n + 1) }; }) },
+          { id: "m1d", title: "Which has more?", rule: "The group with more things is the bigger one. Count both, then decide.",
+            note: "Let him line them up side by side if he needs to. Matching one-to-one is a real strategy, not cheating.",
+            gen: lsMake(() => { let a = between(1, 9), b = between(1, 9); if (a === b) b = a === 9 ? a - 1 : a + 1;
+              const e = pick(COUNTABLE);
+              return { prompt: "A:  " + countRow(a, e) + "\nB:  " + countRow(b, e), say: "Which group has more?",
+                question: "Which group has MORE — A or B?", answer: a > b ? "A" : "B", accept: [] }; }) }
+        ]
+      },
+      {
+        id: "m2", title: "Zero and ten", emoji: "0️⃣",
+        blurb: "Nothing is a number too — and ten is the number everything else is built on.",
+        lessons: [
+          { id: "m2a", title: "Zero means none", rule: "When there is nothing at all, we write 0.",
+            note: "Show it with an empty hand or empty plate. Zero is a surprisingly hard idea — it deserves its own day.",
+            gen: lsMake(() => { const n = between(0, 5), e = pick(COUNTABLE);
+              return { prompt: n === 0 ? "(  nothing here  )" : countRow(n, e), say: "How many?", question: "How many are there?", answer: String(n), accept: numAccept(n) }; }) },
+          { id: "m2b", title: "Counting to ten", rule: "After 9 comes 10 — the first number that needs two digits.",
+            note: "Count ten fingers, ten steps, ten claps. Ten should feel familiar in the body before it is written.",
+            gen: lsMake(() => { const n = between(6, 10), e = pick(COUNTABLE);
+              return { prompt: countRow(n, e), say: "How many?", question: "How many are there?", answer: String(n), accept: numAccept(n) }; }) },
+          { id: "m2c", title: "Before, after, between", rule: "5 comes after 4. 5 comes before 6. 5 is between 4 and 6.",
+            note: "A number line drawn on paper helps enormously. Point along it as you ask.",
+            gen: lsMake(() => { const n = between(1, 8); const kind = pick(["after", "before", "between"]);
+              if (kind === "after") return { prompt: "🔢 " + n + " , ___", say: "What comes after " + n, question: "What comes AFTER " + n + "?", answer: String(n + 1), accept: numAccept(n + 1) };
+              if (kind === "before") return { prompt: "🔢 ___ , " + (n + 1), say: "What comes before " + (n + 1), question: "What comes BEFORE " + (n + 1) + "?", answer: String(n), accept: numAccept(n) };
+              return { prompt: "🔢 " + n + " , ___ , " + (n + 2), say: "What comes between", question: "What comes BETWEEN " + n + " and " + (n + 2) + "?", answer: String(n + 1), accept: numAccept(n + 1) }; }) },
+          { id: "m2d", title: "Biggest and smallest", rule: "Line the numbers up and you can see which is biggest.",
+            note: "Ask him to explain how he knows. The reason is worth more than the answer.",
+            gen: lsMake(() => { const ns = sample([0,1,2,3,4,5,6,7,8,9,10], 3); const big = pick([true, false]);
+              return { prompt: "🔢 " + ns.join("   ·   "), say: ns.join(", "),
+                question: big ? "Which is the BIGGEST?" : "Which is the SMALLEST?",
+                answer: String(big ? Math.max.apply(null, ns) : Math.min.apply(null, ns)),
+                accept: numAccept(big ? Math.max.apply(null, ns) : Math.min.apply(null, ns)) }; }) }
+        ]
+      },
+      {
+        id: "m3", title: "Adding up to 10", emoji: "➕",
+        blurb: "Putting two groups together — starting with counting on, ending with number bonds.",
+        lessons: [
+          { id: "m3a", title: "Put them together", rule: "Adding means putting two groups together and counting them all.",
+            note: "Use real objects first — two spoons and three spoons. The symbol + comes after the idea.",
+            gen: lsMake(() => { const a = between(1, 5), b = between(1, 5), e = pick(COUNTABLE);
+              return { prompt: countRow(a, e) + "   +   " + countRow(b, e), say: a + " plus " + b,
+                question: a + " + " + b + " = ?", answer: String(a + b), accept: numAccept(a + b) }; }) },
+          { id: "m3b", title: "Count on from the bigger one", rule: "For 2 + 6, start at 6 and count on two: 7, 8. Much faster than starting at 1.",
+            note: "This is a real strategy worth teaching explicitly. Always start from the bigger number.",
+            gen: lsMake(() => { const a = between(1, 3), b = between(4, 7);
+              return { prompt: "🔢 " + a + " + " + b, say: a + " plus " + b, question: "Start at " + b + " and count on. " + a + " + " + b + " = ?",
+                answer: String(a + b), accept: numAccept(a + b) }; }) },
+          { id: "m3c", title: "Number bonds to 10", rule: "Two numbers that make 10 are best friends: 6 and 4, 7 and 3, 8 and 2.",
+            note: "Knowing bonds to 10 by heart makes all later maths easier. Ten fingers, hide some, guess how many are hidden.",
+            gen: lsMake(() => { const a = between(0, 10);
+              return { prompt: "🔟 " + a + " + ___ = 10", say: a + " plus what makes ten", question: "What goes with " + a + " to make 10?",
+                answer: String(10 - a), accept: numAccept(10 - a) }; }) },
+          { id: "m3d", title: "Adding stories", rule: "Real problems are additions in disguise. Find the two numbers and put them together.",
+            note: "Read it aloud twice. Ask 'is this getting bigger or smaller?' before any counting starts.",
+            gen: lsMake(() => { const a = between(2, 5), b = between(2, 5);
+              const s = pick([["Kundendu has", "toffees. Amma gives him", "more. How many now?"],
+                ["There are", "birds on a tree.", "more come. How many birds?"],
+                ["A box has", "pencils. Papa puts in", "more. How many pencils?"]]);
+              return { prompt: s[0] + " " + a + " " + s[1] + " " + b + " " + s[2], say: s[0] + " " + a + " " + s[1] + " " + b + " " + s[2],
+                question: "How many altogether?", answer: String(a + b), accept: numAccept(a + b) }; }) }
+        ]
+      },
+      {
+        id: "m4", title: "Taking away", emoji: "➖",
+        blurb: "Subtraction within 10 — counting back, and finding the difference.",
+        lessons: [
+          { id: "m4a", title: "Take some away", rule: "Taking away makes the group smaller. Count what is left.",
+            note: "Do it with real objects and actually take them off the table. Watching it happen is the lesson.",
+            gen: lsMake(() => { const a = between(3, 9), b = between(1, a - 1);
+              return { prompt: "🍎 " + a + "  −  " + b, say: a + " take away " + b, question: a + " − " + b + " = ?",
+                answer: String(a - b), accept: numAccept(a - b) }; }) },
+          { id: "m4b", title: "Count back", rule: "For 8 − 3, start at 8 and count back three: 7, 6, 5.",
+            note: "Fingers go DOWN for subtraction. That physical difference helps him keep the two operations apart.",
+            gen: lsMake(() => { const a = between(5, 10), b = between(1, 3);
+              return { prompt: "🔢 " + a + " − " + b, say: a + " count back " + b, question: "Count back from " + a + ". " + a + " − " + b + " = ?",
+                answer: String(a - b), accept: numAccept(a - b) }; }) },
+          { id: "m4c", title: "How many more?", rule: "Subtraction also answers 'how many more do I need?'",
+            note: "This is the same sum wearing a different coat. Worth pointing out — it confuses a lot of children later.",
+            gen: lsMake(() => { const a = between(2, 6), t = between(a + 1, 10);
+              return { prompt: "🎯 I have " + a + ". I want " + t + ".", say: "I have " + a + ", I want " + t,
+                question: "How many MORE do I need?", answer: String(t - a), accept: numAccept(t - a) }; }) },
+          { id: "m4d", title: "Add or take away?", rule: "Read the story and decide: is it getting bigger, or smaller?",
+            note: "Deciding which operation to use is the real skill. Ask the bigger-or-smaller question every single time.",
+            gen: lsMake(() => { const a = between(3, 8), b = between(1, 3), add = pick([true, false]);
+              const s = add ? ["🐦 " + a + " birds sat on a wire. " + b + " more came.", "How many birds now?", a + b]
+                : ["🐦 " + a + " birds sat on a wire. " + b + " flew away.", "How many birds now?", a - b];
+              return { prompt: s[0], say: s[0], question: s[1], answer: String(s[2]), accept: numAccept(s[2]) }; }) }
+        ]
+      },
+      {
+        id: "m5", title: "Teen numbers, 11 to 20", emoji: "🔢",
+        blurb: "Where numbers stop being new words and start being ten-and-some-more.",
+        lessons: [
+          { id: "m5a", title: "Ten and some more", rule: "13 is one ten and three more. That is why it is written 1 and 3.",
+            note: "Bundle ten sticks with a rubber band and keep the rest loose. This one picture explains the whole number system.",
+            gen: lsMake(() => { const o = between(1, 9);
+              return { prompt: "🎋 1 bundle of ten  +  " + emojiRow("🪵", o), say: "ten and " + o + " more",
+                question: "What number is this?", answer: String(10 + o), accept: numAccept(10 + o) }; }) },
+          { id: "m5b", title: "Counting on to 20", rule: "After 10 the counting keeps going: 11, 12, 13… all the way to 20.",
+            note: "Eleven and twelve are irregular and just have to be learned. Thirteen onwards follows a pattern.",
+            gen: lsMake(() => { const n = between(10, 19);
+              return { prompt: "🔢 " + n + " , ___", say: "What comes after " + n, question: "What comes AFTER " + n + "?",
+                answer: String(n + 1), accept: numAccept(n + 1) }; }) },
+          { id: "m5c", title: "Tens and ones", rule: "In 17, the 1 means one ten and the 7 means seven ones.",
+            note: "Say '1 ten and 7 ones', never 'one and seven'. The words do the teaching here.",
+            gen: lsMake(() => { const n = between(11, 20);
+              return { prompt: "🏠 " + n, say: n, question: "How many TENS and how many ONES? (write like 1 ten 7 ones)",
+                answer: Math.floor(n / 10) + " ten " + (n % 10) + " ones",
+                accept: [Math.floor(n / 10) + " " + (n % 10), Math.floor(n / 10) + "ten" + (n % 10) + "ones"] }; }) },
+          { id: "m5d", title: "Number names", rule: "Every number has a name you can write in letters: 12 is twelve.",
+            note: "Spelling these is hard. Reading them is the goal for now — writing can wait.",
+            gen: lsMake(() => { const n = between(1, 20);
+              return { prompt: "🔢 " + n, say: n, question: "Write the number name in words.", answer: numWord(n), accept: [] }; }) }
+        ]
+      },
+      {
+        id: "m6", title: "Up to 100", emoji: "💯",
+        blurb: "Counting in tens, then filling in the numbers in between.",
+        lessons: [
+          { id: "m6a", title: "Counting in tens", rule: "10, 20, 30, 40… jumping ten at a time gets you to 100 fast.",
+            note: "Chant it while jumping or climbing stairs. Rhythm makes it stick.",
+            gen: lsMake(() => { const k = between(1, 8);
+              return { prompt: "🦘 " + (k * 10) + " , ___", say: (k * 10) + ", what comes next counting in tens",
+                question: "Count on in TENS. What comes next?", answer: String((k + 1) * 10), accept: numAccept((k + 1) * 10) }; }) },
+          { id: "m6b", title: "Tens and ones to 100", rule: "47 is four tens and seven ones.",
+            note: "Keep using the bundles picture. Every two-digit number is bundles plus loose ones.",
+            gen: lsMake(() => { const n = between(21, 99);
+              return { prompt: "🏠 " + n, say: n, question: "How many TENS and how many ONES? (write like 4 tens 7 ones)",
+                answer: Math.floor(n / 10) + " tens " + (n % 10) + " ones",
+                accept: [Math.floor(n / 10) + " " + (n % 10)] }; }) },
+          { id: "m6c", title: "Counting in twos and fives", rule: "2, 4, 6, 8… and 5, 10, 15, 20. Useful jumps to know by heart.",
+            note: "Count shoes in twos and fingers in fives. Real objects make the pattern obvious.",
+            gen: lsMake(() => { const step = pick([2, 5]); const start = step * between(1, 8);
+              return { prompt: "🦘 " + (start - step) + " , " + start + " , ___", say: "counting in " + step + "s",
+                question: "Count on in " + step + "s. What comes next?", answer: String(start + step), accept: numAccept(start + step) }; }) },
+          { id: "m6d", title: "Bigger or smaller", rule: "To compare two numbers, look at the tens first. More tens wins.",
+            note: "If the tens match, then look at the ones. Say the rule aloud each time until it is automatic.",
+            gen: lsMake(() => { let a = between(10, 99), b = between(10, 99); if (a === b) b = a + 1;
+              return { prompt: "🔢 " + a + "   and   " + b, say: a + " and " + b,
+                question: "Which is BIGGER?", answer: String(Math.max(a, b)), accept: numAccept(Math.max(a, b)) }; }) }
+        ]
+      },
+      {
+        id: "m7", title: "Bigger sums", emoji: "🧮",
+        blurb: "Adding and taking away two-digit numbers, with no carrying yet.",
+        lessons: [
+          { id: "m7a", title: "Add a ten", rule: "Adding 10 only changes the tens digit. 23 + 10 = 33.",
+            note: "Show it in a column: the ones stay exactly the same. That surprise is a good hook.",
+            gen: lsMake(() => { const a = between(11, 79);
+              return { prompt: "🔢 " + a + " + 10", say: a + " plus ten", question: a + " + 10 = ?", answer: String(a + 10), accept: numAccept(a + 10) }; }) },
+          { id: "m7b", title: "Add two-digit numbers", rule: "Add the ones first, then the tens. Keep them in their own columns.",
+            note: "Write it vertically, ones under ones. Neat columns prevent almost every mistake at this stage.",
+            gen: lsMake(() => { const a = between(11, 44), b = between(11, 44);
+              if ((a % 10) + (b % 10) > 9) return null;
+              return { prompt: "🔢 " + a + " + " + b, say: a + " plus " + b, question: a + " + " + b + " = ?", answer: String(a + b), accept: numAccept(a + b) }; }) },
+          { id: "m7c", title: "Take away two-digit numbers", rule: "Same idea backwards: take the ones away first, then the tens.",
+            note: "Keep the bottom digits smaller than the top ones for now — borrowing comes in Class 2.",
+            gen: lsMake(() => { const a = between(20, 99), b = between(10, 40);
+              if (b > a || (b % 10) > (a % 10)) return null;
+              return { prompt: "🔢 " + a + " − " + b, say: a + " take away " + b, question: a + " − " + b + " = ?", answer: String(a - b), accept: numAccept(a - b) }; }) },
+          { id: "m7d", title: "Equal groups", rule: "3 groups of 4 is 4 + 4 + 4. That is what multiplying means.",
+            note: "Draw the groups as circles with dots. Multiplication is just repeated adding — the × symbol can wait.",
+            gen: lsMake(() => { const g = between(2, 5), each = between(2, 5), e = pick(COUNTABLE);
+              const rows = Array.from({ length: g }, () => emojiRow(e, each)).join("\n");
+              return { prompt: rows, say: g + " groups of " + each, question: g + " groups of " + each + " = ?",
+                answer: String(g * each), accept: numAccept(g * each) }; }) }
+        ]
+      },
+      {
+        id: "m8", title: "Shapes and patterns", emoji: "🔷",
+        blurb: "Naming shapes, counting their sides, and spotting what comes next.",
+        lessons: [
+          { id: "m8a", title: "Name the shape", rule: "Circle, square, triangle, rectangle — every shape has a name.",
+            note: "Go on a shape hunt round the house afterwards. Roti is a circle, almirah is a rectangle.",
+            gen: lsAsk([["⭕","What shape is this?","circle"],["🔺","What shape is this?","triangle"],
+              ["🟦","What shape is this?","square"],["▭","What shape is this?","rectangle"],
+              ["⭐","What shape is this?","star"],["🔶","What shape is this?","diamond","rhombus"]]) },
+          { id: "m8b", title: "Sides and corners", rule: "A triangle has 3 sides and 3 corners. A square has 4 of each.",
+            note: "Trace the sides with a finger and count the corners out loud. A circle has none — that always gets a laugh.",
+            gen: lsAsk([["🔺 triangle","How many sides?","3","three"],["🟦 square","How many sides?","4","four"],
+              ["▭ rectangle","How many corners?","4","four"],["⭕ circle","How many corners?","0","zero","none"],
+              ["🔺 triangle","How many corners?","3","three"],["🟦 square","How many corners?","4","four"]]) },
+          { id: "m8c", title: "What comes next?", rule: "A pattern repeats. Work out the repeating bit, then carry it on.",
+            note: "Say the pattern out loud in a rhythm — red, blue, red, blue. Hearing it is easier than seeing it.",
+            gen: lsMake(() => { const [a, b] = sample(["🔴","🔵","🟡","🟢","⭐","🔺"], 2);
+              const kind = pick(["ab", "aab", "abb"]);
+              const unit = kind === "ab" ? [a, b] : kind === "aab" ? [a, a, b] : [a, b, b];
+              const seq = []; while (seq.length < 8) seq.push(unit[seq.length % unit.length]);
+              const shown = seq.slice(0, 7);
+              return { prompt: shown.join(" ") + "  ___", say: "what comes next in the pattern",
+                question: "What comes next?", answer: seq[7], accept: [] }; }) },
+          { id: "m8d", title: "Where is it?", rule: "Above, below, inside, outside, left, right — words that say where.",
+            note: "Play a game: put a toy above, under, behind. Position words are learned by doing, not by worksheet.",
+            gen: lsAsk([["🐱 is on top of 📦","Is the cat above or below the box?","above"],
+              ["🐭 is under 🪑","Is the mouse above or below the chair?","below"],
+              ["🍎 is inside 🧺","Is the apple inside or outside the basket?","inside"],
+              ["🐦 is outside 🏠","Is the bird inside or outside the house?","outside"],
+              ["📚 is on the 🪑","Is the book on or under the chair?","on"]]) }
+        ]
+      },
+      {
+        id: "m9", title: "Measuring", emoji: "📏",
+        blurb: "Longer, shorter, heavier, lighter — comparing before using units.",
+        lessons: [
+          { id: "m9a", title: "Long and short", rule: "Put two things side by side with their ends level, then see which sticks out.",
+            note: "The ends must start level — that is the actual rule of measuring, and it is worth insisting on.",
+            gen: lsAsk([["🐍 snake  and  🐛 worm","Which is LONGER?","snake"],["✏️ pencil  and  📏 ruler","Which is SHORTER?","pencil"],
+              ["🚂 train  and  🚗 car","Which is LONGER?","train"],["🌳 tree  and  🌱 plant","Which is TALLER?","tree"],
+              ["🦒 giraffe  and  🐕 dog","Which is TALLER?","giraffe"]]) },
+          { id: "m9b", title: "Heavy and light", rule: "Hold one in each hand. The one that pulls down more is heavier.",
+            note: "Big does not always mean heavy. A big cushion versus a small stone makes the point beautifully.",
+            gen: lsAsk([["🐘 elephant  and  🐁 mouse","Which is HEAVIER?","elephant"],["🪨 stone  and  🪶 feather","Which is LIGHTER?","feather"],
+              ["📚 books  and  🎈 balloon","Which is HEAVIER?","books"],["🚗 car  and  🚲 cycle","Which is HEAVIER?","car"]]) },
+          { id: "m9c", title: "Full and empty", rule: "A full glass holds as much as it can. An empty one holds nothing.",
+            note: "Pour water between different-shaped glasses. Tall and thin looks like more but is not — a lovely surprise.",
+            gen: lsAsk([["🥛 a glass filled to the top","Is it full or empty?","full"],["🪣 a bucket with nothing in it","Is it full or empty?","empty"],
+              ["🍵 a cup with a little tea","Is it full or empty?","empty","nearly empty"],["🏺 a pot filled with water","Is it full or empty?","full"]]) },
+          { id: "m9d", title: "Measure with steps", rule: "You can measure with anything — footsteps, handspans, pencils — as long as you use the same one each time.",
+            note: "Measure the room in his steps, then in yours. Different answers for the same room shows why standard units exist.",
+            gen: lsMake(() => { const n = between(3, 12);
+              return { prompt: "👣 A mat is " + n + " footsteps long.", say: "a mat is " + n + " footsteps long",
+                question: "If you take one more step past it, how many steps is that?", answer: String(n + 1), accept: numAccept(n + 1) }; }) }
+        ]
+      },
+      {
+        id: "m10", title: "Money and time", emoji: "🪙",
+        blurb: "Rupees and coins, days of the week, and telling the hour.",
+        lessons: [
+          { id: "m10a", title: "Our coins", rule: "We have ₹1, ₹2, ₹5, ₹10 and ₹20 coins. Each is worth a different amount.",
+            note: "Use real coins. Let him hold them and sort them — the sizes and weights teach as much as the numbers.",
+            gen: lsMake(() => { const coins = [1, 2, 5, 10]; const a = pick(coins), b = pick(coins);
+              return { prompt: "🪙 ₹" + a + "  +  🪙 ₹" + b, say: a + " rupees plus " + b + " rupees",
+                question: "How much altogether?", answer: "₹" + (a + b), accept: [String(a + b), (a + b) + " rupees", "rs " + (a + b)] }; }) },
+          { id: "m10b", title: "Playing shop", rule: "If a thing costs ₹7 and you give ₹10, you get ₹3 back.",
+            note: "Actually play shop with real coins and household things. Change is subtraction that feels like a game.",
+            gen: lsMake(() => { const cost = between(2, 9), paid = 10;
+              return { prompt: "🏪 A pencil costs ₹" + cost + ". You give ₹" + paid + ".", say: "a pencil costs " + cost + " rupees, you give ten rupees",
+                question: "How much change do you get?", answer: "₹" + (paid - cost), accept: [String(paid - cost), (paid - cost) + " rupees"] }; }) },
+          { id: "m10c", title: "Days of the week", rule: "Seven days, always in the same order, starting with Monday.",
+            note: "Say them at breakfast every day. Which day is it, which was yesterday, which comes tomorrow.",
+            gen: lsMake(() => { const DAYS = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+              const i = rand(7); const kind = pick(["after", "before"]);
+              return { prompt: "📅 " + DAYS[i], say: DAYS[i],
+                question: kind === "after" ? "Which day comes AFTER " + DAYS[i] + "?" : "Which day comes BEFORE " + DAYS[i] + "?",
+                answer: kind === "after" ? DAYS[(i + 1) % 7] : DAYS[(i + 6) % 7], accept: [] }; }) },
+          { id: "m10d", title: "O'clock", rule: "When the long hand points straight up at 12, it is exactly o'clock. The short hand tells you which hour.",
+            note: "A real clock with hands beats any picture. Move the hands together and say the time out loud.",
+            gen: lsMake(() => { const h = between(1, 12);
+              return { prompt: "🕐 The short hand points to " + h + ". The long hand points to 12.", say: "what time is it",
+                question: "What time is it?", answer: h + " o'clock", accept: [String(h), h + " oclock", h + ":00"] }; }) }
+        ]
+      }
+    ];
+
+    /* ================= HINDI: banks ================= */
+    const SWAR = ["अ","आ","इ","ई","उ","ऊ","ए","ऐ","ओ","औ","अं","अः"];
+    const VYANJAN_GROUPS = [
+      ["क","ख","ग","घ","ङ"], ["च","छ","ज","झ","ञ"], ["ट","ठ","ड","ढ","ण"],
+      ["त","थ","द","ध","न"], ["प","फ","ब","भ","म"], ["य","र","ल","व"], ["श","ष","स","ह"]
+    ];
+    // letter → a word that starts with it, with a picture
+    const H_WORD = {
+      "अ":["अनार","🍎"],"आ":["आम","🥭"],"इ":["इमली","🌰"],"ई":["ईख","🎋"],"उ":["उल्लू","🦉"],"ऊ":["ऊन","🧶"],
+      "ए":["एड़ी","🦶"],"ऐ":["ऐनक","👓"],"ओ":["ओखली","🪵"],"औ":["औरत","👩"],
+      "क":["कमल","🪷"],"ख":["खरगोश","🐰"],"ग":["गाय","🐄"],"घ":["घर","🏠"],
+      "च":["चम्मच","🥄"],"छ":["छाता","☂️"],"ज":["जहाज","🚢"],"झ":["झंडा","🚩"],
+      "ट":["टमाटर","🍅"],"ठ":["ठेला","🛒"],"ड":["डमरू","🥁"],"ढ":["ढोल","🥁"],
+      "त":["तितली","🦋"],"थ":["थैला","👜"],"द":["दवात","🖋️"],"ध":["धनुष","🏹"],"न":["नल","🚰"],
+      "प":["पतंग","🪁"],"फ":["फल","🍎"],"ब":["बकरी","🐐"],"भ":["भालू","🐻"],"म":["मछली","🐟"],
+      "य":["यज्ञ","🔥"],"र":["रथ","🛺"],"ल":["लट्टू","🪀"],"व":["वन","🌲"],
+      "श":["शेर","🦁"],"ष":["षट्कोण","⬡"],"स":["सूरज","☀️"],"ह":["हाथी","🐘"]
+    };
+    // two-letter words with no maatra at all — the first readable Hindi words
+    const BINA_MATRA = [["कमल","🪷"],["नमक","🧂"],["कलम","🖊️"],["चमक","✨"],["सड़क","🛣️"],["बचपन","👶"],
+      ["वन","🌲"],["नल","🚰"],["फल","🍎"],["घर","🏠"],["रथ","🛺"],["हल","🚜"],["पत्र","📄"],["शहद","🍯"]];
+    const MATRA_SETS = {
+      "आ (ा)": [["नाव","⛵"],["गाय","🐄"],["माला","📿"],["बाजा","🎺"],["काला","⚫"],["राजा","🤴"],["हाथ","✋"],["नाक","👃"],["दाल","🍲"],["बाग","🌳"]],
+      "इ (ि)": [["तिल","🌰"],["दिन","☀️"],["किताब","📖"],["चिड़िया","🐦"],["मिठाई","🍬"],["सितार","🎸"]],
+      "ई (ी)": [["नदी","🏞️"],["तितली","🦋"],["रोटी","🫓"],["मछली","🐟"],["चाबी","🔑"],["घड़ी","⌚"]],
+      "उ (ु)": [["गुड़","🍯"],["बुढ़िया","👵"],["सुबह","🌅"],["मुरली","🪈"],["कुत्ता","🐕"],["पुल","🌉"]],
+      "ऊ (ू)": [["फूल","🌸"],["झूला","🎠"],["दूध","🥛"],["जूता","👞"],["चूहा","🐭"],["आलू","🥔"]],
+      "ए (े)": [["पेड़","🌳"],["केला","🍌"],["मेला","🎪"],["शेर","🦁"],["बेल","🔔"],["सेब","🍎"]],
+      "ऐ (ै)": [["पैसा","🪙"],["थैला","👜"],["बैल","🐂"],["मैदान","🏟️"],["गैस","🔥"]],
+      "ओ (ो)": [["मोर","🦚"],["सोना","🥇"],["चोटी","💇"],["रोटी","🫓"],["गोला","⚪"]],
+      "औ (ौ)": [["चौका","4️⃣"],["मौसम","🌦️"],["कौआ","🐦‍⬛"],["नौका","⛵"]]
+    };
+    const H_OPP = [["दिन","रात"],["गरम","ठंडा"],["बड़ा","छोटा"],["ऊपर","नीचे"],["आगे","पीछे"],
+      ["अच्छा","बुरा"],["नया","पुराना"],["सुबह","शाम"],["खुश","दुखी"],["लंबा","नाटा"],["मीठा","कड़वा"],["सच","झूठ"]];
+    const H_GIN = [["१","एक",1],["२","दो",2],["३","तीन",3],["४","चार",4],["५","पाँच",5],
+      ["६","छह",6],["७","सात",7],["८","आठ",8],["९","नौ",9],["१०","दस",10]];
+    const H_VAKYA = [
+      ["राम घर गया।","राम कहाँ गया?","घर"],["सीता फल खाती है।","सीता क्या खाती है?","फल"],
+      ["मोर नाचता है।","कौन नाचता है?","मोर"],["गाय दूध देती है।","गाय क्या देती है?","दूध"],
+      ["सूरज सुबह निकलता है।","सूरज कब निकलता है?","सुबह"],["बच्चे मैदान में खेलते हैं।","बच्चे कहाँ खेलते हैं?","मैदान"]
+    ];
+
+    const hFirst = letters => n => sample(letters, n).map(l => {
+      const [w, e] = H_WORD[l] || [l, ""];
+      return { prompt: e + " " + w, say: w, lang: "hi-IN",
+        question: "यह शब्द किस अक्षर से शुरू होता है?", answer: l, accept: [] };
+    });
+    // signs is the maatra (or maatras) this lesson teaches; only those are hidden,
+    // so an इ lesson does not quietly test आ as well.
+    const hMatra = (rows, signs) => {
+      const re = new RegExp("[" + (signs || "ा-ौ") + "]", "g");
+      const usable = rows.filter(([w]) => re.test(w));
+      return n => sample(usable.length ? usable : rows, n).map(([w, e]) => ({
+        prompt: e + "  " + w.replace(new RegExp("[" + (signs || "ा-ौ") + "]", "g"), "_"),
+        say: w, lang: "hi-IN",
+        question: "सही मात्रा लगाकर शब्द लिखो।", answer: w, accept: []
+      }));
+    };
+    const hDictate = words => n => {
+      if (!ttsOK) return [{ type: "info", prompt: "", question: "", answer: "",
+        text: "यह डिवाइस बोल नहीं सकता — सुनने वाला पाठ आवाज़ वाले डिवाइस पर करें। 🔊" }];
+      return sample(words, n).map(w => ({ type: "dictate", say: w, lang: "hi-IN",
+        prompt: "🔊 सुनो…", question: "जो शब्द सुना, वह लिखो।", answer: w, accept: [] }));
+    };
+
+    /* ================= HINDI: modules ================= */
+    const HINDI_MODULES = [
+      {
+        id: "h1", title: "स्वर — the vowels", emoji: "🪔",
+        blurb: "अ से अः तक। हिंदी की शुरुआत यहीं से होती है।",
+        lessons: [
+          { id: "h1a", title: "अ आ इ ई", rule: "ये चार स्वर हैं। हर स्वर की अपनी आवाज़ है।",
+            note: "पहले बोलकर सिखाएँ, फिर लिखवाएँ। अ और आ का अंतर सुनने में है — 'अनार' और 'आम' साथ बोलें।",
+            gen: hFirst(["अ","आ","इ","ई"]) },
+          { id: "h1b", title: "उ ऊ ए ऐ", rule: "चार और स्वर — उल्लू, ऊन, एड़ी, ऐनक।",
+            note: "उ और ऊ में होंठ गोल होते हैं। बच्चे को शीशे में अपना मुँह देखने दें।",
+            gen: hFirst(["उ","ऊ","ए","ऐ"]) },
+          { id: "h1c", title: "ओ औ अं अः", rule: "आख़िरी चार स्वर। अं में बिंदी है, अः में दो बिंदी।",
+            note: "अं और अः कम आते हैं — पहचान लेना ही अभी काफ़ी है।",
+            gen: hFirst(["ओ","औ"]) },
+          { id: "h1d", title: "स्वर लिखो", rule: "अब पेंसिल से स्वर बनाते हैं।",
+            note: "यह पन्ना छापकर कराएँ। ऊपर से नीचे, बाएँ से दाएँ — मात्रा सबसे बाद में।",
+            gen: lsTrace(SWAR.slice(0, 10), "अक्षर पर पेंसिल फेरो, फिर ख़ुद लिखो।") }
+        ]
+      },
+      {
+        id: "h2", title: "व्यंजन — क से ञ", emoji: "✍️",
+        blurb: "पहले दस व्यंजन, कवर्ग और चवर्ग।",
+        lessons: [
+          { id: "h2a", title: "क ख ग घ ङ", rule: "कमल का क, खरगोश का ख, गाय का ग, घर का घ।",
+            note: "ङ अकेले कभी नहीं आता — बस पहचान लेना काफ़ी है।",
+            gen: hFirst(["क","ख","ग","घ"]) },
+          { id: "h2b", title: "च छ ज झ ञ", rule: "चम्मच का च, छाता का छ, जहाज का ज, झंडा का झ।",
+            note: "च और छ में फ़र्क़ हवा का है — छ में ज़्यादा हवा निकलती है। हाथ मुँह के आगे रखकर दिखाएँ।",
+            gen: hFirst(["च","छ","ज","झ"]) },
+          { id: "h2c", title: "क से ञ तक लिखो", rule: "दस व्यंजन पेंसिल से बनाओ।",
+            note: "छापकर कराएँ। रोज़ तीन अक्षर — ज़्यादा नहीं।",
+            gen: lsTrace(VYANJAN_GROUPS[0].concat(VYANJAN_GROUPS[1])) }
+        ]
+      },
+      {
+        id: "h3", title: "व्यंजन — ट से न", emoji: "🖋️",
+        blurb: "टवर्ग और तवर्ग — दस और व्यंजन।",
+        lessons: [
+          { id: "h3a", title: "ट ठ ड ढ ण", rule: "टमाटर का ट, ठेला का ठ, डमरू का ड, ढोल का ढ।",
+            note: "ये मूर्धन्य ध्वनियाँ हैं — जीभ तालु से लगती है। बोलकर दिखाएँ।",
+            gen: hFirst(["ट","ठ","ड","ढ"]) },
+          { id: "h3b", title: "त थ द ध न", rule: "तितली का त, थैला का थ, दवात का द, धनुष का ध, नल का न।",
+            note: "त और ट का अंतर सबसे मुश्किल है। दोनों साथ बोलकर सुनवाएँ।",
+            gen: hFirst(["त","थ","द","ध","न"]) },
+          { id: "h3c", title: "ट से न तक लिखो", rule: "दस और अक्षर।",
+            note: "पिछले अक्षर एक मिनट दोहराकर शुरू करें।",
+            gen: lsTrace(VYANJAN_GROUPS[2].concat(VYANJAN_GROUPS[3])) }
+        ]
+      },
+      {
+        id: "h4", title: "व्यंजन — प से ह", emoji: "🔠",
+        blurb: "बाक़ी सब व्यंजन। अब पूरी वर्णमाला आ गई।",
+        lessons: [
+          { id: "h4a", title: "प फ ब भ म", rule: "पतंग का प, फल का फ, बकरी का ब, भालू का भ, मछली का म।",
+            note: "ये सब होंठ से बनते हैं। होंठ पर उँगली रखकर महसूस कराएँ।",
+            gen: hFirst(["प","फ","ब","भ","म"]) },
+          { id: "h4b", title: "य र ल व श ष स ह", rule: "बाक़ी आठ अक्षर — यज्ञ, रथ, लट्टू, वन, शेर, सूरज, हाथी।",
+            note: "श और स का अंतर ज़रूरी है — शेर और सूरज साथ बोलें।",
+            gen: hFirst(["य","र","ल","व","श","स","ह"]) },
+          { id: "h4c", title: "पूरी वर्णमाला लिखो", rule: "अब सारे अक्षर आते हैं।",
+            note: "पूरी वर्णमाला एक साथ नहीं — रोज़ चार-पाँच अक्षर।",
+            gen: lsTrace(VYANJAN_GROUPS[4].concat(VYANJAN_GROUPS[5], VYANJAN_GROUPS[6])) }
+        ]
+      },
+      {
+        id: "h5", title: "बिना मात्रा के शब्द", emoji: "📗",
+        blurb: "पहले असली शब्द — जिनमें कोई मात्रा नहीं लगती।",
+        lessons: [
+          { id: "h5a", title: "दो अक्षर के शब्द", rule: "घर, नल, फल — दो अक्षर जोड़ो और शब्द बन गया।",
+            note: "यह हिंदी पढ़ने की असली शुरुआत है। एक-एक अक्षर बोलकर जोड़ना सिखाएँ: घ… र… घर।",
+            gen: lsMake(() => { const [w, e] = pick(BINA_MATRA.filter(x => x[0].length === 2));
+              return { prompt: e + "  " + w.split("").join(" · "), say: w, lang: "hi-IN",
+                question: "अक्षर जोड़कर शब्द बोलो और लिखो।", answer: w, accept: [] }; }) },
+          { id: "h5b", title: "तीन अक्षर के शब्द", rule: "कमल, नमक, कलम — तीन अक्षर वाले शब्द।",
+            note: "धीरे-धीरे जोड़ने दें। जल्दी करवाने से आत्मविश्वास टूटता है।",
+            gen: lsMake(() => { const [w, e] = pick(BINA_MATRA.filter(x => x[0].length === 3));
+              return { prompt: e + "  " + w.split("").join(" · "), say: w, lang: "hi-IN",
+                question: "अक्षर जोड़कर शब्द बोलो और लिखो।", answer: w, accept: [] }; }) },
+          { id: "h5c", title: "पहला अक्षर लिखो", rule: "चित्र देखो, नाम बोलो, पहला अक्षर लिखो।",
+            note: "बोलना पहले, लिखना बाद में — हमेशा।",
+            gen: lsMake(() => { const [w, e] = pick(BINA_MATRA);
+              return { prompt: e + "  ___ " + w.slice(1), say: w, lang: "hi-IN",
+                question: "पहला अक्षर लिखो।", answer: w[0], accept: [w] }; }) },
+          { id: "h5d", title: "सुनो और लिखो", rule: "जो शब्द सुनो, वही लिखो।",
+            note: "शब्द दो बार बोलें, फिर रुकें। ख़ुद जोड़ने दें।",
+            gen: hDictate(BINA_MATRA.map(x => x[0])) }
+        ]
+      },
+      {
+        id: "h6", title: "आ, इ और ई की मात्रा", emoji: "🪧",
+        blurb: "अब मात्राएँ। पहली तीन — सबसे ज़्यादा काम आने वाली।",
+        lessons: [
+          { id: "h6a", title: "आ की मात्रा ( ा )", rule: "अक्षर के बाद एक खड़ी लकीर — क से का, म से मा।",
+            note: "यह सबसे आसान मात्रा है। कमल → कमला जैसे बदलाव दिखाएँ।",
+            gen: hMatra(MATRA_SETS["आ (ा)"], "ा") },
+          { id: "h6b", title: "इ की मात्रा ( ि )", rule: "छोटी इ की मात्रा अक्षर से पहले लिखी जाती है, पर बोली बाद में जाती है।",
+            note: "यही इसकी मुश्किल है — लिखते पहले हैं, पढ़ते बाद में। कई बार दिखाना पड़ेगा।",
+            gen: hMatra(MATRA_SETS["इ (ि)"], "ि") },
+          { id: "h6c", title: "ई की मात्रा ( ी )", rule: "बड़ी ई की मात्रा अक्षर के बाद आती है — नदी, रोटी।",
+            note: "छोटी इ और बड़ी ई का अंतर आवाज़ की लंबाई है। खींचकर बोलें: नदीईई।",
+            gen: hMatra(MATRA_SETS["ई (ी)"], "ी") },
+          { id: "h6d", title: "तीनों मात्राएँ मिलाकर", rule: "अब पहचानो — कौन सी मात्रा लगेगी?",
+            note: "अगर उलझन हो तो एक-एक मात्रा पर अलग दिन लौट जाएँ। यह पीछे जाना नहीं, पक्का करना है।",
+            gen: hMatra(MATRA_SETS["आ (ा)"].concat(MATRA_SETS["इ (ि)"], MATRA_SETS["ई (ी)"]), "ािी") }
+        ]
+      },
+      {
+        id: "h7", title: "उ, ऊ, ए और ऐ की मात्रा", emoji: "🎋",
+        blurb: "नीचे लगने वाली और ऊपर लगने वाली मात्राएँ।",
+        lessons: [
+          { id: "h7a", title: "उ की मात्रा ( ु )", rule: "छोटी उ की मात्रा अक्षर के नीचे लगती है — गुड़, पुल।",
+            note: "नीचे लगने वाली मात्राएँ भूल जाना आम बात है। लिखने के बाद पढ़वाकर जँचवाएँ।",
+            gen: hMatra(MATRA_SETS["उ (ु)"], "ु") },
+          { id: "h7b", title: "ऊ की मात्रा ( ू )", rule: "बड़ी ऊ की मात्रा भी नीचे, पर लंबी — फूल, दूध।",
+            note: "फिर वही खींचकर बोलने वाला तरीक़ा: दूऊऊध।",
+            gen: hMatra(MATRA_SETS["ऊ (ू)"], "ू") },
+          { id: "h7c", title: "ए और ऐ की मात्रा ( े ै )", rule: "ऊपर एक लकीर से ए — पेड़। दो लकीर से ऐ — पैसा।",
+            note: "एक लकीर और दो लकीर — गिनती करके दिखाएँ, यही पूरा फ़र्क़ है।",
+            gen: hMatra(MATRA_SETS["ए (े)"].concat(MATRA_SETS["ऐ (ै)"]), "ेै") },
+          { id: "h7d", title: "सुनो और मात्रा लगाओ", rule: "शब्द सुनो, सही मात्रा के साथ लिखो।",
+            note: "यह कठिन है। एक भी मात्रा सही लगे तो शाबाशी दें।",
+            gen: hDictate(["फूल","दूध","पेड़","केला","गुड़","पैसा","झूला","बेल"]) }
+        ]
+      },
+      {
+        id: "h8", title: "ओ, औ और बाक़ी मात्राएँ", emoji: "🦚",
+        blurb: "आख़िरी मात्राएँ, और बिंदी वाले शब्द।",
+        lessons: [
+          { id: "h8a", title: "ओ की मात्रा ( ो )", rule: "आ की लकीर के ऊपर एक और लकीर — मोर, सोना।",
+            note: "ओ की मात्रा आ और ए को जोड़कर बनती है। यह दिखाने से याद रहती है।",
+            gen: hMatra(MATRA_SETS["ओ (ो)"], "ो") },
+          { id: "h8b", title: "औ की मात्रा ( ौ )", rule: "ओ जैसी, पर ऊपर दो लकीर — कौआ, मौसम।",
+            note: "औ कम आती है। पहचान लेना अभी काफ़ी है।",
+            gen: hMatra(MATRA_SETS["औ (ौ)"], "ौ") },
+          { id: "h8c", title: "अनुस्वार — बिंदी ( ं )", rule: "सिर पर बिंदी लगे तो नाक से आवाज़ आती है — अंगूर, रंग, मंदिर।",
+            note: "नाक पकड़कर बोलवाएँ — आवाज़ रुक जाएगी। बच्चों को यह खेल बहुत पसंद आता है।",
+            gen: lsMake(() => { const rows = [["अंगूर","🍇"],["रंग","🎨"],["मंदिर","🛕"],["चंदा","🌙"],["पंखा","🪭"],["बंदर","🐒"]];
+              const [w, e] = pick(rows);
+              return { prompt: e + "  " + w.replace("ं", "_"), say: w, lang: "hi-IN",
+                question: "बिंदी लगाकर पूरा शब्द लिखो।", answer: w, accept: [] }; }) },
+          { id: "h8d", title: "सारी मात्राएँ मिलाकर", rule: "अब कोई भी मात्रा आ सकती है। ध्यान से सुनो।",
+            note: "यह पूरे मात्रा-भाग की परीक्षा है। अटके तो उसी मात्रा वाले पाठ पर लौट जाएँ।",
+            gen: hMatra(Object.keys(MATRA_SETS).reduce((a, k) => a.concat(MATRA_SETS[k]), [])) }
+        ]
+      },
+      {
+        id: "h9", title: "शब्द और वाक्य", emoji: "📚",
+        blurb: "गिनती, विलोम, और पहले वाक्य पढ़ना।",
+        lessons: [
+          { id: "h9a", title: "हिंदी गिनती", rule: "१ एक, २ दो, ३ तीन… दस तक।",
+            note: "रोज़ बोलकर गिनवाएँ। हिंदी अंक देखने का अभ्यास कम होता है, इसलिए दिखाते रहें।",
+            gen: lsMake(() => { const [d, w, v] = pick(H_GIN);
+              return { prompt: "🔢 " + d, say: w, lang: "hi-IN", question: "यह अंक शब्दों में लिखो।", answer: w, accept: [String(v)] }; }) },
+          { id: "h9b", title: "उल्टे शब्द — विलोम", rule: "दिन का उल्टा रात। बड़ा का उल्टा छोटा।",
+            note: "घर की चीज़ों से खेलें — यह भारी है तो वह? यह ऊपर है तो वह?",
+            gen: lsMake(() => { const [a, b] = pick(H_OPP); const flip = pick([true, false]);
+              return { prompt: "↔️ " + (flip ? b : a), say: flip ? b : a, lang: "hi-IN",
+                question: "इसका उल्टा शब्द लिखो।", answer: flip ? a : b, accept: [] }; }) },
+          { id: "h9c", title: "पहला वाक्य पढ़ो", rule: "शब्द जुड़कर वाक्य बनते हैं। वाक्य के अंत में पूर्ण विराम ( । ) लगता है।",
+            note: "पहले आप पढ़कर सुनाएँ, फिर उसे पढ़ने दें। दूसरी बार पढ़ने में ही आत्मविश्वास आता है।",
+            gen: lsMake(() => { const [s, q, a] = pick(H_VAKYA);
+              return { prompt: s, say: s, lang: "hi-IN", question: q, answer: a, accept: [] }; }) },
+          { id: "h9d", title: "वाक्य बनाओ", rule: "शब्दों को सही क्रम में रखो और वाक्य बनाओ।",
+            note: "कागज़ की पर्चियों पर शब्द लिखकर हाथ से जमाना सबसे अच्छा तरीक़ा है।",
+            gen: lsMake(() => { const [s] = pick(H_VAKYA); const words = s.replace("।", "").split(" ");
+              return { prompt: "🧩 " + shuffle(words).join("   ·   "), say: s, lang: "hi-IN",
+                question: "सही क्रम में वाक्य लिखो।", answer: s, accept: [s.replace("।", "")] }; }) }
+        ]
+      }
+    ];
+
+    /* ================= EVS: modules ================= */
+    // EVS is knowledge, not skill-building, so it goes from the child outwards:
+    // my body → my family → my home → food → clothes → plants → animals → world.
+    const EVS_MODULES = [
+      {
+        id: "e1", title: "Myself", emoji: "🧒",
+        blurb: "The nearest thing of all — my own body and my five senses.",
+        lessons: [
+          { id: "e1a", title: "Parts of my body", rule: "My body has many parts, and each one has a job.",
+            note: "Point to each part on himself as you ask. Naming on his own body beats naming on a picture.",
+            gen: lsAsk([["👀","What do you SEE with?","eyes"],["👂","What do you HEAR with?","ears"],
+              ["👃","What do you SMELL with?","nose"],["👅","What do you TASTE with?","tongue"],
+              ["✋","What do you TOUCH and hold with?","hands"],["🦵","What do you WALK with?","legs","feet"],
+              ["🦷","What do you CHEW with?","teeth"],["🧠","What do you THINK with?","brain"]]) },
+          { id: "e1b", title: "My five senses", rule: "Seeing, hearing, smelling, tasting, touching — five ways of knowing the world.",
+            note: "Play a guessing game with eyes closed: smell something, touch something. Senses are learned by using them.",
+            gen: lsAsk([["🌹 a rose smells sweet","Which sense are you using?","smell","smelling","nose"],
+              ["🎵 a song on the radio","Which sense are you using?","hearing","hear","ears"],
+              ["🍋 a sour lemon","Which sense are you using?","taste","tasting","tongue"],
+              ["🌈 a rainbow in the sky","Which sense are you using?","sight","seeing","see","eyes"],
+              ["🧊 a cold ice cube","Which sense are you using?","touch","touching","hands"]]) },
+          { id: "e1c", title: "Keeping clean", rule: "Washing hands, brushing teeth and bathing keep me healthy.",
+            note: "Tie it to real routine — before eating, after the toilet. Habits stick better than facts.",
+            gen: lsAsk([["🍽️ before you eat","What must you always do first?","wash hands","wash your hands"],
+              ["🦷 twice every day","What must you do to your teeth?","brush","brush them","brush teeth"],
+              ["🚽 after using the toilet","What must you do?","wash hands","wash your hands"],
+              ["😷 when you cough or sneeze","What should you cover your mouth with?","hand","elbow","handkerchief","cloth"]]) },
+          { id: "e1d", title: "Good habits", rule: "Please, thank you, sorry — small words that matter a lot.",
+            note: "Model it more than you teach it. He will copy what he hears at home.",
+            gen: lsAsk([["🙏 someone gives you a gift","What do you say?","thank you"],
+              ["😔 you break something by mistake","What do you say?","sorry"],
+              ["🤲 you want something","What word do you use?","please"],
+              ["🌅 you meet someone in the morning","What do you say?","good morning","namaste"]]) }
+        ]
+      },
+      {
+        id: "e2", title: "My family and home", emoji: "👨‍👩‍👦",
+        blurb: "The people I live with and the place I live in.",
+        lessons: [
+          { id: "e2a", title: "My family", rule: "The people who live with me and look after me are my family.",
+            note: "Draw a family tree together with real names. Personal beats generic every time.",
+            gen: lsAsk([["👩 your mother's mother","What do you call her?","grandmother","nani","dadi"],
+              ["👨 your father's father","What do you call him?","grandfather","nana","dada"],
+              ["👦 your parents' son","What is he to you?","brother"],
+              ["👧 your parents' daughter","What is she to you?","sister"],
+              ["👨‍👩‍👦 mother, father and children only","What kind of family is this?","small family","nuclear family","small"]]) },
+          { id: "e2b", title: "Rooms in my home", rule: "Different rooms are used for different things.",
+            note: "Walk round the house naming rooms. Ask what happens in each one.",
+            gen: lsAsk([["🍳 where food is cooked","Which room is it?","kitchen"],
+              ["🛏️ where we sleep","Which room is it?","bedroom"],
+              ["🛁 where we bathe","Which room is it?","bathroom"],
+              ["🛋️ where we sit with guests","Which room is it?","living room","drawing room","sitting room"]]) },
+          { id: "e2c", title: "Helping at home", rule: "Everyone in a family helps. Even small hands can do jobs.",
+            note: "Give him one real job that is genuinely his. Being useful builds more than being praised.",
+            gen: lsAsk([["🧺 clothes are lying on the floor","What should you do?","pick them up","put them away","fold them"],
+              ["🍽️ you finished eating","What should you do with your plate?","take it to the kitchen","wash it","clear it"],
+              ["🧸 toys everywhere after playing","What should you do?","put them away","tidy up","keep them back"]]) }
+        ]
+      },
+      {
+        id: "e3", title: "Food we eat", emoji: "🍎",
+        blurb: "Where food comes from, and which foods keep us strong.",
+        lessons: [
+          { id: "e3a", title: "Food from plants and animals", rule: "Some food grows on plants. Some comes from animals.",
+            note: "Look in the kitchen together and sort real things into two piles.",
+            gen: lsSort([["plant", ["rice","wheat","mango","apple","potato","spinach","dal","banana"]],
+              ["animal", ["milk","egg","honey","cheese","curd","butter"]]], "Does it come from a plant or an animal?") },
+          { id: "e3b", title: "Fruits and vegetables", rule: "Fruits are usually sweet. Vegetables we mostly cook.",
+            note: "A tomato is really a fruit — a lovely fact to share when he is ready for it.",
+            gen: lsSort([["fruit", ["mango","apple","banana","orange","grapes","guava","papaya"]],
+              ["vegetable", ["potato","onion","carrot","brinjal","cabbage","peas","pumpkin"]]], "Is it a fruit or a vegetable?") },
+          { id: "e3c", title: "Healthy or not", rule: "Some food makes us strong. Some is only a sometimes-treat.",
+            note: "Avoid 'good' and 'bad' food. 'Everyday food' and 'sometimes food' works better and lasts longer.",
+            gen: lsSort([["everyday", ["dal","roti","rice","milk","fruit","vegetables","egg","curd"]],
+              ["sometimes", ["chips","cake","toffee","cold drink","ice cream","biscuit"]]], "Everyday food or sometimes food?") },
+          { id: "e3d", title: "Water", rule: "We need water every day — to drink, to cook, to wash and to clean.",
+            note: "Talk about not wasting it. Turn off the tap while brushing, together.",
+            gen: lsAsk([["💧 you feel thirsty","What do you drink?","water"],
+              ["🚰 while brushing your teeth","Should the tap be on or off?","off"],
+              ["🌧️ where does rain water collect?","Name one place","river","pond","lake","well","sea"],
+              ["🥤 water that is safe to drink","What do we call it?","clean water","clean","pure water","boiled water"]]) }
+        ]
+      },
+      {
+        id: "e4", title: "Clothes and seasons", emoji: "👕",
+        blurb: "What we wear, and why it changes through the year.",
+        lessons: [
+          { id: "e4a", title: "The seasons", rule: "Summer is hot, winter is cold, and the monsoon brings rain.",
+            note: "Ask what he can see out of the window today. Seasons are best noticed, not memorised.",
+            gen: lsAsk([["☀️ very hot, we use fans","Which season?","summer"],
+              ["❄️ very cold, we wear sweaters","Which season?","winter"],
+              ["🌧️ it rains a lot","Which season?","monsoon","rainy season","rainy"],
+              ["🍂 leaves fall from trees","Which season?","autumn","fall"]]) },
+          { id: "e4b", title: "Clothes for the weather", rule: "We wear light cotton in summer and warm wool in winter.",
+            note: "Let him choose his own clothes for the weather. Choosing teaches faster than telling.",
+            gen: lsAsk([["🧥 a woollen sweater","Which season do you wear it in?","winter"],
+              ["👕 a thin cotton shirt","Which season do you wear it in?","summer"],
+              ["☂️ an umbrella and raincoat","Which season do you need them in?","monsoon","rainy season","rainy"],
+              ["🧦 socks and a cap","Which season?","winter"]]) },
+          { id: "e4c", title: "Looking after clothes", rule: "Clothes need washing, drying and folding.",
+            note: "Let him fold his own handkerchiefs. Small real tasks build real competence.",
+            gen: lsAsk([["🧼 clothes are dirty","What do we do?","wash them","wash"],
+              ["☀️ clothes are wet after washing","What do we do?","dry them","hang them","put them in the sun"],
+              ["🧺 clothes are dry","What do we do before keeping them?","fold them","fold"]]) }
+        ]
+      },
+      {
+        id: "e5", title: "Plants around us", emoji: "🌱",
+        blurb: "What plants need, what parts they have, and what they give us.",
+        lessons: [
+          { id: "e5a", title: "Parts of a plant", rule: "Root, stem, leaf, flower and fruit — every plant has these parts.",
+            note: "Pull up a small weed and look at the root. Seeing the real thing is worth ten diagrams.",
+            gen: lsAsk([["🌱 the part under the ground","What is it called?","root","roots"],
+              ["🌿 the part that holds the plant up","What is it called?","stem"],
+              ["🍃 the flat green part","What is it called?","leaf","leaves"],
+              ["🌸 the pretty coloured part","What is it called?","flower"],
+              ["🍎 the part we often eat","What is it called?","fruit"]]) },
+          { id: "e5b", title: "What plants need", rule: "Plants need water, air, sunlight and soil to grow.",
+            note: "Grow a moong seed in wet cotton wool. A week of watching beats any explanation.",
+            gen: lsAsk([["💧 plants get thirsty too","What do we give them?","water"],
+              ["☀️ plants need this to make their food","What is it?","sunlight","sun","light"],
+              ["🌍 plants hold on with their roots in this","What is it?","soil","earth","mud"],
+              ["🌬️ plants need this to breathe","What is it?","air"]]) },
+          { id: "e5c", title: "Big and small plants", rule: "Trees are big and strong. Shrubs are smaller. Herbs are small and soft.",
+            note: "Point them out on a walk — a neem tree, a rose shrub, a tulsi herb.",
+            gen: lsSort([["tree", ["mango","neem","banyan","coconut","peepal"]],
+              ["small plant", ["tulsi","mint","rose","money plant","grass"]]], "Is it a big tree or a small plant?") },
+          { id: "e5d", title: "What plants give us", rule: "Plants give us food, wood, medicine, paper and the air we breathe.",
+            note: "The air point is the big one. Plants are why we can breathe — worth saying plainly.",
+            gen: lsAsk([["🍎 we eat these from plants","Name one thing","fruit","vegetables","food","grain"],
+              ["🪵 tables and doors are made from this","What comes from trees?","wood"],
+              ["📄 we write on this","What is made from trees?","paper"],
+              ["🌬️ plants make this for us to breathe","What is it?","oxygen","air","clean air"]]) }
+        ]
+      },
+      {
+        id: "e6", title: "Animals around us", emoji: "🐘",
+        blurb: "Where animals live, what they eat, and what they give us.",
+        lessons: [
+          { id: "e6a", title: "Pet, farm and wild", rule: "Some animals live with us, some on farms, some in the jungle.",
+            note: "Ask which he has actually seen. Real memories anchor the categories.",
+            gen: lsSort([["pet", ["dog","cat","rabbit","parrot","fish"]],
+              ["farm", ["cow","buffalo","goat","hen","sheep"]],
+              ["wild", ["lion","tiger","elephant","monkey","deer","bear"]]], "Pet, farm or wild animal?") },
+          { id: "e6b", title: "What animals eat", rule: "Some animals eat only plants, some eat meat, some eat both.",
+            note: "Herbivore and carnivore are fine words to use. Children enjoy big words when they mean something.",
+            gen: lsSort([["plants only", ["cow","goat","deer","elephant","rabbit","horse"]],
+              ["meat", ["lion","tiger","wolf","eagle"]]], "Does it eat plants or meat?") },
+          { id: "e6c", title: "Animal homes and babies", rule: "A bird lives in a nest. A dog's baby is a puppy.",
+            note: "Look for a real nest outside. Nothing beats spotting one.",
+            gen: lsAsk([["🐦 a bird lives in a…","What is its home called?","nest"],
+              ["🐴 a horse lives in a…","What is its home called?","stable"],
+              ["🐝 bees live in a…","What is its home called?","hive","beehive"],
+              ["🐕 a baby dog is called a…","What?","puppy"],
+              ["🐈 a baby cat is called a…","What?","kitten"],
+              ["🐄 a baby cow is called a…","What?","calf"]]) },
+          { id: "e6d", title: "What animals give us", rule: "Cows give milk, hens give eggs, sheep give wool, bees give honey.",
+            note: "Talk about being kind to animals too — that is the part worth remembering.",
+            gen: lsAsk([["🐄 cow","What does it give us?","milk"],["🐔 hen","What does it give us?","eggs","egg"],
+              ["🐑 sheep","What does it give us?","wool"],["🐝 bee","What does it give us?","honey"],
+              ["🐕 dog","What does it do for us?","guards","protects","guards the house","keeps us safe"]]) }
+        ]
+      },
+      {
+        id: "e7", title: "The world around me", emoji: "🌍",
+        blurb: "Living and non-living things, air, and keeping the earth clean.",
+        lessons: [
+          { id: "e7a", title: "Living or non-living", rule: "Living things grow, eat, breathe and move by themselves. Non-living things do not.",
+            note: "A car moves but is not alive — a good puzzle. Ask 'does it grow?' as the deciding test.",
+            gen: lsSort([["living", ["dog","tree","baby","fish","plant","bird","cow","flower"]],
+              ["non-living", ["chair","stone","book","car","ball","spoon","table","clock"]]], "Living or non-living?") },
+          { id: "e7b", title: "Air is everywhere", rule: "We cannot see air, but it is all around us. We breathe it, and it moves things.",
+            note: "Fan a piece of paper, blow a balloon. Invisible things need to be felt to be believed.",
+            gen: lsAsk([["🎈 what fills a balloon?","What is inside?","air"],
+              ["🪁 what makes a kite fly?","What is it?","air","wind"],
+              ["🌬️ moving air is called…","What?","wind","breeze"],
+              ["😮‍💨 what do we breathe in?","What is it?","air","oxygen"]]) },
+          { id: "e7c", title: "Keeping our earth clean", rule: "Rubbish goes in the bin. Water is not wasted. Trees are not broken.",
+            note: "Do one real thing — pick up one piece of litter on a walk. Actions, not lectures.",
+            gen: lsAsk([["🗑️ you finish a packet of biscuits","Where does the wrapper go?","bin","dustbin","in the bin"],
+              ["🚰 you finished washing your hands","What do you do with the tap?","turn it off","close it","off"],
+              ["🌳 someone is breaking branches off a tree","Is that right or wrong?","wrong"],
+              ["💡 you leave a room","What do you do with the light?","turn it off","switch it off","off"]]) },
+          { id: "e7d", title: "Day and night", rule: "The sun gives us day. At night we see the moon and the stars.",
+            note: "Watch the sun set together once. It makes the idea concrete in a way no worksheet can.",
+            gen: lsAsk([["☀️ it is bright and we go to school","Is it day or night?","day"],
+              ["🌙 it is dark and we sleep","Is it day or night?","night"],
+              ["⭐ we see these in the night sky","What are they?","stars"],
+              ["🌅 the sun comes up in the…","When?","morning"],["🌇 the sun goes down in the…","When?","evening"]]) }
+        ]
+      },
+      {
+        id: "e8", title: "People who help us", emoji: "👮",
+        blurb: "The helpers around us, safety, and finding my way.",
+        lessons: [
+          { id: "e8a", title: "Community helpers", rule: "Many people do jobs that help everyone — doctors, teachers, farmers, police.",
+            note: "Point them out in real life. Say thank you to one of them together.",
+            gen: lsAsk([["🩺 treats us when we are ill","Who is it?","doctor"],["👩‍🏫 teaches us at school","Who is it?","teacher"],
+              ["🌾 grows our food","Who is it?","farmer"],["👮 keeps us safe","Who is it?","police","policeman","police officer"],
+              ["📮 brings our letters","Who is it?","postman","postal worker"],["🚒 puts out fires","Who is it?","fireman","firefighter"],
+              ["✂️ cuts our hair","Who is it?","barber","hairdresser"],["🍞 bakes our bread","Who is it?","baker"]]) },
+          { id: "e8b", title: "Staying safe", rule: "Some things are not safe to touch or do. It is always right to ask a grown-up.",
+            note: "The most important lesson in the whole subject. Keep it calm, not frightening.",
+            gen: lsAsk([["🔥 a burning stove","Should you touch it?","no"],
+              ["🔌 an electric socket","Should you put your finger in?","no"],
+              ["🚗 crossing a busy road","What must you do first?","look both ways","hold a hand","look","stop and look"],
+              ["💊 medicine on a table","Should you eat it?","no"],
+              ["🧑 a stranger offers you a toffee","What should you do?","say no","refuse","tell a grown-up","no"]]) },
+          { id: "e8c", title: "Road safety", rule: "Red means stop, green means go. Always walk on the footpath.",
+            note: "Quiz him at real traffic lights. Live practice makes it automatic.",
+            gen: lsAsk([["🔴 the light is red","What should you do?","stop"],["🟢 the light is green","What should you do?","go"],
+              ["🟡 the light is yellow","What should you do?","wait","get ready","slow down"],
+              ["🚶 where should you walk on a road?","Where?","footpath","pavement","side"],
+              ["🚲 riding a cycle","What should you wear on your head?","helmet"]]) },
+          { id: "e8d", title: "Where I live", rule: "I have a name, a family, and an address — a house, a street, a town.",
+            note: "Teach him your address and phone number by heart. This one is genuinely important.",
+            gen: lsAsk([["🏠 the place where you live","What is it called?","home","house","address"],
+              ["🏫 the place where you learn","What is it called?","school"],
+              ["🏥 the place we go when very ill","What is it called?","hospital"],
+              ["🏪 the place we buy things","What is it called?","shop","market","store"],
+              ["🛕 the place people pray","What is it called?","temple","mandir","church","mosque"]]) }
+        ]
+      }
+    ];
+
+    /* ================= the whole course ================= */
+    const COURSE = [
+      { id: "phonics", label: "Phonics & reading", emoji: "🔤", accent: "#e96f4c", accentDeep: "#c85436",
+        tagline: "From hearing sounds to reading whole books.",
+        modules: PHONICS_MODULES },
+      { id: "maths", label: "Maths", emoji: "🔢", accent: "#1e7d46", accentDeep: "#14522e",
+        tagline: "Counting, adding, shapes, money and time — in order.",
+        modules: MATHS_MODULES },
+      { id: "hindi", label: "हिंदी", emoji: "🪔", accent: "#a3599c", accentDeep: "#84437e",
+        tagline: "स्वर और व्यंजन से शुरू करके वाक्य पढ़ने तक।",
+        modules: HINDI_MODULES },
+      { id: "evs", label: "EVS · My world", emoji: "🌍", accent: "#b7455f", accentDeep: "#933349",
+        tagline: "Starting with his own body and going outwards.",
+        modules: EVS_MODULES }
+    ];
+
+    // flat index, and a back-pointer from every lesson to where it sits
+    const LESSONS = {};
+    COURSE.forEach(path => {
+      let order = 0;
+      path.modules.forEach((mod, mi) => {
+        mod.pathId = path.id;
+        mod.lessons.forEach((les, li) => {
+          les.pathId = path.id; les.moduleId = mod.id;
+          les.moduleTitle = mod.title; les.pathLabel = path.label;
+          les.index = order++; les.mi = mi; les.li = li;
+          LESSONS[les.id] = les;
+        });
+      });
+      path.total = order;
+    });
+
+    /* ================= course progress ================= */
+    /* { "p1a": { passed: true, best: 0.9, tries: 3, at: 1699… } }  */
+    const COURSE_KEY = "kundendu-course";
+    const loadCourse = () => { try { return JSON.parse(localStorage.getItem(COURSE_KEY)) || {}; } catch (e) { return {}; } };
+    const saveCourse = p => { try { localStorage.setItem(COURSE_KEY, JSON.stringify(p)); } catch (e) {} };
+
+    const PASS_MARK = 0.8;
+
+    function lessonState(lessonId) {
+      const rec = loadCourse()[lessonId];
+      return rec || { passed: false, best: 0, tries: 0 };
+    }
+
+    // A lesson is open if it is the first, or the one before it has been passed.
+    // Nothing is ever hard-locked — a locked lesson can still be opened, it is
+    // just marked as "not yet". Blocking a curious child is a bad trade.
+    function isUnlocked(lesson) {
+      if (lesson.index === 0) return true;
+      const path = COURSE.find(p => p.id === lesson.pathId);
+      const prev = allLessons(path)[lesson.index - 1];
+      return !prev || lessonState(prev.id).passed;
+    }
+
+    const allLessons = path => path.modules.reduce((a, m) => a.concat(m.lessons), []);
+
+    function nextLesson(pathId) {
+      const path = COURSE.find(p => p.id === pathId);
+      if (!path) return null;
+      const list = allLessons(path);
+      return list.find(l => !lessonState(l.id).passed) || list[list.length - 1];
+    }
+
+    function pathProgress(path) {
+      const list = allLessons(path);
+      const done = list.filter(l => lessonState(l.id).passed).length;
+      return { done: done, total: list.length, pct: list.length ? Math.round(done / list.length * 100) : 0 };
+    }
+
+    function moduleProgress(mod) {
+      const done = mod.lessons.filter(l => lessonState(l.id).passed).length;
+      return { done: done, total: mod.lessons.length, pct: Math.round(done / mod.lessons.length * 100) };
+    }
+
+    // Called by the marking code when a course worksheet is checked.
+    function recordLessonScore(lessonId, correct, total) {
+      if (!LESSONS[lessonId] || !total) return null;
+      const prog = loadCourse();
+      const rec = prog[lessonId] || { passed: false, best: 0, tries: 0 };
+      const score = correct / total;
+      rec.tries += 1;
+      rec.best = Math.max(rec.best, score);
+      rec.at = Date.now();
+      const firstPass = !rec.passed && score >= PASS_MARK;
+      if (score >= PASS_MARK) rec.passed = true;
+      prog[lessonId] = rec;
+      saveCourse(prog);
+      return { firstPass: firstPass, score: score, rec: rec };
+    }
+
+    /* ---------- turning a lesson into a worksheet ---------- */
+    let currentLessonId = null;
+
+    function openLesson(lessonId) {
+      const les = LESSONS[lessonId];
+      if (!les) return;
+      const path = COURSE.find(p => p.id === les.pathId);
+      currentLessonId = lessonId;
+      applyCourseTheme(path);
+
+      const state = lessonState(lessonId);
+      const stepNo = les.index + 1;
+
+      renderWorksheet({
+        title: les.title,
+        subjectLabel: path.label + " · " + les.moduleTitle,
+        instruction: les.rule,
+        skill: "Step " + stepNo + " of " + path.total + " · " + les.moduleTitle +
+               (state.passed ? " · passed ✅" : state.tries ? " · best " + Math.round(state.best * 100) + "%" : ""),
+        lessonId: lessonId,
+        gen: les.gen
+      }, null);
+
+      showParentNote(les);
+      announceReady(true);
+      setStatus(state.passed
+        ? "Already passed — but practising again is never wasted. 🌟"
+        : "Get " + Math.round(PASS_MARK * 100) + "% right to unlock the next step.");
+      const sheet = document.querySelector(".paper");
+      if (sheet) sheet.scrollIntoView({ block: "start", behavior: "smooth" });
+    }
+
+    function applyCourseTheme(path) {
+      if (!path) return;
+      document.documentElement.style.setProperty("--accent", path.accent);
+      document.documentElement.style.setProperty("--accent-deep", path.accentDeep);
+      $("ws-sticker").replaceChildren(lineArt(path.emoji));
+    }
+
+    // the plain-language rule for the grown-up, shown above the sheet
+    function showParentNote(les) {
+      const slot = $("lesson-note-slot");
+      if (!slot) return;
+      slot.replaceChildren();
+      const box = document.createElement("div");
+      box.className = "lesson-note no-print";
+      const h = document.createElement("strong");
+      h.textContent = "👪 For the grown-up";
+      const p = document.createElement("p");
+      p.textContent = les.note;
+      box.append(h, p);
+      slot.appendChild(box);
+    }
+
+    /* ================= course map UI ================= */
+    let coursePathId = "phonics";
+    try { coursePathId = localStorage.getItem("kundendu-course-path") || "phonics"; } catch (e) {}
+    if (!COURSE.some(p => p.id === coursePathId)) coursePathId = "phonics";
+
+    function openCourse(pathId) {
+      if (pathId) {
+        coursePathId = pathId;
+        try { localStorage.setItem("kundendu-course-path", pathId); } catch (e) {}
+      }
+      renderCourse();
+      $("course-backdrop").classList.add("open");
+      $("course-sheet").classList.add("open");
+      document.body.classList.add("course-open");
+      $("course-close").focus();
+    }
+
+    function closeCourse() {
+      $("course-backdrop").classList.remove("open");
+      $("course-sheet").classList.remove("open");
+      document.body.classList.remove("course-open");
+    }
+
+    function ring(pct, accent) {
+      const wrap = document.createElement("span");
+      wrap.className = "ring";
+      wrap.style.background = "conic-gradient(" + accent + " " + (pct * 3.6) + "deg, #e3d6bd 0deg)";
+      const inner = document.createElement("span");
+      inner.className = "ring-in";
+      inner.textContent = pct + "%";
+      wrap.appendChild(inner);
+      return wrap;
+    }
+
+    function renderCourse() {
+      const path = COURSE.find(p => p.id === coursePathId);
+      const tabs = $("course-tabs");
+      tabs.replaceChildren();
+      COURSE.forEach(p => {
+        const prog = pathProgress(p);
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "course-tab" + (p.id === coursePathId ? " on" : "");
+        b.style.setProperty("--tab", p.accent);
+        b.setAttribute("aria-pressed", p.id === coursePathId ? "true" : "false");
+        const e = document.createElement("span"); e.className = "t-emo"; e.textContent = p.emoji;
+        const l = document.createElement("span"); l.className = "t-lab"; l.textContent = p.label;
+        const s = document.createElement("span"); s.className = "t-sub"; s.textContent = prog.done + " / " + prog.total + " steps";
+        b.append(e, l, s);
+        b.addEventListener("click", () => openCourse(p.id));
+        tabs.appendChild(b);
+      });
+
+      const prog = pathProgress(path);
+      const head = $("course-head");
+      head.replaceChildren();
+      head.style.setProperty("--path", path.accent);
+      const ttl = document.createElement("div");
+      ttl.className = "ch-text";
+      const h = document.createElement("h3"); h.className = "display"; h.textContent = path.emoji + " " + path.label;
+      const p2 = document.createElement("p"); p2.textContent = path.tagline;
+      ttl.append(h, p2);
+      head.append(ttl, ring(prog.pct, path.accent));
+
+      const nxt = nextLesson(path.id);
+      const cont = $("course-continue");
+      cont.replaceChildren();
+      if (nxt) {
+        const done = prog.done === prog.total;
+        const b = document.createElement("button");
+        b.type = "button"; b.className = "btn-course-go";
+        b.style.background = path.accent;
+        b.textContent = (done ? "🏅 Path finished — practise again: " : "▶️ Next step: ") + nxt.title;
+        b.addEventListener("click", () => { closeCourse(); openLesson(nxt.id); });
+        cont.appendChild(b);
+      }
+
+      const list = $("course-modules");
+      list.replaceChildren();
+      const nextId = nxt ? nxt.id : null;
+
+      path.modules.forEach(mod => {
+        const mp = moduleProgress(mod);
+        const det = document.createElement("details");
+        det.className = "mod";
+        det.open = mod.lessons.some(l => l.id === nextId);
+        if (mp.done === mp.total) det.classList.add("mod-done");
+
+        const sum = document.createElement("summary");
+        const badge = document.createElement("span");
+        badge.className = "mod-emo"; badge.textContent = mod.emoji;
+        const box = document.createElement("span"); box.className = "mod-text";
+        const mt = document.createElement("strong"); mt.textContent = mod.title;
+        const mb = document.createElement("span"); mb.className = "mod-blurb"; mb.textContent = mod.blurb;
+        box.append(mt, mb);
+        const cnt = document.createElement("span");
+        cnt.className = "mod-count" + (mp.done === mp.total ? " full" : "");
+        cnt.textContent = mp.done === mp.total ? "✓ done" : mp.done + "/" + mp.total;
+        sum.append(badge, box, cnt);
+        det.appendChild(sum);
+
+        mod.lessons.forEach(les => {
+          const st = lessonState(les.id);
+          const open = isUnlocked(les);
+          const row = document.createElement("button");
+          row.type = "button";
+          row.className = "les" + (st.passed ? " les-done" : "") + (les.id === nextId ? " les-next" : "") + (open || st.tries ? "" : " les-locked");
+
+          const mark = document.createElement("span");
+          mark.className = "les-mark";
+          mark.textContent = st.passed ? "✅" : les.id === nextId ? "▶️" : open ? "○" : "🔒";
+
+          const txt = document.createElement("span");
+          txt.className = "les-text";
+          const t = document.createElement("strong"); t.textContent = les.title;
+          const r = document.createElement("span"); r.className = "les-rule"; r.textContent = les.rule;
+          txt.append(t, r);
+
+          const meta = document.createElement("span");
+          meta.className = "les-meta";
+          meta.textContent = st.passed ? Math.round(st.best * 100) + "%" : st.tries ? "tried" : "";
+
+          row.append(mark, txt, meta);
+          row.addEventListener("click", () => { closeCourse(); openLesson(les.id); });
+          det.appendChild(row);
+        });
+
+        list.appendChild(det);
+      });
+    }
+
+    /* called after a course worksheet is marked */
+    function afterCourseCheck(score) {
+      if (!currentLessonId || !score.total) return;
+      const res = recordLessonScore(currentLessonId, score.right, score.total);
+      if (!res) return;
+      const les = LESSONS[currentLessonId];
+      const path = COURSE.find(p => p.id === les.pathId);
+      const line = $("score-line");
+
+      if (res.firstPass) {
+        const nxt = nextLesson(path.id);
+        line.textContent += "  🎓 Step passed!";
+        const slot = $("lesson-note-slot");
+        const box = document.createElement("div");
+        box.className = "lesson-won no-print";
+        const msg = document.createElement("p");
+        msg.textContent = nxt && nxt.id !== currentLessonId
+          ? "Step " + (les.index + 1) + " of " + path.total + " done. The next step is now open: " + nxt.title
+          : "That was the last step of " + path.label + ". What a thing to have finished! 🏅";
+        box.appendChild(msg);
+        if (nxt && nxt.id !== currentLessonId) {
+          const b = document.createElement("button");
+          b.type = "button"; b.className = "nudge-btn";
+          b.textContent = "▶️ Go to " + nxt.title;
+          b.addEventListener("click", () => openLesson(nxt.id));
+          box.appendChild(b);
+        }
+        slot.appendChild(box);
+      } else if (!res.rec.passed) {
+        line.textContent += "  (" + Math.round(PASS_MARK * 100) + "% opens the next step — try once more?)";
+      }
+    }
+
+    /* ---------- the course card in the side panel ---------- */
+    function renderCourseCard() {
+      const card = $("course-card");
+      if (!card) return;
+      card.replaceChildren();
+      COURSE.forEach(p => {
+        const prog = pathProgress(p);
+        const nxt = nextLesson(p.id);
+        const row = document.createElement("button");
+        row.type = "button";
+        row.className = "cc-row";
+        row.style.setProperty("--tab", p.accent);
+
+        const e = document.createElement("span"); e.className = "cc-emo"; e.textContent = p.emoji;
+        const txt = document.createElement("span"); txt.className = "cc-text";
+        const t = document.createElement("strong"); t.textContent = p.label;
+        const s = document.createElement("span");
+        s.className = "cc-next";
+        s.textContent = prog.done === prog.total ? "All " + prog.total + " steps done 🏅"
+          : "Next: " + (nxt ? nxt.title : "start here");
+        txt.append(t, s);
+
+        const bar = document.createElement("span"); bar.className = "cc-bar";
+        const fill = document.createElement("span");
+        fill.className = "cc-fill"; fill.style.width = prog.pct + "%"; fill.style.background = p.accent;
+        bar.appendChild(fill);
+        txt.appendChild(bar);
+
+        row.append(e, txt);
+        row.addEventListener("click", () => openCourse(p.id));
+        card.appendChild(row);
+      });
+    }
+
     /* ================= state ================= */
     let difficulty = "easy";
     let qCount = 6;
@@ -3031,7 +4840,7 @@
     });
 
     /* ---------- backup & restore ---------- */
-    const BACKUP_KEYS = ["kundendu-worksheet-attempts","kundendu-tricky","kundendu-wins","kundendu-stickers","kundendu-poems","kundendu-progress","kundendu-student-name","kundendu-voice"];
+    const BACKUP_KEYS = ["kundendu-worksheet-attempts","kundendu-tricky","kundendu-wins","kundendu-stickers","kundendu-poems","kundendu-progress","kundendu-course","kundendu-course-path","kundendu-student-name","kundendu-voice"];
 
     $("backup-btn").addEventListener("click", () => {
       const data = { app: "kundendu-learn-and-play", version: 1, saved_at: new Date().toISOString() };
@@ -3264,6 +5073,8 @@
 
     function renderWorksheet(activity, presetQuestions) {
       currentActivity = activity;
+      currentLessonId = activity.lessonId || null;
+      if (!currentLessonId) { const ln = $("lesson-note-slot"); if (ln) ln.replaceChildren(); }
       currentQuestions = presetQuestions || activity.gen(qCount, difficulty);
       $("nudge-slot").replaceChildren();
       document.body.classList.remove("show-answers");
@@ -3562,7 +5373,7 @@
             right >= Math.ceil(score.total * 0.4) ? " ⭐ Good trying!" : " 💪 Keep practising!";
           line.textContent = "Score: " + right + " out of " + score.total + cheer;
         }
-        if (answered) afterCheck(score);
+        if (answered) { afterCheck(score); afterCourseCheck(score); renderCourseCard(); }
       }
       return score;
     }
@@ -4165,6 +5976,13 @@
     $("word-btn").addEventListener("click", exportWord);
     $("docs-btn").addEventListener("click", copyForDocs);
     $("save-btn").addEventListener("click", saveAttempt);
+    $("course-btn").addEventListener("click", () => openCourse());
+    $("course-close").addEventListener("click", closeCourse);
+    $("course-backdrop").addEventListener("click", closeCourse);
+    document.addEventListener("keydown", ev => {
+      if (ev.key === "Escape" && document.body.classList.contains("course-open")) closeCourse();
+    });
+
     $("daily-btn").addEventListener("click", todaysFive);
     $("boss-btn").addEventListener("click", bossLevel);
     $("pack-btn").addEventListener("click", printPack);
@@ -4194,6 +6012,7 @@
     populateActivities();
     activitySelect.value = startActivity;
     generate();
+    renderCourseCard();
 
     backend.init({ onDataChanged: renderAttempts }).then(r => {
       backendReady = !!(r && r.isOk);
