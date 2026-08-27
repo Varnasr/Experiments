@@ -68,7 +68,20 @@ Methodology, data, and grading outputs for evaluating AICC-appointed District Ob
 
 ### Kundendu's Learn & Play
 
-A playful Class 1 CBSE worksheet generator for a young learner. Covers English (phonics, reading, grammar), Hindi (वर्ण, शब्द, गिनती, विलोम), Maths (number sense, add/subtract, shapes & patterns), and EVS — 36 activity types in all. Every worksheet is freshly randomised, with three difficulty levels, 4–10 questions per sheet, on-screen answer checking (with confetti for perfect scores), a printable answer key, Word/Google Docs export, and a local practice-history tracker.
+A playful Class 1 CBSE worksheet generator for a young learner, with a structured course running alongside it.
+
+**Free practice** covers English (phonics, reading, grammar), Hindi (वर्ण, शब्द, गिनती, विलोम), Maths (number sense, add/subtract, shapes & patterns), and EVS — 36 activity types in all. Every worksheet is freshly randomised, with three difficulty levels, 4–10 questions per sheet, on-screen answer checking (with confetti for perfect scores), a printable answer key, Word/Google Docs export, and a local practice-history tracker.
+
+**The course** adds what a generator alone cannot: an order. 161 lessons across 39 modules and four paths, each lesson stating its rule in plain language, generating questions scoped to exactly that rule, and opening the next step at 80%.
+
+| Path | Modules | Steps | Sequence |
+| --- | --- | --- | --- |
+| Phonics & reading | 12 | 58 | Phonemic awareness → `s a t p i n` → CVC word families → the remaining letters → all five short vowels → digraphs (sh ch th ng ck) → blends → magic e → vowel teams → tricky words → suffixes and syllables |
+| Maths | 10 | 40 | Numbers 1–9 → zero and ten → adding to 10 → taking away → teen numbers → up to 100 → two-digit sums → shapes and patterns → measuring → money and time |
+| हिंदी | 9 | 33 | स्वर → व्यंजन (क–ञ, ट–न, प–ह) → बिना मात्रा के शब्द → आ/इ/ई की मात्रा → उ/ऊ/ए/ऐ → ओ/औ/अनुस्वार → वाक्य, विलोम, गिनती |
+| EVS · My world | 8 | 30 | Myself → family and home → food → clothes and seasons → plants → animals → the world around me → people who help us |
+
+Following a synthetic-phonics scope and sequence, the reading path introduces sounds before letters and letters in the order that makes words fastest, and includes six stage-matched decodable readers — each using only the sounds taught by that point — with word-by-word read-along audio. Every lesson also carries a short note for the grown-up explaining the rule and how to teach it.
 
 **Directory:** `kundendu-worksheets/`
 **Stage:** Active
@@ -138,7 +151,8 @@ Experiments/
 │   ├── all_timestamps.csv
 │   └── *.json                          # raw source extracts
 ├── kundendu-worksheets/
-│   └── index.html                      # Class 1 CBSE worksheet generator
+│   ├── index.html                      # worksheet generator + structured course
+│   └── sw.js                           # offline service worker
 ├── tools/
 │   └── drive-pdf-extractor/            # view-only Drive PDF capture
 ├── netlify/
