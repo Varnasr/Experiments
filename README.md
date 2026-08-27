@@ -81,7 +81,7 @@ A playful Class 1 CBSE worksheet generator for a young learner, with a structure
 | हिंदी | 9 | 33 | स्वर → व्यंजन (क–ञ, ट–न, प–ह) → बिना मात्रा के शब्द → आ/इ/ई की मात्रा → उ/ऊ/ए/ऐ → ओ/औ/अनुस्वार → वाक्य, विलोम, गिनती |
 | EVS · My world | 8 | 30 | Myself → family and home → food → clothes and seasons → plants → animals → the world around me → people who help us |
 
-Following a synthetic-phonics scope and sequence, the reading path introduces sounds before letters and letters in the order that makes words fastest, and includes six stage-matched decodable readers — each using only the sounds taught by that point — with word-by-word read-along audio. Every lesson also carries a short note for the grown-up explaining the rule and how to teach it.
+Following a synthetic-phonics scope and sequence, the reading path introduces sounds before letters and letters in the order that makes words fastest, and includes eight decodable readers across six stages — each using only the sounds taught by that point — with word-by-word read-along audio. Every lesson also carries a short note for the grown-up explaining the rule and how to teach it.
 
 **Directory:** `kundendu-worksheets/`
 **Stage:** Active
