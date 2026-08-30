@@ -203,72 +203,71 @@ input.answer:focus,select.mt:focus{border-color:var(--accent)}
 
 footer.foot{max-width:920px; margin:0 auto; padding:26px 18px 40px; color:var(--ink-3); font-size:.82rem; border-top:1px solid var(--rule)}
 
-/* ---- phones and small tablets ---- */
-@media (max-width:680px){
-  body{background-size:22px 22px}
-  .wrap{padding:0 14px 40px}
-  .mast-in{padding:11px 14px 0; gap:10px}
-  .mast h1{font-size:1.2rem}
-  .mast .spectrum i{width:13px}
-  .icon-btn{width:44px; height:44px}
+/* ---- phones, narrow panels, and hosts that scale us down ----
+   Applied via [data-compact] rather than a media query: some hosts lay the page
+   out at desktop width and scale it down, and a media query cannot see that. The
+   script at the top of the page works out the effective width and sets the flag. */
+  :root[data-compact] body{background-size:22px 22px}
+  :root[data-compact] .wrap{padding:0 14px 40px}
+  :root[data-compact] .mast-in{padding:11px 14px 0; gap:10px}
+  :root[data-compact] .mast h1{font-size:1.2rem}
+  :root[data-compact] .mast .spectrum i{width:13px}
+  :root[data-compact] .icon-btn{width:44px; height:44px}
 
   /* four tabs across, no sideways scrolling to find one */
-  .tabs{display:grid; grid-template-columns:repeat(4,1fr); overflow:visible}
-  .tab{padding:13px 3px; min-height:46px; font-size:.71rem; text-align:center; letter-spacing:.01em}
-  .mast .spectrum{display:none}
-  .mast-top{align-items:center; flex-wrap:nowrap; gap:10px}
-  .mast-top > div{min-width:0; flex:1}
+  :root[data-compact] .tabs{display:grid; grid-template-columns:repeat(4,1fr); overflow:visible}
+  :root[data-compact] .tab{padding:13px 3px; min-height:46px; font-size:.71rem; text-align:center; letter-spacing:.01em}
+  :root[data-compact] .mast .spectrum{display:none}
+  :root[data-compact] .mast-top{align-items:center; flex-wrap:nowrap; gap:10px}
+  :root[data-compact] .mast-top > div{min-width:0; flex:1}
 
-  .card{padding:16px}
-  .lede{font-size:.97rem}
+  :root[data-compact] .card{padding:16px}
+  :root[data-compact] .lede{font-size:.97rem}
 
   /* one chapter per row, thumb-sized */
-  .chapters{grid-template-columns:1fr; gap:8px}
-  .chip{padding:14px 14px; min-height:58px; align-items:center}
-  .chip .num{padding-top:0}
-  .chip .nm{font-size:1rem}
+  :root[data-compact] .chapters{grid-template-columns:1fr; gap:8px}
+  :root[data-compact] .chip{padding:14px 14px; min-height:58px; align-items:center}
+  :root[data-compact] .chip .num{padding-top:0}
+  :root[data-compact] .chip .nm{font-size:1rem}
 
-  .btn{padding:13px 16px; min-height:48px}
-  .fieldset{gap:9px}
-  .lbl{flex:0 0 100%}
-  .seg{width:100%}
-  .seg button{flex:1; padding:12px 4px; font-size:.76rem; min-height:48px}
-  #selAll,#selNone,#startBtn,#wsBtn,#wsPrint,#paperBtn,#paperPrint{flex:1 1 auto}
+  :root[data-compact] .btn{padding:13px 16px; min-height:48px}
+  :root[data-compact] .fieldset{gap:9px}
+  :root[data-compact] .lbl{flex:0 0 100%}
+  :root[data-compact] .seg{width:100%}
+  :root[data-compact] .seg button{flex:1; padding:12px 4px; font-size:.76rem; min-height:48px}
+  :root[data-compact] #selAll, :root[data-compact] #selNone, :root[data-compact] #startBtn, :root[data-compact] #wsBtn, :root[data-compact] #wsPrint, :root[data-compact] #paperBtn, :root[data-compact] #paperPrint{flex:1 1 auto}
 
-  .qtext{font-size:1.08rem; margin-top:12px}
-  .opt{padding:14px 15px; border-radius:11px}
-  .opt .key{font-size:.86rem}
-  .opts{gap:9px}
-  input.answer,select.mt{max-width:none; min-height:50px}
-  .mt-row{flex-direction:column; align-items:stretch; gap:7px; padding:10px 0}
-  .mt-row .lhs{flex:1 1 auto}
+  :root[data-compact] .qtext{font-size:1.08rem; margin-top:12px}
+  :root[data-compact] .opt{padding:14px 15px; border-radius:11px}
+  :root[data-compact] .opt .key{font-size:.86rem}
+  :root[data-compact] .opts{gap:9px}
+  :root[data-compact] input.answer, :root[data-compact] select.mt{max-width:none; min-height:50px}
+  :root[data-compact] .mt-row{flex-direction:column; align-items:stretch; gap:7px; padding:10px 0}
+  :root[data-compact] .mt-row .lhs{flex:1 1 auto}
 
   /* keep Check / Next reachable without scrolling to the end of the options */
-  .qbar{position:sticky; bottom:0; z-index:10; gap:8px; flex-wrap:nowrap;
+  :root[data-compact] .qbar{position:sticky; bottom:0; z-index:10; gap:8px; flex-wrap:nowrap;
         margin:16px -14px 0; padding:10px 14px calc(10px + env(safe-area-inset-bottom));
         background:var(--surface); border-top:1px solid var(--rule)}
-  .qbar .spacer{display:none}
-  .qbar #checkBtn,.qbar #nextBtn{flex:1 1 auto}
-  .qbar #quitBtn{flex:0 0 auto; font-size:.72rem; padding:13px 11px}
+  :root[data-compact] .qbar .spacer{display:none}
+  :root[data-compact] .qbar #checkBtn, :root[data-compact] .qbar #nextBtn{flex:1 1 auto}
+  :root[data-compact] .qbar #quitBtn{flex:0 0 auto; font-size:.72rem; padding:13px 11px}
 
-  .score{font-size:2.9rem}
-  .bar{flex-wrap:wrap; gap:8px}
-  .bar .lab{flex:0 0 100%}
+  :root[data-compact] .score{font-size:2.9rem}
+  :root[data-compact] .bar{flex-wrap:wrap; gap:8px}
+  :root[data-compact] .bar .lab{flex:0 0 100%}
 
-  .sheet{padding:18px 15px 26px}
-  .namebar{gap:8px 16px}
-  .q{padding:12px 0}
-  .q .n{width:1.9em}
-  .q .choices{grid-template-columns:1fr; gap:3px}
-  .mtable{font-size:.88rem}
-  .syl{padding:14px 15px}
-  footer.foot{padding:22px 14px 34px}
-}
-@media (max-width:380px){
-  .tab{font-size:.66rem; padding:11px 2px}
-  .mast h1{font-size:1.1rem}
-  .qbar #quitBtn{font-size:.68rem; padding:13px 8px}
-}
+  :root[data-compact] .sheet{padding:18px 15px 26px}
+  :root[data-compact] .namebar{gap:8px 16px}
+  :root[data-compact] .q{padding:12px 0}
+  :root[data-compact] .q .n{width:1.9em}
+  :root[data-compact] .q .choices{grid-template-columns:1fr; gap:3px}
+  :root[data-compact] .mtable{font-size:.88rem}
+  :root[data-compact] .syl{padding:14px 15px}
+  :root[data-compact] footer.foot{padding:22px 14px 34px}
+  :root[data-compact-xs] .tab{font-size:.66rem; padding:11px 2px}
+  :root[data-compact-xs] .mast h1{font-size:1.1rem}
+  :root[data-compact-xs] .qbar #quitBtn{font-size:.68rem; padding:13px 8px}
 
 /* ---- print ---- */
 @media print{
@@ -284,6 +283,43 @@ footer.foot{max-width:920px; margin:0 auto; padding:26px 18px 40px; color:var(--
   .syl,.card{border:1px solid #bbb; background:#fff}
 }
 </style>
+<script>
+/* Work out how wide this page really is on the reader's screen, and adapt.
+
+   Two cases the CSS alone cannot see. A viewport meta is ignored inside an
+   iframe, so an embedded viewer (the Claude artifact frame, an in-app webview)
+   may lay the page out at desktop width and then visually scale the whole thing
+   down to fit a phone — leaving a shrunken desktop layout at a third of its
+   intended size. And Chrome does not re-evaluate media queries under root zoom,
+   so correcting the scale is not enough on its own.
+
+   So: zoom back up when we are laid out much wider than the physical screen,
+   then set the compact flag from the resulting effective width. On an ordinary
+   phone, desktop browser or narrow side panel this leaves zoom alone and simply
+   reports the real width. */
+(function(){
+  var el = document.documentElement;
+  function fit(){
+    try{
+      var laidOut = window.innerWidth || 0;
+      var screenW = (window.screen && window.screen.width) || laidOut;
+      if(!laidOut) return;
+      var zoom = 1;
+      if(screenW && laidOut / screenW > 1.3){
+        zoom = Math.min(laidOut / screenW, 3);
+        el.style.zoom = String(zoom);
+      } else if(el.style.zoom){
+        el.style.zoom = '';
+      }
+      var effective = laidOut / zoom;
+      el.toggleAttribute('data-compact', effective <= 680);
+      el.toggleAttribute('data-compact-xs', effective <= 380);
+    }catch(e){}
+  }
+  fit();
+  addEventListener('resize', fit);
+})();
+</script>
 <!--/ARTIFACT-A-->
 </head>
 <body>
