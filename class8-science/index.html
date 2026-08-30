@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!--ARTIFACT-A-->
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Curiosity Practice Lab</title>
 <meta name="description" content="Practice sets, printable worksheets and a mock paper for CBSE Class 8 Science, Semester 1 — the six chapters in the exam.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -135,7 +136,7 @@ header.mast{
 .opt.wrong .key{color:var(--bad)}
 .opt:disabled{cursor:default}
 input.answer,select.mt{
-  font:inherit; font-family:"IBM Plex Mono",monospace; font-size:.95rem; padding:11px 13px;
+  font:inherit; font-family:"IBM Plex Mono",monospace; font-size:16px; padding:11px 13px;
   border:1.5px solid var(--rule); border-radius:9px; background:var(--surface-2); color:var(--ink); width:100%; max-width:340px;
 }
 input.answer:focus,select.mt:focus{border-color:var(--accent)}
@@ -190,7 +191,6 @@ input.answer:focus,select.mt:focus{border-color:var(--accent)}
 .syl h3{font-size:1.02rem; margin-bottom:2px}
 .syl .tags{display:flex; flex-wrap:wrap; gap:6px; margin-top:10px}
 .syl .tags span{font-family:"IBM Plex Mono",monospace; font-size:.7rem; background:var(--surface-2); border:1px solid var(--rule); border-radius:99px; padding:3px 9px; color:var(--ink-2)}
-.callout{border:1px solid color-mix(in srgb,var(--c4) 45%,transparent); background:color-mix(in srgb,var(--c4) 9%,transparent); border-radius:9px; padding:13px 16px; font-size:.94rem}
 
 .fieldset{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
 .seg{display:inline-flex; border:1px solid var(--rule); border-radius:9px; overflow:hidden; background:var(--surface-2)}
@@ -203,11 +203,71 @@ input.answer:focus,select.mt:focus{border-color:var(--accent)}
 
 footer.foot{max-width:920px; margin:0 auto; padding:26px 18px 40px; color:var(--ink-3); font-size:.82rem; border-top:1px solid var(--rule)}
 
-@media (max-width:560px){
-  .sheet{padding:20px 18px 26px}
-  .mast h1{font-size:1.25rem}
-  .score{font-size:2.8rem}
-  .bar .lab{flex-basis:100%}
+/* ---- phones and small tablets ---- */
+@media (max-width:680px){
+  body{background-size:22px 22px}
+  .wrap{padding:0 14px 40px}
+  .mast-in{padding:11px 14px 0; gap:10px}
+  .mast h1{font-size:1.2rem}
+  .mast .spectrum i{width:13px}
+  .icon-btn{width:44px; height:44px}
+
+  /* four tabs across, no sideways scrolling to find one */
+  .tabs{display:grid; grid-template-columns:repeat(4,1fr); overflow:visible}
+  .tab{padding:13px 3px; min-height:46px; font-size:.71rem; text-align:center; letter-spacing:.01em}
+  .mast .spectrum{display:none}
+  .mast-top{align-items:center; flex-wrap:nowrap; gap:10px}
+  .mast-top > div{min-width:0; flex:1}
+
+  .card{padding:16px}
+  .lede{font-size:.97rem}
+
+  /* one chapter per row, thumb-sized */
+  .chapters{grid-template-columns:1fr; gap:8px}
+  .chip{padding:14px 14px; min-height:58px; align-items:center}
+  .chip .num{padding-top:0}
+  .chip .nm{font-size:1rem}
+
+  .btn{padding:13px 16px; min-height:48px}
+  .fieldset{gap:9px}
+  .lbl{flex:0 0 100%}
+  .seg{width:100%}
+  .seg button{flex:1; padding:12px 4px; font-size:.76rem; min-height:48px}
+  #selAll,#selNone,#startBtn,#wsBtn,#wsPrint,#paperBtn,#paperPrint{flex:1 1 auto}
+
+  .qtext{font-size:1.08rem; margin-top:12px}
+  .opt{padding:14px 15px; border-radius:11px}
+  .opt .key{font-size:.86rem}
+  .opts{gap:9px}
+  input.answer,select.mt{max-width:none; min-height:50px}
+  .mt-row{flex-direction:column; align-items:stretch; gap:7px; padding:10px 0}
+  .mt-row .lhs{flex:1 1 auto}
+
+  /* keep Check / Next reachable without scrolling to the end of the options */
+  .qbar{position:sticky; bottom:0; z-index:10; gap:8px; flex-wrap:nowrap;
+        margin:16px -14px 0; padding:10px 14px calc(10px + env(safe-area-inset-bottom));
+        background:var(--surface); border-top:1px solid var(--rule)}
+  .qbar .spacer{display:none}
+  .qbar #checkBtn,.qbar #nextBtn{flex:1 1 auto}
+  .qbar #quitBtn{flex:0 0 auto; font-size:.72rem; padding:13px 11px}
+
+  .score{font-size:2.9rem}
+  .bar{flex-wrap:wrap; gap:8px}
+  .bar .lab{flex:0 0 100%}
+
+  .sheet{padding:18px 15px 26px}
+  .namebar{gap:8px 16px}
+  .q{padding:12px 0}
+  .q .n{width:1.9em}
+  .q .choices{grid-template-columns:1fr; gap:3px}
+  .mtable{font-size:.88rem}
+  .syl{padding:14px 15px}
+  footer.foot{padding:22px 14px 34px}
+}
+@media (max-width:380px){
+  .tab{font-size:.66rem; padding:11px 2px}
+  .mast h1{font-size:1.1rem}
+  .qbar #quitBtn{font-size:.68rem; padding:13px 8px}
 }
 
 /* ---- print ---- */
@@ -302,10 +362,10 @@ footer.foot{max-width:920px; margin:0 auto; padding:26px 18px 40px; color:var(--
     </div>
     <div class="progress" style="margin-bottom:18px"><i id="qBar" style="width:0%"></i></div>
     <div class="card" id="qCard"></div>
-    <div class="row" style="margin-top:16px">
+    <div class="row qbar" style="margin-top:16px">
       <button class="btn primary" id="checkBtn">Check answer</button>
       <button class="btn" id="nextBtn" hidden>Next question</button>
-      <span style="flex:1"></span>
+      <span class="spacer" style="flex:1"></span>
       <button class="btn" id="quitBtn">End &amp; see score</button>
     </div>
   </div>
@@ -359,7 +419,6 @@ footer.foot{max-width:920px; margin:0 auto; padding:26px 18px 40px; color:var(--
       <h2 style="font-size:1.15rem">What the Semester 1 exam covers</h2>
       <p class="lede">Six chapters from the NCERT <em>Curiosity</em> Class 8 textbook. Chapter 6 is limited to section 6.1 only &mdash; everything on winds, storms and cyclones is out of the exam.</p>
     </div>
-    <div class="callout"><b>One thing to double-check:</b> this is built from the syllabus message as sent. Before the exam, confirm with the teacher whether the mark split, question pattern and the 6.1-only limit still stand.</div>
     <div class="stack" id="sylList" style="gap:12px"></div>
     <div class="card">
       <h3 style="font-size:1.02rem; margin-bottom:8px">A workable revision run for September</h3>
@@ -886,6 +945,7 @@ function startQuiz(){
 
 function showQuestion(){
   answered = false; picked = null;
+  window.scrollTo(0, 0);
   const q = quiz[qi];
   current = prepare(q);
   const c = chOf(q.c);
@@ -1001,6 +1061,7 @@ function check(){
        <div class="selfcheck"><span class="lbl" style="align-self:center">Did you get it?</span>
          <button class="btn" data-self="1">Yes, I had that</button>
          <button class="btn" data-self="0">No, I missed it</button></div>`);
+    card.querySelector('.model').scrollIntoView({block:'nearest', behavior:'smooth'});
     card.querySelectorAll('[data-self]').forEach(b => b.addEventListener('click', () => {
       const got = b.dataset.self === '1';
       card.querySelectorAll('[data-self]').forEach(x => x.disabled = true);
@@ -1030,7 +1091,8 @@ function settle(ok, q, given){
         ${ok ? '' : answerText + '<br>'}${expl(q)}</div>`);
   }
   $('#nextBtn').hidden = false;
-  $('#nextBtn').focus();
+  const v = $('#qCard .verdict');
+  if(v) v.scrollIntoView({block:'nearest', behavior:'smooth'});
 }
 
 function flash(msg){
@@ -1102,7 +1164,7 @@ function finish(){
   $('#p-done').innerHTML = html;
   const again = $('#againBtn'), retry = $('#retryBtn'), back = $('#backBtn');
   again.addEventListener('click', startQuiz);
-  back.addEventListener('click', () => { $('#p-done').hidden = true; $('#p-setup').hidden = false; refreshPool(); });
+  back.addEventListener('click', () => { $('#p-done').hidden = true; $('#p-setup').hidden = false; refreshPool(); window.scrollTo(0, 0); });
   if(retry) retry.addEventListener('click', () => {
     quiz = shuffle(wrongList.map(w => w.q));
     qi = 0; right = 0; wrongList = []; asked = [];
