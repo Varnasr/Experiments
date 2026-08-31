@@ -90,6 +90,17 @@ Installable PWA — add it to a phone or tablet home screen and it works fully o
 
 ---
 
+### Agastya's Science Lab
+
+A mobile-first Class VIII science revision app built around Agastya's Sardar Patel Vidyalaya Semester 1 syllabus: microorganisms, health, electricity, forces, pressure in solids and liquids, and the particulate nature of matter. Each chapter has focused multiple-choice practice with immediate explanations, plus a mixed exam mode and private on-device progress tracking.
+
+**Directory:** `agastya-science/`
+**Stage:** Active
+
+Installable and offline-capable, with no framework or external dependency. Open `agastya-science/index.html` to use it locally.
+
+---
+
 ### WhoGaveTheOrder.in — graduated
 
 A citizen-led public accountability platform asking one question systematically: when state power is used against citizens, who authorised it?
