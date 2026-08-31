@@ -1,6 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="112" fill="#173c36"/>
-  <path d="M194 100h124v38l-18 12v80l91 143c17 27-2 62-34 62H155c-32 0-51-35-34-62l91-143v-80l-18-12z" fill="#f7cf72"/>
-  <path d="M161 353h190l-59-94h-72z" fill="#e85d42"/>
-  <circle cx="232" cy="328" r="13" fill="#fff4d5"/><circle cx="281" cy="292" r="9" fill="#fff4d5"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Study Lab">
+  <rect width="512" height="512" rx="96" fill="#0E7C74"/>
+  <g fill="none" stroke="#F1F2ED" stroke-width="26" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M200 96v104L120 356a56 56 0 0 0 48 84h176a56 56 0 0 0 48-84l-80-156V96"/>
+    <path d="M176 96h160"/>
+  </g>
+  <path d="M143 320h226l23 45a56 56 0 0 1-48 75H168a56 56 0 0 1-48-75z" fill="#F7CF72"/>
+  <circle cx="212" cy="382" r="15" fill="#0E7C74"/>
+  <circle cx="292" cy="404" r="11" fill="#0E7C74"/>
 </svg>
