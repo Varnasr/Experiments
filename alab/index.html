@@ -12,7 +12,7 @@
 <meta name="description" content="Revision notes, practice sets, printable worksheets and a mock paper for CBSE Class 8 Science, Semester 1 — plus notes for the rest of Class VIII science and maths.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap">
 <style>
 :root{
   --paper:#FAF6EF; --surface:#FFFFFF; --surface-2:#F3EDE3; --sunk:#F0E9DD;
@@ -47,10 +47,10 @@
 [hidden]{display:none !important}
 body{
   margin:0; color:var(--ink); background-color:var(--paper);
-  font-family:"Figtree",system-ui,-apple-system,sans-serif; font-size:16.5px; line-height:1.62;
+  font-family:"Figtree","Noto Sans Devanagari",system-ui,-apple-system,sans-serif; font-size:16.5px; line-height:1.62;
   -webkit-text-size-adjust:100%;
 }
-h1,h2,h3{font-family:"Bricolage Grotesque","Trebuchet MS",sans-serif; font-weight:800; text-wrap:balance; line-height:1.15; margin:0}
+h1,h2,h3{font-family:"Bricolage Grotesque","Noto Sans Devanagari","Trebuchet MS",sans-serif; font-weight:800; text-wrap:balance; line-height:1.15; margin:0}
 .mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
 .eyebrow{font-family:"Figtree",sans-serif; font-weight:700; font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3)}
 a{color:var(--accent-2)}
@@ -209,6 +209,14 @@ input.answer:focus,select.mt:focus{border-color:var(--accent)}
 .syl::before{content:""; position:absolute; inset:0 0 auto 0; height:100%;
   background:color-mix(in srgb,var(--hue) 5%,transparent); pointer-events:none}
 .syl > *{position:relative}
+/* Devanagari sits taller than Latin and its conjuncts stack, so the default
+   line height clips matras. Tag the two language subjects and loosen it. */
+[data-script="deva"] .qtext, [data-script="deva"] .opt,
+[data-script="deva"] .syl li, [data-script="deva"] .model,
+[data-script="deva"] .cmap, [data-script="deva"] .sheet .qtext{
+  line-height:1.85;
+}
+[data-script="deva"] .qtext, [data-script="deva"] .sheet .qtext{ font-size:1.06rem; }
 .doodle{
   position:absolute; top:12px; right:12px; width:82px; height:82px;
   opacity:.28; pointer-events:none; z-index:0;
@@ -377,7 +385,7 @@ footer.foot{max-width:920px; margin:0 auto; padding:26px 18px 40px; color:var(--
   <div class="mast-in">
     <div class="mast-top">
       <div>
-        <p class="eyebrow">CBSE Class VIII &middot; Maths &amp; Science</p>
+        <p class="eyebrow">CBSE Class VIII &middot; Four subjects</p>
         <h1>A&nbsp;Lab</h1>
         <div class="spectrum" aria-hidden="true">
           <i style="background:var(--c2)"></i><i style="background:var(--c3)"></i><i style="background:var(--c4)"></i><i style="background:var(--c5)"></i><i style="background:var(--c6)"></i><i style="background:var(--c7)"></i>
@@ -389,6 +397,8 @@ footer.foot{max-width:920px; margin:0 auto; padding:26px 18px 40px; color:var(--
       <div class="seg" id="subjSeg" role="group" aria-label="Subject">
         <button data-subj="sci" aria-pressed="true">Science</button>
         <button data-subj="math" aria-pressed="false">Maths</button>
+        <button data-subj="skt" aria-pressed="false">Sanskrit</button>
+        <button data-subj="hin" aria-pressed="false">Hindi</button>
       </div>
       <button class="filter" id="examFilter" aria-pressed="false">September exam only</button>
     </div>
@@ -1440,7 +1450,12 @@ function plain(s){
   return d.textContent || '';
 }
 function norm(s){
-  return plain(s).toLowerCase().replace(/[.,;:!?'"()\-]/g, ' ').replace(/\s+/g, ' ').trim();
+  /* The danda and double danda end a Devanagari sentence the way a full stop
+     ends an English one, and the avagraha is elided-a. A child typing the
+     punctuation should not be marked wrong for it. */
+  return plain(s).toLowerCase()
+    .replace(/[.,;:!?'"()\-\u0964\u0965\u093D]/g, ' ')
+    .replace(/\s+/g, ' ').trim();
 }
 function fillOk(given, accepted){
   const g = norm(given);
@@ -1485,9 +1500,23 @@ function loadRec(){
 function saveRec(r){
   try{ localStorage.setItem(STORE, JSON.stringify(r)); }catch(e){}
 }
+/* The old key was 'c<n>' with no subject in it, so science chapter 5 and maths
+   chapter 5 were writing to the same row. Key by subject; migrate() below keeps
+   the science history that was already recorded under the old scheme. */
+const recKey = (n, sub) => (sub || subject) + ':c' + n;
+function migrateRec(){
+  const r = loadRec(); let moved = 0;
+  Object.keys(r).forEach(k => {
+    const m = /^c(\d+)$/.exec(k);
+    if(m){ r['sci:c' + m[1]] = r[k]; delete r[k]; moved++; }
+  });
+  if(moved) saveRec(r);
+}
+migrateRec();
+
 function note(chapter, right){
   const r = loadRec();
-  const k = 'c' + chapter;
+  const k = recKey(chapter);
   r[k] = r[k] || {right:0, total:0};
   r[k].total++;
   if(right) r[k].right++;
@@ -1496,15 +1525,18 @@ function note(chapter, right){
 }
 function renderStats(){
   const r = loadRec();
-  const rows = CHAPTERS.filter(c => r['c'+c.n] && r['c'+c.n].total);
+  /* This used to read CHAPTERS, which is only the six examinable science
+     chapters &mdash; so practice on anything else was recorded and then never
+     shown. Read the subject actually on screen instead. */
+  const rows = subj().chapters.filter(c => c.bank && r[recKey(c.n)] && r[recKey(c.n)].total);
   const box = $('#statsBox');
   if(!rows.length){ box.hidden = true; return; }
   box.hidden = false;
   $('#statsBars').innerHTML = rows.map(c => {
-    const d = r['c'+c.n];
+    const d = r[recKey(c.n)];
     const pct = Math.round(d.right / d.total * 100);
-    return `<div class="bar" style="--hue:${chHue(c.n)}">
-      <span class="lab">Ch ${c.n} &middot; ${chTitle(c.n)}</span>
+    return `<div class="bar" style="--hue:${c.hue}">
+      <span class="lab">Ch ${c.n} &middot; ${c.title}</span>
       <span class="track"><i style="width:${pct}%"></i></span>
       <span class="val">${d.right}/${d.total} &middot; ${pct}%</span></div>`;
   }).join('');
@@ -1961,6 +1993,467 @@ function makePaper(){
    the chapter's own colour, flips with the theme, stays sharp at any size, adds
    no weight and keeps working with no connection. Wobbly on purpose — a ruled
    diagram would put the severity straight back. */
+/* ============================================================
+   SANSKRIT — NCERT दीपकम् (Deepakam), Class VIII, 2025-26.
+   This replaces Ruchira, the pre-2025 book. Chapters 1-12 are the lessons;
+   13-18 are the grammar sections the book carries at the back (व्याकरणम्,
+   शब्दरूपाणि, धातुरूपाणि, वर्णोच्चारण-शिक्षा).
+
+   The lesson chapters carry a translation of the title and the genre only.
+   A Sanskrit chapter title is almost always the सुभाषित the lesson is built
+   around, so translating it is honest; inventing the story inside it is not.
+   Chapter-by-chapter comprehension needs the textbook in front of us.
+
+   The grammar chapters are where the marks are and where drilling works, so
+   those carry the full question bank.
+   ============================================================ */
+const SKT = [
+{n:1, title:"संगच्छध्वं संवदध्वम्", sub:"Walk together, speak together", lesson:true,
+ map:"ऋग्वेद &middot; संगठन सूक्त &rarr; unity of step, speech and mind",
+ notes:["The title is the opening of the Rigveda&rsquo;s सङ्गठन सूक्त: <i>saṅgacchadhvaṁ saṁvadadhvaṁ</i> &mdash; &ldquo;move together, speak together, let your minds be of one accord.&rdquo;",
+  "Read the lesson in the book alongside this. Note down every new शब्द with its अर्थ as you go &mdash; that list is what gets tested, not the story."]},
+{n:2, title:"अल्पानामपि वस्तूनां संहतिः कार्यसाधिका", sub:"Small things united get the work done", lesson:true,
+ map:"नीतिकथा &rarr; unity of the weak defeats the strong",
+ notes:["The title translates as: &ldquo;even of small things, joining together accomplishes the task.&rdquo; It is a नीति verse of the Panchatantra kind.",
+  "Keep a list of the धातु forms the story uses in लङ् लकार (past) &mdash; narrative Sanskrit runs on it."]},
+{n:3, title:"सुभाषितरसं पीत्वा जीवनं सफलं कुरु", sub:"Drink the nectar of सुभाषित and make life fruitful", lesson:true,
+ map:"सुभाषितानि &rarr; verse, meaning, moral",
+ notes:["A collection of सुभाषित &mdash; well-said verses. Each one is short enough to memorise whole, and that is the point: they are asked as अन्वय, अर्थ and भाव.",
+  "Learn each verse by heart along with its अन्वय. A half-remembered सुभाषित earns nothing."]},
+{n:4, title:"प्रणम्यो देशभक्तोऽयं गोपबन्धुर्महामनाः", sub:"Gopabandhu, the great-hearted patriot", lesson:true,
+ map:"जीवनचरितम् &rarr; Gopabandhu Das, &lsquo;Utkalamani&rsquo; of Odisha",
+ notes:["A biographical lesson on Gopabandhu Das, the Odia social reformer and freedom fighter known as उत्कलमणि, the jewel of Utkal.",
+  "Biography chapters are asked as दिनाङ्क, स्थान and कार्य &mdash; dates, places and deeds. Make a small table of those three as you read."]},
+{n:5, title:"गीता सुगीता कर्तव्या", sub:"The Gita is worth singing well", lesson:true,
+ map:"श्रीमद्भगवद्गीता &rarr; selected श्लोक and their meaning",
+ notes:["Verses from the Bhagavad Gita. The title itself is a line saying the Gita ought to be well sung &mdash; that is, learnt properly.",
+  "Gita verses are in अनुष्टुप् metre, eight syllables to a quarter. Reading them aloud in that rhythm is the fastest way to memorise them."]},
+{n:6, title:"डिजिभारतम् &mdash; युगपरिवर्तनम्", sub:"Digital India, an age changing", lesson:true,
+ map:"आधुनिकविषयः &rarr; modern vocabulary in Sanskrit",
+ notes:["A modern-subject lesson: Digital India in Sanskrit. Its value is the new coined vocabulary &mdash; संगणकः, जालम्, चलभाषः, विद्युत्पत्रम् and so on.",
+  "This chapter is a vocabulary chapter wearing a topic. Write the new words out with meanings; that is nearly all it is asked for."]},
+{n:7, title:"मञ्जुलमञ्जूषा सुन्दरसुरभाषा", sub:"A lovely casket &mdash; the beautiful language of the gods", lesson:true,
+ map:"संस्कृतभाषायाः महत्त्वम् &rarr; why the language matters",
+ notes:["A lesson in praise of Sanskrit itself &mdash; सुरभाषा, the speech of the gods, kept like a jewel in a मञ्जूषा, a casket.",
+  "Expect questions on the qualities claimed for the language and the reasons given. Note the adjectives; they are the answer."]},
+{n:8, title:"पश्यत कोणमैशान्यं भारतस्य मनोहरम्", sub:"Behold the lovely north-east of India", lesson:true,
+ map:"भूगोलः &rarr; the north-eastern states",
+ notes:["ऐशान्य कोण is the north-east direction, so this is a lesson on India&rsquo;s north-eastern states &mdash; their rivers, hills and people.",
+  "Place names in Sanskrit are the thing to learn here. Keep them beside their ordinary names."]},
+{n:9, title:"कोऽरुक्? कोऽरुक्? कोऽरुक्?", sub:"Who stays healthy?", lesson:true,
+ map:"आयुर्वेदः &rarr; हितभुक् &middot; मितभुक् &middot; ऋतभुक्",
+ notes:["The classical आयुर्वेद answer to &ldquo;who is free of disease?&rdquo; is हितभुक्, मितभुक्, ऋतभुक् &mdash; one who eats what suits, eats in measure, and eats in season.",
+  "Those three words are the spine of the chapter. Learn what each means and be able to give an example of each."]},
+{n:10, title:"सन्निमित्ते वरं त्यागः (क-भागः)", sub:"Better to give up for a good cause &mdash; part one", lesson:true,
+ map:"कथा &rarr; sacrifice for a worthy end, first half",
+ notes:["The title is a नीति line: giving something up for a good reason is the better course. This is the first of two parts.",
+  "Read part one and part two together; the questions treat them as one story."]},
+{n:11, title:"सन्निमित्ते वरं त्यागः (ख-भागः)", sub:"Better to give up for a good cause &mdash; part two", lesson:true,
+ map:"कथा &rarr; the conclusion",
+ notes:["The second half of the same story. The moral is normally asked at the end of this part, so mark it where it falls.",
+  "Write the story out in five or six Sanskrit sentences of your own. That is exactly what a सारांश question wants."]},
+{n:12, title:"सम्यग्वर्णप्रयोगेण ब्रह्मलोके महीयते", sub:"Right use of sounds is honoured", lesson:true,
+ map:"शिक्षा &rarr; correct pronunciation and why it matters",
+ notes:["On उच्चारण &mdash; getting the sounds right. The claim in the title is the traditional one: correct use of वर्ण is honoured even in Brahmaloka.",
+  "This chapter pairs with वर्णोच्चारण-शिक्षा at the back of the book. Do them together."]},
+
+/* ---- grammar: this is what actually gets drilled ---- */
+{n:13, title:"शब्दरूपाणि", sub:"Noun forms &mdash; the seven विभक्ति",
+ map:"प्रथमा &rarr; द्वितीया &rarr; तृतीया &rarr; चतुर्थी &rarr; पञ्चमी &rarr; षष्ठी &rarr; सप्तमी (+ सम्बोधन), each in एकवचन &middot; द्विवचन &middot; बहुवचन",
+ notes:[
+  "Every Sanskrit noun changes shape by विभक्ति (case) and वचन (number). Seven cases, three numbers, plus सम्बोधन for calling out &mdash; twenty-four forms per word. Learn them as a grid, never as a list.",
+  "<b>बालक</b> (अकारान्त पुल्लिङ्ग): बालकः, बालकौ, बालकाः &middot; बालकम्, बालकौ, बालकान् &middot; बालकेन, बालकाभ्याम्, बालकैः &middot; बालकाय, बालकाभ्याम्, बालकेभ्यः &middot; बालकात्, बालकाभ्याम्, बालकेभ्यः &middot; बालकस्य, बालकयोः, बालकानाम् &middot; बालके, बालकयोः, बालकेषु.",
+  "<b>लता</b> (आकारान्त स्त्रीलिङ्ग): लता, लते, लताः &middot; लताम्, लते, लताः &middot; लतया, लताभ्याम्, लताभिः &middot; लतायै &middot; लतायाः &middot; लतायाः, लतयोः, लतानाम् &middot; लतायाम्, लतयोः, लतासु.",
+  "<b>फल</b> (नपुंसकलिङ्ग) differs from बालक only in the first two cases: फलम्, फले, फलानि for both प्रथमा and द्वितीया. Everything after that is identical to बालक &mdash; so learn one and you have most of the other.",
+  "<b>नदी</b> (ईकारान्त): नदी, नद्यौ, नद्यः &middot; नदीम्, नद्यौ, नदीः &middot; नद्या, नदीभ्याम्, नदीभिः &middot; नद्यै &middot; नद्याः &middot; नद्याः, नद्योः, नदीनाम् &middot; नद्याम्, नद्योः, नदीषु. <b>मुनि</b> (इकारान्त): मुनिः, मुनी, मुनयः.",
+  "<b>अस्मद्</b> (I): अहम्, आवाम्, वयम् &mdash; माम्, आवाम्, अस्मान् &mdash; मया &mdash; मह्यम् &mdash; मत् &mdash; मम, आवयोः, अस्माकम् &mdash; मयि. <b>युष्मद्</b> (you): त्वम्, युवाम्, यूयम् &mdash; त्वाम् &mdash; त्वया &mdash; तुभ्यम् &mdash; त्वत् &mdash; तव, युवयोः, युष्माकम् &mdash; त्वयि. Neither has a सम्बोधन: you cannot call out to &ldquo;I&rdquo;.",
+  "<b>तद्</b> (that/he/she/it) shifts by gender: पुं. सः, तौ, ते &middot; स्त्री. सा, ते, ताः &middot; नपुं. तत्, ते, तानि."]},
+{n:14, title:"धातुरूपाणि", sub:"Verb forms &mdash; the five लकार you need",
+ map:"लट् (present) &rarr; लृट् (future) &rarr; लङ् (past) &rarr; लोट् (command) &rarr; विधिलिङ् (should)",
+ notes:[
+  "A Sanskrit verb carries its person and number inside it, so the pronoun is often dropped. Three persons &times; three numbers = nine forms per लकार. The order is always प्रथम (he/she/it), मध्यम (you), उत्तम (I).",
+  "<b>लट् लकार</b> &mdash; present. पठ्: पठति, पठतः, पठन्ति &middot; पठसि, पठथः, पठथ &middot; पठामि, पठावः, पठामः.",
+  "<b>लृट् लकार</b> &mdash; future, marked by <i>-ष्य-</i>: पठिष्यति, पठिष्यतः, पठिष्यन्ति &hellip; पठिष्यामि, पठिष्यावः, पठिष्यामः.",
+  "<b>लङ् लकार</b> &mdash; past, marked by the अ- in front: अपठत्, अपठताम्, अपठन् &middot; अपठः, अपठतम्, अपठत &middot; अपठम्, अपठाव, अपठाम. Stories are told in this लकार.",
+  "<b>लोट् लकार</b> &mdash; command: पठतु, पठताम्, पठन्तु &middot; पठ, पठतम्, पठत &middot; पठानि, पठाव, पठाम. <b>विधिलिङ्</b> &mdash; &lsquo;should&rsquo;: पठेत्, पठेताम्, पठेयुः &middot; पठेः &middot; पठेयम्.",
+  "Four verbs are asked more than any others. <b>भू</b> &rarr; भवति. <b>गम्</b> &rarr; गच्छति (the stem changes &mdash; watch it). <b>कृ</b> &rarr; करोति, कुरुतः, कुर्वन्ति. <b>अस्</b> (to be) is irregular and must be memorised whole: अस्ति, स्तः, सन्ति &middot; असि, स्थः, स्थ &middot; अस्मि, स्वः, स्मः; and in लङ्, आसीत्, आस्ताम्, आसन्."]},
+{n:15, title:"कारकम् एवं विभक्तिः", sub:"Which case, and why",
+ map:"कर्ता &rarr; कर्म &rarr; करण &rarr; सम्प्रदान &rarr; अपादान &rarr; सम्बन्ध &rarr; अधिकरण",
+ notes:[
+  "कारक is the <i>role</i> a noun plays in the sentence; विभक्ति is the <i>ending</i> that shows it. They mostly line up, but not always &mdash; सम्बन्ध (षष्ठी) is a relation between two nouns, not a role in the action at all.",
+  "प्रथमा &mdash; कर्ता, the doer: <i>रामः पठति</i>. द्वितीया &mdash; कर्म, what is acted on: <i>रामः पुस्तकं पठति</i>.",
+  "तृतीया &mdash; करण, the instrument, &lsquo;by/with&rsquo;: <i>बालकः लेखन्या लिखति</i>. Also used with सह, साकम्, सार्धम् and अलम्.",
+  "चतुर्थी &mdash; सम्प्रदान, the recipient, &lsquo;for/to&rsquo;: <i>निर्धनाय धनं ददाति</i>. Also after नमः, स्वस्ति, स्वाहा &mdash; <i>रामाय नमः</i>.",
+  "पञ्चमी &mdash; अपादान, moving away from: <i>वृक्षात् पत्रं पतति</i>. Also after भीत (afraid of), विना, ऋते, बहिः and पूर्वम्.",
+  "षष्ठी &mdash; सम्बन्ध, &lsquo;of&rsquo;: <i>रामस्य पुस्तकम्</i>. सप्तमी &mdash; अधिकरण, place or time, &lsquo;in/on/at&rsquo;: <i>वृक्षे खगाः सन्ति</i>. Also after कुशल, निपुण and विश्वास.",
+  "Learn the odd ones as a separate list: अभितः, परितः, उभयतः, सर्वतः, प्रति and विना all take द्वितीया. Those are the ones examiners reach for."]},
+{n:16, title:"सन्धिः", sub:"When sounds meet and change",
+ map:"स्वरसन्धि (दीर्घ &middot; गुण &middot; वृद्धि &middot; यण् &middot; अयादि) &rarr; व्यञ्जनसन्धि &rarr; विसर्गसन्धि",
+ notes:[
+  "सन्धि is what happens where one word ends and the next begins. To split one (सन्धिविच्छेद), work backwards from the rule &mdash; do not guess.",
+  "<b>दीर्घ</b>: two similar vowels make the long one. विद्या + आलयः = विद्यालयः. गिरि + ईशः = गिरीशः. भानु + उदयः = भानूदयः.",
+  "<b>गुण</b>: अ/आ + इ/ई = ए; + उ/ऊ = ओ; + ऋ = अर्. देव + इन्द्रः = देवेन्द्रः. सूर्य + उदयः = सूर्योदयः. देव + ऋषिः = देवर्षिः.",
+  "<b>वृद्धि</b>: अ/आ + ए/ऐ = ऐ; + ओ/औ = औ. एक + एकम् = एकैकम्. जल + ओघः = जलौघः.",
+  "<b>यण्</b>: इ, उ, ऋ before an unlike vowel become य्, व्, र्. इति + अपि = इत्यपि. सु + आगतम् = स्वागतम्. पितृ + आज्ञा = पित्राज्ञा.",
+  "<b>अयादि</b>: ए, ऐ, ओ, औ before a vowel become अय्, आय्, अव्, आव्. ने + अनम् = नयनम्. पौ + अकः = पावकः.",
+  "<b>व्यञ्जनसन्धि</b>: त् + च = च्च (सत् + चित् = सच्चित्); त् + ज = ज्ज (सत् + जनः = सज्जनः); त् + श = च्छ (उत् + श्वासः = उच्छ्वासः); त् + ल = ल्ल (उत् + लासः = उल्लासः).",
+  "<b>विसर्गसन्धि</b>: निः + बलः = निर्बलः. दुः + जनः = दुर्जनः. मनः + रथः = मनोरथः. रामः + अस्ति = रामोऽस्ति &mdash; note the अवग्रह (ऽ) marking the swallowed अ."]},
+{n:17, title:"संख्या, वासराः, मासाः", sub:"Counting, days and months",
+ map:"१&ndash;१०० &rarr; the seven वासर &rarr; the twelve मास &rarr; telling the time",
+ notes:[
+  "१&ndash;१०: एकम्, द्वे, त्रीणि, चत्वारि, पञ्च, षट्, सप्त, अष्ट, नव, दश. The first four change by gender; from पञ्च onwards they do not, which is one thing less to worry about.",
+  "११&ndash;२०: एकादश, द्वादश, त्रयोदश, चतुर्दश, पञ्चदश, षोडश, सप्तदश, अष्टादश, नवदश (एकोनविंशतिः), विंशतिः.",
+  "The tens: विंशतिः (20), त्रिंशत् (30), चत्वारिंशत् (40), पञ्चाशत् (50), षष्टिः (60), सप्ततिः (70), अशीतिः (80), नवतिः (90), शतम् (100). Note that 19 is often एकोनविंशतिः &mdash; literally &lsquo;one less than twenty&rsquo;.",
+  "वासराः: रविवासरः, सोमवासरः, मङ्गलवासरः, बुधवासरः, गुरुवासरः (or बृहस्पतिवासरः), शुक्रवासरः, शनिवासरः.",
+  "मासाः: चैत्रः, वैशाखः, ज्येष्ठः, आषाढः, श्रावणः, भाद्रपदः, आश्विनः, कार्तिकः, मार्गशीर्षः, पौषः, माघः, फाल्गुनः.",
+  "Time: <i>अधुना कति वादनम्?</i> &mdash; what time is it now? Answer with the number plus वादनम्: <i>सप्त वादनम्</i>."]},
+{n:18, title:"उपसर्गाः, अव्ययानि, प्रत्ययाः", sub:"Prefixes, indeclinables and suffixes",
+ map:"२२ उपसर्ग &rarr; अव्यय that never change &rarr; क्त्वा &middot; ल्यप् &middot; तुमुन् &middot; शतृ",
+ notes:[
+  "An उपसर्ग goes in front of a धातु and bends its meaning, sometimes to the opposite. हृ = carry; आहृ = bring; प्रहृ = strike; संहृ = gather; विहृ = wander. There are twenty-two: प्र, परा, अप, सम्, अनु, अव, निस्, निर्, दुस्, दुर्, वि, आ, नि, अधि, अपि, अति, सु, उत्, अभि, प्रति, परि, उप.",
+  "अव्यय never change their form &mdash; no विभक्ति, no वचन, no लिङ्ग. That is the definition, and it is often the question.",
+  "Place: अत्र (here), तत्र (there), कुत्र (where), सर्वत्र (everywhere), यत्र (where&hellip;), उपरि (above), अधः (below), बहिः (outside), अन्तः (inside), पुरतः (in front), पृष्ठतः (behind).",
+  "Time: अद्य (today), श्वः (tomorrow), ह्यः (yesterday), परश्वः (day after), अधुना / इदानीम् (now), सदा (always), कदा (when), कदापि (ever).",
+  "Joining and emphasis: च (and), वा (or), तु (but), अपि (also), एव (only, indeed), हि (because), खलु (surely), अलम् (enough), शनैः (slowly), उच्चैः (loudly), नीचैः (softly).",
+  "Suffixes: <b>क्त्वा</b> makes &lsquo;having done&rsquo; on a bare root &mdash; पठ् + क्त्वा = पठित्वा. <b>ल्यप्</b> does the same job when the root already carries an उपसर्ग &mdash; आ + गम् + ल्यप् = आगत्य. <b>तुमुन्</b> makes &lsquo;in order to&rsquo; &mdash; पठ् + तुमुन् = पठितुम्. Choosing क्त्वा where ल्यप् is needed is the single commonest slip."]}
+];
+
+const SKT_BANK = [
+/* ---- 13 शब्दरूपाणि ---- */
+{s:'skt',c:13,t:'mcq',q:'&lsquo;बालक&rsquo; शब्दस्य प्रथमाविभक्तेः बहुवचनम् किम्?',o:['बालकाः','बालकः','बालकौ','बालकान्'],a:0,e:'प्रथमा बहुवचन is बालकाः. बालकः is एकवचन and बालकौ द्विवचन; बालकान् is द्वितीया बहुवचन.'},
+{s:'skt',c:13,t:'mcq',q:'&lsquo;बालकेषु&rsquo; इति कस्यां विभक्तौ, कस्मिन् वचने?',o:['सप्तमी बहुवचन','षष्ठी बहुवचन','सप्तमी एकवचन','तृतीया बहुवचन'],a:0,e:'The -एषु ending is सप्तमी बहुवचन &mdash; &lsquo;in/among the boys&rsquo;. षष्ठी बहुवचन would be बालकानाम्.'},
+{s:'skt',c:13,t:'mcq',q:'&lsquo;लता&rsquo; शब्दस्य तृतीया एकवचनम् किम्?',o:['लतया','लतायै','लतायाः','लताम्'],a:0,e:'लतया. लतायै is चतुर्थी, लतायाः is पञ्चमी and षष्ठी, लताम् is द्वितीया.'},
+{s:'skt',c:13,t:'mcq',q:'&lsquo;फल&rsquo; शब्दः &lsquo;बालक&rsquo; शब्दात् कुत्र भिद्यते?',o:['प्रथमा-द्वितीययोः एव','तृतीयायाम् एव','सर्वासु विभक्तिषु','कुत्रापि न'],a:0,e:'A नपुंसकलिङ्ग noun differs only in प्रथमा and द्वितीया, where both read फलम्, फले, फलानि. From तृतीया onwards it is identical to बालक &mdash; which halves the learning.'},
+{s:'skt',c:13,t:'mcq',q:'&lsquo;नदी&rsquo; शब्दस्य प्रथमा द्विवचनम् किम्?',o:['नद्यौ','नद्यः','नदीम्','नद्याम्'],a:0,e:'नद्यौ. नद्यः is बहुवचन, नदीम् is द्वितीया एकवचन, नद्याम् is सप्तमी एकवचन.'},
+{s:'skt',c:13,t:'mcq',q:'&lsquo;मुनि&rsquo; शब्दस्य प्रथमा बहुवचनम् किम्?',o:['मुनयः','मुनीन्','मुनी','मुनिभिः'],a:0,e:'मुनयः. मुनीन् is द्वितीया बहुवचन and मुनिभिः तृतीया बहुवचन.'},
+{s:'skt',c:13,t:'mcq',q:'&lsquo;अहम्&rsquo; इत्यस्य बहुवचनम् किम्?',o:['वयम्','आवाम्','अस्मान्','अस्माकम्'],a:0,e:'वयम् &mdash; we. आवाम् is the dual (we two), अस्मान् is द्वितीया and अस्माकम् षष्ठी.'},
+{s:'skt',c:13,t:'mcq',q:'&lsquo;युष्मद्&rsquo; शब्दस्य षष्ठी बहुवचनम् किम्?',o:['युष्माकम्','यूयम्','युष्मान्','युष्माभिः'],a:0,e:'युष्माकम् &mdash; &lsquo;of you all&rsquo;. यूयम् is प्रथमा, युष्मान् द्वितीया, युष्माभिः तृतीया.'},
+{s:'skt',c:13,t:'mcq',q:'&lsquo;तद्&rsquo; शब्दस्य स्त्रीलिङ्गे प्रथमा एकवचनम् किम्?',o:['सा','सः','तत्','ते'],a:0,e:'सा for feminine, सः for masculine, तत् for neuter. All three are the same word तद् changing by gender.'},
+{s:'skt',c:13,t:'mcq',q:'&lsquo;अस्मद्&rsquo; तथा &lsquo;युष्मद्&rsquo; शब्दयोः किम् न भवति?',o:['सम्बोधनम्','बहुवचनम्','षष्ठी विभक्तिः','द्विवचनम्'],a:0,e:'Neither has a सम्बोधन form, and the reason is plain once you see it: you cannot call out to &ldquo;I&rdquo; or to &ldquo;you&rdquo; &mdash; you are already addressing them.'},
+{s:'skt',c:13,t:'fill',q:'&lsquo;बालक&rsquo; शब्दस्य षष्ठी एकवचनम् ______ ।',a:['बालकस्य','balakasya'],e:'बालकस्य &mdash; &lsquo;of the boy&rsquo;.'},
+{s:'skt',c:13,t:'fill',q:'&lsquo;लता&rsquo; शब्दस्य सप्तमी एकवचनम् ______ ।',a:['लतायाम्','लतायां','latayam'],e:'लतायाम् &mdash; &lsquo;in the creeper&rsquo;.'},
+{s:'skt',c:13,t:'tf',q:'नपुंसकलिङ्गे प्रथमा तथा द्वितीया विभक्त्योः रूपाणि समानानि भवन्ति ।',a:true,e:'सत्यम्. In every neuter noun the first and second cases are identical &mdash; फलम्/फलम्, फले/फले, फलानि/फलानि. It is the quickest way to spot a neuter form.'},
+{s:'skt',c:13,t:'tf',q:'&lsquo;बालकाभ्याम्&rsquo; इति रूपं केवलं तृतीयायाम् एव भवति ।',a:false,e:'असत्यम्. बालकाभ्याम् serves तृतीया, चतुर्थी and पञ्चमी alike in the dual. Several dual forms do double and triple duty, which is why the grid matters more than the list.'},
+{s:'skt',c:13,t:'match',q:'योजयत &mdash; रूपं तथा विभक्तिः ।',pairs:[['बालकम्','द्वितीया एकवचन'],['बालकेन','तृतीया एकवचन'],['बालकाय','चतुर्थी एकवचन'],['बालकात्','पञ्चमी एकवचन'],['बालके','सप्तमी एकवचन']],e:'Read the ending, not the word: -म् द्वितीया, -एन तृतीया, -आय चतुर्थी, -आत् पञ्चमी, -ए सप्तमी.'},
+{s:'skt',c:13,t:'short',m:3,q:'&lsquo;बालक&rsquo; शब्दस्य सप्त विभक्तीनाम् एकवचनरूपाणि लिखत ।',a:'प्रथमा बालकः, द्वितीया बालकम्, तृतीया बालकेन, चतुर्थी बालकाय, पञ्चमी बालकात्, षष्ठी बालकस्य, सप्तमी बालके. सम्बोधन: हे बालक! Write them in this order every time &mdash; examiners award by position as much as by form, and a jumbled list loses marks it need not.'},
+
+/* ---- 14 धातुरूपाणि ---- */
+{s:'skt',c:14,t:'mcq',q:'&lsquo;पठ्&rsquo; धातोः लट्लकारे प्रथमपुरुषे बहुवचनम् किम्?',o:['पठन्ति','पठतः','पठति','पठथ'],a:0,e:'पठन्ति &mdash; they read. पठति is एकवचन, पठतः द्विवचन; पठथ is मध्यमपुरुष बहुवचन.'},
+{s:'skt',c:14,t:'mcq',q:'&lsquo;अपठत्&rsquo; इति कस्मिन् लकारे?',o:['लङ् लकारे','लट् लकारे','लृट् लकारे','लोट् लकारे'],a:0,e:'लङ् &mdash; the past. The giveaway is the अ- prefixed to the stem. Stories in Sanskrit are told almost entirely in this लकार.'},
+{s:'skt',c:14,t:'mcq',q:'&lsquo;पठिष्यति&rsquo; इति कस्मिन् लकारे?',o:['लृट् लकारे','लङ् लकारे','विधिलिङ्&nbsp;लकारे','लोट् लकारे'],a:0,e:'लृट् &mdash; the future, marked by the -ष्य- inserted before the ending.'},
+{s:'skt',c:14,t:'mcq',q:'&lsquo;गम्&rsquo; धातोः लट्लकारे प्रथमपुरुष एकवचनम् किम्?',o:['गच्छति','गमति','गमिष्यति','अगच्छत्'],a:0,e:'गच्छति. The stem itself changes from गम् to गच्छ् &mdash; you cannot build it by rule alone, so it must be learnt.'},
+{s:'skt',c:14,t:'mcq',q:'&lsquo;अस्&rsquo; धातोः लट्लकारे उत्तमपुरुष एकवचनम् किम्?',o:['अस्मि','अस्ति','असि','स्मः'],a:0,e:'अस्मि &mdash; &lsquo;I am&rsquo;. अस्ति is he/she/it is, असि is you are, स्मः is we are. अस् is irregular throughout and simply has to be memorised.'},
+{s:'skt',c:14,t:'mcq',q:'&lsquo;कृ&rsquo; धातोः लट्लकारे प्रथमपुरुषे बहुवचनम् किम्?',o:['कुर्वन्ति','करोति','कुरुतः','कुर्मः'],a:0,e:'कुर्वन्ति. Note how far the stem moves across the three numbers: करोति, कुरुतः, कुर्वन्ति.'},
+{s:'skt',c:14,t:'mcq',q:'&lsquo;पठेत्&rsquo; इत्यस्य अर्थः कः?',o:['पढ़ना चाहिए','पढ़ता है','पढ़ेगा','पढ़ा'],a:0,e:'विधिलिङ् carries &lsquo;should&rsquo; &mdash; obligation or advice, not fact. सः पठेत् = he ought to read.'},
+{s:'skt',c:14,t:'mcq',q:'आज्ञार्थे कः लकारः प्रयुज्यते?',o:['लोट् लकारः','लट् लकारः','लङ् लकारः','लृट् लकारः'],a:0,e:'लोट् is the लकार of command and request: पठ! (read!), गच्छतु (let him go).'},
+{s:'skt',c:14,t:'mcq',q:'&lsquo;आसीत्&rsquo; इति कस्य धातोः रूपम्?',o:['अस्','भू','आस्','इष्'],a:0,e:'अस् in लङ् लकार &mdash; &lsquo;was&rsquo;. The full row is आसीत्, आस्ताम्, आसन्.'},
+{s:'skt',c:14,t:'mcq',q:'&lsquo;भू&rsquo; धातोः लट्लकारे प्रथमपुरुष एकवचनम् किम्?',o:['भवति','भूति','अभवत्','भविष्यति'],a:0,e:'भवति. भू is the model verb of the भ्वादिगण, so its pattern carries across a great many others.'},
+{s:'skt',c:14,t:'fill',q:'&lsquo;पठ्&rsquo; धातोः लट्लकारे उत्तमपुरुष एकवचनम् ______ ।',a:['पठामि','pathami'],e:'पठामि &mdash; &lsquo;I read&rsquo;.'},
+{s:'skt',c:14,t:'fill',q:'&lsquo;गम्&rsquo; धातोः लङ्लकारे प्रथमपुरुष एकवचनम् ______ ।',a:['अगच्छत्','agacchat'],e:'अगच्छत् &mdash; &lsquo;he went&rsquo;. The अ- marks the past, the गच्छ् marks the verb.'},
+{s:'skt',c:14,t:'tf',q:'संस्कृतक्रियापदे पुरुषः वचनं च क्रियायाम् एव निहितम्, अतः सर्वनाम्नः प्रयोगः अनिवार्यः न ।',a:true,e:'सत्यम्. गच्छामि already says &lsquo;I go&rsquo;, so अहम् is optional. This is why Sanskrit sentences can be so short.'},
+{s:'skt',c:14,t:'tf',q:'लङ्लकारस्य आरम्भे &lsquo;अ&rsquo; इति आगमः भवति ।',a:true,e:'सत्यम्. That initial अ &mdash; अपठत्, अगच्छत्, अकरोत् &mdash; is the surest sign you are looking at the past tense.'},
+{s:'skt',c:14,t:'match',q:'योजयत &mdash; लकारः तथा अर्थः ।',pairs:[['लट्','वर्तमान काल'],['लृट्','भविष्यत् काल'],['लङ्','भूत काल'],['लोट्','आज्ञा अथवा प्रार्थना'],['विधिलिङ्','चाहिए अथवा सम्भावना']],e:'Five लकार cover nearly everything Class VIII asks. Learn them by meaning first, forms second.'},
+{s:'skt',c:14,t:'short',m:3,q:'&lsquo;पठ्&rsquo; धातोः लट्लकारस्य नव रूपाणि लिखत ।',a:'प्रथमपुरुष: पठति, पठतः, पठन्ति. मध्यमपुरुष: पठसि, पठथः, पठथ. उत्तमपुरुष: पठामि, पठावः, पठामः. Always write them in this order &mdash; प्रथम, मध्यम, उत्तम, and within each, एकवचन, द्विवचन, बहुवचन. Sanskrit orders its persons the opposite way round to English grammar, and mixing the two up costs marks.'},
+
+/* ---- 15 कारक ---- */
+{s:'skt',c:15,t:'mcq',q:'&lsquo;रामः पुस्तकं पठति&rsquo; अत्र &lsquo;पुस्तकम्&rsquo; इति किम् कारकम्?',o:['कर्म','कर्ता','करण','अधिकरण'],a:0,e:'कर्म &mdash; what the action falls on &mdash; takes द्वितीया. रामः is the कर्ता in प्रथमा.'},
+{s:'skt',c:15,t:'mcq',q:'&lsquo;बालकः लेखन्या लिखति&rsquo; अत्र &lsquo;लेखन्या&rsquo; इति कारकम्?',o:['करणम्','कर्म','सम्प्रदानम्','अपादानम्'],a:0,e:'करण &mdash; the instrument, &lsquo;with the pen&rsquo; &mdash; takes तृतीया.'},
+{s:'skt',c:15,t:'mcq',q:'&lsquo;वृक्षात् पत्रं पतति&rsquo; अत्र &lsquo;वृक्षात्&rsquo; इति कारकम्?',o:['अपादानम्','अधिकरणम्','करणम्','कर्म'],a:0,e:'अपादान &mdash; moving away from something &mdash; takes पञ्चमी. The leaf separates from the tree.'},
+{s:'skt',c:15,t:'mcq',q:'&lsquo;नमः&rsquo; इत्यस्य योगे का विभक्तिः?',o:['चतुर्थी','द्वितीया','षष्ठी','सप्तमी'],a:0,e:'चतुर्थी &mdash; रामाय नमः, गुरवे नमः. This one is asked almost every year.'},
+{s:'skt',c:15,t:'mcq',q:'&lsquo;अभितः&rsquo;, &lsquo;परितः&rsquo;, &lsquo;सर्वतः&rsquo; इत्येषां योगे का विभक्तिः?',o:['द्वितीया','तृतीया','पञ्चमी','सप्तमी'],a:0,e:'All of them take द्वितीया &mdash; ग्रामम् अभितः वृक्षाः सन्ति. Learn this small set as a block; examiners like it precisely because it breaks the obvious pattern.'},
+{s:'skt',c:15,t:'mcq',q:'&lsquo;सह&rsquo; इत्यस्य योगे का विभक्तिः?',o:['तृतीया','द्वितीया','चतुर्थी','षष्ठी'],a:0,e:'तृतीया &mdash; रामेण सह, &lsquo;along with Rama&rsquo;.'},
+{s:'skt',c:15,t:'mcq',q:'&lsquo;वृक्षे खगाः सन्ति&rsquo; अत्र &lsquo;वृक्षे&rsquo; इति कारकम्?',o:['अधिकरणम्','अपादानम्','कर्म','करणम्'],a:0,e:'अधिकरण &mdash; the place or time in which something happens &mdash; takes सप्तमी.'},
+{s:'skt',c:15,t:'mcq',q:'&lsquo;रामस्य पुस्तकम्&rsquo; अत्र षष्ठी कस्य द्योतिका?',o:['सम्बन्धस्य','कर्मणः','करणस्य','अपादानस्य'],a:0,e:'षष्ठी shows सम्बन्ध &mdash; a relation between two nouns. Strictly it is not a कारक at all, because it plays no role in the action itself. That distinction is worth a mark.'},
+{s:'skt',c:15,t:'mcq',q:'&lsquo;सिंहात् बिभेति&rsquo; अत्र &lsquo;सिंहात्&rsquo; पञ्चमी कस्मात् प्रयुक्ता?',o:['भयार्थकधातुयोगे','सम्बन्धार्थे','करणार्थे','अधिकरणार्थे'],a:0,e:'Verbs of fear take पञ्चमी for the thing feared &mdash; you shrink away from it, which is अपादान in spirit.'},
+{s:'skt',c:15,t:'fill',q:'&lsquo;निर्धनाय धनं ______ &rsquo; &mdash; अत्र &lsquo;निर्धनाय&rsquo; इति ______ कारकम् ।',a:['सम्प्रदान','सम्प्रदानम्','sampradan'],e:'सम्प्रदान &mdash; the one you give to &mdash; takes चतुर्थी.'},
+{s:'skt',c:15,t:'tf',q:'षष्ठी विभक्तिः कारकम् अस्ति ।',a:false,e:'असत्यम्. षष्ठी shows सम्बन्ध between two nouns, not a role in the verb&rsquo;s action, so it is counted outside the कारक proper. Examiners ask this to see whether you have understood कारक or only memorised endings.'},
+{s:'skt',c:15,t:'tf',q:'&lsquo;विना&rsquo; इत्यस्य योगे द्वितीया, तृतीया, पञ्चमी &mdash; इति तिस्रः अपि विभक्तयः प्रयुज्यन्ते ।',a:true,e:'सत्यम्. विना is unusually generous: रामं विना, रामेण विना and रामात् विना are all acceptable.'},
+{s:'skt',c:15,t:'match',q:'योजयत &mdash; कारकम् तथा विभक्तिः ।',pairs:[['कर्ता','प्रथमा'],['कर्म','द्वितीया'],['करणम्','तृतीया'],['सम्प्रदानम्','चतुर्थी'],['अपादानम्','पञ्चमी'],['अधिकरणम्','सप्तमी']],e:'Six roles, six cases, in order. The seventh case &mdash; षष्ठी &mdash; is the odd one out, being सम्बन्ध rather than a कारक.'},
+{s:'skt',c:15,t:'short',m:2,q:'कारकम् तथा विभक्तिः &mdash; अनयोः कः भेदः?',a:'कारक is the role a noun plays in relation to the action of the verb &mdash; who does it, what it is done to, what it is done with, and so on. विभक्ति is the case ending that shows that role in writing. They usually correspond, but not perfectly: षष्ठी विभक्ति marks सम्बन्ध, a relation between two nouns, which is not a role in the action at all and so is not counted among the कारक. Equally, one कारक can appear in more than one विभक्ति depending on the word it follows &mdash; विना takes द्वितीया, तृतीया or पञ्चमी.'},
+
+/* ---- 16 सन्धि ---- */
+{s:'skt',c:16,t:'mcq',q:'&lsquo;विद्या + आलयः&rsquo; इत्यस्य सन्धिः कः?',o:['विद्यालयः','विद्यालयम्','विद्याअलयः','विद्यैलयः'],a:0,e:'दीर्घ सन्धि: आ + आ = आ. Two similar vowels meeting simply make the long one.'},
+{s:'skt',c:16,t:'mcq',q:'&lsquo;देव + इन्द्रः&rsquo; इत्यस्य सन्धिः कः?',o:['देवेन्द्रः','देवइन्द्रः','देवैन्द्रः','देविन्द्रः'],a:0,e:'गुण सन्धि: अ + इ = ए.'},
+{s:'skt',c:16,t:'mcq',q:'&lsquo;सूर्य + उदयः&rsquo; इत्यस्य सन्धिः कः?',o:['सूर्योदयः','सूर्यउदयः','सूर्यौदयः','सूर्यूदयः'],a:0,e:'गुण सन्धि: अ + उ = ओ.'},
+{s:'skt',c:16,t:'mcq',q:'&lsquo;एक + एकम्&rsquo; इत्यस्य सन्धिः कः?',o:['एकैकम्','एकेकम्','एकाएकम्','एकौकम्'],a:0,e:'वृद्धि सन्धि: अ + ए = ऐ.'},
+{s:'skt',c:16,t:'mcq',q:'&lsquo;सु + आगतम्&rsquo; इत्यस्य सन्धिः कः?',o:['स्वागतम्','सुआगतम्','सोआगतम्','सूगतम्'],a:0,e:'यण् सन्धि: उ before an unlike vowel becomes व्. The everyday word स्वागतम् is a सन्धि you have been using all along.'},
+{s:'skt',c:16,t:'mcq',q:'&lsquo;इति + अपि&rsquo; इत्यस्य सन्धिः कः?',o:['इत्यपि','इतिअपि','इतीपि','इत्यापि'],a:0,e:'यण् सन्धि: इ becomes य् before an unlike vowel.'},
+{s:'skt',c:16,t:'mcq',q:'&lsquo;ने + अनम्&rsquo; इत्यस्य सन्धिः कः?',o:['नयनम्','नेअनम्','नैनम्','नयानम्'],a:0,e:'अयादि सन्धि: ए + अ = अय्. So नयनम्, the eye, is literally &lsquo;that which leads&rsquo;.'},
+{s:'skt',c:16,t:'mcq',q:'&lsquo;सत् + जनः&rsquo; इत्यस्य सन्धिः कः?',o:['सज्जनः','सत्जनः','सद्जनः','सच्जनः'],a:0,e:'व्यञ्जन सन्धि: त् + ज = ज्ज.'},
+{s:'skt',c:16,t:'mcq',q:'&lsquo;मनः + रथः&rsquo; इत्यस्य सन्धिः कः?',o:['मनोरथः','मनरथः','मनःरथः','मनोरथम्'],a:0,e:'विसर्ग सन्धि: अः before a soft consonant becomes ओ.'},
+{s:'skt',c:16,t:'mcq',q:'&lsquo;निः + बलः&rsquo; इत्यस्य सन्धिः कः?',o:['निर्बलः','निबलः','निःबलः','नीबलः'],a:0,e:'विसर्ग सन्धि: इः before a soft consonant becomes इर्.'},
+{s:'skt',c:16,t:'mcq',q:'&lsquo;रामोऽस्ति&rsquo; इत्यस्य सन्धिविच्छेदः कः?',o:['रामः + अस्ति','रामो + अस्ति','राम + अस्ति','रामौ + अस्ति'],a:0,e:'रामः + अस्ति. The अवग्रह (ऽ) is not decoration &mdash; it marks the अ that was swallowed, and putting it back is how you split the सन्धि.'},
+{s:'skt',c:16,t:'fill',q:'&lsquo;गिरि + ईशः&rsquo; = ______ ।',a:['गिरीशः','girishah','girisah'],e:'दीर्घ सन्धि: इ + ई = ई.'},
+{s:'skt',c:16,t:'fill',q:'&lsquo;देव + ऋषिः&rsquo; = ______ ।',a:['देवर्षिः','devarshih'],e:'गुण सन्धि: अ + ऋ = अर्.'},
+{s:'skt',c:16,t:'tf',q:'सन्धिविच्छेदे नियमः विपरीतक्रमेण प्रयोक्तव्यः ।',a:true,e:'सत्यम्. To split a सन्धि you run the rule backwards: see ए, ask which pair makes ए, and you have अ + इ. Guessing at the split without naming the rule is where most marks go.'},
+{s:'skt',c:16,t:'match',q:'योजयत &mdash; सन्धिः तथा तस्याः नाम ।',pairs:[['विद्या + आलयः = विद्यालयः','दीर्घ सन्धि'],['देव + इन्द्रः = देवेन्द्रः','गुण सन्धि'],['एक + एकम् = एकैकम्','वृद्धि सन्धि'],['सु + आगतम् = स्वागतम्','यण् सन्धि'],['ने + अनम् = नयनम्','अयादि सन्धि']],e:'Five vowel सन्धि, one example each. If you can name the rule you can also reverse it.'},
+{s:'skt',c:16,t:'short',m:3,q:'स्वरसन्धेः पञ्च भेदाः उदाहरणसहितं लिखत ।',a:'(१) दीर्घ &mdash; two similar vowels give the long one: विद्या + आलयः = विद्यालयः. (२) गुण &mdash; अ/आ followed by इ, उ or ऋ gives ए, ओ or अर्: देव + इन्द्रः = देवेन्द्रः; सूर्य + उदयः = सूर्योदयः; देव + ऋषिः = देवर्षिः. (३) वृद्धि &mdash; अ/आ followed by ए/ऐ gives ऐ, and by ओ/औ gives औ: एक + एकम् = एकैकम्. (४) यण् &mdash; इ, उ, ऋ before an unlike vowel become य्, व्, र्: इति + अपि = इत्यपि; सु + आगतम् = स्वागतम्. (५) अयादि &mdash; ए, ऐ, ओ, औ before a vowel become अय्, आय्, अव्, आव्: ने + अनम् = नयनम्; पौ + अकः = पावकः.'},
+
+/* ---- 17 संख्या, वासर, मास ---- */
+{s:'skt',c:17,t:'mcq',q:'&lsquo;षोडश&rsquo; इत्यस्य संख्या का?',o:['१६','१४','१८','६०'],a:0,e:'षोडश = 16. Do not confuse it with षष्टिः, which is 60.'},
+{s:'skt',c:17,t:'mcq',q:'&lsquo;सप्ततिः&rsquo; इत्यस्य संख्या का?',o:['७०','७','१७','७७'],a:0,e:'सप्ततिः = 70. सप्त is 7 and सप्तदश is 17 &mdash; three words worth keeping apart.'},
+{s:'skt',c:17,t:'mcq',q:'&lsquo;एकोनविंशतिः&rsquo; इत्यस्य अर्थः कः?',o:['१९','२१','२९','९१'],a:0,e:'Literally &lsquo;one less than twenty&rsquo;. Sanskrit often counts down to the next ten like this &mdash; एकोनत्रिंशत् is 29.'},
+{s:'skt',c:17,t:'mcq',q:'&lsquo;बुधवासरः&rsquo; इति कः वारः?',o:['बुधवार','सोमवार','गुरुवार','शुक्रवार'],a:0,e:'बुधवासरः = Wednesday. All seven end in -वासरः, so only the first part needs learning.'},
+{s:'skt',c:17,t:'mcq',q:'संस्कृतमासेषु प्रथमः मासः कः?',o:['चैत्रः','माघः','कार्तिकः','श्रावणः'],a:0,e:'चैत्र begins the traditional year, around March&ndash;April. फाल्गुन closes it.'},
+{s:'skt',c:17,t:'mcq',q:'&lsquo;शतम्&rsquo; इत्यस्य संख्या का?',o:['१००','१०','१०००','५०'],a:0,e:'शतम् = 100. सहस्रम् is 1000, दश is 10.'},
+{s:'skt',c:17,t:'mcq',q:'&lsquo;अधुना कति वादनम्?&rsquo; इत्यस्य अर्थः कः?',o:['इस समय कितने बजे हैं?','अब क्या करना है?','आज कौन-सा दिन है?','कितने लोग हैं?'],a:0,e:'वादनम् is the striking of the hour, so कति वादनम् is &lsquo;how many o&rsquo;clock&rsquo;.'},
+{s:'skt',c:17,t:'mcq',q:'संस्कृते कस्याः संख्यायाः आरभ्य लिङ्गभेदः न भवति?',o:['पञ्च','एक','द्वि','त्रि'],a:0,e:'एक, द्वि, त्रि and चतुर् change by gender; from पञ्च onwards the numerals stay the same whatever the noun. One fewer thing to memorise.'},
+{s:'skt',c:17,t:'fill',q:'&lsquo;५०&rsquo; इत्यस्य संस्कृतशब्दः ______ ।',a:['पञ्चाशत्','पंचाशत्','panchashat'],e:'पञ्चाशत् = 50.'},
+{s:'skt',c:17,t:'fill',q:'&lsquo;रविवासरः&rsquo; इत्यस्य हिन्दी-अर्थः ______ ।',a:['रविवार','इतवार','रविवार।'],e:'रविवार &mdash; Sunday, named for रवि, the sun.'},
+{s:'skt',c:17,t:'tf',q:'&lsquo;अष्टादश&rsquo; इत्यस्य अर्थः अष्टाशीतिः ।',a:false,e:'असत्यम्. अष्टादश is 18; अशीतिः is 80 and अष्टाशीतिः is 88. The endings -दश and -शीतिः are what separate them.'},
+{s:'skt',c:17,t:'match',q:'योजयत &mdash; संस्कृतसंख्या तथा अङ्कः ।',pairs:[['विंशतिः','२०'],['त्रिंशत्','३०'],['चत्वारिंशत्','४०'],['षष्टिः','६०'],['नवतिः','९०']],e:'The tens are the backbone; everything between them is built by joining a unit to the ten above or below.'},
+
+/* ---- 18 उपसर्ग, अव्यय, प्रत्यय ---- */
+{s:'skt',c:18,t:'mcq',q:'संस्कृते उपसर्गाणां संख्या का?',o:['२२','१०','१८','२४'],a:0,e:'Twenty-two: प्र, परा, अप, सम्, अनु, अव, निस्, निर्, दुस्, दुर्, वि, आ, नि, अधि, अपि, अति, सु, उत्, अभि, प्रति, परि, उप.'},
+{s:'skt',c:18,t:'mcq',q:'&lsquo;आहरति&rsquo; इत्यत्र कः उपसर्गः?',o:['आ','अ','आह','हर'],a:0,e:'आ + हृ. The root हृ means to carry; आ turns it round to &lsquo;bring&rsquo;. An उपसर्ग can reverse a verb entirely.'},
+{s:'skt',c:18,t:'mcq',q:'अव्ययस्य किम् लक्षणम्?',o:['लिङ्ग-वचन-विभक्तिभिः न परिवर्तते','केवलं बहुवचने प्रयुज्यते','सदा स्त्रीलिङ्गे भवति','क्रियापदम् एव भवति'],a:0,e:'That is the definition and the name: अ-व्यय, &lsquo;not subject to change&rsquo;. It looks the same in every position.'},
+{s:'skt',c:18,t:'mcq',q:'&lsquo;श्वः&rsquo; इत्यस्य अर्थः कः?',o:['आगामी दिनम्','गतदिनम्','अद्य','सर्वदा'],a:0,e:'श्वः is tomorrow, ह्यः is yesterday, अद्य is today, परश्वः is the day after.'},
+{s:'skt',c:18,t:'mcq',q:'&lsquo;पठित्वा&rsquo; इत्यत्र कः प्रत्ययः?',o:['क्त्वा','ल्यप्','तुमुन्','शतृ'],a:0,e:'क्त्वा gives &lsquo;having read&rsquo;, and is used when the root carries no उपसर्ग.'},
+{s:'skt',c:18,t:'mcq',q:'&lsquo;आगत्य&rsquo; इत्यत्र कः प्रत्ययः?',o:['ल्यप्','क्त्वा','तुमुन्','क्तवतु'],a:0,e:'ल्यप् &mdash; because आ + गम् already carries an उपसर्ग. Using क्त्वा here (आगमित्वा) is the commonest single mistake in this chapter.'},
+{s:'skt',c:18,t:'mcq',q:'&lsquo;पठितुम्&rsquo; इत्यस्य अर्थः कः?',o:['पढ़ने के लिए','पढ़कर','पढ़ता हुआ','पढ़ा हुआ'],a:0,e:'तुमुन् gives purpose &mdash; &lsquo;in order to read&rsquo;. सः पठितुं गच्छति: he goes in order to read.'},
+{s:'skt',c:18,t:'mcq',q:'&lsquo;शनैः&rsquo; इत्यस्य अर्थः कः?',o:['धीरे-धीरे','शीघ्रम्','उच्चस्वरेण','सर्वत्र'],a:0,e:'शनैः शनैः &mdash; slowly, gradually. Its opposite in this pair is शीघ्रम्.'},
+{s:'skt',c:18,t:'fill',q:'&lsquo;अत्र&rsquo; इत्यस्य विपरीतार्थकम् अव्ययम् ______ ।',a:['तत्र','tatra'],e:'अत्र is here, तत्र is there, कुत्र is where, सर्वत्र is everywhere.'},
+{s:'skt',c:18,t:'fill',q:'&lsquo;गम्&rsquo; धातोः तुमुन्-प्रत्ययान्तं रूपम् ______ ।',a:['गन्तुम्','गन्तुं','gantum'],e:'गन्तुम् &mdash; &lsquo;in order to go&rsquo;. Note the stem shift again: गम् &rarr; गन्तुम्.'},
+{s:'skt',c:18,t:'tf',q:'यदि धातोः पूर्वम् उपसर्गः अस्ति तर्हि क्त्वा-प्रत्ययस्य स्थाने ल्यप् भवति ।',a:true,e:'सत्यम्. गत्वा (no उपसर्ग) but आगत्य (with आ). This one rule accounts for most of the errors in this section.'},
+{s:'skt',c:18,t:'tf',q:'&lsquo;च&rsquo;, &lsquo;वा&rsquo;, &lsquo;तु&rsquo; इत्येतानि अव्ययानि सन्ति ।',a:true,e:'सत्यम्. All the small joining words &mdash; and, or, but &mdash; are अव्यय, unchanging in every sentence.'},
+{s:'skt',c:18,t:'match',q:'योजयत &mdash; अव्ययम् तथा अर्थः ।',pairs:[['अद्य','आज'],['ह्यः','कल (बीता हुआ)'],['श्वः','कल (आने वाला)'],['अधुना','अब'],['सदा','सदैव']],e:'Hindi uses one word, कल, for both yesterday and tomorrow; Sanskrit does not. ह्यः looks back, श्वः looks forward.'},
+{s:'skt',c:18,t:'short',m:2,q:'क्त्वा तथा ल्यप् प्रत्यययोः भेदं सोदाहरणं लिखत ।',a:'Both mean &lsquo;having done&rsquo; and both make an indeclinable, so the meaning is the same; what differs is where each may be used. क्त्वा goes on a bare root with no उपसर्ग in front: पठ् + क्त्वा = पठित्वा (having read), गम् + क्त्वा = गत्वा (having gone). ल्यप् takes its place the moment the root carries an उपसर्ग: आ + गम् + ल्यप् = आगत्य (having come), वि + हस् + ल्यप् = विहस्य (having laughed). So the test is simply: is there an उपसर्ग? If yes, ल्यप्; if no, क्त्वा.'}
+];
+
+BANK.push(...SKT_BANK);
+
+
+/* ============================================================
+   HINDI — NCERT मल्हार (Malhar), Class VIII, 2025-26.
+   This replaces Vasant, Durva and Bharat ki Khoj. Worth stating plainly,
+   because most sites still list Vasant's contents under Malhar's name —
+   the same trap the maths syllabus fell into earlier.
+
+   Chapters 1-10 are the literature, with विधा and what is worth noting as
+   you read. 11-18 are व्याकरण, which is where the marks are lost and where
+   drilling works, so those carry the question bank.
+   ============================================================ */
+const HIN = [
+{n:1, title:"स्वदेश", sub:"कविता", lesson:true, map:"कविता &rarr; भाव &rarr; काव्य-सौन्दर्य",
+ notes:["A poem on one&rsquo;s own country. For any कविता, note three things as you read: the कवि, the central भाव, and two lines you could quote from memory.",
+  "काव्य-सौन्दर्य questions ask what makes a line beautiful &mdash; usually an अलंकार or a striking image. Mark them in the margin as you go."]},
+{n:2, title:"दो गौरैया", sub:"कहानी", lesson:true, map:"कहानी &rarr; पात्र &rarr; घटनाक्रम &rarr; सन्देश",
+ notes:["A story about two sparrows. For a कहानी, keep a list of पात्र and one line on each &mdash; character questions are nearly free marks if you have that list.",
+  "Write the सारांश in six or seven sentences of your own once you have read it. Do not copy the book&rsquo;s sentences; the examiner can tell."]},
+{n:3, title:"एक आशीर्वाद", sub:"कविता", lesson:true, map:"कविता &rarr; आशीर्वाद का भाव",
+ notes:["A poem shaped as a blessing. Ask what is being wished for, and for whom &mdash; that is usually the central question.",
+  "Learn two or three lines by heart. A quoted line inside an answer lifts it noticeably."]},
+{n:4, title:"हरिद्वार", sub:"पत्र", lesson:true, map:"पत्र &rarr; लेखक &rarr; वर्णन &rarr; प्रभाव",
+ notes:["A letter, so the विधा itself is examinable: who writes, to whom, and what the letter format shows. Note the तिथि, सम्बोधन and समापन.",
+  "Descriptive letters are asked as &lsquo;लेखक ने क्या देखा और कैसा अनुभव किया&rsquo;. Keep the sights and the feelings separate in your notes."]},
+{n:5, title:"कबीर के दोहे", sub:"दोहे", lesson:true, map:"दोहा &rarr; अर्थ &rarr; भाव &rarr; सन्देश",
+ notes:["Kabir&rsquo;s दोहे. Every one is two lines, and every one is asked the same three ways: literal अर्थ, the भाव behind it, and the सन्देश it carries.",
+  "Learn each दोहा whole. Half a दोहा earns nothing, and they are short enough that there is no excuse.",
+  "Kabir writes in सधुक्कड़ी &mdash; a mixed, plain-spoken idiom. Difficult words are usually explained in the शब्दार्थ at the foot of the page; copy them out."]},
+{n:6, title:"एक टोकरी भर मिट्टी", sub:"कहानी", lesson:true, map:"कहानी &rarr; ज़मींदार और वृद्धा &rarr; मार्मिक अन्त",
+ notes:["A well-known short story. Note where the turn comes &mdash; the moment the reader&rsquo;s sympathy shifts &mdash; because that is what &lsquo;मार्मिक प्रसंग&rsquo; questions are asking about.",
+  "Be ready to say what the टोकरी भर मिट्टी stands for. Symbol questions want the literal thing and what it represents, both."]},
+{n:7, title:"मत बाँधो", sub:"कविता", lesson:true, map:"कविता &rarr; स्वतन्त्रता का भाव",
+ notes:["A poem of refusal &mdash; do not bind. Ask what is being bound and who is speaking.",
+  "Poems built on a repeated line are asked about that repetition: what does saying it again do? Note where it recurs."]},
+{n:8, title:"नए मेहमान", sub:"एकांकी", lesson:true, map:"एकांकी &rarr; संवाद &rarr; रंगमंच &rarr; चरित्र",
+ notes:["A one-act play. एकांकी is examined differently from a story: संवाद carry the characters, and the मंच-निर्देश (stage directions) carry the setting.",
+  "Learn what makes एकांकी its own विधा &mdash; single scene, few characters, one situation, quick conclusion. That definition is a standard question."]},
+{n:9, title:"आदमी का अनुपात", sub:"कविता", lesson:true, map:"कविता &rarr; मनुष्य का मापदण्ड",
+ notes:["A poem about the measure of a person. The title is the question the poem asks; the answer it gives is the central भाव.",
+  "Note any comparison the poet draws. Comparisons in a poem are usually उपमा or रूपक, and naming the अलंकार earns a separate mark."]},
+{n:10, title:"तरुण के स्वप्न", sub:"उद्बोधन", lesson:true, map:"उद्बोधन &rarr; युवाओं से आह्वान",
+ notes:["An उद्बोधन &mdash; an address meant to rouse. It is written to young people, so note what it asks of them.",
+  "Persuasive writing is examined as &lsquo;लेखक युवाओं से क्या अपेक्षा रखता है&rsquo;. List the expectations as points; they are easier to recall as a list than as prose."]},
+
+/* ---- व्याकरण: this is what gets drilled ---- */
+{n:11, title:"संधि", sub:"स्वर, व्यंजन और विसर्ग संधि",
+ map:"स्वर संधि (दीर्घ &middot; गुण &middot; वृद्धि &middot; यण् &middot; अयादि) &rarr; व्यंजन संधि &rarr; विसर्ग संधि",
+ notes:[
+  "संधि is the change that happens where two sounds meet. संधि-विच्छेद is undoing it. Both are asked, and the second is harder, so practise splitting more than joining.",
+  "<b>दीर्घ</b>: same vowels give the long one &mdash; विद्या + आलय = विद्यालय, कवि + ईश = कवीश, भानु + उदय = भानूदय.",
+  "<b>गुण</b>: अ/आ + इ/ई = ए, + उ/ऊ = ओ, + ऋ = अर् &mdash; देव + इन्द्र = देवेन्द्र, महा + उत्सव = महोत्सव, देव + ऋषि = देवर्षि.",
+  "<b>वृद्धि</b>: अ/आ + ए/ऐ = ऐ, + ओ/औ = औ &mdash; एक + एक = एकैक, महा + औषध = महौषध.",
+  "<b>यण्</b>: इ, उ, ऋ before an unlike vowel become य्, व्, र् &mdash; अति + अधिक = अत्यधिक, सु + आगत = स्वागत, पितृ + आज्ञा = पित्राज्ञा.",
+  "<b>अयादि</b>: ए, ऐ, ओ, औ before a vowel become अय्, आय्, अव्, आव् &mdash; ने + अन = नयन, पौ + अक = पावक.",
+  "<b>व्यंजन</b>: सत् + जन = सज्जन, उत् + लास = उल्लास, जगत् + नाथ = जगन्नाथ. <b>विसर्ग</b>: निः + बल = निर्बल, मनः + रथ = मनोरथ, दुः + जन = दुर्जन."]},
+{n:12, title:"समास", sub:"छह भेद और विग्रह",
+ map:"तत्पुरुष &rarr; कर्मधारय &rarr; द्विगु &rarr; द्वंद्व &rarr; बहुव्रीहि &rarr; अव्ययीभाव",
+ notes:[
+  "समास joins two words and drops the connector. समास-विग्रह puts the connector back. The trick to naming the भेद is asking which word carries the weight.",
+  "<b>तत्पुरुष</b> &mdash; the second word matters, and a विभक्ति is dropped: राजा का पुत्र = राजपुत्र, रसोई के लिए घर = रसोईघर.",
+  "<b>कर्मधारय</b> &mdash; one word describes the other, like an adjective and its noun: नील है जो कमल = नीलकमल, महान् है जो पुरुष = महापुरुष.",
+  "<b>द्विगु</b> &mdash; the first word is a number: तीन लोकों का समूह = त्रिलोक, नौ रत्नों का समूह = नवरत्न.",
+  "<b>द्वंद्व</b> &mdash; both words matter equally and &lsquo;और&rsquo; is dropped: माता और पिता = माता-पिता, राजा और रानी = राजा-रानी.",
+  "<b>बहुव्रीहि</b> &mdash; neither word matters; together they point at a third thing: नीला है कंठ जिसका, अर्थात् शिव = नीलकंठ. If the answer is somebody not named in the compound, it is बहुव्रीहि.",
+  "<b>अव्ययीभाव</b> &mdash; the first word is an अव्यय and the whole becomes one: प्रति दिन = प्रतिदिन, यथा शक्ति = यथाशक्ति."]},
+{n:13, title:"अलंकार", sub:"शब्दालंकार और अर्थालंकार",
+ map:"शब्दालंकार (अनुप्रास &middot; यमक &middot; श्लेष) &rarr; अर्थालंकार (उपमा &middot; रूपक &middot; उत्प्रेक्षा &middot; अतिशयोक्ति &middot; मानवीकरण)",
+ notes:[
+  "अलंकार is ornament. If the beauty is in the <i>sound</i>, it is a शब्दालंकार; if in the <i>meaning</i>, an अर्थालंकार. Deciding that first halves the work.",
+  "<b>अनुप्रास</b> &mdash; the same letter repeating: &lsquo;चारु चंद्र की चंचल किरणें&rsquo;. <b>यमक</b> &mdash; the same word twice with different meanings: &lsquo;कनक कनक ते सौ गुनी&rsquo;. <b>श्लेष</b> &mdash; one word carrying two meanings at once.",
+  "<b>उपमा</b> &mdash; an open comparison with सा, सी, जैसा, सम: &lsquo;मुख चंद्रमा के समान&rsquo;. Look for the comparing word; it is always there.",
+  "<b>रूपक</b> &mdash; no comparing word, because the two are called one and the same: &lsquo;चरण-कमल&rsquo;. उपमा says <i>like</i>; रूपक says <i>is</i>. That single difference is the most-asked distinction in the chapter.",
+  "<b>उत्प्रेक्षा</b> &mdash; a supposition, marked by मानो, जनु, ज्यों: &lsquo;मानो सोना बरस रहा हो&rsquo;.",
+  "<b>अतिशयोक्ति</b> &mdash; deliberate exaggeration beyond the possible. <b>मानवीकरण</b> &mdash; nature given human behaviour: &lsquo;लहरें नाच रही हैं&rsquo;."]},
+{n:14, title:"कारक", sub:"आठ कारक और उनके चिह्न",
+ map:"कर्ता ने &rarr; कर्म को &rarr; करण से/द्वारा &rarr; सम्प्रदान को/के लिए &rarr; अपादान से (अलग) &rarr; सम्बन्ध का/की/के &rarr; अधिकरण में/पर &rarr; सम्बोधन हे!",
+ notes:[
+  "कारक is the noun&rsquo;s relation to the verb, and the परसर्ग (ने, को, से&hellip;) is the sign of it. Learn the signs as a chant; half the questions are answered by the sign alone.",
+  "The one real trap is <b>करण</b> against <b>अपादान</b>, because both use &lsquo;से&rsquo;. करण is the means &mdash; &lsquo;चाकू <u>से</u> काटा&rsquo;. अपादान is separation &mdash; &lsquo;पेड़ <u>से</u> पत्ता गिरा&rsquo;. Ask whether something is being used or being left behind.",
+  "The second trap is <b>कर्म</b> against <b>सम्प्रदान</b>, both using &lsquo;को&rsquo;. कर्म is what the action falls on &mdash; &lsquo;राम ने श्याम <u>को</u> देखा&rsquo;. सम्प्रदान is who benefits &mdash; &lsquo;राम ने श्याम <u>को</u> पुस्तक दी&rsquo;.",
+  "सम्बन्ध (का, की, के) is not really a relation to the verb at all &mdash; it joins two nouns. Some books therefore count it apart from the कारक proper.",
+  "सम्बोधन has no परसर्ग of its own; it is marked by हे, अरे, ओ and an exclamation."]},
+{n:15, title:"काल और वाच्य", sub:"तीन काल, तीन वाच्य",
+ map:"भूत &middot; वर्तमान &middot; भविष्य &rarr; कर्तृवाच्य &middot; कर्मवाच्य &middot; भाववाच्य",
+ notes:[
+  "काल is the time of the action; वाच्य is whose side the sentence is told from. They are asked together because both are read off the verb.",
+  "<b>वर्तमान</b>: सामान्य (वह पढ़ता है), अपूर्ण (वह पढ़ रहा है), पूर्ण (वह पढ़ चुका है), सन्दिग्ध (वह पढ़ता होगा).",
+  "<b>भूत</b>: सामान्य (उसने पढ़ा), आसन्न (उसने पढ़ा है), पूर्ण (उसने पढ़ा था), अपूर्ण (वह पढ़ रहा था), सन्दिग्ध (उसने पढ़ा होगा), हेतुहेतुमद् (यदि वह पढ़ता तो पास होता).",
+  "<b>भविष्य</b>: सामान्य (वह पढ़ेगा), सम्भाव्य (सम्भव है वह पढ़े).",
+  "<b>कर्तृवाच्य</b> &mdash; the doer leads: &lsquo;राम पत्र लिखता है&rsquo;. <b>कर्मवाच्य</b> &mdash; what is done leads, and the doer takes से/के द्वारा: &lsquo;राम के द्वारा पत्र लिखा जाता है&rsquo;. <b>भाववाच्य</b> &mdash; neither leads and the verb is always singular, used for ability or inability: &lsquo;मुझसे चला नहीं जाता&rsquo;.",
+  "भाववाच्य is only ever built from अकर्मक (intransitive) verbs. If the verb takes an object, the sentence cannot be भाववाच्य &mdash; a quick test worth remembering."]},
+{n:16, title:"उपसर्ग और प्रत्यय", sub:"आगे जुड़ने वाले, पीछे जुड़ने वाले",
+ map:"उपसर्ग शब्द के आगे &rarr; मूल शब्द &rarr; प्रत्यय शब्द के पीछे",
+ notes:[
+  "उपसर्ग goes in front and प्रत्यय behind. Both change the meaning of the root word; telling them apart is simply a matter of where they sit.",
+  "Sanskrit उपसर्ग in Hindi: प्र (प्रबल), परा (पराजय), अप (अपमान), सम् (संगम), अनु (अनुशासन), वि (विजय), नि (निवास), अधि (अधिकार), अति (अतिरिक्त), सु (सुगम), उत् (उन्नति), अभि (अभिमान), प्रति (प्रतिदिन), परि (परिवार), उप (उपकार).",
+  "Hindi&rsquo;s own उपसर्ग: अन (अनपढ़), भर (भरपेट), कु (कुपुत्र), दु (दुबला), बिन (बिनब्याहा), औ (औगुन).",
+  "Borrowed from Urdu and Persian: बे (बेईमान), ला (लापरवाह), खुश (खुशबू), गैर (गैरहाज़िर), हर (हररोज़), ना (नालायक).",
+  "प्रत्यय come in two kinds. <b>कृत्</b> attach to a verb root: लिख + आवट = लिखावट, पढ़ + आई = पढ़ाई, चल + अन = चलन. <b>तद्धित</b> attach to a noun or adjective: मानव + ता = मानवता, सुन्दर + ता = सुन्दरता, धन + ई = धनी, बच्चा + पन = बचपन.",
+  "In the exam the question is usually &lsquo;अलग कीजिए&rsquo; &mdash; separate the उपसर्ग or प्रत्यय from the मूल शब्द. Write both halves; writing only the affix loses half the mark."]},
+{n:17, title:"मुहावरे और लोकोक्तियाँ", sub:"अर्थ और वाक्य-प्रयोग",
+ map:"मुहावरा = वाक्यांश, वाक्य में ढलता है &rarr; लोकोक्ति = पूरा वाक्य, अपने आप में पूर्ण",
+ notes:[
+  "A मुहावरा is a phrase and has to be fitted into a sentence, changing form as it goes. A लोकोक्ति is a complete saying and is quoted whole. That is the difference, and it is asked directly.",
+  "Common मुहावरे: आँखों का तारा (बहुत प्यारा), नाक में दम करना (परेशान करना), दाँतों तले उँगली दबाना (आश्चर्यचकित होना), लोहे के चने चबाना (कठिन काम करना), अपना उल्लू सीधा करना (स्वार्थ साधना).",
+  "More: घी के दिये जलाना (खुशी मनाना), आँख का काँटा (शत्रु), टेढ़ी खीर (कठिन काम), पानी-पानी होना (लज्जित होना), श्रीगणेश करना (आरम्भ करना), हाथ मलना (पछताना).",
+  "Common लोकोक्तियाँ: अब पछताए होत क्या जब चिड़िया चुग गई खेत (समय बीत जाने पर पछताना व्यर्थ), नाच न जाने आँगन टेढ़ा (अपनी कमी दूसरों पर डालना), अंधों में काना राजा (अयोग्यों में थोड़ा योग्य), दूर के ढोल सुहावने (दूर की वस्तु अच्छी लगती है).",
+  "Marks are lost on वाक्य-प्रयोग, not on meaning. Do not put the मुहावरा in a sentence that only <i>explains</i> it &mdash; use it: &lsquo;परीक्षा में सफल होने के लिए उसे लोहे के चने चबाने पड़े&rsquo;, not &lsquo;लोहे के चने चबाना कठिन काम करना होता है&rsquo;."]},
+{n:18, title:"शब्द-भण्डार", sub:"पर्यायवाची, विलोम, अनेकार्थी, एक शब्द",
+ map:"पर्यायवाची &rarr; विलोम &rarr; अनेकार्थी &rarr; वाक्यांश के लिए एक शब्द",
+ notes:[
+  "This is pure vocabulary and pure marks &mdash; nothing to understand, only to collect. Keep a notebook page for each of the four and add to it as you read the chapters.",
+  "<b>पर्यायवाची</b>: सूर्य &mdash; रवि, भानु, दिनकर, दिवाकर, आदित्य. जल &mdash; नीर, पानी, वारि, अंबु, तोय. आँख &mdash; नेत्र, चक्षु, लोचन, दृग. पर्वत &mdash; गिरि, अचल, नग, शैल. फूल &mdash; पुष्प, सुमन, कुसुम, प्रसून.",
+  "<b>विलोम</b>: आदि&ndash;अंत, ज्ञान&ndash;अज्ञान, सरल&ndash;कठिन, उत्थान&ndash;पतन, आय&ndash;व्यय, अनुराग&ndash;विराग, स्वदेश&ndash;विदेश, आकर्षण&ndash;विकर्षण.",
+  "<b>अनेकार्थी</b> &mdash; one word, several meanings: कनक (सोना, धतूरा), हरि (विष्णु, सिंह, इन्द्र, सर्प), अंबर (आकाश, वस्त्र), कर (हाथ, टैक्स, किरण).",
+  "<b>वाक्यांश के लिए एक शब्द</b>: जो कभी न मरे &mdash; अमर. जिसका कोई शत्रु न हो &mdash; अजातशत्रु. जो सब कुछ जानता हो &mdash; सर्वज्ञ. जो पढ़ा-लिखा न हो &mdash; निरक्षर. जिसकी उपमा न हो &mdash; अनुपम. जो देखा न जा सके &mdash; अदृश्य.",
+  "More: रात में घूमने वाला &mdash; निशाचर. जिसका जन्म पहले हुआ हो &mdash; अग्रज. जो बहुत बोलता हो &mdash; वाचाल. जिसे भुलाया न जा सके &mdash; अविस्मरणीय."]}
+];
+
+const HIN_BANK = [
+/* ---- 11 संधि ---- */
+{s:'hin',c:11,t:'mcq',q:'&lsquo;विद्या + आलय&rsquo; की संधि क्या होगी?',o:['विद्यालय','विद्यालाय','विद्यअलय','विद्यैलय'],a:0,e:'दीर्घ संधि &mdash; आ + आ = आ.'},
+{s:'hin',c:11,t:'mcq',q:'&lsquo;महा + उत्सव&rsquo; की संधि क्या होगी?',o:['महोत्सव','महाउत्सव','महौत्सव','महुत्सव'],a:0,e:'गुण संधि &mdash; आ + उ = ओ.'},
+{s:'hin',c:11,t:'mcq',q:'&lsquo;अति + अधिक&rsquo; में कौन-सी संधि है?',o:['यण् संधि','गुण संधि','दीर्घ संधि','वृद्धि संधि'],a:0,e:'अत्यधिक &mdash; इ before an unlike vowel becomes य्. That is यण्.'},
+{s:'hin',c:11,t:'mcq',q:'&lsquo;एक + एक&rsquo; की संधि क्या होगी?',o:['एकैक','एकेक','एकाएक','एकौक'],a:0,e:'वृद्धि संधि &mdash; अ + ए = ऐ.'},
+{s:'hin',c:11,t:'mcq',q:'&lsquo;नयन&rsquo; का संधि-विच्छेद क्या है?',o:['ने + अन','नय + अन','न + अयन','नै + अन'],a:0,e:'अयादि संधि &mdash; ए + अ = अय्.'},
+{s:'hin',c:11,t:'mcq',q:'&lsquo;सज्जन&rsquo; का संधि-विच्छेद क्या है?',o:['सत् + जन','सज् + जन','स + जन','सद् + जन'],a:0,e:'व्यंजन संधि &mdash; त् + ज = ज्ज.'},
+{s:'hin',c:11,t:'mcq',q:'&lsquo;मनोरथ&rsquo; में कौन-सी संधि है?',o:['विसर्ग संधि','स्वर संधि','व्यंजन संधि','यण् संधि'],a:0,e:'मनः + रथ &mdash; the विसर्ग becomes ओ before a soft consonant.'},
+{s:'hin',c:11,t:'mcq',q:'&lsquo;देवर्षि&rsquo; का संधि-विच्छेद क्या है?',o:['देव + ऋषि','देवा + ऋषि','देव + रिषि','देवर् + ऋषि'],a:0,e:'गुण संधि &mdash; अ + ऋ = अर्.'},
+{s:'hin',c:11,t:'fill',q:'&lsquo;सु + आगत&rsquo; की संधि ______ होगी ।',a:['स्वागत','swagat'],e:'यण् संधि &mdash; उ becomes व्. A word you use every day is a संधि.'},
+{s:'hin',c:11,t:'fill',q:'&lsquo;निर्बल&rsquo; का संधि-विच्छेद ______ है ।',a:['निः + बल','निः+बल','निःबल'],e:'विसर्ग संधि &mdash; इः becomes इर् before a soft consonant.'},
+{s:'hin',c:11,t:'tf',q:'संधि और समास दोनों में दो शब्द जुड़ते हैं, किन्तु संधि में वर्णों में परिवर्तन होता है ।',a:true,e:'सही. संधि changes the sounds at the join; समास merely drops the connector between two whole words. That is the cleanest way to keep them apart.'},
+{s:'hin',c:11,t:'match',q:'मिलाइए &mdash; संधि और उसका प्रकार ।',pairs:[['विद्या + आलय = विद्यालय','दीर्घ संधि'],['देव + इन्द्र = देवेन्द्र','गुण संधि'],['एक + एक = एकैक','वृद्धि संधि'],['अति + अधिक = अत्यधिक','यण् संधि'],['ने + अन = नयन','अयादि संधि']],e:'Five kinds of स्वर संधि, one example each.'},
+
+/* ---- 12 समास ---- */
+{s:'hin',c:12,t:'mcq',q:'&lsquo;राजपुत्र&rsquo; में कौन-सा समास है?',o:['तत्पुरुष','कर्मधारय','द्विगु','बहुव्रीहि'],a:0,e:'राजा का पुत्र &mdash; a विभक्ति (&lsquo;का&rsquo;) has been dropped, and the second word carries the meaning. That is तत्पुरुष.'},
+{s:'hin',c:12,t:'mcq',q:'&lsquo;नीलकमल&rsquo; में कौन-सा समास है?',o:['कर्मधारय','तत्पुरुष','द्वंद्व','अव्ययीभाव'],a:0,e:'नील है जो कमल &mdash; the first word describes the second, like an adjective. That is कर्मधारय.'},
+{s:'hin',c:12,t:'mcq',q:'&lsquo;त्रिलोक&rsquo; में कौन-सा समास है?',o:['द्विगु','द्वंद्व','बहुव्रीहि','कर्मधारय'],a:0,e:'The first word is a number, so it is द्विगु. Whenever you see एक, द्वि, त्रि, चतुर्, पंच, नव at the front, look at द्विगु first.'},
+{s:'hin',c:12,t:'mcq',q:'&lsquo;माता-पिता&rsquo; में कौन-सा समास है?',o:['द्वंद्व','तत्पुरुष','कर्मधारय','बहुव्रीहि'],a:0,e:'Both words matter equally and &lsquo;और&rsquo; has been dropped. That is द्वंद्व, and a hyphen is often the giveaway.'},
+{s:'hin',c:12,t:'mcq',q:'&lsquo;नीलकंठ&rsquo; (अर्थात् शिव) में कौन-सा समास है?',o:['बहुव्रीहि','कर्मधारय','द्विगु','तत्पुरुष'],a:0,e:'Neither नील nor कंठ is what is meant &mdash; together they point at Shiva, a third thing named nowhere in the compound. That is बहुव्रीहि, and it is the test for it.'},
+{s:'hin',c:12,t:'mcq',q:'&lsquo;प्रतिदिन&rsquo; में कौन-सा समास है?',o:['अव्ययीभाव','तत्पुरुष','द्विगु','द्वंद्व'],a:0,e:'The first word प्रति is an अव्यय and the whole compound behaves as one. That is अव्ययीभाव.'},
+{s:'hin',c:12,t:'mcq',q:'&lsquo;नीलकमल&rsquo; और &lsquo;नीलकंठ&rsquo; में मूल अन्तर क्या है?',o:['नीलकमल में समस्त पद ही अर्थ देता है, नीलकंठ किसी तीसरे का बोध कराता है','दोनों में कोई अन्तर नहीं','नीलकंठ में संख्यावाची पद है','नीलकमल अव्ययीभाव है'],a:0,e:'Same two-word shape, different समास. नीलकमल really is a blue lotus &mdash; कर्मधारय. नीलकंठ is not a blue throat but Shiva &mdash; बहुव्रीहि. Always ask whether the compound means itself.'},
+{s:'hin',c:12,t:'fill',q:'&lsquo;रसोईघर&rsquo; का समास-विग्रह ______ है ।',a:['रसोई के लिए घर','रसोई के लिये घर'],e:'तत्पुरुष &mdash; the &lsquo;के लिए&rsquo; has been dropped.'},
+{s:'hin',c:12,t:'fill',q:'जिस समास में पहला पद संख्यावाचक हो, उसे ______ समास कहते हैं ।',a:['द्विगु','dvigu'],e:'द्विगु &mdash; नवरत्न, त्रिभुज, चौराहा.'},
+{s:'hin',c:12,t:'tf',q:'बहुव्रीहि समास में समस्त पद अपने शब्दों से भिन्न किसी अन्य अर्थ की ओर संकेत करता है ।',a:true,e:'सही. दशानन means Ravana, not &lsquo;ten faces&rsquo;. If the answer is somebody or something not named inside the compound, it is बहुव्रीहि.'},
+{s:'hin',c:12,t:'match',q:'मिलाइए &mdash; समस्त पद और समास ।',pairs:[['राजपुत्र','तत्पुरुष'],['महापुरुष','कर्मधारय'],['नवरत्न','द्विगु'],['राजा-रानी','द्वंद्व'],['दशानन','बहुव्रीहि'],['यथाशक्ति','अव्ययीभाव']],e:'All six भेद in one row. If you can place these six you can place most of what is set.'},
+{s:'hin',c:12,t:'short',m:3,q:'कर्मधारय और बहुव्रीहि समास में अन्तर उदाहरण देकर समझाइए ।',a:'In कर्मधारय one word describes the other and the compound means exactly what its words say: नीलकमल is a नील (blue) कमल (lotus) &mdash; a blue lotus, and nothing more. In बहुव्रीहि neither word is what is meant; together they point at some third thing not named in the compound at all: नीलकंठ literally reads &lsquo;blue throat&rsquo;, but it means Shiva, who is <i>called</i> that because of his blue throat. Similarly दशानन reads &lsquo;ten faces&rsquo; but means Ravana. The test is simple: ask whether the compound means itself. If yes, कर्मधारय; if it points elsewhere, बहुव्रीहि.'},
+
+/* ---- 13 अलंकार ---- */
+{s:'hin',c:13,t:'mcq',q:'&lsquo;चारु चंद्र की चंचल किरणें&rsquo; &mdash; इसमें कौन-सा अलंकार है?',o:['अनुप्रास','यमक','उपमा','रूपक'],a:0,e:'The च sound repeats through the line. Repetition of a letter is अनुप्रास, a शब्दालंकार.'},
+{s:'hin',c:13,t:'mcq',q:'&lsquo;मुख चंद्रमा के समान सुन्दर है&rsquo; &mdash; इसमें कौन-सा अलंकार है?',o:['उपमा','रूपक','उत्प्रेक्षा','यमक'],a:0,e:'&lsquo;के समान&rsquo; makes it an open comparison &mdash; उपमा. Look for सा, सी, जैसा, सम, तुल्य.'},
+{s:'hin',c:13,t:'mcq',q:'&lsquo;चरण-कमल बंदौं हरि राई&rsquo; &mdash; इसमें कौन-सा अलंकार है?',o:['रूपक','उपमा','उत्प्रेक्षा','अतिशयोक्ति'],a:0,e:'The feet are not <i>like</i> lotuses; they are called lotuses outright, with no comparing word. That is रूपक.'},
+{s:'hin',c:13,t:'mcq',q:'उपमा और रूपक में मूल अन्तर क्या है?',o:['उपमा में वाचक शब्द होता है, रूपक में उपमेय-उपमान अभिन्न होते हैं','उपमा शब्दालंकार है, रूपक अर्थालंकार','रूपक में सदा &lsquo;मानो&rsquo; आता है','दोनों एक ही हैं'],a:0,e:'उपमा says &lsquo;like&rsquo; and keeps the two apart; रूपक says &lsquo;is&rsquo; and merges them. This is the single most-asked distinction in the chapter.'},
+{s:'hin',c:13,t:'mcq',q:'&lsquo;कनक कनक ते सौ गुनी, मादकता अधिकाय&rsquo; &mdash; इसमें कौन-सा अलंकार है?',o:['यमक','अनुप्रास','श्लेष','उपमा'],a:0,e:'कनक appears twice with two different meanings &mdash; gold, and the धतूरा plant. The same word repeated in different senses is यमक.'},
+{s:'hin',c:13,t:'mcq',q:'जहाँ &lsquo;मानो&rsquo;, &lsquo;जनु&rsquo;, &lsquo;ज्यों&rsquo; जैसे शब्द आएँ, वहाँ प्रायः कौन-सा अलंकार होता है?',o:['उत्प्रेक्षा','उपमा','रूपक','यमक'],a:0,e:'उत्प्रेक्षा is a supposition &mdash; the poet imagines one thing as another. Those words are its signature.'},
+{s:'hin',c:13,t:'mcq',q:'&lsquo;लहरें नाच रही हैं&rsquo; &mdash; इसमें कौन-सा अलंकार है?',o:['मानवीकरण','उपमा','अनुप्रास','श्लेष'],a:0,e:'Waves cannot dance; nature has been given human behaviour. That is मानवीकरण.'},
+{s:'hin',c:13,t:'mcq',q:'श्लेष अलंकार में क्या होता है?',o:['एक ही शब्द एक ही बार आकर अनेक अर्थ देता है','एक शब्द दो बार आता है','दो वस्तुओं की तुलना होती है','अतिशयोक्ति होती है'],a:0,e:'श्लेष means clinging &mdash; several meanings cling to one word used once. In यमक the word is repeated; in श्लेष it is not. That is how they are told apart.'},
+{s:'hin',c:13,t:'fill',q:'जिस अलंकार में शब्दों के सौन्दर्य पर बल हो, उसे ______ अलंकार कहते हैं ।',a:['शब्दालंकार','shabdalankar'],e:'शब्दालंकार &mdash; अनुप्रास, यमक, श्लेष. When the beauty lies in meaning instead, it is अर्थालंकार.'},
+{s:'hin',c:13,t:'tf',q:'यमक और श्लेष में अन्तर यह है कि यमक में शब्द की आवृत्ति होती है और श्लेष में नहीं ।',a:true,e:'सही. यमक repeats the word; श्लेष loads one use of it with several meanings.'},
+{s:'hin',c:13,t:'match',q:'मिलाइए &mdash; पंक्ति और अलंकार ।',pairs:[['चारु चंद्र की चंचल किरणें','अनुप्रास'],['मुख चंद्रमा के समान','उपमा'],['चरण-कमल','रूपक'],['मानो सोना बरस रहा हो','उत्प्रेक्षा'],['लहरें नाच रही हैं','मानवीकरण']],e:'Learn the marker word for each and the identification becomes mechanical.'},
+
+/* ---- 14 कारक ---- */
+{s:'hin',c:14,t:'mcq',q:'&lsquo;राम ने पत्र लिखा&rsquo; &mdash; इसमें &lsquo;ने&rsquo; किस कारक का चिह्न है?',o:['कर्ता','कर्म','करण','अपादान'],a:0,e:'ने is the sign of कर्ता, the doer.'},
+{s:'hin',c:14,t:'mcq',q:'&lsquo;पेड़ से पत्ता गिरा&rsquo; &mdash; इसमें कौन-सा कारक है?',o:['अपादान','करण','सम्प्रदान','अधिकरण'],a:0,e:'अपादान &mdash; separation. The leaf is coming away <i>from</i> the tree.'},
+{s:'hin',c:14,t:'mcq',q:'&lsquo;चाकू से फल काटा&rsquo; &mdash; इसमें कौन-सा कारक है?',o:['करण','अपादान','कर्म','सम्प्रदान'],a:0,e:'करण &mdash; the instrument. Both this and अपादान use &lsquo;से&rsquo;, so ask whether the thing is being <i>used</i> or being <i>left behind</i>.'},
+{s:'hin',c:14,t:'mcq',q:'&lsquo;माँ ने बच्चे को दूध दिया&rsquo; &mdash; &lsquo;बच्चे को&rsquo; में कौन-सा कारक है?',o:['सम्प्रदान','कर्म','अधिकरण','कर्ता'],a:0,e:'सम्प्रदान &mdash; the one who receives. Compare &lsquo;राम ने श्याम को देखा&rsquo;, where श्याम is कर्म. Both use &lsquo;को&rsquo;; the difference is whether something is being given.'},
+{s:'hin',c:14,t:'mcq',q:'&lsquo;मेज़ पर पुस्तक है&rsquo; &mdash; इसमें कौन-सा कारक है?',o:['अधिकरण','अपादान','करण','सम्बन्ध'],a:0,e:'अधिकरण &mdash; place or time. Its signs are में and पर.'},
+{s:'hin',c:14,t:'mcq',q:'&lsquo;का&rsquo;, &lsquo;की&rsquo;, &lsquo;के&rsquo; किस कारक के चिह्न हैं?',o:['सम्बन्ध','अधिकरण','कर्म','अपादान'],a:0,e:'सम्बन्ध &mdash; and note that it links two nouns rather than relating a noun to the verb, which is why some books set it apart from the कारक proper.'},
+{s:'hin',c:14,t:'mcq',q:'हिन्दी में कुल कितने कारक होते हैं?',o:['आठ','छह','सात','दस'],a:0,e:'Eight &mdash; कर्ता, कर्म, करण, सम्प्रदान, अपादान, सम्बन्ध, अधिकरण, सम्बोधन.'},
+{s:'hin',c:14,t:'mcq',q:'&lsquo;हे राम! रक्षा करो&rsquo; &mdash; इसमें कौन-सा कारक है?',o:['सम्बोधन','कर्ता','कर्म','सम्प्रदान'],a:0,e:'सम्बोधन &mdash; calling out. It has no परसर्ग of its own; हे, अरे, ओ and the exclamation mark it.'},
+{s:'hin',c:14,t:'fill',q:'&lsquo;को&rsquo; ______ तथा ______ &mdash; दोनों कारकों का चिह्न है ।',a:['कर्म और सम्प्रदान','कर्म तथा सम्प्रदान','कर्म, सम्प्रदान','कर्म सम्प्रदान'],e:'कर्म and सम्प्रदान share &lsquo;को&rsquo;, which is exactly why the difference is worth a question.'},
+{s:'hin',c:14,t:'tf',q:'करण और अपादान दोनों का चिह्न &lsquo;से&rsquo; है ।',a:true,e:'सही, and it is the commonest confusion in the chapter. करण = by means of; अपादान = away from.'},
+{s:'hin',c:14,t:'match',q:'मिलाइए &mdash; कारक और उसका चिह्न ।',pairs:[['कर्ता','ने'],['कर्म','को'],['करण','से, के द्वारा'],['अपादान','से (अलग होना)'],['सम्बन्ध','का, की, के'],['अधिकरण','में, पर']],e:'Learn the signs first. They answer most of the question by themselves.'},
+{s:'hin',c:14,t:'short',m:2,q:'करण और अपादान कारक में अन्तर उदाहरण सहित बताइए ।',a:'Both are marked by &lsquo;से&rsquo;, which is why they are confused. करण कारक is the means or instrument by which the work is done: &lsquo;बच्चे ने कलम <u>से</u> लिखा&rsquo; &mdash; the pen is being used. अपादान कारक shows separation, one thing moving away from another: &lsquo;पेड़ <u>से</u> पत्ता गिरा&rsquo; &mdash; the leaf is leaving the tree. The test is to ask whether the noun is being <i>used</i> to do something (करण) or being <i>departed from</i> (अपादान).'},
+
+/* ---- 15 काल और वाच्य ---- */
+{s:'hin',c:15,t:'mcq',q:'&lsquo;वह पढ़ रहा है&rsquo; &mdash; यह कौन-सा काल है?',o:['अपूर्ण वर्तमान','सामान्य वर्तमान','पूर्ण वर्तमान','सामान्य भूत'],a:0,e:'अपूर्ण वर्तमान &mdash; the action is under way and unfinished. &lsquo;रहा है&rsquo; is its marker.'},
+{s:'hin',c:15,t:'mcq',q:'&lsquo;उसने पढ़ा था&rsquo; &mdash; यह कौन-सा काल है?',o:['पूर्ण भूत','सामान्य भूत','आसन्न भूत','अपूर्ण भूत'],a:0,e:'पूर्ण भूत &mdash; finished well before now. &lsquo;था&rsquo; after the verb is the sign.'},
+{s:'hin',c:15,t:'mcq',q:'&lsquo;यदि वह पढ़ता तो पास हो जाता&rsquo; &mdash; यह कौन-सा काल है?',o:['हेतुहेतुमद् भूत','सामान्य भूत','सम्भाव्य भविष्य','सन्दिग्ध भूत'],a:0,e:'हेतुहेतुमद् भूत &mdash; a condition that did not happen and a result that therefore did not either. &lsquo;यदि&hellip;तो&rsquo; is the giveaway.'},
+{s:'hin',c:15,t:'mcq',q:'&lsquo;राम पत्र लिखता है&rsquo; &mdash; यह कौन-सा वाच्य है?',o:['कर्तृवाच्य','कर्मवाच्य','भाववाच्य','कोई नहीं'],a:0,e:'कर्तृवाच्य &mdash; the doer leads and the verb agrees with him.'},
+{s:'hin',c:15,t:'mcq',q:'&lsquo;राम के द्वारा पत्र लिखा जाता है&rsquo; &mdash; यह कौन-सा वाच्य है?',o:['कर्मवाच्य','कर्तृवाच्य','भाववाच्य','सम्भाव्य'],a:0,e:'कर्मवाच्य &mdash; what is done leads, and the doer is pushed behind &lsquo;के द्वारा&rsquo;.'},
+{s:'hin',c:15,t:'mcq',q:'&lsquo;मुझसे चला नहीं जाता&rsquo; &mdash; यह कौन-सा वाच्य है?',o:['भाववाच्य','कर्मवाच्य','कर्तृवाच्य','कोई नहीं'],a:0,e:'भाववाच्य &mdash; neither doer nor object leads; the sentence is about the ability itself. It is used mostly for inability, and its verb is always singular.'},
+{s:'hin',c:15,t:'mcq',q:'भाववाच्य किन क्रियाओं से बनता है?',o:['अकर्मक क्रियाओं से','सकर्मक क्रियाओं से','दोनों से','संयुक्त क्रियाओं से'],a:0,e:'Only from अकर्मक (intransitive) verbs. If the verb takes an object, the sentence cannot be भाववाच्य &mdash; a quick and reliable test.'},
+{s:'hin',c:15,t:'mcq',q:'&lsquo;वह पढ़ता होगा&rsquo; &mdash; यह कौन-सा काल है?',o:['सन्दिग्ध वर्तमान','सामान्य भविष्य','सम्भाव्य भविष्य','पूर्ण वर्तमान'],a:0,e:'सन्दिग्ध वर्तमान &mdash; a guess about now, not a statement about the future. &lsquo;होगा&rsquo; here carries doubt, not time.'},
+{s:'hin',c:15,t:'fill',q:'काल के तीन मुख्य भेद हैं &mdash; भूत, वर्तमान और ______ ।',a:['भविष्य','भविष्यत्','bhavishya'],e:'भविष्य काल.'},
+{s:'hin',c:15,t:'tf',q:'वाच्य परिवर्तन में कर्तृवाच्य से कर्मवाच्य बनाते समय कर्ता के साथ &lsquo;के द्वारा&rsquo; लगता है ।',a:true,e:'सही. &lsquo;राम पत्र लिखता है&rsquo; becomes &lsquo;राम के द्वारा पत्र लिखा जाता है&rsquo;. The doer takes से or के द्वारा and the verb agrees with the object instead.'},
+{s:'hin',c:15,t:'match',q:'मिलाइए &mdash; वाक्य और काल ।',pairs:[['वह पढ़ता है','सामान्य वर्तमान'],['वह पढ़ रहा है','अपूर्ण वर्तमान'],['उसने पढ़ा','सामान्य भूत'],['उसने पढ़ा था','पूर्ण भूत'],['वह पढ़ेगा','सामान्य भविष्य']],e:'Read the auxiliary, not the main verb &mdash; है, रहा है, था, गा. That is where the tense lives.'},
+
+/* ---- 16 उपसर्ग-प्रत्यय ---- */
+{s:'hin',c:16,t:'mcq',q:'&lsquo;अपमान&rsquo; में कौन-सा उपसर्ग है?',o:['अप','अ','अपम','मान'],a:0,e:'अप + मान. The उपसर्ग अप carries a sense of away or bad &mdash; अपयश, अपकार, अपव्यय.'},
+{s:'hin',c:16,t:'mcq',q:'&lsquo;लिखावट&rsquo; में कौन-सा प्रत्यय है?',o:['आवट','वट','ट','लिख'],a:0,e:'लिख + आवट, a कृत् प्रत्यय, because it attaches to a verb root. So does सजावट, बनावट, रुकावट.'},
+{s:'hin',c:16,t:'mcq',q:'&lsquo;मानवता&rsquo; में कौन-सा प्रत्यय है और किस प्रकार का?',o:['ता &mdash; तद्धित','ता &mdash; कृत्','वता &mdash; तद्धित','अता &mdash; कृत्'],a:0,e:'मानव + ता. It attaches to a noun, not a verb root, so it is तद्धित.'},
+{s:'hin',c:16,t:'mcq',q:'कृत् और तद्धित प्रत्यय में क्या अन्तर है?',o:['कृत् धातु में लगते हैं, तद्धित संज्ञा या विशेषण में','कृत् आगे लगते हैं, तद्धित पीछे','कृत् हिन्दी के हैं, तद्धित संस्कृत के','कोई अन्तर नहीं'],a:0,e:'That is the whole distinction. पढ़ + आई = पढ़ाई is कृत्; धन + ई = धनी is तद्धित.'},
+{s:'hin',c:16,t:'mcq',q:'&lsquo;बेईमान&rsquo; में &lsquo;बे&rsquo; किस भाषा का उपसर्ग है?',o:['फ़ारसी','संस्कृत','हिन्दी','अंग्रेज़ी'],a:0,e:'A Persian उपसर्ग meaning &lsquo;without&rsquo; &mdash; बेकार, बेरहम, बेहोश.'},
+{s:'hin',c:16,t:'mcq',q:'&lsquo;अनपढ़&rsquo; में कौन-सा उपसर्ग है?',o:['अन','अ','अनप','पढ़'],a:0,e:'अन &mdash; a Hindi उपसर्ग of negation: अनबन, अनमोल, अनजान.'},
+{s:'hin',c:16,t:'mcq',q:'उपसर्ग और प्रत्यय में मूल अन्तर क्या है?',o:['उपसर्ग शब्द के आगे और प्रत्यय शब्द के पीछे लगता है','उपसर्ग अर्थ बदलता है, प्रत्यय नहीं','उपसर्ग संज्ञा में और प्रत्यय क्रिया में लगता है','दोनों एक ही हैं'],a:0,e:'Position is the whole difference. Both change the meaning of the root word.'},
+{s:'hin',c:16,t:'fill',q:'&lsquo;बचपन&rsquo; में मूल शब्द ______ और प्रत्यय ______ है ।',a:['बच्चा और पन','बच्चा, पन','बच्चा पन'],e:'बच्चा + पन. Write both halves &mdash; giving only the प्रत्यय loses half the mark.'},
+{s:'hin',c:16,t:'tf',q:'&lsquo;प्रतिदिन&rsquo; में &lsquo;प्रति&rsquo; उपसर्ग है ।',a:true,e:'सही. प्रति is a Sanskrit उपसर्ग &mdash; प्रतिदिन, प्रत्येक, प्रतिक्रिया.'},
+{s:'hin',c:16,t:'match',q:'मिलाइए &mdash; शब्द और उसका उपसर्ग ।',pairs:[['प्रबल','प्र'],['निवास','नि'],['सुगम','सु'],['विजय','वि'],['अभिमान','अभि']],e:'Peel off the front of the word and check what is left is a real word. If it is, you have found the उपसर्ग.'},
+
+/* ---- 17 मुहावरे ---- */
+{s:'hin',c:17,t:'mcq',q:'&lsquo;लोहे के चने चबाना&rsquo; का अर्थ क्या है?',o:['अत्यन्त कठिन कार्य करना','कठोर भोजन करना','क्रोधित होना','व्यर्थ परिश्रम करना'],a:0,e:'To do something extremely difficult.'},
+{s:'hin',c:17,t:'mcq',q:'&lsquo;आँखों का तारा&rsquo; का अर्थ क्या है?',o:['बहुत प्यारा','दुश्मन','चालाक','अंधा'],a:0,e:'Very dear. Note its near-opposite in the same family, आँख का काँटा &mdash; an enemy.'},
+{s:'hin',c:17,t:'mcq',q:'&lsquo;दाँतों तले उँगली दबाना&rsquo; का अर्थ क्या है?',o:['आश्चर्यचकित होना','दर्द सहना','चुप रहना','डर जाना'],a:0,e:'To be astonished.'},
+{s:'hin',c:17,t:'mcq',q:'&lsquo;अब पछताए होत क्या जब चिड़िया चुग गई खेत&rsquo; &mdash; यह क्या है?',o:['लोकोक्ति','मुहावरा','अलंकार','समास'],a:0,e:'A complete saying, quoted whole &mdash; that makes it a लोकोक्ति. A मुहावरा is only a phrase and has to be fitted into a sentence.'},
+{s:'hin',c:17,t:'mcq',q:'मुहावरे और लोकोक्ति में मूल अन्तर क्या है?',o:['मुहावरा वाक्यांश है, लोकोक्ति पूर्ण वाक्य','मुहावरा हिन्दी का है, लोकोक्ति उर्दू की','मुहावरे का अर्थ शाब्दिक होता है','कोई अन्तर नहीं'],a:0,e:'A मुहावरा is a fragment and bends to fit the sentence; a लोकोक्ति stands complete and is quoted as it is.'},
+{s:'hin',c:17,t:'mcq',q:'&lsquo;श्रीगणेश करना&rsquo; का अर्थ क्या है?',o:['आरम्भ करना','पूजा करना','समाप्त करना','विघ्न डालना'],a:0,e:'To begin &mdash; from the custom of invoking Ganesha at the start of any undertaking.'},
+{s:'hin',c:17,t:'mcq',q:'&lsquo;नाच न जाने आँगन टेढ़ा&rsquo; का अर्थ क्या है?',o:['अपनी कमी को दूसरों पर डालना','आँगन ठीक न होना','नाचना न आना','घर की मरम्मत करना'],a:0,e:'Blaming your surroundings for your own shortcoming.'},
+{s:'hin',c:17,t:'mcq',q:'&lsquo;पानी-पानी होना&rsquo; का अर्थ क्या है?',o:['लज्जित होना','भीग जाना','प्यासा होना','शान्त होना'],a:0,e:'To be deeply embarrassed.'},
+{s:'hin',c:17,t:'fill',q:'&lsquo;टेढ़ी खीर&rsquo; का अर्थ ______ है ।',a:['कठिन काम','मुश्किल काम','कठिन कार्य','difficult task'],e:'A difficult task &mdash; despite sounding like a dessert.'},
+{s:'hin',c:17,t:'tf',q:'मुहावरे का प्रयोग करते समय उसका रूप वाक्य के अनुसार बदल सकता है ।',a:true,e:'सही. &lsquo;लोहे के चने चबाना&rsquo; becomes &lsquo;चबाने पड़े&rsquo; inside a sentence. A लोकोक्ति, by contrast, is quoted unchanged.'},
+{s:'hin',c:17,t:'match',q:'मिलाइए &mdash; मुहावरा और अर्थ ।',pairs:[['नाक में दम करना','बहुत परेशान करना'],['हाथ मलना','पछताना'],['घी के दिये जलाना','खुशी मनाना'],['अपना उल्लू सीधा करना','स्वार्थ साधना'],['आँख का काँटा','शत्रु']],e:'Learn them in pairs of opposites where you can &mdash; आँखों का तारा against आँख का काँटा sticks better than either alone.'},
+{s:'hin',c:17,t:'short',m:2,q:'&lsquo;लोहे के चने चबाना&rsquo; और &lsquo;पानी-पानी होना&rsquo; &mdash; इनका अर्थ लिखकर वाक्य में प्रयोग कीजिए ।',a:'लोहे के चने चबाना &mdash; अत्यन्त कठिन कार्य करना. वाक्य: &lsquo;सेना में भर्ती होने के लिए उसे लोहे के चने चबाने पड़े।&rsquo; पानी-पानी होना &mdash; अत्यन्त लज्जित होना. वाक्य: &lsquo;अपनी चोरी पकड़े जाने पर वह पानी-पानी हो गया।&rsquo; Note that in each sentence the मुहावरा is <i>used</i>, not explained. Writing &lsquo;लोहे के चने चबाना कठिन काम करना होता है&rsquo; is not a वाक्य-प्रयोग and earns nothing.'},
+
+/* ---- 18 शब्द-भण्डार ---- */
+{s:'hin',c:18,t:'mcq',q:'&lsquo;सूर्य&rsquo; का पर्यायवाची कौन-सा है?',o:['दिनकर','नीरज','सलिल','अनिल'],a:0,e:'दिनकर &mdash; maker of the day. Also रवि, भानु, दिवाकर, आदित्य. नीरज is a lotus, सलिल is water, अनिल is wind.'},
+{s:'hin',c:18,t:'mcq',q:'&lsquo;जल&rsquo; का पर्यायवाची कौन-सा नहीं है?',o:['अनल','नीर','वारि','अंबु'],a:0,e:'अनल means fire &mdash; the opposite element. नीर, वारि, अंबु and तोय all mean water. अनल and अनिल (wind) are another pair worth keeping apart.'},
+{s:'hin',c:18,t:'mcq',q:'&lsquo;उत्थान&rsquo; का विलोम क्या है?',o:['पतन','उठान','अवनति','विकास'],a:0,e:'पतन. Both अवनति and पतन suggest decline, but पतन is the standard पाठ्यपुस्तक pairing for उत्थान.'},
+{s:'hin',c:18,t:'mcq',q:'&lsquo;अनुराग&rsquo; का विलोम क्या है?',o:['विराग','द्वेष','घृणा','क्रोध'],a:0,e:'विराग. The अनु- / वि- pairing is the pattern to spot.'},
+{s:'hin',c:18,t:'mcq',q:'&lsquo;जो कभी न मरे&rsquo; &mdash; इसके लिए एक शब्द क्या है?',o:['अमर','अजर','अभय','अजेय'],a:0,e:'अमर. अजर is one who does not age, अजेय one who cannot be defeated &mdash; a set often muddled.'},
+{s:'hin',c:18,t:'mcq',q:'&lsquo;जिसका कोई शत्रु न हो&rsquo; &mdash; इसके लिए एक शब्द क्या है?',o:['अजातशत्रु','अजेय','निर्भय','अनुपम'],a:0,e:'अजातशत्रु &mdash; literally, one whose enemy has not been born.'},
+{s:'hin',c:18,t:'mcq',q:'&lsquo;कनक&rsquo; शब्द के दो अर्थ कौन-से हैं?',o:['सोना और धतूरा','सोना और चाँदी','धतूरा और फूल','सोना और सूर्य'],a:0,e:'An अनेकार्थी word &mdash; gold, and the धतूरा plant. That double meaning is what makes the famous यमक line work.'},
+{s:'hin',c:18,t:'mcq',q:'&lsquo;हरि&rsquo; शब्द का अर्थ इनमें से क्या नहीं है?',o:['पर्वत','विष्णु','सिंह','इन्द्र'],a:0,e:'हरि means Vishnu, a lion, Indra and a snake &mdash; but not a mountain. That would be गिरि.'},
+{s:'hin',c:18,t:'fill',q:'&lsquo;जो सब कुछ जानता हो&rsquo; &mdash; इसके लिए एक शब्द ______ है ।',a:['सर्वज्ञ','sarvagya','sarvajna'],e:'सर्वज्ञ. Its opposite, अल्पज्ञ, is worth learning alongside.'},
+{s:'hin',c:18,t:'fill',q:'&lsquo;आँख&rsquo; का एक पर्यायवाची ______ है ।',a:['नेत्र','चक्षु','लोचन','दृग','नयन'],e:'नेत्र, चक्षु, लोचन, दृग and नयन all serve.'},
+{s:'hin',c:18,t:'tf',q:'अनेकार्थी शब्द वह है जिसके एक से अधिक अर्थ होते हैं ।',a:true,e:'सही &mdash; कर means hand, tax and ray of light, all at once.'},
+{s:'hin',c:18,t:'match',q:'मिलाइए &mdash; शब्द और उसका विलोम ।',pairs:[['ज्ञान','अज्ञान'],['आय','व्यय'],['सरल','कठिन'],['आदि','अंत'],['स्वदेश','विदेश']],e:'Many विलोम are built by prefix &mdash; अ-, वि-, नि-. Spotting the prefix usually hands you the answer.'},
+{s:'hin',c:18,t:'match',q:'मिलाइए &mdash; वाक्यांश और एक शब्द ।',pairs:[['जो पढ़ा-लिखा न हो','निरक्षर'],['जिसकी उपमा न हो','अनुपम'],['जो देखा न जा सके','अदृश्य'],['रात में घूमने वाला','निशाचर'],['जो बहुत बोलता हो','वाचाल']],e:'These are free marks: nothing to work out, only to have learnt. Keep a running page of them.'}
+];
+
+BANK.push(...HIN_BANK);
+
 const DOODLE = {
   microbe:'<path d="M18 40c-6-10 0-24 12-27 13-3 24 5 26 16 2 12-6 22-18 24-9 1-15-3-20-13Z"/><circle cx="32" cy="34" r="6"/><path d="M28 20c2-4 8-6 12-4M46 46c4 1 8 5 8 9M14 44c-4 2-7 6-7 10M50 22c3-2 8-2 11 1"/>',
   heart:'<path d="M32 54C18 44 8 35 8 25c0-7 5-12 11-12 5 0 9 3 13 8 4-5 8-8 13-8 6 0 11 5 11 12 0 10-10 19-24 29Z"/><path d="M12 32h10l4-7 6 15 5-9 4 4h12"/>',
@@ -1988,6 +2481,12 @@ const DOODLE = {
   moon:'<path d="M41 11a22 22 0 1 0 12 31A18 18 0 0 1 41 11Z"/><path d="M16 12v6M13 15h6"/><path d="M52 20v5M49.5 22.5h5"/>',
   leaf:'<path d="M52 11C31 11 15 23 15 41c0 7 5 11 11 11 18 0 26-19 26-41Z"/><path d="M13 54 45 20"/><path d="M25 34h11M31 44h10"/>',
   globe:'<circle cx="32" cy="32" r="18"/><path d="M32 14c-8 8-8 28 0 36M32 14c8 8 8 28 0 36"/><path d="M14 32h36"/><path d="M22 20c6 4 14 4 20 0M22 44c6-4 14-4 20 0"/>',
+  quill:'<path d="M52 10C30 14 18 28 14 46l6 6c18-4 32-16 36-38Z"/><path d="M14 52 8 58"/><path d="M40 22 24 40"/>',
+  book:'<path d="M32 18C26 13 18 12 10 13v34c8-1 16 0 22 5 6-5 14-6 22-5V13c-8-1-16 0-22 5Z"/><path d="M32 18v34"/>',
+  lamp:'<path d="M14 42h36c0 6-8 10-18 10s-18-4-18-10Z"/><path d="M50 42c0-5-8-8-18-8s-18 3-18 8"/><path d="M32 34V22"/><path d="M32 22c-3-4 0-8 0-10 0 2 3 6 0 10Z"/>',
+  script:'<path d="M16 12h26l8 8v32a4 4 0 0 1-4 4H16a4 4 0 0 1-4-4V16a4 4 0 0 1 4-4Z"/><path d="M22 26h18M22 34h18M22 42h11"/>',
+  bell:'<path d="M32 10a4 4 0 0 1 4 4c8 3 12 10 12 18v10l4 6H12l4-6V32c0-8 4-15 12-18a4 4 0 0 1 4-4Z"/><path d="M27 48a5 5 0 0 0 10 0"/>',
+  knot:'<path d="M22 22c8-8 20 4 12 12s4 20 12 12"/><path d="M42 22c-8-8-20 4-12 12s-4 20-12 12"/>',
   area:'<path d="M10 20h30v26H10z"/><path d="M40 20h16l-8 26H40"/><path d="M14 24v18M18 24v18M22 24v18M26 24v18M30 24v18M34 24v18"/>'
 };
 function doodle(key, hue){
@@ -1998,6 +2497,12 @@ function doodle(key, hue){
 }
 
 const MATH_HUES = ['var(--c7)','var(--c2)','var(--c5)','var(--c3)','var(--c4)','var(--c6)'];
+const HIN_HUES = ['var(--c3)','var(--c7)','var(--c5)','var(--c2)','var(--c6)','var(--c4)'];
+const HIN_ART  = ['globe','leaf','heart','script','lamp','press','arrows','bell','scope','moon',
+                  'knot','particles','quill','lens','bolt','book','quill','book'];
+const SKT_HUES = ['var(--c4)','var(--c6)','var(--c2)','var(--c5)','var(--c7)','var(--c3)'];
+const SKT_ART  = ['knot','particles','book','heart','lamp','bolt','quill','globe','leaf','press','press','bell',
+                  'script','bell','arrows','knot','moon','quill'];
 const SUBJECTS = {
   sci:{
     id:'sci', name:'Science', book:'Curiosity', hasExam:true,
@@ -2009,6 +2514,18 @@ const SUBJECTS = {
                              hue:c.hue, exam:false, bank:true, map:c.map, notes:c.notes,
                              art:c.art}))
     ]},
+  hin:{
+    id:'hin', name:'Hindi', book:'\u092e\u0932\u094d\u0939\u093e\u0930 (Malhar)', hasExam:false, script:'deva',
+    chapters:HIN.map((c,i) => ({key:'hin'+c.n, n:c.n, title:c.title, sub:c.sub,
+                           hue:HIN_HUES[i % HIN_HUES.length], exam:false, bank:!c.lesson,
+                           map:c.map, notes:c.notes, art:HIN_ART[i]}))
+  },
+  skt:{
+    id:'skt', name:'Sanskrit', book:'\u0926\u0940\u092a\u0915\u092e\u094d (Deepakam)', hasExam:false, script:'deva',
+    chapters:SKT.map((c,i) => ({key:'skt'+c.n, n:c.n, title:c.title, sub:c.sub,
+                           hue:SKT_HUES[i % SKT_HUES.length], exam:false, bank:!c.lesson,
+                           map:c.map, notes:c.notes, art:SKT_ART[i]}))
+  },
   math:{
     id:'math', name:'Mathematics', book:'Ganita Prakash', hasExam:false,
     chapters:MATHS.map((c,i) => ({key:'math'+c.n, n:c.n, title:c.title, sub:c.sub,
@@ -2030,10 +2547,20 @@ function renderLearn(){
   const S = subj(), cs = visibleChapters();
   const exam = cs.filter(c => c.exam), rest = cs.filter(c => !c.exam);
 
-  $('#learnLede').innerHTML = S.id === 'sci'
-    ? 'Class VIII science, from the NCERT <em>Curiosity</em> textbook &mdash; all thirteen chapters. The six in the September paper come first, boiled down to what actually gets asked; the rest of the book follows, and every chapter has questions behind it.'
-    : 'Class VIII mathematics, from the NCERT <em>Ganita Prakash</em> textbook &mdash; all fourteen chapters across Part 1 and Part 2.';
-  $('#bookNote').textContent = `NCERT ${S.book} \u00b7 ${S.chapters.length} chapters`;
+  const LEDE = {
+    sci:'Class VIII science, from the NCERT <em>Curiosity</em> textbook &mdash; all thirteen chapters. The six in the September paper come first, boiled down to what actually gets asked; the rest of the book follows, and every chapter has questions behind it.',
+    math:'Class VIII mathematics, from the NCERT <em>Ganita Prakash</em> textbook &mdash; all fourteen chapters across Part 1 and Part 2.',
+    hin:'Class VIII Hindi, from the NCERT <em>\u092e\u0932\u094d\u0939\u093e\u0930</em> textbook &mdash; not Vasant, which it replaced. The ten \u092a\u093e\u0920 are listed with their \u0935\u093f\u0927\u093e and what to note as you read; the \u0935\u094d\u092f\u093e\u0915\u0930\u0923 sections after them &mdash; \u0938\u0902\u0927\u093f, \u0938\u092e\u093e\u0938, \u0905\u0932\u0902\u0915\u093e\u0930, \u0915\u093e\u0930\u0915 &mdash; are where the marks go, and those carry the drills.',
+    skt:'Class VIII Sanskrit, from the NCERT <em>\u0926\u0940\u092a\u0915\u092e\u094d</em> textbook. The twelve lessons are listed with what each title means; the grammar sections that follow &mdash; \u0936\u092c\u094d\u0926\u0930\u0942\u092a, \u0927\u093e\u0924\u0941\u0930\u0942\u092a, \u0915\u093e\u0930\u0915, \u0938\u0928\u094d\u0927\u093f &mdash; are where the marks are, and those carry the drills.'
+  };
+  $('#learnLede').innerHTML = LEDE[S.id] || '';
+  /* "18 chapters" is true but unhelpful for the language subjects, where the
+     lessons and the grammar sections are quite different animals. */
+  const lessons = S.chapters.filter(c => !c.bank).length;
+  const drills  = S.chapters.length - lessons;
+  $('#bookNote').textContent = lessons
+    ? `NCERT ${S.book} \u00b7 ${lessons} lessons + ${drills} grammar`
+    : `NCERT ${S.book} \u00b7 ${S.chapters.length} chapters`;
 
   const card = c => `<div class="syl" style="--hue:${c.hue}">
       ${doodle(c.art, c.hue)}
@@ -2069,6 +2596,8 @@ function renderLearn(){
    if a subject ever has notes and no questions, say so plainly rather than hand
    over a generator with nothing behind it. */
 function gateSubject(){
+  /* Devanagari needs looser lines than Latin; the flag drives the CSS above. */
+  document.documentElement.setAttribute('data-script', subj().script || 'latn');
   /* This tab is entirely about the September science paper &mdash; its heading, its
      6.1-only note and its revision plan. Under maths it was showing the science
      chapters, so hide it rather than mislabel it. */
@@ -2093,6 +2622,8 @@ function renderSyllabus(){
       <div class="tags">${c.tags.map(t => `<span>${t}</span>`).join('')}</div>
     </div>`).join('');
 }
+
+
 
 /* ============================================================
    WIRING
