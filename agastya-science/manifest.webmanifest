@@ -1,11 +1,13 @@
 {
-  "name": "Agastya's Science Lab",
-  "short_name": "Science Lab",
-  "description": "Class VIII science revision and practice for Agastya.",
+  "name": "Agastya's Study Lab",
+  "short_name": "Study Lab",
+  "description": "CBSE Class VIII science revision, practice, printable worksheets and mock papers.",
   "start_url": "./",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#f4f7f2",
-  "theme_color": "#173c36",
+  "orientation": "portrait",
+  "background_color": "#F1F2ED",
+  "theme_color": "#0E7C74",
   "icons": [
     { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
   ]

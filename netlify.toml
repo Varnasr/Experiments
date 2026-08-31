@@ -26,6 +26,16 @@
   status = 301
   force = true
 
+# ---- class8-science merged into agastya-science ----
+# The Class 8 science lab and the Agastya lab were two takes on the same thing;
+# they are now one app. 301 because the merge is permanent, and the old path was
+# shared before the merge.
+[[redirects]]
+  from = "/class8-science/*"
+  to = "/agastya-science/:splat"
+  status = 301
+  force = true
+
 # ---- littlek.in: serve the worksheet app at the domain root ----
 # www → apex
 [[redirects]]
