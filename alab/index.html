@@ -403,7 +403,7 @@ footer.foot{max-width:920px; margin:0 auto; padding:26px 18px 40px; color:var(--
   <div class="mast-in">
     <div class="mast-top">
       <div>
-        <p class="eyebrow">CBSE Class VIII &middot; Four subjects</p>
+        <p class="eyebrow" id="kicker">CBSE Class VIII</p>
         <h1>A&nbsp;Lab</h1>
         <div class="spectrum" aria-hidden="true">
           <i style="background:var(--c2)"></i><i style="background:var(--c3)"></i><i style="background:var(--c4)"></i><i style="background:var(--c5)"></i><i style="background:var(--c6)"></i><i style="background:var(--c7)"></i>
@@ -3054,6 +3054,12 @@ function renderLearn(){
 /* Both subjects have a bank now. The gate stays because it is cheap insurance:
    if a subject ever has notes and no questions, say so plainly rather than hand
    over a generator with nothing behind it. */
+const NUMWORD = ['no','one','two','three','four','five','six','seven','eight','nine','ten'];
+function renderKicker(){
+  const n = Object.keys(SUBJECTS).length;
+  $('#kicker').innerHTML = `CBSE Class VIII &middot; ${NUMWORD[n] || n} subjects`;
+}
+
 function gateSubject(){
   /* Devanagari needs looser lines than Latin; the flag drives the CSS above. */
   document.documentElement.setAttribute('data-script', subj().script || 'latn');
@@ -3202,6 +3208,7 @@ if('serviceWorker' in navigator){
   addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
 }
 
+renderKicker();
 renderLearn();
 gateSubject();
 renderToday();
