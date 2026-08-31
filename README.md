@@ -90,6 +90,17 @@ Installable PWA — add it to a phone or tablet home screen and it works fully o
 
 ---
 
+### Agastya's Class VIII Study Lab
+
+A mobile-first NCERT Class VIII Science and Mathematics learning and revision app. Science distinguishes the currently announced Sardar Patel Vidyalaya half-yearly portion from the complete 13-chapter course; Mathematics keeps the full course visible until the school announces its exam split. Every chapter includes short notes, a text mind map, links to the official NCERT library and free topic videos, focused practice with explanations, mixed exam practice, and private on-device progress.
+
+**Directory:** `agastya-science/`
+**Stage:** Active
+
+Installable and offline-capable, with no framework or external dependency. Open `agastya-science/index.html` to use it locally.
+
+---
+
 ### WhoGaveTheOrder.in — graduated
 
 A citizen-led public accountability platform asking one question systematically: when state power is used against citizens, who authorised it?
