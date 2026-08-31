@@ -217,6 +217,24 @@ input.answer:focus,select.mt:focus{border-color:var(--accent)}
   line-height:1.85;
 }
 [data-script="deva"] .qtext, [data-script="deva"] .sheet .qtext{ font-size:1.06rem; }
+.countdown{display:flex; align-items:baseline; gap:12px; flex-wrap:wrap;
+  padding:18px 20px; border-radius:var(--r); border:1px solid var(--line); background:var(--card)}
+.countdown b{font-family:"Bricolage Grotesque",sans-serif; font-size:2.6rem; line-height:1; color:var(--accent)}
+.countdown span{color:var(--ink-2)}
+[data-compact] .countdown b{font-size:2.1rem}
+.part{display:flex; gap:11px; align-items:flex-start; padding:11px 13px; border-radius:12px;
+  border:1px solid var(--line); background:var(--bg-2)}
+.part .n{flex:0 0 auto; width:23px; height:23px; border-radius:50%; display:grid; place-items:center;
+  background:var(--accent); color:#fff; font-size:.74rem; font-weight:700; font-family:"IBM Plex Mono",monospace}
+.part p{margin:0; font-size:.93rem}
+.part .sub{color:var(--ink-3); font-size:.83rem; margin-top:2px}
+.ready{display:grid; grid-template-columns:1fr auto auto; gap:10px; align-items:center;
+  padding:8px 0; border-bottom:1px solid var(--line); font-size:.9rem}
+.ready:last-child{border-bottom:0}
+.ready .dot{width:10px; height:10px; border-radius:50%; background:var(--hue)}
+.ready .m{font-family:"IBM Plex Mono",monospace; font-size:.78rem; color:var(--ink-3); white-space:nowrap}
+[data-compact] .ready{grid-template-columns:1fr auto; row-gap:2px}
+[data-compact] .ready .m{grid-column:1 / -1}
 .doodle{
   position:absolute; top:12px; right:12px; width:82px; height:82px;
   opacity:.28; pointer-events:none; z-index:0;
@@ -403,7 +421,8 @@ footer.foot{max-width:920px; margin:0 auto; padding:26px 18px 40px; color:var(--
       <button class="filter" id="examFilter" aria-pressed="false">September exam only</button>
     </div>
     <nav class="tabs" role="tablist" aria-label="Sections">
-      <button class="tab" role="tab" id="tab-learn" aria-selected="true" data-view="learn">Learn</button>
+      <button class="tab" role="tab" id="tab-today" aria-selected="true" data-view="today">Today</button>
+      <button class="tab" role="tab" id="tab-learn" aria-selected="false" data-view="learn">Learn</button>
       <button class="tab" role="tab" id="tab-practice" aria-selected="false" data-view="practice">Practice</button>
       <button class="tab" role="tab" id="tab-worksheet" aria-selected="false" data-view="worksheet">Worksheet</button>
       <button class="tab" role="tab" id="tab-paper" aria-selected="false" data-view="paper">Mock paper</button>
@@ -415,7 +434,57 @@ footer.foot{max-width:920px; margin:0 auto; padding:26px 18px 40px; color:var(--
 <main class="wrap">
 
 <!-- ============ LEARN ============ -->
-<section id="view-learn" role="tabpanel" aria-labelledby="tab-learn">
+<section id="view-today" role="tabpanel" aria-labelledby="tab-today">
+  <div class="stack" style="padding-top:24px">
+
+    <div class="card" id="dateCard" hidden>
+      <p class="eyebrow">First, one question</p>
+      <h2 style="font-size:1.15rem; margin:6px 0 8px">When is the exam?</h2>
+      <p class="lede" style="margin-bottom:14px">Put the date in and this page will work backwards from it &mdash; what to do today, and how much is left. Nothing is sent anywhere; it stays on this device.</p>
+      <div class="row">
+        <input class="answer" type="date" id="examDate" style="max-width:220px">
+        <button class="btn" id="saveDate">Save</button>
+      </div>
+    </div>
+
+    <div id="planCard" hidden>
+      <div class="countdown" id="countdown"></div>
+
+      <div class="card stack" style="gap:14px; margin-top:14px">
+        <div>
+          <p class="eyebrow">Today&rsquo;s session</p>
+          <h2 style="font-size:1.15rem; margin-top:6px" id="planTitle"></h2>
+          <p class="lede" id="planWhy" style="margin-top:6px"></p>
+        </div>
+        <div id="planParts" class="stack" style="gap:9px"></div>
+        <p class="row"><button class="btn primary" id="startToday">Start today&rsquo;s session</button>
+          <button class="btn" id="changeDate">Change date</button></p>
+      </div>
+
+      <div class="card stack" style="gap:12px; margin-top:14px" id="missCard" hidden>
+        <div>
+          <p class="eyebrow">Mistakes book</p>
+          <h2 style="font-size:1.05rem; margin-top:6px" id="missHead"></h2>
+          <p class="lede" style="margin-top:6px">Every question you get wrong lands here and keeps coming back. It only leaves once you have answered it correctly twice, on two different days &mdash; so you cannot clear it by clicking through.</p>
+        </div>
+        <div id="missBars"></div>
+        <p class="row"><button class="btn" id="startFix">Work through my mistakes</button></p>
+      </div>
+
+      <div class="card stack" style="gap:12px; margin-top:14px" id="readyCard" hidden>
+        <div>
+          <p class="eyebrow">Where you stand</p>
+          <h2 style="font-size:1.05rem; margin-top:6px" id="readyHead"></h2>
+          <p class="lede" style="margin-top:6px">Covered is how much of the chapter you have actually met. Recent is your last twenty answers, so it moves when you do &mdash; unlike an all-time average, which stops budging once the numbers get big.</p>
+        </div>
+        <div id="readyRows"></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="view-learn" role="tabpanel" aria-labelledby="tab-learn" hidden>
   <div class="stack" style="padding-top:24px">
     <div>
       <h2 style="font-size:1.15rem">Read the idea, then practise it</h2>
@@ -438,6 +507,11 @@ footer.foot{max-width:920px; margin:0 auto; padding:26px 18px 40px; color:var(--
     <div>
       <h2 style="font-size:1.15rem">Pick the chapters to practise</h2>
       <p class="lede">Questions are drawn fresh each time and mixed across multiple-choice, true/false, fill-in-the-blank, assertion&ndash;reason, matching, numericals and written answers.</p>
+    </div>
+    <div class="card stack" id="fixBox" style="gap:10px" hidden>
+      <div><p class="eyebrow">Mistakes book</p>
+        <p style="margin-top:6px" id="fixLine"></p></div>
+      <p class="row"><button class="btn primary" id="fixBtn">Work through them</button></p>
     </div>
     <div class="chapters" id="chapterPicker"></div>
     <div class="row">
@@ -1551,6 +1625,208 @@ function defaultChapters(){
   return (subj().hasExam && exam.length ? exam : cs).map(c => c.n);
 }
 
+
+/* ============================================================
+   THE MISTAKES BOOK, AND THE PLAN THAT USES IT
+
+   Until now every practice set was a fresh random draw, so a question you
+   got wrong on Monday had no better chance of reaching you on Tuesday than
+   any other. You could answer three hundred questions and keep missing the
+   same twelve. Everything below exists to close that hole.
+   ============================================================ */
+
+/* Questions carry no id, so derive a stable one from what the question says.
+   Rewording a question retires its history, which is the right trade: a
+   reworded question is, for revision purposes, a different question. */
+function qhash(str){
+  let h = 0;
+  for(let i = 0; i < str.length; i++){ h = (h * 31 + str.charCodeAt(i)) | 0; }
+  return (h >>> 0).toString(36);
+}
+const QID = q => `${q.s}:${q.c}:${qhash(q.q || ((q.as || '') + (q.rs || '')))}`;
+const dayKey = (d) => {
+  const t = d || new Date();
+  return t.getFullYear() + '-' + String(t.getMonth() + 1).padStart(2, '0') + '-' + String(t.getDate()).padStart(2, '0');
+};
+
+const MISS_KEY = 'alab.misses.v1';
+const SEEN_KEY = 'alab.seen.v1';
+const PLAN_KEY = 'alab.plan.v1';
+const RECENT_KEY = 'alab.recent.v1';
+const readJSON = (k) => { try{ return JSON.parse(localStorage.getItem(k)) || {}; }catch(e){ return {}; } };
+const writeJSON = (k, v) => { try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} };
+
+/* A question leaves the book only after two correct answers on two DIFFERENT
+   days. One sitting cannot clear it, which is the entire point &mdash; getting a
+   thing right twice in a minute proves short-term memory, not learning. */
+function recordOutcome(q, ok){
+  const id = QID(q), today = dayKey();
+
+  const seen = readJSON(SEEN_KEY); seen[id] = 1; writeJSON(SEEN_KEY, seen);
+
+  const rec = readJSON(RECENT_KEY);
+  const row = rec[q.s] = rec[q.s] || [];
+  row.push(ok ? 1 : 0);
+  if(row.length > 40) row.splice(0, row.length - 40);
+  writeJSON(RECENT_KEY, rec);
+
+  const m = readJSON(MISS_KEY);
+  if(ok === false){
+    const was = m[id];
+    m[id] = {s:q.s, c:q.c, streak:0, added:(was && was.added) || today, last:today};
+  } else if(ok === true && m[id]){
+    if(m[id].last !== today){ m[id].streak = (m[id].streak || 0) + 1; m[id].last = today; }
+    if(m[id].streak >= 2) delete m[id];
+  }
+  writeJSON(MISS_KEY, m);
+}
+
+const missMap   = () => readJSON(MISS_KEY);
+const missQs    = (sub) => { const m = missMap(); return BANK.filter(q => m[QID(q)] && (!sub || q.s === sub)); };
+/* oldest mistakes first: the ones sitting longest are the ones going stale */
+const missQsOrdered = (sub) => {
+  const m = missMap();
+  return missQs(sub).sort((a, b) => (m[QID(a)].added || '').localeCompare(m[QID(b)].added || ''));
+};
+
+function recentPct(sub){
+  const row = readJSON(RECENT_KEY)[sub || subject] || [];
+  const last = row.slice(-20);
+  if(!last.length) return null;
+  return Math.round(last.reduce((t, x) => t + x, 0) / last.length * 100);
+}
+function coverage(sub, n){
+  const seen = readJSON(SEEN_KEY);
+  const all = BANK.filter(q => q.s === sub && q.c === n);
+  if(!all.length) return null;
+  return {seen:all.filter(q => seen[QID(q)]).length, total:all.length};
+}
+
+/* ---------- the plan ---------- */
+const plan = () => readJSON(PLAN_KEY);
+function savePlan(o){ writeJSON(PLAN_KEY, Object.assign(plan(), o)); }
+function daysToExam(){
+  const d = plan().exam; if(!d) return null;
+  const then = new Date(d + 'T00:00:00'), now = new Date(dayKey() + 'T00:00:00');
+  return Math.round((then - now) / 86400000);
+}
+
+/* Which chapter to work today: the least ready one that is actually examinable.
+   Ranking is coverage first, because a chapter you have barely met matters more
+   than one you have met and been shaky at. */
+function weakestChapter(){
+  const cs = subj().chapters.filter(c => c.bank && (!subj().hasExam || c.exam));
+  if(!cs.length) return null;
+  const scored = cs.map(c => {
+    const cov = coverage(subject, c.n) || {seen:0, total:1};
+    const r = loadRec()[recKey(c.n)];
+    const acc = r && r.total ? r.right / r.total : 0;
+    return {c, covPct:cov.seen / cov.total, acc, seenAny:!!(r && r.total)};
+  });
+  scored.sort((a, b) => (a.covPct - b.covPct) || (a.acc - b.acc));
+  return scored[0];
+}
+
+function renderToday(){
+  const hasDate = !!plan().exam;
+  $('#dateCard').hidden = hasDate;
+  $('#planCard').hidden = !hasDate;
+  if(!hasDate) return;
+
+  const d = daysToExam();
+  $('#countdown').innerHTML = d === null ? ''
+    : d > 1  ? `<b>${d}</b><span>days until the exam &mdash; ${new Date(plan().exam + 'T00:00:00').toDateString().slice(4)}</span>`
+    : d === 1 ? `<b>1</b><span>day to go. Tonight is for going over the mistakes book, not for new chapters.</span>`
+    : d === 0 ? `<b>Today</b><span>is the exam. Good luck.</span>`
+    : `<b>Done</b><span>The exam date has passed. Change it below when the next one is set.</span>`;
+
+  const misses = missQsOrdered(subject);
+  const fixN = Math.min(misses.length, 8);
+  const w = weakestChapter();
+  const newN = Math.max(6, 15 - fixN);
+
+  $('#planTitle').textContent = w ? `${w.c.title}` : 'Practice';
+  $('#planWhy').innerHTML = !w ? 'Pick a chapter on the Practice tab.'
+    : w.seenAny
+      ? `Chosen because it is the least covered of what the exam asks &mdash; you have met ${Math.round(w.covPct * 100)}&percnt; of its questions so far.`
+      : `Chosen because you have not practised it yet at all.`;
+
+  const parts = [];
+  if(fixN) parts.push([fixN + ' from your mistakes book', 'The ones sitting longest come first.']);
+  if(w) parts.push([newN + ' from ' + w.c.title, 'Read the chapter in Learn first if it is new.']);
+  if(d !== null && d >= 0 && d <= 7) parts.push(['One mock paper this week', 'Timed, in one sitting, on paper. Under a week out it is worth more than another practice set.']);
+  $('#planParts').innerHTML = parts.map((p, i) =>
+    `<div class="part"><span class="n">${i + 1}</span><div><p>${p[0]}</p><p class="sub">${p[1]}</p></div></div>`).join('');
+
+  /* mistakes book */
+  $('#missCard').hidden = !misses.length;
+  if(misses.length){
+    const byCh = {};
+    misses.forEach(q => { byCh[q.c] = (byCh[q.c] || 0) + 1; });
+    $('#missHead').textContent = `${misses.length} question${misses.length > 1 ? 's' : ''} waiting`;
+    $('#missBars').innerHTML = Object.keys(byCh).sort((a, b) => byCh[b] - byCh[a]).map(n => {
+      const c = subj().chapters.find(x => x.n === +n) || {title:'Chapter ' + n, hue:'var(--accent)'};
+      return `<div class="ready" style="--hue:${c.hue}"><span>Ch ${n} &middot; ${c.title}</span>
+        <span class="dot"></span><span class="m">${byCh[n]} to clear</span></div>`;
+    }).join('');
+  }
+
+  /* where you stand */
+  const rows = subj().chapters.filter(c => c.bank).map(c => {
+    const cov = coverage(subject, c.n); const r = loadRec()[recKey(c.n)];
+    return {c, cov, r};
+  }).filter(x => x.cov && (x.r || x.cov.seen));
+  $('#readyCard').hidden = !rows.length;
+  if(rows.length){
+    const rp = recentPct();
+    $('#readyHead').textContent = rp === null
+      ? `${subj().name} \u00b7 nothing recorded yet`
+      : `${subj().name} \u00b7 ${rp}&percnt; on your last twenty`.replace('&percnt;', '%');
+    $('#readyRows').innerHTML = rows.map(x => {
+      const pct = Math.round(x.cov.seen / x.cov.total * 100);
+      const acc = x.r && x.r.total ? Math.round(x.r.right / x.r.total * 100) : null;
+      /* green needs both breadth and accuracy; amber is one of the two */
+      const good = pct >= 60 && acc !== null && acc >= 75;
+      const mid  = pct >= 30 || (acc !== null && acc >= 60);
+      const hue  = good ? 'var(--good)' : mid ? 'var(--c4)' : 'var(--bad)';
+      return `<div class="ready" style="--hue:${hue}"><span>Ch ${x.c.n} &middot; ${x.c.title}</span>
+        <span class="dot" title="${good ? 'Solid' : mid ? 'Getting there' : 'Needs work'}"></span>
+        <span class="m">${pct}% covered${acc === null ? '' : ' \u00b7 ' + acc + '% right'}</span></div>`;
+    }).join('');
+  }
+
+  /* and the same entry point on the practice screen */
+  const all = missQs(subject).length;
+  $('#fixBox').hidden = !all;
+  if(all) $('#fixLine').innerHTML = `<b>${all}</b> question${all > 1 ? 's' : ''} you have got wrong in ${subj().name} ${all > 1 ? 'are' : 'is'} waiting to be cleared.`;
+}
+
+/* Build a set from the mistakes book alone. */
+function startFixSet(){
+  const qs = missQsOrdered(subject);
+  if(!qs.length) return;
+  quiz = qs.slice(0, Math.min(20, qs.length));
+  qi = 0; right = 0; wrongList = []; asked = [];
+  $('#p-setup').hidden = true; $('#p-done').hidden = true; $('#p-run').hidden = false;
+  showView('practice'); window.scrollTo(0, 0);
+  showQuestion();
+}
+
+/* Today's session: the mistakes first, then the weakest chapter. */
+function startTodaySet(){
+  const fix = missQsOrdered(subject).slice(0, 8);
+  const w = weakestChapter();
+  const fixIds = new Set(fix.map(QID));
+  const fresh = w ? sample(BANK.filter(q => q.s === subject && q.c === w.c.n && !fixIds.has(QID(q))),
+                            Math.max(6, 15 - fix.length)) : [];
+  quiz = fix.concat(fresh);
+  if(!quiz.length) return;
+  qi = 0; right = 0; wrongList = []; asked = [];
+  $('#p-setup').hidden = true; $('#p-done').hidden = true; $('#p-run').hidden = false;
+  showView('practice'); window.scrollTo(0, 0);
+  showQuestion();
+}
+
 /* ---------- chapter pickers ---------- */
 function chapterButtons(host, selected, onToggle){
   const cs = visibleChapters().filter(c => c.bank);
@@ -1732,6 +2008,7 @@ function settle(ok, q, given){
   asked.push(q);
   if(ok) right++; else wrongList.push({q, given});
   note(q.c, ok);
+  recordOutcome(q, ok);
   $('#qScore').textContent = `${right} correct`;
   const answerText =
       q.t === 'mcq' || q.t === 'ar' ? `The correct option is <b>${LETTERS[current.correct]}</b>.`
@@ -1769,6 +2046,7 @@ function nextQ(){
 function finish(){
   const done = asked.length;
   $('#p-run').hidden = true; $('#p-done').hidden = false;
+  renderToday();   /* the mistakes book has just moved; do not show a stale count */
   const pct = done ? Math.round(right / done * 100) : 0;
   const verdict = pct >= 85 ? 'Exam-ready on this set. Move on to the next chapter.'
     : pct >= 70 ? 'Solid. Read through the ones you missed and try the same chapters again tomorrow.'
@@ -2629,7 +2907,7 @@ function renderSyllabus(){
    WIRING
    ============================================================ */
 function showView(name){
-  ['learn','practice','worksheet','paper','syllabus'].forEach(v => {
+  ['today','learn','practice','worksheet','paper','syllabus'].forEach(v => {
     $('#view-' + v).hidden = v !== name;
     $('#tab-' + v).setAttribute('aria-selected', v === name);
   });
@@ -2658,7 +2936,7 @@ $$('#subjSeg button').forEach(b => b.addEventListener('click', () => {
   $('#wsPrint').hidden = true; $('#paperPrint').hidden = true;
   $('#p-run').hidden = true; $('#p-done').hidden = true; $('#p-setup').hidden = false;
   refreshPool();
-  renderLearn(); renderSyllabus(); gateSubject();
+  renderLearn(); renderSyllabus(); gateSubject(); renderToday();
   window.scrollTo(0, 0);
 }));
 $('#examFilter').addEventListener('click', () => {
@@ -2695,6 +2973,25 @@ $('#selNone').addEventListener('click', () => {
   $$('#chapterPicker .chip').forEach(b => b.setAttribute('aria-pressed', 'false'));
   refreshPool();
 });
+/* Suggest a date three weeks out rather than opening on an empty field. */
+(function(){
+  const d = new Date(); d.setDate(d.getDate() + 21);
+  const f = $('#examDate');
+  if(f && !f.value) f.value = plan().exam || dayKey(d);
+  if(f) f.min = dayKey();
+})();
+$('#saveDate').addEventListener('click', () => {
+  const v = $('#examDate').value;
+  if(!v) return flash('Pick a date first.');
+  savePlan({exam:v}); renderToday();
+});
+$('#changeDate').addEventListener('click', () => {
+  $('#examDate').value = plan().exam || '';
+  $('#dateCard').hidden = false; $('#planCard').hidden = true;
+});
+$('#startToday').addEventListener('click', startTodaySet);
+$('#startFix').addEventListener('click', startFixSet);
+$('#fixBtn').addEventListener('click', startFixSet);
 $('#startBtn').addEventListener('click', startQuiz);
 $('#checkBtn').addEventListener('click', check);
 $('#nextBtn').addEventListener('click', nextQ);
@@ -2726,6 +3023,7 @@ if('serviceWorker' in navigator){
 
 renderLearn();
 gateSubject();
+renderToday();
 renderSyllabus();
 renderStats();
 refreshPool();
