@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!--ARTIFACT-A-->
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Agastya&rsquo;s Study Lab</title>
+<title>A Lab</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <meta name="theme-color" content="#0E7C74">
@@ -79,6 +79,15 @@ header.mast{
 }
 .tab:hover{color:var(--ink); background:var(--surface-2)}
 .tab[aria-selected="true"]{background:var(--paper); border-color:var(--rule); color:var(--ink); font-weight:600}
+.subjbar{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+.subjbar .seg button{padding:8px 18px; font-size:.8rem}
+.filter{appearance:none; cursor:pointer; font-family:"IBM Plex Mono",monospace; font-size:.72rem;
+  letter-spacing:.04em; padding:8px 13px; border-radius:99px; border:1px dashed var(--rule);
+  background:none; color:var(--ink-3)}
+.filter:hover{color:var(--ink); border-color:var(--ink-3)}
+.filter[aria-pressed="true"]{background:var(--accent-soft); border-style:solid; border-color:var(--accent); color:var(--accent-2); font-weight:600}
+.booknote{font-family:"IBM Plex Mono",monospace; font-size:.7rem; letter-spacing:.05em; color:var(--ink-3)}
+.empty{border:1px dashed var(--rule); border-radius:11px; padding:24px; text-align:center; color:var(--ink-2)}
 .icon-btn{
   appearance:none; background:var(--surface-2); border:1px solid var(--rule); color:var(--ink-2);
   width:34px; height:34px; border-radius:8px; cursor:pointer; font-size:.95rem; line-height:1; flex:none;
@@ -222,6 +231,8 @@ footer.foot{max-width:920px; margin:0 auto; padding:26px 18px 40px; color:var(--
   :root[data-compact] .tab{padding:12px 4px; min-height:46px; font-size:.74rem; text-align:center; letter-spacing:.01em; border-radius:9px; border:1px solid var(--rule); margin-bottom:0}
   :root[data-compact] .tab[aria-selected="true"]{background:var(--accent); border-color:var(--accent); color:#fff}
   :root[data-compact] .mast .spectrum{display:none}
+  :root[data-compact] .subjbar .seg{width:auto; flex:1}
+  :root[data-compact] .filter{flex:1 1 auto; text-align:center}
   :root[data-compact] .mast-top{align-items:center; flex-wrap:nowrap; gap:10px}
   :root[data-compact] .mast-top > div{min-width:0; flex:1}
 
@@ -332,13 +343,20 @@ footer.foot{max-width:920px; margin:0 auto; padding:26px 18px 40px; color:var(--
   <div class="mast-in">
     <div class="mast-top">
       <div>
-        <p class="eyebrow">CBSE Class VIII &middot; Science &middot; Semester 1</p>
-        <h1>Agastya&rsquo;s Study Lab</h1>
+        <p class="eyebrow">CBSE Class VIII &middot; Maths &amp; Science</p>
+        <h1>A&nbsp;Lab</h1>
         <div class="spectrum" aria-hidden="true">
           <i style="background:var(--c2)"></i><i style="background:var(--c3)"></i><i style="background:var(--c4)"></i><i style="background:var(--c5)"></i><i style="background:var(--c6)"></i><i style="background:var(--c7)"></i>
         </div>
       </div>
       <button class="icon-btn" id="themeBtn" title="Switch light / dark" aria-label="Switch light or dark theme"><svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true" style="vertical-align:-2px"><circle cx="10" cy="10" r="7" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10 3a7 7 0 0 1 0 14z" fill="currentColor"/></svg></button>
+    </div>
+    <div class="subjbar">
+      <div class="seg" id="subjSeg" role="group" aria-label="Subject">
+        <button data-subj="sci" aria-pressed="true">Science</button>
+        <button data-subj="math" aria-pressed="false">Maths</button>
+      </div>
+      <button class="filter" id="examFilter" aria-pressed="false">September exam only</button>
     </div>
     <nav class="tabs" role="tablist" aria-label="Sections">
       <button class="tab" role="tab" id="tab-learn" aria-selected="true" data-view="learn">Learn</button>
@@ -357,22 +375,20 @@ footer.foot{max-width:920px; margin:0 auto; padding:26px 18px 40px; color:var(--
   <div class="stack" style="padding-top:24px">
     <div>
       <h2 style="font-size:1.15rem">Read the idea, then practise it</h2>
-      <p class="lede">The six chapters in the Semester 1 exam, each boiled down to what actually gets asked. Read a chapter here first &mdash; then tap through to practise just that chapter.</p>
+      <p class="lede" id="learnLede"></p>
+      <p class="booknote" id="bookNote" style="margin-top:8px"></p>
     </div>
     <div class="stack" id="learnList" style="gap:12px"></div>
-
-    <details class="card" id="beyondBox" style="padding:0">
-      <summary style="cursor:pointer; padding:16px 18px; font-family:'Bricolage Grotesque',sans-serif; font-weight:600">
-        Beyond the September exam
-        <span class="sup" style="display:block; font-family:'Literata',serif; font-weight:400; margin-top:4px">Notes for the rest of Class VIII science and maths. None of this is in this paper &mdash; it is here for afterwards.</span>
-      </summary>
-      <div style="padding:0 18px 18px" id="beyondList"></div>
-    </details>
   </div>
 </section>
 
 <!-- ============ PRACTICE ============ -->
 <section id="view-practice" role="tabpanel" aria-labelledby="tab-practice" hidden>
+  <div class="noBankYet empty" style="margin-top:24px" hidden>
+    <p style="margin:0 0 8px"><b>Maths practice sets aren&rsquo;t written yet.</b></p>
+    <p style="margin:0; font-size:.95rem">All fourteen Ganita Prakash chapters have notes and a mind map under <b>Learn</b>. The question bank behind practice sets is science-only so far.</p>
+  </div>
+  <div class="needsBank">
 
   <div id="p-setup" class="stack" style="padding-top:24px">
     <div>
@@ -431,10 +447,16 @@ footer.foot{max-width:920px; margin:0 auto; padding:26px 18px 40px; color:var(--
   </div>
 
   <div id="p-done" hidden style="padding-top:24px"></div>
+</div>
 </section>
 
 <!-- ============ WORKSHEET ============ -->
 <section id="view-worksheet" role="tabpanel" aria-labelledby="tab-worksheet" hidden>
+  <div class="noBankYet empty" style="margin-top:24px" hidden>
+    <p style="margin:0 0 8px"><b>Maths worksheets aren&rsquo;t written yet.</b></p>
+    <p style="margin:0; font-size:.95rem">All fourteen Ganita Prakash chapters have notes and a mind map under <b>Learn</b>. The question bank behind worksheets is science-only so far.</p>
+  </div>
+  <div class="needsBank">
   <div class="stack noprint" style="padding-top:24px">
     <div>
       <h2 style="font-size:1.15rem">Build a printable worksheet</h2>
@@ -454,10 +476,16 @@ footer.foot{max-width:920px; margin:0 auto; padding:26px 18px 40px; color:var(--
     </div>
   </div>
   <div id="wsOut" style="margin-top:22px"></div>
+</div>
 </section>
 
 <!-- ============ MOCK PAPER ============ -->
 <section id="view-paper" role="tabpanel" aria-labelledby="tab-paper" hidden>
+  <div class="noBankYet empty" style="margin-top:24px" hidden>
+    <p style="margin:0 0 8px"><b>Maths mock papers aren&rsquo;t written yet.</b></p>
+    <p style="margin:0; font-size:.95rem">All fourteen Ganita Prakash chapters have notes and a mind map under <b>Learn</b>. The question bank behind mock papers is science-only so far.</p>
+  </div>
+  <div class="needsBank">
   <div class="stack noprint" style="padding-top:24px">
     <div>
       <h2 style="font-size:1.15rem">Full-syllabus mock paper</h2>
@@ -470,6 +498,7 @@ footer.foot{max-width:920px; margin:0 auto; padding:26px 18px 40px; color:var(--
     </div>
   </div>
   <div id="paperOut" style="margin-top:22px"></div>
+</div>
 </section>
 
 <!-- ============ SYLLABUS ============ -->
@@ -589,9 +618,9 @@ const LEARN = {
     "Evaporation happens only at the surface, at any temperature, and cools what is left behind. It speeds up with heat, wind, surface area and dry air. Kelvin: K = &deg;C + 273."]}
 };
 
-/* Ported from the Codex branch: notes and concept maps for material beyond the
-   September exam. Kept because it is genuinely useful after it, not because it
-   is examinable — the UI labels it as such. */
+/* Class VIII science beyond the six examinable chapters. Notes ported from the
+   Codex branch; the maths that came with them was the pre-2025 syllabus and has
+   been replaced by MATHS below. */
 const BEYOND = {
   science:[
     {title:"Exploring Scientific Investigations", sub:"Questions, evidence, variables and fair tests", map:"Question → hypothesis → plan a fair test → observe and measure → organise data → infer → communicate", notes:["A scientific investigation begins with an observable, testable question.","Change one independent variable, measure the dependent variable, and control other relevant factors.","Repeated measurements and an adequate sample make a conclusion more reliable.","A conclusion must follow the evidence; unexpected results are useful, not failures."]},
@@ -602,24 +631,145 @@ const BEYOND = {
     {title:"How Nature Works in Harmony", sub:"Ecosystems, relationships and cycles", map:"Sun → producers → consumers → decomposers → nutrients → producers; linked by food webs and cycles", notes:["An ecosystem includes interacting living organisms and non-living surroundings.","Producers capture energy; consumers transfer it; decomposers recycle matter.","Food webs show interconnected feeding relationships and are more realistic than single food chains.","Changes to one population or resource can affect many parts of an ecosystem."]},
     {title:"Our Home: Earth", sub:"A unique, life-sustaining planet", map:"Earth systems → geosphere + hydrosphere + atmosphere + biosphere → interactions → habitability → stewardship", notes:["Liquid water, a suitable temperature range and a protective atmosphere help Earth sustain life.","The atmosphere supplies gases, moderates temperature and shields the surface.","Earth's systems—the geosphere, hydrosphere, atmosphere and biosphere—interact continuously.","Responsible resource use protects the conditions on which life depends."]},
   ],
-  maths:[
-    {n:1, title:"Rational Numbers", sub:"Properties and operations", map:"definition → number line → standard form → four operations → properties", notes:["A rational number is p/q where p and q are integers and q ≠ 0.","Use the LCM for addition and subtraction; multiply numerators and denominators directly.","Every non-zero rational number has a multiplicative inverse.","Rational numbers are closed under +, − and ×, but division by zero is undefined."]},
-    {n:2, title:"Linear Equations in One Variable", sub:"Balance and solve equations", map:"situation → choose variable → form equation → balance → solve → check", notes:["An equation states that two expressions are equal.","Perform the same valid operation on both sides to preserve equality.","Collect variable terms and constants systematically, then check by substitution.","Word problems require defining the unknown before forming an equation."]},
-    {n:3, title:"Understanding Quadrilaterals", sub:"Angles and special quadrilaterals", map:"polygons → quadrilateral → parallelogram → rectangle/rhombus → square", notes:["The interior angles of a quadrilateral total 360°.","A parallelogram has opposite sides parallel and equal.","Rectangles, rhombi and squares are special parallelograms.","Classify shapes from stated properties, not appearance."]},
-    {n:4, title:"Practical Geometry", sub:"Constructing quadrilaterals", map:"given measures → rough sketch → choose base → arcs/angles → join → verify", notes:["A unique construction needs sufficient independent measurements.","Use ruler and compasses accurately and keep construction arcs visible.","Begin with a suitable base or diagonal, then locate vertices by intersecting arcs.","Verify lengths and angles after construction."]},
-    {n:5, title:"Data Handling", sub:"Graphs, probability and interpretation", map:"collect → organise → represent → interpret → probability", notes:["Choose a graph suited to the data and label axes with units.","A pie-chart sector angle is category/total × 360°.","Probability ranges from 0 to 1.","Read scales carefully and distinguish frequency from relative frequency."]},
-    {n:6, title:"Squares & Square Roots", sub:"Patterns and estimation", map:"number → square patterns → prime pairs → square root → estimation", notes:["A square is n²; its square root reverses squaring for non-negative numbers.","Prime-factor pairs help identify perfect squares and square roots.","Perfect squares end only in 0, 1, 4, 5, 6 or 9, though the converse is not guaranteed.","Estimate a root between neighbouring perfect squares."]},
-    {n:7, title:"Cubes & Cube Roots", sub:"Prime triples and cube patterns", map:"number → cube → prime triples → cube root", notes:["A cube is n³ and can be positive or negative.","In prime factorisation, perfect-cube factors occur in triples.","Cube root reverses cubing.","The cube of an even number is even; of an odd number is odd."]},
-    {n:8, title:"Comparing Quantities", sub:"Percentage, discount and interest", map:"ratio → percentage → increase/decrease → profit/loss → discount/tax → interest", notes:["Percentage means per hundred and allows fair comparison.","Discount is calculated on marked price; tax is commonly calculated on the transaction amount.","Profit/loss percentage is usually based on cost price.","Simple interest SI = PRT/100."]},
-    {n:9, title:"Algebraic Expressions & Identities", sub:"Terms, products and identities", map:"terms → like terms → operations → distributive law → identities", notes:["Like terms have identical variable parts.","Use distributivity when multiplying expressions.","Identities are true for every allowed value, unlike equations with particular solutions.","Important identities include (a+b)², (a−b)² and (a+b)(a−b)."]},
-    {n:10, title:"Visualising Solid Shapes", sub:"Views, nets and Euler's relation", map:"3D solid → faces/edges/vertices → views → nets → Euler relation", notes:["A 3D object can be represented by top, front and side views.","A net folds to form a solid without overlapping faces.","For many convex polyhedra, V − E + F = 2.","Maps and scale drawings encode spatial information."]},
-    {n:11, title:"Mensuration", sub:"Area, surface area and volume", map:"2D area → composite shapes → 3D surface area → volume → unit conversion", notes:["Use consistent units before calculation.","Trapezium area = ½ × (sum of parallel sides) × height.","Volume measures space occupied; surface area measures exposed covering.","A cuboid's volume is length × breadth × height."]},
-    {n:12, title:"Exponents & Powers", sub:"Laws and standard form", map:"repeated multiplication → laws → zero/negative powers → standard form", notes:["For the same non-zero base, multiplication adds exponents and division subtracts them.","A non-zero number to power zero equals 1.","Negative exponents represent reciprocals.","Standard form writes a number as a × 10ⁿ with 1 ≤ |a| < 10."]},
-    {n:13, title:"Direct & Inverse Proportions", sub:"Recognising relationships", map:"compare variables → direct [ratio constant] OR inverse [product constant] → solve → reasonableness check", notes:["In direct proportion, the ratio y/x is constant.","In inverse proportion, the product xy is constant.","First decide the relationship; do not apply a memorised rule blindly.","Check whether the final direction makes sense."]},
-    {n:14, title:"Factorisation", sub:"Common factors and identities", map:"expression → common factor → grouping/identity → factors → expand to check", notes:["Factorisation reverses expansion.","First look for the greatest common factor.","Then check grouping or an algebraic identity.","Verify by multiplying the factors back out."]},
-    {n:15, title:"Introduction to Graphs", sub:"Coordinates and relationships", map:"data pairs → axes/scales → plot → join if meaningful → interpret", notes:["An ordered pair is written (x,y): move horizontally, then vertically.","Choose uniform scales and label axes and units.","A line graph shows how one quantity changes with another.","Interpret slope and intercept only in the context of the variables."]},
-  ]
 };
+
+/* NCERT Class VIII mathematics — Ganita Prakash (2025-26).
+   This replaces the chapter list carried over from the earlier merge, which was
+   the pre-2025 NCERT maths book: Rational Numbers, Linear Equations, Practical
+   Geometry, Mensuration and so on. None of those chapters exist in the book
+   Class VIII is taught from now. Titles below follow Ganita Prakash Part 1 and
+   Part 2 as published. */
+const MATHS = [
+{n:1, title:"A Square and a Cube", sub:"Squares, cubes and their roots",
+ map:"square numbers &rarr; patterns in them &rarr; square roots &rarr; cubes &rarr; cube roots",
+ notes:[
+  "A perfect square is what you get by multiplying a whole number by itself: 1, 4, 9, 16, 25, 36&hellip; A perfect cube multiplies a number by itself three times: 1, 8, 27, 64, 125.",
+  "Squares end only in 0, 1, 4, 5, 6 or 9. A number ending in 2, 3, 7 or 8 is never a perfect square &mdash; a quick check worth using before you start working.",
+  "The gap between consecutive squares is the odd numbers in order: 1, 4, 9, 16 differ by 3, 5, 7. So the sum of the first n odd numbers is n&sup2;.",
+  "To find a square root by prime factorisation, split the number into primes and pair them up: 324 = 2&times;2&times;3&times;3&times;3&times;3, so &radic;324 = 2&times;3&times;3 = 18. For a cube root, group the primes in threes instead.",
+  "A cube root undoes a cube, exactly as a square root undoes a square. Cubes of negative numbers stay negative &mdash; (&minus;3)&sup3; = &minus;27 &mdash; which is not true of squares.",
+  "Knowing squares to 20 and cubes to 10 by heart saves real time in an exam; almost every question here starts by recognising one."]},
+{n:2, title:"Power Play", sub:"Exponents, their laws and standard form",
+ map:"exponential notation &rarr; laws of exponents &rarr; negative powers &rarr; standard form",
+ notes:[
+  "a&#8319; means a multiplied by itself n times. a is the base, n is the exponent.",
+  "Same base, multiplying: add the exponents (a&#7504; &times; a&#8319; = a&#7504;&#8314;&#8319;). Dividing: subtract them. A power of a power: multiply them ((a&#7504;)&#8319; = a&#7504;&#8319;).",
+  "Anything non-zero to the power 0 is 1. That is not a special case to memorise &mdash; it follows from a&#8319; &divide; a&#8319; = a&#8304; = 1.",
+  "A negative exponent means a reciprocal: a&#8315;&#8319; = 1/a&#8319;. So 2&#8315;&sup3; = 1/8, not &minus;8. This is the single most common slip in the chapter.",
+  "Standard form writes a number as k &times; 10&#8319; with 1 &le; k &lt; 10. Large numbers take a positive power (3&times;10&#8312;), small ones a negative power (5&times;10&#8315;&#8309;).",
+  "When comparing two numbers in standard form, compare the powers of ten first; only if they match does the k in front decide."]},
+{n:3, title:"A Story of Numbers", sub:"How number systems were invented",
+ map:"tally marks &rarr; Egyptian and Roman systems &rarr; place value &rarr; the Indian zero &rarr; the system we use",
+ notes:[
+  "Early systems were additive: a Roman numeral is read by adding (and sometimes subtracting) the values of its symbols, so XXVII is 10+10+5+1+1.",
+  "Additive systems get unwieldy fast, and have no easy way to write very large numbers or to calculate with them on paper.",
+  "A place-value system fixes this: the same digit means a different amount depending on where it stands, so 3 in 328 means three hundreds.",
+  "Place value needs a symbol for &lsquo;nothing in this place&rsquo;. The Indian invention of zero as a number, not just a gap, is what made the modern system work.",
+  "The Hindu&ndash;Arabic system spread from India through the Arab world into Europe, which is why the digits carry that name.",
+  "The point of the chapter is comparison: what each system could and could not do, and why the one we use won."]},
+{n:4, title:"Quadrilaterals", sub:"Properties of four-sided figures",
+ map:"angle sum &rarr; parallelogram &rarr; rectangle, rhombus, square &rarr; kite and trapezium",
+ notes:[
+  "The angles of any quadrilateral add to 360&deg;. Every angle-chasing question in the chapter starts here.",
+  "A parallelogram has both pairs of opposite sides parallel. Its opposite sides are equal, its opposite angles are equal, adjacent angles add to 180&deg;, and its diagonals bisect each other.",
+  "A rectangle is a parallelogram with a right angle &mdash; and its diagonals are equal. A rhombus is a parallelogram with all sides equal &mdash; and its diagonals meet at right angles.",
+  "A square is both: all sides equal and all angles right, so its diagonals are equal, bisect each other and are perpendicular.",
+  "A kite has two distinct pairs of adjacent equal sides; one diagonal bisects the other at right angles. A trapezium has just one pair of parallel sides.",
+  "Learn these as a family tree, not a list: every square is a rhombus and a rectangle, and every one of those is a parallelogram."]},
+{n:5, title:"Number Play", sub:"Factors, multiples and divisibility",
+ map:"factors and multiples &rarr; primes &rarr; divisibility tests &rarr; HCF and LCM &rarr; digit puzzles",
+ notes:[
+  "A factor divides a number exactly; a multiple is what you get by multiplying it. Every number is a factor and a multiple of itself.",
+  "A prime has exactly two factors, 1 and itself. 1 is not prime &mdash; it has only one factor. Every whole number above 1 breaks into primes in exactly one way.",
+  "Divisibility tests worth knowing: by 2 if it ends even; by 3 if the digit sum divides by 3; by 4 if the last two digits do; by 5 if it ends 0 or 5; by 9 if the digit sum divides by 9; by 10 if it ends 0; by 11 from the alternating digit sum.",
+  "HCF is the largest number dividing both; LCM is the smallest both divide into. From prime factorisation: HCF takes the lowest power of each shared prime, LCM the highest power of every prime.",
+  "For any two numbers, HCF &times; LCM = the product of the numbers &mdash; a fast check on your answer.",
+  "The digit puzzles in the chapter are really place-value arguments: write the number as 10a + b and the pattern usually falls out."]},
+{n:6, title:"We Distribute, Yet Things Multiply", sub:"The distributive property and identities",
+ map:"distributive property &rarr; faster mental multiplication &rarr; expanding brackets &rarr; the three identities",
+ notes:[
+  "The distributive property says a(b + c) = ab + ac. Everything in this chapter is that one rule, used forwards or backwards.",
+  "Used forwards it makes mental arithmetic quick: 7 &times; 103 = 7 &times; (100 + 3) = 700 + 21 = 721.",
+  "Used backwards it is factorisation: pulling the common factor out of 6x + 9 gives 3(2x + 3).",
+  "(a + b)&sup2; = a&sup2; + 2ab + b&sup2;. The middle term is the one people forget &mdash; (a+b)&sup2; is never a&sup2; + b&sup2;.",
+  "(a &minus; b)&sup2; = a&sup2; &minus; 2ab + b&sup2;, and (a + b)(a &minus; b) = a&sup2; &minus; b&sup2;. The last one turns 102 &times; 98 into 100&sup2; &minus; 2&sup2; = 9996 in one step.",
+  "These identities are worth recognising in both directions: spotting a&sup2; &minus; b&sup2; in a question is usually the whole solution."]},
+{n:7, title:"Proportional Reasoning &mdash; 1", sub:"Ratio, proportion and the rule of three",
+ map:"ratio &rarr; equivalent ratios &rarr; proportion &rarr; unitary method &rarr; direct proportion",
+ notes:[
+  "A ratio compares two quantities of the same kind, and has no units. 15 : 20 and 3 : 4 are the same ratio.",
+  "Four quantities are in proportion when a : b = c : d. Then a &times; d = b &times; c &mdash; cross-multiplication, which solves most questions here.",
+  "The unitary method finds the value of one unit first, then scales. If 6 pens cost &#8377;90, one costs &#8377;15, so 10 cost &#8377;150.",
+  "In direct proportion, doubling one doubles the other, and the ratio of the two stays constant: x / y = k.",
+  "Always check the units match before writing a ratio, and simplify at the end. Comparing distances in km with distances in m is the usual trap.",
+  "A quick sense check: if your answer is bigger when it should plainly be smaller, you have the proportion the wrong way up."]}
+];
+const MATHS2 = [
+{n:8, title:"Fractions in Disguise", sub:"Percentage, profit and loss, interest",
+ map:"fraction &rarr; percentage &rarr; increase and decrease &rarr; profit, loss and discount &rarr; simple and compound interest",
+ notes:[
+  "A percentage is a fraction with denominator 100. To convert, multiply a fraction by 100; to go back, divide by 100.",
+  "Percentage change is always measured against the original amount: change &divide; original &times; 100. Using the new amount as the base is the usual error.",
+  "Profit and loss are worked out on the cost price, never the selling price. Profit% = profit / CP &times; 100.",
+  "Discount is worked out on the marked price, not the cost price &mdash; so a shop can offer a discount and still make a profit.",
+  "Simple interest = P &times; R &times; T / 100. The interest is the same every year because it is always charged on the original principal.",
+  "Compound interest charges interest on interest, so the amount is A = P(1 + R/100)&#7511;. Compound interest always exceeds simple interest after the first period."]},
+{n:9, title:"The Baudhayana&ndash;Pythagoras Theorem", sub:"Right-angled triangles",
+ map:"right angle &rarr; hypotenuse &rarr; a&sup2; + b&sup2; = c&sup2; &rarr; triples &rarr; the converse",
+ notes:[
+  "In a right-angled triangle, the square on the hypotenuse equals the sum of the squares on the other two sides: a&sup2; + b&sup2; = c&sup2;.",
+  "The hypotenuse is always the side opposite the right angle, and always the longest. Identify it before substituting anything.",
+  "The result appears in the Baudhayana Sulbasutra centuries before Pythagoras, which is why the book names them together.",
+  "Pythagorean triples are whole-number sides that fit: 3-4-5, 5-12-13, 8-15-17, 7-24-25. Any multiple of a triple is also a triple, so 6-8-10 works too.",
+  "The converse is just as useful: if a&sup2; + b&sup2; = c&sup2; for the three sides, the triangle must be right-angled. That is how you prove a corner is square.",
+  "Typical use: ladders against walls, diagonals of rectangles, and the shortest distance across a field."]},
+{n:10, title:"Proportional Reasoning &mdash; 2", sub:"Inverse proportion, scale and pie charts",
+ map:"direct proportion recap &rarr; inverse proportion &rarr; map scale &rarr; pie charts",
+ notes:[
+  "In inverse proportion, one quantity grows as the other shrinks and their product stays constant: x &times; y = k.",
+  "More workers, less time. More speed, less time for the same distance. If you are unsure which kind you have, ask whether doubling one should double or halve the other.",
+  "For direct proportion use x&#8321;/y&#8321; = x&#8322;/y&#8322;; for inverse use x&#8321;y&#8321; = x&#8322;y&#8322;. Choosing the wrong one is the main source of lost marks.",
+  "A map scale such as 1 : 50 000 means one unit on the map is 50 000 of the same units on the ground. Convert to sensible units before answering.",
+  "A pie chart shows parts of a whole. Each sector angle = (part / total) &times; 360&deg;, and all sectors must sum to 360&deg;.",
+  "Reading a pie chart backwards is common: given an angle, the share of the total is angle / 360&deg;."]},
+{n:11, title:"Exploring Some Geometric Themes", sub:"Solids, nets, views and fractals",
+ map:"solids &rarr; faces, edges and vertices &rarr; nets &rarr; views &rarr; Euler&rsquo;s relation &rarr; fractals",
+ notes:[
+  "A solid has faces (flat surfaces), edges (where two faces meet) and vertices (corners). Count them systematically, not by eye.",
+  "A net is a flat shape that folds into a solid. The same solid usually has several different valid nets &mdash; a cube has eleven.",
+  "Views matter: the top, front and side views of the same solid can look completely different, and a question may give you two and ask for the third.",
+  "Euler&rsquo;s relation holds for many convex polyhedra: F + V &minus; E = 2. For a cube, 6 + 8 &minus; 12 = 2.",
+  "A fractal repeats its own shape at smaller and smaller scales &mdash; the Koch snowflake and Sierpinski triangle are the standard examples.",
+  "Isometric drawing lets you sketch a solid on triangular dot paper so that lengths along the three directions stay to scale."]},
+{n:12, title:"Tales by Dots and Lines", sub:"Handling and reading data",
+ map:"raw data &rarr; tables &rarr; bar graphs and histograms &rarr; mean, median, mode &rarr; reading graphs",
+ notes:[
+  "Organise before you calculate: a frequency table turns a list of raw values into something you can actually read.",
+  "The mean is the total divided by how many there are. The median is the middle value once sorted &mdash; with an even count, the mean of the middle two. The mode is the most frequent value.",
+  "The mean is pulled about by one extreme value; the median is not. That is why the median is the fairer average for something like income.",
+  "A bar graph compares separate categories and its bars have gaps. A histogram shows continuous grouped data and its bars touch.",
+  "A double bar graph compares two sets side by side; a line graph shows change over time.",
+  "Most marks here come from reading the axes and scale correctly before doing any arithmetic at all."]},
+{n:13, title:"Algebra Play", sub:"Patterns, generalisation and why tricks work",
+ map:"number pattern &rarr; describe it in words &rarr; write it with a letter &rarr; prove the trick",
+ notes:[
+  "A letter stands for any number. Writing a pattern with a letter turns &lsquo;it always seems to work&rsquo; into something you can prove.",
+  "The standard move: call the number n, write what the puzzle does to it, and simplify. The trick becomes obvious once the n cancels.",
+  "Consecutive numbers are n, n+1, n+2. Even numbers are 2n; odd numbers are 2n+1. A two-digit number is 10a + b.",
+  "Reversing a two-digit number gives 10b + a; the difference is 9(a &minus; b), which is why the answer is always a multiple of 9.",
+  "Terms with the same letters and powers can be added; 3x + 4x = 7x, but 3x + 4x&sup2; cannot be combined at all.",
+  "When you generalise a pattern, test your formula on a case you have not used yet &mdash; that catches most mistakes."]},
+{n:14, title:"Area", sub:"Areas of polygons and surfaces",
+ map:"rectangle and triangle &rarr; parallelogram &rarr; trapezium &rarr; composite shapes &rarr; surface area",
+ notes:[
+  "Rectangle: length &times; breadth. Triangle: &frac12; &times; base &times; height. The height is always perpendicular to the base you chose, not a slanted side.",
+  "Parallelogram: base &times; height. Trapezium: &frac12; &times; (sum of the parallel sides) &times; the distance between them.",
+  "For a rhombus or a kite, area = &frac12; &times; product of the diagonals.",
+  "Composite shapes are handled by cutting them into rectangles and triangles, or by taking a whole rectangle and subtracting the missing piece.",
+  "Surface area of a cuboid = 2(lb + bh + hl); of a cube = 6a&sup2;. Volume is a different quantity &mdash; cm&sup2; for area, cm&sup3; for volume.",
+  "Keep every length in the same unit before multiplying, and state the unit in the answer. Marks are lost here far more often than in the arithmetic."]}
+];
+MATHS.push(...MATHS2);   /* Ganita Prakash Part 1 + Part 2 = 14 chapters */
 
 const BANK = [
 
@@ -1467,20 +1617,61 @@ function makePaper(){
   $('#paperOut').scrollIntoView({behavior:'smooth', block:'start'});
 }
 
+/* Both subjects reduced to one chapter shape, so Learn, Practise and the
+   printables can be driven by the same code. `exam` marks the six chapters in
+   the September science paper; `bank` says whether questions exist yet. */
+const MATH_HUES = ['var(--c7)','var(--c2)','var(--c5)','var(--c3)','var(--c4)','var(--c6)'];
+const SUBJECTS = {
+  sci:{
+    id:'sci', name:'Science', book:'Curiosity', hasExam:true,
+    chapters:[
+      ...CHAPTERS.map(c => ({key:'sci'+c.n, n:c.n, title:c.name, sub:c.sub, hue:hue(c.n),
+                             exam:true, bank:true, map:LEARN[c.n].map, notes:LEARN[c.n].notes})),
+      ...BEYOND.science.map((c,i) => ({key:'scix'+i, n:null, title:c.title, sub:c.sub,
+                             hue:'var(--ink-3)', exam:false, bank:false, map:c.map, notes:c.notes}))
+    ]},
+  math:{
+    id:'math', name:'Mathematics', book:'Ganita Prakash', hasExam:false,
+    chapters:MATHS.map((c,i) => ({key:'math'+c.n, n:c.n, title:c.title, sub:c.sub,
+                             hue:MATH_HUES[i % MATH_HUES.length], exam:false, bank:false,
+                             map:c.map, notes:c.notes}))
+  }
+};
+let subject = 'sci', examOnly = false;
+const subj = () => SUBJECTS[subject];
+function visibleChapters(){
+  const cs = subj().chapters;
+  return (examOnly && subj().hasExam) ? cs.filter(c => c.exam) : cs;
+}
+
 /* ---------- learn ---------- */
 function renderLearn(){
-  $('#learnList').innerHTML = CHAPTERS.map(c => {
-    const L = LEARN[c.n]; if(!L) return '';
-    return `<div class="syl" style="--hue:${hue(c.n)}">
-      <p class="eyebrow" style="color:${hue(c.n)}">Chapter ${c.n}${c.n === 6 ? ' &middot; section 6.1 only' : ''}</p>
-      <h3>${c.name}<span style="font-weight:600; color:var(--ink-3)"> &mdash; ${c.sub}</span></h3>
-      <p class="mono" style="font-size:.76rem; color:var(--ink-3); margin:9px 0 0; line-height:1.7">${L.map}</p>
+  const S = subj(), cs = visibleChapters();
+  const exam = cs.filter(c => c.exam), rest = cs.filter(c => !c.exam);
+
+  $('#learnLede').innerHTML = S.id === 'sci'
+    ? 'Class VIII science, from the NCERT <em>Curiosity</em> textbook. The six chapters in the September paper come first, each boiled down to what actually gets asked; the rest of the syllabus follows.'
+    : 'Class VIII mathematics, from the NCERT <em>Ganita Prakash</em> textbook &mdash; all fourteen chapters across Part 1 and Part 2.';
+  $('#bookNote').textContent = `NCERT ${S.book} \u00b7 ${S.chapters.length} chapters`;
+
+  const card = c => `<div class="syl" style="--hue:${c.hue}">
+      <p class="eyebrow" style="color:${c.hue}">${c.n ? 'Chapter ' + c.n : 'Beyond the exam'}${c.exam && c.n === 6 ? ' &middot; section 6.1 only' : ''}</p>
+      <h3>${c.title}<span style="font-weight:600; color:var(--ink-3)"> &mdash; ${c.sub}</span></h3>
+      <p class="mono" style="font-size:.76rem; color:var(--ink-3); margin:9px 0 0; line-height:1.7">${c.map}</p>
       <ul style="margin:12px 0 0; padding-left:19px; display:flex; flex-direction:column; gap:9px">
-        ${L.notes.map(n => `<li>${n}</li>`).join('')}
+        ${c.notes.map(n => `<li>${n}</li>`).join('')}
       </ul>
-      <p style="margin:14px 0 0"><button class="btn" data-practise="${c.n}">Practise chapter ${c.n}</button></p>
+      ${c.bank ? `<p style="margin:14px 0 0"><button class="btn" data-practise="${c.n}">Practise chapter ${c.n}</button></p>` : ''}
     </div>`;
-  }).join('');
+
+  const section = (label, rows) => rows.length
+    ? `<p class="section-rule"><span class="eyebrow">${label}</span></p>` + rows.map(card).join('')
+    : '';
+
+  $('#learnList').innerHTML = S.hasExam
+    ? section('In the September paper', exam) + section('Rest of the syllabus &mdash; not in this paper', rest)
+    : cs.map(card).join('');
+
   $$('#learnList [data-practise]').forEach(b => b.addEventListener('click', () => {
     const n = +b.dataset.practise;
     pSel.clear(); pSel.add(n);
@@ -1490,16 +1681,17 @@ function renderLearn(){
     window.scrollTo(0, 0);
     startQuiz();
   }));
+}
 
-  const group = (label, rows, numbered) => `
-    <p class="section-rule" style="margin-top:18px"><span class="eyebrow">${label}</span></p>
-    ${rows.map(c => `<div style="padding:13px 0; border-bottom:1px dotted var(--rule)">
-      <b>${numbered ? c.n + '. ' : ''}${c.title}</b> <span class="sup">&mdash; ${c.sub}</span>
-      <p class="mono" style="font-size:.72rem; color:var(--ink-3); margin:6px 0 0; line-height:1.7">${c.map}</p>
-      <ul style="margin:8px 0 0; padding-left:19px; font-size:.95rem; display:flex; flex-direction:column; gap:6px">
-        ${c.notes.map(n => `<li>${n}</li>`).join('')}</ul></div>`).join('')}`;
-  $('#beyondList').innerHTML = group('Rest of Class VIII science', BEYOND.science, false)
-                             + group('Class VIII mathematics', BEYOND.maths, true);
+/* Practice, worksheets and the paper all run off the science bank. Maths has
+   notes and mind maps but no questions written yet — say so plainly rather than
+   hand over a generator with nothing behind it. */
+function gateSubject(){
+  const noBank = subject === 'math';
+  $$('.needsBank').forEach(e => e.hidden = noBank);
+  $$('.noBankYet').forEach(e => e.hidden = !noBank);
+  if(noBank){ $('#p-run').hidden = true; $('#p-done').hidden = true; $('#p-setup').hidden = true; }
+  else if($('#p-run').hidden && $('#p-done').hidden){ $('#p-setup').hidden = false; }
 }
 
 /* ---------- syllabus ---------- */
@@ -1532,6 +1724,22 @@ function segWire(sel, attr, set){
     set(b.dataset[attr]);
   }));
 }
+/* subject switch + exam filter */
+$$('#subjSeg button').forEach(b => b.addEventListener('click', () => {
+  $$('#subjSeg button').forEach(x => x.setAttribute('aria-pressed', 'false'));
+  b.setAttribute('aria-pressed', 'true');
+  subject = b.dataset.subj;
+  $('#examFilter').hidden = !subj().hasExam;
+  if(!subj().hasExam) { examOnly = false; $('#examFilter').setAttribute('aria-pressed', 'false'); }
+  renderLearn(); renderSyllabus(); gateSubject();
+  window.scrollTo(0, 0);
+}));
+$('#examFilter').addEventListener('click', () => {
+  examOnly = !examOnly;
+  $('#examFilter').setAttribute('aria-pressed', String(examOnly));
+  renderLearn();
+});
+
 segWire('#lenSeg', 'n', v => { pLen = +v; refreshPool(); });
 segWire('#modeSeg', 'mode', v => { pMode = v; refreshPool(); });
 segWire('#wsLenSeg', 'n', v => { wLen = +v; });
@@ -1579,6 +1787,7 @@ if('serviceWorker' in navigator){
 }
 
 renderLearn();
+gateSubject();
 renderSyllabus();
 renderStats();
 refreshPool();
