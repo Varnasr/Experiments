@@ -41,13 +41,34 @@
   status = 301
   force = true
 
-# ---- class8-science merged into agastya-science ----
+# ---- alab.cloud: A Lab serves at the domain root ----
+# www -> apex, then rewrite (not redirect) so the app owns the root, the same
+# shape as the littlek.in rule below.
+[[redirects]]
+  from = "https://www.alab.cloud/*"
+  to = "https://alab.cloud/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://alab.cloud/*"
+  to = "/alab/:splat"
+  status = 200
+  force = true
+
+# ---- earlier paths for the same app, both shared before it was renamed ----
 # The Class 8 science lab and the Agastya lab were two takes on the same thing;
 # they are now one app. 301 because the merge is permanent, and the old path was
 # shared before the merge.
 [[redirects]]
   from = "/class8-science/*"
-  to = "/agastya-science/:splat"
+  to = "/alab/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/agastya-science/*"
+  to = "/alab/:splat"
   status = 301
   force = true
 
