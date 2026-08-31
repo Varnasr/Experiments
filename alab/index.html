@@ -12,48 +12,47 @@
 <meta name="description" content="Revision notes, practice sets, printable worksheets and a mock paper for CBSE Class 8 Science, Semester 1 — plus notes for the rest of Class VIII science and maths.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&family=Literata:opsz,wght@7..72,400;7..72,500;7..72,600;7..72,700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
 :root{
-  --paper:#F1F2ED; --surface:#FCFCF9; --surface-2:#E7EAE1; --sunk:#E2E6DB;
-  --ink:#141E25; --ink-2:#4B5A63; --ink-3:#7C8A91;
-  --rule:#D2D8CC; --grid:#DDE1D5; --shadow:12 30 24;
-  --accent:#0E7C74; --accent-2:#0A5F59; --accent-soft:#DDEDEA;
-  --good:#1E7A4C; --good-bg:#E2F0E7; --bad:#AE3128; --bad-bg:#F8E6E2;
-  --c2:#7A3B9E; --c3:#B03A5B; --c4:#A56A08; --c5:#5A7A1B; --c6:#0E7C74; --c7:#2B5EA8;
+  --paper:#FAF6EF; --surface:#FFFFFF; --surface-2:#F3EDE3; --sunk:#F0E9DD;
+  --ink:#231F1B; --ink-2:#5C564E; --ink-3:#938B80;
+  --rule:#E8E0D3; --grid:#EFE8DB;
+  --card-shadow:0 2px 3px rgba(60,45,25,.04), 0 8px 22px rgba(60,45,25,.06);
+  --accent:#0E8F7E; --accent-2:#0A6E61; --accent-soft:#DCF3EF;
+  --good:#1E874F; --good-bg:#E3F4E9; --bad:#C0392B; --bad-bg:#FCE9E5;
+  --c2:#8B45B5; --c3:#C93A5E; --c4:#C1810E; --c5:#6E9020; --c6:#0E8F7E; --c7:#3160C4;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --paper:#0F1418; --surface:#161D22; --surface-2:#1E272D; --sunk:#131A1F;
-    --ink:#E8EDEA; --ink-2:#A8B6BB; --ink-3:#7A8990;
-    --rule:#2B373E; --grid:#1A2227; --shadow:0 0 0;
-    --accent:#3FB8AE; --accent-2:#7FD8D0; --accent-soft:#14302F;
-    --good:#54C286; --good-bg:#152C20; --bad:#E4736A; --bad-bg:#32201E;
-    --c2:#BA8FD8; --c3:#E58399; --c4:#D9A63F; --c5:#A7C55B; --c6:#3FB8AE; --c7:#7FA9EA;
+    --paper:#16140F; --surface:#211E18; --surface-2:#2B2720; --sunk:#1A1712;
+    --ink:#F2EDE4; --ink-2:#BDB5A8; --ink-3:#8D857a;
+    --rule:#38332A; --grid:#1F1C16;
+    --card-shadow:0 2px 3px rgba(0,0,0,.3), 0 8px 22px rgba(0,0,0,.25);
+    --accent:#3FC9B4; --accent-2:#7FE0D2; --accent-soft:#123833;
+    --good:#5BD08D; --good-bg:#16311F; --bad:#EC8478; --bad-bg:#3A231E;
+    --c2:#C79BE8; --c3:#F08AA4; --c4:#E4B252; --c5:#B4D465; --c6:#3FC9B4; --c7:#8AB4F8;
   }
 }
 :root[data-theme="dark"]{
-  --paper:#0F1418; --surface:#161D22; --surface-2:#1E272D; --sunk:#131A1F;
-  --ink:#E8EDEA; --ink-2:#A8B6BB; --ink-3:#7A8990;
-  --rule:#2B373E; --grid:#1A2227; --shadow:0 0 0;
-  --accent:#3FB8AE; --accent-2:#7FD8D0; --accent-soft:#14302F;
-  --good:#54C286; --good-bg:#152C20; --bad:#E4736A; --bad-bg:#32201E;
-  --c2:#BA8FD8; --c3:#E58399; --c4:#D9A63F; --c5:#A7C55B; --c6:#3FB8AE; --c7:#7FA9EA;
+  --paper:#16140F; --surface:#211E18; --surface-2:#2B2720; --sunk:#1A1712;
+  --ink:#F2EDE4; --ink-2:#BDB5A8; --ink-3:#8D857A;
+  --rule:#38332A; --grid:#1F1C16;
+  --card-shadow:0 2px 3px rgba(0,0,0,.3), 0 8px 22px rgba(0,0,0,.25);
+  --accent:#3FC9B4; --accent-2:#7FE0D2; --accent-soft:#123833;
+  --good:#5BD08D; --good-bg:#16311F; --bad:#EC8478; --bad-bg:#3A231E;
+  --c2:#C79BE8; --c3:#F08AA4; --c4:#E4B252; --c5:#B4D465; --c6:#3FC9B4; --c7:#8AB4F8;
 }
 *{box-sizing:border-box}
 [hidden]{display:none !important}
 body{
   margin:0; color:var(--ink); background-color:var(--paper);
-  background-image:
-    linear-gradient(var(--grid) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
-  background-size:26px 26px;
-  font-family:"Literata",Georgia,serif; font-size:16px; line-height:1.6;
+  font-family:"Figtree",system-ui,-apple-system,sans-serif; font-size:16.5px; line-height:1.62;
   -webkit-text-size-adjust:100%;
 }
 h1,h2,h3{font-family:"Bricolage Grotesque","Trebuchet MS",sans-serif; font-weight:800; text-wrap:balance; line-height:1.15; margin:0}
 .mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
-.eyebrow{font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:.66rem; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-3)}
+.eyebrow{font-family:"Figtree",sans-serif; font-weight:700; font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3)}
 a{color:var(--accent-2)}
 :focus-visible{outline:2.5px solid var(--accent); outline-offset:2px; border-radius:3px}
 @media (prefers-reduced-motion: reduce){*{animation:none !important; transition:none !important}}
@@ -65,28 +64,30 @@ header.mast{
   background:var(--surface); border-bottom:1px solid var(--rule);
   position:sticky; top:0; z-index:20;
 }
-.mast-in{max-width:920px; margin:0 auto; padding:14px 18px 0; display:flex; flex-direction:column; gap:12px}
+.mast-in{max-width:920px; margin:0 auto; padding:12px 18px 0; display:flex; flex-direction:column; gap:9px}
 .mast-top{display:flex; align-items:flex-start; gap:14px; flex-wrap:wrap; justify-content:space-between}
-.mast h1{font-size:1.5rem; letter-spacing:-.015em}
+.mast h1{font-size:1.5rem; letter-spacing:-.02em}
 .mast .spectrum{display:flex; gap:3px; margin-top:7px}
 .mast .spectrum i{width:16px; height:4px; border-radius:1px; display:block}
 .tabs{display:flex; gap:2px; overflow-x:auto; scrollbar-width:thin}
 .tab{
   appearance:none; border:1px solid transparent; border-bottom:none; background:none;
-  font-family:"IBM Plex Mono",monospace; font-size:.78rem; letter-spacing:.04em;
+  font-family:"Figtree",sans-serif; font-weight:600; font-size:.9rem; letter-spacing:.005em;
   color:var(--ink-2); padding:9px 14px; border-radius:7px 7px 0 0; cursor:pointer; white-space:nowrap;
   margin-bottom:-1px;
 }
 .tab:hover{color:var(--ink); background:var(--surface-2)}
 .tab[aria-selected="true"]{background:var(--paper); border-color:var(--rule); color:var(--ink); font-weight:600}
 .subjbar{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+.subjbar .seg{flex:0 0 auto}
+.subjbar .seg button{white-space:nowrap}
 .subjbar .seg button{padding:8px 18px; font-size:.8rem}
-.filter{appearance:none; cursor:pointer; font-family:"IBM Plex Mono",monospace; font-size:.72rem;
+.filter{appearance:none; cursor:pointer; font-family:"Figtree",sans-serif; font-weight:600; font-size:.82rem;
   letter-spacing:.04em; padding:8px 13px; border-radius:99px; border:1px dashed var(--rule);
   background:none; color:var(--ink-3)}
 .filter:hover{color:var(--ink); border-color:var(--ink-3)}
 .filter[aria-pressed="true"]{background:var(--accent-soft); border-style:solid; border-color:var(--accent); color:var(--accent-2); font-weight:600}
-.booknote{font-family:"IBM Plex Mono",monospace; font-size:.7rem; letter-spacing:.05em; color:var(--ink-3)}
+.booknote{font-family:"Figtree",sans-serif; font-weight:600; font-size:.82rem; color:var(--ink-3)}
 .empty{border:1px dashed var(--rule); border-radius:11px; padding:24px; text-align:center; color:var(--ink-2)}
 .icon-btn{
   appearance:none; background:var(--surface-2); border:1px solid var(--rule); color:var(--ink-2);
@@ -95,11 +96,11 @@ header.mast{
 .icon-btn:hover{color:var(--ink)}
 
 /* ---- generic ---- */
-.card{background:var(--surface); border:1px solid var(--rule); border-radius:12px; padding:20px}
+.card{background:var(--surface); border:1px solid var(--rule); border-radius:16px; padding:22px; box-shadow:var(--card-shadow)}
 .stack{display:flex; flex-direction:column; gap:18px}
 .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
 .btn{
-  appearance:none; cursor:pointer; font-family:"IBM Plex Mono",monospace; font-size:.82rem; font-weight:500;
+  appearance:none; cursor:pointer; font-family:"Figtree",sans-serif; font-size:.9rem; font-weight:600;
   letter-spacing:.03em; padding:11px 18px; border-radius:9px; border:1px solid var(--rule);
   background:var(--surface-2); color:var(--ink);
 }
@@ -135,7 +136,7 @@ header.mast{
 .qtext{font-size:1.13rem; line-height:1.55; margin:14px 0 4px; white-space:pre-wrap}
 .opts{display:flex; flex-direction:column; gap:8px; margin-top:14px; list-style:none; padding:0}
 .opt{
-  display:block; width:100%; text-align:left; font:inherit; color:inherit;
+  display:block; width:100%; border-radius:13px; text-align:left; font:inherit; color:inherit;
   background:var(--surface-2); border:1.5px solid transparent; border-radius:10px; padding:12px 14px; cursor:pointer;
 }
 .opt:hover{border-color:var(--ink-3)}
@@ -159,7 +160,7 @@ input.answer:focus,select.mt:focus{border-color:var(--accent)}
 .verdict{margin-top:16px; border-radius:10px; padding:13px 15px; border:1px solid; font-size:.95rem}
 .verdict.ok{background:var(--good-bg); border-color:color-mix(in srgb,var(--good) 40%,transparent)}
 .verdict.no{background:var(--bad-bg); border-color:color-mix(in srgb,var(--bad) 40%,transparent)}
-.verdict .vhead{font-family:"IBM Plex Mono",monospace; font-size:.74rem; letter-spacing:.1em; text-transform:uppercase; font-weight:600; display:block; margin-bottom:5px}
+.verdict .vhead{font-family:"Figtree",sans-serif; font-size:.76rem; letter-spacing:.06em; text-transform:uppercase; font-weight:600; display:block; margin-bottom:5px}
 .verdict.ok .vhead{color:var(--good)} .verdict.no .vhead{color:var(--bad)}
 .model{background:var(--sunk); border:1px dashed var(--rule); border-radius:10px; padding:13px 15px; margin-top:14px; font-size:.95rem}
 .progress{height:5px; background:var(--sunk); border-radius:99px; overflow:hidden; margin-top:2px}
@@ -182,7 +183,7 @@ input.answer:focus,select.mt:focus{border-color:var(--accent)}
 .namebar{display:flex; gap:26px; flex-wrap:wrap; font-family:"IBM Plex Mono",monospace; font-size:.78rem; color:var(--ink-2); margin:16px 0 4px}
 .namebar span{flex:1 1 150px; border-bottom:1px solid var(--rule); padding-bottom:6px}
 .qsec{margin-top:26px}
-.qsec h3{font-family:"IBM Plex Mono",monospace; font-size:.76rem; letter-spacing:.14em; text-transform:uppercase; font-weight:600; color:var(--ink-2); border-bottom:1px solid var(--rule); padding-bottom:6px; margin-bottom:4px}
+.qsec h3{font-family:"Figtree",sans-serif; font-weight:700; font-size:.82rem; letter-spacing:.14em; text-transform:uppercase; font-weight:600; color:var(--ink-2); border-bottom:1px solid var(--rule); padding-bottom:6px; margin-bottom:4px}
 .qsec .note{font-family:"IBM Plex Mono",monospace; font-size:.7rem; color:var(--ink-3); margin:6px 0 0}
 .q{display:flex; gap:12px; padding:11px 0; border-bottom:1px dotted var(--rule); break-inside:avoid; page-break-inside:avoid}
 .q .n{font-family:"IBM Plex Mono",monospace; font-size:.84rem; color:var(--ink-3); flex:none; width:2.1em; padding-top:2px; font-variant-numeric:tabular-nums}
@@ -199,19 +200,40 @@ input.answer:focus,select.mt:focus{border-color:var(--accent)}
 .sup{color:var(--ink-3); font-size:.86rem}
 
 /* ---- syllabus ---- */
-.syl{border-left:4px solid var(--hue); background:var(--surface); border:1px solid var(--rule); border-left-width:4px; border-left-color:var(--hue); border-radius:9px; padding:15px 17px}
-.syl h3{font-size:1.02rem; margin-bottom:2px}
+.syl{
+  background:linear-gradient(var(--surface), var(--surface)) padding-box,
+             linear-gradient(160deg, color-mix(in srgb,var(--hue) 55%,transparent), color-mix(in srgb,var(--hue) 12%,transparent)) border-box;
+  border:1.5px solid transparent; border-radius:16px; padding:20px 20px 22px;
+  box-shadow:var(--card-shadow); position:relative; overflow:hidden;
+}
+.syl::before{content:""; position:absolute; inset:0 0 auto 0; height:100%;
+  background:color-mix(in srgb,var(--hue) 5%,transparent); pointer-events:none}
+.syl > *{position:relative}
+.syl h3{font-size:1.1rem; margin-bottom:2px; letter-spacing:-.01em}
+.syl .chapno{
+  display:inline-flex; align-items:center; gap:8px; font-family:"Bricolage Grotesque",sans-serif;
+  font-weight:800; font-size:.78rem; letter-spacing:.04em; text-transform:uppercase;
+  color:var(--hue); background:color-mix(in srgb,var(--hue) 13%,transparent);
+  border-radius:99px; padding:5px 12px; margin-bottom:11px;
+}
+.syl ul li::marker{color:var(--hue)}
+.cmap{
+  font-family:"IBM Plex Mono",monospace; font-size:.74rem; line-height:1.75;
+  color:color-mix(in srgb,var(--hue) 78%, var(--ink));
+  background:color-mix(in srgb,var(--hue) 9%,transparent);
+  border-radius:10px; padding:9px 12px; margin:11px 0 0;
+}
 .syl .tags{display:flex; flex-wrap:wrap; gap:6px; margin-top:10px}
 .syl .tags span{font-family:"IBM Plex Mono",monospace; font-size:.7rem; background:var(--surface-2); border:1px solid var(--rule); border-radius:99px; padding:3px 9px; color:var(--ink-2)}
 
 .fieldset{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
 .seg{display:inline-flex; border:1px solid var(--rule); border-radius:9px; overflow:hidden; background:var(--surface-2)}
-.seg button{appearance:none; background:none; border:none; border-right:1px solid var(--rule); font-family:"IBM Plex Mono",monospace; font-size:.8rem; padding:9px 14px; cursor:pointer; color:var(--ink-2)}
+.seg button{appearance:none; background:none; border:none; border-right:1px solid var(--rule); font-family:"Figtree",sans-serif; font-weight:600; font-size:.88rem; padding:9px 14px; cursor:pointer; color:var(--ink-2)}
 .seg button:last-child{border-right:none}
 .seg button[aria-pressed="true"]{background:var(--accent); color:#fff; font-weight:500}
 :root[data-theme="dark"] .seg button[aria-pressed="true"]{color:#08201F}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .seg button[aria-pressed="true"]{color:#08201F}}
-.lbl{font-family:"IBM Plex Mono",monospace; font-size:.74rem; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-3)}
+.lbl{font-family:"Figtree",sans-serif; font-weight:700; font-size:.76rem; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-3)}
 
 footer.foot{max-width:920px; margin:0 auto; padding:26px 18px 40px; color:var(--ink-3); font-size:.82rem; border-top:1px solid var(--rule)}
 
@@ -222,7 +244,8 @@ footer.foot{max-width:920px; margin:0 auto; padding:26px 18px 40px; color:var(--
   :root[data-compact] body{background-size:22px 22px}
   :root[data-compact] .wrap{padding:0 14px 40px}
   :root[data-compact] .mast-in{padding:11px 14px 0; gap:10px}
-  :root[data-compact] .mast h1{font-size:1.2rem}
+  :root[data-compact] .mast h1{font-size:1.24rem; margin-top:1px}
+  :root[data-compact] .eyebrow{font-size:.66rem; letter-spacing:.08em}
   :root[data-compact] .mast .spectrum i{width:13px}
   :root[data-compact] .icon-btn{width:44px; height:44px}
 
@@ -231,8 +254,10 @@ footer.foot{max-width:920px; margin:0 auto; padding:26px 18px 40px; color:var(--
   :root[data-compact] .tab{padding:12px 4px; min-height:46px; font-size:.74rem; text-align:center; letter-spacing:.01em; border-radius:9px; border:1px solid var(--rule); margin-bottom:0}
   :root[data-compact] .tab[aria-selected="true"]{background:var(--accent); border-color:var(--accent); color:#fff}
   :root[data-compact] .mast .spectrum{display:none}
-  :root[data-compact] .subjbar .seg{width:auto; flex:1}
-  :root[data-compact] .filter{flex:1 1 auto; text-align:center}
+  :root[data-compact] .subjbar{display:grid; grid-template-columns:1fr; gap:8px}
+  :root[data-compact] .subjbar .seg{width:100%}
+  :root[data-compact] .subjbar .seg button{flex:1; padding:12px 6px; min-height:46px}
+  :root[data-compact] .filter{width:100%; text-align:center; padding:11px 13px}
   :root[data-compact] .mast-top{align-items:center; flex-wrap:nowrap; gap:10px}
   :root[data-compact] .mast-top > div{min-width:0; flex:1}
 
@@ -1655,9 +1680,9 @@ function renderLearn(){
   $('#bookNote').textContent = `NCERT ${S.book} \u00b7 ${S.chapters.length} chapters`;
 
   const card = c => `<div class="syl" style="--hue:${c.hue}">
-      <p class="eyebrow" style="color:${c.hue}">${c.n ? 'Chapter ' + c.n : 'Beyond the exam'}${c.exam && c.n === 6 ? ' &middot; section 6.1 only' : ''}</p>
+      <p class="chapno">${c.n ? 'Chapter ' + c.n : 'Beyond the exam'}${c.exam && c.n === 6 ? ' &middot; 6.1 only' : ''}</p>
       <h3>${c.title}<span style="font-weight:600; color:var(--ink-3)"> &mdash; ${c.sub}</span></h3>
-      <p class="mono" style="font-size:.76rem; color:var(--ink-3); margin:9px 0 0; line-height:1.7">${c.map}</p>
+      <p class="cmap">${c.map}</p>
       <ul style="margin:12px 0 0; padding-left:19px; display:flex; flex-direction:column; gap:9px">
         ${c.notes.map(n => `<li>${n}</li>`).join('')}
       </ul>
