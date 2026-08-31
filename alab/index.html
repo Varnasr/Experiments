@@ -417,6 +417,8 @@ footer.foot{max-width:920px; margin:0 auto; padding:26px 18px 40px; color:var(--
         <button data-subj="math" aria-pressed="false">Maths</button>
         <button data-subj="skt" aria-pressed="false">Sanskrit</button>
         <button data-subj="hin" aria-pressed="false">Hindi</button>
+        <button data-subj="eng" aria-pressed="false">English</button>
+        <button data-subj="sst" aria-pressed="false">Social Science</button>
         <button data-subj="ct" aria-pressed="false">AI &amp; Thinking</button>
       </div>
       <button class="filter" id="examFilter" aria-pressed="false">September exam only</button>
@@ -2902,6 +2904,504 @@ const CT_BANK = [
 
 BANK.push(...CT_BANK);
 
+
+/* ============================================================
+   SOCIAL SCIENCE — NCERT "Exploring Society: India and Beyond",
+   Class 8, Parts 1 and 2. Part 1 is the First Edition of July 2025
+   (reprint 2026-27); Part 2 is the First Edition of June 2026.
+
+   Written from NCERT's own chapter PDFs, not from a chapter list. The
+   notes for each chapter follow the book's own "Before we move on ..."
+   summary, which is the closest thing the book gives to a revision page.
+
+   Chapters are numbered 1-7 (Part 1) and 8-15 (Part 2) so they sort in
+   reading order; the book restarts its own numbering in Part 2, so the
+   part is named on every card.
+   ============================================================ */
+const SST = [
+{n:1, title:"Natural Resources and Their Use", sub:"Part 1 &middot; Geography", hue:'var(--c6)', art:'globe',
+ map:"what counts as a resource &rarr; renewable and non-renewable &rarr; the resource curse &rarr; using them wisely",
+ notes:[
+  "Natural resources are materials and substances occurring in Nature that are of value to humans. Something is only a <i>resource</i> when we have a use for it and the means to use it &mdash; which is why the list has grown over time.",
+  "Resources can be sorted several ways; renewable against non-renewable is the most useful pair. Renewables replace themselves (sunlight, wind, forests, water); non-renewables do not, on any timescale that matters to us (coal, petroleum, minerals).",
+  "Renewable does not mean unlimited. A forest is renewable only while it is cut no faster than it regrows &mdash; so we have to watch the <i>rate</i> of use, not just the fact of it.",
+  "For non-renewables the aim is different: use them judiciously so the supply stretches further, and develop alternatives while there is still time.",
+  "The <b>resource curse</b> is the pattern where a country rich in natural resources ends up poorer or less developed than one without them. The book&rsquo;s answer is that it can be overcome &mdash; through investment in technology and in people&rsquo;s skills.",
+  "The theme running through the chapter: resources are not simply there to be taken. How a country uses them decides whether they become wealth or a trap."]},
+{n:2, title:"Reshaping India&rsquo;s Political Map", sub:"Part 1 &middot; History", hue:'var(--c4)', art:'script',
+ map:"invasions &rarr; dynasties rise and fall &rarr; persecution and resilience &rarr; trade and wealth &rarr; new cultural forms",
+ notes:[
+  "The period saw repeated foreign invasions led by Turkic, Afghan and Mughal forces. These brought widespread destruction, the fall of old dynasties, and a long churn of kingdoms and empires rising and collapsing.",
+  "Continuous warfare, shifting alliances and conquest redrew India&rsquo;s political boundaries again and again. That redrawing is what the chapter title means.",
+  "The book does not soften the record on religious intolerance: Buddhists, Jains, Hindus, Sikhs, Zoroastrians and tribal communities all suffered severe persecution at times &mdash; while noting that some rulers were considerably more broad-minded than others.",
+  "Alongside this, agriculture and trade expanded, adding to India&rsquo;s wealth and its connections with the wider world. But that wealth did not reach far: the economic condition of ordinary subjects generally stayed harsh.",
+  "Indian society showed real resilience &mdash; rebuilding towns, cities and temples, and preserving cultural traditions through repeated disruption.",
+  "It also blended indigenous and foreign elements into new forms. Architecture, music and painting all flourished from that blending, which is the subject Part 2 returns to in Cultural Currents."]},
+{n:3, title:"The Rise of the Marathas", sub:"Part 1 &middot; History", hue:'var(--c2)', art:'shield',
+ map:"Shivaji founds the kingdom &rarr; resistance to the Mughals &rarr; forts and navy &rarr; pan-Indian expansion &rarr; cultural confidence",
+ notes:[
+  "Chhatrapati Shivaji Maharaj founded the Maratha kingdom in the 17th century. Its decades of resistance to Mughal power, and the hard experience gained in it, made the 18th-century expansion across India possible.",
+  "A striking claim the book makes plainly: <b>the British took India more from the Marathas than from any other Indian power.</b> By the time the British were dominant, the Marathas were the power they had to displace.",
+  "<b>Forts were the core of the Maratha state.</b> They controlled hundreds of them, and that network is what made their hold on the region strategically secure rather than merely military.",
+  "Their navy was formidable and held off European naval supremacy for a considerable time &mdash; and did so without access to the latest technology of the day.",
+  "Beyond territory, the Marathas inspired a new cultural confidence among Indians in many regions, feeding a wider cultural revival and innovation.",
+  "When revising, keep the four strands apart: the founding, the resistance, the machinery (forts and navy), and the cultural effect. Questions are usually set on one at a time."]},
+{n:4, title:"The Colonial Era in India", sub:"Part 1 &middot; History", hue:'var(--c3)', art:'scale',
+ map:"Europeans arrive for wealth &rarr; British win out &rarr; taxation, famine, deindustrialisation &rarr; control through administration &rarr; uprisings &rarr; 1857",
+ notes:[
+  "The Portuguese, Dutch, French and British all came primarily because of India&rsquo;s great wealth. They fought each other for dominance of the subcontinent, and the British gained the upper hand.",
+  "British taxation policy was ruthless and inflicted great misery. The book is direct about the consequence: severe famines in particular, and millions of deaths.",
+  "<b>Deindustrialisation was deliberate</b>, and it devastated India&rsquo;s once-thriving manufacturing sector. This is not presented as an accident of economics but as policy.",
+  "Control was then locked in through administrative structures, legal systems and educational institutions &mdash; governing the society, not just holding the territory.",
+  "The other Europeans left their own marks: Portuguese focus on religious conversion and cultural transformation in Goa created long-lasting social divisions, while the French policy of assimilation produced a small culturally French Indian elite in Pondicherry.",
+  "Uprisings began from the late 18th century onward. The Great Rebellion of 1857 threatened colonial rule for a time; most risings, including that one, were brutally repressed.",
+  "One flow ran the other way: in the 19th century India&rsquo;s classical culture, especially through translated Sanskrit texts, reached the West and left a lasting influence there."]},
+{n:5, title:"Universal Franchise and India&rsquo;s Electoral System", sub:"Part 1 &middot; Civics", hue:'var(--c7)', art:'flow',
+ map:"one adult, one vote &rarr; the vote as a responsibility &rarr; making participation possible &rarr; the Election Commission &rarr; the challenges",
+ notes:[
+  "<b>Universal adult franchise is the cornerstone of Indian democracy</b> &mdash; every adult citizen gets one vote, of equal weight, regardless of wealth, education, caste, religion or gender. India adopted this from the very first general election, which was unusual for its time.",
+  "The right to vote is also a responsibility. The book presses this point: it needs to be taken seriously by every voter, and voter awareness matters as much as voter turnout.",
+  "It is not enough that people <i>may</i> vote; participation has to be made possible for all eligible voters &mdash; which is why so much election machinery exists for remote areas, for people with disabilities and for those away from home.",
+  "The <b>Election Commission of India</b> is the Constitutional body that conducts elections. It is independent, and that independence is the point of it.",
+  "The ECI oversees all elections in the country, including those for the President and Vice-President &mdash; not only Parliament and the state legislatures.",
+  "Indian democracy faces real challenges, and the book&rsquo;s answer to them is not machinery but citizens: vigilance and awareness on the part of voters."]},
+{n:6, title:"The Parliamentary System", sub:"Part 1 &middot; Civics &middot; Legislature and Executive", hue:'var(--c5)', art:'book',
+ map:"Legislature makes &rarr; Executive implements &rarr; Judiciary checks &rarr; Parliament represents &rarr; checks and balances",
+ notes:[
+  "The three organs, and the one-line job of each: <b>the Legislature makes laws, the Executive implements them, and the Judiciary ensures they follow the Constitution.</b> If you learn one sentence from this chapter, learn that one.",
+  "Parliament has two Houses. The <b>Lok Sabha</b> (House of the People, the Lower House) is directly elected on universal adult franchise. The <b>Rajya Sabha</b> (Council of States, the Upper House) is elected indirectly, and its seats are allocated to the states &mdash; which is how the federal spirit enters Parliament.",
+  "The President of India is part of Parliament and acts as its head of state, while the Prime Minister heads the Council of Ministers, which is the working executive.",
+  "India&rsquo;s parliamentary system is built so that power is shared, decisions are debated in the open, and leaders can be held accountable. Those three are the design goals, not accidents.",
+  "The same balancing structure is repeated at the Centre and in the states, designed to balance representation, responsibility and unity.",
+  "Checks and balances between the institutions are what protect citizens&rsquo; rights. The book adds a candid note: Parliament&rsquo;s functioning needs to become more efficient and productive, so that the country&rsquo;s progress is not held up."]},
+{n:7, title:"Factors of Production", sub:"Part 1 &middot; Economics", hue:'var(--c4)', art:'chip',
+ map:"land + labour + capital + entrepreneurship &rarr; goods and services &rarr; human capital &rarr; using resources judiciously",
+ notes:[
+  "Four factors of production: <b>land, labour, capital and entrepreneurship</b>. Land is the natural resources, labour is human effort, capital is the tools and money used to produce, and entrepreneurship is what organises the other three and carries the risk.",
+  "They are used in a particular proportion, they complement one another and they are interconnected. No single factor produces anything on its own &mdash; which is why the proportion matters as much as the quantity.",
+  "<b>Human capital</b> is the knowledge, skills, experience and ability of individuals that let them work and create economic value. It is not a headcount; it is what those people can actually do.",
+  "Human capital is built by education, training, health, the use of technology, and the social context people work in. All five appear in the book&rsquo;s definition, and all five are things a country can invest in.",
+  "The entrepreneur is the one whose vision for solving a problem brings the other factors together &mdash; and who takes the risk of being wrong.",
+  "The chapter closes where the first chapter began: these resources produce the goods and services society runs on, and they need to be preserved and used judiciously."]},
+{n:8, title:"World Geography: Some Glimpses", sub:"Part 2 &middot; Geography", hue:'var(--c6)', art:'globe',
+ map:"landforms and water bodies &rarr; the processes that shape them &rarr; effects on climate and people &rarr; human damage &rarr; sustainable management",
+ notes:[
+  "The Earth&rsquo;s surface carries varied landforms and water bodies: mountains, plateaus, plains, deserts, grasslands, rivers and oceans.",
+  "All of them are shaped by natural processes &mdash; <b>tectonic movements, erosion and deposition</b>. Those three words are the mechanism the chapter is built on.",
+  "These features are not scenery. They influence climate, they decide which ecosystems can exist, and they shape human activity: where people settle, what they can farm, and where trade routes run.",
+  "Human actions disturb that balance &mdash; deforestation, overuse of resources and pollution above all.",
+  "The consequences the book names are desertification, loss of biodiversity and climate change. Note that each is a knock-on effect of the disturbance, not a separate problem.",
+  "The reason for studying world geography is given plainly: to understand these features well enough to manage them wisely, for sustainable development."]},
+{n:9, title:"India&rsquo;s Long Road to Independence", sub:"Part 2 &middot; History", hue:'var(--c3)', art:'flow',
+ map:"Moderates &rarr; Nationalists &rarr; revolutionaries &rarr; Gandhi and satyagraha &rarr; unity and the Hindu-Muslim question &rarr; 1947 and Partition",
+ notes:[
+  "The struggle was long and complex, with advances and reverses, and it cost immense suffering and sacrifice. The book does not present it as a single smooth march.",
+  "There were several approaches, and knowing them apart is most of the chapter. <b>Moderates</b> wanted a degree of autonomy for India within the British Empire and hoped gradual reform would be enough.",
+  "<b>Nationalists</b> worked for outright independence and for mass awakening, through Swaraj, Swadeshi and boycott.",
+  "<b>Revolutionaries</b> believed violent acts would unsettle the colonial power and lead to an armed uprising.",
+  "<b>Gandhi</b> brought nonviolence, the method of satyagraha, and mass mobilisation &mdash; drawing in numbers no earlier approach had reached.",
+  "The movement unified the subcontinent, but it could not resolve the political Hindu-Muslim question, as some Muslim leaders &mdash; the book is careful to say not all of them &mdash; insisted on separateness between the two religious groups.",
+  "The legacy is deliberately described as both triumph and tragedy: 1947 brought the joy of independence, and the Partition brought widespread violence and displacement, leaving a deep scar."]},
+{n:10, title:"A Journey Through Indian Architecture", sub:"Part 2 &middot; Heritage", hue:'var(--c2)', art:'lamp',
+ map:"Buddhist, Jain and Hindu architecture &rarr; connecting human and cosmic &rarr; Islamic architecture &rarr; advanced technique &rarr; neglect &rarr; preservation",
+ notes:[
+  "India&rsquo;s architectural heritage is among the richest and most diverse in the world &mdash; so much so that the book says openly that its own selection leaves out thousands of astonishing monuments.",
+  "There is thought and spirituality behind the stone. Classical Buddhist, Jain and Hindu architecture seeks to connect the human with the cosmic, or the human with the divine, and aims at expressing beauty and order.",
+  "That is a design intention, not decoration &mdash; the proportions and the plan are meant to carry the meaning.",
+  "Islamic architecture in India shares with them a reliance on advanced construction techniques. The engineering is as much the achievement as the appearance.",
+  "Travel to the lesser-known monuments and you find many in a state of neglect. Preserving thousands of centuries-old buildings is genuinely difficult, and government bodies are responsible in theory but cannot manage it in practice.",
+  "The book&rsquo;s conclusion is a civic one: much will be lost unless citizens feel responsible too &mdash; and it links this to the Fundamental Duty &ldquo;to value and preserve the rich heritage of our composite culture&rdquo;."]},
+{n:11, title:"The Role of the Judiciary in Our Society", sub:"Part 2 &middot; Civics", hue:'var(--c7)', art:'scale',
+ map:"one of three pillars &rarr; justice, and laws within the Constitution &rarr; separation of powers &rarr; Supreme Court, High Courts, subordinate courts &rarr; citizens&rsquo; role",
+ notes:[
+  "The judiciary is one of the three pillars of government, alongside the legislature and the executive.",
+  "It has two key roles: <b>ensuring justice is served</b>, and <b>ensuring laws are made within the framework of the Constitution</b>. The second is what makes it a check rather than merely a court.",
+  "The Constitution prescribes a separation of powers between the three organs, and requires that the judiciary remain <b>independent</b> of the other two. Independence is the condition on which the checking function works at all.",
+  "The structure has three levels: the <b>Supreme Court of India</b> at the apex in New Delhi, the <b>High Courts</b> at state level, and <b>subordinate courts</b> below them.",
+  "The system handles an enormous number of cases, resolved across those levels and also through alternative modes of dispute resolution &mdash; which exist precisely because the courts alone cannot carry the volume.",
+  "Citizens have a role too: bringing to the court&rsquo;s notice social concerns affecting the rights of people, animals and nature. The judiciary largely acts on what is brought to it."]},
+{n:12, title:"Citizenship: Rights and Duties", sub:"Part 2 &middot; Civics", hue:'var(--c5)', art:'shield',
+ map:"fundamental rights &rarr; remedies in court &rarr; discrimination is a rights violation &rarr; rights and duties together &rarr; everyday action",
+ notes:[
+  "The Constitution guarantees fundamental rights, and &mdash; the part that gives them force &mdash; you can go to court and seek a remedy if they are violated. A right with no remedy is only a sentiment.",
+  "Discrimination on grounds of caste, religion, gender or personal preferences such as choice of clothing is <b>against fundamental rights</b>. It is not merely unkind; it is unconstitutional.",
+  "<b>Rights and duties work together.</b> The book states it flatly: you cannot fulfil one while ignoring the other. Claiming a right you will not extend to others is not citizenship.",
+  "Being a responsible, empathetic and active citizen means living your rights <i>while respecting everyone else&rsquo;s</i>.",
+  "Preventing discrimination and ensuring inclusion needs deliberate action &mdash; it does not follow automatically from having the rules written down.",
+  "The everyday version, and the reason this chapter is in a school textbook: speak up against unfairness, follow the law, help others feel respected and included. A peaceful society is built through ordinary choices, words and actions."]},
+{n:13, title:"Dynamics of Population", sub:"Part 2 &middot; Economics", hue:'var(--c4)', art:'ratio',
+ map:"demography &rarr; births, deaths, migration &rarr; demographic transition &rarr; ageing populations &rarr; India&rsquo;s demographic dividend",
+ notes:[
+  "<b>Demography</b> is the study of the size and structure of a population and how it changes &mdash; through births, deaths and migration. Those three are the only ways a region&rsquo;s population can change.",
+  "Populations follow a pattern called the <b>demographic transition</b>: from high birth and death rates, through a stage where deaths fall first, to low birth and death rates.",
+  "Many developed countries are now at the far end of it, with shrinking and ageing populations caused by low birth rates. An ageing population is a real economic problem: fewer workers supporting more dependants.",
+  "India currently has a large young workforce &mdash; the <b>demographic dividend</b>. It is an opportunity, not an achievement: it only pays if those young people are educated, employed and healthy.",
+  "Which is why the book ties it to human capital: education, employment and healthcare are what convert a young population into growth.",
+  "And it is time-limited. The window is open only for a while, because India&rsquo;s population will itself begin to fall in the coming decades. A census is generally conducted every ten years, which is how these changes are tracked."]},
+{n:14, title:"India&rsquo;s Urban Landscape", sub:"Part 2 &middot; Economics", hue:'var(--c6)', art:'area',
+ map:"what a city is &rarr; why cities grow &rarr; the pressures growth brings &rarr; planning &rarr; rural and urban together",
+ notes:[
+  "Cities are large human settlements and centres of diverse economic and cultural activity. Their size is not the interesting part; the concentration and variety of activity is.",
+  "Cities grow for identifiable reasons: <b>locational advantage</b>, the development of <b>business clusters</b>, <b>tourism</b>, and efficient <b>infrastructure</b>. Learn those four as the standard answer to &ldquo;why do cities grow?&rdquo;",
+  "Growth brings its own problems: air and water pollution, the expansion of slums, loss of green spaces, traffic congestion and mounting waste.",
+  "The book&rsquo;s answer is not to stop growth but to plan it &mdash; <b>dynamically</b>, keeping pace with the changing needs of the people who live there, and sustainably.",
+  "Done well, cities remain what they are supposed to be: centres of innovation, culture and economic prosperity.",
+  "Urban and rural are not separate stories. Cities depend on rural areas for food, water, materials and workers, and urbanisation reshapes rural areas in turn. That two-way dependence is a favourite question."]},
+{n:15, title:"Cultural Currents: 13th to 17th Centuries", sub:"Part 2 &middot; Heritage", hue:'var(--c2)', art:'bell',
+ map:"bhakti and Sufi saints &rarr; Hindustani and Carnatic music &rarr; miniature painting &rarr; blended architecture &rarr; learning and mathematics",
+ notes:[
+  "Cultural continuity and integration happened in everyday things &mdash; art, music, languages, clothing, food. Not only in courts and monuments.",
+  "The <b>bhakti tradition</b> grew stronger and worked as a unifying force through periods of political instability. Bhakti saints promoted the oneness of God and the equality of people, and broke down rigid social barriers.",
+  "<b>Sufi saints</b> formed a valuable bridge between cultures, promoting unity, devotion and music. Bhakti and Sufi are usually asked together, as parallel movements with a shared effect.",
+  "Indian music evolved while keeping its own identity, developing in two related streams: <b>Hindustani</b> classical in the North and <b>Carnatic</b> in the South.",
+  "<b>Miniature painting</b> shows exchange between Rajput and Mughal styles &mdash; in technique, in colour and in composition. Architecture likewise blended traditions into new styles, and temple construction continued, with destroyed temples rebuilt: the book reads this as cultural resilience.",
+  "Despite the destruction of major universities, education continued through decentralised systems. The period produced groundbreaking work in mathematics, calculus in particular, and scholars translated texts between Sanskrit and Persian."]}
+];
+
+const SST_BANK = [
+/* 1 Natural Resources */
+{s:'sst',c:1,t:'mcq',q:'Natural resources are best defined as',o:['materials and substances occurring in Nature that are of value to humans','anything found underground','only minerals and fuels','things made in factories'],a:0,e:'The &ldquo;of value to humans&rdquo; part matters: something becomes a resource when we have a use for it and the means to use it.'},
+{s:'sst',c:1,t:'mcq',q:'Which of these is a non-renewable resource?',o:['Petroleum','Sunlight','Wind','Forests'],a:0,e:'Petroleum took millions of years to form and is not replaced on any timescale that helps us.'},
+{s:'sst',c:1,t:'mcq',q:'A forest counts as renewable only if',o:['it is cut no faster than it regrows','it is very large','it is protected by law','it contains valuable timber'],a:0,e:'Renewable is about the rate of use, not the type of resource. Cut faster than it regrows and it behaves like a non-renewable one.'},
+{s:'sst',c:1,t:'mcq',q:'The &ldquo;resource curse&rdquo; describes',o:['a resource-rich country ending up less developed than one without them','a shortage of resources','the exhaustion of a mine','pollution from mining'],a:0,e:'The paradox is the point: wealth in the ground does not automatically become wealth in the country.'},
+{s:'sst',c:1,t:'mcq',q:'According to the chapter, the resource curse can be overcome through investment in',o:['technology and skills','more mining','foreign borrowing','larger exports'],a:0,e:'Technology and the development of people&rsquo;s skills &mdash; which is the same answer the economics chapters give about human capital.'},
+{s:'sst',c:1,t:'tf',q:'Because renewable resources replace themselves, they cannot be overexploited.',a:false,e:'False. The chapter warns specifically about being vigilant over the rate at which renewables are used.'},
+{s:'sst',c:1,t:'fill',q:'Coal, petroleum and minerals are examples of ______ resources.',a:['non-renewable','nonrenewable','non renewable'],e:'Non-renewable &mdash; not replaced as fast as they are used.'},
+{s:'sst',c:1,t:'match',q:'Match each resource with its category.',pairs:[['Sunlight','Renewable'],['Wind','Renewable'],['Coal','Non-renewable'],['Minerals','Non-renewable'],['Forests','Renewable if replanted']],e:'Note the last one: forests sit in either category depending on how they are managed.'},
+{s:'sst',c:1,t:'short',m:3,q:'Distinguish between renewable and non-renewable resources and explain how each should be used.',a:'Renewable resources replace themselves naturally within a useful timescale &mdash; sunlight, wind, water and forests. Non-renewable resources do not: coal, petroleum, natural gas and minerals took millions of years to form and are being used far faster than they are replaced. The right use differs for each. Renewables must be used at a rate that allows them to regenerate, since a forest cut faster than it regrows stops being renewable in practice, so we need to be vigilant about the rate of use. Non-renewables must be used judiciously so that the available supply stretches over a longer period, while alternatives are developed. In both cases the underlying principle is the same: a resource is only valuable for as long as it lasts, so the way it is used decides whether it becomes lasting wealth or a passing windfall.'},
+
+/* 2 Political Map */
+{s:'sst',c:2,t:'mcq',q:'The invasions that reshaped India&rsquo;s political map in this period were led mainly by',o:['Turkic, Afghan and Mughal forces','Portuguese and Dutch forces','Greek and Roman forces','British and French forces'],a:0,e:'The European powers come later, in the Colonial Era chapter.'},
+{s:'sst',c:2,t:'mcq',q:'What happened to the economic condition of ordinary subjects during this period?',o:['It generally remained harsh, even as trade and wealth grew','It improved steadily for everyone','It was unaffected by the wars','It matched the wealth of the rulers'],a:0,e:'The chapter draws this distinction deliberately: growing national wealth and connectivity did not reach the common subject.'},
+{s:'sst',c:2,t:'mcq',q:'Which communities does the chapter say suffered severe persecution at times?',o:['Buddhists, Jains, Hindus, Sikhs, Zoroastrians and tribals','Only Hindus','Only Buddhists','None — the period was tolerant throughout'],a:0,e:'The book names all of them, while noting that some rulers were more broad-minded than others.'},
+{s:'sst',c:2,t:'mcq',q:'Indian society&rsquo;s response to repeated disruption is described as',o:['adaptability and resilience — rebuilding towns, cities and temples','complete collapse','emigration','passive acceptance'],a:0,e:'Rebuilding, preserving traditions, and blending old and new into fresh cultural forms.'},
+{s:'sst',c:2,t:'tf',q:'Agriculture and trade expanded during this period, adding to India&rsquo;s wealth and its links with the wider world.',a:true,e:'True &mdash; and the chapter sets this alongside the warfare rather than instead of it.'},
+{s:'sst',c:2,t:'fill',q:'New cultural expressions in this period came from blending indigenous and ______ elements.',a:['foreign'],e:'Foreign elements &mdash; visible in architecture, music and painting.'},
+{s:'sst',c:2,t:'short',m:2,q:'How did continuous warfare in this period change India&rsquo;s political map?',a:'Repeated invasions by Turkic, Afghan and Mughal forces, combined with continuous warfare, shifting alliances and conquest, caused old dynasties to fall and new kingdoms and empires to rise and collapse in turn. Because territory changed hands so often and rulers were displaced so regularly, political boundaries were redrawn again and again rather than settling into a stable pattern. The map at the end of the period therefore looked very different from the one at the start, and the process left widespread destruction behind it.'},
+
+/* 3 Marathas */
+{s:'sst',c:3,t:'mcq',q:'The Maratha kingdom was founded in the 17th century by',o:['Chhatrapati Shivaji Maharaj','Baji Rao I','Rajaram','Shahu'],a:0,e:'Shivaji founded it; the pan-Indian expansion came in the 18th century.'},
+{s:'sst',c:3,t:'mcq',q:'According to the chapter, the British captured India effectively from',o:['the Marathas, more than from any other Indian power','the Mughals','the Portuguese','the Sikhs'],a:0,e:'By the time the British were dominant, the Marathas were the power they had to displace.'},
+{s:'sst',c:3,t:'mcq',q:'What formed the core of the Maratha state?',o:['Forts','Ports','Temples','Universities'],a:0,e:'They controlled hundreds of forts, and that network is what made their hold strategically strong.'},
+{s:'sst',c:3,t:'mcq',q:'The Maratha navy is notable because it',o:['resisted European naval supremacy without the latest technology','was the largest in the world','was built by the British','never fought at sea'],a:0,e:'It held off European sea power for a considerable time despite that technological disadvantage.'},
+{s:'sst',c:3,t:'mcq',q:'Beyond territory, what wider effect did the Marathas have?',o:['They inspired a new cultural confidence among Indians in many regions','They ended all warfare in India','They introduced European administration','They abolished forts'],a:0,e:'That cultural confidence fed a broader revival and innovation.'},
+{s:'sst',c:3,t:'tf',q:'Maratha resistance to Mughal power lasted only a few years.',a:false,e:'False &mdash; it went on for decades, and the experience gained in it made the later expansion possible.'},
+{s:'sst',c:3,t:'fill',q:'The Marathas&rsquo; decades-long resistance was against ______ power.',a:['mughal','the mughal'],e:'Mughal power.'},
+{s:'sst',c:3,t:'short',m:3,q:'Why were forts so important to the Maratha state?',a:'Forts were the core of the Maratha state rather than an addition to it. The Marathas controlled hundreds of them, and that network gave them strategic control over their region in a way a field army alone could not. Forts in hilly terrain were extremely difficult to besiege, so they let a smaller force hold territory against a much larger one &mdash; which is precisely what decades of resistance to Mughal power required. They served as bases from which to operate, as refuges to fall back on, and as points from which routes and surrounding country could be dominated. Because the network was distributed, losing one fort did not collapse the system, and this resilience is a large part of why the Maratha kingdom survived long enough to expand across India in the 18th century.'},
+
+/* 4 Colonial */
+{s:'sst',c:4,t:'mcq',q:'What primarily attracted the Portuguese, Dutch, French and British to India?',o:['Her great wealth','Her climate','Her empty land','Her military weakness'],a:0,e:'They then fought each other for dominance, with the British gaining the upper hand.'},
+{s:'sst',c:4,t:'mcq',q:'The chapter says British taxation policy caused, in particular,',o:['severe famines and millions of deaths','a rise in Indian wages','improved agriculture','lower prices'],a:0,e:'The book states this plainly rather than in passing.'},
+{s:'sst',c:4,t:'mcq',q:'India&rsquo;s manufacturing sector was devastated by',o:['deliberate deindustrialisation','a natural disaster','a shortage of workers','loss of raw materials'],a:0,e:'The word the book uses is <i>deliberate</i> &mdash; it is presented as policy, not misfortune.'},
+{s:'sst',c:4,t:'mcq',q:'Which uprising threatened colonial rule for a time?',o:['The Great Rebellion of 1857','The Battle of Plassey','The Salt March','The Quit India Movement'],a:0,e:'1857. Most uprisings from the late 18th century onward, including this one, were brutally repressed.'},
+{s:'sst',c:4,t:'mcq',q:'Portuguese rule in Goa is associated with',o:['religious conversion and cultural transformation','a policy of assimilation','indirect rule','free trade'],a:0,e:'Which created long-lasting social divisions. Assimilation was the French policy, in Pondicherry.'},
+{s:'sst',c:4,t:'mcq',q:'The French policy of assimilation in Pondicherry produced',o:['a small elite of culturally French Indians','mass migration to France','an independent republic','a trading monopoly'],a:0,e:'A small culturally French Indian elite &mdash; a contrast with the Portuguese approach in Goa.'},
+{s:'sst',c:4,t:'mcq',q:'How did the British lock in control over Indian society?',o:['Through administrative structures, legal systems and educational institutions','By military occupation alone','Through trade agreements only','By withdrawing from governance'],a:0,e:'Governing the society, not merely holding the territory.'},
+{s:'sst',c:4,t:'tf',q:'In the 19th century, India&rsquo;s classical culture influenced the West, particularly through translated Sanskrit texts.',a:true,e:'True &mdash; one flow that ran the other way, and it left a lasting influence.'},
+{s:'sst',c:4,t:'fill',q:'The Great Rebellion took place in the year ______.',a:['1857'],e:'1857.'},
+{s:'sst',c:4,t:'short',m:3,q:'Describe the economic effects of British rule on India.',a:'They were severe and largely deliberate. British taxation policy was ruthless and inflicted great misery on ordinary people; the chapter links it directly to severe famines and, through them, to millions of deaths. Alongside this came the deliberate deindustrialisation of India, which devastated a manufacturing sector that had previously been thriving &mdash; India went from producing goods to supplying raw materials and buying finished ones. Control over the economy was reinforced by imposing British administrative structures, legal systems and educational institutions, so that colonial authority extended over the whole society rather than only its territory. The wealth that had originally attracted the Portuguese, Dutch, French and British was, in effect, transferred outward, leaving the country poorer at the end of the period than the scale of its resources would suggest.'},
+
+/* 5 Franchise */
+{s:'sst',c:5,t:'mcq',q:'What is described as the cornerstone of Indian democracy?',o:['Universal adult franchise','The Election Commission','Political parties','The Constitution&rsquo;s Preamble'],a:0,e:'Every adult citizen has one vote of equal weight, regardless of wealth, education, caste, religion or gender.'},
+{s:'sst',c:5,t:'mcq',q:'Which body conducts elections in India?',o:['The Election Commission of India','The Supreme Court','Parliament','The Council of Ministers'],a:0,e:'A Constitutional body, and an independent one &mdash; the independence is the point of it.'},
+{s:'sst',c:5,t:'mcq',q:'The ECI oversees elections including those of',o:['the President and Vice-President','only the Lok Sabha','only state assemblies','only local bodies'],a:0,e:'All elections in the country, the President and Vice-President included.'},
+{s:'sst',c:5,t:'mcq',q:'The chapter describes the right to vote as',o:['a responsibility as well as a right','a formality','an obligation enforced by law','a privilege for some citizens'],a:0,e:'It presses this: the right needs to be taken seriously, and voter awareness matters as much as turnout.'},
+{s:'sst',c:5,t:'mcq',q:'What does the chapter say Indian democracy&rsquo;s challenges call for?',o:['Voters&rsquo; vigilance and awareness','More political parties','Fewer elections','Stronger police powers'],a:0,e:'The answer offered is citizens, not machinery.'},
+{s:'sst',c:5,t:'tf',q:'Universal adult franchise means the vote is restricted to citizens who meet an education or property requirement.',a:false,e:'False &mdash; that is the opposite of it. Universal means every adult citizen, with no such test, and India adopted this from its first general election.'},
+{s:'sst',c:5,t:'fill',q:'The ______ Commission of India is the Constitutional body that conducts elections.',a:['election'],e:'The Election Commission of India (ECI).'},
+{s:'sst',c:5,t:'short',m:2,q:'Why is it important to facilitate the participation of all eligible voters?',a:'Because a right that cannot be exercised is not really available. Universal adult franchise means every adult citizen has an equal vote, but that equality is only real if each of them can actually reach a polling station and cast it. Voters in remote areas, people with disabilities, the elderly, and those away from home for work all face practical obstacles that others do not, and if nothing is done about those obstacles then the effective right to vote is unequal even though the legal right is not. Deliberate arrangements &mdash; accessible booths, polling stations within reach of every settlement, assistance where needed &mdash; are what turn the guarantee into a fact. Wide participation also makes the result a fuller reflection of the people&rsquo;s will, which is what gives an elected government its authority.'},
+
+/* 6 Parliament */
+{s:'sst',c:6,t:'mcq',q:'Which organ of government makes laws?',o:['The Legislature','The Executive','The Judiciary','The Election Commission'],a:0,e:'Legislature makes, Executive implements, Judiciary checks against the Constitution. One sentence, three organs.'},
+{s:'sst',c:6,t:'mcq',q:'The Judiciary&rsquo;s role in this division is to',o:['ensure laws follow the Constitution','implement laws','draft laws','conduct elections'],a:0,e:'That checking function is what makes it a pillar rather than merely a set of courts.'},
+{s:'sst',c:6,t:'mcq',q:'The Lok Sabha is also called',o:['the House of the People','the Council of States','the Upper House','the Council of Ministers'],a:0,e:'House of the People, the Lower House, directly elected. The Rajya Sabha is the Council of States, the Upper House.'},
+{s:'sst',c:6,t:'mcq',q:'Members of the Rajya Sabha are',o:['elected indirectly, with seats allocated to the states','elected directly by all voters','appointed by the Prime Minister','chosen by the Supreme Court'],a:0,e:'Indirect election with state-wise allocation is how the federal spirit enters Parliament.'},
+{s:'sst',c:6,t:'mcq',q:'The Lok Sabha is elected through',o:['direct election based on universal adult franchise','indirect election by state legislatures','nomination by the President','selection by political parties'],a:0,e:'Directly, by all adult citizens.'},
+{s:'sst',c:6,t:'mcq',q:'What do checks and balances between institutions protect?',o:['Citizens&rsquo; rights and democratic values','The majority party','The speed of legislation','The Prime Minister&rsquo;s authority'],a:0,e:'They exist for the citizen, which is why the balance matters more than the efficiency.'},
+{s:'sst',c:6,t:'mcq',q:'What candid criticism does the chapter make of Parliament?',o:['Its functioning needs to become more efficient and productive','It has too many members','It meets too often','It has too much power'],a:0,e:'So that the country&rsquo;s progress is not thwarted &mdash; the book&rsquo;s own words.'},
+{s:'sst',c:6,t:'tf',q:'India&rsquo;s parliamentary system is designed so that power is shared, decisions are debated, and leaders are held accountable.',a:true,e:'True &mdash; and those three are stated as design goals, not happy accidents.'},
+{s:'sst',c:6,t:'match',q:'Match each organ with its function.',pairs:[['Legislature','Makes the laws'],['Executive','Implements the laws'],['Judiciary','Checks laws against the Constitution'],['Lok Sabha','Directly elected House of the People'],['Rajya Sabha','Indirectly elected Council of States']],e:'If you can place these five you can answer most of what this chapter sets.'},
+{s:'sst',c:6,t:'short',m:3,q:'Explain the roles of the legislature, executive and judiciary, and why the separation between them matters.',a:'The legislature makes the laws, the executive implements them, and the judiciary ensures that they follow the Constitution. Keeping the three apart matters because it prevents any one of them from holding all the power. If the body that makes the laws also enforced them and judged disputes about them, there would be nothing to stop it acting unconstitutionally, since it would be judging its own conduct. Separation creates checks and balances: the judiciary can strike down a law that breaches the Constitution, the legislature can hold the executive accountable through debate and questioning, and the executive must act within the law as passed. The purpose of the arrangement is not tidiness but protection &mdash; the checks exist to safeguard citizens&rsquo; rights and uphold democratic values, and the same balancing structure is repeated at the Centre and in the states.'},
+
+/* 7 Factors of Production */
+{s:'sst',c:7,t:'mcq',q:'The four factors of production are',o:['land, labour, capital and entrepreneurship','land, water, air and fire','money, machines, markets and men','farming, mining, trade and industry'],a:0,e:'Land, labour, capital, entrepreneurship. They are used in proportion and are interconnected.'},
+{s:'sst',c:7,t:'mcq',q:'Human capital is',o:['the knowledge, skills, experience and ability of individuals','the number of people in a country','money invested in machinery','the wages paid to workers'],a:0,e:'It is what people can do, not how many there are.'},
+{s:'sst',c:7,t:'mcq',q:'Which of these does the chapter say influences human capital?',o:['All of these','Education and training','Health','Use of technology and social context'],a:0,e:'All five appear in the book&rsquo;s definition, and each is something a country can invest in.'},
+{s:'sst',c:7,t:'mcq',q:'The factor that organises the other three and carries the risk is',o:['entrepreneurship','land','labour','capital'],a:0,e:'The entrepreneur&rsquo;s vision for solving a problem is what brings the other factors together.'},
+{s:'sst',c:7,t:'mcq',q:'The factors of production are described as',o:['complementary and interconnected','independent of one another','interchangeable','equally sized'],a:0,e:'None of them produces anything alone, which is why the proportion matters as much as the quantity.'},
+{s:'sst',c:7,t:'tf',q:'Human capital means simply the number of workers available in a country.',a:false,e:'False. It is their knowledge, skills, experience and ability &mdash; the quality of what they can do, which is why education and health are investments in it.'},
+{s:'sst',c:7,t:'fill',q:'In economics, the natural resources used in production are together called ______.',a:['land'],e:'Land &mdash; used in the broad sense of all natural resources, not just soil.'},
+{s:'sst',c:7,t:'match',q:'Match each factor with what it contributes.',pairs:[['Land','Natural resources'],['Labour','Human effort'],['Capital','Tools, machinery and money'],['Entrepreneurship','Organisation and risk-taking']],e:'Four factors, four contributions. Entrepreneurship is the one students most often leave out.'},
+{s:'sst',c:7,t:'short',m:3,q:'What is human capital, and how can a country increase it?',a:'Human capital is the knowledge, skills, experience and ability of individuals that enable them to work and create economic value. It is a measure of capability rather than of numbers &mdash; two countries with the same population can have very different human capital. The chapter names five things that influence it: education, training, health, the use of technology, and the social context in which people work. A country increases it by investing in exactly those: schooling and higher education to build knowledge, vocational training to build specific skills, healthcare so that people are well enough to work and to keep working, access to technology so that effort produces more, and a social context that allows everyone to participate rather than excluding groups from work and learning. This connects directly to the demographic dividend: a large young population only becomes economic growth if it is educated, healthy and employed.'},
+
+/* 8 World Geography */
+{s:'sst',c:8,t:'mcq',q:'Which natural processes shape the Earth&rsquo;s landforms?',o:['Tectonic movements, erosion and deposition','Rainfall and sunshine only','Human construction','Earthquakes alone'],a:0,e:'Those three are the mechanism the whole chapter rests on.'},
+{s:'sst',c:8,t:'mcq',q:'The chapter says landforms and water bodies influence',o:['climate, ecosystems and human activities','only climate','only wildlife','nothing measurable'],a:0,e:'Including where people settle, what they farm and where trade runs. Geography is not scenery.'},
+{s:'sst',c:8,t:'mcq',q:'Which of these is named as a human action that disturbs the natural balance?',o:['Deforestation','Tectonic movement','Erosion','Deposition'],a:0,e:'Deforestation, overuse of resources and pollution are the human ones. The other three are natural processes.'},
+{s:'sst',c:8,t:'mcq',q:'Desertification, biodiversity loss and climate change are described as',o:['consequences of human disturbance of the natural balance','natural processes unaffected by people','problems of the distant past','regional issues only'],a:0,e:'They are knock-on effects of the disturbance, not separate problems.'},
+{s:'sst',c:8,t:'tf',q:'The purpose of studying world geography, according to the chapter, is to manage the Earth&rsquo;s features wisely for sustainable development.',a:true,e:'True &mdash; the book states the reason for the subject explicitly.'},
+{s:'sst',c:8,t:'fill',q:'Mountains, plateaus, plains, deserts and grasslands are all examples of ______.',a:['landforms','landform'],e:'Landforms.'},
+{s:'sst',c:8,t:'short',m:2,q:'How do human actions disturb the balance of the Earth&rsquo;s natural systems?',a:'Three actions are named: deforestation, the overuse of resources, and pollution. Deforestation removes the tree cover that holds soil in place and returns moisture to the air, so land degrades and rainfall patterns shift. Overuse takes resources faster than they can be replaced, so soils, fisheries and aquifers are exhausted rather than sustained. Pollution loads air, water and soil with substances the systems cannot absorb. Because the Earth&rsquo;s features are interconnected &mdash; landforms shaping climate, climate shaping ecosystems, ecosystems supporting people &mdash; damage in one place travels. The consequences the chapter names are desertification, the loss of biodiversity, and climate change, each of which then makes the others worse.'},
+
+/* 9 Independence */
+{s:'sst',c:9,t:'mcq',q:'The Moderates in the freedom movement hoped for',o:['a degree of autonomy within the British Empire through gradual reform','immediate armed revolution','complete separation without negotiation','a return to princely rule'],a:0,e:'Autonomy within the Empire, reached gradually. The Nationalists wanted independence outright.'},
+{s:'sst',c:9,t:'mcq',q:'Swaraj, Swadeshi and boycott were the methods of the',o:['Nationalists','Moderates','Revolutionaries','Colonial administrators'],a:0,e:'They worked for independence and for mass awakening through those three.'},
+{s:'sst',c:9,t:'mcq',q:'The revolutionaries believed that',o:['violent acts would unsettle the colonial power and lead to an armed uprising','petitions would bring reform','nonviolence was the only path','India should stay within the Empire'],a:0,e:'One of several distinct approaches the chapter is careful to separate.'},
+{s:'sst',c:9,t:'mcq',q:'Gandhi&rsquo;s contribution to the movement was',o:['nonviolence, satyagraha and mass mobilisation','armed struggle','constitutional petitions alone','negotiation with the princes'],a:0,e:'Mass mobilisation is the part that drew in numbers no earlier approach had reached.'},
+{s:'sst',c:9,t:'mcq',q:'Which question did the movement unify the subcontinent but fail to resolve?',o:['The political Hindu-Muslim question','The language question','The question of princely states','The economic question'],a:0,e:'Some Muslim leaders &mdash; the book says explicitly, not all of them &mdash; insisted on separateness between the two religious groups.'},
+{s:'sst',c:9,t:'mcq',q:'The chapter describes the legacy of the journey to freedom as',o:['both triumph and tragedy','purely triumphant','purely tragic','largely uneventful'],a:0,e:'1947 brought the joy of independence; Partition brought violence and displacement, leaving a deep scar.'},
+{s:'sst',c:9,t:'tf',q:'The freedom struggle followed a single agreed approach throughout.',a:false,e:'False. Moderates, Nationalists, revolutionaries and Gandhi&rsquo;s satyagraha were distinct approaches, and telling them apart is most of this chapter.'},
+{s:'sst',c:9,t:'fill',q:'Gandhi&rsquo;s method of nonviolent resistance is called ______.',a:['satyagraha'],e:'Satyagraha.'},
+{s:'sst',c:9,t:'match',q:'Match each group with its approach.',pairs:[['Moderates','Autonomy within the Empire through gradual reform'],['Nationalists','Swaraj, Swadeshi and boycott'],['Revolutionaries','Violent acts to trigger an armed uprising'],['Gandhi','Nonviolence, satyagraha, mass mobilisation']],e:'Four approaches to one goal. Questions usually ask you to distinguish two of them.'},
+{s:'sst',c:9,t:'short',m:3,q:'Describe the different approaches taken in India&rsquo;s freedom struggle.',a:'There were several, and they differed on both the goal and the method. The Moderates aspired to a degree of autonomy for India within the British Empire, and hoped that gradual reform, argued for through constitutional means, would be enough. The Nationalists worked instead for full independence, and for a mass awakening to support it, using Swaraj (self-rule), Swadeshi (Indian-made goods) and the boycott of British goods and institutions. The revolutionaries held that neither would move the colonial power, and believed violent acts would unsettle it enough to spark an armed uprising. Gandhi brought a different method again &mdash; nonviolence and satyagraha, combined with mass mobilisation that drew in ordinary people on a scale no earlier approach had reached. The struggle was long and complex, with advances and reverses and immense suffering and sacrifice, and it succeeded in unifying the subcontinent even though it could not resolve the political Hindu-Muslim question.'},
+
+/* 10 Architecture */
+{s:'sst',c:10,t:'mcq',q:'Classical Buddhist, Jain and Hindu architecture seeks to connect',o:['the human and the cosmic, or the human and the divine','the ruler and the ruled','the city and the village','trade and religion'],a:0,e:'That intention shapes the proportions and the plan; it is design, not decoration.'},
+{s:'sst',c:10,t:'mcq',q:'What do Indian classical and Islamic architecture in India have in common?',o:['Advanced construction techniques','Identical floor plans','The same religious purpose','The same building materials only'],a:0,e:'The engineering is as much the achievement as the appearance.'},
+{s:'sst',c:10,t:'mcq',q:'What state does the chapter say many lesser-known monuments are in?',o:['Neglect','Full restoration','Private ownership','Active use as temples'],a:0,e:'And it says that government bodies are responsible in theory but cannot manage the task in practice.'},
+{s:'sst',c:10,t:'mcq',q:'The chapter links preserving heritage to which Fundamental Duty?',o:['To value and preserve the rich heritage of our composite culture','To defend the country','To develop scientific temper','To protect the environment'],a:0,e:'It quotes the Duty directly at the end of the chapter.'},
+{s:'sst',c:10,t:'tf',q:'The chapter claims to cover all of India&rsquo;s important monuments.',a:false,e:'False &mdash; it says openly that its selection necessarily leaves out thousands of astonishing monuments of diverse styles.'},
+{s:'sst',c:10,t:'fill',q:'Preserving India&rsquo;s heritage requires that ______ feel responsible for it, not only government bodies.',a:['citizens','citizen','people'],e:'Citizens. The chapter&rsquo;s conclusion is a civic one.'},
+{s:'sst',c:10,t:'short',m:2,q:'Why is preserving India&rsquo;s architectural heritage difficult, and what does the chapter suggest?',a:'It is difficult because of sheer scale and age: India has thousands of monuments, many of them centuries old, spread across the whole country and built in many different styles and materials, each needing its own kind of conservation. Government bodies are theoretically responsible for this task, but in practice they cannot cover it, which is why anyone travelling to lesser-known monuments finds many in a state of neglect. The chapter&rsquo;s suggestion is that preservation cannot rest on official bodies alone: much will be lost unless citizens feel equally responsible, and that begins with learning to appreciate and admire what earlier generations built. It ties this directly to the Fundamental Duty &ldquo;to value and preserve the rich heritage of our composite culture&rdquo; &mdash; a duty that only means anything if ordinary people act on it.'},
+
+/* 11 Judiciary */
+{s:'sst',c:11,t:'mcq',q:'The highest court of law in India is',o:['the Supreme Court of India','the High Court','the District Court','the Constitutional Court'],a:0,e:'Supreme Court at the apex, High Courts at state level, subordinate courts below.'},
+{s:'sst',c:11,t:'mcq',q:'The courts at the State level are called',o:['High Courts','Supreme Courts','District Courts','Panchayat Courts'],a:0,e:'High Courts sit between the Supreme Court and the subordinate courts.'},
+{s:'sst',c:11,t:'mcq',q:'What are the two key roles of the judicial system?',o:['Ensuring justice is served, and that laws stay within the Constitution','Making laws and enforcing them','Conducting elections and collecting taxes','Advising the Prime Minister'],a:0,e:'The second role is what makes the judiciary a check rather than merely a court.'},
+{s:'sst',c:11,t:'mcq',q:'The Constitution requires that the judiciary be',o:['independent of the other organs of government','appointed by Parliament','directed by the executive','elected by citizens'],a:0,e:'Independence is the condition on which the checking function works at all.'},
+{s:'sst',c:11,t:'mcq',q:'Besides the courts, cases are also resolved through',o:['alternative modes of dispute resolution','the police','Parliament','the Election Commission'],a:0,e:'They exist precisely because the courts alone cannot carry the volume of cases.'},
+{s:'sst',c:11,t:'tf',q:'The judiciary is one of the three pillars of government.',a:true,e:'True &mdash; alongside the legislature and the executive.'},
+{s:'sst',c:11,t:'fill',q:'The principle that the three organs of government have distinct powers is called the ______ of powers.',a:['separation'],e:'Separation of powers.'},
+{s:'sst',c:11,t:'short',m:2,q:'What role do citizens play in the judicial system?',a:'The judiciary largely acts on what is brought before it, so citizens have a real part to play. The chapter says they can bring to the court&rsquo;s notice social concerns that affect the rights of people, animals and nature &mdash; matters that might otherwise go unaddressed because no individual with the means to litigate has been directly harmed. This matters because a court cannot investigate on its own initiative in the way an executive body can; it needs someone to raise the issue. Citizens therefore act as a channel between the problems of society and the institution that can rule on them, which is one of the ways the judiciary stays connected to the people whose rights it exists to protect.'},
+
+/* 12 Citizenship */
+{s:'sst',c:12,t:'mcq',q:'If a fundamental right is violated, a citizen can',o:['go to court and seek a remedy','only complain to the police','do nothing until the next election','appeal to the Election Commission'],a:0,e:'This is what gives the rights force. A right with no remedy is only a sentiment.'},
+{s:'sst',c:12,t:'mcq',q:'Discrimination based on caste, religion, gender or choice of clothing is',o:['against fundamental rights','permitted in private matters','a matter for local custom','only a social issue'],a:0,e:'Not merely unkind &mdash; unconstitutional.'},
+{s:'sst',c:12,t:'mcq',q:'The chapter says rights and duties',o:['work together — you cannot fulfil one while ignoring the other','are entirely separate','apply to different people','can be chosen between'],a:0,e:'Claiming a right you will not extend to others is not citizenship.'},
+{s:'sst',c:12,t:'mcq',q:'Preventing discrimination and ensuring inclusion requires',o:['deliberate action','only good intentions','waiting for attitudes to change','stronger punishment alone'],a:0,e:'It does not follow automatically from having the rules written down.'},
+{s:'sst',c:12,t:'mcq',q:'Being a responsible and active citizen is described as',o:['living your rights while respecting others&rsquo; rights','claiming every right available','avoiding public matters','following instructions without question'],a:0,e:'The two halves are inseparable in the chapter&rsquo;s account.'},
+{s:'sst',c:12,t:'tf',q:'Democracy is strengthened by enabling and facilitating the participation of all.',a:true,e:'True &mdash; the same principle as facilitating every eligible voter in the elections chapter.'},
+{s:'sst',c:12,t:'fill',q:'The rights guaranteed to every citizen by the Constitution are called ______ rights.',a:['fundamental'],e:'Fundamental rights, enforceable in court.'},
+{s:'sst',c:12,t:'short',m:3,q:'Explain why rights and duties cannot be separated.',a:'Because every right a person holds implies a duty on everyone else to respect it. A right to be free from discrimination means nothing unless other people refrain from discriminating; a right to be heard means nothing unless others are willing to listen. So if a citizen claims a right while ignoring the corresponding duty, they are asking for a protection they are not prepared to extend, and if everyone did that, no right would function at all. The chapter puts it directly: you cannot fulfil one while ignoring the other. This is why it describes responsible citizenship as living your rights while respecting others&rsquo; rights, and why it emphasises everyday action &mdash; speaking up against unfairness, following the law, helping others feel respected and included. A peaceful society is built through those ordinary choices, words and actions, not only through what is written in the Constitution.'},
+
+/* 13 Population */
+{s:'sst',c:13,t:'mcq',q:'Demography is the study of',o:['population size, structure and change','land use','government policy','trade patterns'],a:0,e:'Change through births, deaths and migration &mdash; the only three ways a region&rsquo;s population can alter.'},
+{s:'sst',c:13,t:'mcq',q:'The three factors that change a population are',o:['births, deaths and migration','births, deaths and marriage','migration, income and health','births, education and jobs'],a:0,e:'Everything else works through one of these three.'},
+{s:'sst',c:13,t:'mcq',q:'The demographic transition describes a move from',o:['high birth and death rates to low birth and death rates','low rates to high rates','rural to urban living','poverty to prosperity'],a:0,e:'Death rates typically fall first, which is why population grows fastest in the middle of the transition.'},
+{s:'sst',c:13,t:'mcq',q:'Many developed countries now face',o:['shrinking and ageing populations due to low birth rates','rapid population growth','no demographic change','falling life expectancy'],a:0,e:'Fewer workers supporting more dependants is a genuine economic problem.'},
+{s:'sst',c:13,t:'mcq',q:'India&rsquo;s demographic dividend refers to',o:['its large young workforce','its total population','its birth rate','its urban population'],a:0,e:'An opportunity rather than an achievement &mdash; it only pays if those young people are educated, employed and healthy.'},
+{s:'sst',c:13,t:'mcq',q:'Why is the demographic dividend described as a limited window?',o:['Because India&rsquo;s population will begin to fall in the coming decades','Because young people emigrate','Because the census is only every ten years','Because birth rates are rising'],a:0,e:'The advantage is temporary, which is why the investment has to be made now.'},
+{s:'sst',c:13,t:'tf',q:'A census in India is generally conducted every ten years.',a:true,e:'True &mdash; which is how these population changes are tracked over time.'},
+{s:'sst',c:13,t:'fill',q:'A large young workforce that can boost a country&rsquo;s growth is called the demographic ______.',a:['dividend'],e:'Demographic dividend.'},
+{s:'sst',c:13,t:'short',m:3,q:'What is the demographic dividend, and what does India need to do to benefit from it?',a:'The demographic dividend is the economic advantage a country gains when a large share of its population is of working age relative to the number of dependants. India currently has a large young workforce and so is in this position. But it is an opportunity, not an automatic gain: a large young population only produces growth if those people can actually work productively. The chapter ties this directly to human capital, and names the three investments needed &mdash; education, employment and healthcare. Education and training build the skills that make work valuable, healthcare keeps people able to work, and there must be jobs for them to do, or a young population becomes unemployment rather than growth. The urgency comes from the window being limited: as the demographic transition continues, India&rsquo;s population will itself begin to fall in the coming decades and the ratio of workers to dependants will worsen, so the investment has to be made while the advantage lasts.'},
+
+/* 14 Urban */
+{s:'sst',c:14,t:'mcq',q:'Which of these is named as a reason cities grow?',o:['All of these','Locational advantage','Business clusters and tourism','Efficient infrastructure'],a:0,e:'Those four together are the standard answer to &ldquo;why do cities grow?&rdquo;'},
+{s:'sst',c:14,t:'mcq',q:'Cities are described as centres of',o:['diverse economic and cultural activities','population only','industry only','government only'],a:0,e:'The concentration and variety of activity is what makes a city, not merely its size.'},
+{s:'sst',c:14,t:'mcq',q:'Which of these is NOT listed as a challenge of urban growth?',o:['Falling population','Expansion of slums','Traffic jams','Air and water pollution'],a:0,e:'The challenges listed are pollution, slums, loss of green spaces, traffic and waste. Falling population is the opposite problem.'},
+{s:'sst',c:14,t:'mcq',q:'The chapter argues that cities need to be planned',o:['dynamically and sustainably, for changing needs','once, at the start','only when problems appear','by the residents alone'],a:0,e:'Dynamically, because the needs of the people living there keep changing.'},
+{s:'sst',c:14,t:'tf',q:'Cities depend on rural areas, and urbanisation also affects rural areas in turn.',a:true,e:'True &mdash; cities need food, water, materials and workers from the countryside, and that two-way dependence is a favourite question.'},
+{s:'sst',c:14,t:'fill',q:'With better planning, cities can remain centres of innovation, culture and economic ______.',a:['prosperity'],e:'Prosperity.'},
+{s:'sst',c:14,t:'short',m:3,q:'Why do cities grow, and what challenges does that growth bring?',a:'Cities grow for several identifiable reasons. Locational advantage matters &mdash; a site on a river, a coast, a trade route or a junction attracts activity. Business clusters develop, where firms in related trades gather in one place and draw in more of the same. Tourism brings people and money. Efficient infrastructure &mdash; transport, power, water, communications &mdash; makes a city work well enough that more people and businesses want to be there, and each of these reinforces the others. But growth brings pressures: air and water pollution, the expansion of slums as housing fails to keep pace, the loss of green spaces to construction, traffic congestion, and steadily rising waste generation. The chapter&rsquo;s answer is not to prevent growth but to plan for it dynamically, keeping up with the changing needs of the inhabitants and doing so sustainably, so that cities remain centres of innovation, culture and prosperity rather than of their own problems.'},
+
+/* 15 Cultural Currents */
+{s:'sst',c:15,t:'mcq',q:'The bhakti tradition acted as',o:['a unifying force during periods of political instability','a court ceremony','a military movement','a trading network'],a:0,e:'Bhakti saints promoted the oneness of God and the equality of people, and broke down rigid social barriers.'},
+{s:'sst',c:15,t:'mcq',q:'Sufi saints are described as',o:['a bridge between cultures, promoting unity, devotion and music','opponents of bhakti','court administrators','military commanders'],a:0,e:'Bhakti and Sufi are usually asked together, as parallel movements with a shared effect.'},
+{s:'sst',c:15,t:'mcq',q:'Indian classical music developed in which two streams?',o:['Hindustani in the North and Carnatic in the South','Bhakti and Sufi','Rajput and Mughal','Vedic and folk'],a:0,e:'Two related streams, each keeping the core identity of Indian music.'},
+{s:'sst',c:15,t:'mcq',q:'Miniature painting in this period shows exchange between which styles?',o:['Rajput and Mughal','Hindustani and Carnatic','Buddhist and Jain','Persian and Greek'],a:0,e:'Exchange in technique, colour and composition alike.'},
+{s:'sst',c:15,t:'mcq',q:'What does the rebuilding of destroyed temples demonstrate, according to the chapter?',o:['Cultural resilience','Foreign influence','Royal wealth','Religious conflict'],a:0,e:'Temple construction continued and destroyed temples were rebuilt &mdash; the book reads this as resilience.'},
+{s:'sst',c:15,t:'mcq',q:'Despite the destruction of major universities, education continued through',o:['decentralised systems','foreign institutions','royal courts alone','written correspondence'],a:0,e:'And the period still produced groundbreaking work in mathematics, calculus in particular.'},
+{s:'sst',c:15,t:'tf',q:'Scholars in this period translated texts between Sanskrit and Persian.',a:true,e:'True &mdash; one of the concrete forms the cultural exchange took.'},
+{s:'sst',c:15,t:'fill',q:'Classical music developed as ______ in the North and Carnatic in the South.',a:['hindustani'],e:'Hindustani classical music.'},
+{s:'sst',c:15,t:'match',q:'Match each cultural current with what it did.',pairs:[['Bhakti saints','Promoted equality and the oneness of God'],['Sufi saints','Bridged cultures through devotion and music'],['Hindustani and Carnatic','Two streams of classical music'],['Miniature painting','Rajput and Mughal exchange'],['Decentralised education','Kept learning alive after universities fell']],e:'Five currents, one line each. The chapter is asked as a set of parallel developments.'},
+{s:'sst',c:15,t:'short',m:3,q:'How did the bhakti and Sufi traditions contribute to unity in this period?',a:'Both worked against division at a time when politics was producing plenty of it. The bhakti tradition grew stronger during periods of political instability and served as a unifying force: bhakti saints taught the oneness of God and the equality of all people, and in doing so broke down rigid social barriers that had kept communities apart. Because bhakti was expressed in regional languages and through song rather than in scholarly Sanskrit, it reached ordinary people directly rather than only the learned. Sufi saints formed a valuable bridge between cultures, promoting unity and devotion, and using music as a means of doing so. The two movements ran in parallel and shared an emphasis on personal devotion over formal ritual and on human equality over hierarchy, and that shared emphasis meant people of different religious backgrounds could find common ground in them &mdash; which is why the chapter treats them together as cultural currents that held society together while political structures were unstable.'}
+];
+
+BANK.push(...SST_BANK);
+
+
+/* ============================================================
+   ENGLISH — Class VIII grammar, usage and writing.
+
+   A deliberate choice about scope, and worth stating. NCERT still publishes
+   Class 8 English as Honeydew and It So Happened (the file at
+   ncert.nic.in/textbook/pdf/hehd1ps.pdf is a 2024-25 reprint, unlike the
+   2026-27 Science, Maths, Hindi and Social Science books), so the reader may
+   yet be replaced — and schools vary in which supplementary reader they set.
+
+   More importantly, literature does not drill. An MCQ on a poem tests whether
+   you recognise the answer, not whether you can read the poem or write about
+   it, and a bank of them would make this subject look complete while teaching
+   nothing. Grammar, usage, vocabulary and the writing formats are a different
+   matter: they are mechanical, they are invariant across readers, they are
+   where marks are actually lost, and they reward exactly this kind of
+   practice. So that is what is here.
+   ============================================================ */
+const ENG = [
+{n:1, title:"Tenses", sub:"Twelve forms, and when each is used", hue:'var(--c7)', art:'flow',
+ map:"present &middot; past &middot; future &rarr; each in simple, continuous, perfect and perfect continuous",
+ notes:[
+  "Three times, four aspects, twelve tenses. Lay them out as a grid once and the whole topic stops being a list to memorise.",
+  "<b>Simple</b> states a fact or habit: <i>She writes every morning. She wrote yesterday. She will write tomorrow.</i>",
+  "<b>Continuous</b> shows action in progress: <i>She is writing. She was writing. She will be writing.</i> Formed with be + -ing.",
+  "<b>Perfect</b> shows completion before a point in time: <i>She has written. She had written. She will have written.</i> Formed with have + past participle.",
+  "<b>Perfect continuous</b> shows how long something has been going on: <i>She has been writing for an hour.</i> Formed with have been + -ing.",
+  "The commonest Class VIII error is the present perfect with a finished time. <i>I have seen him yesterday</i> is wrong &mdash; <i>yesterday</i> is over, so it must be <i>I saw him yesterday</i>. Use the present perfect only when the time is unfinished or unstated.",
+  "Second commonest: mixing tenses inside one sentence for no reason. <i>He came in and sits down</i> should be <i>came in and sat down</i>. Keep the sequence consistent unless the meaning genuinely changes."]},
+{n:2, title:"Active and Passive Voice", sub:"Who is doing what to whom", hue:'var(--c6)', art:'arrows',
+ map:"active: doer + verb + object &rarr; passive: object + be + past participle + (by + doer)",
+ notes:[
+  "In the <b>active voice</b> the doer comes first: <i>Rama wrote the letter.</i> In the <b>passive</b> the thing done to comes first: <i>The letter was written by Rama.</i>",
+  "To change active to passive: move the object to the front, put the verb into <i>be</i> + past participle in the same tense, and move the subject to the end after <i>by</i>.",
+  "Keep the tense. Present simple <i>writes</i> &rarr; <i>is written</i>. Past simple <i>wrote</i> &rarr; <i>was written</i>. Present perfect <i>has written</i> &rarr; <i>has been written</i>. Future <i>will write</i> &rarr; <i>will be written</i>.",
+  "Pronouns change form because they move from subject to object position: <i>I</i> &rarr; <i>me</i>, <i>he</i> &rarr; <i>him</i>, <i>she</i> &rarr; <i>her</i>, <i>we</i> &rarr; <i>us</i>, <i>they</i> &rarr; <i>them</i>.",
+  "Only <b>transitive</b> verbs &mdash; verbs that take an object &mdash; can be made passive. <i>He slept</i> has no object, so it has no passive form. This is a favourite trick question.",
+  "The <i>by</i> phrase is often dropped when the doer is unknown or unimportant: <i>The window was broken.</i> That is a reason to use the passive, not a mistake."]},
+{n:3, title:"Direct and Indirect Speech", sub:"Reporting what someone said", hue:'var(--c5)', art:'bell',
+ map:"reporting verb &rarr; drop the quotes &rarr; shift the tense back &rarr; change pronouns &rarr; change time and place words",
+ notes:[
+  "<b>Direct speech</b> gives the exact words in quotation marks: <i>He said, &ldquo;I am tired.&rdquo;</i> <b>Indirect speech</b> reports them: <i>He said that he was tired.</i>",
+  "If the reporting verb is in the past, the reported verb shifts back one step: present &rarr; past, past &rarr; past perfect, <i>will</i> &rarr; <i>would</i>, <i>can</i> &rarr; <i>could</i>, <i>may</i> &rarr; <i>might</i>.",
+  "Pronouns change to match the new speaker: <i>&ldquo;I have finished my work,&rdquo; she said</i> &rarr; <i>She said that she had finished her work.</i>",
+  "Words of time and place shift too: <i>now</i> &rarr; <i>then</i>, <i>today</i> &rarr; <i>that day</i>, <i>tomorrow</i> &rarr; <i>the next day</i>, <i>yesterday</i> &rarr; <i>the previous day</i>, <i>here</i> &rarr; <i>there</i>, <i>this</i> &rarr; <i>that</i>.",
+  "Questions lose the question form. <i>He asked, &ldquo;Where do you live?&rdquo;</i> becomes <i>He asked where I lived</i> &mdash; no <i>do</i>, no question mark, normal word order. For yes/no questions use <i>if</i> or <i>whether</i>.",
+  "Commands and requests take <i>to</i>: <i>&ldquo;Sit down,&rdquo; he said</i> &rarr; <i>He told me to sit down.</i> Requests use <i>requested</i>, orders use <i>ordered</i> or <i>told</i>.",
+  "One exception worth knowing: a universal truth does not shift. <i>The teacher said that the earth revolves round the sun</i> &mdash; not <i>revolved</i>."]},
+{n:4, title:"Determiners and Prepositions", sub:"The small words that decide the marks", hue:'var(--c4)', art:'knot',
+ map:"a &middot; an &middot; the &rarr; some &middot; any &middot; much &middot; many &middot; few &middot; little &rarr; in &middot; on &middot; at &middot; by &middot; for &middot; since",
+ notes:[
+  "<b>A</b> before a consonant sound, <b>an</b> before a vowel sound &mdash; sound, not letter. <i>An hour</i> (the h is silent), <i>a university</i> (it begins with a &lsquo;yoo&rsquo; sound).",
+  "<b>The</b> is used for something already known or unique: <i>the sun, the Ganga, the book I lent you.</i> No article before an uncountable or plural noun used in general: <i>Honesty is the best policy</i>, not <i>The honesty</i>.",
+  "<b>Many</b> and <b>few</b> go with countable nouns; <b>much</b> and <b>little</b> with uncountable. <i>Many books, much water.</i>",
+  "<b>A few</b> means some, <b>few</b> means hardly any &mdash; and the difference changes the meaning entirely. <i>A few friends came</i> is cheerful; <i>Few friends came</i> is not. Same for <i>a little</i> and <i>little</i>.",
+  "Time prepositions: <b>at</b> for a point (<i>at 5 o&rsquo;clock</i>), <b>on</b> for a day or date (<i>on Monday</i>), <b>in</b> for a longer period (<i>in June, in 2026</i>).",
+  "<b>Since</b> takes a point in time, <b>for</b> takes a length of time: <i>since Monday</i>, <i>for three days</i>. This pair appears in nearly every paper.",
+  "Learn the fixed pairs as whole phrases, because no rule generates them: <i>good at, afraid of, interested in, angry with</i> a person, <i>angry at</i> a thing, <i>different from, married to, depend on, congratulate on, insist on.</i>"]},
+{n:5, title:"Subject-Verb Agreement", sub:"Making the verb match", hue:'var(--c3)', art:'scale',
+ map:"singular subject &rarr; singular verb &rarr; watch the traps: phrases between, either/or, collective nouns",
+ notes:[
+  "The verb agrees with the <b>subject</b>, not with whatever noun happens to sit closest to it. <i>The box of chocolates <u>is</u> on the table</i> &mdash; the subject is <i>box</i>, not <i>chocolates</i>.",
+  "Two subjects joined by <b>and</b> take a plural verb: <i>Ram and Shyam are here.</i> But if the two name one thing, the verb stays singular: <i>Bread and butter is my breakfast.</i>",
+  "With <b>either&hellip;or</b> and <b>neither&hellip;nor</b>, the verb agrees with the <i>nearer</i> subject: <i>Neither the students nor the teacher <u>was</u> present.</i> Reverse the order and the verb changes.",
+  "<b>Each, every, everyone, somebody, nobody, either, neither</b> are all singular however many people they cover. <i>Everyone <u>has</u> arrived.</i>",
+  "<b>Collective nouns</b> take a singular verb when the group acts as one: <i>The team <u>is</u> playing well.</i> Plural when the members act separately: <i>The team <u>are</u> arguing among themselves.</i>",
+  "Some nouns look plural but are singular: <i>news, mathematics, physics, politics.</i> <i>The news <u>is</u> good.</i> Others are always plural: <i>scissors, trousers, spectacles.</i>",
+  "A phrase such as <i>along with, as well as, together with, in addition to</i> does not change the subject: <i>The captain, along with his players, <u>was</u> present.</i>"]},
+{n:6, title:"Punctuation and Editing", sub:"Finding the error in the line", hue:'var(--c2)', art:'quill',
+ map:"capitals &rarr; full stop, comma, apostrophe &rarr; quotation marks &rarr; the one-error-per-line editing task",
+ notes:[
+  "Capital letters: the first word of a sentence, the pronoun <i>I</i>, proper nouns, days and months, titles, and the first word inside a quotation.",
+  "The <b>apostrophe</b> does two jobs and neither is making a plural. Possession: <i>the boy&rsquo;s book</i> (one boy), <i>the boys&rsquo; books</i> (several). Contraction: <i>can&rsquo;t, it&rsquo;s (it is).</i>",
+  "<b>Its</b> is possessive, <b>it&rsquo;s</b> means <i>it is</i>. This is the single most common error in the whole paper, and it is worth one mark every time.",
+  "The comma separates items in a list, marks off a phrase, and comes before the quotation in direct speech: <i>He said, &ldquo;Come in.&rdquo;</i> The full stop or comma goes inside the closing quotation mark.",
+  "In an <b>editing</b> task there is exactly one error per line, and it is usually a small word: a wrong article, a missing preposition, a verb that does not agree, a wrong tense. Read for those first rather than hunting for something clever.",
+  "In an <b>omission</b> task a word has been left out. Copy the whole answer in the format asked for &mdash; word before, missing word, word after &mdash; because marks go for the format as much as the word."]},
+{n:7, title:"Vocabulary", sub:"Synonyms, antonyms, phrasal verbs, idioms", hue:'var(--c6)', art:'book',
+ map:"synonyms &rarr; antonyms &rarr; one-word substitutes &rarr; phrasal verbs &rarr; idioms &rarr; commonly confused pairs",
+ notes:[
+  "This is the part of the paper with nothing to work out and everything to have collected. Keep a running page for each of the five kinds below and add to it from whatever you read.",
+  "<b>Commonly confused pairs</b> are the most reliable marks in the paper: <i>accept/except, affect/effect, advice/advise, principal/principle, stationary/stationery, lose/loose, weather/whether, their/there/they&rsquo;re.</i>",
+  "<b>Phrasal verbs</b> mean nothing like their parts, so they must be learnt whole: <i>call off</i> (cancel), <i>put off</i> (postpone), <i>give up</i> (stop trying), <i>look after</i> (take care of), <i>break down</i> (stop working), <i>turn up</i> (arrive), <i>run out of</i> (exhaust the supply).",
+  "<b>Idioms</b> likewise: <i>a piece of cake</i> (very easy), <i>once in a blue moon</i> (rarely), <i>let the cat out of the bag</i> (reveal a secret), <i>hit the nail on the head</i> (be exactly right), <i>in hot water</i> (in trouble).",
+  "<b>One-word substitutes</b>: <i>one who cannot read or write &mdash; illiterate; one who eats only plants &mdash; herbivore; a person who writes books &mdash; author; a speech made without preparation &mdash; impromptu; something that cannot be avoided &mdash; inevitable.</i>",
+  "When you meet a new word, write the word, its meaning and a sentence of your own. The sentence is what makes it stick; the meaning alone rarely does."]},
+{n:8, title:"Writing", sub:"Notice, letter, paragraph, story", hue:'var(--c5)', art:'script',
+ map:"notice &rarr; formal and informal letter &rarr; paragraph &rarr; story &rarr; marks for format as much as content",
+ notes:[
+  "In every writing question, <b>format carries marks of its own</b>. A brilliant letter in the wrong format loses them; a plain one in the right format keeps them. Learn the shapes first.",
+  "<b>Notice</b>: name of the institution, the word NOTICE, the date, a heading, the body (what, when, where, who), and the writer&rsquo;s name and designation. Put it in a box. Keep it to about 50 words &mdash; a notice is an announcement, not an essay.",
+  "<b>Formal letter</b>: sender&rsquo;s address, date, receiver&rsquo;s designation and address, subject line, salutation (<i>Sir/Madam</i>), body in three short paragraphs &mdash; why you are writing, the detail, what you want &mdash; then <i>Yours faithfully</i> and your name.",
+  "<b>Informal letter</b>: your address, date, salutation (<i>Dear Ravi</i>), body, and a close such as <i>Yours affectionately</i>. No subject line. The tone may be relaxed; the format still is not.",
+  "<b>Paragraph</b>: one topic sentence saying what it is about, three or four sentences developing it with reasons or examples, one closing sentence. Do not start a new idea in the last line.",
+  "<b>Story</b>: use the outline you are given in order, keep it to one tense throughout, give it an ending rather than stopping, and add a title. Marks are lost far more often for wandering off the outline than for plain language.",
+  "Word limits are real. Well over or well under the limit costs marks even when the content is good, so learn roughly what 50, 100 and 150 words look like in your own handwriting."]}
+];
+
+const ENG_BANK = [
+/* 1 Tenses */
+{s:'eng',c:1,t:'mcq',q:'Choose the correct sentence.',o:['I saw him yesterday.','I have seen him yesterday.','I have saw him yesterday.','I had seen him yesterday morning at 8 and again later yesterday.'],a:0,e:'&ldquo;Yesterday&rdquo; is a finished time, so it takes the simple past. The present perfect cannot be used with a finished time expression.'},
+{s:'eng',c:1,t:'mcq',q:'&ldquo;She has been reading for two hours.&rdquo; This tense is',o:['present perfect continuous','present continuous','present perfect','past perfect continuous'],a:0,e:'has/have been + -ing, and it answers &ldquo;for how long&rdquo;.'},
+{s:'eng',c:1,t:'mcq',q:'Choose the correct form: &ldquo;By the time we reached, the train ______.&rdquo;',o:['had left','has left','leaves','is leaving'],a:0,e:'One past action finished before another past action takes the past perfect.'},
+{s:'eng',c:1,t:'mcq',q:'&ldquo;Water ______ at 100 degrees Celsius.&rdquo;',o:['boils','is boiling','has boiled','boiled'],a:0,e:'A general truth takes the simple present, whatever the time of speaking.'},
+{s:'eng',c:1,t:'mcq',q:'Which sentence keeps its tenses consistent?',o:['He came in and sat down.','He came in and sits down.','He comes in and sat down.','He come in and sat down.'],a:0,e:'Two actions in the same past sequence stay in the same tense.'},
+{s:'eng',c:1,t:'fill',q:'Complete: &ldquo;They ______ (live) here since 2019.&rdquo;',a:['have lived','have been living'],e:'&ldquo;Since&rdquo; with a period continuing to now takes the present perfect or present perfect continuous.'},
+{s:'eng',c:1,t:'tf',q:'The present perfect can be used with a finished time expression such as &ldquo;last year&rdquo;.',a:false,e:'False. Use the simple past for finished time; the present perfect needs the time to be unfinished or unstated.'},
+{s:'eng',c:1,t:'match',q:'Match each sentence with its tense.',pairs:[['She writes daily','Simple present'],['She is writing now','Present continuous'],['She has written it','Present perfect'],['She had written it','Past perfect'],['She will be writing','Future continuous']],e:'Read the auxiliary, not the main verb &mdash; that is where the tense lives.'},
+
+/* 2 Voice */
+{s:'eng',c:2,t:'mcq',q:'Change to passive: &ldquo;Rama wrote a letter.&rdquo;',o:['A letter was written by Rama.','A letter is written by Rama.','A letter has been written by Rama.','A letter were written by Rama.'],a:0,e:'Simple past active becomes was/were + past participle.'},
+{s:'eng',c:2,t:'mcq',q:'Change to passive: &ldquo;They have completed the work.&rdquo;',o:['The work has been completed by them.','The work is completed by them.','The work was completed by them.','The work had been completed by them.'],a:0,e:'Present perfect active &rarr; has/have been + past participle. Keep the tense.'},
+{s:'eng',c:2,t:'mcq',q:'Which sentence CANNOT be changed into the passive voice?',o:['He slept peacefully.','He wrote a letter.','She sang a song.','They built a house.'],a:0,e:'&ldquo;Slept&rdquo; is intransitive &mdash; it has no object to become the new subject. Only transitive verbs have a passive.'},
+{s:'eng',c:2,t:'mcq',q:'Change to active: &ldquo;The window was broken by the boy.&rdquo;',o:['The boy broke the window.','The boy breaks the window.','The boy has broken the window.','The window broke the boy.'],a:0,e:'Move the doer to the front and put the verb back in the simple past.'},
+{s:'eng',c:2,t:'mcq',q:'In the passive, the pronoun &ldquo;I&rdquo; after &ldquo;by&rdquo; becomes',o:['me','my','mine','I'],a:0,e:'It moves into object position, so it takes the object form: by me, by him, by her, by us, by them.'},
+{s:'eng',c:2,t:'fill',q:'Change to passive: &ldquo;The teacher will announce the results.&rdquo; The results ______ by the teacher.',a:['will be announced'],e:'Future simple active &rarr; will be + past participle.'},
+{s:'eng',c:2,t:'tf',q:'The &ldquo;by&rdquo; phrase may be left out when the doer is unknown or unimportant.',a:true,e:'True &mdash; &ldquo;The window was broken&rdquo; is complete, and that is often the reason for choosing the passive in the first place.'},
+{s:'eng',c:2,t:'short',m:2,q:'Explain when the passive voice is preferred to the active, with an example.',a:'The passive is preferred when the action or its object matters more than who performed it, or when the doer is unknown, obvious or deliberately not named. If a shop is burgled overnight and nobody knows by whom, &ldquo;The shop was burgled last night&rdquo; is the natural sentence, because there is no doer to name. It is also used in formal, scientific and official writing, where the process matters and the person does not: &ldquo;The mixture was heated for ten minutes&rdquo; keeps attention on the experiment rather than the experimenter. The active voice is otherwise preferable, because it is shorter and clearer about responsibility.'},
+
+/* 3 Narration */
+{s:'eng',c:3,t:'mcq',q:'Change to indirect: He said, &ldquo;I am busy.&rdquo;',o:['He said that he was busy.','He said that I am busy.','He said that he is busy.','He says that he was busy.'],a:0,e:'Past reporting verb shifts the present to the past, and &ldquo;I&rdquo; becomes &ldquo;he&rdquo;.'},
+{s:'eng',c:3,t:'mcq',q:'Change to indirect: She said, &ldquo;I will come tomorrow.&rdquo;',o:['She said that she would come the next day.','She said that she will come tomorrow.','She said that she would come tomorrow.','She says she will come the next day.'],a:0,e:'Two changes: will &rarr; would, and tomorrow &rarr; the next day. Missing the time word is the usual slip.'},
+{s:'eng',c:3,t:'mcq',q:'Change to indirect: He asked, &ldquo;Where do you live?&rdquo;',o:['He asked where I lived.','He asked where did I live.','He asked where do I live.','He asked me where I live?'],a:0,e:'A reported question takes normal word order, drops the auxiliary &ldquo;do&rdquo;, and takes no question mark.'},
+{s:'eng',c:3,t:'mcq',q:'Change to indirect: &ldquo;Please help me,&rdquo; she said to him.',o:['She requested him to help her.','She said him to help her.','She asked him that help her.','She told him please help her.'],a:0,e:'Requests take &ldquo;requested&rdquo; + object + to + verb.'},
+{s:'eng',c:3,t:'mcq',q:'Change to indirect: The teacher said, &ldquo;The earth revolves round the sun.&rdquo;',o:['The teacher said that the earth revolves round the sun.','The teacher said that the earth revolved round the sun.','The teacher said that the earth had revolved round the sun.','The teacher told that the earth revolves round the sun.'],a:0,e:'A universal truth does not shift back, even after a past reporting verb.'},
+{s:'eng',c:3,t:'mcq',q:'In indirect speech, &ldquo;yesterday&rdquo; becomes',o:['the previous day','that day','the next day','then'],a:0,e:'today &rarr; that day, tomorrow &rarr; the next day, yesterday &rarr; the previous day.'},
+{s:'eng',c:3,t:'fill',q:'In indirect speech, a yes/no question is introduced by ______ or whether.',a:['if'],e:'&ldquo;He asked if I was ready.&rdquo;'},
+{s:'eng',c:3,t:'match',q:'Match each direct-speech word with its indirect form.',pairs:[['now','then'],['today','that day'],['tomorrow','the next day'],['here','there'],['this','that']],e:'Time and place words shift because the reporting happens somewhere and sometime else.'},
+
+/* 4 Determiners */
+{s:'eng',c:4,t:'mcq',q:'Choose the correct article: &ldquo;He waited for ______ hour.&rdquo;',o:['an','a','the','no article'],a:0,e:'The h in &ldquo;hour&rdquo; is silent, so the word begins with a vowel sound. Sound decides, not spelling.'},
+{s:'eng',c:4,t:'mcq',q:'Choose the correct article: &ldquo;She joined ______ university in Delhi.&rdquo;',o:['a','an','the','no article'],a:0,e:'&ldquo;University&rdquo; begins with a &lsquo;yoo&rsquo; sound, which is a consonant sound &mdash; so &ldquo;a&rdquo;.'},
+{s:'eng',c:4,t:'mcq',q:'&ldquo;______ friends came to see me, so I was not lonely.&rdquo;',o:['A few','Few','Little','A little'],a:0,e:'&ldquo;A few&rdquo; means some. &ldquo;Few&rdquo; means hardly any, which would contradict the second half of the sentence.'},
+{s:'eng',c:4,t:'mcq',q:'Choose the correct word: &ldquo;How ______ water is left?&rdquo;',o:['much','many','few','several'],a:0,e:'Water is uncountable, so it takes &ldquo;much&rdquo;. &ldquo;Many&rdquo; goes with countable nouns.'},
+{s:'eng',c:4,t:'mcq',q:'&ldquo;I have been waiting ______ two hours.&rdquo;',o:['for','since','from','at'],a:0,e:'&ldquo;For&rdquo; takes a length of time; &ldquo;since&rdquo; takes a point in time.'},
+{s:'eng',c:4,t:'mcq',q:'&ldquo;She has lived here ______ 2019.&rdquo;',o:['since','for','from','by'],a:0,e:'2019 is a point in time, so &ldquo;since&rdquo;.'},
+{s:'eng',c:4,t:'mcq',q:'Choose the correct preposition: &ldquo;He is good ______ mathematics.&rdquo;',o:['at','in','with','for'],a:0,e:'A fixed pair &mdash; good at. These have to be learnt whole; no rule generates them.'},
+{s:'eng',c:4,t:'fill',q:'&ldquo;The meeting is ______ Monday at 10 o&rsquo;clock.&rdquo;',a:['on'],e:'On for a day or date, at for a point in the clock, in for a longer period.'},
+{s:'eng',c:4,t:'match',q:'Match each adjective with the preposition that follows it.',pairs:[['afraid','of'],['interested','in'],['good','at'],['different','from'],['married','to']],e:'Learn these as whole phrases; they are worth a mark each and cannot be worked out.'},
+
+/* 5 Agreement */
+{s:'eng',c:5,t:'mcq',q:'Choose the correct verb: &ldquo;The box of chocolates ______ on the table.&rdquo;',o:['is','are','were','have'],a:0,e:'The subject is &ldquo;box&rdquo;, singular. &ldquo;Of chocolates&rdquo; is a phrase in between, and the verb ignores it.'},
+{s:'eng',c:5,t:'mcq',q:'&ldquo;Neither the students nor the teacher ______ present.&rdquo;',o:['was','were','are','have been'],a:0,e:'With either/or and neither/nor the verb agrees with the nearer subject &mdash; here &ldquo;teacher&rdquo;.'},
+{s:'eng',c:5,t:'mcq',q:'&ldquo;Everyone ______ arrived.&rdquo;',o:['has','have','are','were'],a:0,e:'Everyone, everybody, each, nobody and either are all singular however many people they cover.'},
+{s:'eng',c:5,t:'mcq',q:'&ldquo;The news ______ good.&rdquo;',o:['is','are','were','have been'],a:0,e:'News looks plural but is singular. So are mathematics, physics and politics.'},
+{s:'eng',c:5,t:'mcq',q:'&ldquo;The captain, along with his players, ______ present.&rdquo;',o:['was','were','are','have been'],a:0,e:'&ldquo;Along with&rdquo;, &ldquo;as well as&rdquo; and &ldquo;together with&rdquo; do not change the subject &mdash; it is still &ldquo;the captain&rdquo;.'},
+{s:'eng',c:5,t:'mcq',q:'&ldquo;Bread and butter ______ my breakfast.&rdquo;',o:['is','are','were','have been'],a:0,e:'Two nouns joined by &ldquo;and&rdquo; take a plural verb only when they are two things. Here they name one dish.'},
+{s:'eng',c:5,t:'tf',q:'A collective noun such as &ldquo;team&rdquo; always takes a plural verb.',a:false,e:'False. Singular when the group acts as one &mdash; &ldquo;The team is playing well&rdquo; &mdash; and plural when its members act separately: &ldquo;The team are arguing among themselves.&rdquo;'},
+{s:'eng',c:5,t:'fill',q:'&ldquo;Each of the boys ______ (have) a book.&rdquo;',a:['has'],e:'&ldquo;Each&rdquo; is singular, so &ldquo;has&rdquo; &mdash; despite &ldquo;boys&rdquo; sitting right next to the verb.'},
+
+/* 6 Punctuation */
+{s:'eng',c:6,t:'mcq',q:'Choose the correct sentence.',o:['It&rsquo;s raining, so the dog is in its kennel.','Its raining, so the dog is in it&rsquo;s kennel.','It&rsquo;s raining, so the dog is in it&rsquo;s kennel.','Its raining, so the dog is in its kennel.'],a:0,e:'It&rsquo;s = it is. Its = belonging to it. The commonest error in the whole paper.'},
+{s:'eng',c:6,t:'mcq',q:'&ldquo;The boys&rsquo; books&rdquo; means the books belong to',o:['more than one boy','one boy','the books themselves','nobody'],a:0,e:'Apostrophe after the s means a plural owner. &ldquo;The boy&rsquo;s books&rdquo; would be one boy.'},
+{s:'eng',c:6,t:'mcq',q:'Which sentence is correctly punctuated?',o:['He said, &ldquo;Come in.&rdquo;','He said &ldquo;Come in&rdquo;.','He said, &ldquo;come in.&rdquo;','He said: &ldquo;Come in&rdquo;'],a:0,e:'Comma before the quotation, capital on the first word inside it, full stop inside the closing mark.'},
+{s:'eng',c:6,t:'mcq',q:'An apostrophe is NOT used to',o:['make a word plural','show possession','mark a contraction','shorten &ldquo;cannot&rdquo; to &ldquo;can&rsquo;t&rdquo;'],a:0,e:'It never makes a plural. &ldquo;Mango&rsquo;s&rdquo; for several mangoes is always wrong.'},
+{s:'eng',c:6,t:'mcq',q:'In an editing task, how many errors are there per line?',o:['Exactly one','Two','It varies','None'],a:0,e:'One per line, and usually a small word &mdash; an article, a preposition, an agreement or a tense.'},
+{s:'eng',c:6,t:'fill',q:'Add the missing capital letters: &ldquo;on monday, ravi visited delhi.&rdquo; The three words needing capitals are Monday, Ravi and ______.',a:['delhi','Delhi'],e:'Days, names and places are all proper nouns.'},
+{s:'eng',c:6,t:'tf',q:'In direct speech, the full stop goes inside the closing quotation mark.',a:true,e:'True: He said, &ldquo;Come in.&rdquo; &mdash; not &ldquo;Come in&rdquo;.'},
+
+/* 7 Vocabulary */
+{s:'eng',c:7,t:'mcq',q:'Choose the correct word: &ldquo;Please ______ my apology.&rdquo;',o:['accept','except','expect','access'],a:0,e:'Accept means to receive or agree to. Except means apart from.'},
+{s:'eng',c:7,t:'mcq',q:'Choose the correct word: &ldquo;The medicine had no ______ on him.&rdquo;',o:['effect','affect','effort','affair'],a:0,e:'Effect is the noun (a result); affect is the verb (to influence).'},
+{s:'eng',c:7,t:'mcq',q:'&ldquo;The match was called off&rdquo; means it was',o:['cancelled','postponed','won','started'],a:0,e:'Call off = cancel. Put off = postpone &mdash; a pair worth keeping apart.'},
+{s:'eng',c:7,t:'mcq',q:'&ldquo;Once in a blue moon&rdquo; means',o:['very rarely','every month','at night','very often'],a:0,e:'Rarely. Idioms mean nothing like their parts, so they must be learnt whole.'},
+{s:'eng',c:7,t:'mcq',q:'One word for &ldquo;a person who cannot read or write&rdquo; is',o:['illiterate','ignorant','innocent','illegible'],a:0,e:'Illiterate. Illegible describes handwriting that cannot be read &mdash; a common confusion.'},
+{s:'eng',c:7,t:'mcq',q:'Choose the correct word: &ldquo;He is the ______ of the school.&rdquo;',o:['principal','principle','principled','principality'],a:0,e:'Principal = head of an institution (the &lsquo;pal&rsquo; is your pal). Principle = a rule or belief.'},
+{s:'eng',c:7,t:'mcq',q:'&ldquo;Let the cat out of the bag&rdquo; means to',o:['reveal a secret','free an animal','make a mistake','cause confusion'],a:0,e:'To reveal a secret, usually by accident.'},
+{s:'eng',c:7,t:'fill',q:'The opposite of &ldquo;ancient&rdquo; is ______.',a:['modern','new','recent'],e:'Modern. Antonym pairs are among the easiest marks in the paper.'},
+{s:'eng',c:7,t:'match',q:'Match each phrasal verb with its meaning.',pairs:[['call off','cancel'],['put off','postpone'],['give up','stop trying'],['look after','take care of'],['break down','stop working'],['turn up','arrive']],e:'Learn them as whole units; the parts will not tell you the meaning.'},
+
+/* 8 Writing */
+{s:'eng',c:8,t:'mcq',q:'A notice should be about',o:['50 words','200 words','300 words','as long as needed'],a:0,e:'A notice is an announcement, not an essay. Well over the limit costs marks even if the content is right.'},
+{s:'eng',c:8,t:'mcq',q:'A formal letter ends with',o:['Yours faithfully','Yours affectionately','Lots of love','Yours truly and a nickname'],a:0,e:'Yours faithfully for a formal letter; Yours affectionately or similar for an informal one.'},
+{s:'eng',c:8,t:'mcq',q:'Which is NOT part of a notice?',o:['A closing salutation such as &ldquo;Yours sincerely&rdquo;','The word NOTICE','The date','The writer&rsquo;s name and designation'],a:0,e:'A notice has no salutation and no sign-off of that kind &mdash; it is not addressed to one person.'},
+{s:'eng',c:8,t:'mcq',q:'A formal letter includes a subject line. An informal letter',o:['does not','also does','uses two','uses one only if long'],a:0,e:'No subject line in an informal letter. The tone may relax; the format does not.'},
+{s:'eng',c:8,t:'mcq',q:'The four questions a notice must answer are',o:['what, when, where and who','who, why, how and when','what, why, how and where','when, where, why and how much'],a:0,e:'What is happening, when, where, and who it concerns. Miss one and the notice fails its job.'},
+{s:'eng',c:8,t:'mcq',q:'A good paragraph begins with',o:['a topic sentence saying what it is about','an example','a question','a conclusion'],a:0,e:'Topic sentence, three or four developing sentences, one closing sentence &mdash; and no new idea in the last line.'},
+{s:'eng',c:8,t:'tf',q:'In a writing question, marks are given for format as well as content.',a:true,e:'True, and it is the easiest place to lose them. A brilliant letter in the wrong format still loses the format marks.'},
+{s:'eng',c:8,t:'short',m:3,q:'List the parts of a formal letter in order.',a:'(1) Sender&rsquo;s address, at the top left. (2) Date, below the address. (3) Receiver&rsquo;s designation and address &mdash; for example, The Principal, followed by the school&rsquo;s name and address. (4) Subject line, one line stating the purpose. (5) Salutation: Sir or Madam. (6) Body, in three short paragraphs: why you are writing, the details, and what you want done. (7) Complimentary close: Yours faithfully. (8) Your signature and name, and your designation or class if relevant. Writing them in this order matters, because the format carries marks of its own, separately from the quality of the English.'}
+];
+
+BANK.push(...ENG_BANK);
+
 const DOODLE = {
   microbe:'<path d="M18 40c-6-10 0-24 12-27 13-3 24 5 26 16 2 12-6 22-18 24-9 1-15-3-20-13Z"/><circle cx="32" cy="34" r="6"/><path d="M28 20c2-4 8-6 12-4M46 46c4 1 8 5 8 9M14 44c-4 2-7 6-7 10M50 22c3-2 8-2 11 1"/>',
   heart:'<path d="M32 54C18 44 8 35 8 25c0-7 5-12 11-12 5 0 9 3 13 8 4-5 8-8 13-8 6 0 11 5 11 12 0 10-10 19-24 29Z"/><path d="M12 32h10l4-7 6 15 5-9 4 4h12"/>',
@@ -2949,6 +3449,7 @@ function doodle(key, hue){
 }
 
 const MATH_HUES = ['var(--c7)','var(--c2)','var(--c5)','var(--c3)','var(--c4)','var(--c6)'];
+const SST_HUES = ['var(--c6)','var(--c4)','var(--c2)','var(--c3)','var(--c7)','var(--c5)'];
 const CT_HUES = ['var(--c7)','var(--c6)','var(--c5)','var(--c3)','var(--c4)'];
 const HIN_HUES = ['var(--c3)','var(--c7)','var(--c5)','var(--c2)','var(--c6)','var(--c4)'];
 const HIN_ART  = ['globe','leaf','heart','script','lamp','press','arrows','bell','scope','moon',
@@ -2967,6 +3468,16 @@ const SUBJECTS = {
                              hue:c.hue, exam:false, bank:true, map:c.map, notes:c.notes,
                              art:c.art}))
     ]},
+  eng:{
+    id:'eng', name:'English', book:'Grammar, usage and writing', publisher:null, hasExam:false,
+    chapters:ENG.map(c => ({key:'eng'+c.n, n:c.n, title:c.title, sub:c.sub,
+                       hue:c.hue, exam:false, bank:true, map:c.map, notes:c.notes, art:c.art}))
+  },
+  sst:{
+    id:'sst', name:'Social Science', book:'Exploring Society: India and Beyond', hasExam:false,
+    chapters:SST.map(c => ({key:'sst'+c.n, n:c.n, title:c.title, sub:c.sub,
+                       hue:c.hue, exam:false, bank:true, map:c.map, notes:c.notes, art:c.art}))
+  },
   ct:{
     id:'ct', name:'AI & Thinking', book:'CT &amp; AI Student Handbook', publisher:'CBSE', hasExam:false,
     chapters:CTAI.map(c => ({key:'ct'+c.n, n:c.n, title:c.title, sub:c.sub,
@@ -3008,6 +3519,8 @@ function renderLearn(){
   const LEDE = {
     sci:'Class VIII science, from the NCERT <em>Curiosity</em> textbook &mdash; all thirteen chapters. The six in the September paper come first, boiled down to what actually gets asked; the rest of the book follows, and every chapter has questions behind it.',
     math:'Class VIII mathematics, from the NCERT <em>Ganita Prakash</em> textbook &mdash; all fourteen chapters across Part 1 and Part 2.',
+    eng:'Class VIII English &mdash; grammar, usage, vocabulary and the writing formats. Deliberately not the reader: an MCQ on a poem tests whether you recognise the answer, not whether you can read or write about it. This is the half of the paper that drills, and it is the same whichever reader your school sets.',
+    sst:'Class VIII Social Science, from the NCERT <em>Exploring Society: India and Beyond</em> textbook &mdash; both parts, fifteen chapters, spanning geography, history, civics, economics and heritage. The notes follow the book&rsquo;s own end-of-chapter summaries.',
     ct:'Computational Thinking and Artificial Intelligence, from the CBSE Class 8 Student Handbook. Part 1 of that handbook works through the first seven chapters of <em>Ganita Prakash</em>, which are already in the Maths tab &mdash; so chapter 1 here covers the thinking skills themselves and the four AI chapters carry the new material.',
     hin:'Class VIII Hindi, from the NCERT <em>\u092e\u0932\u094d\u0939\u093e\u0930</em> textbook &mdash; not Vasant, which it replaced. The ten \u092a\u093e\u0920 are listed with their \u0935\u093f\u0927\u093e and what to note as you read; the \u0935\u094d\u092f\u093e\u0915\u0930\u0923 sections after them &mdash; \u0938\u0902\u0927\u093f, \u0938\u092e\u093e\u0938, \u0905\u0932\u0902\u0915\u093e\u0930, \u0915\u093e\u0930\u0915 &mdash; are where the marks go, and those carry the drills.',
     skt:'Class VIII Sanskrit, from the NCERT <em>\u0930\u0941\u091a\u093f\u0930\u093e \u092d\u093e\u0917 \u0969</em> textbook. The twelve lessons are listed with what each title means; the grammar sections that follow &mdash; \u0936\u092c\u094d\u0926\u0930\u0942\u092a, \u0927\u093e\u0924\u0941\u0930\u0942\u092a, \u0915\u093e\u0930\u0915, \u0938\u0928\u094d\u0927\u093f &mdash; are where the marks are, and those carry the drills.'
@@ -3017,9 +3530,13 @@ function renderLearn(){
      lessons and the grammar sections are quite different animals. */
   const lessons = S.chapters.filter(c => !c.bank).length;
   const drills  = S.chapters.length - lessons;
-  $('#bookNote').textContent = lessons
-    ? `NCERT ${S.book} \u00b7 ${lessons} lessons + ${drills} grammar`
-    : `NCERT ${S.book} \u00b7 ${S.chapters.length} chapters`;
+  /* innerHTML, not textContent: a book name may carry an entity (CT &amp; AI).
+     The publisher belongs to the subject — the CT handbook is CBSE's own, and
+     the English grammar section is not from a textbook at all. */
+  const pub = S.publisher === null ? '' : (S.publisher || 'NCERT') + ' ';
+  $('#bookNote').innerHTML = lessons
+    ? `${pub}${S.book} \u00b7 ${lessons} lessons + ${drills} grammar`
+    : `${pub}${S.book} \u00b7 ${S.chapters.length} chapters`;
 
   const card = c => `<div class="syl" style="--hue:${c.hue}">
       ${doodle(c.art, c.hue)}
