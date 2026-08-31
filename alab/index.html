@@ -652,18 +652,75 @@ const LEARN = {
     "Evaporation happens only at the surface, at any temperature, and cools what is left behind. It speeds up with heat, wind, surface area and dry air. Kelvin: K = &deg;C + 273."]}
 };
 
-/* Class VIII science beyond the six examinable chapters. Notes ported from the
-   Codex branch; the maths that came with them was the pre-2025 syllabus and has
-   been replaced by MATHS below. */
+/* The seven Curiosity chapters that are NOT in the September paper. They now
+   carry the same depth of notes as the examinable six, and a question bank of
+   their own, so the whole book is covered rather than just the exam.
+   Numbering follows NCERT Curiosity: 1, then 8 to 13. */
 const BEYOND = {
   science:[
-    {title:"Exploring Scientific Investigations", sub:"Questions, evidence, variables and fair tests", map:"Question → hypothesis → plan a fair test → observe and measure → organise data → infer → communicate", notes:["A scientific investigation begins with an observable, testable question.","Change one independent variable, measure the dependent variable, and control other relevant factors.","Repeated measurements and an adequate sample make a conclusion more reliable.","A conclusion must follow the evidence; unexpected results are useful, not failures."]},
-    {title:"Nature of Matter", sub:"Elements, compounds and mixtures", map:"Matter → pure substances [elements | compounds] OR mixtures [homogeneous | heterogeneous] → physical separation", notes:["An element contains one kind of atom; a compound has elements chemically combined in a fixed ratio.","A mixture retains the properties of its components and can often be separated physically.","Pure substances have characteristic properties; mixtures may have variable composition.","Choose separation methods from differences in particle size, solubility, density, magnetism or boiling point."]},
-    {title:"Solutes, Solvents & Solutions", sub:"Dissolving, concentration and saturation", map:"Solute + solvent → solution → dilute/concentrated → unsaturated/saturated; temperature affects solubility", notes:["A solution is a homogeneous mixture of a solute dissolved in a solvent.","Solubility is the maximum amount of solute that dissolves at a stated temperature.","Stirring and smaller particles change the rate of dissolving, not necessarily the final solubility.","A saturated solution cannot dissolve more solute at that temperature."]},
-    {title:"Light: Mirrors & Lenses", sub:"Reflection, images and refraction", map:"Light ray → reflection [mirrors] or refraction [lenses] → image position, size, orientation and type", notes:["Reflection obeys two laws: angle of incidence equals angle of reflection, and the rays and normal share a plane.","A plane mirror forms a virtual, upright, same-sized, laterally inverted image.","Lenses refract light; convex lenses converge parallel rays while concave lenses diverge them.","Ray diagrams should use a ruler, arrowheads and a normal where needed."]},
-    {title:"Keeping Time with the Skies", sub:"Periodic motion, calendars and celestial cycles", map:"Periodic motion → day [rotation] → month [lunar phases] → year [revolution] → clocks and calendars", notes:["Regular repeating events provide standards for measuring time.","Earth's rotation produces day and night; its revolution around the Sun defines a year.","The Moon's changing apparent shape follows a regular phase cycle.","Modern clocks use highly regular oscillations, but calendars need adjustments because cycles do not divide perfectly."]},
-    {title:"How Nature Works in Harmony", sub:"Ecosystems, relationships and cycles", map:"Sun → producers → consumers → decomposers → nutrients → producers; linked by food webs and cycles", notes:["An ecosystem includes interacting living organisms and non-living surroundings.","Producers capture energy; consumers transfer it; decomposers recycle matter.","Food webs show interconnected feeding relationships and are more realistic than single food chains.","Changes to one population or resource can affect many parts of an ecosystem."]},
-    {title:"Our Home: Earth", sub:"A unique, life-sustaining planet", map:"Earth systems → geosphere + hydrosphere + atmosphere + biosphere → interactions → habitability → stewardship", notes:["Liquid water, a suitable temperature range and a protective atmosphere help Earth sustain life.","The atmosphere supplies gases, moderates temperature and shields the surface.","Earth's systems—the geosphere, hydrosphere, atmosphere and biosphere—interact continuously.","Responsible resource use protects the conditions on which life depends."]},
+{n:1, title:"Exploring the Investigative World of Science", sub:"How an investigation actually works", hue:'var(--c7)', art:'scope',
+ map:"a testable question &rarr; a hypothesis &rarr; change one thing &rarr; observe and measure &rarr; record &rarr; infer &rarr; share",
+ notes:[
+  "Science begins with a question you can actually test by observing or measuring. &ldquo;Does a paper plane fly farther with longer wings?&rdquo; can be tested. &ldquo;Which plane is nicest?&rdquo; cannot &mdash; it is a matter of taste, not evidence.",
+  "A hypothesis is a possible answer, stated so plainly that an experiment can knock it down. It is just as useful when it turns out wrong, because that narrows the field.",
+  "In a fair test you change one thing (the independent variable), measure what happens (the dependent variable) and keep everything else the same (the controlled variables). Change two things at once and you cannot tell which one did the work.",
+  "Measure with the right instrument and unit, read a scale with your eye level with the mark, and take the reading more than once. One measurement is an anecdote; three are data.",
+  "Tables and graphs are for finding patterns, not for decoration. Put what you changed in the first column and what you measured in the second, and the pattern usually shows itself.",
+  "A conclusion says only what the evidence supports &mdash; four plants on one windowsill do not settle what all plants need. An unexpected result is information: it usually points at a variable you did not control."]},
+{n:8, title:"Nature of Matter", sub:"Elements, compounds and mixtures", hue:'var(--c2)', art:'flask',
+ map:"matter &rarr; pure substances (elements &middot; compounds) or mixtures (homogeneous &middot; heterogeneous) &rarr; separating them",
+ notes:[
+  "Everything is either a pure substance or a mixture. A pure substance has the same composition all the way through and fixed properties; a mixture does not.",
+  "An element is made of one kind of atom and cannot be broken down by any chemical means &mdash; hydrogen, oxygen, iron, gold. There are only about a hundred, and every other substance in the universe is built from them.",
+  "A compound has two or more elements chemically combined in a fixed ratio, and its properties are nothing like its ingredients&rsquo;. Sodium catches fire in water, chlorine is a poison gas &mdash; together they are table salt.",
+  "In a mixture the components keep their own properties and can be present in any proportion. Air, sea water, brass and soil are all mixtures, which is why you can have weak tea or strong tea but never weak water.",
+  "Homogeneous mixtures look the same throughout (salt in water, air, brass); heterogeneous ones do not (sand in water, oil and water, a bowl of muesli).",
+  "Every separation method exploits a difference: particle size (sieving, filtration), density (sedimentation, decantation, winnowing), magnetism, solubility (evaporation, crystallisation) or boiling point (distillation). Ask what is different before you ask what to do."]},
+{n:9, title:"The Amazing World of Solutes, Solvents and Solutions", sub:"Dissolving, solubility and saturation", hue:'var(--c6)', art:'beaker',
+ map:"solute + solvent &rarr; solution &rarr; dilute or concentrated &rarr; unsaturated &rarr; saturated &rarr; temperature moves the limit",
+ notes:[
+  "The substance that dissolves is the solute, the one doing the dissolving is the solvent, and the result is a solution. Water dissolves more substances than any other liquid, which is why it is called the universal solvent &mdash; a compliment, not a literal claim.",
+  "Dilute and concentrated only compare how much solute sits in the same amount of solvent. They are relative words, not measurements.",
+  "A saturated solution holds all the solute it can at that temperature. Add more and it simply settles at the bottom, undissolved.",
+  "Solubility is the largest mass of a solute that dissolves in 100&nbsp;g of solvent at a stated temperature. Quote the temperature or the number means nothing.",
+  "Most solids dissolve better in a hot solvent. Gases do the opposite &mdash; warm water holds less dissolved oxygen, which is why fish suffer in a heated pond and why a warm fizzy drink goes flat fast.",
+  "Stirring, warming and grinding the solute finer all make it dissolve faster. Only warming changes how much finally dissolves. Rate and amount are two different questions."]},
+{n:10, title:"Light: Mirrors and Lenses", sub:"Reflection, images and refraction", hue:'var(--c4)', art:'lens',
+ map:"a ray of light &rarr; reflection at a mirror &rarr; the image &rarr; refraction through a lens &rarr; converging or diverging",
+ notes:[
+  "Light travels in straight lines. We see something when light from it reaches the eye &mdash; either light it gives out itself, or light it reflects.",
+  "The two laws of reflection: the angle of incidence equals the angle of reflection, and the incident ray, the reflected ray and the normal all lie in one plane.",
+  "A smooth surface gives regular reflection and an image; a rough one gives diffuse reflection and none. The laws hold in both cases &mdash; it is the surface that differs, not the light.",
+  "A plane mirror gives an image that is virtual, erect, the same size, as far behind the mirror as the object is in front, and laterally inverted. That last property is why AMBULANCE is painted reversed on the bonnet.",
+  "Light changes speed when it crosses into a new medium, and so it bends. That is refraction: it is why a pencil looks broken at the water line and why a pool always looks shallower than it is.",
+  "A convex lens is thicker in the middle and converges parallel rays to a focus; it can throw a real image onto a screen and works as a magnifying glass. A concave lens is thinner in the middle, diverges rays, and can never make a real image."]},
+{n:11, title:"Keeping Time with the Skies", sub:"Periodic motion, days, months and years", hue:'var(--c7)', art:'moon',
+ map:"periodic motion &rarr; rotation gives the day &rarr; the Moon&rsquo;s phases give the month &rarr; revolution gives the year &rarr; clocks and calendars",
+ notes:[
+  "Any motion that repeats itself in equal intervals is periodic, and every clock ever built is simply a periodic motion being counted &mdash; a swinging pendulum, a vibrating quartz crystal, an oscillating atom.",
+  "The Earth spins once on its axis in about 24 hours, and that rotation gives day and night. The Sun does not cross the sky; we turn underneath it, from west to east.",
+  "The Earth also revolves once around the Sun in about 365&frac14; days. That is the year, and the leftover quarter is exactly why a leap day is added every fourth February.",
+  "The Moon makes no light of its own. We see whatever part of its sunlit half is turned towards us, so it runs new &rarr; waxing crescent &rarr; first quarter &rarr; full &rarr; waning &rarr; new again in about 29&frac12; days. (The Earth&rsquo;s shadow explains an eclipse, not the phases.)",
+  "Seasons come from the tilt of the Earth&rsquo;s axis, not from its distance to the Sun. The hemisphere leaning towards the Sun gets more direct light and longer days.",
+  "Sundials, water clocks and lunar calendars were all built on these cycles. They need constant correction because the day, the month and the year do not divide neatly into one another."]},
+{n:12, title:"How Nature Works in Harmony", sub:"Ecosystems, food webs and cycles", hue:'var(--c5)', art:'leaf',
+ map:"Sun &rarr; producers &rarr; consumers &rarr; decomposers &rarr; nutrients return to the soil; chains link into webs",
+ notes:[
+  "An ecosystem is every living thing in a place together with the non-living surroundings they depend on &mdash; light, air, water, soil and temperature.",
+  "Producers (green plants) make their own food by photosynthesis. Consumers eat: herbivores eat plants, carnivores eat animals, omnivores eat both. Decomposers &mdash; bacteria and fungi &mdash; break down the dead and return the nutrients.",
+  "A food chain shows one path of energy and always starts at a producer. The arrows point the way the energy travels: grass &rarr; grasshopper &rarr; frog &rarr; snake.",
+  "Real feeding is a web, not a chain, because most animals eat several things. That is what makes an ecosystem tough &mdash; and also why pulling out one species can still ripple through many.",
+  "Energy flows one way and some is lost as heat at every step, so there are always far fewer tigers than deer. Matter is different: carbon, nitrogen and water cycle round and are used again and again.",
+  "Organisms live in relationships: mutualism where both gain (bee and flower), parasitism where one gains at the other&rsquo;s cost (tick and dog), and competition where two want the same limited thing."]},
+{n:13, title:"Our Home: Earth", sub:"A unique, life-sustaining planet", hue:'var(--c6)', art:'globe',
+ map:"geosphere + hydrosphere + atmosphere + biosphere &rarr; they interact &rarr; the conditions life needs &rarr; looking after them",
+ notes:[
+  "The Earth&rsquo;s four systems interact without pause: the geosphere (rock and soil), the hydrosphere (all its water), the atmosphere (the air) and the biosphere (everything alive).",
+  "Life needs liquid water, a temperature range that keeps it liquid, a breathable atmosphere and a supply of nutrients. The Earth&rsquo;s distance from the Sun hands it the first two.",
+  "The atmosphere does three jobs at once: it supplies oxygen and carbon dioxide, it traps enough heat to hold the average temperature near 15&nbsp;&deg;C instead of about &minus;18&nbsp;&deg;C, and its ozone absorbs most of the ultraviolet.",
+  "Only about 2.5&percnt; of the Earth&rsquo;s water is fresh, and most of that is locked in ice. The water cycle &mdash; evaporation, condensation, precipitation, collection &mdash; is what keeps returning it.",
+  "A renewable resource is replaced as fast as we use it (sunlight, wind, a replanted forest). A non-renewable one is not (coal, petroleum, minerals). That single difference is the whole argument.",
+  "Human activity reaches all four spheres: burning fossil fuels warms the atmosphere, felling forests strips the biosphere, plastic and effluent load the hydrosphere. Reduce, reuse, recycle is a small handle on a large problem."]},
   ],
 };
 
@@ -1121,7 +1178,147 @@ const BANK = [
 {c:7,t:'short',m:3,q:'Explain why water kept in an earthen pot becomes cool in summer.',a:'An earthen pot has a large number of tiny pores in its wall. Water from inside seeps out through these pores and appears on the outer surface. This water evaporates into the dry summer air. Evaporation is a cooling process, because the particles that escape are the fastest ones and they carry energy away with them, and the heat needed for evaporation is drawn from the pot and the water inside it. As a result the water left in the pot loses heat and becomes cool. The effect is greatest on a hot, dry, windy day and least when the air is humid.'},
 {c:7,t:'short',m:3,q:'Compare solids, liquids and gases with respect to interparticle spacing, force of attraction and compressibility.',a:'Interparticle spacing: smallest in solids, larger in liquids and very large in gases. Force of attraction between particles: strongest in solids, weaker in liquids and almost negligible in gases. Compressibility: solids are practically incompressible, liquids are only very slightly compressible, and gases are highly compressible because of the large spaces between their particles. This is why a solid has a fixed shape and volume, a liquid has a fixed volume but takes the shape of its container, and a gas has neither a fixed shape nor a fixed volume.'},
 {c:7,t:'short',m:3,q:'Give reasons: (a) we can smell food being cooked in another room; (b) a bottle of cold drink taken out of the fridge soon has water droplets on the outside; (c) naphthalene balls kept in a cupboard slowly disappear.',a:'(a) The particles of the vapours given off by hot food are in constant rapid motion and diffuse through the air of the room until they reach our nose. Diffusion is fast in gases and faster still at high temperature. (b) Water vapour present in the air comes into contact with the cold surface of the bottle, loses heat and changes into tiny liquid droplets. This is condensation. (c) Naphthalene sublimes: it changes directly from the solid state into vapour without becoming a liquid, so the balls slowly grow smaller and finally disappear without leaving any wet residue.'},
-{c:7,t:'short',m:2,q:'Distinguish between evaporation and boiling.',a:'Evaporation takes place only at the surface of the liquid, occurs at all temperatures, is a slow and quiet process, and causes cooling of the liquid left behind. Boiling takes place throughout the whole liquid, occurs only at one fixed temperature called the boiling point, is a rapid process with bubbles rising through the liquid, and requires a continuous supply of heat.'}
+{c:7,t:'short',m:2,q:'Distinguish between evaporation and boiling.',a:'Evaporation takes place only at the surface of the liquid, occurs at all temperatures, is a slow and quiet process, and causes cooling of the liquid left behind. Boiling takes place throughout the whole liquid, occurs only at one fixed temperature called the boiling point, is a rapid process with bubbles rising through the liquid, and requires a continuous supply of heat.'},
+
+/* ==================== CHAPTER 1 &mdash; not in the September paper ==================== */
+{c:1,t:'mcq',q:'Which of these is a question science can actually test?',o:['Does a paper plane fly farther if its wings are longer?','Which paper plane is the prettiest?','Should everyone learn to make paper planes?','Is flying more fun than running?'],a:0,e:'A testable question names something you can change and something you can measure. Questions of taste, or of what people ought to do, cannot be settled by an experiment however interesting they are.'},
+{c:1,t:'mcq',q:'In an experiment to find whether more sunlight makes a plant grow taller, the independent variable is',o:['the number of hours of sunlight given','the height the plant reaches','the amount of water given','the size of the pot'],a:0,e:'The independent variable is the one thing you deliberately change. Height is what you measure, so it is the dependent variable; water and pot size are controlled &mdash; kept identical for every plant.'},
+{c:1,t:'mcq',q:'Keeping the water, the soil and the pot size the same for every plant in that experiment makes it',o:['a fair test','a hypothesis','a conclusion','an observation'],a:0,e:'A fair test changes one variable and holds the rest steady, so any difference in the result can honestly be blamed on the one thing you changed.'},
+{c:1,t:'mcq',q:'A hypothesis is best described as',o:['a possible answer, stated so that it can be tested','a fact that has already been proved','a guess that must turn out to be right','the final conclusion of an experiment'],a:0,e:'A hypothesis is a prediction you deliberately put at risk. It has done its job whether the evidence supports it or knocks it down.'},
+{c:1,t:'mcq',q:'Why does a scientist take the same measurement several times?',o:['To reduce the effect of a chance error in any single reading','To make the experiment last longer','Because the first reading is always wrong','To be able to choose the reading that suits'],a:0,e:'Any one reading can be spoiled by a slip, a draught or a misread scale. Several readings, averaged, are much harder to fool.'},
+{c:1,t:'mcq',q:'An experiment gives a result nobody expected. The right next step is to',o:['check the method and the variables, then investigate why','ignore it and repeat until the numbers agree','adjust the recorded data to match the hypothesis','declare the experiment a failure'],a:0,e:'Unexpected results are where a great deal of real science has started. Usually they point at a variable that was not controlled &mdash; occasionally at something genuinely new.'},
+{c:1,t:'mcq',q:'Which of these belongs in the method section of an investigation, not the conclusion?',o:['The steps followed, in the order they were done','What the results show','Whether the hypothesis was supported','What should be investigated next'],a:0,e:'The method must be detailed enough for someone else to repeat the work exactly. That repeatability is what separates an experiment from an anecdote.'},
+{c:1,t:'tf',q:'A hypothesis that turns out to be wrong means the investigation has failed.',a:false,e:'False. Disproving a hypothesis is a real result &mdash; it removes one possibility. An investigation fails only when its method cannot answer the question at all.'},
+{c:1,t:'tf',q:'In a fair test you should change several variables at once so the experiment finishes sooner.',a:false,e:'False. If two things change together you can never tell which one caused the result. One variable at a time is the entire point of a fair test.'},
+{c:1,t:'tf',q:'A conclusion should state only what the collected evidence actually supports.',a:true,e:'True. Stretching four plants on one windowsill into a claim about all plants everywhere is the commonest mistake in a school report.'},
+{c:1,t:'tf',q:'Using more plants in each group makes the conclusion more reliable than using one.',a:true,e:'True. A larger sample means one odd individual cannot swing the result. Sample size and repeated readings are two different safeguards, and good work uses both.'},
+{c:1,t:'fill',q:'The variable that the experimenter deliberately changes is called the ______ variable.',a:['independent'],e:'Independent. What you measure in response is the dependent variable.'},
+{c:1,t:'fill',q:'The variables deliberately kept the same throughout a fair test are called ______ variables.',a:['controlled','control','constant'],e:'Controlled variables. Listing them before you start is the quickest way to catch a flaw in your own plan.'},
+{c:1,t:'fill',q:'A group set up without the treatment being tested, for comparison, is called the ______ group.',a:['control'],e:'The control group. Without one there is nothing to compare the treated group against.'},
+{c:1,t:'ar',as:'A scientist repeats each measurement three times and takes the average.',rs:'Any single measurement may be affected by a chance error.',a:0,e:'Both statements are true and the second is exactly why the first is done.'},
+{c:1,t:'ar',as:'&ldquo;Which is the tastiest mango?&rdquo; is not a scientific question.',rs:'It cannot be answered by measurement or observation that everyone would agree on.',a:0,e:'Both true, and the reason explains it. Science can measure sugar content; it cannot measure tastiness.'},
+{c:1,t:'short',m:2,q:'Riya thinks a fertiliser makes tomato plants grow taller. Describe how she could test this fairly.',a:'She should take two groups of tomato plants of the same variety, age and starting size, in the same soil and the same pots. One group gets the fertiliser &mdash; the independent variable &mdash; and the other, the control group, gets none. Water, sunlight, temperature and pot size are kept identical for both. She measures the height of every plant at the same intervals (the dependent variable), uses several plants in each group rather than one, and compares the averages before drawing any conclusion.'},
+{c:1,t:'short',m:3,q:'List the steps of a scientific investigation in order, with one line on each.',a:'(i) Ask a testable question &mdash; something that can be settled by observing or measuring. (ii) Form a hypothesis &mdash; a possible answer, stated so it can be checked. (iii) Plan a fair test &mdash; decide the independent, dependent and controlled variables. (iv) Carry it out and observe &mdash; measure carefully, repeat readings, record as you go. (v) Organise the data &mdash; tables and graphs to bring out the pattern. (vi) Draw a conclusion that the evidence supports, and say how confident you are. (vii) Communicate it, in enough detail that someone else could repeat the work.'},
+
+/* ==================== CHAPTER 8 &mdash; not in the September paper ==================== */
+{c:8,t:'mcq',q:'A substance made of only one kind of atom is',o:['an element','a compound','a mixture','a solution'],a:0,e:'Elements are the alphabet of matter. About a hundred of them make every substance there is.'},
+{c:8,t:'mcq',q:'Which of these is a compound?',o:['Water','Oxygen','Air','Brass'],a:0,e:'Water is hydrogen and oxygen chemically combined in a fixed 2:1 ratio. Oxygen is an element; air and brass are mixtures.'},
+{c:8,t:'mcq',q:'Common salt has none of the properties of the sodium and chlorine it is made from. That is because sodium chloride is',o:['a compound, in which the elements are chemically combined','a mixture of the two elements','an element in its own right','a solution of sodium in chlorine'],a:0,e:'This is the sharpest test of the compound-versus-mixture idea: sodium catches fire in water, chlorine is a poison gas, and their compound goes on your food.'},
+{c:8,t:'mcq',q:'Which of these is a heterogeneous mixture?',o:['Sand stirred into water','Salt dissolved in water','Air','Vinegar'],a:0,e:'You can see the sand separately, and it settles. A homogeneous mixture looks the same all the way through.'},
+{c:8,t:'mcq',q:'Iron filings can be picked out of a mixture with sulphur powder using a magnet because',o:['iron is magnetic and sulphur is not','iron is heavier than sulphur','iron dissolves in water','the mixture is a compound'],a:0,e:'Every separation method uses a difference in property. Here the difference is magnetism.'},
+{c:8,t:'mcq',q:'The best way to get pure salt back from sea water is',o:['evaporation','filtration','magnetic separation','sieving'],a:0,e:'The salt is dissolved, so no filter will catch it. Evaporating the water leaves the salt behind.'},
+{c:8,t:'mcq',q:'Two liquids that mix completely, such as alcohol and water, are best separated by',o:['distillation','filtration','decantation','sieving'],a:0,e:'They have different boiling points. Distillation boils the more volatile one off and condenses it back as a pure liquid.'},
+{c:8,t:'mcq',q:'Which of these is NOT a mixture?',o:['Carbon dioxide','Soil','Sea water','Air'],a:0,e:'Carbon dioxide is a compound &mdash; carbon and oxygen chemically joined in a fixed ratio. The other three are mixtures of several substances.'},
+{c:8,t:'tf',q:'The components of a mixture can be present in any proportion.',a:true,e:'True. You can make tea weak or strong. A compound always has its elements in one fixed ratio.'},
+{c:8,t:'tf',q:'A compound can be split into its elements by physical methods such as filtering or picking.',a:false,e:'False. The elements in a compound are chemically bonded, so breaking them apart needs a chemical change &mdash; electricity or heat, not a sieve.'},
+{c:8,t:'tf',q:'Air is a mixture rather than a compound.',a:true,e:'True. Its gases keep their own properties, are not in a fixed ratio, and can be separated physically by cooling and fractional distillation.'},
+{c:8,t:'tf',q:'The properties of a mixture are usually the properties of its components put together.',a:true,e:'True, and that is the giveaway. Iron filings in sulphur are still magnetic and still yellow. Iron sulphide, the compound, is neither.'},
+{c:8,t:'fill',q:'A mixture that looks the same throughout, such as salt dissolved in water, is called a ______ mixture.',a:['homogeneous'],e:'Homogeneous. One that does not &mdash; sand in water &mdash; is heterogeneous.'},
+{c:8,t:'fill',q:'Two or more elements chemically combined in a fixed ratio form a ______.',a:['compound'],e:'A compound, with properties of its own quite unlike those of its elements.'},
+{c:8,t:'fill',q:'Separating a solid from a liquid by pouring the mixture through filter paper is called ______.',a:['filtration','filtering'],e:'Filtration. It works only when the solid has not dissolved.'},
+{c:8,t:'ar',as:'Brass is called a mixture and not a compound.',rs:'Copper and zinc in brass are not chemically combined, and their proportions can vary.',a:0,e:'Both true, and the reason is the explanation. That is also why brass can be made harder or softer by changing the recipe.'},
+{c:8,t:'match',q:'Match each mixture with a method that separates it.',pairs:[['Sand in water','Filtration'],['Salt in water','Evaporation'],['Iron filings in sand','Magnetic separation'],['Cream from milk','Churning or centrifugation'],['Alcohol and water','Distillation']],e:'Ask what property is different &mdash; size, solubility, magnetism, density, boiling point &mdash; and the method follows.'},
+{c:8,t:'short',m:3,q:'Give three differences between a compound and a mixture, with one example of each.',a:'(i) Composition: a compound has its elements in a fixed ratio (water is always 2 hydrogen to 1 oxygen), while a mixture can have any proportion (tea can be weak or strong). (ii) Properties: a compound has new properties of its own &mdash; sodium chloride is nothing like sodium or chlorine &mdash; whereas a mixture keeps the properties of its components, so iron filings in sulphur are still magnetic. (iii) Separation: a compound can be split only by a chemical change, while a mixture can usually be separated by physical means such as filtering, magnetism or evaporation.'},
+
+/* ==================== CHAPTER 9 &mdash; not in the September paper ==================== */
+{c:9,t:'mcq',q:'In a cup of sugar solution, the solute is',o:['the sugar','the water','the cup','the spoon'],a:0,e:'The solute is what dissolves; the solvent is what does the dissolving. Together they make the solution.'},
+{c:9,t:'mcq',q:'Water is called the universal solvent because',o:['it dissolves more substances than any other liquid','it dissolves absolutely everything','it is found everywhere on Earth','it has no taste or colour'],a:0,e:'&ldquo;Universal&rdquo; is a compliment, not a literal claim. Oil, wax, sand and plastic all refuse to dissolve in it.'},
+{c:9,t:'mcq',q:'A solution that can dissolve no more solute at a given temperature is called',o:['saturated','unsaturated','dilute','concentrated'],a:0,e:'Add more solute to a saturated solution and it simply lies at the bottom.'},
+{c:9,t:'mcq',q:'Sugar dissolves faster in hot tea than in cold. Heating',o:['speeds up the dissolving and also raises how much can dissolve','only changes the colour','lowers the solubility of the sugar','has no real effect'],a:0,e:'For most solids, warming does both. For gases it works the other way &mdash; they dissolve less in warm liquid.'},
+{c:9,t:'mcq',q:'Warm water holds less dissolved oxygen than cold water. This explains why',o:['fish struggle in a pond that has been warmed','ice floats on water','salt dissolves in water','water boils at 100 &deg;C'],a:0,e:'The solubility of a gas falls as temperature rises. It is also why a warm fizzy drink goes flat faster than a chilled one.'},
+{c:9,t:'mcq',q:'Which of these does NOT change the final amount of sugar that dissolves in 100 g of water at 25 &deg;C?',o:['Stirring the mixture','Raising the temperature','Cooling the water','Using a different solvent'],a:0,e:'Stirring changes only how fast it dissolves. At a fixed temperature the final amount &mdash; the solubility &mdash; is fixed.'},
+{c:9,t:'mcq',q:'Solubility must always be quoted along with the',o:['temperature','colour of the solute','size of the container','time of day'],a:0,e:'Solubility is the mass of solute that dissolves in 100 g of solvent at a stated temperature. Without the temperature the number means nothing.'},
+{c:9,t:'mcq',q:'Crystals of copper sulphate appear when a hot saturated solution is left to cool. That is because',o:['solubility falls as the solution cools, so the extra solute comes out','the water turns into crystals','the solute evaporates','cooling makes new copper sulphate'],a:0,e:'This is crystallisation, and it is how salt, sugar and alum are purified &mdash; the solid that comes out is purer than the one that went in.'},
+{c:9,t:'tf',q:'A dilute solution has a small amount of solute compared with the solvent.',a:true,e:'True. Dilute and concentrated are relative words, not measurements &mdash; they only make sense in comparison.'},
+{c:9,t:'tf',q:'Grinding a solid into a fine powder makes it dissolve faster because more surface meets the solvent.',a:true,e:'True. Grinding, stirring and warming all raise the rate. Only warming changes how much can finally dissolve.'},
+{c:9,t:'tf',q:'Once a solution is saturated, adding more solute makes it more concentrated.',a:false,e:'False. The extra solute settles undissolved at the bottom. The concentration of the solution itself does not budge unless the temperature does.'},
+{c:9,t:'tf',q:'A solution is a homogeneous mixture.',a:true,e:'True. The solute is spread evenly right through, which is why a sip from the top of a glass of sherbet tastes the same as one from the bottom.'},
+{c:9,t:'fill',q:'The substance in which a solute dissolves is called the ______.',a:['solvent'],e:'The solvent &mdash; usually, but not always, water.'},
+{c:9,t:'fill',q:'The maximum mass of a solute that dissolves in 100 g of solvent at a stated temperature is its ______.',a:['solubility'],e:'Solubility. Always name the temperature alongside it.'},
+{c:9,t:'fill',q:'A solution that can still dissolve more solute at that temperature is described as ______.',a:['unsaturated'],e:'Unsaturated. Keep adding solute and it eventually becomes saturated.'},
+{c:9,t:'ar',as:'A fizzy drink goes flat faster when it is left in the sun.',rs:'The solubility of a gas in a liquid falls as the temperature rises.',a:0,e:'Both true, and the reason explains it. The dissolved carbon dioxide escapes more readily from warm liquid.'},
+{c:9,t:'short',m:2,q:'Give two ways to make sugar dissolve faster in water, and explain why each works.',a:'(i) Stir the mixture &mdash; stirring keeps bringing fresh solvent to the sugar instead of letting a concentrated layer sit around it. (ii) Warm the water &mdash; the particles move faster and pull the sugar particles apart more quickly. Grinding the sugar finer is a third way, because it exposes more surface to the water. All three change the rate of dissolving; only heating changes how much can finally dissolve.'},
+{c:9,t:'short',m:3,q:'Explain the difference between a saturated and an unsaturated solution, and describe how you would turn one into the other.',a:'An unsaturated solution can still dissolve more solute at that temperature; a saturated one cannot, so any further solute settles at the bottom. To go from unsaturated to saturated, keep adding solute at a fixed temperature until no more disappears, or evaporate some of the solvent. To go the other way, from saturated to unsaturated, either add more solvent or warm the solution &mdash; heating raises the solubility of most solids, so the solution can then hold more than before.'},
+
+/* ==================== CHAPTER 10 &mdash; not in the September paper ==================== */
+{c:10,t:'mcq',q:'The law of reflection states that the angle of incidence is',o:['equal to the angle of reflection','twice the angle of reflection','half the angle of reflection','always 90&deg;'],a:0,e:'Both angles are measured from the normal &mdash; the line drawn at right angles to the surface at the point where the ray strikes.'},
+{c:10,t:'mcq',q:'The image formed by a plane mirror is',o:['virtual, erect and the same size as the object','real, inverted and smaller','real, erect and larger','virtual, inverted and smaller'],a:0,e:'It also sits as far behind the mirror as the object is in front, and it is laterally inverted.'},
+{c:10,t:'mcq',q:'AMBULANCE is painted reversed on the front of the vehicle because',o:['a driver ahead sees it the right way round in the rear-view mirror','it looks more striking','mirrors make letters smaller','reversed paint lasts longer'],a:0,e:'A plane mirror swaps left and right. Reversing the word first cancels that out.'},
+{c:10,t:'mcq',q:'Reflection from a rough surface such as a plastered wall is called',o:['diffuse reflection','regular reflection','refraction','dispersion'],a:0,e:'The laws of reflection are obeyed at every single point. The surface simply faces many different ways, so the rays scatter and no image forms.'},
+{c:10,t:'mcq',q:'A pencil standing in a glass of water looks bent at the water surface because of',o:['refraction','reflection','dispersion','diffuse reflection'],a:0,e:'Light changes speed as it leaves the water, so it bends, and the eye traces it back along a straight line to the wrong place.'},
+{c:10,t:'mcq',q:'A lens that is thicker in the middle than at its edges',o:['converges parallel rays of light to a point','diverges parallel rays','reflects light instead of bending it','has no effect on light'],a:0,e:'That is a convex lens. The point where parallel rays meet is its focus.'},
+{c:10,t:'mcq',q:'Which of these can throw a real image onto a screen?',o:['A convex lens','A concave lens','A plane mirror','None of these'],a:0,e:'Only converging optics make real images. A concave lens and a plane mirror always give virtual ones, which cannot be caught on a screen.'},
+{c:10,t:'mcq',q:'A magnifying glass is',o:['a convex lens','a concave lens','a plane mirror','a prism'],a:0,e:'Held close to the object, a convex lens gives an enlarged, erect, virtual image.'},
+{c:10,t:'tf',q:'Light travels in straight lines.',a:true,e:'True, and it is why shadows have sharp edges and why you cannot see around a corner without a mirror.'},
+{c:10,t:'tf',q:'A concave lens can be used as a magnifying glass.',a:false,e:'False. A concave lens always gives a diminished, erect, virtual image. The magnifying glass is convex.'},
+{c:10,t:'tf',q:'We can see a non-luminous object such as a book because it reflects light into our eyes.',a:true,e:'True. Luminous objects give out their own light; everything else is seen by the light it bounces towards us. In a truly dark room, nothing is visible.'},
+{c:10,t:'tf',q:'The laws of reflection are not obeyed when light falls on a rough surface.',a:false,e:'False. They are obeyed at every point. The normals point in many directions, so the reflected rays scatter &mdash; that is diffuse reflection, not a broken law.'},
+{c:10,t:'fill',q:'The bending of light as it passes from one transparent medium into another is called ______.',a:['refraction'],e:'Refraction, caused by the change in the speed of light between the two media.'},
+{c:10,t:'fill',q:'The line drawn at right angles to a mirror at the point where a ray strikes it is called the ______.',a:['normal'],e:'The normal. Both the angle of incidence and the angle of reflection are measured from it, never from the mirror surface.'},
+{c:10,t:'fill',q:'An image that cannot be caught on a screen is described as ______.',a:['virtual'],e:'Virtual. A real image can be caught on a screen; a virtual one only appears to be where you see it.'},
+{c:10,t:'ar',as:'A swimming pool always looks shallower than it really is.',rs:'Light from the bottom of the pool bends as it leaves the water and enters the air.',a:0,e:'Both true, and the reason explains it. The eye follows the bent ray back in a straight line and places the bottom higher than it is.'},
+{c:10,t:'match',q:'Match each optical item with what it does.',pairs:[['Plane mirror','Virtual, erect, same-sized image'],['Convex lens','Converges parallel rays to a focus'],['Concave lens','Diverges parallel rays'],['Plastered wall','Diffuse reflection'],['Pencil bent at the water line','Refraction']],e:'Sort them by whether they bend light (lenses, refraction) or bounce it (mirrors, walls).'},
+{c:10,t:'short',m:3,q:'List the characteristics of the image formed by a plane mirror.',a:'The image is (i) virtual &mdash; it cannot be caught on a screen; (ii) erect, the same way up as the object; (iii) the same size as the object; (iv) formed as far behind the mirror as the object stands in front of it; and (v) laterally inverted, with left and right interchanged. The last is why writing held up to a mirror reads backwards, and why AMBULANCE is painted reversed.'},
+
+/* ==================== CHAPTER 11 &mdash; not in the September paper ==================== */
+{c:11,t:'mcq',q:'A motion that repeats itself at equal intervals of time is called',o:['periodic motion','random motion','linear motion','irregular motion'],a:0,e:'Every clock ever made is a periodic motion being counted &mdash; a pendulum, a quartz crystal, an oscillating atom.'},
+{c:11,t:'mcq',q:'Day and night are caused by',o:['the rotation of the Earth on its axis','the revolution of the Earth around the Sun','the phases of the Moon','the tilt of the Earth&rsquo;s axis'],a:0,e:'Rotation gives the day; revolution gives the year; the tilt gives the seasons. Keep the three apart and this chapter becomes easy.'},
+{c:11,t:'mcq',q:'The Earth takes about 365&frac14; days to',o:['revolve once around the Sun','rotate once on its axis','complete one lunar month','complete one season'],a:0,e:'That is the year. One rotation takes about 24 hours; one lunar cycle about 29&frac12; days.'},
+{c:11,t:'mcq',q:'A leap day is added every fourth year because',o:['the extra quarter day each year adds up to a whole day','the Earth is slowing down','the Moon&rsquo;s cycle is 29&frac12; days','February is the shortest month'],a:0,e:'Four years of leftover quarter-days make one full day, which is dropped into February.'},
+{c:11,t:'mcq',q:'The Moon appears to change shape through the month because',o:['we see different amounts of its sunlit half','the Moon itself changes shape','the Earth&rsquo;s shadow falls on it each night','the Moon gives out less light on some nights'],a:0,e:'The Earth&rsquo;s shadow explains a lunar eclipse, which is rare. The phases happen every single month, and they are about which part of the lit half faces us.'},
+{c:11,t:'mcq',q:'The seasons are caused mainly by',o:['the tilt of the Earth&rsquo;s axis','the changing distance between Earth and Sun','the phases of the Moon','the rotation of the Earth'],a:0,e:'A common trap. The Earth is actually closest to the Sun in early January, in the middle of the northern winter.'},
+{c:11,t:'mcq',q:'Which of these is a periodic motion suitable for keeping time?',o:['The swing of a pendulum','A ball rolling down a slope','A car braking at a signal','A leaf falling from a tree'],a:0,e:'A pendulum of a given length takes the same time for every swing, which is exactly what a timekeeper needs.'},
+{c:11,t:'mcq',q:'One complete cycle of the Moon&rsquo;s phases takes about',o:['29&frac12; days','24 hours','365 days','7 days'],a:0,e:'That is where the month comes from &mdash; and why a lunar calendar drifts against a solar one.'},
+{c:11,t:'tf',q:'The Moon produces its own light.',a:false,e:'False. The Moon shines only by reflecting sunlight. We see whichever part of its sunlit half is turned towards us.'},
+{c:11,t:'tf',q:'The Sun really moves across the sky from east to west each day.',a:false,e:'False &mdash; that is how it looks, but it is the Earth turning from west to east beneath it. Correcting this appearance is one of the oldest lessons in science.'},
+{c:11,t:'tf',q:'The Earth&rsquo;s rotation gives us day and night, while its revolution gives us the year.',a:true,e:'True. Two different motions, two different effects.'},
+{c:11,t:'tf',q:'Calendars need corrections such as the leap year because the day, the month and the year do not divide neatly into one another.',a:true,e:'True. The three cycles are set by three unrelated motions, so no calendar can fit them all without adjustment.'},
+{c:11,t:'fill',q:'The spinning of the Earth on its own axis is called ______.',a:['rotation'],e:'Rotation &mdash; one turn in about 24 hours.'},
+{c:11,t:'fill',q:'The movement of the Earth around the Sun is called ______.',a:['revolution'],e:'Revolution &mdash; one circuit in about 365&frac14; days.'},
+{c:11,t:'fill',q:'A motion that repeats itself in equal intervals of time is called ______ motion.',a:['periodic'],e:'Periodic motion. Every clock is built on one.'},
+{c:11,t:'ar',as:'A calendar needs a leap year.',rs:'The Earth takes about 365 days and 6 hours to complete one revolution around the Sun.',a:0,e:'Both true, and the reason explains it: four lots of six hours make the extra day.'},
+{c:11,t:'short',m:2,q:'Why do we always see the same face of the Moon from the Earth?',a:'The Moon takes the same time to rotate once on its axis as it takes to revolve once around the Earth &mdash; about 27&frac13; days. Because the two periods match exactly, the same side stays turned towards us throughout the orbit, and the far side never faces the Earth. It is not that the Moon does not spin; it spins at precisely the rate that keeps one face towards us.'},
+{c:11,t:'short',m:3,q:'Distinguish between the rotation and the revolution of the Earth, and name what each one causes.',a:'Rotation is the Earth spinning on its own axis, once in about 24 hours, from west to east. It causes day and night, and the apparent daily movement of the Sun and stars across the sky. Revolution is the Earth travelling around the Sun, once in about 365&frac14; days. It gives us the year, and together with the tilt of the axis it gives us the seasons, since the hemisphere leaning towards the Sun receives more direct light and longer days.'},
+
+/* ==================== CHAPTER 12 &mdash; not in the September paper ==================== */
+{c:12,t:'mcq',q:'In a food chain, green plants are called',o:['producers','consumers','decomposers','predators'],a:0,e:'They produce their own food by photosynthesis, which is why every food chain starts with them.'},
+{c:12,t:'mcq',q:'In the chain grass &rarr; grasshopper &rarr; frog &rarr; snake, the frog is',o:['a secondary consumer','a producer','a primary consumer','a decomposer'],a:0,e:'The grasshopper is the primary consumer, the frog the secondary, the snake the tertiary. Count from the producer.'},
+{c:12,t:'mcq',q:'The arrows drawn in a food chain show',o:['the direction in which energy flows','which animal is larger','the order of size','the direction the animals travel'],a:0,e:'The arrow points from the eaten to the eater, because that is the way the energy moves.'},
+{c:12,t:'mcq',q:'Bacteria and fungi that break down dead plants and animals are called',o:['decomposers','producers','herbivores','carnivores'],a:0,e:'They return nutrients to the soil. Without them, dead matter and its nutrients would simply pile up.'},
+{c:12,t:'mcq',q:'A forest holds far fewer tigers than deer because',o:['energy is lost at every step of the food chain','tigers are larger animals','deer breed only in winter','tigers eat very little'],a:0,e:'Only a fraction of the energy at one level reaches the next; the rest is spent living and lost as heat. So the top of a food chain is always thinly populated.'},
+{c:12,t:'mcq',q:'A relationship in which both organisms benefit, as with a bee and a flower, is called',o:['mutualism','parasitism','competition','predation'],a:0,e:'The bee gets nectar, the flower gets pollinated. In parasitism only one side gains.'},
+{c:12,t:'mcq',q:'Removing one species from a food web usually',o:['affects several other populations in the web','affects nothing else at all','affects only the species directly above it','makes the whole web stronger'],a:0,e:'Because most animals eat and are eaten by several others, one gap sends ripples in more than one direction.'},
+{c:12,t:'mcq',q:'Which of these is a non-living component of an ecosystem?',o:['Soil','Earthworms','Fungi','Grass'],a:0,e:'Soil, water, air, light and temperature are the abiotic components. Everything alive is biotic.'},
+{c:12,t:'tf',q:'A food web is a more realistic picture of feeding in nature than a single food chain.',a:true,e:'True. Almost no animal eats only one thing, so the interconnected web is closer to what actually happens.'},
+{c:12,t:'tf',q:'Energy cycles endlessly through an ecosystem in the same way that matter does.',a:false,e:'False. Matter &mdash; carbon, nitrogen, water &mdash; cycles round. Energy flows one way: in as sunlight, out as heat. That is why an ecosystem needs the Sun continuously.'},
+{c:12,t:'tf',q:'Decomposers return nutrients from dead matter to the soil.',a:true,e:'True, and they close the loop. Producers then take those nutrients up again.'},
+{c:12,t:'tf',q:'An ecosystem includes only the living organisms in an area.',a:false,e:'False. An ecosystem is the living organisms together with the non-living surroundings &mdash; soil, water, air, light and temperature &mdash; that they depend on.'},
+{c:12,t:'fill',q:'All the living organisms of an area together with their non-living surroundings make up an ______.',a:['ecosystem'],e:'An ecosystem &mdash; a pond, a forest, a field, even an aquarium.'},
+{c:12,t:'fill',q:'An animal that eats only plants is called a ______.',a:['herbivore'],e:'A herbivore, and it is always the primary consumer in its chain.'},
+{c:12,t:'fill',q:'Green plants make their own food by the process of ______.',a:['photosynthesis'],e:'Photosynthesis, which is how the Sun&rsquo;s energy first enters every food chain.'},
+{c:12,t:'ar',as:'Every food chain begins with a green plant.',rs:'Only producers can capture the Sun&rsquo;s energy and make food from it.',a:0,e:'Both true, and the reason is the explanation. Consumers can only pass along energy that a producer captured first.'},
+{c:12,t:'match',q:'Match each organism with its role in an ecosystem.',pairs:[['Mango tree','Producer'],['Deer','Primary consumer (herbivore)'],['Tiger','Carnivore'],['Mushroom','Decomposer'],['Tick on a dog','Parasite']],e:'Sort by what the organism eats and where it sits relative to the producer.'},
+{c:12,t:'short',m:3,q:'Draw out a food chain of four organisms and explain what happens to the energy at each step.',a:'A typical chain: grass &rarr; grasshopper &rarr; frog &rarr; snake. The grass is the producer and captures the Sun&rsquo;s energy by photosynthesis. The grasshopper, a herbivore and primary consumer, eats the grass and takes in some of that energy. The frog, a secondary consumer, eats the grasshopper; the snake, a tertiary consumer, eats the frog. At every step most of the energy is used up in living &mdash; moving, breathing, keeping warm &mdash; and is lost as heat, so only a small share passes on. That is why each level supports fewer organisms than the one below it, and why food chains are rarely more than four or five links long. Decomposers act at every level, breaking down the dead and returning nutrients to the soil.'},
+
+/* ==================== CHAPTER 13 &mdash; not in the September paper ==================== */
+{c:13,t:'mcq',q:'The four major systems of the Earth are the geosphere, the hydrosphere, the biosphere and the',o:['atmosphere','stratosphere','magnetosphere','ionosphere'],a:0,e:'Rock, water, life and air. Every environmental question is about how those four act on one another.'},
+{c:13,t:'mcq',q:'Roughly what share of the Earth&rsquo;s water is fresh water?',o:['About 2.5&percnt;','About 25&percnt;','About 50&percnt;','About 75&percnt;'],a:0,e:'And most of that 2.5&percnt; is locked in glaciers and ice caps, so usable fresh water is far scarcer than a picture of the blue planet suggests.'},
+{c:13,t:'mcq',q:'Without its atmosphere, the Earth&rsquo;s average surface temperature would be about',o:['&minus;18 &deg;C instead of 15 &deg;C','exactly the same','100 &deg;C','0 &deg;C'],a:0,e:'The natural greenhouse effect is what makes the planet liveable. The problem is not that it exists but that we are strengthening it.'},
+{c:13,t:'mcq',q:'Which gas in the atmosphere absorbs most of the Sun&rsquo;s ultraviolet radiation?',o:['Ozone','Nitrogen','Carbon dioxide','Argon'],a:0,e:'Ozone sits high in the stratosphere and acts as the planet&rsquo;s sunscreen.'},
+{c:13,t:'mcq',q:'Which of these is a non-renewable resource?',o:['Petroleum','Sunlight','Wind','Tidal energy'],a:0,e:'Petroleum took millions of years to form and is being used far faster than it is replaced. The other three arrive continuously.'},
+{c:13,t:'mcq',q:'The stages of the water cycle, in order, are',o:['evaporation &rarr; condensation &rarr; precipitation &rarr; collection','condensation &rarr; evaporation &rarr; collection &rarr; precipitation','precipitation &rarr; evaporation &rarr; condensation &rarr; collection','collection &rarr; precipitation &rarr; evaporation &rarr; condensation'],a:0,e:'Water rises as vapour, cools into droplets, falls as rain or snow, and gathers in rivers, lakes and the ground &mdash; then round again.'},
+{c:13,t:'mcq',q:'The biosphere is',o:['the part of the Earth where life exists','the layer of rock beneath the soil','all the water on the Earth','the upper atmosphere'],a:0,e:'It is a thin shell &mdash; from the deepest ocean trench to a few kilometres up &mdash; and every living thing we know of is inside it.'},
+{c:13,t:'mcq',q:'Which of these best explains why the Earth can hold liquid water while Mars largely cannot?',o:['Its distance from the Sun and its atmosphere keep the temperature and pressure right','It is a larger planet','It has a moon','It spins faster'],a:0,e:'Too close and water boils away, too far and it freezes. The atmosphere holds the pressure and steadies the temperature.'},
+{c:13,t:'tf',q:'A renewable resource is one that is replaced as fast as it is used.',a:true,e:'True. A forest is renewable if it is replanted at the rate it is felled, and non-renewable in practice if it is not.'},
+{c:13,t:'tf',q:'The four spheres of the Earth work independently of one another.',a:false,e:'False. They interact constantly &mdash; rain from the atmosphere carves the geosphere, plants in the biosphere put oxygen into the atmosphere, rivers carry soil to the sea.'},
+{c:13,t:'tf',q:'Burning coal and petroleum adds carbon dioxide to the atmosphere.',a:true,e:'True, and since carbon dioxide traps heat, that is the main way human activity is warming the planet.'},
+{c:13,t:'tf',q:'Ozone in the upper atmosphere protects living things from ultraviolet radiation.',a:true,e:'True. Ultraviolet damages living cells, and the ozone layer absorbs most of it before it reaches the ground.'},
+{c:13,t:'fill',q:'All the water on the Earth &mdash; in oceans, rivers, ice and underground &mdash; makes up the ______.',a:['hydrosphere'],e:'The hydrosphere. About 97&percnt; of it is salt water in the oceans.'},
+{c:13,t:'fill',q:'Coal, petroleum and natural gas are together called ______ fuels.',a:['fossil'],e:'Fossil fuels, formed from the remains of organisms buried over millions of years.'},
+{c:13,t:'fill',q:'The part of the Earth made up of rock and soil is called the ______.',a:['geosphere','lithosphere'],e:'The geosphere &mdash; also called the lithosphere for its solid outer layer.'},
+{c:13,t:'ar',as:'Scientists searching for life on other planets look first for liquid water.',rs:'Every living process we know of uses water as its medium.',a:0,e:'Both true, and the reason explains the search. It is why so much attention goes to Mars and to the icy moons of Jupiter and Saturn.'},
+{c:13,t:'short',m:3,q:'Name the four spheres of the Earth and give one way in which any two of them interact.',a:'The four are the geosphere (rock, soil and the solid Earth), the hydrosphere (all its water), the atmosphere (the surrounding air) and the biosphere (all living things). Interactions to choose from: a river in the hydrosphere wears away rock and carries soil from the geosphere; trees in the biosphere release oxygen and water vapour into the atmosphere; rain from the atmosphere fills the lakes and rivers of the hydrosphere; plant roots in the biosphere break up and enrich the soil of the geosphere. Any two spheres, correctly linked with a real example, earns the marks.'},
+{c:13,t:'short',m:2,q:'Explain the difference between renewable and non-renewable resources, with two examples of each.',a:'A renewable resource is replaced as fast as, or faster than, it is used &mdash; sunlight and wind arrive continuously, and a forest is renewable so long as it is replanted at the rate it is cut. A non-renewable resource forms far more slowly than we consume it, so the supply shrinks: coal and petroleum took millions of years to form, and metals and minerals exist in fixed deposits. The practical difference is that renewable resources can be used indefinitely if managed sensibly, while non-renewable ones must be conserved, used efficiently and eventually replaced by alternatives.'},
 ];
 
 /* The science bank predates the second subject, so tag it rather than rewrite
@@ -1313,9 +1510,18 @@ function renderStats(){
   }).join('');
 }
 
+/* The default selection is what the exam actually covers. The rest of the book
+   is one tap away in the picker, but it should not quietly walk into a revision
+   set three weeks before the paper. */
+function defaultChapters(){
+  const cs = subj().chapters.filter(c => c.bank);
+  const exam = cs.filter(c => c.exam);
+  return (subj().hasExam && exam.length ? exam : cs).map(c => c.n);
+}
+
 /* ---------- chapter pickers ---------- */
 function chapterButtons(host, selected, onToggle){
-  const cs = subj().chapters.filter(c => c.bank);
+  const cs = visibleChapters().filter(c => c.bank);
   host.innerHTML = cs.map(c => `
     <button class="chip" data-n="${c.n}" style="--hue:${c.hue}" aria-pressed="${selected.has(c.n)}">
       <span class="num">CH&nbsp;${c.n}</span>
@@ -1705,7 +1911,12 @@ function makeWorksheet(){
 
 /* ---------- mock paper: 40 marks, all six chapters ---------- */
 function makePaper(){
-  const byType = t => BANK.filter(q => q.s === subject && (Array.isArray(t) ? t.includes(q.t) : q.t === t));
+  /* The paper mocks the September exam, so it must never reach into the chapters
+     that exam does not cover, however good those questions are. */
+  const inPaper = subj().hasExam
+    ? (q => subj().chapters.some(c => c.exam && c.n === q.c))
+    : (() => true);
+  const byType = t => BANK.filter(q => q.s === subject && inPaper(q) && (Array.isArray(t) ? t.includes(q.t) : q.t === t));
   const spread = (list, k) => {
     /* take from as many different chapters as possible */
     const out = [], byCh = {};
@@ -1771,6 +1982,12 @@ const DOODLE = {
   solids:'<path d="M14 26 30 16l16 10-16 10Z"/><path d="M14 26v16l16 10V36M46 26v16L30 52"/><path d="M50 14l6 4-6 4-6-4Z"/>',
   graph:'<path d="M12 52V12M12 52h44"/><path d="m18 42 10-12 9 8 14-20"/><circle cx="28" cy="30" r="2.5"/><circle cx="37" cy="38" r="2.5"/>',
   algebra:'<path d="M14 18 34 46M34 18 14 46"/><path d="M44 22h14M51 15v14"/><path d="M44 46h14"/>',
+  flask:'<path d="M26 8h12"/><path d="M28 8v16L14 48a4 4 0 0 0 3.5 6h29a4 4 0 0 0 3.5-6L36 24V8"/><path d="M21 40h22"/><circle cx="28" cy="46" r="2"/><circle cx="36" cy="44" r="1.5"/>',
+  beaker:'<path d="M17 10h30"/><path d="M21 10v36a7 7 0 0 0 7 7h8a7 7 0 0 0 7-7V10"/><path d="M21 33h22"/><circle cx="28" cy="42" r="2"/><circle cx="37" cy="25" r="2"/><circle cx="30" cy="21" r="1.5"/>',
+  lens:'<path d="M32 10c8 8 8 36 0 44-8-8-8-36 0-44Z"/><path d="M6 20h18M6 32h16M6 44h18"/><path d="M42 32h16"/><path d="m51 27 7 5-7 5"/>',
+  moon:'<path d="M41 11a22 22 0 1 0 12 31A18 18 0 0 1 41 11Z"/><path d="M16 12v6M13 15h6"/><path d="M52 20v5M49.5 22.5h5"/>',
+  leaf:'<path d="M52 11C31 11 15 23 15 41c0 7 5 11 11 11 18 0 26-19 26-41Z"/><path d="M13 54 45 20"/><path d="M25 34h11M31 44h10"/>',
+  globe:'<circle cx="32" cy="32" r="18"/><path d="M32 14c-8 8-8 28 0 36M32 14c8 8 8 28 0 36"/><path d="M14 32h36"/><path d="M22 20c6 4 14 4 20 0M22 44c6-4 14-4 20 0"/>',
   area:'<path d="M10 20h30v26H10z"/><path d="M40 20h16l-8 26H40"/><path d="M14 24v18M18 24v18M22 24v18M26 24v18M30 24v18M34 24v18"/>'
 };
 function doodle(key, hue){
@@ -1788,9 +2005,9 @@ const SUBJECTS = {
       ...CHAPTERS.map(c => ({key:'sci'+c.n, n:c.n, title:c.name, sub:c.sub, hue:hue(c.n),
                              exam:true, bank:true, map:LEARN[c.n].map, notes:LEARN[c.n].notes,
                              art:{2:'microbe',3:'heart',4:'bolt',5:'arrows',6:'press',7:'particles'}[c.n]})),
-      ...BEYOND.science.map((c,i) => ({key:'scix'+i, n:null, title:c.title, sub:c.sub,
-                             hue:'var(--ink-3)', exam:false, bank:false, map:c.map, notes:c.notes,
-                             art:['scope','particles','bolt','arrows','microbe','heart','scope'][i]}))
+      ...BEYOND.science.map(c => ({key:'sci'+c.n, n:c.n, title:c.title, sub:c.sub,
+                             hue:c.hue, exam:false, bank:true, map:c.map, notes:c.notes,
+                             art:c.art}))
     ]},
   math:{
     id:'math', name:'Mathematics', book:'Ganita Prakash', hasExam:false,
@@ -1814,7 +2031,7 @@ function renderLearn(){
   const exam = cs.filter(c => c.exam), rest = cs.filter(c => !c.exam);
 
   $('#learnLede').innerHTML = S.id === 'sci'
-    ? 'Class VIII science, from the NCERT <em>Curiosity</em> textbook. The six chapters in the September paper come first, each boiled down to what actually gets asked; the rest of the syllabus follows.'
+    ? 'Class VIII science, from the NCERT <em>Curiosity</em> textbook &mdash; all thirteen chapters. The six in the September paper come first, boiled down to what actually gets asked; the rest of the book follows, and every chapter has questions behind it.'
     : 'Class VIII mathematics, from the NCERT <em>Ganita Prakash</em> textbook &mdash; all fourteen chapters across Part 1 and Part 2.';
   $('#bookNote').textContent = `NCERT ${S.book} \u00b7 ${S.chapters.length} chapters`;
 
@@ -1848,10 +2065,16 @@ function renderLearn(){
   }));
 }
 
-/* Practice, worksheets and the paper all run off the science bank. Maths has
-   notes and mind maps but no questions written yet — say so plainly rather than
-   hand over a generator with nothing behind it. */
+/* Both subjects have a bank now. The gate stays because it is cheap insurance:
+   if a subject ever has notes and no questions, say so plainly rather than hand
+   over a generator with nothing behind it. */
 function gateSubject(){
+  /* This tab is entirely about the September science paper &mdash; its heading, its
+     6.1-only note and its revision plan. Under maths it was showing the science
+     chapters, so hide it rather than mislabel it. */
+  const sylOK = subj().hasExam;
+  $('#tab-syllabus').hidden = !sylOK;
+  if(!sylOK && $('#tab-syllabus').getAttribute('aria-selected') === 'true') showView('learn');
   const noBank = !subj().chapters.some(c => c.bank);
   $$('.needsBank').forEach(e => e.hidden = noBank);
   $$('.noBankYet').forEach(e => e.hidden = !noBank);
@@ -1896,7 +2119,7 @@ $$('#subjSeg button').forEach(b => b.addEventListener('click', () => {
   subject = b.dataset.subj;
   $('#examFilter').hidden = !subj().hasExam;
   if(!subj().hasExam) { examOnly = false; $('#examFilter').setAttribute('aria-pressed', 'false'); }
-  const ns = subj().chapters.filter(c => c.bank).map(c => c.n);
+  const ns = defaultChapters();
   pSel.clear(); wSel.clear(); ns.forEach(n => { pSel.add(n); wSel.add(n); });
   chapterButtons($('#chapterPicker'), pSel, refreshPool);
   chapterButtons($('#wsPicker'), wSel, () => { $('#wsBtn').disabled = wSel.size === 0; });
@@ -1910,6 +2133,17 @@ $$('#subjSeg button').forEach(b => b.addEventListener('click', () => {
 $('#examFilter').addEventListener('click', () => {
   examOnly = !examOnly;
   $('#examFilter').setAttribute('aria-pressed', String(examOnly));
+  /* the filter means the same thing everywhere: hide what is not in the paper.
+     Drop any chapter that just disappeared from the picker out of the selection
+     too, or a practice set silently draws from chapters you cannot see. */
+  if(examOnly){
+    const keep = new Set(visibleChapters().filter(c => c.bank).map(c => c.n));
+    [pSel, wSel].forEach(sel => [...sel].forEach(n => { if(!keep.has(n)) sel.delete(n); }));
+  }
+  chapterButtons($('#chapterPicker'), pSel, refreshPool);
+  chapterButtons($('#wsPicker'), wSel, () => { $('#wsBtn').disabled = wSel.size === 0; });
+  $('#wsBtn').disabled = wSel.size === 0;
+  refreshPool();
   renderLearn();
 });
 
@@ -1921,7 +2155,7 @@ chapterButtons($('#chapterPicker'), pSel, refreshPool);
 chapterButtons($('#wsPicker'), wSel, () => { $('#wsBtn').disabled = wSel.size === 0; });
 
 $('#selAll').addEventListener('click', () => {
-  CHAPTERS.forEach(c => pSel.add(c.n));
+  visibleChapters().filter(c => c.bank).forEach(c => pSel.add(c.n));
   $$('#chapterPicker .chip').forEach(b => b.setAttribute('aria-pressed', 'true'));
   refreshPool();
 });
