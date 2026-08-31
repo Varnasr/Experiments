@@ -209,6 +209,15 @@ input.answer:focus,select.mt:focus{border-color:var(--accent)}
 .syl::before{content:""; position:absolute; inset:0 0 auto 0; height:100%;
   background:color-mix(in srgb,var(--hue) 5%,transparent); pointer-events:none}
 .syl > *{position:relative}
+.doodle{
+  position:absolute; top:12px; right:12px; width:82px; height:82px;
+  opacity:.28; pointer-events:none; z-index:0;
+  transform:rotate(-6deg);
+}
+:root[data-theme="dark"] .doodle{opacity:.38}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .doodle{opacity:.38}}
+:root[data-compact] .doodle{width:70px; height:70px; top:10px; right:10px}
+@media print{.doodle{display:none}}
 .syl h3{font-size:1.1rem; margin-bottom:2px; letter-spacing:-.01em}
 .syl .chapno{
   display:inline-flex; align-items:center; gap:8px; font-family:"Bricolage Grotesque",sans-serif;
@@ -1114,6 +1123,90 @@ const BANK = [
 {c:7,t:'short',m:3,q:'Give reasons: (a) we can smell food being cooked in another room; (b) a bottle of cold drink taken out of the fridge soon has water droplets on the outside; (c) naphthalene balls kept in a cupboard slowly disappear.',a:'(a) The particles of the vapours given off by hot food are in constant rapid motion and diffuse through the air of the room until they reach our nose. Diffusion is fast in gases and faster still at high temperature. (b) Water vapour present in the air comes into contact with the cold surface of the bottle, loses heat and changes into tiny liquid droplets. This is condensation. (c) Naphthalene sublimes: it changes directly from the solid state into vapour without becoming a liquid, so the balls slowly grow smaller and finally disappear without leaving any wet residue.'},
 {c:7,t:'short',m:2,q:'Distinguish between evaporation and boiling.',a:'Evaporation takes place only at the surface of the liquid, occurs at all temperatures, is a slow and quiet process, and causes cooling of the liquid left behind. Boiling takes place throughout the whole liquid, occurs only at one fixed temperature called the boiling point, is a rapid process with bubbles rising through the liquid, and requires a continuous supply of heat.'}
 ];
+
+/* The science bank predates the second subject, so tag it rather than rewrite
+   304 rows, then append maths. */
+BANK.forEach(q => { if(!q.s) q.s = 'sci'; });
+
+/* Maths question bank — Ganita Prakash. Same shapes as the science bank, with
+   s:'math' so the two never mix in a practice set or a paper. */
+const MATH_BANK = [
+{s:'math',c:1,t:'mcq',q:'Which of these is a perfect square?',o:['196','198','192','194'],a:0,e:'14 &times; 14 = 196. The others end in 8, 2 and 4 &mdash; and while a square can end in 4, none of these has an integer root.'},
+{s:'math',c:1,t:'mcq',q:'A number ending in 7 can never be',o:['a perfect square','a perfect cube','an even number','a multiple of 3'],a:0,e:'Squares end only in 0, 1, 4, 5, 6 or 9. Cubes can end in any digit &mdash; 3&sup3; = 27.'},
+{s:'math',c:1,t:'num',q:'Find &radic;576.',a:24,u:'',w:'576 = 2&times;2&times;2&times;2&times;2&times;2&times;3&times;3. Pairing: 2&times;2&times;2&times;3 = 24',e:'Prime factorise, then take one from each pair.'},
+{s:'math',c:1,t:'num',q:'Find the cube root of 1728.',a:12,u:'',w:'1728 = 2&sup3; &times; 2&sup3; &times; 3&sup3;, so the cube root is 2 &times; 2 &times; 3 = 12',e:'For a cube root, group the primes in threes.'},
+{s:'math',c:1,t:'fill',q:'The sum of the first 9 odd numbers is ______.',a:['81'],e:'The sum of the first n odd numbers is n&sup2;, so 9&sup2; = 81.'},
+{s:'math',c:1,t:'tf',q:'The square of a negative number is negative.',a:false,e:'False. (&minus;5)&sup2; = 25. Cubes keep the sign, squares do not.'},
+{s:'math',c:2,t:'mcq',q:'2&#8309; &times; 2&sup3; equals',o:['2&#8312;','2&#185;&#8309;','4&#8312;','2&#178;'],a:0,e:'Same base multiplying: add the exponents, 5 + 3 = 8.'},
+{s:'math',c:2,t:'mcq',q:'3&#8315;&sup2; equals',o:['1/9','&minus;9','&minus;6','9'],a:0,e:'A negative exponent means a reciprocal, not a negative number: 3&#8315;&sup2; = 1/3&sup2; = 1/9.'},
+{s:'math',c:2,t:'num',q:'What is the value of 7&#8304;?',a:1,u:'',w:'Any non-zero number to the power 0 is 1',e:'It follows from a&#8319; &divide; a&#8319; = a&#8304; = 1.'},
+{s:'math',c:2,t:'fill',q:'Written in standard form, 45 000 is 4.5 &times; 10 to the power ______.',a:['4'],e:'45 000 = 4.5 &times; 10&#8308;.'},
+{s:'math',c:2,t:'tf',q:'(2&sup3;)&#8308; is the same as 2&#185;&sup2;.',a:true,e:'True. A power of a power multiplies the exponents: 3 &times; 4 = 12.'},
+{s:'math',c:3,t:'mcq',q:'What made place-value systems more powerful than additive ones like Roman numerals?',o:['The same digit means a different amount depending on its position','They used more symbols','They were written left to right','They avoided the number zero'],a:0,e:'Position carries meaning, so a handful of digits can write any number and be calculated with on paper.'},
+{s:'math',c:3,t:'mcq',q:'Zero was needed in a place-value system in order to',o:['show that a place is empty','make numbers larger','replace the number one','mark the end of a number'],a:0,e:'Without a symbol for an empty place, 305 and 35 could not be told apart.'},
+{s:'math',c:3,t:'tf',q:'Roman numerals are an additive system.',a:true,e:'True. XXVII is read by adding: 10 + 10 + 5 + 1 + 1.'},
+{s:'math',c:3,t:'fill',q:'The digits we use today spread to Europe from ______ through the Arab world.',a:['india','indian'],e:'They are called the Hindu&ndash;Arabic numerals for that reason.'},
+{s:'math',c:4,t:'mcq',q:'The angles of any quadrilateral add up to',o:['360&deg;','180&deg;','270&deg;','540&deg;'],a:0,e:'Split it into two triangles: 2 &times; 180&deg; = 360&deg;.'},
+{s:'math',c:4,t:'mcq',q:'In which quadrilateral do the diagonals meet at right angles but need not be equal?',o:['Rhombus','Rectangle','Trapezium','Parallelogram'],a:0,e:'A rhombus has perpendicular diagonals. A rectangle has equal diagonals. A square has both.'},
+{s:'math',c:4,t:'num',q:'Three angles of a quadrilateral are 80&deg;, 95&deg; and 110&deg;. Find the fourth.',a:75,u:'&deg;',w:'360 &minus; (80 + 95 + 110) = 360 &minus; 285 = 75&deg;',e:'Always start from the 360&deg; angle sum.'},
+{s:'math',c:4,t:'tf',q:'Every square is a rhombus.',a:true,e:'True. A square has all four sides equal, which is exactly what makes a rhombus &mdash; it just also has right angles.'},
+{s:'math',c:4,t:'fill',q:'A quadrilateral with exactly one pair of parallel sides is a ______.',a:['trapezium'],e:'A trapezium. Two pairs would make it a parallelogram.'},
+{s:'math',c:5,t:'mcq',q:'A number is divisible by 9 if',o:['the sum of its digits is divisible by 9','it ends in 9','it is divisible by 3','it is odd'],a:0,e:'The digit-sum test. 738 &rarr; 7+3+8 = 18, which divides by 9, so 738 does too.'},
+{s:'math',c:5,t:'mcq',q:'Why is 1 not a prime number?',o:['It has only one factor','It is too small','It is odd','It divides everything'],a:0,e:'A prime has exactly two factors. 1 has only itself.'},
+{s:'math',c:5,t:'num',q:'Find the HCF of 36 and 60.',a:12,u:'',w:'36 = 2&sup2;&times;3&sup2;, 60 = 2&sup2;&times;3&times;5. Lowest power of each shared prime: 2&sup2; &times; 3 = 12',e:'HCF takes the lowest power of the primes they share.'},
+{s:'math',c:5,t:'num',q:'The HCF of two numbers is 6 and their LCM is 60. If one number is 12, find the other.',a:30,u:'',w:'HCF &times; LCM = product, so 6 &times; 60 = 12 &times; n, giving n = 360/12 = 30',e:'That identity is a fast route and a good check.'},
+{s:'math',c:5,t:'tf',q:'Every whole number greater than 1 breaks into primes in exactly one way.',a:true,e:'True &mdash; apart from the order you write them in.'},
+{s:'math',c:6,t:'mcq',q:'(a + b)&sup2; equals',o:['a&sup2; + 2ab + b&sup2;','a&sup2; + b&sup2;','a&sup2; &minus; 2ab + b&sup2;','2a + 2b'],a:0,e:'The middle term is the one that gets forgotten. (a+b)&sup2; is never a&sup2; + b&sup2;.'},
+{s:'math',c:6,t:'num',q:'Use an identity to work out 102 &times; 98.',a:9996,u:'',w:'(100+2)(100&minus;2) = 100&sup2; &minus; 2&sup2; = 10000 &minus; 4 = 9996',e:'Spotting a&sup2; &minus; b&sup2; turns a long multiplication into one subtraction.'},
+{s:'math',c:6,t:'num',q:'Find the value of 7 &times; 104 using the distributive property.',a:728,u:'',w:'7 &times; (100 + 4) = 700 + 28 = 728',e:'Splitting the awkward number is the whole trick.'},
+{s:'math',c:6,t:'fill',q:'Factorising 12x + 18 by taking out the common factor gives 6( ______ ).',a:['2x + 3','2x+3'],e:'6 is the highest common factor of 12 and 18.'},
+{s:'math',c:6,t:'tf',q:'(a &minus; b)&sup2; = a&sup2; &minus; b&sup2;.',a:false,e:'False. (a &minus; b)&sup2; = a&sup2; &minus; 2ab + b&sup2;. It is a&sup2; &minus; b&sup2; that factorises as (a+b)(a&minus;b).'},
+{s:'math',c:7,t:'mcq',q:'If 8 pens cost &#8377;96, what do 5 cost?',o:['&#8377;60','&#8377;50','&#8377;72','&#8377;48'],a:0,e:'One pen costs 96/8 = &#8377;12, so five cost &#8377;60. That is the unitary method.'},
+{s:'math',c:7,t:'num',q:'If a : b = 3 : 4 and a = 15, find b.',a:20,u:'',w:'3/4 = 15/b, so 3b = 60 and b = 20',e:'Cross-multiplication handles almost every proportion question.'},
+{s:'math',c:7,t:'tf',q:'A ratio has units.',a:false,e:'False. A ratio compares two quantities of the same kind, so the units cancel. Convert to the same unit before writing one.'},
+{s:'math',c:7,t:'fill',q:'In direct proportion, the ______ of the two quantities stays constant.',a:['ratio'],e:'x / y = k. In inverse proportion it is the product that stays constant.'}
+];
+
+const MATH_BANK2 = [
+{s:'math',c:8,t:'mcq',q:'Profit percentage is always worked out on the',o:['cost price','selling price','marked price','discount'],a:0,e:'Profit% = profit / CP &times; 100. Using the selling price is the commonest error in the chapter.'},
+{s:'math',c:8,t:'num',q:'An article bought for &#8377;400 is sold for &#8377;460. Find the profit percentage.',a:15,u:'%',w:'Profit = 60. Profit% = 60/400 &times; 100 = 15%',e:'Always divide by the cost price.'},
+{s:'math',c:8,t:'num',q:'Find the simple interest on &#8377;5000 at 8% per annum for 3 years.',a:1200,u:'&#8377;',w:'SI = P&times;R&times;T/100 = 5000&times;8&times;3/100 = &#8377;1200',e:'Simple interest is the same each year, because it is always charged on the original principal.'},
+{s:'math',c:8,t:'num',q:'A shirt marked at &#8377;800 is sold at a 25% discount. Find the selling price.',a:600,u:'&#8377;',w:'Discount = 25% of 800 = &#8377;200. SP = 800 &minus; 200 = &#8377;600',e:'Discount is always on the marked price, not the cost price.'},
+{s:'math',c:8,t:'tf',q:'For the same principal, rate and time, compound interest is more than simple interest after the first period.',a:true,e:'True. Compound interest charges interest on interest, so it pulls ahead from the second period onwards.'},
+{s:'math',c:9,t:'mcq',q:'In a right-angled triangle the hypotenuse is',o:['the side opposite the right angle','the shortest side','always vertical','the base'],a:0,e:'It is opposite the right angle and always the longest side. Identify it before substituting.'},
+{s:'math',c:9,t:'num',q:'A right triangle has legs 9 cm and 12 cm. Find the hypotenuse.',a:15,u:'cm',w:'9&sup2; + 12&sup2; = 81 + 144 = 225, and &radic;225 = 15 cm',e:'9-12-15 is just 3-4-5 scaled by three.'},
+{s:'math',c:9,t:'num',q:'A ladder 13 m long leans against a wall with its foot 5 m from the wall. How high up the wall does it reach?',a:12,u:'m',w:'13&sup2; &minus; 5&sup2; = 169 &minus; 25 = 144, and &radic;144 = 12 m',e:'The ladder is the hypotenuse, so here you subtract rather than add.'},
+{s:'math',c:9,t:'tf',q:'If a&sup2; + b&sup2; = c&sup2; for the three sides of a triangle, the triangle must be right-angled.',a:true,e:'True &mdash; that is the converse, and it is how you check whether a corner is square.'},
+{s:'math',c:9,t:'fill',q:'The theorem appears in the Indian ______ Sulbasutra, centuries before Pythagoras.',a:['baudhayana'],e:'Which is why the book names them together.'},
+{s:'math',c:10,t:'mcq',q:'Which pair is in inverse proportion?',o:['Number of workers and time to finish a job','Distance and time at fixed speed','Cost and number of items','Side and perimeter of a square'],a:0,e:'More workers, less time &mdash; their product stays constant. The other three are direct.'},
+{s:'math',c:10,t:'num',q:'6 workers finish a job in 12 days. How many days would 9 workers take?',a:8,u:'days',w:'Inverse: 6 &times; 12 = 9 &times; d, so d = 72/9 = 8 days',e:'For inverse proportion multiply; for direct proportion divide.'},
+{s:'math',c:10,t:'num',q:'In a pie chart, a category holding one quarter of the total takes a sector of what angle?',a:90,u:'&deg;',w:'&frac14; &times; 360&deg; = 90&deg;',e:'Sector angle = (part / total) &times; 360&deg;.'},
+{s:'math',c:10,t:'num',q:'On a map of scale 1 : 50 000, two towns are 4 cm apart. Find the real distance in km.',a:2,u:'km',w:'4 &times; 50 000 = 200 000 cm = 2000 m = 2 km',e:'Convert to sensible units at the end, not the beginning.'},
+{s:'math',c:10,t:'tf',q:'In inverse proportion the product of the two quantities stays constant.',a:true,e:'True: x &times; y = k. In direct proportion it is the ratio that is constant.'},
+{s:'math',c:11,t:'mcq',q:'For a cube, F + V &minus; E equals',o:['2','0','6','12'],a:0,e:'6 faces + 8 vertices &minus; 12 edges = 2. That is Euler&rsquo;s relation.'},
+{s:'math',c:11,t:'num',q:'How many edges does a cuboid have?',a:12,u:'',w:'4 along the top, 4 along the bottom, 4 vertical = 12',e:'Count systematically rather than by eye.'},
+{s:'math',c:11,t:'mcq',q:'A net is',o:['a flat shape that folds into a solid','the surface area of a solid','a view of a solid from above','the outline of a shadow'],a:0,e:'A cube has eleven different valid nets.'},
+{s:'math',c:11,t:'tf',q:'The top, front and side views of a solid are always identical.',a:false,e:'False &mdash; they are usually different, and questions often give you two and ask for the third.'},
+{s:'math',c:11,t:'fill',q:'A shape that repeats itself at smaller and smaller scales is called a ______.',a:['fractal'],e:'The Koch snowflake and the Sierpinski triangle are the standard examples.'},
+{s:'math',c:12,t:'mcq',q:'Which average is least affected by one extreme value?',o:['Median','Mean','Total','Range'],a:0,e:'One very large value drags the mean up but barely moves the median, which is why the median is fairer for something like income.'},
+{s:'math',c:12,t:'num',q:'Find the median of 4, 9, 2, 7, 6.',a:6,u:'',w:'Sorted: 2, 4, 6, 7, 9. The middle value is 6',e:'Sort first &mdash; always. With an even count, take the mean of the middle two.'},
+{s:'math',c:12,t:'num',q:'Find the mean of 12, 15, 9, 20 and 14.',a:14,u:'',w:'(12+15+9+20+14) / 5 = 70/5 = 14',e:'Total divided by how many there are.'},
+{s:'math',c:12,t:'mcq',q:'A histogram differs from a bar graph because',o:['its bars touch, since the data is continuous','its bars are taller','it uses colours','it has no axes'],a:0,e:'Gaps mean separate categories; touching bars mean continuous grouped data.'},
+{s:'math',c:12,t:'tf',q:'The mode is the value that appears most often.',a:true,e:'True. A set can have more than one mode, or none at all.'},
+{s:'math',c:13,t:'mcq',q:'Two consecutive whole numbers can be written as',o:['n and n + 1','n and 2n','n and n&sup2;','2n and 2n + 2'],a:0,e:'Writing a pattern with a letter is what turns &lsquo;it always works&rsquo; into a proof.'},
+{s:'math',c:13,t:'num',q:'Take a two-digit number, reverse its digits and subtract the smaller from the larger. The answer is always a multiple of which number?',a:9,u:'',w:'(10a + b) &minus; (10b + a) = 9(a &minus; b)',e:'The whole trick falls out of writing the number as 10a + b.'},
+{s:'math',c:13,t:'fill',q:'3x + 4x simplifies to ______.',a:['7x'],e:'Like terms add. 3x + 4x&sup2; cannot be combined at all.'},
+{s:'math',c:13,t:'tf',q:'An even number can always be written as 2n.',a:true,e:'True, and an odd one as 2n + 1. These are the standard tools for proving a pattern.'},
+{s:'math',c:14,t:'num',q:'Find the area of a triangle with base 14 cm and height 9 cm.',a:63,u:'cm&sup2;',w:'&frac12; &times; 14 &times; 9 = 63 cm&sup2;',e:'The height must be perpendicular to the base you chose, not a slanted side.'},
+{s:'math',c:14,t:'num',q:'A trapezium has parallel sides 8 cm and 12 cm, and the distance between them is 5 cm. Find its area.',a:50,u:'cm&sup2;',w:'&frac12; &times; (8 + 12) &times; 5 = &frac12; &times; 20 &times; 5 = 50 cm&sup2;',e:'Add the parallel sides first, then halve.'},
+{s:'math',c:14,t:'num',q:'A rhombus has diagonals 10 cm and 16 cm. Find its area.',a:80,u:'cm&sup2;',w:'&frac12; &times; 10 &times; 16 = 80 cm&sup2;',e:'Half the product of the diagonals &mdash; the same formula works for a kite.'},
+{s:'math',c:14,t:'num',q:'Find the surface area of a cube of side 5 cm.',a:150,u:'cm&sup2;',w:'6a&sup2; = 6 &times; 25 = 150 cm&sup2;',e:'Six identical faces. Area is cm&sup2;; volume would be cm&sup3;.'},
+{s:'math',c:14,t:'tf',q:'The area of a parallelogram is base &times; slant side.',a:false,e:'False. It is base &times; perpendicular height. The slant side is longer, and using it overstates the area.'}
+];
+MATH_BANK.push(...MATH_BANK2);
+
+BANK.push(...MATH_BANK);
+
 </script>
 <script>
 "use strict";
@@ -1121,7 +1214,14 @@ const BANK = [
 /* ---------- helpers ---------- */
 const $ = s => document.querySelector(s);
 const $$ = s => Array.from(document.querySelectorAll(s));
-const chOf = n => CHAPTERS.find(c => c.n === n);
+/* Resolve a chapter within the subject currently in play. Before maths existed
+   these only knew CHAPTERS, so a maths question crashed the renderer. */
+function chOf(n){
+  const inSubject = (typeof SUBJECTS !== 'undefined') && subj().chapters.find(c => c.n === n && c.bank);
+  return inSubject || CHAPTERS.find(c => c.n === n) || {n, title:'Chapter ' + n, name:'Chapter ' + n, hue:'var(--accent)'};
+}
+const chTitle = n => { const c = chOf(n); return c.title || c.name; };
+const chHue = n => { const c = chOf(n); return c.hue || hue(n); };
 const hue = n => `var(--c${n})`;
 const LETTERS = ['A','B','C','D','E','F'];
 
@@ -1206,8 +1306,8 @@ function renderStats(){
   $('#statsBars').innerHTML = rows.map(c => {
     const d = r['c'+c.n];
     const pct = Math.round(d.right / d.total * 100);
-    return `<div class="bar" style="--hue:${hue(c.n)}">
-      <span class="lab">Ch ${c.n} &middot; ${c.name}</span>
+    return `<div class="bar" style="--hue:${chHue(c.n)}">
+      <span class="lab">Ch ${c.n} &middot; ${chTitle(c.n)}</span>
       <span class="track"><i style="width:${pct}%"></i></span>
       <span class="val">${d.right}/${d.total} &middot; ${pct}%</span></div>`;
   }).join('');
@@ -1215,10 +1315,11 @@ function renderStats(){
 
 /* ---------- chapter pickers ---------- */
 function chapterButtons(host, selected, onToggle){
-  host.innerHTML = CHAPTERS.map(c => `
-    <button class="chip" data-n="${c.n}" style="--hue:${hue(c.n)}" aria-pressed="${selected.has(c.n)}">
+  const cs = subj().chapters.filter(c => c.bank);
+  host.innerHTML = cs.map(c => `
+    <button class="chip" data-n="${c.n}" style="--hue:${c.hue}" aria-pressed="${selected.has(c.n)}">
       <span class="num">CH&nbsp;${c.n}</span>
-      <span><span class="nm">${c.name}</span><span class="sub">${c.sub}</span></span>
+      <span><span class="nm">${c.title}</span><span class="sub">${c.sub}</span></span>
       <span class="tick" aria-hidden="true">&#10003;</span>
     </button>`).join('');
   host.querySelectorAll('.chip').forEach(b => {
@@ -1239,7 +1340,7 @@ let pLen = 15, pMode = 'mixed';
 let quiz = [], qi = 0, right = 0, wrongList = [], asked = [], answered = false, current = null, picked = null;
 
 function poolFor(sel, mode){
-  return BANK.filter(q => sel.has(q.c) && (
+  return BANK.filter(q => q.s === subject && sel.has(q.c) && (
     mode === 'objective' ? OBJECTIVE.includes(q.t) :
     mode === 'written'   ? ['short','num','match'].includes(q.t) : true));
 }
@@ -1273,8 +1374,8 @@ function showQuestion(){
   $('#nextBtn').hidden = true;
   $('#nextBtn').innerHTML = qi === quiz.length - 1 ? 'Finish &amp; see score' : 'Next question';
 
-  let body = `<div class="qmeta" style="--hue:${hue(q.c)}">
-      <span class="pill hue">Ch ${q.c} &middot; ${c.name}</span>
+  let body = `<div class="qmeta" style="--hue:${chHue(q.c)}">
+      <span class="pill hue">Ch ${q.c} &middot; ${c.title || c.name}</span>
       <span class="pill">${TYPE_LABEL[q.t]}</span>
       ${q.m ? `<span class="pill">${q.m} mark${q.m > 1 ? 's' : ''}</span>` : ''}
     </div>`;
@@ -1447,8 +1548,8 @@ function finish(){
     <div style="margin-top:16px">` +
     Object.keys(byCh).sort().map(n => {
       const d = byCh[n], r = d.t - (d.wrong || 0), p = Math.round(r / d.t * 100);
-      return `<div class="bar" style="--hue:${hue(n)}">
-        <span class="lab">Ch ${n} &middot; ${chOf(+n).name}</span>
+      return `<div class="bar" style="--hue:${chHue(+n)}">
+        <span class="lab">Ch ${n} &middot; ${chTitle(+n)}</span>
         <span class="track"><i style="width:${p}%"></i></span>
         <span class="val">${r}/${d.t}</span></div>`;
     }).join('') +
@@ -1470,7 +1571,7 @@ function finish(){
           : q.t === 'num' ? `${q.a} ${q.u}`
           : q.t === 'match' ? q.pairs.map(p => `${p[0]} &rarr; ${p[1]}`).join('; ')
           : q.a;
-        return `<div class="review" style="--hue:${hue(q.c)}">
+        return `<div class="review" style="--hue:${chHue(q.c)}">
           <p class="qmeta" style="margin-bottom:5px"><span class="pill">Ch ${q.c}</span></p>
           <p style="margin:0 0 6px">${stem}</p>
           <p style="margin:0"><b>Answer:</b> ${ans}</p>
@@ -1575,7 +1676,7 @@ const wSel = new Set([2,3,4,5,6,7]);
 let wLen = 20;
 
 function makeWorksheet(){
-  const pool = t => BANK.filter(q => wSel.has(q.c) && (Array.isArray(t) ? t.includes(q.t) : q.t === t));
+  const pool = t => BANK.filter(q => q.s === subject && wSel.has(q.c) && (Array.isArray(t) ? t.includes(q.t) : q.t === t));
   const n = wLen;
   const want = {obj:Math.round(n * 0.4), fill:Math.round(n * 0.2), num:Math.round(n * 0.15), match:1};
   want.short = Math.max(2, n - want.obj - want.fill - want.num - want.match);
@@ -1604,7 +1705,7 @@ function makeWorksheet(){
 
 /* ---------- mock paper: 40 marks, all six chapters ---------- */
 function makePaper(){
-  const byType = t => BANK.filter(q => Array.isArray(t) ? t.includes(q.t) : q.t === t);
+  const byType = t => BANK.filter(q => q.s === subject && (Array.isArray(t) ? t.includes(q.t) : q.t === t));
   const spread = (list, k) => {
     /* take from as many different chapters as possible */
     const out = [], byCh = {};
@@ -1645,21 +1746,59 @@ function makePaper(){
 /* Both subjects reduced to one chapter shape, so Learn, Practise and the
    printables can be driven by the same code. `exam` marks the six chapters in
    the September science paper; `bank` says whether questions exist yet. */
+/* Hand-drawn doodles, one per chapter. Inline SVG rather than images: each takes
+   the chapter's own colour, flips with the theme, stays sharp at any size, adds
+   no weight and keeps working with no connection. Wobbly on purpose — a ruled
+   diagram would put the severity straight back. */
+const DOODLE = {
+  microbe:'<path d="M18 40c-6-10 0-24 12-27 13-3 24 5 26 16 2 12-6 22-18 24-9 1-15-3-20-13Z"/><circle cx="32" cy="34" r="6"/><path d="M28 20c2-4 8-6 12-4M46 46c4 1 8 5 8 9M14 44c-4 2-7 6-7 10M50 22c3-2 8-2 11 1"/>',
+  heart:'<path d="M32 54C18 44 8 35 8 25c0-7 5-12 11-12 5 0 9 3 13 8 4-5 8-8 13-8 6 0 11 5 11 12 0 10-10 19-24 29Z"/><path d="M12 32h10l4-7 6 15 5-9 4 4h12"/>',
+  bolt:'<path d="M34 6 16 34h12l-4 24 20-30H31l6-22Z"/><path d="M50 16c4 2 7 6 8 11M52 40c4 3 6 7 6 12M10 14c-3 3-5 7-5 11"/>',
+  arrows:'<path d="M8 40h34"/><path d="m34 32 9 8-9 8"/><path d="M56 20V8"/><path d="M20 12c8-6 20-5 27 2"/><path d="m45 10 3 5-6 1"/><circle cx="14" cy="20" r="5"/>',
+  press:'<path d="M12 16h40"/><path d="m20 16 12 22 12-22"/><path d="M8 50h48"/><path d="M18 44c2 4 5 6 8 6M40 44c2 4 5 6 8 6"/><path d="M32 38v12"/>',
+  particles:'<circle cx="16" cy="18" r="4"/><circle cx="32" cy="14" r="4"/><circle cx="48" cy="20" r="4"/><circle cx="20" cy="34" r="4"/><circle cx="38" cy="32" r="4"/><circle cx="28" cy="48" r="4"/><circle cx="46" cy="44" r="4"/><path d="M20 20l8-3M36 16l8 2M24 32l10-1"/>',
+  scope:'<path d="M24 52h24"/><path d="M30 52V34"/><path d="M42 52V34"/><rect x="26" y="24" width="20" height="10" rx="3"/><path d="M36 24V10"/><circle cx="36" cy="8" r="4"/><path d="M12 44c2-12 8-20 14-24"/>',
+  square:'<rect x="8" y="26" width="22" height="22" rx="2"/><path d="M36 20h20v20"/><path d="M36 40h20V20"/><path d="M36 20 46 12l20 0M56 40l10-8"/>',
+  power:'<path d="M12 46V18l14 28 14-28v28"/><path d="M48 20c4-4 10-2 10 3 0 4-8 6-10 11h12"/>',
+  numerals:'<path d="M12 20h8v28"/><path d="M28 22c4-4 12-3 12 3s-10 8-12 15h14"/><path d="M50 20h10l-8 12c5 0 8 3 8 8s-4 8-9 7"/>',
+  quad:'<path d="M10 44 22 14l30 6-8 30Z"/><path d="M22 14 44 50M10 44l42-24"/>',
+  primes:'<circle cx="18" cy="20" r="7"/><circle cx="40" cy="16" r="5"/><circle cx="46" cy="38" r="8"/><circle cx="20" cy="44" r="6"/><path d="M24 24l12 8M25 26l-4 12M44 22l2 8"/>',
+  distrib:'<path d="M10 32h12"/><path d="M22 20h26v24H22z"/><path d="M34 20v24M22 32h26"/><path d="M54 26l6 6-6 6"/>',
+  ratio:'<path d="M10 50 54 14"/><circle cx="18" cy="42" r="4"/><circle cx="34" cy="30" r="5"/><circle cx="48" cy="18" r="6"/><path d="M8 14h6M8 20h10"/>',
+  percent:'<circle cx="18" cy="18" r="7"/><circle cx="46" cy="44" r="7"/><path d="M12 50 52 12"/>',
+  pythag:'<path d="M12 48h32V16Z"/><path d="M12 44v4h4"/><path d="M44 48h12V16H44M12 48v12h32v-12"/>',
+  pie:'<circle cx="32" cy="32" r="22"/><path d="M32 32V10M32 32l19 11M32 32 14 44"/>',
+  solids:'<path d="M14 26 30 16l16 10-16 10Z"/><path d="M14 26v16l16 10V36M46 26v16L30 52"/><path d="M50 14l6 4-6 4-6-4Z"/>',
+  graph:'<path d="M12 52V12M12 52h44"/><path d="m18 42 10-12 9 8 14-20"/><circle cx="28" cy="30" r="2.5"/><circle cx="37" cy="38" r="2.5"/>',
+  algebra:'<path d="M14 18 34 46M34 18 14 46"/><path d="M44 22h14M51 15v14"/><path d="M44 46h14"/>',
+  area:'<path d="M10 20h30v26H10z"/><path d="M40 20h16l-8 26H40"/><path d="M14 24v18M18 24v18M22 24v18M26 24v18M30 24v18M34 24v18"/>'
+};
+function doodle(key, hue){
+  const d = DOODLE[key]; if(!d) return '';
+  return `<svg class="doodle" viewBox="0 0 64 64" aria-hidden="true" focusable="false"
+    style="color:${hue}" fill="none" stroke="currentColor" stroke-width="2.4"
+    stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
+}
+
 const MATH_HUES = ['var(--c7)','var(--c2)','var(--c5)','var(--c3)','var(--c4)','var(--c6)'];
 const SUBJECTS = {
   sci:{
     id:'sci', name:'Science', book:'Curiosity', hasExam:true,
     chapters:[
       ...CHAPTERS.map(c => ({key:'sci'+c.n, n:c.n, title:c.name, sub:c.sub, hue:hue(c.n),
-                             exam:true, bank:true, map:LEARN[c.n].map, notes:LEARN[c.n].notes})),
+                             exam:true, bank:true, map:LEARN[c.n].map, notes:LEARN[c.n].notes,
+                             art:{2:'microbe',3:'heart',4:'bolt',5:'arrows',6:'press',7:'particles'}[c.n]})),
       ...BEYOND.science.map((c,i) => ({key:'scix'+i, n:null, title:c.title, sub:c.sub,
-                             hue:'var(--ink-3)', exam:false, bank:false, map:c.map, notes:c.notes}))
+                             hue:'var(--ink-3)', exam:false, bank:false, map:c.map, notes:c.notes,
+                             art:['scope','particles','bolt','arrows','microbe','heart','scope'][i]}))
     ]},
   math:{
     id:'math', name:'Mathematics', book:'Ganita Prakash', hasExam:false,
     chapters:MATHS.map((c,i) => ({key:'math'+c.n, n:c.n, title:c.title, sub:c.sub,
-                             hue:MATH_HUES[i % MATH_HUES.length], exam:false, bank:false,
-                             map:c.map, notes:c.notes}))
+                             hue:MATH_HUES[i % MATH_HUES.length], exam:false, bank:true,
+                             map:c.map, notes:c.notes,
+                             art:['square','power','numerals','quad','primes','distrib','ratio',
+                                  'percent','pythag','ratio','solids','graph','algebra','area'][i]}))
   }
 };
 let subject = 'sci', examOnly = false;
@@ -1680,6 +1819,7 @@ function renderLearn(){
   $('#bookNote').textContent = `NCERT ${S.book} \u00b7 ${S.chapters.length} chapters`;
 
   const card = c => `<div class="syl" style="--hue:${c.hue}">
+      ${doodle(c.art, c.hue)}
       <p class="chapno">${c.n ? 'Chapter ' + c.n : 'Beyond the exam'}${c.exam && c.n === 6 ? ' &middot; 6.1 only' : ''}</p>
       <h3>${c.title}<span style="font-weight:600; color:var(--ink-3)"> &mdash; ${c.sub}</span></h3>
       <p class="cmap">${c.map}</p>
@@ -1712,7 +1852,7 @@ function renderLearn(){
    notes and mind maps but no questions written yet — say so plainly rather than
    hand over a generator with nothing behind it. */
 function gateSubject(){
-  const noBank = subject === 'math';
+  const noBank = !subj().chapters.some(c => c.bank);
   $$('.needsBank').forEach(e => e.hidden = noBank);
   $$('.noBankYet').forEach(e => e.hidden = !noBank);
   if(noBank){ $('#p-run').hidden = true; $('#p-done').hidden = true; $('#p-setup').hidden = true; }
@@ -1756,6 +1896,14 @@ $$('#subjSeg button').forEach(b => b.addEventListener('click', () => {
   subject = b.dataset.subj;
   $('#examFilter').hidden = !subj().hasExam;
   if(!subj().hasExam) { examOnly = false; $('#examFilter').setAttribute('aria-pressed', 'false'); }
+  const ns = subj().chapters.filter(c => c.bank).map(c => c.n);
+  pSel.clear(); wSel.clear(); ns.forEach(n => { pSel.add(n); wSel.add(n); });
+  chapterButtons($('#chapterPicker'), pSel, refreshPool);
+  chapterButtons($('#wsPicker'), wSel, () => { $('#wsBtn').disabled = wSel.size === 0; });
+  $('#wsOut').innerHTML = ''; $('#paperOut').innerHTML = '';
+  $('#wsPrint').hidden = true; $('#paperPrint').hidden = true;
+  $('#p-run').hidden = true; $('#p-done').hidden = true; $('#p-setup').hidden = false;
+  refreshPool();
   renderLearn(); renderSyllabus(); gateSubject();
   window.scrollTo(0, 0);
 }));
