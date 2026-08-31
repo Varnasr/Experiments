@@ -263,6 +263,18 @@ input.answer:focus,select.mt:focus{border-color:var(--accent)}
 
 .fieldset{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
 .seg{display:inline-flex; border:1px solid var(--rule); border-radius:9px; overflow:hidden; background:var(--surface-2)}
+/* Seven subjects will not sit on one phone-width row. The subject switcher
+   wraps instead of overflowing; the small two- and three-way segments inside
+   the app (length, mode) keep the single-row pill shape they were drawn for. */
+#subjSeg{flex-wrap:wrap; border:0; background:none; gap:6px; overflow:visible}
+#subjSeg button{border:1px solid var(--rule); border-radius:9px; background:var(--surface-2)}
+/* The id selector above outranks .seg button[aria-pressed], so the selected
+   subject has to restate its own colours here or it renders white-on-cream
+   and becomes invisible. */
+#subjSeg button[aria-pressed="true"]{background:var(--accent); color:#fff; border-color:var(--accent)}
+:root[data-theme="dark"] #subjSeg button[aria-pressed="true"]{color:#08201F}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) #subjSeg button[aria-pressed="true"]{color:#08201F}}
+[data-compact] #subjSeg button{padding-left:11px; padding-right:11px; font-size:.84rem}
 .seg button{appearance:none; background:none; border:none; border-right:1px solid var(--rule); font-family:"Figtree",sans-serif; font-weight:600; font-size:.88rem; padding:9px 14px; cursor:pointer; color:var(--ink-2)}
 .seg button:last-child{border-right:none}
 .seg button[aria-pressed="true"]{background:var(--accent); color:#fff; font-weight:500}
