@@ -417,6 +417,7 @@ footer.foot{max-width:920px; margin:0 auto; padding:26px 18px 40px; color:var(--
         <button data-subj="math" aria-pressed="false">Maths</button>
         <button data-subj="skt" aria-pressed="false">Sanskrit</button>
         <button data-subj="hin" aria-pressed="false">Hindi</button>
+        <button data-subj="ct" aria-pressed="false">AI &amp; Thinking</button>
       </div>
       <button class="filter" id="examFilter" aria-pressed="false">September exam only</button>
     </div>
@@ -2272,71 +2273,80 @@ function makePaper(){
    no weight and keeps working with no connection. Wobbly on purpose — a ruled
    diagram would put the severity straight back. */
 /* ============================================================
-   SANSKRIT — NCERT दीपकम् (Deepakam), Class VIII, 2025-26.
-   This replaces Ruchira, the pre-2025 book. Chapters 1-12 are the lessons;
-   13-18 are the grammar sections the book carries at the back (व्याकरणम्,
-   शब्दरूपाणि, धातुरूपाणि, वर्णोच्चारण-शिक्षा).
+   SANSKRIT — NCERT रुचिरा भाग ३ (Ruchira, Part 3), Class VIII.
 
-   The lesson chapters carry a translation of the title and the genre only.
-   A Sanskrit chapter title is almost always the सुभाषित the lesson is built
-   around, so translating it is honest; inventing the story inside it is not.
-   Chapter-by-chapter comprehension needs the textbook in front of us.
+   CORRECTION. An earlier version of this file said the book was दीपकम्
+   (Deepakam) and listed twelve chapters under that name. That was wrong.
+   NCERT publishes Class 8 Sanskrit as Ruchira Bhag 3 — the PDFs at
+   ncert.nic.in/textbook/pdf/hhsk1NN.pdf say "रुचिरा, तृतीयो भागः" on the
+   page — and no Deepakam exists on NCERT's site for any class. The
+   Deepakam list came from aggregator sites; two of them agreed, but both
+   were downstream of the same bad information, which is exactly the trap
+   this file congratulated itself on avoiding for Hindi. Cross-checking two
+   secondary sources is not verification. The primary source is.
 
-   The grammar chapters are where the marks are and where drilling works, so
-   those carry the full question bank.
+   The thirteen chapters below, and the source and theme given for each,
+   are read from NCERT's own chapter PDFs. Two chapters of the original
+   fifteen have been withdrawn.
+
+   Grammar sections follow at 14-19 and carry the question bank, as before —
+   शब्दरूप, धातुरूप, कारक and सन्धि do not change between editions.
    ============================================================ */
 const SKT = [
-{n:1, title:"संगच्छध्वं संवदध्वम्", sub:"Walk together, speak together", lesson:true,
- map:"ऋग्वेद &middot; संगठन सूक्त &rarr; unity of step, speech and mind",
- notes:["The title is the opening of the Rigveda&rsquo;s सङ्गठन सूक्त: <i>saṅgacchadhvaṁ saṁvadadhvaṁ</i> &mdash; &ldquo;move together, speak together, let your minds be of one accord.&rdquo;",
-  "Read the lesson in the book alongside this. Note down every new शब्द with its अर्थ as you go &mdash; that list is what gets tested, not the story."]},
-{n:2, title:"अल्पानामपि वस्तूनां संहतिः कार्यसाधिका", sub:"Small things united get the work done", lesson:true,
- map:"नीतिकथा &rarr; unity of the weak defeats the strong",
- notes:["The title translates as: &ldquo;even of small things, joining together accomplishes the task.&rdquo; It is a नीति verse of the Panchatantra kind.",
-  "Keep a list of the धातु forms the story uses in लङ् लकार (past) &mdash; narrative Sanskrit runs on it."]},
-{n:3, title:"सुभाषितरसं पीत्वा जीवनं सफलं कुरु", sub:"Drink the nectar of सुभाषित and make life fruitful", lesson:true,
- map:"सुभाषितानि &rarr; verse, meaning, moral",
- notes:["A collection of सुभाषित &mdash; well-said verses. Each one is short enough to memorise whole, and that is the point: they are asked as अन्वय, अर्थ and भाव.",
-  "Learn each verse by heart along with its अन्वय. A half-remembered सुभाषित earns nothing."]},
-{n:4, title:"प्रणम्यो देशभक्तोऽयं गोपबन्धुर्महामनाः", sub:"Gopabandhu, the great-hearted patriot", lesson:true,
- map:"जीवनचरितम् &rarr; Gopabandhu Das, &lsquo;Utkalamani&rsquo; of Odisha",
- notes:["A biographical lesson on Gopabandhu Das, the Odia social reformer and freedom fighter known as उत्कलमणि, the jewel of Utkal.",
-  "Biography chapters are asked as दिनाङ्क, स्थान and कार्य &mdash; dates, places and deeds. Make a small table of those three as you read."]},
-{n:5, title:"गीता सुगीता कर्तव्या", sub:"The Gita is worth singing well", lesson:true,
- map:"श्रीमद्भगवद्गीता &rarr; selected श्लोक and their meaning",
- notes:["Verses from the Bhagavad Gita. The title itself is a line saying the Gita ought to be well sung &mdash; that is, learnt properly.",
-  "Gita verses are in अनुष्टुप् metre, eight syllables to a quarter. Reading them aloud in that rhythm is the fastest way to memorise them."]},
-{n:6, title:"डिजिभारतम् &mdash; युगपरिवर्तनम्", sub:"Digital India, an age changing", lesson:true,
- map:"आधुनिकविषयः &rarr; modern vocabulary in Sanskrit",
- notes:["A modern-subject lesson: Digital India in Sanskrit. Its value is the new coined vocabulary &mdash; संगणकः, जालम्, चलभाषः, विद्युत्पत्रम् and so on.",
-  "This chapter is a vocabulary chapter wearing a topic. Write the new words out with meanings; that is nearly all it is asked for."]},
-{n:7, title:"मञ्जुलमञ्जूषा सुन्दरसुरभाषा", sub:"A lovely casket &mdash; the beautiful language of the gods", lesson:true,
- map:"संस्कृतभाषायाः महत्त्वम् &rarr; why the language matters",
- notes:["A lesson in praise of Sanskrit itself &mdash; सुरभाषा, the speech of the gods, kept like a jewel in a मञ्जूषा, a casket.",
-  "Expect questions on the qualities claimed for the language and the reasons given. Note the adjectives; they are the answer."]},
-{n:8, title:"पश्यत कोणमैशान्यं भारतस्य मनोहरम्", sub:"Behold the lovely north-east of India", lesson:true,
- map:"भूगोलः &rarr; the north-eastern states",
- notes:["ऐशान्य कोण is the north-east direction, so this is a lesson on India&rsquo;s north-eastern states &mdash; their rivers, hills and people.",
-  "Place names in Sanskrit are the thing to learn here. Keep them beside their ordinary names."]},
-{n:9, title:"कोऽरुक्? कोऽरुक्? कोऽरुक्?", sub:"Who stays healthy?", lesson:true,
- map:"आयुर्वेदः &rarr; हितभुक् &middot; मितभुक् &middot; ऋतभुक्",
- notes:["The classical आयुर्वेद answer to &ldquo;who is free of disease?&rdquo; is हितभुक्, मितभुक्, ऋतभुक् &mdash; one who eats what suits, eats in measure, and eats in season.",
-  "Those three words are the spine of the chapter. Learn what each means and be able to give an example of each."]},
-{n:10, title:"सन्निमित्ते वरं त्यागः (क-भागः)", sub:"Better to give up for a good cause &mdash; part one", lesson:true,
- map:"कथा &rarr; sacrifice for a worthy end, first half",
- notes:["The title is a नीति line: giving something up for a good reason is the better course. This is the first of two parts.",
-  "Read part one and part two together; the questions treat them as one story."]},
-{n:11, title:"सन्निमित्ते वरं त्यागः (ख-भागः)", sub:"Better to give up for a good cause &mdash; part two", lesson:true,
- map:"कथा &rarr; the conclusion",
- notes:["The second half of the same story. The moral is normally asked at the end of this part, so mark it where it falls.",
-  "Write the story out in five or six Sanskrit sentences of your own. That is exactly what a सारांश question wants."]},
-{n:12, title:"सम्यग्वर्णप्रयोगेण ब्रह्मलोके महीयते", sub:"Right use of sounds is honoured", lesson:true,
- map:"शिक्षा &rarr; correct pronunciation and why it matters",
- notes:["On उच्चारण &mdash; getting the sounds right. The claim in the title is the traditional one: correct use of वर्ण is honoured even in Brahmaloka.",
-  "This chapter pairs with वर्णोच्चारण-शिक्षा at the back of the book. Do them together."]},
-
+{n:1, title:"सुभाषितानि", sub:"Well-said verses", lesson:true,
+ map:"सु + भाषित = that which is well spoken &rarr; verse &rarr; अन्वय &rarr; अर्थ &rarr; भाव",
+ notes:["The word सुभाषित is सु (good, beautiful) + भाषित (spoken) &mdash; something well said. The chapter is a collection of such verses, each complete in itself.",
+  "Each is asked three ways: the literal अर्थ, the अन्वय (prose order), and the भाव or moral. Learn every verse whole, with its अन्वय; half a श्लोक earns nothing."]},
+{n:2, title:"बिलस्य वाणी न कदापि मे श्रुता", sub:"I have never heard a burrow speak", lesson:true,
+ map:"पञ्चतन्त्रम् &rarr; तृतीय तन्त्र काकोलूकीयम् &rarr; the jackal and the cave",
+ notes:["Taken from the पञ्चतन्त्र, third book (काकोलूकीयम्), by विष्णुशर्मा. The title is the line that gives the story away: a cave that greets you is not a cave.",
+  "Panchatantra stories are asked for their नीति &mdash; the practical lesson. Note where the clever character tests a suspicion rather than acting on it blindly."]},
+{n:3, title:"डिजीभारतम्", sub:"Digital India", lesson:true,
+ map:"निबन्धात्मक पाठ &rarr; वैज्ञानिक प्रगति &rarr; modern vocabulary in Sanskrit",
+ notes:["An essay-style lesson built on the theme of Digital India and scientific progress. Its real value is the modern vocabulary coined in Sanskrit &mdash; संगणकः, जालम्, चलभाषः, विद्युत्पत्रम्.",
+  "This is a vocabulary chapter wearing a topic. Write the new words out with meanings; that is most of what it is asked for."]},
+{n:4, title:"सदैव पुरतो निधेहि चरणम्", sub:"Always place your foot forward", lesson:true,
+ map:"गीतम् &rarr; श्रीधर भास्कर वर्णेकर &rarr; facing difficulty and going on",
+ notes:["A song composed by श्रीधर भास्कर वर्णेकर, about accepting challenges and continuing to move ahead. The title is its refrain.",
+  "Songs are asked for their भाव and for the repeated line. Note where the refrain recurs and what changes around it."]},
+{n:5, title:"कण्टकेनैव कण्टकम्", sub:"A thorn by a thorn alone", lesson:true,
+ map:"लोककथा &rarr; डिण्डोरी, मध्यप्रदेश &rarr; meeting like with like",
+ notes:["A folk tale current among the Pardhan community of Dindori district in Madhya Pradesh. The title is the नीति: a thorn is drawn out by another thorn.",
+  "Folk tales are asked as पात्र, घटनाक्रम and सन्देश. Keep a short list of the characters as you read."]},
+{n:6, title:"गृहं शून्यं सुतां विना", sub:"A house is empty without a daughter", lesson:true,
+ map:"सामाजिक पाठ &rarr; against female infanticide &rarr; for girls&rsquo; education",
+ notes:["A lesson written to encourage an end to the killing of girl children and to ensure their education. The title states the claim directly.",
+  "Social-theme chapters are asked as &lsquo;लेखक किस बात पर बल देता है&rsquo;. Note the reasons given, and list them; they are easier to recall as points."]},
+{n:7, title:"भारतजनताऽहम्", sub:"I am the people of India", lesson:true,
+ map:"कविता &rarr; डॉ. रमाकान्त शुक्ल &rarr; the voice of the nation&rsquo;s people",
+ notes:["A poem by डॉ. रमाकान्त शुक्ल, a leading modern Sanskrit poet. The speaker is the people of India, speaking as one.",
+  "Ask who is speaking and what they claim about themselves. In a poem written in the first person, that is nearly always the central question."]},
+{n:8, title:"संसारसागरस्य नायकाः", sub:"Heroes of the ocean of the world", lesson:true,
+ map:"अनुपम मिश्र &rarr; आज भी खरे हैं तालाब &rarr; those who built and kept the ponds",
+ notes:["Drawn from अनुपम मिश्र&rsquo;s <i>आज भी खरे हैं तालाब</i> &mdash; about the people who built and maintained India&rsquo;s traditional water tanks, and were never named for it.",
+  "The chapter honours ordinary, unnamed builders. Note what they made, how, and why the author calls them नायक."]},
+{n:9, title:"सप्तभगिन्यः", sub:"The seven sisters", lesson:true,
+ map:"उत्तर-पूर्व के सात राज्य &rarr; their land, people and character",
+ notes:["सप्तभगिनी is the byname given to the seven states of India&rsquo;s north-east. The chapter introduces each.",
+  "Place names in Sanskrit are what this chapter is asked for. Keep them beside their ordinary names as you read."]},
+{n:10, title:"नीतिनवनीतम्", sub:"The butter of right conduct", lesson:true,
+ map:"मनुस्मृति &rarr; selected श्लोक &rarr; सदाचार",
+ notes:["A selection of verses from the मनुस्मृति on सदाचार &mdash; right conduct. नवनीत means fresh butter: the title claims these are the churned essence of नीति.",
+  "Each श्लोक stands alone and is asked alone. Memorise them individually with their meanings."]},
+{n:11, title:"सावित्री बाई फुले", sub:"Savitribai Phule", lesson:true,
+ map:"जीवनचरितम् &rarr; education as a right &rarr; the first schools for girls",
+ notes:["A biography of Savitribai Phule, who opened schools for girls and for communities long denied education. The chapter frames education as a right, not a privilege.",
+  "Biography chapters are asked as दिनाङ्क, स्थान and कार्य. Make a small table of those three as you read; it is the fastest way to be ready."]},
+{n:12, title:"कः रक्षति कः रक्षितः", sub:"Who protects, and who is protected?", lesson:true,
+ map:"संवाद &rarr; स्वच्छता &rarr; पर्यावरण",
+ notes:["A dialogue written in simple Sanskrit on cleanliness and improving the environment. The title asks the question the chapter answers: protect the environment and it protects you.",
+  "Being written as a dialogue, it is good to read aloud &mdash; the easiest Sanskrit in the book to follow."]},
+{n:13, title:"क्षितौ राजते भारतस्वर्णभूमिः", sub:"On this earth shines India, the golden land", lesson:true,
+ map:"डॉ. कृष्णचन्द्र त्रिपाठी &rarr; भारत का गौरव",
+ notes:["Composed by डॉ. कृष्णचन्द्र त्रिपाठी, on the glory of India &mdash; its land, achievements and character.",
+  "Note the qualities claimed for the country and the examples given for each. Those pairs are the answer to most of what is set."]},
 /* ---- grammar: this is what actually gets drilled ---- */
-{n:13, title:"शब्दरूपाणि", sub:"Noun forms &mdash; the seven विभक्ति",
+{n:14, title:"शब्दरूपाणि", sub:"Noun forms &mdash; the seven विभक्ति",
  map:"प्रथमा &rarr; द्वितीया &rarr; तृतीया &rarr; चतुर्थी &rarr; पञ्चमी &rarr; षष्ठी &rarr; सप्तमी (+ सम्बोधन), each in एकवचन &middot; द्विवचन &middot; बहुवचन",
  notes:[
   "Every Sanskrit noun changes shape by विभक्ति (case) and वचन (number). Seven cases, three numbers, plus सम्बोधन for calling out &mdash; twenty-four forms per word. Learn them as a grid, never as a list.",
@@ -2346,7 +2356,7 @@ const SKT = [
   "<b>नदी</b> (ईकारान्त): नदी, नद्यौ, नद्यः &middot; नदीम्, नद्यौ, नदीः &middot; नद्या, नदीभ्याम्, नदीभिः &middot; नद्यै &middot; नद्याः &middot; नद्याः, नद्योः, नदीनाम् &middot; नद्याम्, नद्योः, नदीषु. <b>मुनि</b> (इकारान्त): मुनिः, मुनी, मुनयः.",
   "<b>अस्मद्</b> (I): अहम्, आवाम्, वयम् &mdash; माम्, आवाम्, अस्मान् &mdash; मया &mdash; मह्यम् &mdash; मत् &mdash; मम, आवयोः, अस्माकम् &mdash; मयि. <b>युष्मद्</b> (you): त्वम्, युवाम्, यूयम् &mdash; त्वाम् &mdash; त्वया &mdash; तुभ्यम् &mdash; त्वत् &mdash; तव, युवयोः, युष्माकम् &mdash; त्वयि. Neither has a सम्बोधन: you cannot call out to &ldquo;I&rdquo;.",
   "<b>तद्</b> (that/he/she/it) shifts by gender: पुं. सः, तौ, ते &middot; स्त्री. सा, ते, ताः &middot; नपुं. तत्, ते, तानि."]},
-{n:14, title:"धातुरूपाणि", sub:"Verb forms &mdash; the five लकार you need",
+{n:15, title:"धातुरूपाणि", sub:"Verb forms &mdash; the five लकार you need",
  map:"लट् (present) &rarr; लृट् (future) &rarr; लङ् (past) &rarr; लोट् (command) &rarr; विधिलिङ् (should)",
  notes:[
   "A Sanskrit verb carries its person and number inside it, so the pronoun is often dropped. Three persons &times; three numbers = nine forms per लकार. The order is always प्रथम (he/she/it), मध्यम (you), उत्तम (I).",
@@ -2355,7 +2365,7 @@ const SKT = [
   "<b>लङ् लकार</b> &mdash; past, marked by the अ- in front: अपठत्, अपठताम्, अपठन् &middot; अपठः, अपठतम्, अपठत &middot; अपठम्, अपठाव, अपठाम. Stories are told in this लकार.",
   "<b>लोट् लकार</b> &mdash; command: पठतु, पठताम्, पठन्तु &middot; पठ, पठतम्, पठत &middot; पठानि, पठाव, पठाम. <b>विधिलिङ्</b> &mdash; &lsquo;should&rsquo;: पठेत्, पठेताम्, पठेयुः &middot; पठेः &middot; पठेयम्.",
   "Four verbs are asked more than any others. <b>भू</b> &rarr; भवति. <b>गम्</b> &rarr; गच्छति (the stem changes &mdash; watch it). <b>कृ</b> &rarr; करोति, कुरुतः, कुर्वन्ति. <b>अस्</b> (to be) is irregular and must be memorised whole: अस्ति, स्तः, सन्ति &middot; असि, स्थः, स्थ &middot; अस्मि, स्वः, स्मः; and in लङ्, आसीत्, आस्ताम्, आसन्."]},
-{n:15, title:"कारकम् एवं विभक्तिः", sub:"Which case, and why",
+{n:16, title:"कारकम् एवं विभक्तिः", sub:"Which case, and why",
  map:"कर्ता &rarr; कर्म &rarr; करण &rarr; सम्प्रदान &rarr; अपादान &rarr; सम्बन्ध &rarr; अधिकरण",
  notes:[
   "कारक is the <i>role</i> a noun plays in the sentence; विभक्ति is the <i>ending</i> that shows it. They mostly line up, but not always &mdash; सम्बन्ध (षष्ठी) is a relation between two nouns, not a role in the action at all.",
@@ -2365,7 +2375,7 @@ const SKT = [
   "पञ्चमी &mdash; अपादान, moving away from: <i>वृक्षात् पत्रं पतति</i>. Also after भीत (afraid of), विना, ऋते, बहिः and पूर्वम्.",
   "षष्ठी &mdash; सम्बन्ध, &lsquo;of&rsquo;: <i>रामस्य पुस्तकम्</i>. सप्तमी &mdash; अधिकरण, place or time, &lsquo;in/on/at&rsquo;: <i>वृक्षे खगाः सन्ति</i>. Also after कुशल, निपुण and विश्वास.",
   "Learn the odd ones as a separate list: अभितः, परितः, उभयतः, सर्वतः, प्रति and विना all take द्वितीया. Those are the ones examiners reach for."]},
-{n:16, title:"सन्धिः", sub:"When sounds meet and change",
+{n:17, title:"सन्धिः", sub:"When sounds meet and change",
  map:"स्वरसन्धि (दीर्घ &middot; गुण &middot; वृद्धि &middot; यण् &middot; अयादि) &rarr; व्यञ्जनसन्धि &rarr; विसर्गसन्धि",
  notes:[
   "सन्धि is what happens where one word ends and the next begins. To split one (सन्धिविच्छेद), work backwards from the rule &mdash; do not guess.",
@@ -2376,7 +2386,7 @@ const SKT = [
   "<b>अयादि</b>: ए, ऐ, ओ, औ before a vowel become अय्, आय्, अव्, आव्. ने + अनम् = नयनम्. पौ + अकः = पावकः.",
   "<b>व्यञ्जनसन्धि</b>: त् + च = च्च (सत् + चित् = सच्चित्); त् + ज = ज्ज (सत् + जनः = सज्जनः); त् + श = च्छ (उत् + श्वासः = उच्छ्वासः); त् + ल = ल्ल (उत् + लासः = उल्लासः).",
   "<b>विसर्गसन्धि</b>: निः + बलः = निर्बलः. दुः + जनः = दुर्जनः. मनः + रथः = मनोरथः. रामः + अस्ति = रामोऽस्ति &mdash; note the अवग्रह (ऽ) marking the swallowed अ."]},
-{n:17, title:"संख्या, वासराः, मासाः", sub:"Counting, days and months",
+{n:18, title:"संख्या, वासराः, मासाः", sub:"Counting, days and months",
  map:"१&ndash;१०० &rarr; the seven वासर &rarr; the twelve मास &rarr; telling the time",
  notes:[
   "१&ndash;१०: एकम्, द्वे, त्रीणि, चत्वारि, पञ्च, षट्, सप्त, अष्ट, नव, दश. The first four change by gender; from पञ्च onwards they do not, which is one thing less to worry about.",
@@ -2385,7 +2395,7 @@ const SKT = [
   "वासराः: रविवासरः, सोमवासरः, मङ्गलवासरः, बुधवासरः, गुरुवासरः (or बृहस्पतिवासरः), शुक्रवासरः, शनिवासरः.",
   "मासाः: चैत्रः, वैशाखः, ज्येष्ठः, आषाढः, श्रावणः, भाद्रपदः, आश्विनः, कार्तिकः, मार्गशीर्षः, पौषः, माघः, फाल्गुनः.",
   "Time: <i>अधुना कति वादनम्?</i> &mdash; what time is it now? Answer with the number plus वादनम्: <i>सप्त वादनम्</i>."]},
-{n:18, title:"उपसर्गाः, अव्ययानि, प्रत्ययाः", sub:"Prefixes, indeclinables and suffixes",
+{n:19, title:"उपसर्गाः, अव्ययानि, प्रत्ययाः", sub:"Prefixes, indeclinables and suffixes",
  map:"२२ उपसर्ग &rarr; अव्यय that never change &rarr; क्त्वा &middot; ल्यप् &middot; तुमुन् &middot; शतृ",
  notes:[
   "An उपसर्ग goes in front of a धातु and bends its meaning, sometimes to the opposite. हृ = carry; आहृ = bring; प्रहृ = strike; संहृ = gather; विहृ = wander. There are twenty-two: प्र, परा, अप, सम्, अनु, अव, निस्, निर्, दुस्, दुर्, वि, आ, नि, अधि, अपि, अति, सु, उत्, अभि, प्रति, परि, उप.",
@@ -2397,105 +2407,105 @@ const SKT = [
 ];
 
 const SKT_BANK = [
-/* ---- 13 शब्दरूपाणि ---- */
-{s:'skt',c:13,t:'mcq',q:'&lsquo;बालक&rsquo; शब्दस्य प्रथमाविभक्तेः बहुवचनम् किम्?',o:['बालकाः','बालकः','बालकौ','बालकान्'],a:0,e:'प्रथमा बहुवचन is बालकाः. बालकः is एकवचन and बालकौ द्विवचन; बालकान् is द्वितीया बहुवचन.'},
-{s:'skt',c:13,t:'mcq',q:'&lsquo;बालकेषु&rsquo; इति कस्यां विभक्तौ, कस्मिन् वचने?',o:['सप्तमी बहुवचन','षष्ठी बहुवचन','सप्तमी एकवचन','तृतीया बहुवचन'],a:0,e:'The -एषु ending is सप्तमी बहुवचन &mdash; &lsquo;in/among the boys&rsquo;. षष्ठी बहुवचन would be बालकानाम्.'},
-{s:'skt',c:13,t:'mcq',q:'&lsquo;लता&rsquo; शब्दस्य तृतीया एकवचनम् किम्?',o:['लतया','लतायै','लतायाः','लताम्'],a:0,e:'लतया. लतायै is चतुर्थी, लतायाः is पञ्चमी and षष्ठी, लताम् is द्वितीया.'},
-{s:'skt',c:13,t:'mcq',q:'&lsquo;फल&rsquo; शब्दः &lsquo;बालक&rsquo; शब्दात् कुत्र भिद्यते?',o:['प्रथमा-द्वितीययोः एव','तृतीयायाम् एव','सर्वासु विभक्तिषु','कुत्रापि न'],a:0,e:'A नपुंसकलिङ्ग noun differs only in प्रथमा and द्वितीया, where both read फलम्, फले, फलानि. From तृतीया onwards it is identical to बालक &mdash; which halves the learning.'},
-{s:'skt',c:13,t:'mcq',q:'&lsquo;नदी&rsquo; शब्दस्य प्रथमा द्विवचनम् किम्?',o:['नद्यौ','नद्यः','नदीम्','नद्याम्'],a:0,e:'नद्यौ. नद्यः is बहुवचन, नदीम् is द्वितीया एकवचन, नद्याम् is सप्तमी एकवचन.'},
-{s:'skt',c:13,t:'mcq',q:'&lsquo;मुनि&rsquo; शब्दस्य प्रथमा बहुवचनम् किम्?',o:['मुनयः','मुनीन्','मुनी','मुनिभिः'],a:0,e:'मुनयः. मुनीन् is द्वितीया बहुवचन and मुनिभिः तृतीया बहुवचन.'},
-{s:'skt',c:13,t:'mcq',q:'&lsquo;अहम्&rsquo; इत्यस्य बहुवचनम् किम्?',o:['वयम्','आवाम्','अस्मान्','अस्माकम्'],a:0,e:'वयम् &mdash; we. आवाम् is the dual (we two), अस्मान् is द्वितीया and अस्माकम् षष्ठी.'},
-{s:'skt',c:13,t:'mcq',q:'&lsquo;युष्मद्&rsquo; शब्दस्य षष्ठी बहुवचनम् किम्?',o:['युष्माकम्','यूयम्','युष्मान्','युष्माभिः'],a:0,e:'युष्माकम् &mdash; &lsquo;of you all&rsquo;. यूयम् is प्रथमा, युष्मान् द्वितीया, युष्माभिः तृतीया.'},
-{s:'skt',c:13,t:'mcq',q:'&lsquo;तद्&rsquo; शब्दस्य स्त्रीलिङ्गे प्रथमा एकवचनम् किम्?',o:['सा','सः','तत्','ते'],a:0,e:'सा for feminine, सः for masculine, तत् for neuter. All three are the same word तद् changing by gender.'},
-{s:'skt',c:13,t:'mcq',q:'&lsquo;अस्मद्&rsquo; तथा &lsquo;युष्मद्&rsquo; शब्दयोः किम् न भवति?',o:['सम्बोधनम्','बहुवचनम्','षष्ठी विभक्तिः','द्विवचनम्'],a:0,e:'Neither has a सम्बोधन form, and the reason is plain once you see it: you cannot call out to &ldquo;I&rdquo; or to &ldquo;you&rdquo; &mdash; you are already addressing them.'},
-{s:'skt',c:13,t:'fill',q:'&lsquo;बालक&rsquo; शब्दस्य षष्ठी एकवचनम् ______ ।',a:['बालकस्य','balakasya'],e:'बालकस्य &mdash; &lsquo;of the boy&rsquo;.'},
-{s:'skt',c:13,t:'fill',q:'&lsquo;लता&rsquo; शब्दस्य सप्तमी एकवचनम् ______ ।',a:['लतायाम्','लतायां','latayam'],e:'लतायाम् &mdash; &lsquo;in the creeper&rsquo;.'},
-{s:'skt',c:13,t:'tf',q:'नपुंसकलिङ्गे प्रथमा तथा द्वितीया विभक्त्योः रूपाणि समानानि भवन्ति ।',a:true,e:'सत्यम्. In every neuter noun the first and second cases are identical &mdash; फलम्/फलम्, फले/फले, फलानि/फलानि. It is the quickest way to spot a neuter form.'},
-{s:'skt',c:13,t:'tf',q:'&lsquo;बालकाभ्याम्&rsquo; इति रूपं केवलं तृतीयायाम् एव भवति ।',a:false,e:'असत्यम्. बालकाभ्याम् serves तृतीया, चतुर्थी and पञ्चमी alike in the dual. Several dual forms do double and triple duty, which is why the grid matters more than the list.'},
-{s:'skt',c:13,t:'match',q:'योजयत &mdash; रूपं तथा विभक्तिः ।',pairs:[['बालकम्','द्वितीया एकवचन'],['बालकेन','तृतीया एकवचन'],['बालकाय','चतुर्थी एकवचन'],['बालकात्','पञ्चमी एकवचन'],['बालके','सप्तमी एकवचन']],e:'Read the ending, not the word: -म् द्वितीया, -एन तृतीया, -आय चतुर्थी, -आत् पञ्चमी, -ए सप्तमी.'},
-{s:'skt',c:13,t:'short',m:3,q:'&lsquo;बालक&rsquo; शब्दस्य सप्त विभक्तीनाम् एकवचनरूपाणि लिखत ।',a:'प्रथमा बालकः, द्वितीया बालकम्, तृतीया बालकेन, चतुर्थी बालकाय, पञ्चमी बालकात्, षष्ठी बालकस्य, सप्तमी बालके. सम्बोधन: हे बालक! Write them in this order every time &mdash; examiners award by position as much as by form, and a jumbled list loses marks it need not.'},
+/* ---- 14 शब्दरूपाणि ---- */
+{s:'skt',c:14,t:'mcq',q:'&lsquo;बालक&rsquo; शब्दस्य प्रथमाविभक्तेः बहुवचनम् किम्?',o:['बालकाः','बालकः','बालकौ','बालकान्'],a:0,e:'प्रथमा बहुवचन is बालकाः. बालकः is एकवचन and बालकौ द्विवचन; बालकान् is द्वितीया बहुवचन.'},
+{s:'skt',c:14,t:'mcq',q:'&lsquo;बालकेषु&rsquo; इति कस्यां विभक्तौ, कस्मिन् वचने?',o:['सप्तमी बहुवचन','षष्ठी बहुवचन','सप्तमी एकवचन','तृतीया बहुवचन'],a:0,e:'The -एषु ending is सप्तमी बहुवचन &mdash; &lsquo;in/among the boys&rsquo;. षष्ठी बहुवचन would be बालकानाम्.'},
+{s:'skt',c:14,t:'mcq',q:'&lsquo;लता&rsquo; शब्दस्य तृतीया एकवचनम् किम्?',o:['लतया','लतायै','लतायाः','लताम्'],a:0,e:'लतया. लतायै is चतुर्थी, लतायाः is पञ्चमी and षष्ठी, लताम् is द्वितीया.'},
+{s:'skt',c:14,t:'mcq',q:'&lsquo;फल&rsquo; शब्दः &lsquo;बालक&rsquo; शब्दात् कुत्र भिद्यते?',o:['प्रथमा-द्वितीययोः एव','तृतीयायाम् एव','सर्वासु विभक्तिषु','कुत्रापि न'],a:0,e:'A नपुंसकलिङ्ग noun differs only in प्रथमा and द्वितीया, where both read फलम्, फले, फलानि. From तृतीया onwards it is identical to बालक &mdash; which halves the learning.'},
+{s:'skt',c:14,t:'mcq',q:'&lsquo;नदी&rsquo; शब्दस्य प्रथमा द्विवचनम् किम्?',o:['नद्यौ','नद्यः','नदीम्','नद्याम्'],a:0,e:'नद्यौ. नद्यः is बहुवचन, नदीम् is द्वितीया एकवचन, नद्याम् is सप्तमी एकवचन.'},
+{s:'skt',c:14,t:'mcq',q:'&lsquo;मुनि&rsquo; शब्दस्य प्रथमा बहुवचनम् किम्?',o:['मुनयः','मुनीन्','मुनी','मुनिभिः'],a:0,e:'मुनयः. मुनीन् is द्वितीया बहुवचन and मुनिभिः तृतीया बहुवचन.'},
+{s:'skt',c:14,t:'mcq',q:'&lsquo;अहम्&rsquo; इत्यस्य बहुवचनम् किम्?',o:['वयम्','आवाम्','अस्मान्','अस्माकम्'],a:0,e:'वयम् &mdash; we. आवाम् is the dual (we two), अस्मान् is द्वितीया and अस्माकम् षष्ठी.'},
+{s:'skt',c:14,t:'mcq',q:'&lsquo;युष्मद्&rsquo; शब्दस्य षष्ठी बहुवचनम् किम्?',o:['युष्माकम्','यूयम्','युष्मान्','युष्माभिः'],a:0,e:'युष्माकम् &mdash; &lsquo;of you all&rsquo;. यूयम् is प्रथमा, युष्मान् द्वितीया, युष्माभिः तृतीया.'},
+{s:'skt',c:14,t:'mcq',q:'&lsquo;तद्&rsquo; शब्दस्य स्त्रीलिङ्गे प्रथमा एकवचनम् किम्?',o:['सा','सः','तत्','ते'],a:0,e:'सा for feminine, सः for masculine, तत् for neuter. All three are the same word तद् changing by gender.'},
+{s:'skt',c:14,t:'mcq',q:'&lsquo;अस्मद्&rsquo; तथा &lsquo;युष्मद्&rsquo; शब्दयोः किम् न भवति?',o:['सम्बोधनम्','बहुवचनम्','षष्ठी विभक्तिः','द्विवचनम्'],a:0,e:'Neither has a सम्बोधन form, and the reason is plain once you see it: you cannot call out to &ldquo;I&rdquo; or to &ldquo;you&rdquo; &mdash; you are already addressing them.'},
+{s:'skt',c:14,t:'fill',q:'&lsquo;बालक&rsquo; शब्दस्य षष्ठी एकवचनम् ______ ।',a:['बालकस्य','balakasya'],e:'बालकस्य &mdash; &lsquo;of the boy&rsquo;.'},
+{s:'skt',c:14,t:'fill',q:'&lsquo;लता&rsquo; शब्दस्य सप्तमी एकवचनम् ______ ।',a:['लतायाम्','लतायां','latayam'],e:'लतायाम् &mdash; &lsquo;in the creeper&rsquo;.'},
+{s:'skt',c:14,t:'tf',q:'नपुंसकलिङ्गे प्रथमा तथा द्वितीया विभक्त्योः रूपाणि समानानि भवन्ति ।',a:true,e:'सत्यम्. In every neuter noun the first and second cases are identical &mdash; फलम्/फलम्, फले/फले, फलानि/फलानि. It is the quickest way to spot a neuter form.'},
+{s:'skt',c:14,t:'tf',q:'&lsquo;बालकाभ्याम्&rsquo; इति रूपं केवलं तृतीयायाम् एव भवति ।',a:false,e:'असत्यम्. बालकाभ्याम् serves तृतीया, चतुर्थी and पञ्चमी alike in the dual. Several dual forms do double and triple duty, which is why the grid matters more than the list.'},
+{s:'skt',c:14,t:'match',q:'योजयत &mdash; रूपं तथा विभक्तिः ।',pairs:[['बालकम्','द्वितीया एकवचन'],['बालकेन','तृतीया एकवचन'],['बालकाय','चतुर्थी एकवचन'],['बालकात्','पञ्चमी एकवचन'],['बालके','सप्तमी एकवचन']],e:'Read the ending, not the word: -म् द्वितीया, -एन तृतीया, -आय चतुर्थी, -आत् पञ्चमी, -ए सप्तमी.'},
+{s:'skt',c:14,t:'short',m:3,q:'&lsquo;बालक&rsquo; शब्दस्य सप्त विभक्तीनाम् एकवचनरूपाणि लिखत ।',a:'प्रथमा बालकः, द्वितीया बालकम्, तृतीया बालकेन, चतुर्थी बालकाय, पञ्चमी बालकात्, षष्ठी बालकस्य, सप्तमी बालके. सम्बोधन: हे बालक! Write them in this order every time &mdash; examiners award by position as much as by form, and a jumbled list loses marks it need not.'},
 
-/* ---- 14 धातुरूपाणि ---- */
-{s:'skt',c:14,t:'mcq',q:'&lsquo;पठ्&rsquo; धातोः लट्लकारे प्रथमपुरुषे बहुवचनम् किम्?',o:['पठन्ति','पठतः','पठति','पठथ'],a:0,e:'पठन्ति &mdash; they read. पठति is एकवचन, पठतः द्विवचन; पठथ is मध्यमपुरुष बहुवचन.'},
-{s:'skt',c:14,t:'mcq',q:'&lsquo;अपठत्&rsquo; इति कस्मिन् लकारे?',o:['लङ् लकारे','लट् लकारे','लृट् लकारे','लोट् लकारे'],a:0,e:'लङ् &mdash; the past. The giveaway is the अ- prefixed to the stem. Stories in Sanskrit are told almost entirely in this लकार.'},
-{s:'skt',c:14,t:'mcq',q:'&lsquo;पठिष्यति&rsquo; इति कस्मिन् लकारे?',o:['लृट् लकारे','लङ् लकारे','विधिलिङ्&nbsp;लकारे','लोट् लकारे'],a:0,e:'लृट् &mdash; the future, marked by the -ष्य- inserted before the ending.'},
-{s:'skt',c:14,t:'mcq',q:'&lsquo;गम्&rsquo; धातोः लट्लकारे प्रथमपुरुष एकवचनम् किम्?',o:['गच्छति','गमति','गमिष्यति','अगच्छत्'],a:0,e:'गच्छति. The stem itself changes from गम् to गच्छ् &mdash; you cannot build it by rule alone, so it must be learnt.'},
-{s:'skt',c:14,t:'mcq',q:'&lsquo;अस्&rsquo; धातोः लट्लकारे उत्तमपुरुष एकवचनम् किम्?',o:['अस्मि','अस्ति','असि','स्मः'],a:0,e:'अस्मि &mdash; &lsquo;I am&rsquo;. अस्ति is he/she/it is, असि is you are, स्मः is we are. अस् is irregular throughout and simply has to be memorised.'},
-{s:'skt',c:14,t:'mcq',q:'&lsquo;कृ&rsquo; धातोः लट्लकारे प्रथमपुरुषे बहुवचनम् किम्?',o:['कुर्वन्ति','करोति','कुरुतः','कुर्मः'],a:0,e:'कुर्वन्ति. Note how far the stem moves across the three numbers: करोति, कुरुतः, कुर्वन्ति.'},
-{s:'skt',c:14,t:'mcq',q:'&lsquo;पठेत्&rsquo; इत्यस्य अर्थः कः?',o:['पढ़ना चाहिए','पढ़ता है','पढ़ेगा','पढ़ा'],a:0,e:'विधिलिङ् carries &lsquo;should&rsquo; &mdash; obligation or advice, not fact. सः पठेत् = he ought to read.'},
-{s:'skt',c:14,t:'mcq',q:'आज्ञार्थे कः लकारः प्रयुज्यते?',o:['लोट् लकारः','लट् लकारः','लङ् लकारः','लृट् लकारः'],a:0,e:'लोट् is the लकार of command and request: पठ! (read!), गच्छतु (let him go).'},
-{s:'skt',c:14,t:'mcq',q:'&lsquo;आसीत्&rsquo; इति कस्य धातोः रूपम्?',o:['अस्','भू','आस्','इष्'],a:0,e:'अस् in लङ् लकार &mdash; &lsquo;was&rsquo;. The full row is आसीत्, आस्ताम्, आसन्.'},
-{s:'skt',c:14,t:'mcq',q:'&lsquo;भू&rsquo; धातोः लट्लकारे प्रथमपुरुष एकवचनम् किम्?',o:['भवति','भूति','अभवत्','भविष्यति'],a:0,e:'भवति. भू is the model verb of the भ्वादिगण, so its pattern carries across a great many others.'},
-{s:'skt',c:14,t:'fill',q:'&lsquo;पठ्&rsquo; धातोः लट्लकारे उत्तमपुरुष एकवचनम् ______ ।',a:['पठामि','pathami'],e:'पठामि &mdash; &lsquo;I read&rsquo;.'},
-{s:'skt',c:14,t:'fill',q:'&lsquo;गम्&rsquo; धातोः लङ्लकारे प्रथमपुरुष एकवचनम् ______ ।',a:['अगच्छत्','agacchat'],e:'अगच्छत् &mdash; &lsquo;he went&rsquo;. The अ- marks the past, the गच्छ् marks the verb.'},
-{s:'skt',c:14,t:'tf',q:'संस्कृतक्रियापदे पुरुषः वचनं च क्रियायाम् एव निहितम्, अतः सर्वनाम्नः प्रयोगः अनिवार्यः न ।',a:true,e:'सत्यम्. गच्छामि already says &lsquo;I go&rsquo;, so अहम् is optional. This is why Sanskrit sentences can be so short.'},
-{s:'skt',c:14,t:'tf',q:'लङ्लकारस्य आरम्भे &lsquo;अ&rsquo; इति आगमः भवति ।',a:true,e:'सत्यम्. That initial अ &mdash; अपठत्, अगच्छत्, अकरोत् &mdash; is the surest sign you are looking at the past tense.'},
-{s:'skt',c:14,t:'match',q:'योजयत &mdash; लकारः तथा अर्थः ।',pairs:[['लट्','वर्तमान काल'],['लृट्','भविष्यत् काल'],['लङ्','भूत काल'],['लोट्','आज्ञा अथवा प्रार्थना'],['विधिलिङ्','चाहिए अथवा सम्भावना']],e:'Five लकार cover nearly everything Class VIII asks. Learn them by meaning first, forms second.'},
-{s:'skt',c:14,t:'short',m:3,q:'&lsquo;पठ्&rsquo; धातोः लट्लकारस्य नव रूपाणि लिखत ।',a:'प्रथमपुरुष: पठति, पठतः, पठन्ति. मध्यमपुरुष: पठसि, पठथः, पठथ. उत्तमपुरुष: पठामि, पठावः, पठामः. Always write them in this order &mdash; प्रथम, मध्यम, उत्तम, and within each, एकवचन, द्विवचन, बहुवचन. Sanskrit orders its persons the opposite way round to English grammar, and mixing the two up costs marks.'},
+/* ---- 15 धातुरूपाणि ---- */
+{s:'skt',c:15,t:'mcq',q:'&lsquo;पठ्&rsquo; धातोः लट्लकारे प्रथमपुरुषे बहुवचनम् किम्?',o:['पठन्ति','पठतः','पठति','पठथ'],a:0,e:'पठन्ति &mdash; they read. पठति is एकवचन, पठतः द्विवचन; पठथ is मध्यमपुरुष बहुवचन.'},
+{s:'skt',c:15,t:'mcq',q:'&lsquo;अपठत्&rsquo; इति कस्मिन् लकारे?',o:['लङ् लकारे','लट् लकारे','लृट् लकारे','लोट् लकारे'],a:0,e:'लङ् &mdash; the past. The giveaway is the अ- prefixed to the stem. Stories in Sanskrit are told almost entirely in this लकार.'},
+{s:'skt',c:15,t:'mcq',q:'&lsquo;पठिष्यति&rsquo; इति कस्मिन् लकारे?',o:['लृट् लकारे','लङ् लकारे','विधिलिङ्&nbsp;लकारे','लोट् लकारे'],a:0,e:'लृट् &mdash; the future, marked by the -ष्य- inserted before the ending.'},
+{s:'skt',c:15,t:'mcq',q:'&lsquo;गम्&rsquo; धातोः लट्लकारे प्रथमपुरुष एकवचनम् किम्?',o:['गच्छति','गमति','गमिष्यति','अगच्छत्'],a:0,e:'गच्छति. The stem itself changes from गम् to गच्छ् &mdash; you cannot build it by rule alone, so it must be learnt.'},
+{s:'skt',c:15,t:'mcq',q:'&lsquo;अस्&rsquo; धातोः लट्लकारे उत्तमपुरुष एकवचनम् किम्?',o:['अस्मि','अस्ति','असि','स्मः'],a:0,e:'अस्मि &mdash; &lsquo;I am&rsquo;. अस्ति is he/she/it is, असि is you are, स्मः is we are. अस् is irregular throughout and simply has to be memorised.'},
+{s:'skt',c:15,t:'mcq',q:'&lsquo;कृ&rsquo; धातोः लट्लकारे प्रथमपुरुषे बहुवचनम् किम्?',o:['कुर्वन्ति','करोति','कुरुतः','कुर्मः'],a:0,e:'कुर्वन्ति. Note how far the stem moves across the three numbers: करोति, कुरुतः, कुर्वन्ति.'},
+{s:'skt',c:15,t:'mcq',q:'&lsquo;पठेत्&rsquo; इत्यस्य अर्थः कः?',o:['पढ़ना चाहिए','पढ़ता है','पढ़ेगा','पढ़ा'],a:0,e:'विधिलिङ् carries &lsquo;should&rsquo; &mdash; obligation or advice, not fact. सः पठेत् = he ought to read.'},
+{s:'skt',c:15,t:'mcq',q:'आज्ञार्थे कः लकारः प्रयुज्यते?',o:['लोट् लकारः','लट् लकारः','लङ् लकारः','लृट् लकारः'],a:0,e:'लोट् is the लकार of command and request: पठ! (read!), गच्छतु (let him go).'},
+{s:'skt',c:15,t:'mcq',q:'&lsquo;आसीत्&rsquo; इति कस्य धातोः रूपम्?',o:['अस्','भू','आस्','इष्'],a:0,e:'अस् in लङ् लकार &mdash; &lsquo;was&rsquo;. The full row is आसीत्, आस्ताम्, आसन्.'},
+{s:'skt',c:15,t:'mcq',q:'&lsquo;भू&rsquo; धातोः लट्लकारे प्रथमपुरुष एकवचनम् किम्?',o:['भवति','भूति','अभवत्','भविष्यति'],a:0,e:'भवति. भू is the model verb of the भ्वादिगण, so its pattern carries across a great many others.'},
+{s:'skt',c:15,t:'fill',q:'&lsquo;पठ्&rsquo; धातोः लट्लकारे उत्तमपुरुष एकवचनम् ______ ।',a:['पठामि','pathami'],e:'पठामि &mdash; &lsquo;I read&rsquo;.'},
+{s:'skt',c:15,t:'fill',q:'&lsquo;गम्&rsquo; धातोः लङ्लकारे प्रथमपुरुष एकवचनम् ______ ।',a:['अगच्छत्','agacchat'],e:'अगच्छत् &mdash; &lsquo;he went&rsquo;. The अ- marks the past, the गच्छ् marks the verb.'},
+{s:'skt',c:15,t:'tf',q:'संस्कृतक्रियापदे पुरुषः वचनं च क्रियायाम् एव निहितम्, अतः सर्वनाम्नः प्रयोगः अनिवार्यः न ।',a:true,e:'सत्यम्. गच्छामि already says &lsquo;I go&rsquo;, so अहम् is optional. This is why Sanskrit sentences can be so short.'},
+{s:'skt',c:15,t:'tf',q:'लङ्लकारस्य आरम्भे &lsquo;अ&rsquo; इति आगमः भवति ।',a:true,e:'सत्यम्. That initial अ &mdash; अपठत्, अगच्छत्, अकरोत् &mdash; is the surest sign you are looking at the past tense.'},
+{s:'skt',c:15,t:'match',q:'योजयत &mdash; लकारः तथा अर्थः ।',pairs:[['लट्','वर्तमान काल'],['लृट्','भविष्यत् काल'],['लङ्','भूत काल'],['लोट्','आज्ञा अथवा प्रार्थना'],['विधिलिङ्','चाहिए अथवा सम्भावना']],e:'Five लकार cover nearly everything Class VIII asks. Learn them by meaning first, forms second.'},
+{s:'skt',c:15,t:'short',m:3,q:'&lsquo;पठ्&rsquo; धातोः लट्लकारस्य नव रूपाणि लिखत ।',a:'प्रथमपुरुष: पठति, पठतः, पठन्ति. मध्यमपुरुष: पठसि, पठथः, पठथ. उत्तमपुरुष: पठामि, पठावः, पठामः. Always write them in this order &mdash; प्रथम, मध्यम, उत्तम, and within each, एकवचन, द्विवचन, बहुवचन. Sanskrit orders its persons the opposite way round to English grammar, and mixing the two up costs marks.'},
 
-/* ---- 15 कारक ---- */
-{s:'skt',c:15,t:'mcq',q:'&lsquo;रामः पुस्तकं पठति&rsquo; अत्र &lsquo;पुस्तकम्&rsquo; इति किम् कारकम्?',o:['कर्म','कर्ता','करण','अधिकरण'],a:0,e:'कर्म &mdash; what the action falls on &mdash; takes द्वितीया. रामः is the कर्ता in प्रथमा.'},
-{s:'skt',c:15,t:'mcq',q:'&lsquo;बालकः लेखन्या लिखति&rsquo; अत्र &lsquo;लेखन्या&rsquo; इति कारकम्?',o:['करणम्','कर्म','सम्प्रदानम्','अपादानम्'],a:0,e:'करण &mdash; the instrument, &lsquo;with the pen&rsquo; &mdash; takes तृतीया.'},
-{s:'skt',c:15,t:'mcq',q:'&lsquo;वृक्षात् पत्रं पतति&rsquo; अत्र &lsquo;वृक्षात्&rsquo; इति कारकम्?',o:['अपादानम्','अधिकरणम्','करणम्','कर्म'],a:0,e:'अपादान &mdash; moving away from something &mdash; takes पञ्चमी. The leaf separates from the tree.'},
-{s:'skt',c:15,t:'mcq',q:'&lsquo;नमः&rsquo; इत्यस्य योगे का विभक्तिः?',o:['चतुर्थी','द्वितीया','षष्ठी','सप्तमी'],a:0,e:'चतुर्थी &mdash; रामाय नमः, गुरवे नमः. This one is asked almost every year.'},
-{s:'skt',c:15,t:'mcq',q:'&lsquo;अभितः&rsquo;, &lsquo;परितः&rsquo;, &lsquo;सर्वतः&rsquo; इत्येषां योगे का विभक्तिः?',o:['द्वितीया','तृतीया','पञ्चमी','सप्तमी'],a:0,e:'All of them take द्वितीया &mdash; ग्रामम् अभितः वृक्षाः सन्ति. Learn this small set as a block; examiners like it precisely because it breaks the obvious pattern.'},
-{s:'skt',c:15,t:'mcq',q:'&lsquo;सह&rsquo; इत्यस्य योगे का विभक्तिः?',o:['तृतीया','द्वितीया','चतुर्थी','षष्ठी'],a:0,e:'तृतीया &mdash; रामेण सह, &lsquo;along with Rama&rsquo;.'},
-{s:'skt',c:15,t:'mcq',q:'&lsquo;वृक्षे खगाः सन्ति&rsquo; अत्र &lsquo;वृक्षे&rsquo; इति कारकम्?',o:['अधिकरणम्','अपादानम्','कर्म','करणम्'],a:0,e:'अधिकरण &mdash; the place or time in which something happens &mdash; takes सप्तमी.'},
-{s:'skt',c:15,t:'mcq',q:'&lsquo;रामस्य पुस्तकम्&rsquo; अत्र षष्ठी कस्य द्योतिका?',o:['सम्बन्धस्य','कर्मणः','करणस्य','अपादानस्य'],a:0,e:'षष्ठी shows सम्बन्ध &mdash; a relation between two nouns. Strictly it is not a कारक at all, because it plays no role in the action itself. That distinction is worth a mark.'},
-{s:'skt',c:15,t:'mcq',q:'&lsquo;सिंहात् बिभेति&rsquo; अत्र &lsquo;सिंहात्&rsquo; पञ्चमी कस्मात् प्रयुक्ता?',o:['भयार्थकधातुयोगे','सम्बन्धार्थे','करणार्थे','अधिकरणार्थे'],a:0,e:'Verbs of fear take पञ्चमी for the thing feared &mdash; you shrink away from it, which is अपादान in spirit.'},
-{s:'skt',c:15,t:'fill',q:'&lsquo;निर्धनाय धनं ______ &rsquo; &mdash; अत्र &lsquo;निर्धनाय&rsquo; इति ______ कारकम् ।',a:['सम्प्रदान','सम्प्रदानम्','sampradan'],e:'सम्प्रदान &mdash; the one you give to &mdash; takes चतुर्थी.'},
-{s:'skt',c:15,t:'tf',q:'षष्ठी विभक्तिः कारकम् अस्ति ।',a:false,e:'असत्यम्. षष्ठी shows सम्बन्ध between two nouns, not a role in the verb&rsquo;s action, so it is counted outside the कारक proper. Examiners ask this to see whether you have understood कारक or only memorised endings.'},
-{s:'skt',c:15,t:'tf',q:'&lsquo;विना&rsquo; इत्यस्य योगे द्वितीया, तृतीया, पञ्चमी &mdash; इति तिस्रः अपि विभक्तयः प्रयुज्यन्ते ।',a:true,e:'सत्यम्. विना is unusually generous: रामं विना, रामेण विना and रामात् विना are all acceptable.'},
-{s:'skt',c:15,t:'match',q:'योजयत &mdash; कारकम् तथा विभक्तिः ।',pairs:[['कर्ता','प्रथमा'],['कर्म','द्वितीया'],['करणम्','तृतीया'],['सम्प्रदानम्','चतुर्थी'],['अपादानम्','पञ्चमी'],['अधिकरणम्','सप्तमी']],e:'Six roles, six cases, in order. The seventh case &mdash; षष्ठी &mdash; is the odd one out, being सम्बन्ध rather than a कारक.'},
-{s:'skt',c:15,t:'short',m:2,q:'कारकम् तथा विभक्तिः &mdash; अनयोः कः भेदः?',a:'कारक is the role a noun plays in relation to the action of the verb &mdash; who does it, what it is done to, what it is done with, and so on. विभक्ति is the case ending that shows that role in writing. They usually correspond, but not perfectly: षष्ठी विभक्ति marks सम्बन्ध, a relation between two nouns, which is not a role in the action at all and so is not counted among the कारक. Equally, one कारक can appear in more than one विभक्ति depending on the word it follows &mdash; विना takes द्वितीया, तृतीया or पञ्चमी.'},
+/* ---- 16 कारक ---- */
+{s:'skt',c:16,t:'mcq',q:'&lsquo;रामः पुस्तकं पठति&rsquo; अत्र &lsquo;पुस्तकम्&rsquo; इति किम् कारकम्?',o:['कर्म','कर्ता','करण','अधिकरण'],a:0,e:'कर्म &mdash; what the action falls on &mdash; takes द्वितीया. रामः is the कर्ता in प्रथमा.'},
+{s:'skt',c:16,t:'mcq',q:'&lsquo;बालकः लेखन्या लिखति&rsquo; अत्र &lsquo;लेखन्या&rsquo; इति कारकम्?',o:['करणम्','कर्म','सम्प्रदानम्','अपादानम्'],a:0,e:'करण &mdash; the instrument, &lsquo;with the pen&rsquo; &mdash; takes तृतीया.'},
+{s:'skt',c:16,t:'mcq',q:'&lsquo;वृक्षात् पत्रं पतति&rsquo; अत्र &lsquo;वृक्षात्&rsquo; इति कारकम्?',o:['अपादानम्','अधिकरणम्','करणम्','कर्म'],a:0,e:'अपादान &mdash; moving away from something &mdash; takes पञ्चमी. The leaf separates from the tree.'},
+{s:'skt',c:16,t:'mcq',q:'&lsquo;नमः&rsquo; इत्यस्य योगे का विभक्तिः?',o:['चतुर्थी','द्वितीया','षष्ठी','सप्तमी'],a:0,e:'चतुर्थी &mdash; रामाय नमः, गुरवे नमः. This one is asked almost every year.'},
+{s:'skt',c:16,t:'mcq',q:'&lsquo;अभितः&rsquo;, &lsquo;परितः&rsquo;, &lsquo;सर्वतः&rsquo; इत्येषां योगे का विभक्तिः?',o:['द्वितीया','तृतीया','पञ्चमी','सप्तमी'],a:0,e:'All of them take द्वितीया &mdash; ग्रामम् अभितः वृक्षाः सन्ति. Learn this small set as a block; examiners like it precisely because it breaks the obvious pattern.'},
+{s:'skt',c:16,t:'mcq',q:'&lsquo;सह&rsquo; इत्यस्य योगे का विभक्तिः?',o:['तृतीया','द्वितीया','चतुर्थी','षष्ठी'],a:0,e:'तृतीया &mdash; रामेण सह, &lsquo;along with Rama&rsquo;.'},
+{s:'skt',c:16,t:'mcq',q:'&lsquo;वृक्षे खगाः सन्ति&rsquo; अत्र &lsquo;वृक्षे&rsquo; इति कारकम्?',o:['अधिकरणम्','अपादानम्','कर्म','करणम्'],a:0,e:'अधिकरण &mdash; the place or time in which something happens &mdash; takes सप्तमी.'},
+{s:'skt',c:16,t:'mcq',q:'&lsquo;रामस्य पुस्तकम्&rsquo; अत्र षष्ठी कस्य द्योतिका?',o:['सम्बन्धस्य','कर्मणः','करणस्य','अपादानस्य'],a:0,e:'षष्ठी shows सम्बन्ध &mdash; a relation between two nouns. Strictly it is not a कारक at all, because it plays no role in the action itself. That distinction is worth a mark.'},
+{s:'skt',c:16,t:'mcq',q:'&lsquo;सिंहात् बिभेति&rsquo; अत्र &lsquo;सिंहात्&rsquo; पञ्चमी कस्मात् प्रयुक्ता?',o:['भयार्थकधातुयोगे','सम्बन्धार्थे','करणार्थे','अधिकरणार्थे'],a:0,e:'Verbs of fear take पञ्चमी for the thing feared &mdash; you shrink away from it, which is अपादान in spirit.'},
+{s:'skt',c:16,t:'fill',q:'&lsquo;निर्धनाय धनं ______ &rsquo; &mdash; अत्र &lsquo;निर्धनाय&rsquo; इति ______ कारकम् ।',a:['सम्प्रदान','सम्प्रदानम्','sampradan'],e:'सम्प्रदान &mdash; the one you give to &mdash; takes चतुर्थी.'},
+{s:'skt',c:16,t:'tf',q:'षष्ठी विभक्तिः कारकम् अस्ति ।',a:false,e:'असत्यम्. षष्ठी shows सम्बन्ध between two nouns, not a role in the verb&rsquo;s action, so it is counted outside the कारक proper. Examiners ask this to see whether you have understood कारक or only memorised endings.'},
+{s:'skt',c:16,t:'tf',q:'&lsquo;विना&rsquo; इत्यस्य योगे द्वितीया, तृतीया, पञ्चमी &mdash; इति तिस्रः अपि विभक्तयः प्रयुज्यन्ते ।',a:true,e:'सत्यम्. विना is unusually generous: रामं विना, रामेण विना and रामात् विना are all acceptable.'},
+{s:'skt',c:16,t:'match',q:'योजयत &mdash; कारकम् तथा विभक्तिः ।',pairs:[['कर्ता','प्रथमा'],['कर्म','द्वितीया'],['करणम्','तृतीया'],['सम्प्रदानम्','चतुर्थी'],['अपादानम्','पञ्चमी'],['अधिकरणम्','सप्तमी']],e:'Six roles, six cases, in order. The seventh case &mdash; षष्ठी &mdash; is the odd one out, being सम्बन्ध rather than a कारक.'},
+{s:'skt',c:16,t:'short',m:2,q:'कारकम् तथा विभक्तिः &mdash; अनयोः कः भेदः?',a:'कारक is the role a noun plays in relation to the action of the verb &mdash; who does it, what it is done to, what it is done with, and so on. विभक्ति is the case ending that shows that role in writing. They usually correspond, but not perfectly: षष्ठी विभक्ति marks सम्बन्ध, a relation between two nouns, which is not a role in the action at all and so is not counted among the कारक. Equally, one कारक can appear in more than one विभक्ति depending on the word it follows &mdash; विना takes द्वितीया, तृतीया or पञ्चमी.'},
 
-/* ---- 16 सन्धि ---- */
-{s:'skt',c:16,t:'mcq',q:'&lsquo;विद्या + आलयः&rsquo; इत्यस्य सन्धिः कः?',o:['विद्यालयः','विद्यालयम्','विद्याअलयः','विद्यैलयः'],a:0,e:'दीर्घ सन्धि: आ + आ = आ. Two similar vowels meeting simply make the long one.'},
-{s:'skt',c:16,t:'mcq',q:'&lsquo;देव + इन्द्रः&rsquo; इत्यस्य सन्धिः कः?',o:['देवेन्द्रः','देवइन्द्रः','देवैन्द्रः','देविन्द्रः'],a:0,e:'गुण सन्धि: अ + इ = ए.'},
-{s:'skt',c:16,t:'mcq',q:'&lsquo;सूर्य + उदयः&rsquo; इत्यस्य सन्धिः कः?',o:['सूर्योदयः','सूर्यउदयः','सूर्यौदयः','सूर्यूदयः'],a:0,e:'गुण सन्धि: अ + उ = ओ.'},
-{s:'skt',c:16,t:'mcq',q:'&lsquo;एक + एकम्&rsquo; इत्यस्य सन्धिः कः?',o:['एकैकम्','एकेकम्','एकाएकम्','एकौकम्'],a:0,e:'वृद्धि सन्धि: अ + ए = ऐ.'},
-{s:'skt',c:16,t:'mcq',q:'&lsquo;सु + आगतम्&rsquo; इत्यस्य सन्धिः कः?',o:['स्वागतम्','सुआगतम्','सोआगतम्','सूगतम्'],a:0,e:'यण् सन्धि: उ before an unlike vowel becomes व्. The everyday word स्वागतम् is a सन्धि you have been using all along.'},
-{s:'skt',c:16,t:'mcq',q:'&lsquo;इति + अपि&rsquo; इत्यस्य सन्धिः कः?',o:['इत्यपि','इतिअपि','इतीपि','इत्यापि'],a:0,e:'यण् सन्धि: इ becomes य् before an unlike vowel.'},
-{s:'skt',c:16,t:'mcq',q:'&lsquo;ने + अनम्&rsquo; इत्यस्य सन्धिः कः?',o:['नयनम्','नेअनम्','नैनम्','नयानम्'],a:0,e:'अयादि सन्धि: ए + अ = अय्. So नयनम्, the eye, is literally &lsquo;that which leads&rsquo;.'},
-{s:'skt',c:16,t:'mcq',q:'&lsquo;सत् + जनः&rsquo; इत्यस्य सन्धिः कः?',o:['सज्जनः','सत्जनः','सद्जनः','सच्जनः'],a:0,e:'व्यञ्जन सन्धि: त् + ज = ज्ज.'},
-{s:'skt',c:16,t:'mcq',q:'&lsquo;मनः + रथः&rsquo; इत्यस्य सन्धिः कः?',o:['मनोरथः','मनरथः','मनःरथः','मनोरथम्'],a:0,e:'विसर्ग सन्धि: अः before a soft consonant becomes ओ.'},
-{s:'skt',c:16,t:'mcq',q:'&lsquo;निः + बलः&rsquo; इत्यस्य सन्धिः कः?',o:['निर्बलः','निबलः','निःबलः','नीबलः'],a:0,e:'विसर्ग सन्धि: इः before a soft consonant becomes इर्.'},
-{s:'skt',c:16,t:'mcq',q:'&lsquo;रामोऽस्ति&rsquo; इत्यस्य सन्धिविच्छेदः कः?',o:['रामः + अस्ति','रामो + अस्ति','राम + अस्ति','रामौ + अस्ति'],a:0,e:'रामः + अस्ति. The अवग्रह (ऽ) is not decoration &mdash; it marks the अ that was swallowed, and putting it back is how you split the सन्धि.'},
-{s:'skt',c:16,t:'fill',q:'&lsquo;गिरि + ईशः&rsquo; = ______ ।',a:['गिरीशः','girishah','girisah'],e:'दीर्घ सन्धि: इ + ई = ई.'},
-{s:'skt',c:16,t:'fill',q:'&lsquo;देव + ऋषिः&rsquo; = ______ ।',a:['देवर्षिः','devarshih'],e:'गुण सन्धि: अ + ऋ = अर्.'},
-{s:'skt',c:16,t:'tf',q:'सन्धिविच्छेदे नियमः विपरीतक्रमेण प्रयोक्तव्यः ।',a:true,e:'सत्यम्. To split a सन्धि you run the rule backwards: see ए, ask which pair makes ए, and you have अ + इ. Guessing at the split without naming the rule is where most marks go.'},
-{s:'skt',c:16,t:'match',q:'योजयत &mdash; सन्धिः तथा तस्याः नाम ।',pairs:[['विद्या + आलयः = विद्यालयः','दीर्घ सन्धि'],['देव + इन्द्रः = देवेन्द्रः','गुण सन्धि'],['एक + एकम् = एकैकम्','वृद्धि सन्धि'],['सु + आगतम् = स्वागतम्','यण् सन्धि'],['ने + अनम् = नयनम्','अयादि सन्धि']],e:'Five vowel सन्धि, one example each. If you can name the rule you can also reverse it.'},
-{s:'skt',c:16,t:'short',m:3,q:'स्वरसन्धेः पञ्च भेदाः उदाहरणसहितं लिखत ।',a:'(१) दीर्घ &mdash; two similar vowels give the long one: विद्या + आलयः = विद्यालयः. (२) गुण &mdash; अ/आ followed by इ, उ or ऋ gives ए, ओ or अर्: देव + इन्द्रः = देवेन्द्रः; सूर्य + उदयः = सूर्योदयः; देव + ऋषिः = देवर्षिः. (३) वृद्धि &mdash; अ/आ followed by ए/ऐ gives ऐ, and by ओ/औ gives औ: एक + एकम् = एकैकम्. (४) यण् &mdash; इ, उ, ऋ before an unlike vowel become य्, व्, र्: इति + अपि = इत्यपि; सु + आगतम् = स्वागतम्. (५) अयादि &mdash; ए, ऐ, ओ, औ before a vowel become अय्, आय्, अव्, आव्: ने + अनम् = नयनम्; पौ + अकः = पावकः.'},
+/* ---- 17 सन्धि ---- */
+{s:'skt',c:17,t:'mcq',q:'&lsquo;विद्या + आलयः&rsquo; इत्यस्य सन्धिः कः?',o:['विद्यालयः','विद्यालयम्','विद्याअलयः','विद्यैलयः'],a:0,e:'दीर्घ सन्धि: आ + आ = आ. Two similar vowels meeting simply make the long one.'},
+{s:'skt',c:17,t:'mcq',q:'&lsquo;देव + इन्द्रः&rsquo; इत्यस्य सन्धिः कः?',o:['देवेन्द्रः','देवइन्द्रः','देवैन्द्रः','देविन्द्रः'],a:0,e:'गुण सन्धि: अ + इ = ए.'},
+{s:'skt',c:17,t:'mcq',q:'&lsquo;सूर्य + उदयः&rsquo; इत्यस्य सन्धिः कः?',o:['सूर्योदयः','सूर्यउदयः','सूर्यौदयः','सूर्यूदयः'],a:0,e:'गुण सन्धि: अ + उ = ओ.'},
+{s:'skt',c:17,t:'mcq',q:'&lsquo;एक + एकम्&rsquo; इत्यस्य सन्धिः कः?',o:['एकैकम्','एकेकम्','एकाएकम्','एकौकम्'],a:0,e:'वृद्धि सन्धि: अ + ए = ऐ.'},
+{s:'skt',c:17,t:'mcq',q:'&lsquo;सु + आगतम्&rsquo; इत्यस्य सन्धिः कः?',o:['स्वागतम्','सुआगतम्','सोआगतम्','सूगतम्'],a:0,e:'यण् सन्धि: उ before an unlike vowel becomes व्. The everyday word स्वागतम् is a सन्धि you have been using all along.'},
+{s:'skt',c:17,t:'mcq',q:'&lsquo;इति + अपि&rsquo; इत्यस्य सन्धिः कः?',o:['इत्यपि','इतिअपि','इतीपि','इत्यापि'],a:0,e:'यण् सन्धि: इ becomes य् before an unlike vowel.'},
+{s:'skt',c:17,t:'mcq',q:'&lsquo;ने + अनम्&rsquo; इत्यस्य सन्धिः कः?',o:['नयनम्','नेअनम्','नैनम्','नयानम्'],a:0,e:'अयादि सन्धि: ए + अ = अय्. So नयनम्, the eye, is literally &lsquo;that which leads&rsquo;.'},
+{s:'skt',c:17,t:'mcq',q:'&lsquo;सत् + जनः&rsquo; इत्यस्य सन्धिः कः?',o:['सज्जनः','सत्जनः','सद्जनः','सच्जनः'],a:0,e:'व्यञ्जन सन्धि: त् + ज = ज्ज.'},
+{s:'skt',c:17,t:'mcq',q:'&lsquo;मनः + रथः&rsquo; इत्यस्य सन्धिः कः?',o:['मनोरथः','मनरथः','मनःरथः','मनोरथम्'],a:0,e:'विसर्ग सन्धि: अः before a soft consonant becomes ओ.'},
+{s:'skt',c:17,t:'mcq',q:'&lsquo;निः + बलः&rsquo; इत्यस्य सन्धिः कः?',o:['निर्बलः','निबलः','निःबलः','नीबलः'],a:0,e:'विसर्ग सन्धि: इः before a soft consonant becomes इर्.'},
+{s:'skt',c:17,t:'mcq',q:'&lsquo;रामोऽस्ति&rsquo; इत्यस्य सन्धिविच्छेदः कः?',o:['रामः + अस्ति','रामो + अस्ति','राम + अस्ति','रामौ + अस्ति'],a:0,e:'रामः + अस्ति. The अवग्रह (ऽ) is not decoration &mdash; it marks the अ that was swallowed, and putting it back is how you split the सन्धि.'},
+{s:'skt',c:17,t:'fill',q:'&lsquo;गिरि + ईशः&rsquo; = ______ ।',a:['गिरीशः','girishah','girisah'],e:'दीर्घ सन्धि: इ + ई = ई.'},
+{s:'skt',c:17,t:'fill',q:'&lsquo;देव + ऋषिः&rsquo; = ______ ।',a:['देवर्षिः','devarshih'],e:'गुण सन्धि: अ + ऋ = अर्.'},
+{s:'skt',c:17,t:'tf',q:'सन्धिविच्छेदे नियमः विपरीतक्रमेण प्रयोक्तव्यः ।',a:true,e:'सत्यम्. To split a सन्धि you run the rule backwards: see ए, ask which pair makes ए, and you have अ + इ. Guessing at the split without naming the rule is where most marks go.'},
+{s:'skt',c:17,t:'match',q:'योजयत &mdash; सन्धिः तथा तस्याः नाम ।',pairs:[['विद्या + आलयः = विद्यालयः','दीर्घ सन्धि'],['देव + इन्द्रः = देवेन्द्रः','गुण सन्धि'],['एक + एकम् = एकैकम्','वृद्धि सन्धि'],['सु + आगतम् = स्वागतम्','यण् सन्धि'],['ने + अनम् = नयनम्','अयादि सन्धि']],e:'Five vowel सन्धि, one example each. If you can name the rule you can also reverse it.'},
+{s:'skt',c:17,t:'short',m:3,q:'स्वरसन्धेः पञ्च भेदाः उदाहरणसहितं लिखत ।',a:'(१) दीर्घ &mdash; two similar vowels give the long one: विद्या + आलयः = विद्यालयः. (२) गुण &mdash; अ/आ followed by इ, उ or ऋ gives ए, ओ or अर्: देव + इन्द्रः = देवेन्द्रः; सूर्य + उदयः = सूर्योदयः; देव + ऋषिः = देवर्षिः. (३) वृद्धि &mdash; अ/आ followed by ए/ऐ gives ऐ, and by ओ/औ gives औ: एक + एकम् = एकैकम्. (४) यण् &mdash; इ, उ, ऋ before an unlike vowel become य्, व्, र्: इति + अपि = इत्यपि; सु + आगतम् = स्वागतम्. (५) अयादि &mdash; ए, ऐ, ओ, औ before a vowel become अय्, आय्, अव्, आव्: ने + अनम् = नयनम्; पौ + अकः = पावकः.'},
 
-/* ---- 17 संख्या, वासर, मास ---- */
-{s:'skt',c:17,t:'mcq',q:'&lsquo;षोडश&rsquo; इत्यस्य संख्या का?',o:['१६','१४','१८','६०'],a:0,e:'षोडश = 16. Do not confuse it with षष्टिः, which is 60.'},
-{s:'skt',c:17,t:'mcq',q:'&lsquo;सप्ततिः&rsquo; इत्यस्य संख्या का?',o:['७०','७','१७','७७'],a:0,e:'सप्ततिः = 70. सप्त is 7 and सप्तदश is 17 &mdash; three words worth keeping apart.'},
-{s:'skt',c:17,t:'mcq',q:'&lsquo;एकोनविंशतिः&rsquo; इत्यस्य अर्थः कः?',o:['१९','२१','२९','९१'],a:0,e:'Literally &lsquo;one less than twenty&rsquo;. Sanskrit often counts down to the next ten like this &mdash; एकोनत्रिंशत् is 29.'},
-{s:'skt',c:17,t:'mcq',q:'&lsquo;बुधवासरः&rsquo; इति कः वारः?',o:['बुधवार','सोमवार','गुरुवार','शुक्रवार'],a:0,e:'बुधवासरः = Wednesday. All seven end in -वासरः, so only the first part needs learning.'},
-{s:'skt',c:17,t:'mcq',q:'संस्कृतमासेषु प्रथमः मासः कः?',o:['चैत्रः','माघः','कार्तिकः','श्रावणः'],a:0,e:'चैत्र begins the traditional year, around March&ndash;April. फाल्गुन closes it.'},
-{s:'skt',c:17,t:'mcq',q:'&lsquo;शतम्&rsquo; इत्यस्य संख्या का?',o:['१००','१०','१०००','५०'],a:0,e:'शतम् = 100. सहस्रम् is 1000, दश is 10.'},
-{s:'skt',c:17,t:'mcq',q:'&lsquo;अधुना कति वादनम्?&rsquo; इत्यस्य अर्थः कः?',o:['इस समय कितने बजे हैं?','अब क्या करना है?','आज कौन-सा दिन है?','कितने लोग हैं?'],a:0,e:'वादनम् is the striking of the hour, so कति वादनम् is &lsquo;how many o&rsquo;clock&rsquo;.'},
-{s:'skt',c:17,t:'mcq',q:'संस्कृते कस्याः संख्यायाः आरभ्य लिङ्गभेदः न भवति?',o:['पञ्च','एक','द्वि','त्रि'],a:0,e:'एक, द्वि, त्रि and चतुर् change by gender; from पञ्च onwards the numerals stay the same whatever the noun. One fewer thing to memorise.'},
-{s:'skt',c:17,t:'fill',q:'&lsquo;५०&rsquo; इत्यस्य संस्कृतशब्दः ______ ।',a:['पञ्चाशत्','पंचाशत्','panchashat'],e:'पञ्चाशत् = 50.'},
-{s:'skt',c:17,t:'fill',q:'&lsquo;रविवासरः&rsquo; इत्यस्य हिन्दी-अर्थः ______ ।',a:['रविवार','इतवार','रविवार।'],e:'रविवार &mdash; Sunday, named for रवि, the sun.'},
-{s:'skt',c:17,t:'tf',q:'&lsquo;अष्टादश&rsquo; इत्यस्य अर्थः अष्टाशीतिः ।',a:false,e:'असत्यम्. अष्टादश is 18; अशीतिः is 80 and अष्टाशीतिः is 88. The endings -दश and -शीतिः are what separate them.'},
-{s:'skt',c:17,t:'match',q:'योजयत &mdash; संस्कृतसंख्या तथा अङ्कः ।',pairs:[['विंशतिः','२०'],['त्रिंशत्','३०'],['चत्वारिंशत्','४०'],['षष्टिः','६०'],['नवतिः','९०']],e:'The tens are the backbone; everything between them is built by joining a unit to the ten above or below.'},
+/* ---- 18 संख्या, वासर, मास ---- */
+{s:'skt',c:18,t:'mcq',q:'&lsquo;षोडश&rsquo; इत्यस्य संख्या का?',o:['१६','१४','१८','६०'],a:0,e:'षोडश = 16. Do not confuse it with षष्टिः, which is 60.'},
+{s:'skt',c:18,t:'mcq',q:'&lsquo;सप्ततिः&rsquo; इत्यस्य संख्या का?',o:['७०','७','१७','७७'],a:0,e:'सप्ततिः = 70. सप्त is 7 and सप्तदश is 17 &mdash; three words worth keeping apart.'},
+{s:'skt',c:18,t:'mcq',q:'&lsquo;एकोनविंशतिः&rsquo; इत्यस्य अर्थः कः?',o:['१९','२१','२९','९१'],a:0,e:'Literally &lsquo;one less than twenty&rsquo;. Sanskrit often counts down to the next ten like this &mdash; एकोनत्रिंशत् is 29.'},
+{s:'skt',c:18,t:'mcq',q:'&lsquo;बुधवासरः&rsquo; इति कः वारः?',o:['बुधवार','सोमवार','गुरुवार','शुक्रवार'],a:0,e:'बुधवासरः = Wednesday. All seven end in -वासरः, so only the first part needs learning.'},
+{s:'skt',c:18,t:'mcq',q:'संस्कृतमासेषु प्रथमः मासः कः?',o:['चैत्रः','माघः','कार्तिकः','श्रावणः'],a:0,e:'चैत्र begins the traditional year, around March&ndash;April. फाल्गुन closes it.'},
+{s:'skt',c:18,t:'mcq',q:'&lsquo;शतम्&rsquo; इत्यस्य संख्या का?',o:['१००','१०','१०००','५०'],a:0,e:'शतम् = 100. सहस्रम् is 1000, दश is 10.'},
+{s:'skt',c:18,t:'mcq',q:'&lsquo;अधुना कति वादनम्?&rsquo; इत्यस्य अर्थः कः?',o:['इस समय कितने बजे हैं?','अब क्या करना है?','आज कौन-सा दिन है?','कितने लोग हैं?'],a:0,e:'वादनम् is the striking of the hour, so कति वादनम् is &lsquo;how many o&rsquo;clock&rsquo;.'},
+{s:'skt',c:18,t:'mcq',q:'संस्कृते कस्याः संख्यायाः आरभ्य लिङ्गभेदः न भवति?',o:['पञ्च','एक','द्वि','त्रि'],a:0,e:'एक, द्वि, त्रि and चतुर् change by gender; from पञ्च onwards the numerals stay the same whatever the noun. One fewer thing to memorise.'},
+{s:'skt',c:18,t:'fill',q:'&lsquo;५०&rsquo; इत्यस्य संस्कृतशब्दः ______ ।',a:['पञ्चाशत्','पंचाशत्','panchashat'],e:'पञ्चाशत् = 50.'},
+{s:'skt',c:18,t:'fill',q:'&lsquo;रविवासरः&rsquo; इत्यस्य हिन्दी-अर्थः ______ ।',a:['रविवार','इतवार','रविवार।'],e:'रविवार &mdash; Sunday, named for रवि, the sun.'},
+{s:'skt',c:18,t:'tf',q:'&lsquo;अष्टादश&rsquo; इत्यस्य अर्थः अष्टाशीतिः ।',a:false,e:'असत्यम्. अष्टादश is 18; अशीतिः is 80 and अष्टाशीतिः is 88. The endings -दश and -शीतिः are what separate them.'},
+{s:'skt',c:18,t:'match',q:'योजयत &mdash; संस्कृतसंख्या तथा अङ्कः ।',pairs:[['विंशतिः','२०'],['त्रिंशत्','३०'],['चत्वारिंशत्','४०'],['षष्टिः','६०'],['नवतिः','९०']],e:'The tens are the backbone; everything between them is built by joining a unit to the ten above or below.'},
 
-/* ---- 18 उपसर्ग, अव्यय, प्रत्यय ---- */
-{s:'skt',c:18,t:'mcq',q:'संस्कृते उपसर्गाणां संख्या का?',o:['२२','१०','१८','२४'],a:0,e:'Twenty-two: प्र, परा, अप, सम्, अनु, अव, निस्, निर्, दुस्, दुर्, वि, आ, नि, अधि, अपि, अति, सु, उत्, अभि, प्रति, परि, उप.'},
-{s:'skt',c:18,t:'mcq',q:'&lsquo;आहरति&rsquo; इत्यत्र कः उपसर्गः?',o:['आ','अ','आह','हर'],a:0,e:'आ + हृ. The root हृ means to carry; आ turns it round to &lsquo;bring&rsquo;. An उपसर्ग can reverse a verb entirely.'},
-{s:'skt',c:18,t:'mcq',q:'अव्ययस्य किम् लक्षणम्?',o:['लिङ्ग-वचन-विभक्तिभिः न परिवर्तते','केवलं बहुवचने प्रयुज्यते','सदा स्त्रीलिङ्गे भवति','क्रियापदम् एव भवति'],a:0,e:'That is the definition and the name: अ-व्यय, &lsquo;not subject to change&rsquo;. It looks the same in every position.'},
-{s:'skt',c:18,t:'mcq',q:'&lsquo;श्वः&rsquo; इत्यस्य अर्थः कः?',o:['आगामी दिनम्','गतदिनम्','अद्य','सर्वदा'],a:0,e:'श्वः is tomorrow, ह्यः is yesterday, अद्य is today, परश्वः is the day after.'},
-{s:'skt',c:18,t:'mcq',q:'&lsquo;पठित्वा&rsquo; इत्यत्र कः प्रत्ययः?',o:['क्त्वा','ल्यप्','तुमुन्','शतृ'],a:0,e:'क्त्वा gives &lsquo;having read&rsquo;, and is used when the root carries no उपसर्ग.'},
-{s:'skt',c:18,t:'mcq',q:'&lsquo;आगत्य&rsquo; इत्यत्र कः प्रत्ययः?',o:['ल्यप्','क्त्वा','तुमुन्','क्तवतु'],a:0,e:'ल्यप् &mdash; because आ + गम् already carries an उपसर्ग. Using क्त्वा here (आगमित्वा) is the commonest single mistake in this chapter.'},
-{s:'skt',c:18,t:'mcq',q:'&lsquo;पठितुम्&rsquo; इत्यस्य अर्थः कः?',o:['पढ़ने के लिए','पढ़कर','पढ़ता हुआ','पढ़ा हुआ'],a:0,e:'तुमुन् gives purpose &mdash; &lsquo;in order to read&rsquo;. सः पठितुं गच्छति: he goes in order to read.'},
-{s:'skt',c:18,t:'mcq',q:'&lsquo;शनैः&rsquo; इत्यस्य अर्थः कः?',o:['धीरे-धीरे','शीघ्रम्','उच्चस्वरेण','सर्वत्र'],a:0,e:'शनैः शनैः &mdash; slowly, gradually. Its opposite in this pair is शीघ्रम्.'},
-{s:'skt',c:18,t:'fill',q:'&lsquo;अत्र&rsquo; इत्यस्य विपरीतार्थकम् अव्ययम् ______ ।',a:['तत्र','tatra'],e:'अत्र is here, तत्र is there, कुत्र is where, सर्वत्र is everywhere.'},
-{s:'skt',c:18,t:'fill',q:'&lsquo;गम्&rsquo; धातोः तुमुन्-प्रत्ययान्तं रूपम् ______ ।',a:['गन्तुम्','गन्तुं','gantum'],e:'गन्तुम् &mdash; &lsquo;in order to go&rsquo;. Note the stem shift again: गम् &rarr; गन्तुम्.'},
-{s:'skt',c:18,t:'tf',q:'यदि धातोः पूर्वम् उपसर्गः अस्ति तर्हि क्त्वा-प्रत्ययस्य स्थाने ल्यप् भवति ।',a:true,e:'सत्यम्. गत्वा (no उपसर्ग) but आगत्य (with आ). This one rule accounts for most of the errors in this section.'},
-{s:'skt',c:18,t:'tf',q:'&lsquo;च&rsquo;, &lsquo;वा&rsquo;, &lsquo;तु&rsquo; इत्येतानि अव्ययानि सन्ति ।',a:true,e:'सत्यम्. All the small joining words &mdash; and, or, but &mdash; are अव्यय, unchanging in every sentence.'},
-{s:'skt',c:18,t:'match',q:'योजयत &mdash; अव्ययम् तथा अर्थः ।',pairs:[['अद्य','आज'],['ह्यः','कल (बीता हुआ)'],['श्वः','कल (आने वाला)'],['अधुना','अब'],['सदा','सदैव']],e:'Hindi uses one word, कल, for both yesterday and tomorrow; Sanskrit does not. ह्यः looks back, श्वः looks forward.'},
-{s:'skt',c:18,t:'short',m:2,q:'क्त्वा तथा ल्यप् प्रत्यययोः भेदं सोदाहरणं लिखत ।',a:'Both mean &lsquo;having done&rsquo; and both make an indeclinable, so the meaning is the same; what differs is where each may be used. क्त्वा goes on a bare root with no उपसर्ग in front: पठ् + क्त्वा = पठित्वा (having read), गम् + क्त्वा = गत्वा (having gone). ल्यप् takes its place the moment the root carries an उपसर्ग: आ + गम् + ल्यप् = आगत्य (having come), वि + हस् + ल्यप् = विहस्य (having laughed). So the test is simply: is there an उपसर्ग? If yes, ल्यप्; if no, क्त्वा.'}
+/* ---- 19 उपसर्ग, अव्यय, प्रत्यय ---- */
+{s:'skt',c:19,t:'mcq',q:'संस्कृते उपसर्गाणां संख्या का?',o:['२२','१०','१८','२४'],a:0,e:'Twenty-two: प्र, परा, अप, सम्, अनु, अव, निस्, निर्, दुस्, दुर्, वि, आ, नि, अधि, अपि, अति, सु, उत्, अभि, प्रति, परि, उप.'},
+{s:'skt',c:19,t:'mcq',q:'&lsquo;आहरति&rsquo; इत्यत्र कः उपसर्गः?',o:['आ','अ','आह','हर'],a:0,e:'आ + हृ. The root हृ means to carry; आ turns it round to &lsquo;bring&rsquo;. An उपसर्ग can reverse a verb entirely.'},
+{s:'skt',c:19,t:'mcq',q:'अव्ययस्य किम् लक्षणम्?',o:['लिङ्ग-वचन-विभक्तिभिः न परिवर्तते','केवलं बहुवचने प्रयुज्यते','सदा स्त्रीलिङ्गे भवति','क्रियापदम् एव भवति'],a:0,e:'That is the definition and the name: अ-व्यय, &lsquo;not subject to change&rsquo;. It looks the same in every position.'},
+{s:'skt',c:19,t:'mcq',q:'&lsquo;श्वः&rsquo; इत्यस्य अर्थः कः?',o:['आगामी दिनम्','गतदिनम्','अद्य','सर्वदा'],a:0,e:'श्वः is tomorrow, ह्यः is yesterday, अद्य is today, परश्वः is the day after.'},
+{s:'skt',c:19,t:'mcq',q:'&lsquo;पठित्वा&rsquo; इत्यत्र कः प्रत्ययः?',o:['क्त्वा','ल्यप्','तुमुन्','शतृ'],a:0,e:'क्त्वा gives &lsquo;having read&rsquo;, and is used when the root carries no उपसर्ग.'},
+{s:'skt',c:19,t:'mcq',q:'&lsquo;आगत्य&rsquo; इत्यत्र कः प्रत्ययः?',o:['ल्यप्','क्त्वा','तुमुन्','क्तवतु'],a:0,e:'ल्यप् &mdash; because आ + गम् already carries an उपसर्ग. Using क्त्वा here (आगमित्वा) is the commonest single mistake in this chapter.'},
+{s:'skt',c:19,t:'mcq',q:'&lsquo;पठितुम्&rsquo; इत्यस्य अर्थः कः?',o:['पढ़ने के लिए','पढ़कर','पढ़ता हुआ','पढ़ा हुआ'],a:0,e:'तुमुन् gives purpose &mdash; &lsquo;in order to read&rsquo;. सः पठितुं गच्छति: he goes in order to read.'},
+{s:'skt',c:19,t:'mcq',q:'&lsquo;शनैः&rsquo; इत्यस्य अर्थः कः?',o:['धीरे-धीरे','शीघ्रम्','उच्चस्वरेण','सर्वत्र'],a:0,e:'शनैः शनैः &mdash; slowly, gradually. Its opposite in this pair is शीघ्रम्.'},
+{s:'skt',c:19,t:'fill',q:'&lsquo;अत्र&rsquo; इत्यस्य विपरीतार्थकम् अव्ययम् ______ ।',a:['तत्र','tatra'],e:'अत्र is here, तत्र is there, कुत्र is where, सर्वत्र is everywhere.'},
+{s:'skt',c:19,t:'fill',q:'&lsquo;गम्&rsquo; धातोः तुमुन्-प्रत्ययान्तं रूपम् ______ ।',a:['गन्तुम्','गन्तुं','gantum'],e:'गन्तुम् &mdash; &lsquo;in order to go&rsquo;. Note the stem shift again: गम् &rarr; गन्तुम्.'},
+{s:'skt',c:19,t:'tf',q:'यदि धातोः पूर्वम् उपसर्गः अस्ति तर्हि क्त्वा-प्रत्ययस्य स्थाने ल्यप् भवति ।',a:true,e:'सत्यम्. गत्वा (no उपसर्ग) but आगत्य (with आ). This one rule accounts for most of the errors in this section.'},
+{s:'skt',c:19,t:'tf',q:'&lsquo;च&rsquo;, &lsquo;वा&rsquo;, &lsquo;तु&rsquo; इत्येतानि अव्ययानि सन्ति ।',a:true,e:'सत्यम्. All the small joining words &mdash; and, or, but &mdash; are अव्यय, unchanging in every sentence.'},
+{s:'skt',c:19,t:'match',q:'योजयत &mdash; अव्ययम् तथा अर्थः ।',pairs:[['अद्य','आज'],['ह्यः','कल (बीता हुआ)'],['श्वः','कल (आने वाला)'],['अधुना','अब'],['सदा','सदैव']],e:'Hindi uses one word, कल, for both yesterday and tomorrow; Sanskrit does not. ह्यः looks back, श्वः looks forward.'},
+{s:'skt',c:19,t:'short',m:2,q:'क्त्वा तथा ल्यप् प्रत्यययोः भेदं सोदाहरणं लिखत ।',a:'Both mean &lsquo;having done&rsquo; and both make an indeclinable, so the meaning is the same; what differs is where each may be used. क्त्वा goes on a bare root with no उपसर्ग in front: पठ् + क्त्वा = पठित्वा (having read), गम् + क्त्वा = गत्वा (having gone). ल्यप् takes its place the moment the root carries an उपसर्ग: आ + गम् + ल्यप् = आगत्य (having come), वि + हस् + ल्यप् = विहस्य (having laughed). So the test is simply: is there an उपसर्ग? If yes, ल्यप्; if no, क्त्वा.'}
 ];
 
 BANK.push(...SKT_BANK);
@@ -2732,6 +2742,166 @@ const HIN_BANK = [
 
 BANK.push(...HIN_BANK);
 
+
+/* ============================================================
+   COMPUTATIONAL THINKING & AI — CBSE Class 8 Student Handbook, First
+   Edition March 2026, rolling out for 2026-27 across classes 3 to 8.
+
+   Written from the handbook itself rather than from a chapter list, so
+   unlike the Sanskrit and Hindi lessons this one carries real content and
+   real questions. Several are modelled on the board's own exercises.
+
+   One thing worth knowing: Part 1 of the handbook is not a separate
+   syllabus. Its seven chapters — A Square and a Cube, Power Play, A Story
+   of Numbers, Quadrilaterals, Number Play, We Distribute Yet Things
+   Multiply, Proportional Reasoning — are exactly the first seven chapters
+   of Ganita Prakash, already in the Maths tab. The handbook works
+   computational thinking THROUGH that maths. So chapter 1 here teaches the
+   six CT skills and points back at maths rather than duplicating it; the
+   four AI chapters are the genuinely new material.
+   ============================================================ */
+const CTAI = [
+{n:1, title:"Computational Thinking", sub:"The six skills, and where to practise them", hue:'var(--c7)', art:'flow',
+ map:"decomposition &rarr; pattern recognition &rarr; abstraction &rarr; algorithm design &rarr; data analysis &rarr; troubleshooting",
+ notes:[
+  "Computational thinking is a way of solving problems, not a way of using computers. You can do all of it on paper. The handbook lists six skills, and they are worth knowing by name because that is how they are asked.",
+  "<b>Decomposition</b> &mdash; break a big problem into smaller ones you can actually attack. <b>Pattern recognition</b> &mdash; notice what repeats, so you solve it once instead of many times.",
+  "<b>Abstraction</b> &mdash; strip away the detail that does not matter for this problem. A metro map is abstraction: the lines are not the real shapes of the tracks, and that is exactly why the map is useful.",
+  "<b>Algorithm design</b> &mdash; write the steps in an order that always works, for every case, not just the one in front of you. <b>Data analysis</b> &mdash; read what the numbers actually say. <b>Troubleshooting</b> &mdash; find where it went wrong and fix it, rather than starting again.",
+  "Part 1 of the handbook does not introduce new maths. It works these six skills through the first seven chapters of <em>Ganita Prakash</em> &mdash; A Square and a Cube, Power Play, A Story of Numbers, Quadrilaterals, Number Play, We Distribute Yet Things Multiply and Proportional Reasoning. Those chapters are already in the <b>Maths</b> tab of this app, so practise them there and read them here as thinking exercises.",
+  "The distinction the handbook cares about most, and returns to again and again: <b>automation follows fixed rules; AI learns from data and adapts.</b> A car wash that sprays for thirty seconds no matter how dirty the car is, is automation. One that looks at the car and decides, is AI."]},
+{n:2, title:"The AI Project Lifecycle", sub:"Six stages from problem to upkeep", hue:'var(--c6)', art:'chip',
+ map:"define the problem &rarr; collect and prepare data &rarr; build and train the model &rarr; evaluate and refine &rarr; deploy &rarr; monitor and maintain",
+ notes:[
+  "An AI project is a defined process, not magic: building a system that solves a real problem by learning from past data. The six stages repeat &mdash; the lifecycle is a loop, not a line.",
+  "<b>1. Define the problem.</b> The first and most important step, and the one where you ask a question most people skip: <i>does this even need AI?</i> If fixed rules would do the job, use fixed rules. That is automation, and it is often the better answer.",
+  "<b>2. Collect and prepare the data.</b> Sources are sensors, surveys, websites and historical records. Raw data arrives with missing values, duplicate entries, incorrect information and irrelevant data, so it is cleaned and formatted before use. The handbook&rsquo;s phrase for what happens if you skip this: <b>Garbage In, Garbage Out.</b>",
+  "<b>3. Build and train the model.</b> The system studies the prepared data and learns the patterns in it.",
+  "<b>4. Evaluate and refine.</b> Test it on data it has not seen. If it does poorly, go back &mdash; usually to the data, not the model.",
+  "<b>5. Deploy.</b> Put it to real use. <b>6. Monitor and maintain.</b> Keep watching it, because the world changes and a model trained on last year&rsquo;s data slowly stops matching this year&rsquo;s.",
+  "The handbook&rsquo;s worked example is worth remembering whole: predicting whether a student will score above 75&percnt;, using attendance, study hours, previous test marks and class participation. Those four are the input; the final result is what is predicted."]},
+{n:3, title:"AI and Its Applications", sub:"Where it is already at work", hue:'var(--c5)', art:'globe',
+ map:"healthcare &rarr; environment &rarr; automation and transport &rarr; agriculture &rarr; education &rarr; no-code tools",
+ notes:[
+  "AI does four things that are worth listing separately, because questions are set on each: it analyses data, recognises patterns, learns from experience, and makes predictions or decisions.",
+  "<b>Healthcare</b>: reading medical scans, predicting health risks from medical history and lifestyle, virtual assistants that answer health questions and remind patients about medicines, and remote monitoring through wearable devices.",
+  "<b>Environment</b>: monitoring pollution, detecting plastic waste from satellite images of rivers and oceans, tracking wildlife populations, managing waste, and checking soil health.",
+  "<b>Getting around and at home</b>: self-driving cars, navigation apps finding the quickest route, voice-controlled appliances, thermostats that learn the temperature you like.",
+  "<b>Agriculture and education</b>: predicting crop yields and soil needs; personalised learning tailored to one student, smart tutoring, accessible virtual classrooms.",
+  "<b>No-code tools</b> let you build and train a model without writing any code &mdash; Teachable Machine is the one the handbook uses. This matters: you can do a real AI project this year, without learning to program first."]},
+{n:4, title:"Data and Fairness in AI", sub:"Why unbalanced data makes unfair systems", hue:'var(--c3)', art:'scale',
+ map:"AI learns only from its training data &rarr; unbalanced data &rarr; bias &rarr; unfair decisions &rarr; how to reduce it",
+ notes:[
+  "AI does not understand objects the way you do. It finds patterns in the examples it was shown. So whatever is over-represented in the training data, it gets good at; whatever is under-represented, it gets worse at. That single sentence explains almost every question in this chapter.",
+  "The handbook&rsquo;s example: train a model on many pictures of cricket bats and few of badminton rackets, and it will guess &ldquo;cricket bat&rdquo; most of the time &mdash; not because bats are more common in the world, but because they were more common in <i>its</i> world.",
+  "<b>Bias</b> means the data is unbalanced or unfair, and a system trained on it can reject deserving candidates, spread stereotypes, ignore minority groups and make incorrect predictions.",
+  "Joy Buolamwini tested face-recognition systems from major technology companies and found they worked well for light-skinned men but made far more mistakes on women and on people with darker skin. In one demonstration the system did not detect her face until she put on a white mask. The cause was the training data, not the code.",
+  "Bias shows up in translation too: <i>वह डॉक्टर है</i> comes back as &ldquo;He is a doctor&rdquo;, though the Hindi does not say which gender. The training data simply held more male doctors.",
+  "Three ways to reduce it, and none is automatic: <b>bias check</b> (test whether the system treats different groups differently), <b>human supervision</b> (review important decisions instead of trusting them blindly) and <b>transparency</b> (be able to explain how the decision was made). Add diverse and representative data, test before deployment, and keep monitoring."]},
+{n:5, title:"Ethics and Responsible AI", sub:"Privacy, bias, misinformation, accountability", hue:'var(--c4)', art:'shield',
+ map:"what can it do? &rarr; what SHOULD it do? &rarr; privacy &rarr; bias &rarr; misinformation &rarr; who is answerable",
+ notes:[
+  "When a new technology appears, people ask what it <i>can</i> do. Ethics is the second question: what it <i>should</i> do. AI ethics are the values guiding how these systems are designed, built and used &mdash; that they are fair, respect privacy, help society, and remain accountable.",
+  "<b>Privacy</b> is not hiding from the world. It is having control over your own information. Apps collect names, locations, photographs, health information, browsing history and contacts; misused, that leads to identity theft, financial fraud and damage to reputation.",
+  "Four questions to ask before sharing anything: why is this information needed, who will be able to see it, how long will it be stored, and can I delete it later? Never share an OTP, a password, bank details or a PIN &mdash; not with anyone, for any reason.",
+  "<b>Misinformation</b> is incorrect or misleading information passed on to others, and AI has made it much easier to produce: realistic fake images, fake news articles, imitated voices, misleading videos. It can affect public opinion, elections, reputations, public trust and social harmony.",
+  "Before believing or forwarding anything: check the source, verify against trusted sites, read past the headline, and think critically. A fake message about an exam being cancelled spreads a great deal faster than the correction does.",
+  "<b>Accountability</b> is the hardest of the questions the chapter raises: when an AI system gets something wrong, who answers for it? The people who designed it, trained it and chose to deploy it &mdash; not the system. Responsibility does not transfer to a machine."]}
+];
+
+const CT_BANK = [
+/* ---- 1 Computational Thinking ---- */
+{s:'ct',c:1,t:'mcq',q:'Breaking a large problem into smaller, more manageable parts is called',o:['decomposition','abstraction','troubleshooting','deployment'],a:0,e:'Decomposition. It is usually the first move, because most problems are only hard when taken whole.'},
+{s:'ct',c:1,t:'mcq',q:'A metro map does not show the real shape or length of the tracks, only which stations connect. This is an example of',o:['abstraction','decomposition','data analysis','pattern recognition'],a:0,e:'Abstraction &mdash; removing the detail that does not matter for the job in hand. The map is more useful <i>because</i> it leaves things out.'},
+{s:'ct',c:1,t:'mcq',q:'Noticing that a problem repeats the same structure several times is',o:['pattern recognition','abstraction','troubleshooting','deployment'],a:0,e:'Pattern recognition. Spot the repeat and you solve it once rather than many times.'},
+{s:'ct',c:1,t:'mcq',q:'A set of steps that always solves the problem, for every valid case and not just one example, is',o:['an algorithm','a pattern','an abstraction','a dataset'],a:0,e:'An algorithm. The &ldquo;every case&rdquo; part is what separates an algorithm from a description of what you happened to do once.'},
+{s:'ct',c:1,t:'mcq',q:'A car wash sprays water for exactly thirty seconds for every car, however dirty. This is',o:['automation, not AI','AI, not automation','both','neither'],a:0,e:'Automation. There is no learning, no adaptation and no decision beyond the rules programmed in advance. This distinction is the one the handbook returns to most often.'},
+{s:'ct',c:1,t:'mcq',q:'A car wash that scans each car, judges its size and how dirty it is, and then decides the spray time and brush speed, is',o:['AI, because it adapts using data','automation, because it is a machine','neither','the same as the timed version'],a:0,e:'AI. The behaviour changes with the input rather than following a fixed schedule.'},
+{s:'ct',c:1,t:'mcq',q:'Traffic lights that change every 30 seconds regardless of how many cars are waiting are an example of',o:['automation','artificial intelligence','machine learning','data analysis'],a:0,e:'Automation. An AI version would adjust the green time to the actual traffic density.'},
+{s:'ct',c:1,t:'mcq',q:'An irrigation system waters plants at 7 AM every day whatever the weather. To make it AI-based you would',o:['let it decide using soil moisture and weather data','set the timer to twice a day','use a bigger pump','add more pipes'],a:0,e:'The change that makes it AI is deciding from data, not doing more of the same on a fixed schedule.'},
+{s:'ct',c:1,t:'mcq',q:'Finding where a solution went wrong and repairing it, rather than starting over, is',o:['troubleshooting','decomposition','abstraction','deployment'],a:0,e:'Troubleshooting &mdash; the sixth of the handbook&rsquo;s CT skills.'},
+{s:'ct',c:1,t:'mcq',q:'Computational thinking requires',o:['no computer at all — it is a way of solving problems','a computer with internet access','knowledge of programming','an AI model'],a:0,e:'It is a way of thinking, and every part of it can be done on paper. Computers are useful for carrying it out, not for doing it.'},
+{s:'ct',c:1,t:'fill',q:'The six computational thinking skills are decomposition, pattern recognition, ______, algorithm design, data analysis and troubleshooting.',a:['abstraction'],e:'Abstraction &mdash; keeping what matters and discarding what does not.'},
+{s:'ct',c:1,t:'tf',q:'Every problem is best solved with artificial intelligence.',a:false,e:'False, and the handbook says so directly at the very first stage of the project lifecycle. If fixed rules will do the job, fixed rules are the better answer &mdash; simpler, cheaper and easier to check.'},
+{s:'ct',c:1,t:'tf',q:'The main difference between automation and AI is that AI learns from data and adapts, while automation follows fixed rules.',a:true,e:'True. This is the distinction the handbook tests most often, in the most different disguises &mdash; car washes, traffic lights, irrigation.'},
+{s:'ct',c:1,t:'match',q:'Match each computational thinking skill with what it does.',pairs:[['Decomposition','Break the problem into smaller parts'],['Pattern recognition','Notice what repeats'],['Abstraction','Ignore the detail that does not matter'],['Algorithm design','Write steps that always work'],['Troubleshooting','Find and fix what went wrong']],e:'Five of the six. Data analysis &mdash; reading what the numbers actually say &mdash; is the one not listed here.'},
+{s:'ct',c:1,t:'short',m:3,q:'Explain the difference between automation and artificial intelligence, using an example of each.',a:'Automation follows a fixed set of rules decided in advance. It does not learn, adapt, or make decisions beyond those rules, and it behaves the same way whatever the input. A car wash that sprays water for thirty seconds and runs the brushes at a set speed for every car is automation &mdash; it does not notice that one car is filthy and another nearly clean. Artificial intelligence learns from data and adapts its behaviour accordingly. An AI car wash uses cameras to judge the size of the car, how dirty it is and what kind of dirt it carries, then decides the spray time, soap quantity and brush speed for that particular car. The same contrast appears in traffic lights &mdash; fixed 30-second cycles against green time adjusted to real traffic density &mdash; and in irrigation, where a 7 AM timer becomes a system watering according to soil moisture and the weather forecast.'},
+
+/* ---- 2 AI Project Lifecycle ---- */
+{s:'ct',c:2,t:'mcq',q:'What is the first stage of the AI project lifecycle?',o:['Define the problem','Collect the data','Train the model','Deploy the system'],a:0,e:'Define the problem &mdash; and decide whether AI is genuinely needed for it at all.'},
+{s:'ct',c:2,t:'mcq',q:'&ldquo;Garbage In, Garbage Out&rdquo; is a warning about',o:['the quality of the training data','the speed of the computer','the size of the screen','the cost of the project'],a:0,e:'A model can only be as good as what it learned from. The handbook compares it to baking a cake with the wrong ingredients.'},
+{s:'ct',c:2,t:'mcq',q:'Which of these is NOT one of the data sources the handbook lists?',o:['Guesswork','Sensors','Surveys','Historical records'],a:0,e:'The four listed are sensors, surveys, websites and historical records. Guessing is not data collection.'},
+{s:'ct',c:2,t:'mcq',q:'A device that measures a physical change in the environment and converts it into an electrical signal is a',o:['sensor','survey','database','model'],a:0,e:'A sensor &mdash; a temperature sensor measures heat, a light sensor measures intensity.'},
+{s:'ct',c:2,t:'mcq',q:'Removing duplicate entries, filling missing values and deleting irrelevant data is called',o:['data cleaning','data collection','deployment','evaluation'],a:0,e:'Data cleaning, part of the data preparation stage. Raw data almost never arrives fit to use.'},
+{s:'ct',c:2,t:'mcq',q:'Data points that are repeated more than once in a dataset are',o:['duplicate entries','missing values','irrelevant data','incorrect information'],a:0,e:'Duplicates. The four problems the handbook names in raw data are missing values, duplicates, incorrect information and irrelevant data.'},
+{s:'ct',c:2,t:'mcq',q:'In the handbook&rsquo;s example predicting whether a student scores above 75&percnt;, which of these is the value being PREDICTED rather than an input?',o:['The final exam result','Attendance percentage','Hours studied per day','Class participation'],a:0,e:'Attendance, study hours, previous test marks and participation are the inputs; the final result is what the model predicts.'},
+{s:'ct',c:2,t:'mcq',q:'Why does an AI system need monitoring after it has been deployed?',o:['Because the world changes, and a model trained on old data slowly stops matching it','Because computers wear out','Because the data is deleted','It does not — deployment is the last stage'],a:0,e:'The lifecycle is a loop, not a line. Monitoring and maintenance is the sixth stage precisely because a deployed model drifts out of date.'},
+{s:'ct',c:2,t:'mcq',q:'At which stage do you test the model on data it has not seen before?',o:['Evaluation and refinement','Data collection','Deployment','Defining the problem'],a:0,e:'Evaluation. Testing on the data it trained on tells you almost nothing &mdash; it has already seen the answers.'},
+{s:'ct',c:2,t:'mcq',q:'A model performs badly at evaluation. Where does the handbook suggest the problem usually lies?',o:['In the data','In the screen resolution','In the deployment','In the problem being too easy'],a:0,e:'Usually the data &mdash; too little of it, unbalanced, or not cleaned properly. It is the stage most often rushed.'},
+{s:'ct',c:2,t:'fill',q:'The six-stage framework for building, deploying and maintaining an AI tool is called the AI project ______.',a:['lifecycle','life cycle'],e:'The AI project lifecycle.'},
+{s:'ct',c:2,t:'fill',q:'Converting text into numbers where required is part of data ______.',a:['formatting','preparation'],e:'Data formatting, one of the steps within data preparation.'},
+{s:'ct',c:2,t:'tf',q:'The AI project lifecycle runs once from start to finish and then stops.',a:false,e:'False. It is iterative &mdash; you go back from evaluation to the data, and monitoring after deployment feeds new work. A loop, not a line.'},
+{s:'ct',c:2,t:'tf',q:'Deciding whether the project needs AI at all is part of the first stage.',a:true,e:'True, and the handbook is unusually firm about it: some problems only need automation with rules set up in advance.'},
+{s:'ct',c:2,t:'match',q:'Match each lifecycle stage with what happens in it.',pairs:[['Define the problem','Decide the goal, and whether AI is needed'],['Data collection and preparation','Gather it, then clean and format it'],['Model development','Train the system on the prepared data'],['Evaluation','Test on unseen data and refine'],['Deployment','Put it to real use'],['Monitoring','Keep watching it after release']],e:'Six stages in order. Being able to name them in sequence is worth marks on its own.'},
+{s:'ct',c:2,t:'short',m:3,q:'List the six stages of the AI project lifecycle and write one line on each.',a:'(1) Define the problem &mdash; state the goal clearly and decide whether AI is genuinely required, since fixed rules may be enough. (2) Data collection and preparation &mdash; gather relevant data from sensors, surveys, websites or historical records, then clean it by removing errors, duplicates and irrelevant points and filling missing values. (3) Model development and training &mdash; the system studies the prepared data and learns the patterns in it. (4) Evaluation and refinement &mdash; test the model on data it has not seen and improve it, usually by going back to the data. (5) Deployment &mdash; put the model into real use. (6) Monitoring and maintenance &mdash; keep checking its performance, because the world changes and a model trained on old data gradually stops matching it. The lifecycle is iterative, so these stages repeat rather than running once.'},
+
+/* ---- 3 Applications ---- */
+{s:'ct',c:3,t:'mcq',q:'AI helps in environmental protection by',o:['all of these','tracking wildlife populations','predicting pollution levels','detecting plastic waste'],a:0,e:'All of them, and the handbook adds waste management and soil health.'},
+{s:'ct',c:3,t:'mcq',q:'No-code AI tools allow users to',o:['train AI models without writing code','program models in Python only','analyse text and nothing else','replace teachers entirely'],a:0,e:'That is the whole point of them &mdash; a real project without learning to program first. Teachable Machine is the handbook&rsquo;s example.'},
+{s:'ct',c:3,t:'mcq',q:'AI can predict a person&rsquo;s future health risks by analysing their',o:['medical history and lifestyle habits','favourite films','social media posts','holiday destinations'],a:0,e:'Predictions come from relevant data. What someone watches tells you nothing useful about their health risk.'},
+{s:'ct',c:3,t:'mcq',q:'Which environmental problem can AI help with by analysing satellite images of rivers and oceans?',o:['Plastic pollution','Soil degradation','Air pollution','Water shortage'],a:0,e:'Satellite imagery of water bodies is how plastic waste is detected at scale.'},
+{s:'ct',c:3,t:'mcq',q:'An example of AI in a smart home is',o:['voice-controlled appliances','self-driving cars','tracking wildlife','diagnosing disease'],a:0,e:'Voice control and thermostats that learn your preferred temperature. The others are AI too, but not in the home.'},
+{s:'ct',c:3,t:'mcq',q:'Which of these is NOT one of the four things the handbook says AI systems do?',o:['Feel emotions','Analyse data','Recognise patterns','Learn from experience'],a:0,e:'The four are: analyse data, recognise patterns, learn from experience, and make predictions or decisions. Nothing about feeling.'},
+{s:'ct',c:3,t:'mcq',q:'Personalised learning in education means',o:['content adapted to each student&rsquo;s own pace and needs','every student getting identical lessons','removing teachers from classrooms','learning only from videos'],a:0,e:'Tailoring to the individual student. Note that the handbook lists AI as assisting teaching, not replacing teachers.'},
+{s:'ct',c:3,t:'mcq',q:'In healthcare, AI assists doctors mainly by',o:['analysing medical scans and reports faster and more accurately','performing operations alone','deciding fees','replacing nurses'],a:0,e:'Reading imaging and records to support a diagnosis. The doctor still decides.'},
+{s:'ct',c:3,t:'fill',q:'AI-powered ______ can answer health questions and remind patients to take their medicines.',a:['virtual assistants','virtual assistant','assistants','chatbots'],e:'Virtual assistants &mdash; straight from the handbook&rsquo;s exercise.'},
+{s:'ct',c:3,t:'fill',q:'______ devices such as smartwatches allow AI to carry out remote patient monitoring.',a:['wearable','wearables'],e:'Wearable devices.'},
+{s:'ct',c:3,t:'fill',q:'AI in education can provide ______ learning tailored to each student&rsquo;s needs.',a:['personalised','personalized'],e:'Personalised learning.'},
+{s:'ct',c:3,t:'tf',q:'AI is used in agriculture to help improve crop production and monitor soil health.',a:true,e:'True &mdash; one of the sectors the handbook names, alongside healthcare, environment, transport and education.'},
+{s:'ct',c:3,t:'tf',q:'You need to be able to program before you can build and train an AI model.',a:false,e:'False. No-code platforms let you train a model from examples without writing any code at all.'},
+{s:'ct',c:3,t:'match',q:'Match each AI application with its field.',pairs:[['Reading medical scans','Healthcare'],['Detecting plastic in oceans','Environment'],['Finding the quickest route','Transport'],['Voice-controlled appliances','Smart homes'],['Smart tutoring','Education']],e:'Learn one clear example per field; that is how the applications question is usually set.'},
+{s:'ct',c:3,t:'short',m:2,q:'Name two ways AI helps reduce environmental problems, and explain one of them.',a:'Two of: detecting plastic waste by analysing satellite images of rivers and oceans; predicting and monitoring pollution levels; tracking wildlife populations; managing waste; monitoring soil health. Taking plastic detection as the example: satellites photograph large stretches of water continuously, far more than any team of people could examine. An AI model trained on images where plastic accumulation has already been identified learns to recognise the same patterns, and can then flag new images automatically. That tells cleanup teams where to go, which is the part that actually reduces the problem.'},
+
+/* ---- 4 Data and Fairness ---- */
+{s:'ct',c:4,t:'mcq',q:'An AI model is trained on many pictures of cricket bats and very few of badminton rackets. Shown a new image, it will most likely',o:['guess cricket bat, because that is what it saw most','guess badminton racket','be equally accurate at both','refuse to answer'],a:0,e:'It learns from what it was shown, not from the world. Whatever dominates the training data dominates the guesses.'},
+{s:'ct',c:4,t:'mcq',q:'In AI, bias means',o:['the training data is unbalanced or unfair','the computer runs slowly','the model is too large','the code has a spelling mistake'],a:0,e:'Bias is a property of the data far more often than of the code.'},
+{s:'ct',c:4,t:'mcq',q:'Joy Buolamwini found that face-recognition systems',o:['worked well on light-skinned men but made more errors on women and darker-skinned people','worked equally well for everyone','could not detect any faces','only worked outdoors'],a:0,e:'In one demonstration the system did not detect her face until she wore a white mask. The cause was unrepresentative training data.'},
+{s:'ct',c:4,t:'mcq',q:'The Hindi sentence &lsquo;वह डॉक्टर है&rsquo; does not state a gender, yet AI translates it as &ldquo;He is a doctor.&rdquo; This happens because',o:['the training data contained more examples of male doctors','Hindi has no pronouns','the translation model is broken','English requires a male pronoun'],a:0,e:'The model reproduces the stereotype present in what it learned from. English does have &ldquo;they&rdquo;; the model simply picked the pattern it saw most.'},
+{s:'ct',c:4,t:'mcq',q:'A school&rsquo;s AI recommends sports from past data where 55 boys and 15 girls enjoyed cricket, and 10 boys and 20 girls enjoyed badminton. For a new girl it will most likely recommend badminton. This recommendation is based on',o:['a pattern in the data, not the student&rsquo;s ability','her measured sporting ability','a fair test of both sports','her own stated preference'],a:0,e:'The system has never seen this student play anything. It is repeating a pattern, which is exactly why the recommendation is not fair to her.'},
+{s:'ct',c:4,t:'mcq',q:'A company&rsquo;s hiring AI learned from past data in which most engineers hired were men, and began favouring similar resumes. This shows that',o:['AI can learn human biases from historical data','AI prefers men by design','the code contained an error','hiring data should never be used'],a:0,e:'Historical data records how things <i>were</i>, including their unfairness. A model trained on it will carry that forward unless someone intervenes.'},
+{s:'ct',c:4,t:'mcq',q:'Which is NOT one of the three ways the handbook gives for making AI fair?',o:['Collecting as much data as possible, whatever its source','Bias check','Human supervision','Transparency'],a:0,e:'More data is not the answer if it is more of the same unbalanced data. The three are bias check, human supervision and transparency.'},
+{s:'ct',c:4,t:'mcq',q:'&ldquo;Human supervision&rdquo; as a way of reducing bias means',o:['people review AI decisions instead of trusting them blindly','a person watches the computer switch on','humans collect all the data by hand','only humans make predictions'],a:0,e:'Keeping a person in the loop on decisions that matter.'},
+{s:'ct',c:4,t:'mcq',q:'A recommendation system mostly suggests videos in widely-spoken languages because those have the highest view counts. The likely effect on regional-language creators is that they',o:['are recommended less often, so are seen less','gain more viewers','are unaffected','are recommended more often'],a:0,e:'The system reinforces what is already popular. This is bias without anyone intending it &mdash; which is what makes it hard to spot.'},
+{s:'ct',c:4,t:'mcq',q:'A face-recognition system trained mostly on images from one region is used elsewhere. What is likely?',o:['It performs worse, because it has not learned from diverse examples','It performs the same everywhere','It stops working entirely','It becomes faster'],a:0,e:'Systems perform worst on the groups least represented in their training.'},
+{s:'ct',c:4,t:'fill',q:'When training data does not represent everyone equally, the result is called ______.',a:['bias'],e:'Bias &mdash; unbalanced or unfair data.'},
+{s:'ct',c:4,t:'fill',q:'Being able to understand how an AI system works and how it reaches its decisions is called ______.',a:['transparency'],e:'Transparency, the third of the three fairness measures.'},
+{s:'ct',c:4,t:'tf',q:'AI understands objects in the same way humans do.',a:false,e:'False, and it is the central point of the chapter. AI finds patterns in the examples it was given; it has no idea what a cricket bat <i>is</i>.'},
+{s:'ct',c:4,t:'tf',q:'Fairness in an AI system happens automatically if the developers mean well.',a:false,e:'False. The handbook is explicit: fairness requires careful design, continuous testing and responsible use. Good intentions are not a method.'},
+{s:'ct',c:4,t:'match',q:'Match each measure with what it does.',pairs:[['Bias check','Test whether groups are treated differently'],['Human supervision','Review decisions rather than trust them blindly'],['Transparency','Be able to explain how a decision was made'],['Diverse data','Represent everyone in the training set']],e:'Four practical steps. Note that none of them is about writing better code.'},
+{s:'ct',c:4,t:'short',m:3,q:'A school builds an AI that recommends sports. Its training data shows 55 boys and 15 girls enjoyed cricket, and 10 boys and 20 girls enjoyed badminton. What will it recommend to a new girl, is that fair, and how could the data be improved?',a:'It will most likely recommend badminton, because the pattern in the data links girls with badminton and boys with cricket. It is not fair. The system has never seen this student play anything and knows nothing about her ability or interest &mdash; it is repeating a historical pattern and treating her as a category rather than a person. Worse, the recommendation is self-reinforcing: if girls are steered towards badminton, future data will show even more girls playing badminton, and the bias deepens. The data could be improved by recording what students actually enjoy after trying every sport rather than only what they already played, by collecting information about ability and interest instead of using gender as a proxy for them, and by ensuring roughly equal representation of every group across every sport. Adding human review of the recommendations, and testing whether the system suggests different sports to otherwise identical students of different genders, would catch the problem before it reached anyone.'},
+
+/* ---- 5 Ethics ---- */
+{s:'ct',c:5,t:'mcq',q:'AI ethics is concerned with the question',o:['what SHOULD this technology do?','what CAN this technology do?','how fast can it run?','how much does it cost?'],a:0,e:'&ldquo;What can it do&rdquo; is engineering. &ldquo;What should it do&rdquo; is ethics, and the handbook opens the chapter on exactly that contrast.'},
+{s:'ct',c:5,t:'mcq',q:'Privacy is best described as',o:['having control over your personal information','hiding from the world','never using the internet','deleting all your data'],a:0,e:'The handbook is careful about this: privacy is control, not concealment.'},
+{s:'ct',c:5,t:'mcq',q:'Which of these should you never share online, with anyone?',o:['OTPs, passwords, bank details and PINs','Your favourite colour','Your school subject','A photo of your pet'],a:0,e:'Those four are the handbook&rsquo;s explicit never-share list. No legitimate service will ever ask for an OTP.'},
+{s:'ct',c:5,t:'mcq',q:'Incorrect or misleading information shared with others is called',o:['misinformation','abstraction','automation','deployment'],a:0,e:'Misinformation &mdash; and AI tools have made it much cheaper to produce convincingly.'},
+{s:'ct',c:5,t:'mcq',q:'Which of these can AI tools now produce, making misinformation more serious?',o:['All of these','Realistic fake images','Imitated voices','Fake news articles'],a:0,e:'All of them, plus misleading video. That is why checking the source matters more than it used to.'},
+{s:'ct',c:5,t:'mcq',q:'Before forwarding a message you are not sure about, you should FIRST',o:['check the source and verify it against trusted sites','forward it and correct it later','forward it only to close friends','delete your account'],a:0,e:'Check before sharing. A correction never travels as far as the original.'},
+{s:'ct',c:5,t:'mcq',q:'An app asks for access to your location, contacts, photos and camera. The best response is to',o:['ask why each permission is needed before allowing it','allow everything so the app works','refuse to install any app','allow it and hope for the best'],a:0,e:'The handbook&rsquo;s scenario exactly: pause, ask why the app needs it and who can see the data, then decide.'},
+{s:'ct',c:5,t:'mcq',q:'When an AI system makes a harmful mistake, responsibility rests with',o:['the people who designed, trained and deployed it','the AI system itself','nobody','the person harmed'],a:0,e:'Accountability does not transfer to a machine. This is one of the questions the chapter opens with, and the answer matters.'},
+{s:'ct',c:5,t:'mcq',q:'Responsible AI is described as AI that is',o:['fair, safe, transparent and beneficial to society','fast and cheap','popular and widely used','complicated and advanced'],a:0,e:'Those four words are the handbook&rsquo;s definition. Speed and accuracy alone are not enough.'},
+{s:'ct',c:5,t:'mcq',q:'Which of these is NOT a question the handbook says to ask before sharing personal data?',o:['Will this make me popular?','Why is this information needed?','Who will be able to see it?','Can I delete it later?'],a:0,e:'The four are: why is it needed, who can see it, how long is it stored, and can I delete it.'},
+{s:'ct',c:5,t:'fill',q:'Designing and using AI in ways that are fair, safe, transparent and beneficial to society is called ______ AI.',a:['responsible'],e:'Responsible AI.'},
+{s:'ct',c:5,t:'fill',q:'Keeping your personal information safe and under your own control is called ______.',a:['privacy'],e:'Privacy.'},
+{s:'ct',c:5,t:'tf',q:'A system that is fast and accurate is a success even if it harms certain groups of people.',a:false,e:'False &mdash; and the handbook sets this as a discussion question rather than a fact, because it wants you to argue it. Speed and accuracy measure how well a system does what it does; they say nothing about whether it should be doing it.'},
+{s:'ct',c:5,t:'tf',q:'Misinformation can affect public opinion, elections, reputations and social harmony.',a:true,e:'True. The handbook lists all four, plus public trust. A false message about an exam being cancelled spreads faster than the correction.'},
+{s:'ct',c:5,t:'tf',q:'Ethical AI is only about making systems accurate and efficient.',a:false,e:'False. It is about making them responsible and trustworthy &mdash; fair, respectful of privacy, helpful to society and accountable.'},
+{s:'ct',c:5,t:'match',q:'Match each idea with its meaning.',pairs:[['Privacy','Control over your personal information'],['Bias','Unfair or unbalanced training data'],['Misinformation','Incorrect information shared with others'],['Transparency','Being able to explain a decision'],['Accountability','Someone answers for the mistake']],e:'Five words that carry the whole chapter. Being able to define each one cleanly is most of the marks.'},
+{s:'ct',c:5,t:'short',m:3,q:'What is misinformation, why has AI made it a bigger problem, and what can you do before sharing something?',a:'Misinformation is incorrect or misleading information passed on to other people. AI has made it a bigger problem because these tools can now produce convincing fake material cheaply and at speed: realistic fake images, fake news articles, imitated voices and misleading videos. Content that once needed skill and time can now be generated in seconds, and it spreads faster than any correction, affecting public opinion, elections, careers and reputations, public trust and social harmony. Before believing or forwarding anything: check the source of the information; verify the facts against trusted websites; read beyond the headline, since headlines are written to be shared rather than to be accurate; and think critically about who benefits from you passing it on. The handbook&rsquo;s point is that every user has a role &mdash; misinformation spreads because ordinary people forward it, so ordinary people can also stop it.'}
+];
+
+BANK.push(...CT_BANK);
+
 const DOODLE = {
   microbe:'<path d="M18 40c-6-10 0-24 12-27 13-3 24 5 26 16 2 12-6 22-18 24-9 1-15-3-20-13Z"/><circle cx="32" cy="34" r="6"/><path d="M28 20c2-4 8-6 12-4M46 46c4 1 8 5 8 9M14 44c-4 2-7 6-7 10M50 22c3-2 8-2 11 1"/>',
   heart:'<path d="M32 54C18 44 8 35 8 25c0-7 5-12 11-12 5 0 9 3 13 8 4-5 8-8 13-8 6 0 11 5 11 12 0 10-10 19-24 29Z"/><path d="M12 32h10l4-7 6 15 5-9 4 4h12"/>',
@@ -2765,6 +2935,10 @@ const DOODLE = {
   script:'<path d="M16 12h26l8 8v32a4 4 0 0 1-4 4H16a4 4 0 0 1-4-4V16a4 4 0 0 1 4-4Z"/><path d="M22 26h18M22 34h18M22 42h11"/>',
   bell:'<path d="M32 10a4 4 0 0 1 4 4c8 3 12 10 12 18v10l4 6H12l4-6V32c0-8 4-15 12-18a4 4 0 0 1 4-4Z"/><path d="M27 48a5 5 0 0 0 10 0"/>',
   knot:'<path d="M22 22c8-8 20 4 12 12s4 20 12 12"/><path d="M42 22c-8-8-20 4-12 12s-4 20-12 12"/>',
+  chip:'<path d="M20 20h24v24H20z"/><path d="M26 26h12v12H26z"/><path d="M26 12v8M38 12v8M26 44v8M38 44v8M12 26h8M12 38h8M44 26h8M44 38h8"/>',
+  flow:'<path d="M24 8h16v12H24z"/><path d="M8 30h16v12H8z"/><path d="M40 30h16v12H40z"/><path d="M32 20v4M32 24H16v6M32 24h16v6"/>',
+  scale:'<path d="M32 12v40"/><path d="M14 20h36"/><path d="M20 52h24"/><path d="m14 20-6 14a8 8 0 0 0 12 0Z"/><path d="m50 20-6 14a8 8 0 0 0 12 0Z"/>',
+  shield:'<path d="M32 8 14 15v14c0 12 8 21 18 25 10-4 18-13 18-25V15Z"/><path d="m24 31 6 6 12-12"/>',
   area:'<path d="M10 20h30v26H10z"/><path d="M40 20h16l-8 26H40"/><path d="M14 24v18M18 24v18M22 24v18M26 24v18M30 24v18M34 24v18"/>'
 };
 function doodle(key, hue){
@@ -2775,12 +2949,13 @@ function doodle(key, hue){
 }
 
 const MATH_HUES = ['var(--c7)','var(--c2)','var(--c5)','var(--c3)','var(--c4)','var(--c6)'];
+const CT_HUES = ['var(--c7)','var(--c6)','var(--c5)','var(--c3)','var(--c4)'];
 const HIN_HUES = ['var(--c3)','var(--c7)','var(--c5)','var(--c2)','var(--c6)','var(--c4)'];
 const HIN_ART  = ['globe','leaf','heart','script','lamp','press','arrows','bell','scope','moon',
                   'knot','particles','quill','lens','bolt','book','quill','book'];
 const SKT_HUES = ['var(--c4)','var(--c6)','var(--c2)','var(--c5)','var(--c7)','var(--c3)'];
-const SKT_ART  = ['knot','particles','book','heart','lamp','bolt','quill','globe','leaf','press','press','bell',
-                  'script','bell','arrows','knot','moon','quill'];
+const SKT_ART  = ['book','leaf','bolt','arrows','knot','heart','globe','press','globe','lamp','quill','particles','shield',
+                  'script','bell','flow','knot','moon','chip'];
 const SUBJECTS = {
   sci:{
     id:'sci', name:'Science', book:'Curiosity', hasExam:true,
@@ -2792,6 +2967,11 @@ const SUBJECTS = {
                              hue:c.hue, exam:false, bank:true, map:c.map, notes:c.notes,
                              art:c.art}))
     ]},
+  ct:{
+    id:'ct', name:'AI & Thinking', book:'CT &amp; AI Student Handbook', publisher:'CBSE', hasExam:false,
+    chapters:CTAI.map(c => ({key:'ct'+c.n, n:c.n, title:c.title, sub:c.sub,
+                        hue:c.hue, exam:false, bank:true, map:c.map, notes:c.notes, art:c.art}))
+  },
   hin:{
     id:'hin', name:'Hindi', book:'\u092e\u0932\u094d\u0939\u093e\u0930 (Malhar)', hasExam:false, script:'deva',
     chapters:HIN.map((c,i) => ({key:'hin'+c.n, n:c.n, title:c.title, sub:c.sub,
@@ -2799,7 +2979,7 @@ const SUBJECTS = {
                            map:c.map, notes:c.notes, art:HIN_ART[i]}))
   },
   skt:{
-    id:'skt', name:'Sanskrit', book:'\u0926\u0940\u092a\u0915\u092e\u094d (Deepakam)', hasExam:false, script:'deva',
+    id:'skt', name:'Sanskrit', book:'\u0930\u0941\u091a\u093f\u0930\u093e \u092d\u093e\u0917 \u0969 (Ruchira 3)', hasExam:false, script:'deva',
     chapters:SKT.map((c,i) => ({key:'skt'+c.n, n:c.n, title:c.title, sub:c.sub,
                            hue:SKT_HUES[i % SKT_HUES.length], exam:false, bank:!c.lesson,
                            map:c.map, notes:c.notes, art:SKT_ART[i]}))
@@ -2828,8 +3008,9 @@ function renderLearn(){
   const LEDE = {
     sci:'Class VIII science, from the NCERT <em>Curiosity</em> textbook &mdash; all thirteen chapters. The six in the September paper come first, boiled down to what actually gets asked; the rest of the book follows, and every chapter has questions behind it.',
     math:'Class VIII mathematics, from the NCERT <em>Ganita Prakash</em> textbook &mdash; all fourteen chapters across Part 1 and Part 2.',
+    ct:'Computational Thinking and Artificial Intelligence, from the CBSE Class 8 Student Handbook. Part 1 of that handbook works through the first seven chapters of <em>Ganita Prakash</em>, which are already in the Maths tab &mdash; so chapter 1 here covers the thinking skills themselves and the four AI chapters carry the new material.',
     hin:'Class VIII Hindi, from the NCERT <em>\u092e\u0932\u094d\u0939\u093e\u0930</em> textbook &mdash; not Vasant, which it replaced. The ten \u092a\u093e\u0920 are listed with their \u0935\u093f\u0927\u093e and what to note as you read; the \u0935\u094d\u092f\u093e\u0915\u0930\u0923 sections after them &mdash; \u0938\u0902\u0927\u093f, \u0938\u092e\u093e\u0938, \u0905\u0932\u0902\u0915\u093e\u0930, \u0915\u093e\u0930\u0915 &mdash; are where the marks go, and those carry the drills.',
-    skt:'Class VIII Sanskrit, from the NCERT <em>\u0926\u0940\u092a\u0915\u092e\u094d</em> textbook. The twelve lessons are listed with what each title means; the grammar sections that follow &mdash; \u0936\u092c\u094d\u0926\u0930\u0942\u092a, \u0927\u093e\u0924\u0941\u0930\u0942\u092a, \u0915\u093e\u0930\u0915, \u0938\u0928\u094d\u0927\u093f &mdash; are where the marks are, and those carry the drills.'
+    skt:'Class VIII Sanskrit, from the NCERT <em>\u0930\u0941\u091a\u093f\u0930\u093e \u092d\u093e\u0917 \u0969</em> textbook. The twelve lessons are listed with what each title means; the grammar sections that follow &mdash; \u0936\u092c\u094d\u0926\u0930\u0942\u092a, \u0927\u093e\u0924\u0941\u0930\u0942\u092a, \u0915\u093e\u0930\u0915, \u0938\u0928\u094d\u0927\u093f &mdash; are where the marks are, and those carry the drills.'
   };
   $('#learnLede').innerHTML = LEDE[S.id] || '';
   /* "18 chapters" is true but unhelpful for the language subjects, where the
