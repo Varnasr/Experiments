@@ -16,6 +16,21 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://unpkg.com https://code.iconify.design https://api.iconify.design https://api.simplesvg.com https://api.unisvg.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://cdn.jsdelivr.net https://www.google-analytics.com https://*.basemaps.cartocdn.com https://licensebuttons.net; connect-src 'self' https://varnasr-experiments.netlify.app https://api.worldbank.org https://api.climatetrace.org https://api.iconify.design https://api.simplesvg.com https://api.unisvg.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://unpkg.com https://tessdata.projectnaptha.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com; worker-src 'self' blob:; media-src 'self' blob: data:; object-src 'none'; frame-ancestors 'none'; base-uri 'self'"
 
+# ---- PWA content types ----
+# Netlify serves .webmanifest as application/octet-stream, and Chrome refuses to
+# treat that as a web app manifest — so "add to home screen" never offered a real
+# install. The service worker is marked no-cache so a new one is picked up on the
+# next visit rather than after the old copy expires.
+[[headers]]
+  for = "/*.webmanifest"
+  [headers.values]
+    Content-Type = "application/manifest+json; charset=utf-8"
+
+[[headers]]
+  for = "/*/sw.js"
+  [headers.values]
+    Cache-Control = "no-cache"
+
 # ---- whogavetheorder moved to its own repository and site ----
 # Graduated out of this sandbox on 17 August 2026 to Varnasr/WhoGaveTheOrder,
 # serving from whogavetheorder.netlify.app. 301 rather than 302: the move is
