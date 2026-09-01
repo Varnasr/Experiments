@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Poverty & Inequality Lab — Experiments</title>
+<meta name="description" content="Fit Lorenz curves to grouped distribution data, compute Gini, Theil, Atkinson and FGT poverty measures at any line, decompose poverty change into growth and redistribution, and draw growth incidence curves. Pulls live decile data from the World Bank's Poverty and Inequality Platform.">
+<link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231B6B4A'/><path d='M7 25 L25 7 M7 25 Q18 24 25 7' stroke='white' stroke-width='2.5' fill='none' stroke-linecap='round'/></svg>">
+<style>
+  :root { --bg:#fafafa; --surface:#fff; --border:#e5e7eb; --text:#1a1a2e; --dim:#4b5563; --muted:#9ca3af; --accent:#1B6B4A; --accent-soft:#e6f2ec; --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#4a3aa7; --grid:#eceef1; --mono:ui-monospace,SFMono-Regular,Menlo,monospace; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--text); line-height:1.55; }
+  a { color:var(--accent); }
+  header { border-bottom:1px solid var(--border); background:#fff; }
+  .wrap { max-width:1080px; margin:0 auto; padding:0 1.25rem; }
+  header .wrap { display:flex; align-items:baseline; justify-content:space-between; gap:1rem; padding:.9rem 1.25rem; flex-wrap:wrap; }
+  header h1 { font-family:Georgia,serif; font-size:1.35rem; font-weight:400; }
+  header h1 small { font-size:.8rem; color:var(--muted); margin-left:.5rem; }
+  header nav a { font-size:.85rem; margin-left:1rem; text-decoration:none; }
+  main { padding:1.5rem 0 3rem; }
+  .lede { color:var(--dim); font-size:.95rem; max-width:66ch; margin-bottom:1.25rem; }
+  .grid { display:grid; grid-template-columns:320px 1fr; gap:1.25rem; align-items:start; }
+  @media (max-width:860px){ .grid { grid-template-columns:1fr; } }
+  .panel { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1rem 1.15rem; margin-bottom:1rem; }
+  .panel h2 { font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; margin-bottom:.7rem; }
+  label { display:block; font-size:.8rem; color:var(--dim); margin:.5rem 0 .2rem; }
+  select, input[type=text], input[type=number], textarea { width:100%; font:inherit; font-size:.9rem; padding:.4rem .5rem; border:1px solid var(--border); border-radius:6px; background:#fff; color:var(--text); }
+  textarea { font-family:var(--mono); font-size:.8rem; }
+  .row { display:flex; gap:.5rem; } .row > * { flex:1; }
+  button { font:inherit; font-size:.88rem; padding:.5rem .9rem; border-radius:6px; border:1px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer; }
+  button.secondary { background:#fff; color:var(--accent); } button:disabled { opacity:.5; cursor:default; }
+  .tabs { display:flex; gap:.25rem; border-bottom:1px solid var(--border); margin-bottom:.75rem; }
+  .tabs button { background:none; border:none; color:var(--dim); padding:.45rem .7rem; border-bottom:2px solid transparent; border-radius:0; }
+  .tabs button.on { color:var(--accent); border-bottom-color:var(--accent); font-weight:600; }
+  .tab { display:none; } .tab.on { display:block; }
+  .stat { display:inline-block; margin:.25rem 1.25rem .25rem 0; vertical-align:top; }
+  .stat b { display:block; font-size:1.4rem; font-family:Georgia,serif; font-weight:400; }
+  .stat span { font-size:.75rem; color:var(--muted); }
+  table { border-collapse:collapse; width:100%; font-size:.84rem; margin:.5rem 0; }
+  th, td { text-align:right; padding:.3rem .5rem; border-bottom:1px solid var(--border); font-variant-numeric:tabular-nums; }
+  th:first-child, td:first-child { text-align:left; } th { color:var(--dim); font-weight:600; font-size:.75rem; }
+  .note { font-size:.82rem; color:var(--dim); margin-top:.5rem; }
+  .warn { background:#fff7ed; border:1px solid #fed7aa; color:#9a3412; padding:.5rem .7rem; border-radius:6px; font-size:.83rem; margin:.5rem 0; }
+  .ok { background:var(--accent-soft); color:var(--accent); padding:.5rem .7rem; border-radius:6px; font-size:.83rem; margin:.5rem 0; }
+  .chart { width:100%; height:auto; display:block; margin:.4rem 0; } .chart text { font-family:inherit; font-size:11px; fill:var(--dim); }
+  .legend { display:flex; gap:1rem; flex-wrap:wrap; font-size:.8rem; color:var(--dim); margin:.2rem 0; } .legend i { display:inline-block; width:14px; height:3px; vertical-align:middle; margin-right:.35rem; border-radius:2px; }
+  .tip { position:fixed; pointer-events:none; background:#1a1a2e; color:#fff; font-size:.75rem; padding:.3rem .5rem; border-radius:4px; display:none; z-index:9; white-space:nowrap; }
+  details { margin-top:.5rem; font-size:.85rem; color:var(--dim); } summary { cursor:pointer; color:var(--accent); }
+  .mini { font-size:.78rem; color:var(--muted); } code { font-family:var(--mono); font-size:.8em; background:#f3f4f6; padding:.05em .3em; border-radius:3px; }
+  .pill { display:inline-block; font-size:.7rem; padding:1px 7px; border-radius:99px; background:var(--accent-soft); color:var(--accent); font-weight:600; margin-left:.4rem; vertical-align:middle; text-transform:none; letter-spacing:0; }
+  footer { border-top:1px solid var(--border); padding:1.25rem; text-align:center; font-size:.8rem; color:var(--muted); }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>Poverty &amp; Inequality Lab <small>grouped data · Lorenz curves · FGT · Datt–Ravallion</small></h1>
+  <nav><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/poverty-lab">Source</a></nav>
+</div></header>
+<main><div class="wrap">
+<p class="lede">Most published distribution data is grouped: ten decile shares and a mean, not a microdata file. This page does what POVCAL did with such data. It fits parametric Lorenz curves (General Quadratic and Beta), recovers the whole quantile function, and from that computes Gini, Theil, mean log deviation, Atkinson, the Palma ratio and the Foster–Greer–Thorbecke poverty measures at any line; between two surveys it decomposes the change in poverty into growth and redistribution and draws the growth incidence curve. Decile data can be pulled live from the World Bank's Poverty and Inequality Platform, or typed in.</p>
+
+<div class="grid">
+<div>
+  <div class="panel">
+    <h2>Distribution</h2>
+    <div class="tabs" id="srcTabs"><button data-src="pip" class="on">PIP (live)</button><button data-src="manual">Type it in</button></div>
+    <div class="tab on" id="src-pip">
+      <label>Country</label><select id="country"><option value="">Loading countries…</option></select>
+      <p class="mini" id="pipStatus"></p>
+      <label>Survey (the distribution analysed)</label><select id="surveyA" disabled><option>Pick a country first</option></select>
+      <label>Compare with another survey (optional)</label><select id="surveyB" disabled><option>—</option></select>
+      <p class="mini">Means and lines are per person per day in 2021 PPP dollars; deciles are shares of total welfare. Source rows are national, urban or rural, consumption or income, as PIP labels them.</p>
+    </div>
+    <div class="tab" id="src-manual">
+      <label>Decile shares of total income or consumption, in %, poorest first (any number ≥ 4 of equal-population groups)</label>
+      <textarea id="mShares" rows="3">4.5, 5.6, 6.5, 7.3, 8.3, 9.3, 10.5, 12.2, 14.6, 21.2</textarea>
+      <div class="row"><div><label>Mean per person</label><input type="number" id="mMean" value="6.36" step="0.01"></div><div><label>Unit label</label><input type="text" id="mUnit" value="$/day"></div></div>
+      <label>Label</label><input type="text" id="mLabel" value="Typed-in distribution">
+      <p style="margin-top:.6rem"><button id="mGo">Use this distribution</button></p>
+    </div>
+  </div>
+  <div class="panel">
+    <h2>Poverty line</h2>
+    <label>Line, in the same unit as the mean</label>
+    <div class="row"><input type="number" id="zline" value="3.00" step="0.05" min="0.01"><select id="zpreset"><option value="">presets…</option><option value="3.00">$3.00 (2021 PPP, extreme)</option><option value="4.20">$4.20 (lower-middle)</option><option value="8.30">$8.30 (upper-middle)</option></select></div>
+    <p class="mini">The three presets are the World Bank's global lines adopted in June 2025 in 2021 PPP dollars, replacing $2.15, $3.65 and $6.85 in 2017 PPP.</p>
+    <p style="margin-top:.6rem"><button id="recalc" disabled>Recalculate</button> <button class="secondary" id="pipCheck" disabled title="Ask PIP for its own headcount at this line and compare">Check against PIP</button></p>
+    <p class="mini" id="status"></p>
+  </div>
+</div>
+
+<div>
+  <div class="panel" id="fitPanel"><h2>Lorenz curve <span class="pill" id="fitPill"></span></h2><div id="fitOut" class="note">Choose a distribution to begin.</div></div>
+  <div class="panel" id="ineqPanel" style="display:none"><h2>Inequality</h2><div id="ineqOut"></div>
+    <details><summary>How these are computed</summary><p>Every measure is computed from the fitted quantile function y(p) = μ·L′(p) on a grid of 4,000 population points, so the numbers are those of the fitted curve, not of the ten points. Gini = 1 − 2∫L(p)dp. Theil T = ∫(y/μ)ln(y/μ)dp; mean log deviation = ∫ln(μ/y)dp; Atkinson(ε) = 1 − [∫(y/μ)<sup>1−ε</sup>dp]<sup>1/(1−ε)</sup>, with the geometric-mean form at ε = 1. The Palma ratio is the top 10% share over the bottom 40% share, read off the fitted curve. The “from the points” Gini is the trapezoid on the raw cumulative shares, which is always a lower bound because it assumes equality within each decile.</p></details></div>
+  <div class="panel" id="povPanel" style="display:none"><h2>Poverty</h2><div id="povOut"></div>
+    <details><summary>How these are computed</summary><p>The headcount H is the p at which the fitted quantile y(p) crosses the line z, found by bisection. FGT<sub>α</sub> = ∫<sub>0</sub><sup>H</sup>(1 − y(p)/z)<sup>α</sup>dp: α = 0 is the headcount, α = 1 the poverty gap (mean shortfall as a share of the line, over the whole population), α = 2 the squared gap that weights the poorest most. Watts = ∫<sub>0</sub><sup>H</sup> ln(z/y)dp. The sensitivity curve re-solves H for a range of lines; a steep curve near the chosen line means the headcount is fragile to where the line is drawn.</p></details></div>
+  <div class="panel" id="chgPanel" style="display:none"><h2>Change between surveys <span class="pill">Datt–Ravallion</span></h2><div id="chgOut"></div>
+    <details><summary>How these are computed</summary><p>With P(μ, L) the poverty measure implied by mean μ and Lorenz curve L, the change from A to B is split into a growth component P(μ<sub>B</sub>, L<sub>A</sub>) − P(μ<sub>A</sub>, L<sub>A</sub>), a redistribution component P(μ<sub>A</sub>, L<sub>B</sub>) − P(μ<sub>A</sub>, L<sub>A</sub>) and a residual (Datt and Ravallion 1992). The Shapley version averages each component over both reference points so the residual vanishes (Shorrocks 1999; Kolenikov and Shorrocks 2005). The growth incidence curve (Ravallion and Chen 2003) is the growth in y(p) between the two fitted quantile functions at each percentile; when it lies above the mean growth for low p, growth was pro-poor in the relative sense.</p></details></div>
+</div>
+</div>
+</div></main>
+<div class="tip" id="tip"></div>
+<footer>Part of <a href="../">Experiments</a> by Varna Sri Raman · Idealog Works · MIT licence · Data from the World Bank Poverty and Inequality Platform (pip.worldbank.org), fetched live; computation in the browser.</footer>
+
+<script>
+'use strict';
+const $=s=>document.querySelector(s);
+const fmt=(x,d=3)=>(x==null||!isFinite(x))?'—':Number(x).toLocaleString('en-IN',{maximumFractionDigits:d,minimumFractionDigits:d});
+const pct=(x,d=1)=>(x==null||!isFinite(x))?'—':(100*x).toFixed(d)+'%';
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function solve(A,b){ const n=b.length; const M=A.map((r,i)=>[...r,b[i]]); for(let i=0;i<n;i++){ let p=i; for(let r=i+1;r<n;r++) if(Math.abs(M[r][i])>Math.abs(M[p][i])) p=r; [M[i],M[p]]=[M[p],M[i]]; if(Math.abs(M[i][i])<1e-14) throw new Error('singular'); for(let r=0;r<n;r++){ if(r===i) continue; const f=M[r][i]/M[i][i]; for(let c=i;c<=n;c++) M[r][c]-=f*M[i][c]; } } return M.map((r,i)=>r[n]/r[i]); }
+function ols(X,y){ const k=X[0].length; const A=Array.from({length:k},()=>new Array(k).fill(0)), b=new Array(k).fill(0); X.forEach((x,i)=>{ for(let a=0;a<k;a++){ b[a]+=x[a]*y[i]; for(let c=0;c<k;c++) A[a][c]+=x[a]*x[c]; } }); return solve(A,b); }
+
+// ── Lorenz curve models (Datt 1998, IFPRI FCND Discussion Paper 50) ──
+function fitGQ(p,L){ const X=p.map((pi,i)=>[pi*pi-L[i], L[i]*(pi-1), pi-L[i]]); const y=L.map(l=>l*(1-l)); const [a,b,c]=ols(X,y); const e=-(a+b+c+1), m=b*b-4*a, n=2*b*e-4*c;
+  const Lf=q=>{ const s=m*q*q+n*q+e*e; return -0.5*(b*q+e+Math.sqrt(Math.max(s,0))); }; const dL=q=>{ const s=Math.max(m*q*q+n*q+e*e,1e-300); return -0.5*(b+(2*m*q+n)/(2*Math.sqrt(s))); };
+  return {name:'General Quadratic',short:'GQ',params:{a,b,c,e,m,n},L:Lf,dL,theory:(e<0)&&(a+c>=1)}; }
+function fitBeta(p,L){ const X=p.map(pi=>[1,Math.log(pi),Math.log(1-pi)]); const y=p.map((pi,i)=>Math.log(pi-L[i])); const [lt,g,d]=ols(X,y); const th=Math.exp(lt);
+  const Lf=q=>q-th*Math.pow(q,g)*Math.pow(1-q,d); const dL=q=>1-th*Math.pow(q,g)*Math.pow(1-q,d)*(g/q-d/(1-q));
+  return {name:'Beta',short:'Beta',params:{theta:th,gamma:g,delta:d},L:Lf,dL,theory:th>0}; }
+function validate(f,p,L){ const N=2000; let viol=0, first=null, last=null, prev=-Infinity; for(let i=1;i<N;i++){ const q=i/N; const l=f.L(q), d=f.dL(q); const bad=!(l>=-1e-9&&l<=q+1e-9&&d>=-1e-9&&d>=prev-1e-6); if(bad){ viol++; if(first==null) first=q; last=q; } prev=Math.max(prev,d); }
+  const sse=p.reduce((a,pi,i)=>a+(f.L(pi)-L[i])**2,0); const maxErr=Math.max(...p.map((pi,i)=>Math.abs(f.L(pi)-L[i]))); return Object.assign(f,{viol,first,last,valid:viol===0&&f.theory,sse,maxErr}); }
+function fitBest(shares){ const K=shares.length; const tot=shares.reduce((a,b)=>a+b,0); let cum=0; const p=[],L=[]; for(let i=0;i<K-1;i++){ cum+=shares[i]/tot; p.push((i+1)/K); L.push(cum); }
+  const fits=[]; try{ fits.push(validate(fitGQ(p,L),p,L)); }catch(e){} try{ fits.push(validate(fitBeta(p,L),p,L)); }catch(e){}
+  if(!fits.length) throw new Error('Neither Lorenz curve could be fitted.'); const valid=fits.filter(f=>f.valid); const pool=valid.length?valid:fits; pool.sort((a,b)=>a.sse-b.sse); return {best:pool[0],fits,p,L}; }
+
+// ── measures from a fitted curve and a mean ──
+const N=4000; const grid=Array.from({length:N},(_,i)=>(i+0.5)/N);
+function measures(fit,mu){ const y=grid.map(q=>Math.max(mu*fit.dL(q),1e-12)); const s=y.map(v=>v/mu);
+  const gini=1-2*grid.reduce((a,q)=>a+fit.L(q),0)/N; const theil=s.reduce((a,v)=>a+v*Math.log(v),0)/N; const mld=s.reduce((a,v)=>a-Math.log(v),0)/N;
+  const atk=eps=>eps===1?1-Math.exp(s.reduce((a,v)=>a+Math.log(v),0)/N):1-Math.pow(s.reduce((a,v)=>a+Math.pow(v,1-eps),0)/N,1/(1-eps));
+  const q=pp=>mu*fit.dL(pp); const bottom40=fit.L(0.4), top10=1-fit.L(0.9); return {y,gini,theil,mld,a05:atk(0.5),a1:atk(1),a2:atk(2),palma:top10/bottom40,bottom40,top10,median:q(0.5),p90p10:q(0.9)/q(0.1),p50mean:q(0.5)/mu,q}; }
+function headcount(fit,mu,z){ let lo=0,hi=1; if(mu*fit.dL(1-1e-9)<=z) return 1; if(mu*fit.dL(1e-9)>=z) return 0; for(let i=0;i<80;i++){ const mid=(lo+hi)/2; if(mu*fit.dL(mid)<z) lo=mid; else hi=mid; } return (lo+hi)/2; }
+function fgt(fit,mu,z){ const H=headcount(fit,mu,z); if(H<=0) return {H:0,P1:0,P2:0,W:0}; const M=2000; let P1=0,P2=0,W=0; for(let i=0;i<M;i++){ const q=H*(i+0.5)/M; const y=Math.max(mu*fit.dL(q),1e-12); const g=Math.max(1-y/z,0); P1+=g; P2+=g*g; W+=Math.log(z/y); } return {H,P1:P1/M*H,P2:P2/M*H,W:W/M*H}; }
+
+// ── charts ──
+const tip=$('#tip'); document.addEventListener('mousemove',e=>{const t=e.target.closest&&e.target.closest('[data-tip]');if(t){tip.innerHTML=t.getAttribute('data-tip');tip.style.display='block';tip.style.left=(e.clientX+12)+'px';tip.style.top=(e.clientY-10)+'px';}else tip.style.display='none';});
+function niceTicks(lo,hi,n=5){ if(lo===hi){lo-=1;hi+=1;} const raw=(hi-lo)/n, mag=10**Math.floor(Math.log10(raw)); const r=raw/mag; const step=(r<1.5?1:r<3?2:r<7?5:10)*mag; const t=[]; for(let v=Math.ceil(lo/step)*step; v<=hi+1e-9; v+=step) t.push(+v.toFixed(10)); return t; }
+function lineChart(series, opts={}){ const W=760,H=opts.height||300,m={l:56,r:16,t:14,b:36},pw=W-m.l-m.r,ph=H-m.t-m.b; const xs=series.flatMap(s=>s.x), ys=series.flatMap(s=>s.y).filter(isFinite); let x0=opts.x0??Math.min(...xs), x1=opts.x1??Math.max(...xs), y0=opts.y0??Math.min(...ys), y1=opts.y1??Math.max(...ys); if(opts.yzero){y0=Math.min(0,y0);y1=Math.max(0,y1);} if(opts.y0==null){const pad=(y1-y0)*0.06||1;y0-=pad;y1+=pad;} const X=v=>m.l+(v-x0)/(x1-x0||1)*pw, Y=v=>m.t+ph-(v-y0)/(y1-y0||1)*ph;
+  let g=`<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(opts.title||'chart')}">`; niceTicks(y0,y1).forEach(v=>{ g+=`<line x1="${m.l}" x2="${W-m.r}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--grid)"/><text x="${m.l-6}" y="${Y(v)+4}" text-anchor="end">${opts.yfmt?opts.yfmt(v):fmt(v,2)}</text>`; }); niceTicks(x0,x1,8).forEach(v=>{ g+=`<text x="${X(v)}" y="${H-m.b+16}" text-anchor="middle">${opts.xfmt?opts.xfmt(v):fmt(v,2)}</text>`; });
+  if(opts.hline!=null) g+=`<line x1="${m.l}" x2="${W-m.r}" y1="${Y(opts.hline)}" y2="${Y(opts.hline)}" stroke="#9ca3af"/>`; if(opts.vline!=null) g+=`<line x1="${X(opts.vline)}" x2="${X(opts.vline)}" y1="${m.t}" y2="${m.t+ph}" stroke="#9ca3af" stroke-dasharray="4 3"/><text x="${X(opts.vline)+4}" y="${m.t+10}">${esc(opts.vlabel||'')}</text>`; if(opts.diag) g+=`<line x1="${X(0)}" y1="${Y(0)}" x2="${X(1)}" y2="${Y(1)}" stroke="#9ca3af" stroke-dasharray="4 3"/>`;
+  series.forEach(s=>{ let d=''; s.x.forEach((x,i)=>{ const v=s.y[i]; if(!isFinite(v)){d+=' ';return;} d+=(d.endsWith(' ')||!d?'M':'L')+X(x)+','+Y(v); }); if(!s.pointsOnly) g+=`<path d="${d.trim()}" fill="none" stroke="${s.color}" stroke-width="${s.width||2}" ${s.dash?`stroke-dasharray="${s.dash}"`:''}/>`; if(s.points) s.x.forEach((x,i)=>{ g+=`<circle cx="${X(x)}" cy="${Y(s.y[i])}" r="4" fill="${s.color}" stroke="#fff" stroke-width="1.5"/>`; }); const step=Math.max(1,Math.floor(s.x.length/80)); s.x.forEach((x,i)=>{ if(i%step&&!s.points) return; const v=s.y[i]; if(!isFinite(v)) return; g+=`<circle cx="${X(x)}" cy="${Y(v)}" r="8" fill="transparent" data-tip="${esc(s.name)} · ${opts.xfmt?opts.xfmt(x):fmt(x,2)}: ${opts.yfmt?opts.yfmt(v):fmt(v,3)}"/>`; }); });
+  if(opts.ylabel) g+=`<text transform="translate(12,${m.t+ph/2}) rotate(-90)" text-anchor="middle">${esc(opts.ylabel)}</text>`; if(opts.xlabel) g+=`<text x="${m.l+pw/2}" y="${H-4}" text-anchor="middle">${esc(opts.xlabel)}</text>`; return g+'</svg>'; }
+
+// ── state ──
+let A=null, B=null; // {label, shares[], mean, unit, meta:{pip fields}}
+let pipRows=[]; const PIP='https://api.worldbank.org/pip/v1';
+function setStatus(s){ $('#status').textContent=s; }
+async function loadCountries(){ try{ const r=await fetch(`${PIP}/aux?table=countries&format=json`); const j=await r.json(); j.sort((a,b)=>a.country_name.localeCompare(b.country_name)); $('#country').innerHTML='<option value="">Choose a country…</option>'+j.map(c=>`<option value="${c.country_code}">${esc(c.country_name)} (${c.country_code})</option>`).join(''); $('#country').value='IND'; loadSurveys(); } catch(e){ $('#country').innerHTML='<option value="">Could not load the country list</option>'; $('#pipStatus').textContent='PIP is not reachable from this browser right now; type a distribution in instead.'; } }
+async function loadSurveys(){ const c=$('#country').value; if(!c) return; $('#pipStatus').textContent='Fetching surveys…'; $('#surveyA').disabled=$('#surveyB').disabled=true;
+  try{ const r=await fetch(`${PIP}/pip?country=${c}&year=all&povline=3.0&format=json`); const j=await r.json(); if(!Array.isArray(j)||!j.length) throw new Error('no surveys'); pipRows=j.sort((a,b)=>a.reporting_year-b.reporting_year||a.reporting_level.localeCompare(b.reporting_level));
+    const opt=(r,i)=>`<option value="${i}">${r.reporting_year} · ${r.reporting_level} · ${r.welfare_type} · ${r.survey_acronym||''}</option>`; $('#surveyA').innerHTML=pipRows.map(opt).join(''); $('#surveyB').innerHTML='<option value="">— none —</option>'+pipRows.map(opt).join('');
+    const nat=pipRows.map((r,i)=>r.reporting_level==='national'?i:-1).filter(i=>i>=0); const last=nat.length?nat[nat.length-1]:pipRows.length-1; $('#surveyA').value=last; const prevNat=nat.length>1?nat[nat.length-2]:''; $('#surveyB').value=prevNat;
+    $('#surveyA').disabled=$('#surveyB').disabled=false; $('#pipStatus').textContent=`${pipRows.length} survey rows for ${c}.`; usePip(); } catch(e){ $('#pipStatus').textContent='No PIP data for this country.'; } }
+function rowToDist(r){ const shares=[1,2,3,4,5,6,7,8,9,10].map(k=>r['decile'+k]); return {label:`${r.country_name} ${r.reporting_year} (${r.reporting_level}, ${r.welfare_type}, ${r.survey_acronym||'survey'})`, shares, mean:r.mean, unit:'$/day (2021 PPP)', meta:r}; }
+function usePip(){ const a=$('#surveyA').value, b=$('#surveyB').value; if(a==='') return; A=rowToDist(pipRows[+a]); B=b===''?null:rowToDist(pipRows[+b]); $('#recalc').disabled=false; $('#pipCheck').disabled=false; run(); }
+$('#country').onchange=loadSurveys; $('#surveyA').onchange=usePip; $('#surveyB').onchange=usePip;
+$('#mGo').onclick=()=>{ const shares=$('#mShares').value.split(/[,\s]+/).map(Number).filter(isFinite); if(shares.length<4){ alert('Give at least four shares.'); return; } const mean=+$('#mMean').value; if(!(mean>0)){ alert('Mean must be positive.'); return; } A={label:$('#mLabel').value||'Typed-in distribution',shares,mean,unit:$('#mUnit').value||'',meta:null}; B=null; $('#recalc').disabled=false; $('#pipCheck').disabled=true; run(); };
+$('#zpreset').onchange=e=>{ if(e.target.value){ $('#zline').value=e.target.value; run(); } }; $('#recalc').onclick=run; $('#zline').onchange=run;
+$('#srcTabs').addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return; [...$('#srcTabs').children].forEach(x=>x.classList.toggle('on',x===b)); document.querySelectorAll('#src-pip,#src-manual').forEach(x=>x.classList.toggle('on',x.id==='src-'+b.dataset.src)); });
+
+function describeFit(F,label){ return `<tr><td>${esc(label)}</td><td>${F.best.short}</td><td>${F.fits.map(f=>`${f.short}: ${f.valid?'valid':`invalid (${f.viol} grid points${f.first!=null?`, p ≈ ${f.first.toFixed(3)}–${f.last.toFixed(3)}`:''})`}, max error ${f.maxErr.toExponential(1)}`).join('; ')}</td></tr>`; }
+
+function run(){ if(!A) return; const z=+$('#zline').value; if(!(z>0)) return; try{
+  const FA=fitBest(A.shares), FB=B?fitBest(B.shares):null; const mA=measures(FA.best,A.mean), mB=FB?measures(FB.best,B.mean):null;
+  const giniPts=(F)=>{ let g=0, pp=0, ll=0; F.p.concat([1]).forEach((p,i)=>{ const l=i<F.L.length?F.L[i]:1; g+=(p-pp)*(l+ll); pp=p; ll=l; }); return 1-g; };
+  // Lorenz panel
+  $('#fitPill').textContent=`${FA.best.name}${FB?' / '+FB.best.name:''}`;
+  const curve=(F,color,name)=>({name,color,x:grid.filter((_,i)=>i%20===0).concat([1]),y:grid.filter((_,i)=>i%20===0).map(q=>F.best.L(q)).concat([1])});
+  const pts=(F,color,name)=>({name,color,x:F.p,y:F.L,points:true,pointsOnly:true});
+  const ser=[curve(FA,'var(--s1)',`Fitted (${FA.best.short}) A`),pts(FA,'var(--s1)','Decile points A')]; if(FB){ ser.push(curve(FB,'var(--s2)',`Fitted (${FB.best.short}) B`),pts(FB,'var(--s2)','Decile points B')); }
+  let warn=''; [['A',FA],['B',FB]].forEach(([k,F])=>{ if(F&&!F.best.valid) warn+=`<div class="warn">Distribution ${k}: neither curve is a valid Lorenz curve everywhere (${F.best.short} violates monotonicity or convexity at ${F.best.viol} of 2,000 grid points${F.best.first!=null?`, around p = ${F.best.first.toFixed(3)}–${F.best.last.toFixed(3)}`:''}). Measures that depend on that range, usually the extreme tails, are approximate.</div>`; });
+  $('#fitOut').innerHTML=`<div class="note"><b>A:</b> ${esc(A.label)} · mean ${fmt(A.mean,2)} ${esc(A.unit)}${B?`<br><b>B:</b> ${esc(B.label)} · mean ${fmt(B.mean,2)} ${esc(B.unit)}`:''}</div><div class="legend"><span><i style="background:var(--s1)"></i>A</span>${B?'<span><i style="background:var(--s2)"></i>B</span>':''}<span><i style="background:#9ca3af"></i>line of equality</span></div>`+lineChart(ser,{x0:0,x1:1,y0:0,y1:1,diag:true,xlabel:'cumulative share of population',ylabel:'cumulative share of income or consumption',title:'Lorenz curves',yfmt:v=>pct(v,0),xfmt:v=>pct(v,0)})+warn+`<details><summary>Fit diagnostics</summary><table><tr><th>Distribution</th><th>Chosen</th><th>Validity and fit</th></tr>${describeFit(FA,'A')}${FB?describeFit(FB,'B'):''}</table><p class="mini">Both curves are fitted by OLS to the cumulative decile points excluding (1, 1), as in Datt (1998). A curve is valid when L(p) lies between 0 and p, L′ is non-negative and non-decreasing, and the theoretical conditions hold (GQ: e &lt; 0 and a + c ≥ 1). The valid curve with the smaller sum of squared errors is used; if neither is valid everywhere the better-fitting one is used with the warning above.</p></details>`;
+  // Inequality
+  const pipG=A.meta?A.meta.gini:null; const pipMed=A.meta?A.meta.median:null;
+  const row=(name,va,vb,f=v=>fmt(v,3))=>`<tr><td>${name}</td><td>${f(va)}</td>${B?`<td>${f(vb)}</td>`:''}</tr>`;
+  $('#ineqOut').innerHTML=`<span class="stat"><b>${fmt(mA.gini,3)}</b><span>Gini (fitted curve)</span></span><span class="stat"><b>${fmt(giniPts(FA),3)}</b><span>Gini (from the points, lower bound)</span></span>${pipG!=null?`<span class="stat"><b>${fmt(pipG,3)}</b><span>Gini reported by PIP</span></span>`:''}<span class="stat"><b>${fmt(mA.palma,2)}</b><span>Palma ratio</span></span>
+  <table><tr><th>Measure</th><th>A</th>${B?'<th>B</th>':''}</tr>${row('Gini',mA.gini,mB&&mB.gini)}${row('Theil T (GE(1))',mA.theil,mB&&mB.theil)}${row('Mean log deviation (GE(0))',mA.mld,mB&&mB.mld)}${row('Atkinson ε = 0.5',mA.a05,mB&&mB.a05)}${row('Atkinson ε = 1',mA.a1,mB&&mB.a1)}${row('Atkinson ε = 2',mA.a2,mB&&mB.a2)}${row('Bottom 40% share',mA.bottom40,mB&&mB.bottom40,v=>pct(v))}${row('Top 10% share',mA.top10,mB&&mB.top10,v=>pct(v))}${row('Palma ratio (top 10 / bottom 40)',mA.palma,mB&&mB.palma,v=>fmt(v,2))}${row('P90 / P10',mA.p90p10,mB&&mB.p90p10,v=>fmt(v,2))}${row(`Median (${esc(A.unit)})`,mA.median,mB&&mB.median,v=>fmt(v,2))}${pipMed!=null?row('Median reported by PIP',pipMed,B&&B.meta&&B.meta.median,v=>fmt(v,2)):''}${row('Median / mean',mA.p50mean,mB&&mB.p50mean,v=>fmt(v,3))}</table>`;
+  $('#ineqPanel').style.display='block';
+  // Poverty
+  const lines=[...new Set([z,3.0,4.2,8.3])]; const tbl=lines.map(l=>{ const a=fgt(FA.best,A.mean,l), b=FB?fgt(FB.best,B.mean,l):null; return `<tr><td>${fmt(l,2)}${l===z?' (chosen)':''}</td><td>${pct(a.H)}</td><td>${pct(a.P1)}</td><td>${pct(a.P2)}</td><td>${fmt(a.W,3)}</td>${B?`<td>${pct(b.H)}</td><td>${pct(b.P1)}</td><td>${pct(b.P2)}</td>`:''}</tr>`; }).join('');
+  const fa=fgt(FA.best,A.mean,z); const pop=A.meta&&A.meta.reporting_pop?A.meta.reporting_pop:null;
+  const zs=[]; const zmax=Math.max(15,2.5*A.mean); for(let v=0.25;v<=zmax;v+=zmax/120) zs.push(v); const sens=[{name:'A headcount',color:'var(--s1)',x:zs,y:zs.map(v=>headcount(FA.best,A.mean,v))}]; if(FB) sens.push({name:'B headcount',color:'var(--s2)',x:zs,y:zs.map(v=>headcount(FB.best,B.mean,v))});
+  const elas=(headcount(FA.best,A.mean,z*1.01)-headcount(FA.best,A.mean,z*0.99))/(0.02)/Math.max(fa.H,1e-9);
+  const pipCmp=A.meta&&Math.abs(A.meta.poverty_line-z)<1e-9?`<div class="ok">PIP's own headcount at $${fmt(z,2)} for this row is ${pct(A.meta.headcount)} and poverty gap ${pct(A.meta.poverty_gap)}, computed from the microdata; this page gets ${pct(fa.H)} and ${pct(fa.P1)} from ten decile shares. The difference is the cost of grouping.</div>`:'';
+  $('#povOut').innerHTML=`<span class="stat"><b>${pct(fa.H)}</b><span>headcount at ${fmt(z,2)} ${esc(A.unit)}</span></span><span class="stat"><b>${pct(fa.P1)}</b><span>poverty gap (FGT1)</span></span><span class="stat"><b>${pct(fa.P2)}</b><span>squared gap (FGT2)</span></span>${pop?`<span class="stat"><b>${fmt(fa.H*pop/1e6,1)}m</b><span>people, on PIP's population of ${fmt(pop/1e6,0)}m</span></span>`:''}<span class="stat"><b>${fmt(elas,2)}</b><span>elasticity of headcount to the line</span></span>${pipCmp}<div id="pipCheckOut"></div>
+  <table><tr><th>Line</th><th>H (A)</th><th>FGT1 (A)</th><th>FGT2 (A)</th><th>Watts (A)</th>${B?'<th>H (B)</th><th>FGT1 (B)</th><th>FGT2 (B)</th>':''}</tr>${tbl}</table>
+  <div class="legend"><span><i style="background:var(--s1)"></i>A</span>${B?'<span><i style="background:var(--s2)"></i>B</span>':''}</div>`+lineChart(sens,{vline:z,vlabel:'chosen line',y0:0,y1:1,xlabel:`poverty line (${A.unit})`,ylabel:'headcount ratio',title:'headcount against the poverty line',yfmt:v=>pct(v,0)});
+  $('#povPanel').style.display='block';
+  // Change
+  if(FB){ const swap=(A.meta&&B.meta&&B.meta.reporting_year<A.meta.reporting_year); const [E,Lt,FE,FL,mE,mL]=swap?[B,A,FB,FA,mB,mA]:[A,B,FA,FB,mA,mB]; const P=(mu,F)=>fgt(F.best,mu,z); const PAA=P(E.mean,FE), PBB=P(Lt.mean,FL), PBA=P(Lt.mean,FE), PAB=P(E.mean,FL); const dr=key=>{ const d=PBB[key]-PAA[key], g=PBA[key]-PAA[key], r=PAB[key]-PAA[key]; const gS=0.5*(g+(PBB[key]-PAB[key])), rS=0.5*(r+(PBB[key]-PBA[key])); return {d,g,r,res:d-g-r,gS,rS}; };
+    const rows=[['Headcount','H'],['Poverty gap','P1'],['Squared gap','P2']].map(([n,k])=>{ const x=dr(k); return `<tr><td>${n}</td><td>${(100*x.d).toFixed(2)}</td><td>${(100*x.g).toFixed(2)}</td><td>${(100*x.r).toFixed(2)}</td><td>${(100*x.res).toFixed(2)}</td><td>${(100*x.gS).toFixed(2)}</td><td>${(100*x.rS).toFixed(2)}</td></tr>`; }).join('');
+    const gp=grid.filter((_,i)=>i%40===0).filter(q=>q>=0.01&&q<=0.99); const gic=gp.map(q=>mL.q(q)/mE.q(q)-1); const meanG=Lt.mean/E.mean-1; const yrs=(E.meta&&Lt.meta)?(Lt.meta.reporting_year-E.meta.reporting_year):null; const ann=yrs?Math.pow(Lt.mean/E.mean,1/yrs)-1:null;
+    const proPoor=gic.slice(0,Math.floor(gic.length*0.4)).reduce((a,b)=>a+b,0)/Math.floor(gic.length*0.4);
+    $('#chgOut').innerHTML=`<div class="note">From <b>${esc(E.label)}</b> to <b>${esc(Lt.label)}</b>${swap?' (the surveys were put in date order)':''}, at the line ${fmt(z,2)} ${esc(A.unit)}. Mean grew ${pct(meanG)}${ann!=null?` over ${yrs} years, ${pct(ann,2)} a year`:''}; the Gini moved from ${fmt(mE.gini,3)} to ${fmt(mL.gini,3)}.</div>
+    <table><tr><th>Measure (percentage points)</th><th>Change</th><th>Growth</th><th>Redistribution</th><th>Residual</th><th>Growth (Shapley)</th><th>Redistribution (Shapley)</th></tr>${rows}</table>
+    <div class="legend"><span><i style="background:var(--s1)"></i>growth in y(p) between the two surveys</span><span><i style="background:#9ca3af"></i>growth in the mean</span></div>`+lineChart([{name:'growth incidence',color:'var(--s1)',x:gp,y:gic}],{hline:meanG,x0:0,x1:1,yzero:true,xlabel:'percentile of the population',ylabel:'growth in income or consumption',title:'growth incidence curve',yfmt:v=>pct(v,0),xfmt:v=>pct(v,0)})+`<p class="note">Bottom 40% grew ${pct(proPoor)} on average against ${pct(meanG)} for the mean: growth was ${proPoor>meanG?'pro-poor in the relative sense (the poor gained proportionally more)':'not pro-poor in the relative sense (the poor gained proportionally less)'}. The tails of a growth incidence curve built from two parametric fits are the least reliable part of it.</p>`;
+    $('#chgPanel').style.display='block'; } else $('#chgPanel').style.display='none';
+  setStatus(''); } catch(e){ setStatus('Error: '+e.message); console.error(e); } }
+
+$('#pipCheck').onclick=async()=>{ if(!A||!A.meta) return; const z=+$('#zline').value; const r=A.meta; $('#pipCheckOut').innerHTML='<p class="mini">Asking PIP…</p>'; try{ const res=await fetch(`${PIP}/pip?country=${r.country_code}&year=${r.reporting_year}&povline=${z}&format=json`); const j=await res.json(); const row=(j||[]).find(x=>x.reporting_level===r.reporting_level&&x.welfare_type===r.welfare_type); if(!row) throw new Error('no matching row'); const FA=fitBest(A.shares); const f=fgt(FA.best,A.mean,z);
+  $('#pipCheckOut').innerHTML=`<div class="ok">PIP, from the microdata at $${fmt(z,2)}: headcount ${pct(row.headcount)}, poverty gap ${pct(row.poverty_gap)}, squared gap ${pct(row.poverty_severity)}, Watts ${fmt(row.watts,3)}. This page, from ten deciles: ${pct(f.H)}, ${pct(f.P1)}, ${pct(f.P2)}, ${fmt(f.W,3)}.</div>`; } catch(e){ $('#pipCheckOut').innerHTML=`<div class="warn">PIP did not return a matching row for this line (${e.message}).</div>`; } };
+
+loadCountries();
+</script>
+</body>
+</html>
