@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Causal Inference Workbench — Experiments</title>
+<meta name="description" content="Difference-in-differences, event studies and synthetic control, computed entirely in your browser. Bring a panel CSV, simulate one with a known effect, or pull a live country panel from the World Bank.">
+<link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231B6B4A'/><path d='M7 22 L14 15 L19 19 L26 9' stroke='white' stroke-width='3' fill='none' stroke-linecap='round'/></svg>">
+<style>
+  :root {
+    --bg:#fafafa; --surface:#fff; --border:#e5e7eb; --text:#1a1a2e; --dim:#4b5563; --muted:#9ca3af;
+    --accent:#1B6B4A; --accent-soft:#e6f2ec;
+    --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#4a3aa7; --s5:#e34948; --grid:#eceef1;
+    --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--text); line-height:1.55; }
+  a { color:var(--accent); }
+  header { border-bottom:1px solid var(--border); background:#fff; }
+  .wrap { max-width:1080px; margin:0 auto; padding:0 1.25rem; }
+  header .wrap { display:flex; align-items:baseline; justify-content:space-between; gap:1rem; padding:.9rem 1.25rem; flex-wrap:wrap; }
+  header h1 { font-family:Georgia,serif; font-size:1.35rem; font-weight:400; }
+  header h1 small { font-size:.8rem; color:var(--muted); margin-left:.5rem; font-family:inherit; }
+  header nav a { font-size:.85rem; margin-left:1rem; text-decoration:none; }
+  main { padding:1.5rem 0 3rem; }
+  .lede { color:var(--dim); font-size:.95rem; max-width:64ch; margin-bottom:1.25rem; }
+  .grid { display:grid; grid-template-columns:320px 1fr; gap:1.25rem; align-items:start; }
+  @media (max-width:860px){ .grid { grid-template-columns:1fr; } }
+  .panel { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1rem 1.15rem; margin-bottom:1rem; }
+  .panel h2 { font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; margin-bottom:.7rem; }
+  .panel h3 { font-family:Georgia,serif; font-weight:400; font-size:1.1rem; margin-bottom:.4rem; }
+  label { display:block; font-size:.8rem; color:var(--dim); margin:.5rem 0 .2rem; }
+  input[type=text], input[type=number], select, textarea { width:100%; font:inherit; font-size:.9rem; padding:.42rem .5rem; border:1px solid var(--border); border-radius:6px; background:#fff; color:var(--text); }
+  input[type=file] { font-size:.85rem; }
+  .row { display:flex; gap:.5rem; }
+  .row > * { flex:1; }
+  button { font:inherit; font-size:.88rem; padding:.5rem .9rem; border-radius:6px; border:1px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer; }
+  button.secondary { background:#fff; color:var(--accent); }
+  button:disabled { opacity:.5; cursor:default; }
+  .tabs { display:flex; gap:.25rem; border-bottom:1px solid var(--border); margin-bottom:.75rem; flex-wrap:wrap; }
+  .tabs button { background:none; border:none; color:var(--dim); padding:.45rem .7rem; border-bottom:2px solid transparent; border-radius:0; }
+  .tabs button.on { color:var(--accent); border-bottom-color:var(--accent); font-weight:600; }
+  .tab { display:none; } .tab.on { display:block; }
+  .stat { display:inline-block; margin:.25rem 1.25rem .25rem 0; }
+  .stat b { display:block; font-size:1.45rem; font-family:Georgia,serif; font-weight:400; }
+  .stat span { font-size:.75rem; color:var(--muted); }
+  table { border-collapse:collapse; width:100%; font-size:.85rem; margin:.5rem 0; }
+  th, td { text-align:right; padding:.3rem .5rem; border-bottom:1px solid var(--border); font-variant-numeric:tabular-nums; }
+  th:first-child, td:first-child { text-align:left; }
+  th { color:var(--dim); font-weight:600; font-size:.75rem; }
+  .note { font-size:.82rem; color:var(--dim); margin-top:.5rem; }
+  .warn { background:#fff7ed; border:1px solid #fed7aa; color:#9a3412; padding:.5rem .7rem; border-radius:6px; font-size:.83rem; margin:.5rem 0; }
+  .ok { background:var(--accent-soft); color:var(--accent); padding:.5rem .7rem; border-radius:6px; font-size:.83rem; margin:.5rem 0; }
+  .chart { width:100%; height:auto; display:block; margin:.5rem 0; }
+  .chart text { font-family:inherit; font-size:11px; fill:var(--dim); }
+  .legend { display:flex; gap:1rem; flex-wrap:wrap; font-size:.8rem; color:var(--dim); margin:.2rem 0; }
+  .legend i { display:inline-block; width:14px; height:3px; vertical-align:middle; margin-right:.35rem; border-radius:2px; }
+  .tip { position:fixed; pointer-events:none; background:#1a1a2e; color:#fff; font-size:.75rem; padding:.3rem .5rem; border-radius:4px; display:none; z-index:9; white-space:nowrap; }
+  details { margin-top:.6rem; font-size:.85rem; color:var(--dim); }
+  summary { cursor:pointer; color:var(--accent); }
+  code { font-family:var(--mono); font-size:.8em; background:#f3f4f6; padding:.05em .3em; border-radius:3px; }
+  .mini { font-size:.78rem; color:var(--muted); }
+  progress { width:100%; height:6px; }
+  .pill { display:inline-block; font-size:.7rem; padding:1px 7px; border-radius:99px; background:var(--accent-soft); color:var(--accent); font-weight:600; margin-left:.4rem; vertical-align:middle; }
+  footer { border-top:1px solid var(--border); padding:1.25rem; text-align:center; font-size:.8rem; color:var(--muted); }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>Causal Inference Workbench <small>DiD · event study · synthetic control</small></h1>
+  <nav><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/causal-workbench">Source</a></nav>
+</div></header>
+
+<main><div class="wrap">
+<p class="lede">Three panel-data estimators that economists reach for when a policy hits some units and not others: two-way fixed-effects difference-in-differences with cluster-robust standard errors, an event study (plain TWFE or the Sun–Abraham interaction-weighted version for staggered adoption), and Abadie-style synthetic control with placebo-in-space inference. Everything runs in this tab. Nothing is uploaded anywhere.</p>
+
+<div class="grid">
+<div>
+  <div class="panel">
+    <h2>1 · Data</h2>
+    <div class="tabs" id="srcTabs">
+      <button data-src="sim" class="on">Simulate</button>
+      <button data-src="csv">Upload CSV</button>
+      <button data-src="wb">World Bank</button>
+    </div>
+
+    <div class="tab on" id="src-sim">
+      <p class="mini">A panel with unit and year effects, an AR(1) shock, and a treatment effect you choose. Because the truth is known, you can see which estimator recovers it.</p>
+      <div class="row"><div><label>Units</label><input type="number" id="simN" value="40" min="6" max="300"></div>
+      <div><label>Periods</label><input type="number" id="simT" value="20" min="6" max="60"></div></div>
+      <div class="row"><div><label>Treated units</label><input type="number" id="simK" value="10" min="1" max="100"></div>
+      <div><label>First treated period</label><input type="number" id="simG" value="11" min="3"></div></div>
+      <label>Adoption</label>
+      <select id="simStagger"><option value="0">Common date</option><option value="1">Staggered (cohorts spread over 5 periods)</option></select>
+      <div class="row"><div><label>Effect at adoption</label><input type="number" id="simEff" value="2" step="0.5"></div>
+      <div><label>Growth per period</label><input type="number" id="simSlope" value="0.5" step="0.25"></div></div>
+      <div class="row"><div><label>Noise SD</label><input type="number" id="simSD" value="1" step="0.25" min="0"></div>
+      <div><label>Seed</label><input type="number" id="simSeed" value="7"></div></div>
+      <label><input type="checkbox" id="simTrend"> Give treated units a steeper pre-trend (violates parallel trends)</label>
+      <p style="margin-top:.7rem"><button id="simGo">Generate panel</button></p>
+    </div>
+
+    <div class="tab" id="src-csv">
+      <p class="mini">Long format: one row per unit-period. A 0/1 treatment column that switches on when a unit is treated, or a column with each unit's adoption period (blank or 0 for never treated).</p>
+      <label>File</label><input type="file" id="csvFile" accept=".csv,text/csv">
+      <div id="csvMap" style="display:none">
+        <label>Unit column</label><select id="cUnit"></select>
+        <label>Time column</label><select id="cTime"></select>
+        <label>Outcome column</label><select id="cY"></select>
+        <label>Treatment column</label><select id="cD"></select>
+        <label>Treatment column is</label>
+        <select id="cDkind"><option value="onoff">0/1 switching on at treatment</option><option value="adopt">adoption period (0 or blank = never)</option></select>
+        <p style="margin-top:.7rem"><button id="csvGo">Load panel</button></p>
+      </div>
+    </div>
+
+    <div class="tab" id="src-wb">
+      <p class="mini">Pulls a country-year panel straight from the World Bank API (<code>api.worldbank.org</code>). Aggregates are dropped. You name the treated country and the year.</p>
+      <label>Indicator</label>
+      <select id="wbInd">
+        <option value="NY.GDP.PCAP.KD">GDP per capita (constant 2015 US$)</option>
+        <option value="NY.GDP.PCAP.KD.ZG">GDP per capita growth (annual %)</option>
+        <option value="SP.DYN.LE00.IN">Life expectancy at birth (years)</option>
+        <option value="SH.DYN.MORT">Under-5 mortality (per 1,000)</option>
+        <option value="EG.ELC.ACCS.ZS">Access to electricity (% of population)</option>
+        <option value="SE.SEC.ENRR">Secondary school enrolment, gross (%)</option>
+        <option value="FP.CPI.TOTL.ZG">Inflation, consumer prices (annual %)</option>
+        <option value="IT.NET.USER.ZS">Individuals using the Internet (%)</option>
+      </select>
+      <div class="row"><div><label>From</label><input type="number" id="wbFrom" value="2000"></div><div><label>To</label><input type="number" id="wbTo" value="2023"></div></div>
+      <div class="row"><div><label>Treated ISO3</label><input type="text" id="wbTreated" value="IND" maxlength="3" style="text-transform:uppercase"></div>
+      <div><label>Treatment year</label><input type="number" id="wbYear" value="2017"></div></div>
+      <label>Transform</label>
+      <select id="wbLog"><option value="none">Level</option><option value="log">Natural log</option></select>
+      <p style="margin-top:.7rem"><button id="wbGo">Fetch panel</button></p>
+      <p class="mini" id="wbStatus"></p>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>2 · Estimation settings</h2>
+    <label>Event window (periods before / after)</label>
+    <div class="row"><input type="number" id="esPre" value="5" min="1"><input type="number" id="esPost" value="5" min="0"></div>
+    <label>Event-study estimator</label>
+    <select id="esKind"><option value="twfe">TWFE (dynamic)</option><option value="sa">Sun–Abraham interaction-weighted</option></select>
+    <label>Synthetic control: placebo runs</label>
+    <select id="scPlacebo"><option value="all">Every donor</option><option value="0">None</option></select>
+    <p style="margin-top:.7rem"><button id="runBtn" disabled>Run all three</button></p>
+    <p class="mini" id="status"></p>
+  </div>
+</div>
+
+<div>
+  <div class="panel" id="dataPanel">
+    <h2>Panel</h2>
+    <div id="dataSummary" class="note">No data yet. Simulate a panel, upload one, or fetch one.</div>
+    <div id="rawChart"></div>
+  </div>
+
+  <div class="panel" id="didPanel" style="display:none">
+    <h2>Difference-in-differences <span class="pill">TWFE · cluster-robust SE</span></h2>
+    <div id="didOut"></div>
+    <details><summary>What is being estimated</summary>
+      <p>y<sub>it</sub> = α<sub>i</sub> + λ<sub>t</sub> + δ·D<sub>it</sub> + ε<sub>it</sub>, where D<sub>it</sub> = 1 once unit i is treated. Both sets of fixed effects are removed by alternating demeaning, δ is estimated by OLS on the residualised variables, and the variance uses the cluster-robust sandwich with clusters at the unit level and the usual small-sample factor G/(G−1)·(n−1)/(n−k). With a single adoption date this equals the 2×2 comparison of means shown in the table. With staggered adoption, TWFE mixes clean and “forbidden” comparisons (Goodman-Bacon 2021); read the event study instead.</p>
+    </details>
+  </div>
+
+  <div class="panel" id="esPanel" style="display:none">
+    <h2>Event study <span class="pill" id="esPill"></span></h2>
+    <div id="esOut"></div>
+    <details><summary>What is being estimated</summary>
+      <p>Relative time k = t − g<sub>i</sub>, where g<sub>i</sub> is the adoption period. The plain version regresses y on unit and period effects plus an indicator for every k in the window (endpoints binned), omitting k = −1. The Sun–Abraham (2021) version interacts each cohort with each k, uses never-treated units as the comparison, and averages cohort-specific coefficients with weights equal to each cohort’s share of the treated units observed at that k; its standard errors come from the delta method on the full coefficient covariance. Pre-period coefficients near zero are the parallel-trends check; the simulator’s “steeper pre-trend” box shows what a violation looks like.</p>
+    </details>
+  </div>
+
+  <div class="panel" id="scPanel" style="display:none">
+    <h2>Synthetic control <span class="pill">Abadie–Diamond–Hainmueller</span></h2>
+    <div id="scOut"></div>
+    <details><summary>What is being estimated</summary>
+      <p>Weights w ≥ 0 with Σw = 1 over never-treated donors, chosen to minimise the pre-treatment root mean squared prediction error between the treated unit and Σ<sub>j</sub> w<sub>j</sub>·y<sub>jt</sub> (pre-period outcomes are the predictors). The problem is solved by accelerated projected gradient descent with an exact projection onto the simplex (Duchi et al. 2008). If several units are treated at the same date, their average is the treated series. Inference is the placebo-in-space test: every donor is treated as if it were the treated unit, and the ratio of post- to pre-period RMSPE for the real treated unit is ranked against the placebo ratios; the rank-based p-value is the share of units with a ratio at least as large.</p>
+    </details>
+  </div>
+</div>
+</div>
+</div></main>
+<div class="tip" id="tip"></div>
+<footer>Part of <a href="../">Experiments</a> by Varna Sri Raman · Idealog Works · MIT licence · Computation is in-browser and nothing leaves the page.</footer>
+
+<script>
+'use strict';
+// ───────────────────────── utilities ─────────────────────────
+const $ = s => document.querySelector(s);
+const fmt = (x, d=3) => x===Infinity ? '∞' : (x==null || !isFinite(x)) ? '—' : Number(x).toLocaleString('en-IN', {maximumFractionDigits:d, minimumFractionDigits: d>2 ? Math.min(d,3) : 0});
+const fmt2 = (x,d=2)=> fmt(x,d);
+function mulberry32(a){ return function(){ a|=0; a=a+0x6D2B79F5|0; let t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; } }
+function randn(rng){ let u=0,v=0; while(u===0)u=rng(); while(v===0)v=rng(); return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v); }
+function normCdf(z){ const t=1/(1+0.2316419*Math.abs(z)); const d=0.3989423*Math.exp(-z*z/2); let p=d*t*(0.3193815+t*(-0.3565638+t*(1.781478+t*(-1.821256+t*1.330274)))); return z>0?1-p:p; }
+function tCritical(df){ // 97.5th percentile, Cornish-Fisher approximation of Student t
+  if(!isFinite(df)||df>1e6) return 1.959964; const z=1.959964; const g1=(z**3+z)/4, g2=(5*z**5+16*z**3+3*z)/96, g3=(3*z**7+19*z**5+17*z**3-15*z)/384; return z+g1/df+g2/df**2+g3/df**3; }
+function esc(s){ return String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+// ───────────────────────── linear algebra ─────────────────────────
+function cholSolve(A, B){ // A symmetric PD (k×k), B k×m → X k×m
+  const k=A.length; const L=Array.from({length:k},()=>new Float64Array(k));
+  for(let i=0;i<k;i++){ for(let j=0;j<=i;j++){ let s=A[i][j]; for(let p=0;p<j;p++) s-=L[i][p]*L[j][p];
+    if(i===j){ if(s<=1e-12) throw new Error('Design matrix is singular: a regressor is collinear (often a relative-time bin with no observations).'); L[i][i]=Math.sqrt(s);} else L[i][j]=s/L[j][j]; } }
+  const m=B[0].length, X=Array.from({length:k},()=>new Float64Array(m));
+  for(let c=0;c<m;c++){ const y=new Float64Array(k);
+    for(let i=0;i<k;i++){ let s=B[i][c]; for(let p=0;p<i;p++) s-=L[i][p]*y[p]; y[i]=s/L[i][i]; }
+    for(let i=k-1;i>=0;i--){ let s=y[i]; for(let p=i+1;p<k;p++) s-=L[p][i]*X[p][c]; X[i][c]=s/L[i][i]; } }
+  return X;
+}
+function invPD(A){ const k=A.length; const I=Array.from({length:k},(_,i)=>{const r=new Float64Array(k); r[i]=1; return r;}); return cholSolve(A,I); }
+
+// OLS with cluster-robust covariance. X: n×k arrays, y: n, cl: n cluster ids
+function olsCluster(X, y, cl){
+  const n=y.length, k=X[0].length;
+  const XtX=Array.from({length:k},()=>new Float64Array(k)); const Xty=Array.from({length:k},()=>new Float64Array(1));
+  for(let i=0;i<n;i++){ const xi=X[i]; for(let a=0;a<k;a++){ Xty[a][0]+=xi[a]*y[i]; for(let b=a;b<k;b++) XtX[a][b]+=xi[a]*xi[b]; } }
+  for(let a=0;a<k;a++) for(let b=0;b<a;b++) XtX[a][b]=XtX[b][a];
+  const XtXi=invPD(XtX); const beta=new Float64Array(k);
+  for(let a=0;a<k;a++){ let s=0; for(let b=0;b<k;b++) s+=XtXi[a][b]*Xty[b][0]; beta[a]=s; }
+  const e=new Float64Array(n); for(let i=0;i<n;i++){ let s=0; for(let a=0;a<k;a++) s+=X[i][a]*beta[a]; e[i]=y[i]-s; }
+  const scores=new Map(); for(let i=0;i<n;i++){ let s=scores.get(cl[i]); if(!s){ s=new Float64Array(k); scores.set(cl[i],s);} for(let a=0;a<k;a++) s[a]+=X[i][a]*e[i]; }
+  const G=scores.size; const meat=Array.from({length:k},()=>new Float64Array(k));
+  for(const s of scores.values()) for(let a=0;a<k;a++) for(let b=0;b<k;b++) meat[a][b]+=s[a]*s[b];
+  const adj = (G/(G-1))*((n-1)/(n-k)); const V=Array.from({length:k},()=>new Float64Array(k));
+  for(let a=0;a<k;a++) for(let b=0;b<k;b++){ let s=0; for(let p=0;p<k;p++) for(let q=0;q<k;q++) s+=XtXi[a][p]*meat[p][q]*XtXi[q][b]; V[a][b]=s*adj; }
+  return {beta, V, se:beta.map((_,a)=>Math.sqrt(Math.max(V[a][a],0))), G, n, k, resid:e};
+}
+
+// Two-way demeaning by alternating projections (handles unbalanced panels)
+function demeanTwoWay(cols, unit, time){
+  const n=unit.length; const uIdx=new Map(), tIdx=new Map();
+  unit.forEach(u=>{ if(!uIdx.has(u)) uIdx.set(u,uIdx.size); }); time.forEach(t=>{ if(!tIdx.has(t)) tIdx.set(t,tIdx.size); });
+  const ui=unit.map(u=>uIdx.get(u)), ti=time.map(t=>tIdx.get(t));
+  const uc=new Float64Array(uIdx.size), tc=new Float64Array(tIdx.size); ui.forEach(i=>uc[i]++); ti.forEach(i=>tc[i]++);
+  return cols.map(col=>{ const v=Float64Array.from(col); for(let it=0;it<500;it++){ let maxd=0;
+      const um=new Float64Array(uIdx.size); for(let i=0;i<n;i++) um[ui[i]]+=v[i]; for(let i=0;i<um.length;i++) um[i]/=uc[i]; for(let i=0;i<n;i++){ v[i]-=um[ui[i]]; }
+      const tm=new Float64Array(tIdx.size); for(let i=0;i<n;i++) tm[ti[i]]+=v[i]; for(let i=0;i<tm.length;i++) tm[i]/=tc[i]; for(let i=0;i<n;i++){ v[i]-=tm[ti[i]]; maxd=Math.max(maxd,Math.abs(tm[ti[i]])); }
+      if(maxd<1e-11) break; } return v; });
+}
+
+// Projection onto the probability simplex (Duchi, Shalev-Shwartz, Singer, Chandra 2008)
+function projSimplex(v){ const n=v.length; const u=Array.from(v).sort((a,b)=>b-a); let css=0, rho=-1, theta=0;
+  for(let j=0;j<n;j++){ css+=u[j]; const t=(css-1)/(j+1); if(u[j]-t>0){ rho=j; theta=t; } }
+  return v.map(x=>Math.max(x-theta,0)); }
+
+// min ||y1 - Y0 w||^2 over simplex, Y0: T×J, y1: T. Accelerated projected gradient.
+function synthWeights(Y0, y1, iters=3000){
+  const T=Y0.length, J=Y0[0].length; let w=new Array(J).fill(1/J), z=w.slice(), t=1;
+  // Lipschitz constant via power iteration on Y0'Y0
+  let v=new Array(J).fill(1/Math.sqrt(J)); let L=1;
+  for(let it=0;it<60;it++){ const Yv=new Float64Array(T); for(let i=0;i<T;i++){ let s=0; for(let j=0;j<J;j++) s+=Y0[i][j]*v[j]; Yv[i]=s; }
+    const g=new Array(J).fill(0); for(let j=0;j<J;j++){ let s=0; for(let i=0;i<T;i++) s+=Y0[i][j]*Yv[i]; g[j]=s; } const nrm=Math.sqrt(g.reduce((a,b)=>a+b*b,0)); L=nrm; v=g.map(x=>x/(nrm||1)); }
+  const step=1/(2*L+1e-12); let prev=Infinity;
+  for(let it=0;it<iters;it++){ const r=new Float64Array(T); for(let i=0;i<T;i++){ let s=0; for(let j=0;j<J;j++) s+=Y0[i][j]*z[j]; r[i]=s-y1[i]; }
+    const g=new Array(J).fill(0); for(let j=0;j<J;j++){ let s=0; for(let i=0;i<T;i++) s+=Y0[i][j]*r[i]; g[j]=2*s; }
+    const wn=projSimplex(z.map((x,j)=>x-step*g[j])); const tn=(1+Math.sqrt(1+4*t*t))/2; z=wn.map((x,j)=>x+((t-1)/tn)*(x-w[j])); w=wn; t=tn;
+    if(it%50===0){ let f=0; for(let i=0;i<T;i++){ let s=0; for(let j=0;j<J;j++) s+=Y0[i][j]*w[j]; f+=(s-y1[i])**2; } if(Math.abs(prev-f)<1e-12*(1+f)) break; prev=f; } }
+  return w;
+}
+
+// ───────────────────────── SVG charts ─────────────────────────
+const tip=$('#tip');
+function showTip(e,html){ tip.innerHTML=html; tip.style.display='block'; tip.style.left=(e.clientX+12)+'px'; tip.style.top=(e.clientY-10)+'px'; }
+function hideTip(){ tip.style.display='none'; }
+function niceTicks(lo,hi,n=5){ if(lo===hi){lo-=1;hi+=1;} const span=hi-lo, raw=span/n, mag=10**Math.floor(Math.log10(raw)); const r=raw/mag; const step=(r<1.5?1:r<3?2:r<7?5:10)*mag; const t=[]; for(let v=Math.ceil(lo/step)*step; v<=hi+1e-9; v+=step) t.push(+v.toFixed(10)); return t; }
+// series: [{name,color,x:[],y:[],dash?,width?,band?:{lo:[],hi:[]}}], opts: {vline, hline, xlabel, ylabel, height, yzero}
+function lineChart(series, opts={}){
+  const W=760, H=opts.height||300, m={l:56,r:16,t:14,b:36}; const pw=W-m.l-m.r, ph=H-m.t-m.b;
+  const xs=series.flatMap(s=>s.x), ys=series.flatMap(s=>s.y.filter(v=>v!=null&&isFinite(v)).concat(s.band?s.band.lo.concat(s.band.hi).filter(v=>isFinite(v)):[]));
+  let x0=Math.min(...xs), x1=Math.max(...xs), y0=Math.min(...ys), y1=Math.max(...ys); if(opts.yzero){ y0=Math.min(0,y0); y1=Math.max(0,y1);} const pad=(y1-y0)*0.08||1; y0-=pad; y1+=pad;
+  const X=v=>m.l+(v-x0)/(x1-x0||1)*pw, Y=v=>m.t+ph-(v-y0)/(y1-y0)*ph;
+  let g=`<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(opts.title||'chart')}">`;
+  niceTicks(y0,y1).forEach(v=>{ g+=`<line x1="${m.l}" x2="${W-m.r}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--grid)"/><text x="${m.l-6}" y="${Y(v)+4}" text-anchor="end">${fmt(v,2)}</text>`; });
+  niceTicks(x0,x1,8).forEach(v=>{ if(Number.isInteger(v)||opts.xfrac) g+=`<text x="${X(v)}" y="${H-m.b+16}" text-anchor="middle">${v}</text>`; });
+  if(opts.hline!=null) g+=`<line x1="${m.l}" x2="${W-m.r}" y1="${Y(opts.hline)}" y2="${Y(opts.hline)}" stroke="#9ca3af" stroke-width="1"/>`;
+  if(opts.vline!=null) g+=`<line x1="${X(opts.vline)}" x2="${X(opts.vline)}" y1="${m.t}" y2="${m.t+ph}" stroke="#9ca3af" stroke-dasharray="4 3"/><text x="${X(opts.vline)+4}" y="${m.t+10}">${esc(opts.vlabel||'treatment')}</text>`;
+  series.forEach((s,si)=>{ if(s.band){ let d=''; s.x.forEach((x,i)=>{ if(isFinite(s.band.hi[i])) d+=(d?'L':'M')+X(x)+','+Y(s.band.hi[i]); }); for(let i=s.x.length-1;i>=0;i--) if(isFinite(s.band.lo[i])) d+='L'+X(s.x[i])+','+Y(s.band.lo[i]); g+=`<path d="${d}Z" fill="${s.color}" opacity="0.14"/>`; }
+    let d=''; s.x.forEach((x,i)=>{ const v=s.y[i]; if(v==null||!isFinite(v)){ d+=' '; return;} d+=(d.endsWith(' ')||!d?'M':'L')+X(x)+','+Y(v); });
+    g+=`<path d="${d.trim()}" fill="none" stroke="${s.color}" stroke-width="${s.width||2}" ${s.dash?`stroke-dasharray="${s.dash}"`:''} opacity="${s.opacity??1}"/>`;
+    if(s.points) s.x.forEach((x,i)=>{ const v=s.y[i]; if(v==null||!isFinite(v)) return; g+=`<circle cx="${X(x)}" cy="${Y(v)}" r="3.5" fill="${s.color}" stroke="#fff" stroke-width="1.5"/>`; });
+    if(!s.silent) s.x.forEach((x,i)=>{ const v=s.y[i]; if(v==null||!isFinite(v)) return; g+=`<circle cx="${X(x)}" cy="${Y(v)}" r="9" fill="transparent" data-tip="${esc(s.name)} · ${x}: ${fmt(v,3)}"/>`; }); });
+  if(opts.ylabel) g+=`<text transform="translate(12,${m.t+ph/2}) rotate(-90)" text-anchor="middle">${esc(opts.ylabel)}</text>`;
+  if(opts.xlabel) g+=`<text x="${m.l+pw/2}" y="${H-4}" text-anchor="middle">${esc(opts.xlabel)}</text>`;
+  return g+'</svg>';
+}
+function coefPlot(ks, b, se, opts={}){ // dot + 95% whisker per k
+  const W=760,H=300,m={l:56,r:16,t:14,b:36},pw=W-m.l-m.r,ph=H-m.t-m.b; const crit=opts.crit||1.96;
+  const lo=b.map((v,i)=>v-crit*se[i]), hi=b.map((v,i)=>v+crit*se[i]); const extra=opts.truth?opts.truth.filter(v=>isFinite(v)):[];
+  let y0=Math.min(0,...lo,...extra), y1=Math.max(0,...hi,...extra); const pad=(y1-y0)*0.08||1; y0-=pad; y1+=pad;
+  const x0=Math.min(...ks)-0.6, x1=Math.max(...ks)+0.6; const X=v=>m.l+(v-x0)/(x1-x0)*pw, Y=v=>m.t+ph-(v-y0)/(y1-y0)*ph;
+  let g=`<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="event study coefficients">`;
+  niceTicks(y0,y1).forEach(v=>{ g+=`<line x1="${m.l}" x2="${W-m.r}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--grid)"/><text x="${m.l-6}" y="${Y(v)+4}" text-anchor="end">${fmt(v,2)}</text>`; });
+  g+=`<line x1="${m.l}" x2="${W-m.r}" y1="${Y(0)}" y2="${Y(0)}" stroke="#9ca3af"/>`;
+  g+=`<line x1="${X(-0.5)}" x2="${X(-0.5)}" y1="${m.t}" y2="${m.t+ph}" stroke="#9ca3af" stroke-dasharray="4 3"/>`;
+  if(opts.truth){ let d=''; ks.forEach((k,i)=>{ if(isFinite(opts.truth[i])) d+=(d?'L':'M')+X(k)+','+Y(opts.truth[i]); }); g+=`<path d="${d}" fill="none" stroke="var(--s3)" stroke-width="2" stroke-dasharray="5 4"/>`; }
+  ks.forEach((k,i)=>{ g+=`<text x="${X(k)}" y="${H-m.b+16}" text-anchor="middle">${k}</text>`; if(k===-1){ g+=`<circle cx="${X(k)}" cy="${Y(0)}" r="4" fill="#fff" stroke="var(--s1)" stroke-width="2"/>`; return; }
+    g+=`<line x1="${X(k)}" x2="${X(k)}" y1="${Y(lo[i])}" y2="${Y(hi[i])}" stroke="var(--s1)" stroke-width="2"/><circle cx="${X(k)}" cy="${Y(b[i])}" r="4.5" fill="var(--s1)" stroke="#fff" stroke-width="1.5"/><circle cx="${X(k)}" cy="${Y(b[i])}" r="12" fill="transparent" data-tip="k=${k}: ${fmt(b[i],3)} [${fmt(lo[i],2)}, ${fmt(hi[i],2)}]"/>`; });
+  g+=`<text x="${m.l+pw/2}" y="${H-4}" text-anchor="middle">periods relative to adoption (k = −1 omitted)</text>`;
+  return g+'</svg>';
+}
+document.addEventListener('mousemove',e=>{ const t=e.target.closest && e.target.closest('[data-tip]'); if(t) showTip(e,t.getAttribute('data-tip')); else hideTip(); });
+
+// ───────────────────────── data ─────────────────────────
+let panel=null; // {rows:[{u,t,y,D}], units, times, adopt:Map(unit->g or null), truth?:fn(k)}
+function setStatus(s){ $('#status').textContent=s; }
+function buildPanel(rows, adopt, extra={}){
+  const units=[...new Set(rows.map(r=>r.u))], times=[...new Set(rows.map(r=>r.t))].sort((a,b)=>a-b);
+  rows=rows.filter(r=>isFinite(r.y)); rows.forEach(r=>{ const g=adopt.get(r.u); r.D=(g!=null && r.t>=g)?1:0; });
+  panel=Object.assign({rows, units, times, adopt}, extra); $('#runBtn').disabled=false; renderData(); $('#didPanel').style.display=$('#esPanel').style.display=$('#scPanel').style.display='none';
+}
+function renderData(){
+  const treated=panel.units.filter(u=>panel.adopt.get(u)!=null), never=panel.units.filter(u=>panel.adopt.get(u)==null);
+  const cohorts=[...new Set(treated.map(u=>panel.adopt.get(u)))].sort((a,b)=>a-b);
+  $('#dataSummary').innerHTML=`<span class="stat"><b>${panel.units.length}</b><span>units</span></span><span class="stat"><b>${panel.times.length}</b><span>periods</span></span><span class="stat"><b>${treated.length}</b><span>treated</span></span><span class="stat"><b>${never.length}</b><span>never treated</span></span><span class="stat"><b>${cohorts.length}</b><span>adoption cohort${cohorts.length===1?'':'s'}</span></span><span class="stat"><b>${panel.rows.length}</b><span>observations</span></span>
+   <div class="note">${esc(panel.label||'')} ${cohorts.length?`Adoption at ${cohorts.join(', ')}.`:''} ${panel.truth?'<b>Truth is known</b>: the dashed green line in the event study is the simulated effect.':''}</div>`;
+  // raw means
+  const mean=(us,t)=>{ const v=panel.rows.filter(r=>r.t===t&&us.includes(r.u)).map(r=>r.y); return v.length?v.reduce((a,b)=>a+b,0)/v.length:null; };
+  const s=[{name:'Treated units (mean)',color:'var(--s2)',x:panel.times,y:panel.times.map(t=>mean(treated,t))},{name:'Never-treated units (mean)',color:'var(--s1)',x:panel.times,y:panel.times.map(t=>mean(never,t))}];
+  $('#rawChart').innerHTML=`<div class="legend"><span><i style="background:var(--s2)"></i>treated, mean</span><span><i style="background:var(--s1)"></i>never treated, mean</span></div>`+lineChart(s,{vline:cohorts.length===1?cohorts[0]-0.5:null, vlabel:'adoption', ylabel:'outcome', xlabel:'period', title:'raw group means'});
+}
+
+// simulate
+$('#simGo').onclick=()=>{
+  const N=+$('#simN').value, T=+$('#simT').value, K=Math.min(+$('#simK').value,N-2), G=+$('#simG').value, stag=$('#simStagger').value==='1', eff=+$('#simEff').value, slope=+$('#simSlope').value, sd=+$('#simSD').value, seed=+$('#simSeed').value, trend=$('#simTrend').checked;
+  const rng=mulberry32(seed||1); const rows=[], adopt=new Map();
+  for(let i=0;i<N;i++){ const u='U'+String(i+1).padStart(3,'0'); const a=randn(rng)*2; const g=i<K ? (stag? G+Math.floor(rng()*5) : G) : null; adopt.set(u,g); let e=0;
+    for(let t=1;t<=T;t++){ e=0.5*e+randn(rng)*sd; const lam=0.3*t+Math.sin(t/2); const pre=(trend && g!=null)?0.25*t:0; const k=g!=null?t-g:null; const tau=(k!=null&&k>=0)?eff+slope*k:0; rows.push({u,t,y:10+a+lam+pre+tau+e}); } }
+  buildPanel(rows, adopt, {label:`Simulated: true effect ${eff} + ${slope}·k after adoption${trend?', with a violated pre-trend':''}.`, truth:k=>k>=0?eff+slope*k:0});
+};
+
+// CSV
+let csvData=null;
+function parseCSV(text){ const rows=[]; let row=[], field='', q=false; for(let i=0;i<text.length;i++){ const c=text[i]; if(q){ if(c==='"'){ if(text[i+1]==='"'){field+='"';i++;} else q=false; } else field+=c; } else { if(c==='"') q=true; else if(c===','){ row.push(field); field=''; } else if(c==='\n'||c==='\r'){ if(c==='\r'&&text[i+1]==='\n') i++; row.push(field); rows.push(row); row=[]; field=''; } else field+=c; } } if(field!==''||row.length){ row.push(field); rows.push(row);} return rows.filter(r=>r.length>1||r[0]!==''); }
+$('#csvFile').onchange=e=>{ const f=e.target.files[0]; if(!f) return; const rd=new FileReader(); rd.onload=()=>{ const rows=parseCSV(rd.result); const head=rows[0].map(h=>h.trim()); csvData={head, rows:rows.slice(1)};
+  ['cUnit','cTime','cY','cD'].forEach(id=>{ $('#'+id).innerHTML=head.map((h,i)=>`<option value="${i}">${esc(h)}</option>`).join(''); });
+  const guess=(re,id)=>{ const i=head.findIndex(h=>re.test(h)); if(i>=0) $('#'+id).value=i; }; guess(/unit|id|state|country|district|village|school/i,'cUnit'); guess(/time|year|period|month|wave|t$/i,'cTime'); guess(/^y$|outcome|value|score|income|gdp/i,'cY'); guess(/treat|^d$|policy|adopt|post/i,'cD'); $('#csvMap').style.display='block'; }; rd.readAsText(f); };
+$('#csvGo').onclick=()=>{ if(!csvData) return; const iu=+$('#cUnit').value, it=+$('#cTime').value, iy=+$('#cY').value, id=+$('#cD').value, kind=$('#cDkind').value; const rows=[], adopt=new Map();
+  for(const r of csvData.rows){ const u=r[iu], t=+r[it], y=parseFloat(r[iy]); if(!u||!isFinite(t)) continue; rows.push({u,t,y}); const d=r[id]; if(kind==='adopt'){ const g=parseFloat(d); if(isFinite(g)&&g>0) adopt.set(u,g); else if(!adopt.has(u)) adopt.set(u,null); } else { const on=+d===1||/^(true|yes|1)$/i.test(String(d).trim()); if(on){ const cur=adopt.get(u); adopt.set(u, cur==null?t:Math.min(cur,t)); } else if(!adopt.has(u)) adopt.set(u,null); } }
+  if(!rows.length){ alert('No usable rows: check the column mapping.'); return; } buildPanel(rows, adopt, {label:`CSV: ${rows.length} rows.`}); };
+
+// World Bank
+$('#wbGo').onclick=async()=>{ const ind=$('#wbInd').value, from=+$('#wbFrom').value, to=+$('#wbTo').value, tr=$('#wbTreated').value.trim().toUpperCase(), yr=+$('#wbYear').value, lg=$('#wbLog').value==='log'; const st=$('#wbStatus'); st.textContent='Fetching…'; $('#wbGo').disabled=true;
+  try{ const cres=await fetch('https://api.worldbank.org/v2/country?format=json&per_page=400'); const cj=await cres.json(); const real=new Set(cj[1].filter(c=>c.region && c.region.value!=='Aggregates').map(c=>c.id));
+    const names=new Map(cj[1].map(c=>[c.id,c.name]));
+    const r=await fetch(`https://api.worldbank.org/v2/country/all/indicator/${ind}?format=json&date=${from}:${to}&per_page=20000`); const j=await r.json(); if(!j[1]) throw new Error('No data returned');
+    const rows=[], adopt=new Map(); for(const o of j[1]){ const iso=o.countryiso3code; if(!real.has(iso)) continue; let v=o.value; if(v==null) continue; if(lg){ if(v<=0) continue; v=Math.log(v);} rows.push({u:iso,t:+o.date,y:v}); if(!adopt.has(iso)) adopt.set(iso,null); }
+    if(!adopt.has(tr)) throw new Error(`No rows for ${tr}. Use an ISO3 code such as IND, BGD, KEN.`); adopt.set(tr,yr);
+    // keep only countries with a complete series so the synthetic control has a balanced donor pool
+    const years=[...new Set(rows.map(r=>r.t))].sort((a,b)=>a-b); const cnt=new Map(); rows.forEach(r=>cnt.set(r.u,(cnt.get(r.u)||0)+1)); const full=new Set([...cnt].filter(([u,c])=>c===years.length).map(([u])=>u)); if(!full.has(tr)) throw new Error(`${tr} has gaps in ${from}–${to} for this indicator; narrow the years.`);
+    const kept=rows.filter(r=>full.has(r.u)); for(const u of [...adopt.keys()]) if(!full.has(u)) adopt.delete(u);
+    buildPanel(kept, adopt, {label:`World Bank ${ind}${lg?' (log)':''}, ${from}–${to}; ${full.size} countries with complete series; treated: ${names.get(tr)||tr} from ${yr}. Fetched ${new Date().toISOString().slice(0,10)}.`, names});
+    st.textContent=`Loaded ${kept.length} rows.`; } catch(err){ st.textContent='Failed: '+err.message; } $('#wbGo').disabled=false; };
+
+// tabs
+$('#srcTabs').addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return; [...$('#srcTabs').children].forEach(x=>x.classList.toggle('on',x===b)); document.querySelectorAll('#src-sim,#src-csv,#src-wb').forEach(x=>x.classList.toggle('on',x.id==='src-'+b.dataset.src)); });
+
+// ───────────────────────── estimators ─────────────────────────
+function runDiD(){
+  const rows=panel.rows; const unit=rows.map(r=>r.u), time=rows.map(r=>r.t); const [yd, Dd]=demeanTwoWay([rows.map(r=>r.y), rows.map(r=>r.D)], unit, time);
+  const X=Array.from(Dd,v=>[v]); const fit=olsCluster(X, yd, unit); const b=fit.beta[0], se=fit.se[0]; const crit=tCritical(fit.G-1); const t=b/se, p=2*(1-normCdf(Math.abs(t)));
+  const cohorts=[...new Set([...panel.adopt.values()].filter(g=>g!=null))]; let tbl='';
+  if(cohorts.length===1){ const g=cohorts[0]; const m=(tr,post)=>{ const v=rows.filter(r=>((panel.adopt.get(r.u)!=null)===tr)&&((r.t>=g)===post)).map(r=>r.y); return v.length?v.reduce((a,b)=>a+b,0)/v.length:NaN; }; const Tp=m(true,true),Tb=m(true,false),Cp=m(false,true),Cb=m(false,false); const did=(Tp-Tb)-(Cp-Cb);
+    tbl=`<table><tr><th></th><th>Before</th><th>After</th><th>Change</th></tr><tr><td>Treated</td><td>${fmt(Tb)}</td><td>${fmt(Tp)}</td><td>${fmt(Tp-Tb)}</td></tr><tr><td>Control</td><td>${fmt(Cb)}</td><td>${fmt(Cp)}</td><td>${fmt(Cp-Cb)}</td></tr><tr><td><b>Difference-in-differences</b></td><td></td><td></td><td><b>${fmt(did)}</b></td></tr></table><p class="mini">The 2×2 means table and the regression coefficient agree only for a balanced panel; with missing cells the regression is the one to report.</p>`; }
+  let truthNote=''; if(panel.truth){ const ks=rows.filter(r=>r.D===1).map(r=>r.t-panel.adopt.get(r.u)); const avg=ks.reduce((a,k)=>a+panel.truth(k),0)/ks.length; truthNote=`<div class="ok">Simulated truth: the average effect over the treated observations is ${fmt(avg)}. The TWFE estimate ${Math.abs(b-avg)<crit*se?'covers it':'does not cover it'} at 95%.${cohorts.length>1?' With staggered adoption and effects that grow with k, TWFE is biased even under parallel trends — compare the Sun–Abraham event study.':''}</div>`; }
+  $('#didOut').innerHTML=`<span class="stat"><b>${fmt(b)}</b><span>δ (ATT, TWFE)</span></span><span class="stat"><b>${fmt(se)}</b><span>cluster SE (${fit.G} clusters)</span></span><span class="stat"><b>[${fmt(b-crit*se,2)}, ${fmt(b+crit*se,2)}]</b><span>95% CI (t, ${fit.G-1} df)</span></span><span class="stat"><b>${p<0.001?'<0.001':fmt(p,3)}</b><span>p-value</span></span>${tbl}${truthNote}${cohorts.length>1?'<div class="warn">Staggered adoption detected. The single TWFE coefficient is a weighted average of many 2×2 comparisons, some of which use already-treated units as controls. Prefer the event study below.</div>':''}`;
+  $('#didPanel').style.display='block';
+}
+
+function runES(){
+  const rows=panel.rows, pre=+$('#esPre').value, post=+$('#esPost').value, kind=$('#esKind').value; const ks=[]; for(let k=-pre;k<=post;k++) ks.push(k);
+  const rel=r=>{ const g=panel.adopt.get(r.u); if(g==null) return null; let k=r.t-g; return Math.max(-pre,Math.min(post,k)); };
+  const unit=rows.map(r=>r.u), time=rows.map(r=>r.t); const never=panel.units.filter(u=>panel.adopt.get(u)==null);
+  let names, cols, b, se, V, fit, weightsInfo='';
+  if(kind==='twfe'){ names=ks.filter(k=>k!==-1); cols=names.map(k=>rows.map(r=>rel(r)===k?1:0)); }
+  else { if(!never.length) throw new Error('Sun–Abraham needs never-treated units as the comparison group'); const cohorts=[...new Set([...panel.adopt.values()].filter(g=>g!=null))].sort((a,b)=>a-b); names=[]; cols=[];
+    for(const g of cohorts) for(const k of ks){ if(k===-1) continue; const c=rows.map(r=>(panel.adopt.get(r.u)===g && rel(r)===k)?1:0); if(c.some(v=>v)) { names.push({g,k}); cols.push(c);} } }
+  const dm=demeanTwoWay([rows.map(r=>r.y), ...cols], unit, time); const yd=dm[0]; const X=rows.map((_,i)=>dm.slice(1).map(c=>c[i])); fit=olsCluster(X, yd, unit); V=fit.V;
+  if(kind==='twfe'){ b=ks.map(k=>k===-1?0:fit.beta[names.indexOf(k)]); se=ks.map(k=>k===-1?0:fit.se[names.indexOf(k)]); }
+  else { b=[]; se=[]; const treatedUnits=panel.units.filter(u=>panel.adopt.get(u)!=null);
+    for(const k of ks){ if(k===-1){ b.push(0); se.push(0); continue; } const idx=names.map((n,i)=>n.k===k?i:-1).filter(i=>i>=0); if(!idx.length){ b.push(NaN); se.push(NaN); continue; }
+      // weights: share of treated units in each cohort observed at relative time k
+      const counts=idx.map(i=>{ const g=names[i].g; return new Set(rows.filter(r=>panel.adopt.get(r.u)===g && rel(r)===k).map(r=>r.u)).size; }); const tot=counts.reduce((a,c)=>a+c,0); const w=counts.map(c=>c/tot);
+      let est=0, v=0; idx.forEach((i,a)=>{ est+=w[a]*fit.beta[i]; idx.forEach((j,c)=>{ v+=w[a]*w[c]*V[i][j]; }); }); b.push(est); se.push(Math.sqrt(v)); }
+    weightsInfo=`<p class="mini">${names.length} cohort × relative-time coefficients estimated; each reported k averages them with cohort-share weights.</p>`; }
+  const crit=tCritical(fit.G-1); const truth=panel.truth?ks.map(k=>k===-1?0:(panel.truth(k)-panel.truth(-1))):null;
+  // pre-trend joint test (Wald) on the pre coefficients, TWFE only (SA uses per-k approx)
+  let preTest=''; if(kind==='twfe'){ const pidx=names.map((k,i)=>k<-1?i:-1).filter(i=>i>=0); if(pidx.length){ const sub=pidx.map(i=>pidx.map(j=>V[i][j])); try{ const inv=invPD(sub); let w=0; pidx.forEach((i,a)=>pidx.forEach((j,c)=>{ w+=fit.beta[i]*inv[a][c]*fit.beta[j]; })); const pv=chi2Upper(w,pidx.length); preTest=`<span class="stat"><b>${fmt(w,2)}</b><span>Wald χ²(${pidx.length}) pre-period = 0</span></span><span class="stat"><b>${pv<0.001?'<0.001':fmt(pv,3)}</b><span>p-value (pre-trends)</span></span>`; } catch(e){} } }
+  const postIdx=ks.map((k,i)=>k>=0?i:-1).filter(i=>i>=0); const avgPost=postIdx.reduce((a,i)=>a+(isFinite(b[i])?b[i]:0),0)/postIdx.length;
+  let rowsHtml=ks.map((k,i)=>`<tr><td>${k}${k===-1?' (ref.)':''}</td><td>${fmt(b[i])}</td><td>${k===-1?'—':fmt(se[i])}</td><td>${k===-1?'—':`[${fmt(b[i]-crit*se[i],2)}, ${fmt(b[i]+crit*se[i],2)}]`}</td>${truth?`<td>${fmt(truth[i])}</td>`:''}</tr>`).join('');
+  $('#esPill').textContent = kind==='twfe' ? 'TWFE, endpoints binned' : 'Sun–Abraham (2021), never-treated comparison';
+  $('#esOut').innerHTML=`<span class="stat"><b>${fmt(avgPost)}</b><span>mean of post coefficients (k ≥ 0)</span></span>${preTest}<div class="legend"><span><i style="background:var(--s1)"></i>estimate with 95% CI</span>${truth?'<span><i style="background:var(--s3)"></i>simulated truth</span>':''}</div>`+coefPlot(ks,b,se,{crit,truth})+weightsInfo+`<details><summary>Coefficient table</summary><table><tr><th>k</th><th>β</th><th>SE</th><th>95% CI</th>${truth?'<th>truth</th>':''}</tr>${rowsHtml}</table></details>`;
+  $('#esPanel').style.display='block';
+}
+function chi2Upper(x,k){ // upper tail of chi-square via regularized gamma
+  if(x<=0) return 1; const a=k/2, z=x/2; // series/continued fraction (Numerical Recipes)
+  const gln=lgamma(a); if(z<a+1){ let sum=1/a, del=sum, ap=a; for(let n=0;n<500;n++){ ap++; del*=z/ap; sum+=del; if(Math.abs(del)<Math.abs(sum)*1e-14) break; } return 1-sum*Math.exp(-z+a*Math.log(z)-gln); }
+  let b=z+1-a, c=1/1e-300, d=1/b, h=d; for(let i=1;i<500;i++){ const an=-i*(i-a); b+=2; d=an*d+b; if(Math.abs(d)<1e-300) d=1e-300; c=b+an/c; if(Math.abs(c)<1e-300) c=1e-300; d=1/d; const del=d*c; h*=del; if(Math.abs(del-1)<1e-14) break; } return Math.exp(-z+a*Math.log(z)-gln)*h; }
+function lgamma(x){ const c=[76.18009172947146,-86.50532032941677,24.01409824083091,-1.231739572450155,0.1208650973866179e-2,-0.5395239384953e-5]; let y=x, t=x+5.5; t-=(x+0.5)*Math.log(t); let s=1.000000000190015; for(let j=0;j<6;j++) s+=c[j]/++y; return -t+Math.log(2.5066282746310005*s/x); }
+
+function runSC(){
+  const cohorts=[...new Set([...panel.adopt.values()].filter(g=>g!=null))]; if(cohorts.length!==1) throw new Error('needs a single adoption date (one treated unit or several treated at the same time).');
+  const g=cohorts[0]; const times=panel.times; const preT=times.filter(t=>t<g), postT=times.filter(t=>t>=g); if(preT.length<2) throw new Error('needs at least two pre-treatment periods.');
+  const byU=new Map(); panel.rows.forEach(r=>{ if(!byU.has(r.u)) byU.set(r.u,new Map()); byU.get(r.u).set(r.t,r.y); });
+  const treated=panel.units.filter(u=>panel.adopt.get(u)!=null), donors=panel.units.filter(u=>panel.adopt.get(u)==null && times.every(t=>byU.get(u).has(t)));
+  if(donors.length<2) throw new Error('needs at least two never-treated donors with complete series.');
+  const series=u=>times.map(t=>byU.get(u).get(t)); const y1=times.map(t=>{ const v=treated.map(u=>byU.get(u).get(t)).filter(v=>v!=null); return v.reduce((a,b)=>a+b,0)/v.length; });
+  const donorSeries=donors.map(series); const fitOne=(target, pool)=>{ const Y0pre=preT.map((t,i)=>pool.map(s=>s[times.indexOf(t)])); const w=synthWeights(Y0pre, preT.map(t=>target[times.indexOf(t)])); const synth=times.map((t,i)=>pool.reduce((a,s,j)=>a+w[j]*s[i],0)); const gap=times.map((t,i)=>target[i]-synth[i]); const rm=idx=>Math.sqrt(idx.reduce((a,t)=>a+gap[times.indexOf(t)]**2,0)/idx.length); return {w,synth,gap,preR:rm(preT),postR:rm(postT)}; };
+  const main=fitOne(y1, donorSeries); const att=postT.reduce((a,t)=>a+main.gap[times.indexOf(t)],0)/postT.length;
+  const nm=u=>(panel.names&&panel.names.get(u))||u;
+  // placebos
+  let placebos=[]; if($('#scPlacebo').value==='all'){ donors.forEach((d,j)=>{ const pool=donorSeries.filter((_,i)=>i!==j); const f=fitOne(donorSeries[j], pool); placebos.push({u:d, gap:f.gap, preR:f.preR, postR:f.postR}); }); }
+  const ratio=main.postR/main.preR; const ratios=placebos.map(p=>p.postR/p.preR); const pval=placebos.length?( (1+ratios.filter(r=>r>=ratio).length)/(placebos.length+1) ):null;
+  const wtab=donors.map((d,j)=>({d,w:main.w[j]})).filter(x=>x.w>0.001).sort((a,b)=>b.w-a.w);
+  const s1=[{name:'Treated',color:'var(--s2)',x:times,y:y1},{name:'Synthetic',color:'var(--s1)',x:times,y:main.synth,dash:'6 4'}];
+  const gapSeries=placebos.map(p=>({name:nm(p.u)+' (placebo)',color:'#9ca3af',x:times,y:p.gap,width:1,opacity:.6,silent:false})); gapSeries.push({name:'Treated gap',color:'var(--s2)',x:times,y:main.gap,width:2.5});
+  let truthNote=''; if(panel.truth){ const tavg=postT.reduce((a,t)=>a+panel.truth(t-g),0)/postT.length; truthNote=`<div class="ok">Simulated truth: average post-treatment effect ${fmt(tavg)}.</div>`; }
+  let fitNote=''; if(donors.length>preT.length) fitNote=`<div class="warn">${donors.length} donors but only ${preT.length} pre-treatment periods: an exact pre-period fit is achievable and the weights are not unique. This is the over-fitting case Abadie (2021) warns about; the RMSPE ratios below are then dominated by tiny pre-period errors. Lengthen the pre-period or trim the donor pool before reading the placebo p-value.</div>`; else if(main.preR>0.5*Math.sqrt(preT.reduce((a,t)=>a+(y1[times.indexOf(t)]-y1.slice(0,preT.length).reduce((x,y)=>x+y,0)/preT.length)**2,0)/preT.length)) fitNote=`<div class="warn">The synthetic unit tracks the treated unit poorly before treatment (pre-period RMSPE is more than half the treated unit's own pre-period standard deviation). The post-period gap is not credible as an effect.</div>`;
+  $('#scOut').innerHTML=`<span class="stat"><b>${fmt(att)}</b><span>mean post-period gap (ATT)</span></span><span class="stat"><b>${fmt(main.preR)}</b><span>pre-period RMSPE</span></span><span class="stat"><b>${fmt(ratio,2)}</b><span>post/pre RMSPE ratio</span></span>${pval!=null?`<span class="stat"><b>${fmt(pval,3)}</b><span>placebo p-value (${placebos.length} placebos)</span></span>`:''}
+   <div class="legend"><span><i style="background:var(--s2)"></i>treated${treated.length>1?' (mean of '+treated.length+')':''}: ${esc(treated.length===1?nm(treated[0]):'')}</span><span><i style="background:var(--s1)"></i>synthetic control</span></div>`
+   +lineChart(s1,{vline:g-0.5,vlabel:'treatment',ylabel:'outcome',xlabel:'period',title:'treated versus synthetic'})
+   +(placebos.length?`<div class="legend"><span><i style="background:var(--s2)"></i>treated gap</span><span><i style="background:#9ca3af"></i>placebo gaps (each donor treated in turn)</span></div>`+lineChart(gapSeries,{vline:g-0.5,vlabel:'treatment',hline:0,ylabel:'gap: actual − synthetic',xlabel:'period',title:'placebo gaps'}):'')
+   +fitNote+truthNote+`<details open><summary>Donor weights (${wtab.length} donors with weight &gt; 0.001)</summary><table><tr><th>Donor</th><th>Weight</th></tr>${wtab.map(x=>`<tr><td>${esc(nm(x.d))}</td><td>${fmt(x.w,3)}</td></tr>`).join('')}</table></details>`
+   +(placebos.length?`<details><summary>Placebo RMSPE ratios</summary><table><tr><th>Unit</th><th>pre RMSPE</th><th>post RMSPE</th><th>ratio</th></tr><tr><td><b>${esc(treated.map(nm).join(', '))}</b></td><td>${fmt(main.preR)}</td><td>${fmt(main.postR)}</td><td><b>${fmt(ratio,2)}</b></td></tr>${placebos.map(p=>({...p,r:p.postR/p.preR})).sort((a,b)=>b.r-a.r).map(p=>`<tr><td>${esc(nm(p.u))}</td><td>${fmt(p.preR)}</td><td>${fmt(p.postR)}</td><td>${fmt(p.r,2)}</td></tr>`).join('')}</table><p class="mini">Abadie, Diamond and Hainmueller (2010) recommend discarding placebos whose pre-period fit is far worse than the treated unit's, since a bad pre-fit inflates post-period gaps mechanically; the ratio test above is their alternative that keeps every placebo.</p></details>`:'')
+   +`<p style="margin-top:.6rem"><button class="secondary" id="scDl">Download weights and gaps (CSV)</button></p>`;
+  $('#scDl').onclick=()=>{ let csv='period,treated,synthetic,gap\n'+times.map((t,i)=>`${t},${y1[i]},${main.synth[i]},${main.gap[i]}`).join('\n')+'\n\ndonor,weight\n'+donors.map((d,j)=>`${d},${main.w[j]}`).join('\n'); const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'})); a.download='synthetic-control.csv'; a.click(); };
+  $('#scPanel').style.display='block';
+}
+
+$('#runBtn').onclick=()=>{ if(!panel) return; setStatus('Running…'); setTimeout(()=>{ const errs=[];
+  try{ runDiD(); }catch(e){ errs.push('DiD: '+e.message); $('#didPanel').style.display='none'; }
+  try{ runES(); }catch(e){ errs.push('Event study: '+e.message); $('#esPanel').style.display='none'; }
+  try{ runSC(); }catch(e){ errs.push('Synthetic control: '+e.message); $('#scPanel').style.display='none'; }
+  setStatus(errs.length?errs.join(' · '):'Done.'); },30); };
+$('#simGo').click();
+</script>
+</body>
+</html>

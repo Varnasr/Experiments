@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Motor Accident Compensation Calculator — Experiments</title>
+<meta name="description" content="Fatal motor accident compensation under the Motor Vehicles Act, computed step by step with the authority for each step: the Sarla Verma multiplier, Pranay Sethi future prospects and conventional heads with their 10% triennial enhancement, consortium per dependant, and interest.">
+<link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231B6B4A'/><path d='M16 6 v20 M8 12 h16 M8 12 l-3 8 h6 z M24 12 l-3 8 h6 z' stroke='white' stroke-width='2' fill='none' stroke-linejoin='round'/></svg>">
+<style>
+  :root { --bg:#fafafa; --surface:#fff; --border:#e5e7eb; --text:#1a1a2e; --dim:#4b5563; --muted:#9ca3af; --accent:#1B6B4A; --accent-soft:#e6f2ec; --mono:ui-monospace,SFMono-Regular,Menlo,monospace; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--text); line-height:1.55; }
+  a { color:var(--accent); }
+  header { border-bottom:1px solid var(--border); background:#fff; }
+  .wrap { max-width:1080px; margin:0 auto; padding:0 1.25rem; }
+  header .wrap { display:flex; align-items:baseline; justify-content:space-between; gap:1rem; padding:.9rem 1.25rem; flex-wrap:wrap; }
+  header h1 { font-family:Georgia,serif; font-size:1.35rem; font-weight:400; }
+  header h1 small { font-size:.8rem; color:var(--muted); margin-left:.5rem; }
+  header nav a { font-size:.85rem; margin-left:1rem; text-decoration:none; }
+  main { padding:1.5rem 0 3rem; }
+  .lede { color:var(--dim); font-size:.95rem; max-width:66ch; margin-bottom:1.25rem; }
+  .grid { display:grid; grid-template-columns:340px 1fr; gap:1.25rem; align-items:start; }
+  @media (max-width:860px){ .grid { grid-template-columns:1fr; } }
+  .panel { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1rem 1.15rem; margin-bottom:1rem; }
+  .panel h2 { font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; margin-bottom:.7rem; }
+  label { display:block; font-size:.8rem; color:var(--dim); margin:.5rem 0 .2rem; }
+  select, input[type=text], input[type=number], input[type=date] { width:100%; font:inherit; font-size:.9rem; padding:.4rem .5rem; border:1px solid var(--border); border-radius:6px; background:#fff; color:var(--text); }
+  .row { display:flex; gap:.5rem; } .row > * { flex:1; }
+  button { font:inherit; font-size:.88rem; padding:.5rem .9rem; border-radius:6px; border:1px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer; }
+  button.secondary { background:#fff; color:var(--accent); }
+  .total { font-family:Georgia,serif; font-size:2rem; font-weight:400; }
+  .stat { display:inline-block; margin:.25rem 1.5rem .25rem 0; vertical-align:top; }
+  .stat b { display:block; font-size:1.3rem; font-family:Georgia,serif; font-weight:400; } .stat span { font-size:.75rem; color:var(--muted); }
+  table { border-collapse:collapse; width:100%; font-size:.86rem; margin:.5rem 0; }
+  th, td { text-align:left; padding:.4rem .5rem; border-bottom:1px solid var(--border); vertical-align:top; }
+  td.num, th.num { text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; }
+  th { color:var(--dim); font-weight:600; font-size:.75rem; }
+  tr.sub td { background:#fbfbfb; } tr.tot td { font-weight:600; border-top:2px solid var(--border); }
+  .auth { font-size:.76rem; color:var(--muted); display:block; margin-top:.15rem; }
+  .note { font-size:.82rem; color:var(--dim); margin-top:.5rem; }
+  .warn { background:#fff7ed; border:1px solid #fed7aa; color:#9a3412; padding:.5rem .7rem; border-radius:6px; font-size:.83rem; margin:.5rem 0; }
+  details { margin-top:.5rem; font-size:.85rem; color:var(--dim); } summary { cursor:pointer; color:var(--accent); }
+  .mini { font-size:.78rem; color:var(--muted); }
+  footer { border-top:1px solid var(--border); padding:1.25rem; text-align:center; font-size:.8rem; color:var(--muted); }
+  @media print { header nav, .grid > div:first-child, footer, #printBtn { display:none; } .grid { grid-template-columns:1fr; } body { background:#fff; } .panel { border:none; padding:0; } }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>Motor Accident Compensation Calculator <small>fatal claims · Motor Vehicles Act 1988</small></h1>
+  <nav><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/compensation-calculator">Source</a></nav>
+</div></header>
+<main><div class="wrap">
+<p class="lede">The Supreme Court has standardised almost every step of a fatal-accident award: the multiplier by the deceased's age (<i>Sarla Verma</i>, 2009), the addition for future prospects and the fixed conventional heads with their 10% enhancement every three years (<i>Pranay Sethi</i>, Constitution Bench, 2017), the deduction for personal expenses, and consortium for each dependant (<i>Magma</i>, 2018; <i>Somwati</i>, 2020). This page applies those rules step by step and cites the authority for each line, so a claimant, a tribunal clerk or a law student can see where every rupee comes from.</p>
+
+<div class="grid">
+<div>
+  <div class="panel">
+    <h2>The deceased</h2>
+    <div class="row"><div><label>Age at death (years)</label><input type="number" id="age" value="38" min="0" max="100"></div><div><label>Monthly income (₹)</label><input type="number" id="income" value="25000" min="0" step="500"></div></div>
+    <label>Income tax paid per year (₹), if any</label><input type="number" id="tax" value="0" min="0" step="1000">
+    <label>Nature of income</label>
+    <select id="job"><option value="perm">Permanent job (salaried, with increments)</option><option value="self">Self-employed or on a fixed salary</option><option value="none">Not earning: notional income entered above</option></select>
+    <label>Marital status</label>
+    <select id="marital"><option value="married">Married</option><option value="bachelor">Unmarried (bachelor or spinster)</option></select>
+    <label>Number of dependants (legal representatives claiming)</label><input type="number" id="deps" value="3" min="1" max="20">
+  </div>
+  <div class="panel">
+    <h2>Dates and options</h2>
+    <div class="row"><div><label>Date of accident</label><input type="date" id="dAcc" value="2024-03-15"></div><div><label>Claim petition filed</label><input type="date" id="dClaim" value="2024-06-01"></div></div>
+    <label>Date of award (enhancement and interest run to this date)</label><input type="date" id="dAward">
+    <label>Consortium</label>
+    <select id="consortium"><option value="each">₹40,000 (enhanced) to each dependant</option><option value="one">₹40,000 (enhanced) once, in total</option></select>
+    <label>Deduction for personal and living expenses</label>
+    <select id="dedMode"><option value="auto">As per Sarla Verma (from status and dependants)</option><option value="0.5">One-half</option><option value="0.3333">One-third</option><option value="0.25">One-fourth</option><option value="0.2">One-fifth</option></select>
+    <label>Multiplier</label>
+    <select id="multMode"><option value="auto">Sarla Verma table (by age of the deceased)</option><option value="custom">Enter a multiplier</option></select>
+    <input type="number" id="multCustom" value="15" min="1" max="18" style="display:none;margin-top:.3rem">
+    <label>Interest rate (simple, per year)</label><input type="number" id="rate" value="7.5" step="0.5" min="0" max="18">
+    <p style="margin-top:.7rem"><button id="calc">Compute</button> <button class="secondary" id="printBtn">Print</button></p>
+  </div>
+</div>
+
+<div>
+  <div class="panel" id="out"></div>
+  <div class="panel">
+    <h2>What this page does not do</h2>
+    <p class="note">It handles death claims under section 166 of the Motor Vehicles Act, 1988, for an earning (or notionally earning) deceased. It does not compute injury claims, contributory negligence, the section 164 no-fault sum (₹5,00,000 for death after the 2019 amendment, without proof of fault, in lieu of a section 166 claim), or the special rules for a child's death. Tribunals depart from the standard figures in reasoned cases, and the consortium rule is contested (see below). A judgment on the point, not this page, is the authority.</p>
+  </div>
+</div>
+</div>
+</div></main>
+<footer>Part of <a href="../">Experiments</a> by Varna Sri Raman · Idealog Works · MIT licence · Not legal advice.</footer>
+
+<script>
+'use strict';
+const $=s=>document.querySelector(s);
+const inr=x=>'₹'+Math.round(x).toLocaleString('en-IN');
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+$('#dAward').value=new Date().toISOString().slice(0,10);
+$('#multMode').onchange=e=>{ $('#multCustom').style.display=e.target.value==='custom'?'block':'none'; };
+$('#printBtn').onclick=()=>window.print();
+
+// Sarla Verma v Delhi Transport Corporation (2009) 6 SCC 121, para 42 (table), as adopted in Pranay Sethi para 61(vi)-(vii)
+function multiplier(age){ if(age<=25) return 18; if(age<=30) return 17; if(age<=35) return 16; if(age<=40) return 15; if(age<=45) return 14; if(age<=50) return 13; if(age<=55) return 11; if(age<=60) return 9; if(age<=65) return 7; if(age<=70) return 5; return null; }
+// National Insurance v Pranay Sethi (2017) 16 SCC 680, para 61(iii)-(iv)
+function prospects(job,age){ if(job==='perm') return age<40?0.5:age<=50?0.3:age<=60?0.15:0; if(job==='self') return age<40?0.4:age<=50?0.25:age<=60?0.10:0; return age<40?0.4:age<=50?0.25:age<=60?0.10:0; }
+// Sarla Verma paras 30-32, reproduced in Pranay Sethi para 61(v)
+function deduction(marital,deps){ if(marital==='bachelor') return {f:0.5,why:'unmarried deceased: one-half (Sarla Verma para 31; may be reduced to one-third where parents and siblings are wholly dependent)'}; if(deps<=1) return {f:1/3,why:'married, one dependant: Sarla Verma para 30 starts its scale at two or three dependants (one-third); the one-dependant case is not settled and one-half is also seen'}; if(deps<=3) return {f:1/3,why:'married, 2 to 3 dependants: one-third (Sarla Verma para 30)'}; if(deps<=6) return {f:0.25,why:'married, 4 to 6 dependants: one-fourth (Sarla Verma para 30)'}; return {f:0.2,why:'married, more than 6 dependants: one-fifth (Sarla Verma para 30)'}; }
+// Pranay Sethi para 61(viii): Rs 15,000 loss of estate, Rs 40,000 consortium, Rs 15,000 funeral; enhanced 10% every three years. Judgment dated 31 October 2017.
+function enhancement(dateStr){ const base=new Date('2017-10-31'); const d=new Date(dateStr); if(isNaN(d)||d<base) return {steps:0,f:1}; let months=(d.getFullYear()-base.getFullYear())*12+(d.getMonth()-base.getMonth()); if(d.getDate()<base.getDate()) months--; const steps=Math.floor(months/36); return {steps,f:Math.pow(1.1,steps)}; }
+const frac=f=>Math.abs(f-0.5)<1e-6?'one-half':Math.abs(f-1/3)<1e-6?'one-third':Math.abs(f-0.25)<1e-6?'one-fourth':Math.abs(f-0.2)<1e-6?'one-fifth':(100*f).toFixed(0)+'%';
+
+function compute(){ const age=+$('#age').value, inc=+$('#income').value, tax=+$('#tax').value||0, job=$('#job').value, marital=$('#marital').value, deps=Math.max(1,+$('#deps').value||1); const dAcc=$('#dAcc').value, dClaim=$('#dClaim').value, dAward=$('#dAward').value; const cons=$('#consortium').value, dedMode=$('#dedMode').value, multMode=$('#multMode').value, rate=+$('#rate').value/100;
+  const rows=[]; const add=(head,calc,amount,auth,cls)=>rows.push({head,calc,amount,auth,cls});
+  const annual=inc*12; const net=Math.max(annual-tax,0);
+  add('Annual income', `${inr(inc)} × 12${tax?` − tax ${inr(tax)}`:''}`, net, tax?'Income net of tax: Pranay Sethi para 61(iv) ("established income means the income minus the tax component"); Sarla Verma para 32 on tax':'Sarla Verma (2009) 6 SCC 121, para 32', '');
+  const fp=prospects(job,age); const withFp=net*(1+fp);
+  add('Addition for future prospects', fp?`+ ${(100*fp).toFixed(0)}% of ${inr(net)}`:`none: age ${age} is above 60, beyond the brackets in the conclusions`, withFp, job==='perm'?`Pranay Sethi (2017) 16 SCC 680, para 61(iii): permanent job, 50% below 40, 30% at 40–50, 15% at 50–60`:job==='self'?`Pranay Sethi para 61(iv): self-employed or fixed salary, 40% below 40, 25% at 40–50, 10% at 50–60`:`Notional income treated like fixed income: Pranay Sethi para 61(iv) brackets; for a homemaker see Kirti v Oriental Insurance (2021) 2 SCC 166`, '');
+  const ded=dedMode==='auto'?deduction(marital,deps):{f:+dedMode,why:'as chosen'}; const multiplicand=withFp*(1-ded.f);
+  add('Less personal and living expenses', `− ${frac(ded.f)} of ${inr(withFp)}`, multiplicand, ded.why, '');
+  const mAuto=multiplier(age); const mult=multMode==='custom'?+$('#multCustom').value:mAuto; let multWhy=multMode==='custom'?'multiplier entered by hand':`Sarla Verma para 42 table for age ${age}, adopted in Pranay Sethi para 61(vi)–(vii): the multiplier follows the age of the deceased, not of the claimants`; if(multMode!=='custom'&&mAuto==null) multWhy='the Sarla Verma table stops at age 70; enter a multiplier';
+  const dependency=multiplicand*(mult||0);
+  add('Loss of dependency', `${inr(multiplicand)} × multiplier ${mult??'—'}`, dependency, multWhy, 'sub');
+  const enh=enhancement(dAward); const estate=15000*enh.f, funeral=15000*enh.f, consUnit=40000*enh.f; const nCons=cons==='each'?deps:1; const consortium=consUnit*nCons;
+  const enhWhy=`Pranay Sethi para 61(viii): ₹15,000 loss of estate, ₹40,000 consortium, ₹15,000 funeral, "enhanced at the rate of 10% in every three years" from the judgment of 31 October 2017; ${enh.steps} enhancement${enh.steps===1?'':'s'} to the award date (factor ${enh.f.toFixed(3)})`;
+  add('Loss of estate', `₹15,000 × ${enh.f.toFixed(3)}`, estate, enhWhy, '');
+  add('Funeral expenses', `₹15,000 × ${enh.f.toFixed(3)}`, funeral, 'Pranay Sethi para 61(viii), enhanced as above', '');
+  add('Loss of consortium', `₹40,000 × ${enh.f.toFixed(3)}${nCons>1?` × ${nCons} dependants`:''}`, consortium, cons==='each'?`Spousal, parental and filial consortium to each dependant: Magma General Insurance v Nanu Ram (2018) 18 SCC 130; New India Assurance v Somwati (2020) 9 SCC 644; Sameem Begum v K. Venkat Swamy (Supreme Court, 14 August 2026, ₹48,400 each). Contra: Shri Ram General Insurance v Bhagat Singh Rawat (Supreme Court, 27 March 2023) treated the ₹40,000 as the total`:`Single sum: Shri Ram General Insurance v Bhagat Singh Rawat (Supreme Court, 27 March 2023). Contra: Magma (2018), Somwati (2020) and Sameem Begum (2026) award it to each dependant`, '');
+  const total=dependency+estate+funeral+consortium; add('Total compensation', '', total, 'sum of the heads above', 'tot');
+  const d1=new Date(dClaim), d2=new Date(dAward); const days=(isNaN(d1)||isNaN(d2))?0:Math.max(0,Math.round((d2-d1)/86400000)); const interest=total*rate*days/365;
+  add('Interest', `${inr(total)} × ${(100*rate).toFixed(1)}% × ${days} days ÷ 365`, interest, 'Section 171, Motor Vehicles Act 1988: simple interest from the date of the claim petition at a rate the tribunal fixes; 6% to 9% is the usual range in reported awards', '');
+  add('Total with interest', '', total+interest, '', 'tot');
+  let warn=''; if(mult==null) warn+='<div class="warn">No multiplier applies from the table above age 70. Enter one by hand.</div>'; if(job!=='none'&&inc<=0) warn+='<div class="warn">Enter the deceased\'s monthly income; for a non-earning deceased choose "not earning" and enter a notional income.</div>'; if(marital==='bachelor'&&deps>3) warn+='<div class="warn">For an unmarried deceased with a large dependent family Sarla Verma para 31 allows the deduction to be reduced to one-third; the one-half default is applied.</div>'; if(dedMode==='auto'&&marital==='married'&&deps<=1) warn+='<div class="warn">A married deceased with a single dependant: Sarla Verma para 30 gives one-third for two to three dependants and is silent on one. One-third is applied; one-half is also seen. Choose explicitly if it matters.</div>';
+  $('#out').innerHTML=`<h2>Award</h2><span class="stat"><b class="total">${inr(total)}</b><span>compensation (before interest)</span></span><span class="stat"><b>${inr(interest)}</b><span>interest to ${esc(dAward)}</span></span><span class="stat"><b>${inr(total+interest)}</b><span>total payable</span></span>${warn}
+  <table><tr><th>Head</th><th>Working</th><th class="num">Amount</th></tr>${rows.map(r=>`<tr class="${r.cls}"><td>${esc(r.head)}${r.auth?`<span class="auth">${esc(r.auth)}</span>`:''}</td><td>${esc(r.calc)}</td><td class="num">${inr(r.amount)}</td></tr>`).join('')}</table>
+  <p class="note">Accident ${esc(dAcc)}; claim filed ${esc(dClaim)}; award ${esc(dAward)}. Deceased aged ${age}, ${marital==='married'?'married':'unmarried'}, ${deps} dependant${deps===1?'':'s'}, ${job==='perm'?'permanent job':job==='self'?'self-employed or fixed salary':'notional income'}.</p>
+  <details><summary>The method in one paragraph</summary><p>Annual income (net of tax) is raised by the future-prospects percentage for the deceased's age and kind of employment, reduced by the fraction the deceased would have spent on themself, and multiplied by the multiplier for their age, giving the loss of dependency. To that are added three fixed conventional heads, which grow 10% every three years from 31 October 2017 (so ₹15,000 became ₹16,500 in late 2020, ₹18,150 in late 2023, and ₹19,965 from late 2026; ₹40,000 became ₹44,000, ₹48,400 and ₹53,240). Some benches apply the enhancement by the date of the accident rather than the award; change the award date to see the effect. Interest is simple, from the date the claim was filed.</p></details>`; }
+$('#calc').onclick=compute; document.querySelectorAll('input,select').forEach(el=>el.addEventListener('change',compute)); compute();
+</script>
+</body>
+</html>
