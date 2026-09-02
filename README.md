@@ -140,6 +140,63 @@ with a comparison to the 1894 Act.
 
 ---
 
+### Election Expenditure Ledger
+
+A candidate's running account of election expenses against the Rule 90 ceiling:
+the section 77 accounting period (nomination to declaration of result), entries by
+head with voucher and mode of payment, totals by head, daily burn rate and a
+projection to counting day, the section 78 lodging deadline, and flags for cash
+payments above the Commission's threshold, spending outside the period and
+expenditure by others attributable to the candidate. Stored in the browser only;
+CSV in and out for the expenditure observer.
+
+**Directory:** `expense-ledger/`
+**Stage:** Active
+
+---
+
+### Manifesto Promise Costing
+
+Each promise as beneficiaries × uptake × unit cost with low, likely and high
+values, set against a state's revenue receipts, expenditure, GSDP and fiscal
+deficit; a multi-year path against the 3% norm, a 4,000-draw Monte Carlo band on
+the ranges, and a tornado ranking the assumptions. The example budget is
+illustrative and says so; enter a real one from the state budget or the RBI's
+State Finances study.
+
+**Directory:** `promise-costing/`
+**Stage:** Active
+
+---
+
+### Statutory Interest Calculator
+
+Interest the way Indian statutes prescribe it, with the provision quoted on the
+page: MSMED Act section 16 (three times the RBI bank rate, compounded with monthly
+rests from the day after the agreed period, capped at 45 days), CPC section 34 on
+decrees (pre-suit, pendente lite, post-decree with the 6% ceiling), Arbitration Act
+section 31(7) on awards (post-award at current rate plus two, with the Hyder
+Consulting reading and the alternative), the Negotiable Instruments Act limits on a
+bounced cheque, and a plain simple-or-compound calculator with the schedule shown.
+
+**Directory:** `statutory-interest/`
+**Stage:** Active
+
+---
+
+### A Year of Air
+
+A year of hourly PM2.5, PM10 and NO₂ for any Indian city or coordinate from
+Open-Meteo's CAMS-based air quality archive, reduced to what the WHO 2021
+guidelines and India's 2009 NAAQS actually ask: annual means, days over each
+24-hour limit, the worst and cleanest days, month by month, and the Berkeley Earth
+cigarette equivalent. Model estimates, not station readings, and the page says so.
+
+**Directory:** `air-quality/`
+**Stage:** Active
+
+---
+
 ### Motor Accident Compensation Calculator
 
 Fatal-accident compensation under section 166 of the Motor Vehicles Act, computed
@@ -292,6 +349,10 @@ Experiments/
 ├── rct-planner/                        # power/MDE and stratified randomiser
 ├── cost-benefit/                       # NPV/BCR/IRR with Monte Carlo
 ├── land-acquisition/                   # RFCTLARR 2013 compensation
+├── expense-ledger/                     # election expenses against the Rule 90 ceiling
+├── promise-costing/                    # manifesto promises against the state budget
+├── statutory-interest/                 # MSMED, CPC s.34, Arbitration s.31(7), NI Act
+├── air-quality/                        # a year of PM2.5 against WHO and NAAQS, live
 ├── court-translator/
 │   └── index.html                      # Court Petition Translator UI
 ├── chamber-petition/
