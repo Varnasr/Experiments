@@ -231,15 +231,6 @@ An AI-powered tool for translating Hindi Supreme Court and High Court petitions 
 
 ---
 
-### Chamber Petition (AOR Supreme Court)
-
-A static HTML signature-collection page for an AOR Supreme Court petition, migrated from ImpactMojo. Submissions go to Netlify Forms; the latest snapshot lives in `signatures-backup-2026-04-16.json` (66 verified signatures after removing one test record).
-
-**Directory:** `chamber-petition/`
-**Stage:** Active
-
----
-
 ### AICC Observers: DCC Readiness Grading
 
 Methodology, data, and grading outputs for evaluating AICC-appointed District Observers on their preparation for District Congress Committee (DCC) membership recommendations. Six components scored: district report submission, proposed names, daily activity reports, supporting documents, potential leaders, non-political influencers.
@@ -355,10 +346,6 @@ Experiments/
 ├── air-quality/                        # a year of PM2.5 against WHO and NAAQS, live
 ├── court-translator/
 │   └── index.html                      # Court Petition Translator UI
-├── chamber-petition/
-│   ├── index.html                      # AOR Supreme Court petition form
-│   ├── README.md
-│   └── signatures-backup-2026-04-16.json
 ├── aicc_analysis/
 │   ├── grading_system.py               # DCC-readiness scoring engine
 │   ├── extract_candidates.py           # AICC portal extractor (needs env vars)
