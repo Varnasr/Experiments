@@ -160,9 +160,9 @@ The 744 districts span **19 states + UTs**. Several large states are absent from
 
 1. **Religion (high confidence)**: match name tokens against curated Muslim, Sikh, and Christian first/last-name dictionaries. `SINGH` alone is treated as ambiguous (Rajput vs. Sikh) unless a second Sikh marker is present (e.g., `KAUR`, distinctive Punjabi first name, Sikh-only surname like `SANDHU`/`GILL`/`DHILLON`).
 
-2. **Hindu category: empirical**, for non-religious names, compute the surname's distribution of `Category` values across the 3,630 self-declared candidate records (the same population). If the surname has ≥5 candidates with ≥80% concentrated in one Category, label `HIGH_SURNAME`. If ≥2 candidates with ≥60% concentration, label `MEDIUM`. Otherwise drop through.
+2. **Hindu category, empirical**, for non-religious names, compute the surname's distribution of `Category` values across the 3,630 self-declared candidate records (the same population). If the surname has ≥5 candidates with ≥80% concentrated in one Category, label `HIGH_SURNAME`. If ≥2 candidates with ≥60% concentration, label `MEDIUM`. Otherwise drop through.
 
-3. **Hindu category: curated dict fallback**, for surnames not covered by candidates, use a conservative hand-curated dictionary (Sharma/Mishra/Tiwari/etc. → General; Yadav/Kurmi/Mahato → OBC; Munda/Tudu/Soren → ST; …). Only includes surnames with well-known nationally-consistent mappings; state-context-dependent surnames (`PATEL`, `MEENA`, `SINGH`, `THAKUR`) are deliberately omitted and remain `LOW_AMBIGUOUS`.
+3. **Hindu category, curated dict fallback**, for surnames not covered by candidates, use a conservative hand-curated dictionary (Sharma/Mishra/Tiwari/etc. → General; Yadav/Kurmi/Mahato → OBC; Munda/Tudu/Soren → ST; …). Only includes surnames with well-known nationally-consistent mappings; state-context-dependent surnames (`PATEL`, `MEENA`, `SINGH`, `THAKUR`) are deliberately omitted and remain `LOW_AMBIGUOUS`.
 
 4. **Generic-token stoplist**: `KUMAR`, `LAL`, `PRASAD`, `DEVI`, `CHANDRA`, `CHAND`, `NATH`, `BABU`, `BAI` carry no caste signal; if these are the last token, the inference falls back to the second-to-last token.
 
