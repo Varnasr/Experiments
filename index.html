@@ -4,218 +4,348 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Experiments — Varna Sri Raman</title>
-    <meta name="description" content="Tech experiments by Varna Sri Raman — a development economist who likes to tinker.">
+    <meta name="description" content="Tech experiments by Varna Sri Raman, a development economist and lawyer who builds things: in-browser econometrics, poverty measurement, survey auditing, legal calculators, and a few apps made for family.">
+    <meta property="og:title" content="Experiments — Varna Sri Raman">
+    <meta property="og:description" content="In-browser econometrics, poverty measurement, survey auditing, legal calculators, and a few apps made for family. Every tool explains its own working.">
+    <meta property="og:type" content="website">
+    <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231B6B4A'/><path d='M11 6h10M13 6v9l-6 10a2 2 0 0 0 2 3h14a2 2 0 0 0 2-3l-6-10V6' stroke='white' stroke-width='2.2' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background: #fafafa;
-            color: #1a1a2e;
-            line-height: 1.6;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+        :root {
+            --bg:#fafafa; --surface:#fff; --border:#e5e7eb; --text:#1a1a2e; --dim:#4b5563; --muted:#9ca3af;
+            --accent:#1B6B4A; --accent-soft:#e6f2ec; --ink:#1a1a2e;
+            --c1:#2a78d6; --c2:#eb6834; --c3:#1baf7a; --c4:#7C3AED; --c5:#be185d; --c6:#b45309;
         }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--text); line-height:1.6; min-height:100vh; display:flex; flex-direction:column; }
+        a { color:var(--accent); }
+        main { flex:1; padding:2.5rem 1.5rem 2rem; }
+        .container { max-width:760px; margin:0 auto; }
 
-        /* Layout */
-        main { flex: 1; padding: 3rem 1.5rem 2rem; }
-        .container { max-width: 720px; margin: 0 auto; }
+        /* intro */
+        .intro { position:relative; margin-bottom:2.25rem; padding-right:120px; }
+        .intro h1 { font-family:Georgia,serif; font-size:2rem; font-weight:400; margin-bottom:.35rem; line-height:1.2; }
+        .intro h1 .u { position:relative; display:inline-block; }
+        .intro h1 .u svg { position:absolute; left:0; right:0; bottom:-6px; width:100%; height:10px; }
+        .intro p { color:var(--dim); font-size:.95rem; margin-bottom:.55rem; max-width:60ch; }
+        .intro p:last-child { margin-bottom:0; }
+        .hero-doodle { position:absolute; right:0; top:-6px; width:110px; height:110px; color:var(--accent); opacity:.85; transform:rotate(4deg); }
+        @media (max-width:560px) { .intro { padding-right:0; } .hero-doodle { display:none; } }
 
-        /* Header / intro */
-        .intro { margin-bottom: 2.5rem; }
-        h1 {
-            font-family: Georgia, serif;
-            font-size: 1.85rem;
-            margin-bottom: 0.5rem;
-        }
-        .intro p {
-            color: #4b5563;
-            font-size: 0.9375rem;
-            margin-bottom: 0.5rem;
-        }
-        .intro p:last-child { margin-bottom: 0; }
+        /* section labels */
+        .section { margin-top:2.25rem; }
+        .section:first-of-type { margin-top:0; }
+        .section-head { display:flex; align-items:baseline; gap:.75rem; margin-bottom:.8rem; }
+        .section-label { font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.09em; color:var(--muted); white-space:nowrap; }
+        .section-head .rule { flex:1; height:8px; }
+        .section-head .rule path { stroke:#d1d5db; stroke-width:1.5; fill:none; stroke-linecap:round; }
+        .section-blurb { font-size:.85rem; color:var(--dim); margin:-.3rem 0 .8rem; }
 
-        /* Section labels */
-        .section-label {
-            font-size: 0.6875rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: #9ca3af;
-            margin-bottom: 0.75rem;
-            margin-top: 2rem;
-        }
-        .section-label:first-of-type { margin-top: 0; }
+        /* cards */
+        .card { position:relative; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:1.15rem 1.35rem 1rem; margin-bottom:.8rem; transition:border-color .15s, box-shadow .15s, transform .15s; overflow:hidden; }
+        .card:hover, .card:focus-within { border-color:var(--accent); box-shadow:0 3px 14px rgba(27,107,74,.09); }
+        .card h2 { font-size:1.08rem; font-weight:600; margin-bottom:.2rem; padding-right:84px; }
+        .card h2 a { color:var(--text); text-decoration:none; }
+        .card h2 a::after { content:""; position:absolute; inset:0; } /* whole card clickable */
+        .card h2 a:hover { color:var(--accent); }
+        .card .summary { font-size:.9rem; color:var(--dim); padding-right:64px; }
+        .card .tech { margin-top:.5rem; font-size:.75rem; color:var(--muted); }
+        .card .live { font-size:.75rem; color:var(--muted); margin-top:.15rem; }
+        .card .live a { position:relative; z-index:2; }
+        .doodle { position:absolute; top:10px; right:12px; width:78px; height:78px; opacity:.3; pointer-events:none; transform:rotate(-6deg); color:var(--ink); transition:opacity .2s, transform .2s; }
+        .card:hover .doodle, .card:focus-within .doodle { opacity:.7; transform:rotate(-2deg) scale(1.04); }
+        .doodle svg { width:100%; height:100%; fill:none; stroke:currentColor; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round; }
 
-        /* Cards */
-        .card {
-            background: #fff;
-            border: 1px solid #e5e7eb;
-            border-radius: 10px;
-            padding: 1.25rem 1.5rem;
-            margin-bottom: 0.75rem;
-            text-decoration: none;
-            display: block;
-            transition: border-color 0.15s, box-shadow 0.15s;
-        }
-        .card:hover {
-            border-color: #1B6B4A;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-        }
-        .card h2 {
-            font-size: 1.0625rem;
-            color: #1a1a2e;
-            margin-bottom: 0.25rem;
-        }
-        .card p {
-            font-size: 0.875rem;
-            color: #6b7280;
-            margin-bottom: 0;
-        }
-        .card .tech {
-            margin-top: 0.5rem;
-            font-size: 0.75rem;
-            color: #9ca3af;
-        }
+        /* badges */
+        .badge { display:inline-block; font-size:.66rem; font-weight:600; padding:1px 6px; border-radius:4px; vertical-align:middle; margin-left:.35rem; letter-spacing:.01em; }
+        .badge-ai { background:#f3eeff; color:#7C3AED; }
+        .badge-data { background:#e0f2fe; color:#0369a1; }
+        .badge-research { background:#fce7f3; color:#be185d; }
+        .badge-creative { background:#fef3c7; color:#b45309; }
+        .badge-tool { background:#d1fae5; color:#065f46; }
+        .badge-law { background:#fee2e2; color:#991b1b; }
+        .badge-family { background:#ffedd5; color:#9a3412; }
 
-        /* Badges */
-        .badge {
-            display: inline-block;
-            font-size: 0.6875rem;
-            font-weight: 600;
-            padding: 1px 6px;
-            border-radius: 4px;
-            vertical-align: middle;
-            margin-left: 0.4rem;
-        }
-        .badge-ai { background: #f3eeff; color: #7C3AED; }
-        .badge-data { background: #e0f2fe; color: #0369a1; }
-        .badge-research { background: #fce7f3; color: #be185d; }
-        .badge-creative { background: #fef3c7; color: #b45309; }
-        .badge-tool { background: #d1fae5; color: #065f46; }
+        /* hover explanation and tech notes */
+        .more { position:relative; z-index:2; margin-top:.6rem; display:flex; gap:.5rem; flex-wrap:wrap; align-items:center; }
+        .more button { font:inherit; font-size:.76rem; padding:.22rem .6rem; border-radius:99px; border:1px solid var(--border); background:#fff; color:var(--dim); cursor:pointer; }
+        .more button:hover, .more button[aria-expanded="true"] { border-color:var(--accent); color:var(--accent); background:var(--accent-soft); }
+        .pop, .notes { position:relative; z-index:2; display:none; margin-top:.7rem; font-size:.86rem; color:var(--dim); border-top:1px dashed var(--border); padding-top:.7rem; }
+        .pop b, .notes b { color:var(--text); font-weight:600; }
+        .card.pop-open .pop, .card.notes-open .notes { display:block; }
+        @media (hover:hover) and (pointer:fine) { .card:hover .pop, .card:focus-within .pop { display:block; } }
+        .notes ul { margin:.35rem 0 0 1.1rem; }
+        .notes li { margin-bottom:.3rem; }
+        .notes code { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.8em; background:#f3f4f6; padding:.05em .3em; border-radius:3px; }
+        .notes .verified { display:block; margin-top:.4rem; font-size:.8rem; color:var(--accent); }
 
-        /* Footer */
-        footer {
-            border-top: 1px solid #e5e7eb;
-            padding: 1.5rem;
-            text-align: center;
-            font-size: 0.8125rem;
-            color: #9ca3af;
-        }
-        footer a {
-            color: #1B6B4A;
-            text-decoration: none;
-        }
-        footer a:hover { text-decoration: underline; }
-        .footer-links { margin-bottom: 0.35rem; }
-        .footer-links a + a::before {
-            content: "\00b7";
-            margin: 0 0.5rem;
-            color: #d1d5db;
-        }
+        /* stack notes */
+        .stack { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:1.15rem 1.35rem; font-size:.88rem; color:var(--dim); }
+        .stack h3 { font-family:Georgia,serif; font-weight:400; font-size:1.15rem; color:var(--text); margin-bottom:.5rem; }
+        .stack p { margin-bottom:.6rem; }
+        .stack p:last-child { margin-bottom:0; }
+        .stack ul { margin:.2rem 0 .6rem 1.1rem; }
+        .stack li { margin-bottom:.25rem; }
+
+        footer { border-top:1px solid var(--border); padding:1.5rem; text-align:center; font-size:.8125rem; color:var(--muted); }
+        footer a { color:var(--accent); text-decoration:none; }
+        footer a:hover { text-decoration:underline; }
+        .footer-links { margin-bottom:.35rem; }
+        .footer-links a + a::before { content:"\00b7"; margin:0 .5rem; color:#d1d5db; }
+        @media print { .doodle, .more { display:none; } .pop, .notes { display:block; } }
     </style>
 </head>
 <body>
-    <main>
-        <div class="container">
-            <div class="intro">
-                <h1>Hi, I'm Varna.</h1>
-                <p>I'm a development economist and maker of all things at <a href="https://idealog.works" target="_blank" rel="noopener">Idealog Works</a>. This is where I keep my tech experiments — small tools, proof-of-concepts, and side projects built to scratch an itch or test an idea.</p>
-                <p>Not everything here is polished. That's the point.</p>
-                <p>When something outgrows this page it moves out and gets indexed at
-                <a href="https://openstacks.dev">openstacks.dev</a> &mdash; the data trackers,
-                the research toolkits, the teaching material. What stays here is what is
-                still being figured out.</p>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="wobble" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="7" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="1.6" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+</svg>
+<main>
+<div class="container">
+
+    <div class="intro">
+        <svg class="hero-doodle" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" filter="url(#wobble)" aria-hidden="true">
+            <path d="M26 8h12"/><path d="M28 8v14L14 46a4 4 0 0 0 3.5 6h29A4 4 0 0 0 50 46L36 22V8"/>
+            <path d="M20 38h24"/><circle cx="30" cy="44" r="1.6"/><circle cx="37" cy="47" r="1.2"/><circle cx="33" cy="41" r="1"/>
+            <path d="M54 12l3-3M56 20h4M8 16l-3 2"/>
+        </svg>
+        <h1>Hi, I'm <span class="u">Varna<svg viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path d="M2 6 C 20 2, 40 9, 60 5 S 90 3, 98 6" fill="none" stroke="#1B6B4A" stroke-width="2.5" stroke-linecap="round"/></svg></span>.</h1>
+        <p>I am a development economist and a lawyer, and I make things at <a href="https://idealog.works" target="_blank" rel="noopener">Idealog Works</a>. This page is where the experiments live: tools that compute in the browser, calculators that show their working, and a few apps built for the people in my house.</p>
+        <p>Hover over any card (or tap the question mark) for what it does in plain words. Open "how it's built" for the methods and the code decisions behind it. Everything is open source, one HTML file per tool wherever possible, and nothing you type into them leaves your browser.</p>
+        <p>When something outgrows this page it moves out and gets indexed at <a href="https://openstacks.dev">openstacks.dev</a>. What stays here is what is still being figured out.</p>
+    </div>
+
+    <!-- ───────────── Data & economics ───────────── -->
+    <section class="section">
+        <div class="section-head"><span class="section-label">Data &amp; economics</span><svg class="rule" viewBox="0 0 400 8" preserveAspectRatio="none" aria-hidden="true"><path d="M0 4 C 60 1, 120 7, 200 4 S 340 1, 400 4"/></svg></div>
+        <p class="section-blurb">Econometrics and measurement, computed entirely in the page. Each one checks itself against an independent reference and says so.</p>
+
+        <article class="card" id="causal">
+            <div class="doodle"><svg viewBox="0 0 64 64" filter="url(#wobble)"><path d="M8 52h48"/><path d="M8 40c10-2 16-6 22-10"/><path d="M30 30c8 0 14-10 24-16"/><path d="M30 30c8 4 14 6 24 6" stroke-dasharray="3 3"/><path d="M30 14v42" stroke-dasharray="2 4"/><circle cx="30" cy="30" r="2.5"/></svg></div>
+            <h2><a href="causal-workbench/">Causal Inference Workbench</a><span class="badge badge-data">Data</span><span class="badge badge-research">Research</span></h2>
+            <p class="summary">Difference-in-differences, event studies and synthetic control on any panel: simulate one with a known true effect, upload a CSV, or pull a live country panel from the World Bank and name the treated country.</p>
+            <p class="tech">HTML · JavaScript · World Bank API · no dependencies</p>
+            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button></div>
+            <div class="pop"><b>In plain words.</b> When a policy reaches some places and not others, the question is what would have happened without it. These three methods each build a counterfactual from the untreated units and measure the gap. The simulator plants a known effect so you can watch each estimator recover it, or fail to when parallel trends are violated.</div>
+            <div class="notes">
+                <ul>
+                    <li><b>DiD.</b> Two-way fixed effects removed by alternating demeaning (so unbalanced panels work), then OLS on the residualised variables by Cholesky. Standard errors are the cluster-robust sandwich with the <code>fixest</code> small-sample convention (nested fixed effects not counted in k); the CI uses a t with G−1 degrees of freedom.</li>
+                    <li><b>Event study.</b> Relative-time indicators with binned endpoints and k = −1 omitted; a Wald test on the pre-period coefficients. The Sun–Abraham (2021) option interacts cohort with relative time against never-treated units and averages with cohort-share weights, standard errors by the delta method on the full covariance.</li>
+                    <li><b>Synthetic control.</b> Weights on the simplex found by accelerated projected gradient with the exact simplex projection of Duchi et al. (2008); placebo-in-space inference ranks the post/pre RMSPE ratio against every donor treated in turn. The page warns when donors outnumber pre-periods, the over-fitting case Abadie (2021) describes.</li>
+                    <li><b>Charts</b> are hand-rolled SVG with hover tooltips; no charting library.</li>
+                </ul>
+                <span class="verified">Verified: the TWFE estimate and clustered SE match an explicit-dummies regression written separately in Python to six and four decimals.</span>
             </div>
+        </article>
 
-            <p class="section-label">Data &amp; economics</p>
+        <article class="card" id="poverty">
+            <div class="doodle"><svg viewBox="0 0 64 64" filter="url(#wobble)"><path d="M10 54h44V10"/><path d="M10 54L54 10" stroke-dasharray="3 3"/><path d="M10 54C28 54 44 46 54 10"/><circle cx="26" cy="52" r="1.8"/><circle cx="38" cy="46" r="1.8"/><circle cx="47" cy="34" r="1.8"/></svg></div>
+            <h2><a href="poverty-lab/">Poverty &amp; Inequality Lab</a><span class="badge badge-data">Data</span><span class="badge badge-research">Research</span></h2>
+            <p class="summary">What POVCAL did with grouped data: Lorenz curves fitted to decile shares pulled live from the World Bank's Poverty and Inequality Platform, then Gini, Theil, Atkinson, Palma and FGT poverty at any line, the Datt–Ravallion decomposition and a growth incidence curve.</p>
+            <p class="tech">HTML · JavaScript · PIP API · no dependencies</p>
+            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button></div>
+            <div class="pop"><b>In plain words.</b> Published inequality data usually comes as ten numbers, the share of income going to each tenth of the population, not as a household file. From those ten numbers and the average, this page reconstructs the whole distribution and reads off how many people fall below any poverty line, how unequal the country is, and whether growth between two surveys reached the poor. One click compares its answers with the World Bank's own, computed from the microdata.</div>
+            <div class="notes">
+                <ul>
+                    <li><b>Lorenz curves</b> after Datt (1998): the General Quadratic (Villasenor and Arnold 1989) and Beta (Kakwani 1980) forms, each fitted by OLS to the cumulative decile points. Validity is checked on a 2,000-point grid (0 ≤ L ≤ p, L′ non-negative and non-decreasing) and against the theoretical conditions; the valid curve with the smaller squared error wins.</li>
+                    <li><b>Measures</b> come from the fitted quantile function y(p) = μ·L′(p) on a 4,000-point grid: Gini, Theil T, mean log deviation, Atkinson at three aversions, Palma, P90/P10, median; the headcount by bisection, FGT1 and FGT2 by integration to the headcount, Watts.</li>
+                    <li><b>Change over time</b>: Datt–Ravallion (1992) growth and redistribution with its residual, the Shapley version without one, and the Ravallion–Chen (2003) growth incidence curve.</li>
+                    <li><b>Data</b> from <code>api.worldbank.org/pip/v1</code> (2021 PPP), country list from the PIP auxiliary tables; the CSP on this site allows only that host.</li>
+                </ul>
+                <span class="verified">Verified: on India 2022 the page gives Gini 0.256 and a $3.00 headcount of 5.1% against PIP's microdata 0.255 and 5.3%; the GQ results match Datt's closed-form formulas to four decimals.</span>
+            </div>
+        </article>
 
-            <a class="card" href="causal-workbench/">
-                <h2>Causal Inference Workbench <span class="badge badge-data">Data</span> <span class="badge badge-research">Research</span></h2>
-                <p>Difference-in-differences with cluster-robust standard errors, event studies (plain TWFE or Sun&ndash;Abraham for staggered adoption), and synthetic control with placebo-in-space inference &mdash; all computed in the browser. Simulate a panel with a known effect, upload your own, or pull a live country panel from the World Bank and name the treated country.</p>
-                <p class="tech">HTML &middot; JavaScript &middot; World Bank API &middot; no dependencies</p>
-            </a>
+        <article class="card" id="survey">
+            <div class="doodle"><svg viewBox="0 0 64 64" filter="url(#wobble)"><path d="M16 10h26a3 3 0 0 1 3 3v40a3 3 0 0 1-3 3H16a3 3 0 0 1-3-3V13a3 3 0 0 1 3-3z"/><path d="M24 8h10v5H24z"/><path d="M19 24h12M19 32h14M19 40h8"/><circle cx="42" cy="42" r="8"/><path d="M48 48l7 7"/></svg></div>
+            <h2><a href="survey-audit/">Survey Data Auditor</a><span class="badge badge-data">Data</span><span class="badge badge-tool">Tool</span></h2>
+            <p class="summary">The checks a monitoring team runs before anyone estimates anything: duplicate and near-duplicate interviews, Benford's law on amounts, age heaping, straightlining, interview length and timing, missingness, and an enumerator profile that says who to call back.</p>
+            <p class="tech">HTML · JavaScript · no dependencies</p>
+            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button></div>
+            <div class="pop"><b>In plain words.</b> Field surveys go wrong in predictable ways: an interviewer copies yesterday's form under a new number, invents incomes, rounds every age to a five, answers a whole block of questions with the same tick, or finishes a forty-minute interview in eight. Drop in the CSV and the page finds each pattern, names the enumerator, and writes the call-back list. Nothing is uploaded anywhere.</div>
+            <div class="notes">
+                <ul>
+                    <li><b>Duplicates</b>: exact matches by hashing every column except ID and timestamps; near-duplicates by pairwise comparison within an enumerator, flagged at 90% identical fields (sampled above 4,000 interviews).</li>
+                    <li><b>Benford</b>: first-digit distribution against log10(1 + 1/d), judged by Nigrini's mean-absolute-deviation cut-offs rather than χ², which over-rejects in large samples; per-enumerator verdicts use the χ² p-value because MAD is unreliable below a few hundred values. Only offered for columns whose 5th to 95th percentile spans at least tenfold.</li>
+                    <li><b>Age heaping</b>: Whipple's index on ages 23 to 62 with the UN scale, Myers' blended index on ages 10 to 89; per-enumerator flags require the 0/5 share to be significantly above 20%.</li>
+                    <li><b>Straightlining</b> against a chance benchmark of m<sup>1−k</sup>; <b>duration</b> under 40% of the median; night starts; <b>rounding</b> of second decimals (true zeros excluded); outliers by MAD-based z.</li>
+                    <li><b>Who to call</b>: every metric z-scored across enumerators, two flags puts a name on the list. Exports Markdown and CSV.</li>
+                </ul>
+                <span class="verified">Verified: the seeded demo plants six problems across five enumerators and the audit recovers all six, attributed to the right people; Whipple, Myers and the Benford expectation were checked by hand.</span>
+            </div>
+        </article>
+    </section>
 
-            <a class="card" href="poverty-lab/">
-                <h2>Poverty &amp; Inequality Lab <span class="badge badge-data">Data</span> <span class="badge badge-research">Research</span></h2>
-                <p>What POVCAL did with grouped data: fits General Quadratic and Beta Lorenz curves to decile shares pulled live from the World Bank&rsquo;s Poverty and Inequality Platform, then computes Gini, Theil, Atkinson, Palma and the FGT poverty measures at any line, decomposes the change between two surveys into growth and redistribution, and draws the growth incidence curve. One click compares its answers with PIP&rsquo;s own.</p>
-                <p class="tech">HTML &middot; JavaScript &middot; PIP API &middot; no dependencies</p>
-            </a>
+    <!-- ───────────── Law & economics ───────────── -->
+    <section class="section">
+        <div class="section-head"><span class="section-label">Law &amp; economics</span><svg class="rule" viewBox="0 0 400 8" preserveAspectRatio="none" aria-hidden="true"><path d="M0 4 C 60 7, 120 1, 200 4 S 340 7, 400 4"/></svg></div>
+        <p class="section-blurb">Where a court has turned a valuation into a schedule, the schedule can be coded, and the code can cite the paragraph.</p>
 
-            <a class="card" href="survey-audit/">
-                <h2>Survey Data Auditor <span class="badge badge-data">Data</span> <span class="badge badge-tool">Tool</span></h2>
-                <p>The checks a monitoring team runs before anyone estimates anything: duplicate and near-duplicate interviews, Benford&rsquo;s law on amounts, age heaping (Whipple and Myers), straightlining, interview length and timing, missingness, and an enumerator-by-enumerator profile that says who to call back. Drop in a CSV; nothing leaves the browser.</p>
-                <p class="tech">HTML &middot; JavaScript &middot; no dependencies</p>
-            </a>
+        <article class="card" id="mact">
+            <div class="doodle"><svg viewBox="0 0 64 64" filter="url(#wobble)"><path d="M32 10v44"/><path d="M12 20h40"/><path d="M22 54h20"/><path d="M12 20l-6 16a8 8 0 0 0 12 0z"/><path d="M52 20l-6 16a8 8 0 0 0 12 0z"/></svg></div>
+            <h2><a href="compensation-calculator/">Motor Accident Compensation Calculator</a><span class="badge badge-law">Law</span><span class="badge badge-tool">Tool</span></h2>
+            <p class="summary">Fatal-accident awards under the Motor Vehicles Act, step by step with the authority for each line: the <em>Sarla Verma</em> multiplier, <em>Pranay Sethi</em> future prospects and conventional heads with their 10% triennial enhancement, consortium per dependant, and interest.</p>
+            <p class="tech">HTML · JavaScript · no dependencies</p>
+            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button></div>
+            <div class="pop"><b>In plain words.</b> When someone dies in a road accident, Indian tribunals value the income the family has lost using rules the Supreme Court has fixed: how much of the income the deceased would have spent on themself, how much it would have grown, and how many years to count. Enter the age, income and family, and the page produces the award the way a tribunal would write it, with the case and paragraph next to every figure. Where the judgments disagree, it offers both readings.</div>
+            <div class="notes">
+                <ul>
+                    <li><b>Rules encoded</b>: Sarla Verma (2009) 6 SCC 121 paras 30 to 32 and 42 (deductions, multiplier table); Pranay Sethi (2017) 16 SCC 680 para 61 (future prospects by employment and age, conventional heads, enhancement every three years from 31 October 2017); Magma (2018), Somwati (2020) and Sameem Begum (2026) on consortium to each dependant; section 171 interest.</li>
+                    <li><b>Enhancement</b> is computed as 1.1<sup>⌊months/36⌋</sup> from the judgment date to the award date, which reproduces the ₹16,500 / ₹44,000 and ₹18,150 / ₹48,400 figures the courts have applied since.</li>
+                    <li><b>Unsettled points are surfaced, not hidden</b>: consortium once or per dependant, enhancement by award or accident date, a married deceased with one dependant, ages above the table.</li>
+                    <li>Print stylesheet produces a clean award sheet.</li>
+                </ul>
+                <span class="verified">Verified: reproduces a published worked example (age 38, ₹4,004 a month, eight dependants: loss of dependency ₹8,64,864) and the ₹48,400 consortium the Supreme Court applied in August 2026.</span>
+            </div>
+        </article>
+    </section>
 
-            <p class="section-label">Law &amp; economics</p>
+    <!-- ───────────── Tools ───────────── -->
+    <section class="section">
+        <div class="section-head"><span class="section-label">Tools</span><svg class="rule" viewBox="0 0 400 8" preserveAspectRatio="none" aria-hidden="true"><path d="M0 4 C 60 1, 120 7, 200 4 S 340 1, 400 4"/></svg></div>
 
-            <a class="card" href="compensation-calculator/">
-                <h2>Motor Accident Compensation Calculator <span class="badge badge-tool">Tool</span> <span class="badge badge-research">Research</span></h2>
-                <p>Fatal-accident awards under the Motor Vehicles Act, step by step with the authority for each line: the <em>Sarla Verma</em> multiplier, <em>Pranay Sethi</em> future prospects and conventional heads with their 10% triennial enhancement, consortium per dependant, and interest. Where the case law is split, it says so.</p>
-                <p class="tech">HTML &middot; JavaScript &middot; no dependencies</p>
-            </a>
+        <article class="card" id="court">
+            <div class="doodle"><svg viewBox="0 0 64 64" filter="url(#wobble)"><path d="M8 14h24a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H18l-6 6v-6H8a4 4 0 0 1-4-4V18a4 4 0 0 1 4-4z"/><path d="M14 24h12"/><path d="M12 20h16" stroke-width="1.6"/><path d="M32 34h24a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4h-4v6l-6-6H32a4 4 0 0 1-4-4V38a4 4 0 0 1 4-4z"/><path d="M36 44h16M38 40h12" stroke-width="1.6"/></svg></div>
+            <h2><a href="court-translator/">Court Petition Translator</a><span class="badge badge-ai">AI</span><span class="badge badge-tool">Tool</span></h2>
+            <p class="summary">Translates Hindi Supreme Court and High Court petitions into formal legal English. Handles the legalese, so <em>yaachikaakarta</em> becomes "Petitioner" and <em>anuchhed</em> becomes "Article", and the output reads like it was drafted in English.</p>
+            <p class="tech">Sarvam AI · Llama 3.3 70B via Groq · Netlify Functions</p>
+            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button></div>
+            <div class="pop"><b>In plain words.</b> Paste the Hindi text of a petition and get back English that a lawyer would recognise as a petition, with the right terms of art, rather than a literal translation.</div>
+            <div class="notes">
+                <ul>
+                    <li>Text is chunked and sent to <code>sarvam-translate:v1</code> in formal mode, then the draft is revised by Llama 3.3 70B on Groq with a prompt that fixes legal terminology (याचिकाकर्ता → Petitioner, माननीय → Hon'ble, अनुच्छेद → Article).</li>
+                    <li>Keys stay server-side in a Netlify Function (<code>netlify/functions/court-translate.js</code>); the browser only ever talks to that function.</li>
+                    <li>Stage: prototype. The evaluation that is missing is a blind comparison against a human legal translator on a sample of real petitions.</li>
+                </ul>
+            </div>
+        </article>
 
-            <p class="section-label">Tools</p>
+        <article class="card" id="drive">
+            <div class="doodle"><svg viewBox="0 0 64 64" filter="url(#wobble)"><path d="M16 8h22l10 10v36a3 3 0 0 1-3 3H16a3 3 0 0 1-3-3V11a3 3 0 0 1 3-3z"/><path d="M38 8v10h10"/><path d="M22 30h20M22 38h20M22 46h12"/><path d="M50 40v14M45 49l5 5 5-5"/></svg></div>
+            <h2><a href="https://github.com/Varnasr/Experiments/tree/main/tools/drive-pdf-extractor" target="_blank" rel="noopener">Drive PDF Extractor</a><span class="badge badge-tool">Tool</span></h2>
+            <p class="summary">Headless-browser command line for view-only Google Drive PDFs: scrolls the Drive viewer, captures each rendered page, and reassembles them into a fresh PDF. No Drive authentication needed.</p>
+            <p class="tech">Node · Playwright · jsPDF</p>
+            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button></div>
+            <div class="pop"><b>In plain words.</b> Some documents shared on Google Drive can be read but not downloaded. This script reads them the way you would, page by page, and saves what it sees as a normal PDF you can keep and search.</div>
+            <div class="notes">
+                <ul>
+                    <li>Playwright drives Chromium through the Drive viewer, scrolling until every page canvas has rendered, then exports each canvas as an image and stitches them with jsPDF at the original page dimensions.</li>
+                    <li>Runs locally from the terminal; nothing is uploaded and no credentials are stored. Internal tool, used for research archives.</li>
+                </ul>
+            </div>
+        </article>
+    </section>
 
-            <a class="card" href="court-translator/">
-                <h2>Court Petition Translator <span class="badge badge-ai">AI</span> <span class="badge badge-tool">Tool</span></h2>
-                <p>Translates Hindi Supreme Court and High Court petitions into formal legal English. Handles the legalese — <em>yaachikaakartha</em> becomes "Petitioner", <em>anuchhed</em> becomes "Article" — so the output reads like it was drafted in English.</p>
-                <p class="tech">Sarvam AI &middot; Llama 3.3 70B via Groq &middot; Netlify Functions</p>
-            </a>
+    <!-- ───────────── Personal ───────────── -->
+    <section class="section">
+        <div class="section-head"><span class="section-label">Personal</span><svg class="rule" viewBox="0 0 400 8" preserveAspectRatio="none" aria-hidden="true"><path d="M0 4 C 60 7, 120 1, 200 4 S 340 7, 400 4"/></svg></div>
+        <p class="section-blurb">Built for the two children in the house and the shelves they read from. These are the most-used things on this page.</p>
 
-            <a class="card" href="https://github.com/Varnasr/Experiments/tree/main/tools/drive-pdf-extractor" target="_blank" rel="noopener">
-                <h2>Drive PDF Extractor <span class="badge badge-tool">Tool</span></h2>
-                <p>Headless-browser CLI for downloading view-only Google Drive PDFs. Scrolls the Drive viewer, captures each page from the rendered canvas, and reassembles them into a fresh PDF — no Drive auth required.</p>
-                <p class="tech">Node &middot; Playwright &middot; jsPDF</p>
-            </a>
+        <article class="card" id="littlek">
+            <div class="doodle"><svg viewBox="0 0 64 64" filter="url(#wobble)"><path d="M12 30h16v16H12z"/><path d="M28 22h16v16H28z"/><path d="M14 46h16v10H14z"/><path d="M18 40l4-6 4 6" stroke-width="1.8"/><path d="M33 33c0-4 6-4 6 0 0 3-6 3-6 6M36 32v-6" stroke-width="1.8"/><path d="M48 10l4 8-8 2z"/><path d="M50 18l-10 30"/></svg></div>
+            <h2><a href="kundendu-worksheets/">Kundendu's Learn &amp; Play</a><span class="badge badge-family">Family</span><span class="badge badge-creative">Creative</span></h2>
+            <p class="summary">A Class 1 CBSE worksheet generator with a structured course beside it: English phonics and reading, Hindi, Maths and EVS. Fresh questions every time, three difficulty levels, on-screen marking with confetti, printable sheets with answer keys, and eight decodable readers with read-along audio.</p>
+            <p class="tech">HTML · CSS · JavaScript · PWA · no dependencies</p>
+            <p class="live">Also at <a href="https://littlek.in">littlek.in</a></p>
+            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button></div>
+            <div class="pop"><b>In plain words.</b> A six-year-old's practice app. It never shows the same worksheet twice, it checks answers on screen, and its course introduces sounds before letters in the order that makes readable words fastest. Every lesson has a note for the grown-up on how to teach the rule.</div>
+            <div class="notes">
+                <ul>
+                    <li>36 activity types generated from rules, not stored questions, seeded per sheet so a printed answer key matches its worksheet.</li>
+                    <li>The course is a directed sequence of 161 lessons across four paths (synthetic-phonics scope and sequence, number sense, Hindi varnamala and matras, EVS), each unlocking the next at 80%.</li>
+                    <li>Decodable readers use only the sounds taught so far; read-along audio is word-timed. Word and Google Docs export for the printable sheets.</li>
+                    <li>Installable PWA with a small service worker, so it works offline on a tablet after the first visit; progress is stored locally on the device.</li>
+                </ul>
+            </div>
+        </article>
 
-            <p class="section-label">Creative</p>
+        <article class="card" id="alab">
+            <div class="doodle"><svg viewBox="0 0 64 64" filter="url(#wobble)"><path d="M26 8h12"/><path d="M28 8v14L14 46a4 4 0 0 0 3.5 6h29A4 4 0 0 0 50 46L36 22V8"/><path d="M20 38h24"/><circle cx="30" cy="44" r="1.6"/><circle cx="37" cy="47" r="1.2"/></svg></div>
+            <h2><a href="alab/">Agastya's Study Lab</a><span class="badge badge-family">Family</span><span class="badge badge-creative">Creative</span></h2>
+            <p class="summary">A CBSE Class 8 revision app: notes for every chapter of science, maths, social science, English, Hindi, Sanskrit and computing, then hundreds of questions across multiple choice, assertion–reason, matching, numericals and written answers, with instant marking and explanations, printable worksheets, mock papers in the CBSE pattern, and a mistakes book.</p>
+            <p class="tech">HTML · CSS · JavaScript · PWA · no dependencies</p>
+            <p class="live">Also at <a href="https://alab.cloud">alab.cloud</a></p>
+            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button></div>
+            <div class="pop"><b>In plain words.</b> A thirteen-year-old's exam companion. Pick a chapter, read the notes, answer questions and see why an answer is right or wrong, then let the mistakes book bring back what you got wrong until you don't. A "Today" screen decides what to revise next.</div>
+            <div class="notes">
+                <ul>
+                    <li>All content lives in one HTML file as structured data; chapters are rendered from it, with a doodle per chapter drawn as inline SVG.</li>
+                    <li>Question types share one marking engine; numericals accept tolerance, written answers are self-marked against a model answer. Mock papers are assembled to the CBSE section weights.</li>
+                    <li>Spaced repetition on the mistakes book; private on-device progress; PWA with offline support. Lesson content was checked against the NCERT texts (Curiosity, Ganita Prakash, Ruchira).</li>
+                </ul>
+            </div>
+        </article>
 
+        <article class="card" id="nilaya">
+            <div class="doodle"><svg viewBox="0 0 64 64" filter="url(#wobble)"><path d="M10 52h44"/><path d="M14 52V22h8v30"/><path d="M24 52V16h8v36"/><path d="M34 52V26h8v26"/><path d="M44 50l6-28 7 2-6 28z"/><path d="M16 30h4M26 24h4M36 34h4"/></svg></div>
+            <h2><a href="Nilaya_Pothi/">Nilaya E-Pothi</a><span class="badge badge-family">Family</span><span class="badge badge-creative">Creative</span></h2>
+            <p class="summary">A small family library, kept in this house. A parchment-styled catalogue with search, themed browsing, a reading tracker, and a network map of books linked by themes, keywords and authors.</p>
+            <p class="tech">HTML · Tailwind · D3 · FlexSearch · Python catalogue builder</p>
+            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button></div>
+            <div class="pop"><b>In plain words.</b> The shelves at home, online: what we own, who has read it, and which books sit near each other in subject. The map view shows the library as a web rather than a list, which is how a household actually reads.</div>
+            <div class="notes">
+                <ul>
+                    <li><code>build_catalogue.py</code> scans the shelf list, fetches metadata and cover thumbnails, and writes <code>catalog.json</code> with a resumable progress file so a long build can be interrupted.</li>
+                    <li>FlexSearch indexes titles, authors and keywords in the browser; D3 force layout draws the theme network; the reading tracker is stored locally.</li>
+                </ul>
+            </div>
+        </article>
+    </section>
 
-            <a class="card" href="kundendu-worksheets/">
-                <h2>Kundendu's Learn &amp; Play <span class="badge badge-creative">Creative</span> <span class="badge badge-tool">Tool</span></h2>
-                <p>A playful Class 1 CBSE worksheet generator — English phonics and reading, Hindi, Maths, and EVS. Freshly randomised questions every time, three difficulty levels, on-screen answer checking with confetti, printable sheets with answer keys, and a practice-history tracker.</p>
-                <p class="tech">HTML &middot; CSS &middot; JavaScript &middot; no dependencies</p>
-            </a>
+    <!-- ───────────── Graduated ───────────── -->
+    <section class="section">
+        <div class="section-head"><span class="section-label">Graduated</span><svg class="rule" viewBox="0 0 400 8" preserveAspectRatio="none" aria-hidden="true"><path d="M0 4 C 60 1, 120 7, 200 4 S 340 1, 400 4"/></svg></div>
+        <article class="card" id="grad">
+            <div class="doodle"><svg viewBox="0 0 64 64" filter="url(#wobble)"><path d="M8 34L56 12 40 54l-8-16z"/><path d="M32 38l24-26"/><path d="M12 50c4-4 8-6 12-6" stroke-dasharray="2 3"/></svg></div>
+            <h2><a href="https://openstacks.dev">Everything that grew up</a><span class="badge badge-data">Index</span></h2>
+            <p class="summary">Projects that started here and moved out: the SDG Progress Tracker, India Development Indicators, Climate TRACE India, the Industry Conglomerates Database, Bihar Parichay and the Bihar Electoral Dashboard, Some Perspective, WhoGaveTheOrder.in, Dev Case Studies, Development Discourses, How India Lives, and the research toolkits. They have their own homes now and are indexed, with status labels, at openstacks.dev.</p>
+            <p class="tech">openstacks.dev</p>
+        </article>
+    </section>
 
-
-            <a class="card" href="alab/">
-                <h2>Agastya&rsquo;s Study Lab <span class="badge badge-creative">Creative</span> <span class="badge badge-tool">Tool</span></h2>
-                <p>A CBSE Class 8 revision tool built around the Semester 1 science exam &mdash; revision notes for each of the six examinable chapters, then 304 questions across multiple choice, assertion&ndash;reason, matching, numericals and written answers, with instant marking and explanations. Printable worksheets with detachable answer keys, a 40-mark mock paper in the CBSE section pattern, and notes for the rest of Class VIII science and maths. Installs to a phone and works offline.</p>
-                <p class="tech">HTML &middot; CSS &middot; JavaScript &middot; PWA &middot; no dependencies</p>
-            </a>
-
-            <a class="card" href="Nilaya_Pothi/">
-                <h2>Nilaya E-Pothi <span class="badge badge-creative">Creative</span></h2>
-                <p>A small family library, kept in this house. A parchment-styled e-library with searchable catalogue, themed browsing, reading tracker, and a network map of books linked by themes, keywords, and authors.</p>
-                <p class="tech">HTML &middot; Tailwind &middot; D3 &middot; FlexSearch</p>
-            </a>
-
-            <p class="section-label">Graduated</p>
-
-            <a class="card" href="https://openstacks.dev">
-                <h2>Everything that grew up <span class="badge badge-data">Index</span></h2>
-                <p>Projects that started here and moved out: the SDG Progress Tracker, India
-                Development Indicators, Climate TRACE India, the Industry Conglomerates
-                Database, Bihar Parichay and the Bihar Electoral Dashboard, Some Perspective,
-                WhoGaveTheOrder.in, Dev Case Studies, Development Discourses, How India Lives,
-                and the research toolkits.</p>
-                <p>They have their own homes now and are indexed, with status labels, at
-                openstacks.dev.</p>
-                <p class="tech">openstacks.dev</p>
-            </a>
+    <!-- ───────────── How this is built ───────────── -->
+    <section class="section">
+        <div class="section-head"><span class="section-label">Notes on the stack</span><svg class="rule" viewBox="0 0 400 8" preserveAspectRatio="none" aria-hidden="true"><path d="M0 4 C 60 7, 120 1, 200 4 S 340 7, 400 4"/></svg></div>
+        <div class="stack">
+            <h3>How these are made, and why this way</h3>
+            <p><b>One file, no build.</b> Each tool is a single HTML file with its CSS and JavaScript inline, deployed as-is by Netlify on push. There is no bundler, no framework and no package to install, which means a tool from this page still opens in ten years, can be read in full by anyone who views source, and can be forked by copying one file. The two AI tools are the exception: their keys live in Netlify Functions so the browser never holds a secret.</p>
+            <p><b>Compute in the browser.</b> The econometrics and the poverty measures are implemented from the papers rather than imported: Cholesky solves, alternating-projection demeaning, cluster-robust sandwiches, simplex projection, Lorenz-curve fitting, numerical integration and bisection are all written in plain JavaScript in the page. Survey data and panels never leave the machine. The only network calls are to two public World Bank APIs, and the site's Content-Security-Policy allows nothing else.</p>
+            <p><b>Every number is checked against something outside the page.</b></p>
+            <ul>
+                <li>TWFE coefficient and clustered standard error against an explicit-dummies regression written independently in Python.</li>
+                <li>General Quadratic poverty measures against Datt's closed-form formulas; Gini and headcounts against PIP's own microdata figures.</li>
+                <li>Whipple, Myers and Benford against hand-computed limiting cases; the demo audit against the problems planted in it.</li>
+                <li>The compensation calculator against a published worked example and against figures the Supreme Court applied in 2026.</li>
+            </ul>
+            <p><b>Tested in a real browser.</b> Every page is driven in headless Chromium before it is pushed: the estimators are run on simulated and recorded data, the console is required to be empty, and screenshots are checked at desktop and phone widths. Charts are drawn as SVG by hand with hover tooltips, one axis, and a palette validated for colour-vision deficiency.</p>
+            <p><b>Written to be read.</b> Every tool carries a "what is being estimated" or "method" note beside its output, its README states what was verified and how, and the places where a method or a judgment is unsettled are said out loud rather than smoothed over.</p>
+            <p>Source for all of it: <a href="https://github.com/Varnasr/Experiments">github.com/Varnasr/Experiments</a>, MIT licence. Each tool's folder has its own README with the method and the verification.</p>
         </div>
-    </main>
+    </section>
 
-    <footer>
-        <div class="footer-links">
-            <a href="https://github.com/Varnasr/Experiments">GitHub</a>
-            <a href="https://github.com/Varnasr/Experiments/blob/main/LICENSE">MIT License</a>
-            <a href="https://github.com/Varnasr/OpenStacks-for-Change">OpenStacks for Change</a>
-        </div>
-        <span>&copy; <span id="year">2025</span> Varna Sri Raman</span>
-    </footer>
-    <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</div>
+</main>
+
+<footer>
+    <div class="footer-links">
+        <a href="https://github.com/Varnasr/Experiments">GitHub</a>
+        <a href="https://github.com/Varnasr/Experiments/blob/main/LICENSE">MIT License</a>
+        <a href="https://github.com/Varnasr/OpenStacks-for-Change">OpenStacks for Change</a>
+        <a href="https://idealog.works">Idealog Works</a>
+    </div>
+    <span>&copy; <span id="year">2025</span> Varna Sri Raman</span>
+</footer>
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+// "?" toggles the plain-words note (for touch screens; hover does it on desktop); "How it's built" toggles the tech notes.
+document.querySelectorAll('.card').forEach(card => {
+  const q = card.querySelector('.q'), n = card.querySelector('.n');
+  if (q) q.addEventListener('click', e => { e.preventDefault(); const on = card.classList.toggle('pop-open'); q.setAttribute('aria-expanded', on); });
+  if (n) n.addEventListener('click', e => { e.preventDefault(); const on = card.classList.toggle('notes-open'); n.setAttribute('aria-expanded', on); });
+});
+</script>
 </body>
 </html>
