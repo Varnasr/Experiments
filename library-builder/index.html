@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Household Library Builder · Experiments</title>
+<meta name="description" content="Catalogue the books in a house: add by ISBN or title with metadata and covers from Open Library, or by hand or CSV; shelve, tag, track who is reading what and who has borrowed it, see the subjects the shelves cluster around, and export the whole thing. Stored in the browser only.">
+<link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23572e91'/><path d='M8 8h4v16H8zM13 8h4v16h-4zM18.5 9l3.8-1 4.2 15.5-3.8 1z' fill='white'/><path d='M8 24h18' stroke='%23ff9911' stroke-width='2' stroke-linecap='round'/></svg>">
+<style>
+  :root { --bg:#fafafa; --surface:#fff; --border:#e5e7eb; --text:#1a1a2e; --dim:#4b5563; --muted:#9ca3af; --accent:#572e91; --accent-soft:#efe9f7; --orange:#ff9911; --grid:#eee; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--text); line-height:1.55; }
+  a { color:var(--accent); }
+  header { border-bottom:1px solid var(--border); background:#fff; }
+  .wrap { max-width:1280px; margin:0 auto; padding:0 1.25rem; }
+  header .wrap { display:flex; align-items:baseline; justify-content:space-between; gap:1rem; padding:.9rem 1.25rem; flex-wrap:wrap; }
+  header h1 { font-family:Georgia,serif; font-size:1.35rem; font-weight:400; }
+  header h1 small { font-size:.8rem; color:var(--muted); margin-left:.5rem; }
+  header nav a { font-size:.85rem; margin-left:1rem; text-decoration:none; }
+  main { padding:1.5rem 0 3rem; }
+  .lede { color:var(--dim); font-size:.95rem; max-width:72ch; margin-bottom:1.25rem; }
+  .grid { display:grid; grid-template-columns:380px 1fr; gap:1.25rem; align-items:start; }
+  @media (max-width:960px){ .grid { grid-template-columns:1fr; } }
+  .panel { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1rem 1.15rem; margin-bottom:1rem; }
+  .panel h2 { font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; margin-bottom:.7rem; }
+  label { display:block; font-size:.78rem; color:var(--dim); margin:.45rem 0 .15rem; }
+  select, input[type=text], input[type=number], input[type=date], input[type=search], textarea { width:100%; font:inherit; font-size:.88rem; padding:.36rem .5rem; border:1px solid var(--border); border-radius:6px; background:#fff; color:var(--text); }
+  textarea { min-height:3.5rem; resize:vertical; }
+  .row { display:flex; gap:.4rem; } .row > * { flex:1; min-width:0; }
+  button { font:inherit; font-size:.84rem; padding:.42rem .75rem; border-radius:6px; border:1px solid var(--border); background:#fff; color:var(--text); cursor:pointer; }
+  button.go { border-color:var(--accent); background:var(--accent); color:#fff; }
+  button.danger { color:#b91c1c; }
+  button.on { background:var(--accent-soft); border-color:#c9b5e6; }
+  .btns { display:flex; gap:.4rem; flex-wrap:wrap; margin-top:.5rem; }
+  .mini { font-size:.76rem; color:var(--muted); }
+  .note { font-size:.82rem; color:var(--dim); margin-top:.5rem; }
+  .tabs { display:flex; gap:.25rem; border-bottom:1px solid var(--border); margin-bottom:.9rem; flex-wrap:wrap; }
+  .tabs button { border:none; border-bottom:2px solid transparent; border-radius:0; background:none; color:var(--dim); padding:.45rem .7rem; }
+  .tabs button.on { color:var(--accent); border-bottom-color:var(--accent); font-weight:600; }
+  .view { display:none; } .view.on { display:block; }
+  .stat { display:inline-block; margin:.2rem 1.3rem .3rem 0; vertical-align:top; }
+  .stat b { display:block; font-size:1.3rem; font-family:Georgia,serif; font-weight:400; } .stat span { font-size:.72rem; color:var(--muted); display:block; }
+  .shelf { display:grid; grid-template-columns:repeat(auto-fill,minmax(128px,1fr)); gap:.8rem; }
+  .book { cursor:pointer; border:1px solid var(--border); border-radius:8px; background:#fff; overflow:hidden; display:flex; flex-direction:column; transition:box-shadow .15s; }
+  .book:hover { box-shadow:0 4px 14px rgba(87,46,145,.15); }
+  .book.sel { outline:2px solid var(--accent); }
+  .cover { aspect-ratio:2/3; background:linear-gradient(160deg,#efe9f7,#e3d7f3); display:flex; align-items:flex-end; padding:.5rem; font-family:Georgia,serif; font-size:.78rem; line-height:1.25; color:#2f1a52; position:relative; }
+  .cover img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+  .cover .t { position:relative; z-index:1; }
+  .cover img + .t { display:none; }
+  .book .meta { padding:.4rem .5rem .5rem; font-size:.74rem; color:var(--dim); line-height:1.3; }
+  .book .meta b { display:block; color:var(--text); font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .pill { display:inline-block; font-size:.66rem; padding:0 .35rem; border-radius:4px; background:var(--accent-soft); color:#2f1a52; margin:.15rem .15rem 0 0; }
+  .pill.lent { background:#fff7ed; color:#9a3412; } .pill.read { background:#ecfdf5; color:#065f46; } .pill.reading { background:#eff6ff; color:#1e40af; }
+  table { border-collapse:collapse; width:100%; font-size:.83rem; }
+  th, td { text-align:left; padding:.3rem .45rem; border-bottom:1px solid var(--border); vertical-align:top; }
+  th { color:var(--dim); font-weight:600; font-size:.74rem; white-space:nowrap; cursor:pointer; user-select:none; }
+  tr.rowb { cursor:pointer; } tr.rowb:hover td { background:#faf7fe; }
+  .tscroll { overflow:auto; max-height:70vh; }
+  .results { border:1px solid var(--border); border-radius:6px; margin-top:.4rem; max-height:16rem; overflow:auto; }
+  .results div { padding:.35rem .5rem; font-size:.8rem; border-bottom:1px solid var(--border); cursor:pointer; } .results div:hover { background:var(--accent-soft); }
+  .results div span { color:var(--muted); }
+  svg.chart { width:100%; height:auto; font-size:11px; fill:var(--dim); }
+  .tip { position:fixed; pointer-events:none; background:#1a1a2e; color:#fff; padding:.35rem .55rem; border-radius:5px; font-size:.78rem; display:none; z-index:10; max-width:300px; }
+  .warn { background:#fff7ed; border:1px solid #fed7aa; color:#9a3412; padding:.5rem .7rem; border-radius:6px; font-size:.83rem; margin:.5rem 0; }
+  .filters { display:flex; gap:.4rem; flex-wrap:wrap; margin-bottom:.7rem; align-items:center; } .filters > * { width:auto; flex:0 1 auto; } .filters input[type=search] { flex:1 1 180px; }
+  footer { border-top:1px solid var(--border); padding:1.25rem; text-align:center; font-size:.8rem; color:var(--muted); }
+  @media print { header nav, .grid > div:first-child, .tabs, .filters, footer, .tip { display:none; } .grid { grid-template-columns:1fr; } .tscroll { max-height:none; } body { background:#fff; } }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>Household Library Builder <small>catalogue the shelves, track the borrowing, see the subjects</small></h1>
+  <nav><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/library-builder">Source</a></nav>
+</div></header>
+<main><div class="wrap">
+<p class="lede">A house with a few hundred books has a library and no catalogue. This page makes one. Type an ISBN or a title and the record comes back from Open Library with authors, year, publisher, subjects and a cover; or enter books by hand, paste a list, or import a Goodreads or LibraryThing CSV. Then shelve them, mark who is reading what, record who borrowed which book and when, and look at the shelves as a subject map rather than a list. The catalogue lives in this browser and nowhere else; export it as JSON to keep a copy, move it to another machine or hand it to the next generation.</p>
+
+<div class="grid">
+<div>
+  <div class="panel"><h2>Add books</h2>
+    <label>ISBN (10 or 13 digits; hyphens fine)</label><div class="row"><input type="text" id="isbn" placeholder="978…"><button class="go" id="isbnGo">Look up</button></div>
+    <label>Or search by title and author</label><div class="row"><input type="text" id="q" placeholder="title, author"><button id="qGo">Search</button></div>
+    <div id="results" class="results" hidden></div>
+    <p class="mini" id="addMsg"></p>
+    <details style="margin-top:.5rem"><summary class="mini" style="cursor:pointer;color:var(--accent)">Paste a list, or import a CSV</summary>
+      <label>One book per line: an ISBN, or "Title | Author | Year"</label><textarea id="bulk"></textarea>
+      <div class="btns"><button id="bulkGo">Add these</button><label style="display:inline-flex;align-items:center;gap:.3rem;margin:0;font-size:.78rem"><input type="checkbox" id="bulkLookup" checked> look up ISBNs online</label></div>
+      <div class="btns"><button id="csvIn">Import CSV (Goodreads, LibraryThing, or title/author/isbn columns)</button><input type="file" id="csvFile" accept=".csv,text/csv" hidden></div>
+    </details>
+  </div>
+  <div class="panel" id="editPanel"><h2 id="editTitle">Book</h2>
+    <div id="edit"><p class="mini">Select a book on the right to edit it, or add one above.</p></div>
+  </div>
+  <div class="panel"><h2>The catalogue</h2>
+    <div class="btns"><button id="jsonOut">Export JSON (full backup)</button><button id="jsonIn">Import JSON</button><input type="file" id="jsonFile" accept=".json" hidden><button id="csvOut">Export CSV</button><button id="print">Print shelf list</button></div>
+    <div class="btns"><button id="example">Load a starter shelf</button><button class="danger" id="clear">Clear everything</button></div>
+    <p class="mini">Saved in this browser as you go. Nothing is sent anywhere except the ISBN or title you look up, which goes to openlibrary.org.</p>
+  </div>
+</div>
+
+<div>
+  <div class="panel" id="stats"></div>
+  <div class="tabs"><button data-v="shelf" class="on">Shelves</button><button data-v="table">Table</button><button data-v="lent">Borrowed and reading</button><button data-v="subjects">Subjects</button><button data-v="map">Map</button></div>
+  <div class="filters"><input type="search" id="search" placeholder="Search title, author, subject, notes"><select id="fShelf"><option value="">All shelves</option></select><select id="fStatus"><option value="">Any status</option><option>unread</option><option>reading</option><option>read</option><option>reference</option></select><select id="fOwner"><option value="">Anyone's</option></select><select id="fTag"><option value="">Any subject</option></select><select id="sort"><option value="added">Newest first</option><option value="title">Title</option><option value="author">Author</option><option value="year">Year</option><option value="shelf">Shelf</option></select></div>
+  <div class="view on" id="v-shelf"><div class="shelf" id="shelf"></div></div>
+  <div class="view" id="v-table"><div class="tscroll" id="table"></div></div>
+  <div class="view" id="v-lent"><div id="lent"></div></div>
+  <div class="view" id="v-subjects"><div id="subjects"></div></div>
+  <div class="view" id="v-map"><div id="map"></div><p class="note">Each dot is a book; two books are joined when they share a subject. The layout is a force simulation run in the page; drag nothing, hover for the title. Books with no subjects sit out.</p></div>
+</div>
+</div>
+</div></main>
+<div class="tip" id="tip"></div>
+<footer>Part of <a href="../">Experiments</a> by Varna Sri Raman · Idealog Works · MIT licence · Metadata and covers from Open Library (openlibrary.org); the catalogue itself never leaves your browser.</footer>
+<script>
+'use strict';
+const $=s=>document.querySelector(s); const $$=s=>[...document.querySelectorAll(s)]; const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const tip=$('#tip'); document.addEventListener('mousemove',e=>{const t=e.target.closest&&e.target.closest('[data-tip]');if(t){tip.innerHTML=t.getAttribute('data-tip');tip.style.display='block';tip.style.left=(e.clientX+12)+'px';tip.style.top=(e.clientY-10)+'px';}else tip.style.display='none';});
+const KEY='library-builder-v1'; let B=[]; let sel=null; let sortKey='added';
+const uid=()=>Math.random().toString(36).slice(2,10)+Date.now().toString(36);
+const cleanIsbn=s=>String(s||'').replace(/[^0-9Xx]/g,'').toUpperCase();
+function load(){ try{ const j=JSON.parse(localStorage.getItem(KEY)); if(j&&Array.isArray(j.books)) B=j.books; }catch(e){} }
+function save(){ try{ localStorage.setItem(KEY,JSON.stringify({books:B,saved:new Date().toISOString()})); }catch(e){ msg('Could not save: browser storage is full or blocked.'); } }
+function msg(t){ $('#addMsg').textContent=t; }
+const blank=()=>({id:uid(),title:'',authors:[],year:'',publisher:'',isbn:'',subjects:[],shelf:'',owner:'',status:'unread',lentTo:'',lentOn:'',rating:'',notes:'',cover:'',added:new Date().toISOString().slice(0,10)});
+function addBook(b){ const isbn=cleanIsbn(b.isbn); if(isbn){ const dup=B.find(x=>cleanIsbn(x.isbn)===isbn); if(dup){ msg(`Already on the shelf: ${dup.title}`); return dup; } } const t=b.title.trim().toLowerCase(); const dup2=B.find(x=>x.title.trim().toLowerCase()===t&&(x.authors[0]||'')===(b.authors[0]||'')); if(dup2&&t){ msg(`Already on the shelf: ${dup2.title}`); return dup2; } B.unshift(b); save(); render(); return b; }
+
+// Open Library
+async function byIsbn(isbn){ isbn=cleanIsbn(isbn); if(!/^(\d{9}[\dX]|\d{13})$/.test(isbn)) throw new Error('That is not a 10- or 13-digit ISBN.'); const r=await fetch(`https://openlibrary.org/api/books?bibkeys=ISBN:${isbn}&format=json&jscmd=data`); if(!r.ok) throw new Error('Open Library replied '+r.status); const j=await r.json(); const d=j['ISBN:'+isbn]; if(!d) throw new Error('No record for ISBN '+isbn+' on Open Library; add it by hand.'); const b=blank(); b.title=d.title||''; if(d.subtitle) b.title+=': '+d.subtitle; b.authors=(d.authors||[]).map(a=>a.name); b.year=(d.publish_date||'').match(/\d{4}/)?.[0]||''; b.publisher=(d.publishers||[]).map(p=>p.name).join('; '); b.isbn=isbn; b.subjects=(d.subjects||[]).map(s=>s.name).slice(0,12); b.cover=d.cover?.medium||`https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg`; return b; }
+async function search(q){ const r=await fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(q)}&limit=10&fields=title,author_name,first_publish_year,isbn,cover_i,subject,publisher`); if(!r.ok) throw new Error('Open Library replied '+r.status); const j=await r.json(); return (j.docs||[]).map(d=>{ const b=blank(); b.title=d.title||''; b.authors=d.author_name||[]; b.year=d.first_publish_year?String(d.first_publish_year):''; b.publisher=(d.publisher||[])[0]||''; b.isbn=(d.isbn||[]).find(x=>x.length===13)||(d.isbn||[])[0]||''; b.subjects=(d.subject||[]).slice(0,12); b.cover=d.cover_i?`https://covers.openlibrary.org/b/id/${d.cover_i}-M.jpg`:''; return b; }); }
+$('#isbnGo').onclick=async()=>{ msg('Looking up…'); try{ const b=await byIsbn($('#isbn').value); const a=addBook(b); msg(`Added: ${a.title}`); $('#isbn').value=''; select(a.id); }catch(e){ msg(e.message); } };
+$('#isbn').addEventListener('keydown',e=>{ if(e.key==='Enter') $('#isbnGo').click(); });
+$('#qGo').onclick=async()=>{ const q=$('#q').value.trim(); if(!q) return; msg('Searching…'); $('#results').hidden=true; try{ const rs=await search(q); if(!rs.length){ msg('Nothing found.'); return; } $('#results').innerHTML=rs.map((b,i)=>`<div data-i="${i}"><b>${esc(b.title)}</b> <span>${esc(b.authors.join(', '))}${b.year?' · '+b.year:''}${b.publisher?' · '+esc(b.publisher):''}</span></div>`).join(''); $('#results').hidden=false; msg(rs.length+' results; click one to add it.'); $('#results').querySelectorAll('div').forEach(el=>el.onclick=()=>{ const a=addBook(rs[+el.dataset.i]); msg(`Added: ${a.title}`); $('#results').hidden=true; $('#q').value=''; select(a.id); }); }catch(e){ msg(e.message); } };
+$('#q').addEventListener('keydown',e=>{ if(e.key==='Enter') $('#qGo').click(); });
+$('#bulkGo').onclick=async()=>{ const ls=$('#bulk').value.split('\n').map(x=>x.trim()).filter(Boolean); let n=0,f=0; const n0=B.length; for(const l of ls){ const isbn=cleanIsbn(l); if(/^(\d{9}[\dX]|\d{13})$/.test(isbn)&&isbn.length===l.replace(/[-\s]/g,'').length){ if($('#bulkLookup').checked){ try{ addBook(await byIsbn(isbn)); n++; }catch(e){ const b=blank(); b.isbn=isbn; b.title='ISBN '+isbn+' (not found; edit)'; addBook(b); f++; } } else { const b=blank(); b.isbn=isbn; b.title='ISBN '+isbn; addBook(b); n++; } } else { const p=l.split('|').map(x=>x.trim()); const b=blank(); b.title=p[0]||''; b.authors=p[1]?p[1].split(/;|&| and /).map(x=>x.trim()).filter(Boolean):[]; b.year=(p[2]||'').match(/\d{4}/)?.[0]||''; if(b.title){ addBook(b); n++; } } msg(`Adding… ${n} done`); } n=B.length-n0; msg(`${n} added${f?', '+f+' ISBNs not found on Open Library (added as placeholders)':''}${ls.length>n?', '+(ls.length-n)+' already on the shelf':''}.`); $('#bulk').value=''; };
+$('#csvIn').onclick=()=>$('#csvFile').click(); $('#csvFile').onchange=e=>{ const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ const rows=parseCSV(r.result); if(rows.length<2){ msg('Empty CSV.'); return; } const h=rows[0].map(x=>x.trim().toLowerCase()); const ix=(...names)=>{ for(const n of names){ const i=h.indexOf(n); if(i>=0) return i; } return -1; }; const iT=ix('title'),iA=ix('author','authors','primary author','author l-f'),iI=ix('isbn13','isbn','ean'),iY=ix('original publication year','year published','year','date','publication'),iP=ix('publisher'),iS=ix('bookshelves','tags','subjects','collections'),iR=ix('my rating','rating'),iX=ix('exclusive shelf','status'),iN=ix('my review','notes','comments','review'); if(iT<0){ msg('No title column found.'); return; } let n=0; rows.slice(1).forEach(x=>{ if(!x[iT]) return; const b=blank(); b.title=x[iT]; b.authors=iA>=0&&x[iA]?[x[iA].replace(/^(.*), (.*)$/,'$2 $1')]:[]; b.isbn=iI>=0?cleanIsbn((x[iI]||'').replace(/^="?|"?$/g,'')):''; b.year=iY>=0?((x[iY]||'').match(/\d{4}/)?.[0]||''):''; b.publisher=iP>=0?x[iP]||'':''; b.subjects=iS>=0&&x[iS]?x[iS].split(/[,;]/).map(s=>s.trim()).filter(Boolean).slice(0,12):[]; b.rating=iR>=0&&+x[iR]>0?String(+x[iR]):''; const st=iX>=0?(x[iX]||'').toLowerCase():''; b.status=/read$|^read/.test(st)&&!/to-read|unread/.test(st)?'read':/currently|reading/.test(st)?'reading':'unread'; b.notes=iN>=0?x[iN]||'':''; if(b.isbn) b.cover=`https://covers.openlibrary.org/b/isbn/${b.isbn}-M.jpg`; const before=B.length; addBook(b); if(B.length>before) n++; }); msg(`${n} books imported from the CSV.`); }; r.readAsText(f); e.target.value=''; };
+function parseCSV(t){ const rows=[]; let row=[],cur='',q=false; for(let i=0;i<t.length;i++){ const c=t[i]; if(q){ if(c==='"'){ if(t[i+1]==='"'){ cur+='"'; i++; } else q=false; } else cur+=c; } else if(c==='"') q=true; else if(c===','){ row.push(cur); cur=''; } else if(c==='\n'||c==='\r'){ if(c==='\r'&&t[i+1]==='\n') i++; row.push(cur); rows.push(row); row=[]; cur=''; } else cur+=c; } if(cur!==''||row.length){ row.push(cur); rows.push(row); } return rows; }
+
+// edit
+function select(id){ sel=id; const b=B.find(x=>x.id===id); if(!b){ $('#edit').innerHTML='<p class="mini">Select a book on the right to edit it.</p>'; $('#editTitle').textContent='Book'; render(); return; } $('#editTitle').textContent=b.title||'Book';
+  const f=(k,l,type='text')=>`<label>${l}</label><input type="${type}" data-k="${k}" value="${esc(b[k])}">`;
+  $('#edit').innerHTML=`${f('title','Title')}<label>Authors (separate with ;)</label><input type="text" data-k="authors" value="${esc(b.authors.join('; '))}"><div class="row"><div>${f('year','Year')}</div><div>${f('isbn','ISBN')}</div></div>${f('publisher','Publisher')}<label>Subjects and tags (separate with ;)</label><input type="text" data-k="subjects" value="${esc(b.subjects.join('; '))}"><div class="row"><div>${f('shelf','Shelf or room')}</div><div>${f('owner','Whose')}</div></div><div class="row"><div><label>Status</label><select data-k="status">${['unread','reading','read','reference'].map(s=>`<option${b.status===s?' selected':''}>${s}</option>`).join('')}</select></div><div><label>Rating (1 to 5)</label><input type="number" min="1" max="5" data-k="rating" value="${esc(b.rating)}"></div></div><div class="row"><div>${f('lentTo','Lent to (blank if home)')}</div><div>${f('lentOn','Lent on','date')}</div></div>${f('cover','Cover image URL')}<label>Notes</label><textarea data-k="notes">${esc(b.notes)}</textarea><div class="btns"><button id="unsel">Done</button><button class="danger" id="del">Remove from catalogue</button></div>`;
+  $('#edit').querySelectorAll('[data-k]').forEach(el=>el.addEventListener('input',()=>{ const k=el.dataset.k; const v=el.value; if(k==='authors'||k==='subjects') b[k]=v.split(';').map(x=>x.trim()).filter(Boolean); else b[k]=v; save(); render(); $('#editTitle').textContent=b.title||'Book'; }));
+  $('#unsel').onclick=()=>{ sel=null; select(null); }; $('#del').onclick=()=>{ if(confirm('Remove "'+b.title+'" from the catalogue?')){ B=B.filter(x=>x.id!==id); sel=null; save(); select(null); } }; render(); }
+
+// views
+$$('.tabs button').forEach(bt=>bt.onclick=()=>{ $$('.tabs button').forEach(x=>x.classList.toggle('on',x===bt)); $$('.view').forEach(v=>v.classList.toggle('on',v.id==='v-'+bt.dataset.v)); render(); });
+['#search','#fShelf','#fStatus','#fOwner','#fTag','#sort'].forEach(s=>$(s).addEventListener('input',render));
+function filtered(){ const q=$('#search').value.trim().toLowerCase(), sh=$('#fShelf').value, st=$('#fStatus').value, ow=$('#fOwner').value, tg=$('#fTag').value; sortKey=$('#sort').value; let L=B.filter(b=>(!sh||b.shelf===sh)&&(!st||b.status===st)&&(!ow||b.owner===ow)&&(!tg||b.subjects.includes(tg))&&(!q||[b.title,b.authors.join(' '),b.subjects.join(' '),b.notes,b.publisher,b.isbn,b.lentTo].join(' ').toLowerCase().includes(q)));
+  const key={added:b=>b.added+b.id,title:b=>b.title.toLowerCase(),author:b=>(b.authors[0]||'').split(' ').pop().toLowerCase()+b.title,year:b=>b.year||'0000',shelf:b=>b.shelf+b.title}[sortKey]; L.sort((a,b)=>key(a)<key(b)?-1:key(a)>key(b)?1:0); if(sortKey==='added') L.reverse(); return L; }
+function opts(sel,vals,label){ const cur=$(sel).value; $(sel).innerHTML=`<option value="">${label}</option>`+vals.map(v=>`<option${v===cur?' selected':''}>${esc(v)}</option>`).join(''); }
+function render(){ const uniq=k=>[...new Set(B.map(b=>b[k]).filter(Boolean))].sort(); opts('#fShelf',uniq('shelf'),'All shelves'); opts('#fOwner',uniq('owner'),"Anyone's"); const tagCount=new Map(); B.forEach(b=>b.subjects.forEach(s=>tagCount.set(s,(tagCount.get(s)||0)+1))); const tags=[...tagCount].sort((a,b)=>b[1]-a[1]).map(x=>x[0]); opts('#fTag',tags.slice(0,80),'Any subject');
+  const L=filtered(); const lent=B.filter(b=>b.lentTo); const over=lent.filter(b=>b.lentOn&&(Date.now()-new Date(b.lentOn))/864e5>60);
+  $('#stats').innerHTML=`<span class="stat"><b>${B.length}</b><span>books catalogued</span></span><span class="stat"><b>${new Set(B.flatMap(b=>b.authors)).size}</b><span>authors</span></span><span class="stat"><b>${B.filter(b=>b.status==='read').length}</b><span>read</span></span><span class="stat"><b>${B.filter(b=>b.status==='reading').length}</b><span>being read now</span></span><span class="stat"><b>${lent.length}</b><span>out on loan${over.length?', '+over.length+' for over 60 days':''}</span></span><span class="stat"><b>${uniq('shelf').length}</b><span>shelves</span></span><span class="stat"><b>${tagCount.size}</b><span>subjects</span></span>${L.length!==B.length?`<span class="stat"><b>${L.length}</b><span>shown by the current filter</span></span>`:''}`;
+  const view=$('.tabs button.on').dataset.v;
+  if(view==='shelf') $('#shelf').innerHTML=L.length?L.map(b=>`<div class="book${b.id===sel?' sel':''}" data-id="${b.id}"><div class="cover">${b.cover?`<img src="${esc(b.cover)}" alt="" loading="lazy" onerror="this.remove()">`:''}<div class="t">${esc(b.title)}</div></div><div class="meta"><b title="${esc(b.title)}">${esc(b.title)}</b>${esc(b.authors.join(', '))}${b.year?' · '+b.year:''}<br>${b.shelf?`<span class="pill">${esc(b.shelf)}</span>`:''}${b.status!=='unread'?`<span class="pill ${b.status}">${b.status}</span>`:''}${b.lentTo?`<span class="pill lent">with ${esc(b.lentTo)}</span>`:''}</div></div>`).join(''):'<p class="note">Nothing here yet. Add a book on the left, or load the starter shelf.</p>';
+  if(view==='table') $('#table').innerHTML=`<table><tr><th data-s="title">Title</th><th data-s="author">Author</th><th data-s="year">Year</th><th data-s="shelf">Shelf</th><th>Whose</th><th>Status</th><th>Lent to</th><th>Subjects</th></tr>${L.map(b=>`<tr class="rowb" data-id="${b.id}"><td>${esc(b.title)}</td><td>${esc(b.authors.join(', '))}</td><td>${esc(b.year)}</td><td>${esc(b.shelf)}</td><td>${esc(b.owner)}</td><td>${b.status}</td><td>${esc(b.lentTo)}${b.lentOn?' <span class="mini">('+b.lentOn+')</span>':''}</td><td class="mini">${esc(b.subjects.slice(0,4).join(', '))}</td></tr>`).join('')}</table>`;
+  if(view==='lent'){ const reading=B.filter(b=>b.status==='reading'); $('#lent').innerHTML=`<h3 style="font-size:.9rem;margin:.3rem 0">Out on loan</h3>${lent.length?`<table><tr><th>Title</th><th>Lent to</th><th>Since</th><th>Days</th></tr>${lent.sort((a,b)=>(a.lentOn||'')<(b.lentOn||'')?-1:1).map(b=>{ const d=b.lentOn?Math.floor((Date.now()-new Date(b.lentOn))/864e5):null; return `<tr class="rowb" data-id="${b.id}"><td>${esc(b.title)}</td><td>${esc(b.lentTo)}</td><td>${b.lentOn||'—'}</td><td${d>60?' style="color:#b91c1c"':''}>${d??''}</td></tr>`; }).join('')}</table>`:'<p class="note">Everything is home.</p>'}<h3 style="font-size:.9rem;margin:1rem 0 .3rem">Being read now</h3>${reading.length?`<table><tr><th>Title</th><th>Whose</th><th>Shelf</th></tr>${reading.map(b=>`<tr class="rowb" data-id="${b.id}"><td>${esc(b.title)}</td><td>${esc(b.owner)}</td><td>${esc(b.shelf)}</td></tr>`).join('')}</table>`:'<p class="note">Nobody has a book marked as being read.</p>'}`; }
+  if(view==='subjects'){ const top=[...tagCount].sort((a,b)=>b[1]-a[1]).slice(0,25); const authors=new Map(); B.forEach(b=>b.authors.forEach(a=>authors.set(a,(authors.get(a)||0)+1))); const topA=[...authors].sort((a,b)=>b[1]-a[1]).slice(0,12); const decades=new Map(); B.forEach(b=>{ if(/^\d{4}$/.test(b.year)){ const d=b.year.slice(0,3)+'0s'; decades.set(d,(decades.get(d)||0)+1); } }); $('#subjects').innerHTML=(top.length?bars(top,'Subjects with the most books'):'<p class="note">No subjects yet. Books looked up on Open Library carry them; add your own tags in the edit panel.</p>')+(topA.length?bars(topA,'Authors with the most books'):'')+([...decades].length?bars([...decades].sort(),'Books by decade of publication'):''); }
+  if(view==='map') $('#map').innerHTML=network();
+  $$('[data-id]').forEach(el=>el.onclick=()=>select(el.dataset.id));
+  $$('th[data-s]').forEach(th=>th.onclick=()=>{ $('#sort').value=th.dataset.s; render(); });
+}
+function bars(rows,title){ const W=760,rh=20,m={l:220,r:40,t:24,b:6},pw=W-m.l-m.r; const mx=Math.max(...rows.map(r=>r[1]))||1; const H=m.t+m.b+rows.length*rh; let g=`<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(title)}"><text x="0" y="14" font-weight="600" fill="#1a1a2e">${esc(title)}</text>`; rows.forEach((r,i)=>{ const y=m.t+i*rh; const w=r[1]/mx*pw; g+=`<text x="${m.l-8}" y="${y+14}" text-anchor="end">${esc(r[0].length>34?r[0].slice(0,32)+'…':r[0])}</text><rect x="${m.l}" y="${y+3}" width="${w}" height="${rh-6}" rx="2" fill="var(--accent)" data-tip="${esc(r[0])}: ${r[1]}" style="cursor:pointer" onclick="document.querySelector('#fTag').value=${JSON.stringify(r[0]).replace(/"/g,'&quot;')};document.querySelector('.tabs button').click()"/><text x="${m.l+w+5}" y="${y+14}">${r[1]}</text>`; }); return g+'</svg>'; }
+function network(){ const books=B.filter(b=>b.subjects.length).slice(0,300); if(books.length<2) return '<p class="note">The map needs at least two books with subjects.</p>'; const n=books.length; const idx=new Map(books.map((b,i)=>[b.id,i])); const bySub=new Map(); books.forEach((b,i)=>b.subjects.forEach(s=>{ const k=s.toLowerCase(); if(!bySub.has(k)) bySub.set(k,[]); bySub.get(k).push(i); })); const E=new Map(); bySub.forEach((ids,s)=>{ if(ids.length>40) return; for(let a=0;a<ids.length;a++) for(let c=a+1;c<ids.length;c++){ const k=ids[a]+'-'+ids[c]; E.set(k,(E.get(k)||{a:ids[a],b:ids[c],w:0,s:[]})); const e=E.get(k); e.w++; if(e.s.length<3) e.s.push(s); } }); const edges=[...E.values()]; const W=760,H=520; let rnd=12345; const rand=()=>{ rnd=(rnd*1103515245+12345)&0x7fffffff; return rnd/0x7fffffff; }; const P=books.map(()=>({x:W/2+(rand()-.5)*W*.8,y:H/2+(rand()-.5)*H*.8,vx:0,vy:0})); const deg=new Array(n).fill(0); edges.forEach(e=>{ deg[e.a]++; deg[e.b]++; });
+  for(let it=0;it<220;it++){ const k=Math.sqrt(W*H/n)*.9; const t=1-it/220; for(let i=0;i<n;i++){ let fx=0,fy=0; for(let j=0;j<n;j++){ if(i===j) continue; let dx=P[i].x-P[j].x, dy=P[i].y-P[j].y; let d2=dx*dx+dy*dy+0.01; const f=k*k/d2; fx+=dx*f; fy+=dy*f; } fx+=(W/2-P[i].x)*.02; fy+=(H/2-P[i].y)*.02; P[i].vx=fx; P[i].vy=fy; } edges.forEach(e=>{ const dx=P[e.b].x-P[e.a].x, dy=P[e.b].y-P[e.a].y; const d=Math.sqrt(dx*dx+dy*dy)+0.01; const f=d*d/k*Math.min(e.w,3)*.02; P[e.a].vx+=dx/d*f; P[e.a].vy+=dy/d*f; P[e.b].vx-=dx/d*f; P[e.b].vy-=dy/d*f; }); for(let i=0;i<n;i++){ const v=Math.sqrt(P[i].vx**2+P[i].vy**2)||1; const step=Math.min(v,12*t+1); P[i].x=Math.max(16,Math.min(W-16,P[i].x+P[i].vx/v*step)); P[i].y=Math.max(16,Math.min(H-16,P[i].y+P[i].vy/v*step)); } }
+  let g=`<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="books linked by shared subject">`; edges.forEach(e=>{ g+=`<line x1="${P[e.a].x.toFixed(1)}" y1="${P[e.a].y.toFixed(1)}" x2="${P[e.b].x.toFixed(1)}" y2="${P[e.b].y.toFixed(1)}" stroke="#c9b5e6" stroke-width="${Math.min(3,e.w)*.7}" stroke-opacity=".6" data-tip="${esc(books[e.a].title)} and ${esc(books[e.b].title)} share: ${esc(e.s.join(', '))}"/>`; }); books.forEach((b,i)=>{ const r=4+Math.min(8,deg[i]*.6); g+=`<circle cx="${P[i].x.toFixed(1)}" cy="${P[i].y.toFixed(1)}" r="${r}" fill="${b.status==='read'?'#1B6B4A':b.lentTo?'#ff9911':'var(--accent)'}" stroke="#fff" stroke-width="1.5" data-id="${b.id}" data-tip="<b>${esc(b.title)}</b><br>${esc(b.authors.join(', '))}<br>${esc(b.subjects.slice(0,5).join(' · '))}" style="cursor:pointer"/>`; if(deg[i]>=Math.max(3,n/12)) g+=`<text x="${(P[i].x+r+3).toFixed(1)}" y="${(P[i].y+4).toFixed(1)}">${esc(b.title.length>28?b.title.slice(0,26)+'…':b.title)}</text>`; }); return g+`</svg><div class="mini">${n} books with subjects, ${edges.length} links; purple unread or reference, green read, orange out on loan; larger dots share more subjects.</div>`; }
+
+// files
+function download(name,content,type){ const b=new Blob([content],{type}); const a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download=name; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),2000); }
+$('#jsonOut').onclick=()=>download('library-'+new Date().toISOString().slice(0,10)+'.json',JSON.stringify({books:B,exported:new Date().toISOString(),format:'library-builder-v1'},null,1),'application/json');
+$('#jsonIn').onclick=()=>$('#jsonFile').click(); $('#jsonFile').onchange=e=>{ const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{ const j=JSON.parse(r.result); const books=Array.isArray(j)?j:j.books; if(!Array.isArray(books)) throw 0; const mode=B.length?(confirm('Merge into the current catalogue? Cancel replaces it.')?'merge':'replace'):'replace'; if(mode==='replace') B=[]; let n=0; books.forEach(b=>{ const x=Object.assign(blank(),b); x.authors=Array.isArray(x.authors)?x.authors:String(x.authors||'').split(';').map(s=>s.trim()).filter(Boolean); x.subjects=Array.isArray(x.subjects)?x.subjects:[]; const before=B.length; addBook(x); if(B.length>before) n++; }); save(); render(); msg(n+' books loaded.'); }catch(err){ msg('Not a library file.'); } }; r.readAsText(f); e.target.value=''; };
+$('#csvOut').onclick=()=>{ const q=s=>'"'+String(s??'').replace(/"/g,'""')+'"'; const rows=[['title','authors','year','publisher','isbn','subjects','shelf','owner','status','lent_to','lent_on','rating','notes','added']].concat(B.map(b=>[b.title,b.authors.join('; '),b.year,b.publisher,b.isbn,b.subjects.join('; '),b.shelf,b.owner,b.status,b.lentTo,b.lentOn,b.rating,b.notes,b.added])); download('library.csv',rows.map(r=>r.map(q).join(',')).join('\n'),'text/csv'); };
+$('#print').onclick=()=>{ $$('.tabs button')[1].click(); setTimeout(()=>window.print(),100); };
+$('#clear').onclick=()=>{ if(confirm('Remove every book from this browser? Export a JSON backup first if you want to keep it.')){ B=[]; sel=null; save(); select(null); } };
+$('#example').onclick=()=>{ if(B.length&&!confirm('Add the starter shelf to the current catalogue?')) return; const EX=[['Development as Freedom','Amartya Sen','1999','Development economics; Capabilities; Welfare economics; Poverty','Study','read'],['Poor Economics','Abhijit V. Banerjee; Esther Duflo','2011','Development economics; Poverty; Randomised trials; Behavioural economics','Study','read'],['An Uncertain Glory: India and Its Contradictions','Jean Drèze; Amartya Sen','2013','India; Development economics; Public policy; Inequality','Study','reading'],['India After Gandhi','Ramachandra Guha','2007','India; History; Politics; Democracy','Living room','read'],['The Great Escape: Health, Wealth, and the Origins of Inequality','Angus Deaton','2013','Inequality; Health; Development economics; Economic history','Study','unread'],['Governing the Commons','Elinor Ostrom','1990','Institutions; Common-pool resources; Political economy; Collective action','Study','read'],['Seeing Like a State','James C. Scott','1998','State; Political economy; Planning; Development','Study','read'],['Annihilation of Caste','B. R. Ambedkar','1936','Caste; India; Social reform; Politics','Living room','read'],['The Indian Constitution: Cornerstone of a Nation','Granville Austin','1966','Constitution; India; Law; History','Study','reference'],['Capital in the Twenty-First Century','Thomas Piketty','2014','Inequality; Economic history; Capital; Taxation','Study','unread'],['Why Nations Fail','Daron Acemoglu; James A. Robinson','2012','Institutions; Political economy; Economic history; Development','Living room','read'],['The Discovery of India','Jawaharlal Nehru','1946','India; History; Politics','Living room','read']]; EX.forEach(([t,a,y,s,sh,st],i)=>{ const b=blank(); b.title=t; b.authors=a.split(';').map(x=>x.trim()); b.year=y; b.subjects=s.split(';').map(x=>x.trim()); b.shelf=sh; b.status=st; b.owner=i%3===0?'Varna':'Household'; if(i===4){ b.lentTo='A friend'; b.lentOn='2026-05-10'; } b.added='2026-01-0'+(1+i%9); addBook(b); }); msg('Twelve books added: an illustrative shelf, tagged by hand, without ISBNs; look them up to fetch covers and Open Library subjects.'); };
+load(); render();
+</script>
+</body>
+</html>
