@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Petition Builder · Experiments</title>
+<meta name="description" content="Draft a representation, memorandum or petition to an Indian public authority, legislature or court registry in the accepted form: addressee, subject, background, grounds, prayer, annexures and a signatory sheet, with print, Word and Markdown export and a shareable link. Nothing leaves the browser.">
+<link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23572e91'/><path d='M9 7h14v18H9z' fill='white'/><path d='M12 12h8M12 16h8M12 20h5' stroke='%23572e91' stroke-width='1.6' stroke-linecap='round'/></svg>">
+<style>
+  :root { --bg:#fafafa; --surface:#fff; --border:#e5e7eb; --text:#1a1a2e; --dim:#4b5563; --muted:#9ca3af; --accent:#572e91; --accent-soft:#efe9f7; --orange:#ff9911; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--text); line-height:1.55; }
+  a { color:var(--accent); }
+  header { border-bottom:1px solid var(--border); background:#fff; }
+  .wrap { max-width:1240px; margin:0 auto; padding:0 1.25rem; }
+  header .wrap { display:flex; align-items:baseline; justify-content:space-between; gap:1rem; padding:.9rem 1.25rem; flex-wrap:wrap; }
+  header h1 { font-family:Georgia,serif; font-size:1.35rem; font-weight:400; }
+  header h1 small { font-size:.8rem; color:var(--muted); margin-left:.5rem; }
+  header nav a { font-size:.85rem; margin-left:1rem; text-decoration:none; }
+  main { padding:1.5rem 0 3rem; }
+  .lede { color:var(--dim); font-size:.95rem; max-width:72ch; margin-bottom:1.25rem; }
+  .grid { display:grid; grid-template-columns:420px 1fr; gap:1.25rem; align-items:start; }
+  @media (max-width:980px){ .grid { grid-template-columns:1fr; } }
+  .panel { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1rem 1.15rem; margin-bottom:1rem; }
+  .panel h2 { font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; margin-bottom:.7rem; }
+  label { display:block; font-size:.78rem; color:var(--dim); margin:.5rem 0 .15rem; }
+  select, input[type=text], input[type=date], textarea { width:100%; font:inherit; font-size:.88rem; padding:.38rem .5rem; border:1px solid var(--border); border-radius:6px; background:#fff; color:var(--text); }
+  textarea { min-height:5.5rem; resize:vertical; line-height:1.45; }
+  .row { display:flex; gap:.5rem; } .row > * { flex:1; min-width:0; }
+  button { font:inherit; font-size:.85rem; padding:.45rem .8rem; border-radius:6px; border:1px solid var(--border); background:#fff; color:var(--text); cursor:pointer; }
+  button.go { border-color:var(--accent); background:var(--accent); color:#fff; }
+  button.danger { color:#b91c1c; }
+  .btns { display:flex; gap:.4rem; flex-wrap:wrap; margin-top:.6rem; }
+  .mini { font-size:.76rem; color:var(--muted); }
+  .note { font-size:.82rem; color:var(--dim); margin-top:.5rem; }
+  .law { background:var(--accent-soft); border-radius:8px; padding:.7rem .9rem; font-size:.84rem; color:#2f1a52; margin:.6rem 0; }
+  .law b { display:block; margin-bottom:.2rem; }
+  .sig { display:grid; grid-template-columns:1.2fr 1.4fr .8fr auto; gap:.3rem; margin:.25rem 0; align-items:center; }
+  .sig input { font-size:.82rem; padding:.3rem .4rem; }
+  .sig .x { border:none; background:none; color:#b91c1c; font-size:1rem; padding:0 .3rem; }
+  /* the document */
+  .doc { background:#fff; border:1px solid var(--border); border-radius:4px; padding:2.2cm 2cm; font-family:"Times New Roman",Times,Georgia,serif; font-size:12pt; line-height:1.5; color:#000; box-shadow:0 1px 3px rgba(0,0,0,.06); max-width:21cm; margin:0 auto; }
+  .doc p { margin:0 0 .6em; text-align:justify; }
+  .doc .to { text-align:left; }
+  .doc .center { text-align:center; }
+  .doc .title { text-align:center; font-weight:bold; text-transform:uppercase; letter-spacing:.04em; margin:.8em 0; }
+  .doc .subj { margin:.9em 0; }
+  .doc .subj b { font-weight:bold; }
+  .doc ol { margin:0 0 .8em 1.6em; } .doc ol li { margin:0 0 .45em; text-align:justify; padding-left:.2em; }
+  .doc h3 { font-size:12pt; font-weight:bold; text-transform:uppercase; margin:1em 0 .4em; letter-spacing:.03em; }
+  .doc table { border-collapse:collapse; width:100%; margin:.6em 0; font-size:11pt; }
+  .doc th, .doc td { border:1px solid #000; padding:.3em .45em; text-align:left; vertical-align:top; }
+  .doc th { font-weight:bold; }
+  .doc .sigline { height:2.2em; }
+  .doc .right { text-align:right; }
+  .doc .small { font-size:10.5pt; }
+  .toolbar { display:flex; gap:.4rem; flex-wrap:wrap; margin-bottom:.8rem; }
+  footer { border-top:1px solid var(--border); padding:1.25rem; text-align:center; font-size:.8rem; color:var(--muted); }
+  @media print { header, .grid > div:first-child, .toolbar, footer, .lede, .mini, .panel h2 { display:none !important; } body { background:#fff; } .grid { display:block; } .panel { border:none; padding:0; margin:0; } .doc { border:none; box-shadow:none; padding:0; max-width:none; margin:0; } main { padding:0; } @page { size:A4; margin:2.2cm 2cm; } }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>Petition Builder <small>representations, memoranda and petitions in the accepted form</small></h1>
+  <nav><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/petition-builder">Source</a></nav>
+</div></header>
+<main><div class="wrap">
+<p class="lede">A petition is a document with a shape: who it is addressed to, who sends it, what it concerns, the facts, the grounds, and what is asked for, followed by the people who put their names to it. Officials read the shape before they read the words, and a petition that lacks it is easier to set aside. This page builds the document from its parts, in the form used for a representation to a public authority, a petition to Parliament or a state assembly, a memorandum to a minister or legislator, or a petition to a court registry or a professional body. Everything stays in this browser; the shareable link carries the draft in the address itself, so it can be passed to co-signatories without a server.</p>
+
+<div class="grid">
+<div>
+  <div class="panel"><h2>Form and addressee</h2>
+    <label>Kind of document</label><select id="kind"><option value="rep">Representation to a public authority</option><option value="house">Petition to the Lok Sabha or a State Legislative Assembly</option><option value="memo">Memorandum to a minister or legislator</option><option value="court">Petition to a court registry, bar council or professional body</option></select>
+    <label>Addressee: designation</label><input type="text" id="toTitle" placeholder="e.g. The Municipal Commissioner">
+    <label>Addressee: office and address</label><textarea id="toAddr" style="min-height:3.6rem" placeholder="Office, building, city, PIN"></textarea>
+    <label>Through (optional; e.g. the Member countersigning, or the Registrar)</label><input type="text" id="through">
+    <label>Subject</label><input type="text" id="subject" placeholder="One line, specific: place, problem, provision">
+    <label>Reference (optional; earlier letter, file number, RTI reply)</label><input type="text" id="ref">
+  </div>
+  <div class="panel"><h2>Petitioners</h2>
+    <label>Who sends it</label><input type="text" id="from" placeholder="e.g. Residents of Ward 12, or the XYZ Welfare Association (Regd. No. …)">
+    <label>Contact for correspondence</label><input type="text" id="contact" placeholder="Name, address, phone, email">
+  </div>
+  <div class="panel"><h2>Content <span class="mini">one paragraph per line</span></h2>
+    <label>Background: the facts, in order, with dates</label><textarea id="facts"></textarea>
+    <label>Grounds: why the authority should act (law, policy, precedent, fairness)</label><textarea id="grounds"></textarea>
+    <label>Prayer: what exactly is asked for, numbered, with a time frame where one is reasonable</label><textarea id="prayer"></textarea>
+    <label>Annexures (one per line; the page numbers them)</label><textarea id="annex" style="min-height:3.6rem"></textarea>
+    <div class="row"><div><label>Place</label><input type="text" id="place"></div><div><label>Date</label><input type="date" id="date"></div></div>
+  </div>
+  <div class="panel"><h2>Signatories</h2>
+    <div id="sigs"></div>
+    <div class="btns"><button id="addSig">Add a signatory</button><button id="csvSig">Import CSV (name, designation, id)</button><input type="file" id="csvFile" accept=".csv,text/csv" hidden><label style="display:inline-flex;align-items:center;gap:.3rem;margin:0"><input type="checkbox" id="blankRows"> add 10 blank rows for signatures by hand</label></div>
+  </div>
+  <div class="panel"><h2>Draft</h2>
+    <div class="btns"><button id="example">Load the example</button><button id="jsonOut">Export JSON</button><button id="jsonIn">Import JSON</button><input type="file" id="jsonFile" accept=".json" hidden><button class="danger" id="clear">Clear</button></div>
+    <p class="mini">Saved in this browser as you type. Export JSON to keep a copy or move it to another machine.</p>
+  </div>
+</div>
+
+<div>
+  <div class="toolbar"><button class="go" id="print">Print or save as PDF</button><button id="docBtn">Download as Word (.doc)</button><button id="md">Download Markdown</button><button id="share">Copy shareable link</button><span class="mini" id="msg"></span></div>
+  <div class="panel" style="padding:0;border:none;background:none"><div class="doc" id="doc"></div></div>
+  <div class="law" id="guide"></div>
+  <div class="law"><b>Article 350, Constitution of India</b>"Every person shall be entitled to submit a representation for the redress of any grievance to any officer or authority of the Union or a State in any of the languages used in the Union or in the State, as the case may be." A representation may be in any language in use in the state; an authority may not refuse it for its language.</div>
+  <p class="note">Practical points that decide whether a petition is acted on: address it to the officer who has the power to grant what is asked, not to the head of the department by habit; state facts with dates and keep opinion out of them; ask for something specific that the addressee can do; annex the documents relied on and list them; sign with name and address; deliver it in a way that leaves a record (a receipted copy, registered post, or the grievance portal's acknowledgement number); and, if there is no reply within a reasonable time, ask under section 6 of the Right to Information Act 2005 what action was taken on it. Central government grievances go through the CPGRAMS portal (pgportal.gov.in); most states run their own portals.</p>
+</div>
+</div>
+</div></main>
+<footer>Part of <a href="../">Experiments</a> by Varna Sri Raman · Idealog Works · MIT licence · Not legal advice. The form is general; a court or a legislature may prescribe its own.</footer>
+<script>
+'use strict';
+const $=s=>document.querySelector(s); const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const F=['kind','toTitle','toAddr','through','subject','ref','from','contact','facts','grounds','prayer','annex','place','date'];
+const KEY='petition-builder-v1';
+let S={sigs:[],blankRows:false};
+const GUIDE={
+ rep:'<b>Representation to a public authority</b>The ordinary form: addressee, subject line, a respectful opening, numbered paragraphs of fact, the grounds, a numbered prayer, "Yours faithfully" and the signatories. Send it to the officer who can grant the relief and copy the supervisory officer. Keep a receipted copy. A grievance that is a grievance in law (a statutory duty not performed) reads better as a representation than as a complaint.',
+ house:'<b>Petition to the Lok Sabha or a State Legislative Assembly</b>The Rules of Procedure and Conduct of Business in Lok Sabha, in their chapter on petitions, and the corresponding rules of each state assembly prescribe the form: it is addressed to the House itself, opens "The humble petition of … sheweth", is couched in respectful language, is signed by the petitioners with their addresses, and must be countersigned by a Member of the House who presents it; petitions are then referred to the Committee on Petitions. A petition on a Bill or a matter of general public interest is in order; one on a matter pending before a court is not. Check the current rules and the Committee\'s practice before sending.',
+ memo:'<b>Memorandum to a minister or legislator</b>A memorandum is a representation that asks the recipient to use an office they hold: to raise a matter in the House, to take it up with a department, or to decide it themselves. Say which. Keep it to the points that the recipient can act on, and put the documentary record in annexures. A memorandum handed over at a meeting should carry the date of the meeting and the names of the delegation.',
+ court:'<b>Petition to a court registry, bar council or professional body</b>Administrative petitions to a registry (for a listing, a certified copy, a facility, a chamber) or to a bar council or association follow the court style: "To the Hon\'ble …", "Most respectfully showeth", numbered paragraphs, a prayer, and the petitioners\' names with enrolment or registration numbers. This is not a pleading: a writ, an appeal or an application under a statute has its own form and rules, and this page does not draft those.'
+};
+function collect(){ const o={}; F.forEach(k=>o[k]=$('#'+k).value); o.sigs=S.sigs; o.blankRows=$('#blankRows').checked; return o; }
+function apply(o){ F.forEach(k=>{ if(o[k]!=null) $('#'+k).value=o[k]; }); S.sigs=Array.isArray(o.sigs)?o.sigs:[]; $('#blankRows').checked=!!o.blankRows; renderSigs(); render(); }
+function save(){ try{ localStorage.setItem(KEY,JSON.stringify(collect())); }catch(e){} }
+F.forEach(k=>$('#'+k).addEventListener('input',()=>{ save(); render(); }));
+$('#blankRows').addEventListener('change',()=>{ save(); render(); });
+function renderSigs(){ $('#sigs').innerHTML=S.sigs.map((s,i)=>`<div class="sig" data-i="${i}"><input type="text" data-k="name" placeholder="Name" value="${esc(s.name)}"><input type="text" data-k="desig" placeholder="Designation or address" value="${esc(s.desig)}"><input type="text" data-k="id" placeholder="ID / enrolment no." value="${esc(s.id)}"><button class="x" title="Remove">×</button></div>`).join('')||'<p class="mini">No signatories yet.</p>';
+  $('#sigs').querySelectorAll('input').forEach(el=>el.addEventListener('input',()=>{ S.sigs[+el.closest('.sig').dataset.i][el.dataset.k]=el.value; save(); render(); }));
+  $('#sigs').querySelectorAll('.x').forEach(b=>b.onclick=()=>{ S.sigs.splice(+b.closest('.sig').dataset.i,1); save(); renderSigs(); render(); }); }
+$('#addSig').onclick=()=>{ S.sigs.push({name:'',desig:'',id:''}); save(); renderSigs(); $('#sigs .sig:last-child input').focus(); };
+$('#csvSig').onclick=()=>$('#csvFile').click();
+$('#csvFile').onchange=e=>{ const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ const rows=parseCSV(r.result).filter(x=>x.length&&x.some(c=>c.trim())); if(rows.length&&/name/i.test(rows[0][0])) rows.shift(); rows.forEach(x=>S.sigs.push({name:x[0]||'',desig:x[1]||'',id:x[2]||''})); save(); renderSigs(); render(); msg(rows.length+' signatories imported.'); }; r.readAsText(f); e.target.value=''; };
+function parseCSV(t){ const rows=[]; let row=[],cur='',q=false; for(let i=0;i<t.length;i++){ const c=t[i]; if(q){ if(c==='"'){ if(t[i+1]==='"'){ cur+='"'; i++; } else q=false; } else cur+=c; } else if(c==='"') q=true; else if(c===','){ row.push(cur); cur=''; } else if(c==='\n'||c==='\r'){ if(c==='\r'&&t[i+1]==='\n') i++; row.push(cur); rows.push(row); row=[]; cur=''; } else cur+=c; } if(cur!==''||row.length){ row.push(cur); rows.push(row); } return rows; }
+const lines=t=>String(t||'').split('\n').map(x=>x.trim()).filter(Boolean);
+const fmtD=d=>d?new Date(d+'T00:00:00').toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'}):'…';
+function msg(t){ $('#msg').textContent=t; setTimeout(()=>{ if($('#msg').textContent===t) $('#msg').textContent=''; },4000); }
+
+function build(o){ // returns the document as HTML fragments
+  const k=o.kind, facts=lines(o.facts), grounds=lines(o.grounds), prayer=lines(o.prayer), annex=lines(o.annex);
+  const sigs=o.sigs.filter(s=>s.name||s.desig||s.id); const blanks=o.blankRows?10:0;
+  let h='';
+  if(k==='house'){ h+=`<p class="center"><b>TO</b></p><p class="center"><b>${esc(o.toTitle||'THE LOK SABHA')}</b></p>${o.toAddr?`<p class="center small">${esc(o.toAddr).replace(/\n/g,'<br>')}</p>`:''}`; h+=`<p class="title">The humble petition of ${esc(o.from||'the undersigned')}</p>`; if(o.subject) h+=`<p class="subj"><b>Subject:</b> ${esc(o.subject)}</p>`; h+=`<p class="center"><b>SHEWETH</b></p>`; }
+  else if(k==='court'){ h+=`<p class="to">To<br>The Hon'ble ${esc(o.toTitle||'…')}${o.toAddr?'<br>'+esc(o.toAddr).replace(/\n/g,'<br>'):''}</p>`; if(o.through) h+=`<p class="to">Through: ${esc(o.through)}</p>`; h+=`<p class="title">Petition of ${esc(o.from||'the undersigned')}</p>`; if(o.subject) h+=`<p class="subj"><b>Subject:</b> ${esc(o.subject)}</p>`; if(o.ref) h+=`<p class="subj"><b>Reference:</b> ${esc(o.ref)}</p>`; h+=`<p><b>MOST RESPECTFULLY SHOWETH:</b></p>`; }
+  else { h+=`<p class="to">To<br>${esc(o.toTitle||'…')}${o.toAddr?'<br>'+esc(o.toAddr).replace(/\n/g,'<br>'):''}</p>`; if(o.through) h+=`<p class="to">Through: ${esc(o.through)}</p>`; h+=`<p class="right">${esc(o.place||'…')}, ${fmtD(o.date)}</p>`; if(o.subject) h+=`<p class="subj"><b>Subject:</b> ${esc(o.subject)}</p>`; if(o.ref) h+=`<p class="subj"><b>Reference:</b> ${esc(o.ref)}</p>`; h+=`<p>${k==='memo'?'Respected Sir/Madam,':'Sir/Madam,'}</p>`; h+=`<p>${k==='memo'?'This memorandum is submitted by':'This representation is submitted by'} ${esc(o.from||'the undersigned')} ${k==='memo'?'to place the following matter before you and to request your intervention.':'under Article 350 of the Constitution for the redress of the grievance set out below.'}</p>`; }
+  let n=0; const para=t=>`<li value="${++n}">${esc(t)}</li>`;
+  if(facts.length){ h+=`<h3>${k==='house'||k==='court'?'Facts':'Background'}</h3><ol>${facts.map(para).join('')}</ol>`; }
+  if(grounds.length){ h+=`<h3>Grounds</h3><ol>${grounds.map(para).join('')}</ol>`; }
+  if(prayer.length){ n=0; h+=`<h3>Prayer</h3><p>${k==='house'?'Your petitioners therefore pray that':'It is therefore ' + (k==='court'?'most respectfully prayed that this Hon\'ble authority may be pleased to':'requested that')}:</p><ol>${prayer.map(para).join('')}</ol>`; }
+  if(annex.length){ h+=`<h3>Annexures</h3><ol>${annex.map((t,i)=>`<li value="${i+1}"><b>Annexure ${String.fromCharCode(65+i)}:</b> ${esc(t)}</li>`).join('')}</ol>`; }
+  if(k==='house') h+=`<p>And your petitioners, as in duty bound, will ever pray.</p>`; else if(k==='court') h+=`<p>And for this act of kindness the petitioners shall, as in duty bound, ever pray.</p>`; else h+=`<p>We request an acknowledgement of this ${k==='memo'?'memorandum':'representation'} and a reply within a reasonable time. We are available to meet at your convenience.</p><p>Yours faithfully,</p>`;
+  if(k==='house'||k==='court') h+=`<p class="right">${esc(o.place||'…')}, ${fmtD(o.date)}</p>`;
+  if(sigs.length||blanks){ h+=`<h3>Signatories</h3><table><tr><th style="width:2.2em">No.</th><th>Name</th><th>${k==='court'?'Enrolment / registration no. and chamber':'Designation or address'}</th><th style="width:22%">Signature</th></tr>`; sigs.forEach((s,i)=>{ h+=`<tr><td>${i+1}</td><td>${esc(s.name)}${s.id&&k!=='court'?`<br><span class="small">${esc(s.id)}</span>`:''}</td><td>${esc(s.desig)}${k==='court'&&s.id?`<br><span class="small">${esc(s.id)}</span>`:''}</td><td class="sigline"></td></tr>`; }); for(let i=0;i<blanks;i++) h+=`<tr><td>${sigs.length+i+1}</td><td class="sigline"></td><td></td><td></td></tr>`; h+=`</table>`; }
+  if(o.contact) h+=`<p class="small">Correspondence: ${esc(o.contact)}</p>`;
+  if(k==='house') h+=`<p class="small">Countersigned by: ______________________ , Member of the House (the rules of procedure require a Member to countersign and present a petition).</p>`;
+  return h;
+}
+function render(){ const o=collect(); $('#doc').innerHTML=build(o); $('#guide').innerHTML=GUIDE[o.kind]; }
+
+function markdown(o){ const k=o.kind; const L=[]; L.push(`**To:** ${o.toTitle||'…'}${o.toAddr?', '+o.toAddr.replace(/\n/g,', '):''}`); if(o.through) L.push(`**Through:** ${o.through}`); L.push(`**Place and date:** ${o.place||'…'}, ${fmtD(o.date)}`); if(o.subject) L.push(`\n**Subject:** ${o.subject}`); if(o.ref) L.push(`**Reference:** ${o.ref}`); L.push(`\n${k==='house'?'The humble petition of':'Submitted by'} ${o.from||'the undersigned'}\n`);
+  const sec=(t,a)=>{ if(a.length){ L.push(`\n## ${t}\n`); a.forEach((x,i)=>L.push(`${i+1}. ${x}`)); } }; sec(k==='house'||k==='court'?'Facts':'Background',lines(o.facts)); sec('Grounds',lines(o.grounds)); sec('Prayer',lines(o.prayer)); const an=lines(o.annex); if(an.length){ L.push('\n## Annexures\n'); an.forEach((x,i)=>L.push(`- Annexure ${String.fromCharCode(65+i)}: ${x}`)); }
+  const sigs=o.sigs.filter(s=>s.name); if(sigs.length){ L.push('\n## Signatories\n'); L.push('| No. | Name | Designation or address | ID |'); L.push('| --- | --- | --- | --- |'); sigs.forEach((s,i)=>L.push(`| ${i+1} | ${s.name} | ${s.desig} | ${s.id} |`)); } if(o.contact) L.push(`\nCorrespondence: ${o.contact}`); return L.join('\n'); }
+function download(name,content,type){ const b=new Blob([content],{type}); const a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download=name; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),2000); }
+const slug=()=>(($('#subject').value||'petition').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,60)||'petition');
+$('#print').onclick=()=>window.print();
+$('#md').onclick=()=>download(slug()+'.md',markdown(collect()),'text/markdown');
+$('#docBtn').onclick=()=>{ const body=$('#doc').innerHTML; const html=`<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"><title>${esc($('#subject').value||'Petition')}</title><style>@page{size:A4;margin:2.2cm 2cm} body{font-family:"Times New Roman";font-size:12pt;line-height:1.5} p{margin:0 0 .6em;text-align:justify} .center{text-align:center} .right{text-align:right} .title{text-align:center;font-weight:bold;text-transform:uppercase;margin:.8em 0} h3{font-size:12pt;text-transform:uppercase;margin:1em 0 .4em} table{border-collapse:collapse;width:100%} th,td{border:1px solid #000;padding:.3em .45em;text-align:left;vertical-align:top} .sigline{height:2.2em} .small{font-size:10.5pt} ol{margin:0 0 .8em 1.6em}</style></head><body>${body}</body></html>`; download(slug()+'.doc','﻿'+html,'application/msword'); };
+$('#share').onclick=async()=>{ const o=collect(); const enc=btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,''); const url=location.origin+location.pathname+'#p='+enc; try{ await navigator.clipboard.writeText(url); msg('Link copied ('+Math.round(url.length/1024*10)/10+' KB). Anyone opening it gets this draft.'); }catch(e){ prompt('Copy this link',url); } };
+$('#jsonOut').onclick=()=>download(slug()+'.json',JSON.stringify(collect(),null,1),'application/json');
+$('#jsonIn').onclick=()=>$('#jsonFile').click(); $('#jsonFile').onchange=e=>{ const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{ apply(JSON.parse(r.result)); save(); msg('Draft imported.'); }catch(err){ msg('Not a petition file.'); } }; r.readAsText(f); e.target.value=''; };
+$('#clear').onclick=()=>{ if(!confirm('Clear the draft from this browser?')) return; apply({kind:'rep',sigs:[]}); F.forEach(k=>{ if(k!=='kind') $('#'+k).value=''; }); S.sigs=[]; save(); renderSigs(); render(); };
+$('#example').onclick=()=>{ if(($('#subject').value||S.sigs.length)&&!confirm('Replace the current draft with the example?')) return; apply({kind:'rep',toTitle:'The Commissioner',toAddr:'Bruhat Bengaluru Mahanagara Palike\nN.R. Square, Bengaluru 560002',through:'',subject:'Non-functioning street lights on 4th Main Road, Ward 12, and the resulting safety risk to residents (illustrative example)',ref:'Our complaint no. 2026/0417 on the Sahaaya portal dated 14 July 2026, unanswered',from:'the residents of 4th Main Road, Ward 12, through the 4th Main Residents\' Welfare Association',contact:'A. Resident, Secretary, 4th Main RWA, No. 22, 4th Main Road, Bengaluru 560001; 98xxxxxxxx; rwa4thmain@example.org',
+  facts:['4th Main Road, Ward 12, is a residential street of about 400 metres with 14 street-light poles maintained by the Corporation.','Of the 14 lights, 9 have not worked since the first week of June 2026. The dark stretch runs from the junction with 2nd Cross to the bus stop at 6th Cross.','A complaint was registered on the Sahaaya portal on 14 July 2026 (no. 2026/0417). The status has shown "in progress" since 16 July 2026 with no visit by a lineman.','On 2 August 2026 a resident, Ms B, was knocked down by a two-wheeler at the unlit junction with 4th Cross and treated at the government hospital; a copy of the outpatient slip is annexed.','The ward engineer, when contacted on 5 August 2026, said the matter was with the electrical division.'].join('\n'),
+  grounds:['Street lighting is an obligatory function of the Corporation under the municipal law applicable to the city, and the poles and fittings are its property.','The Corporation\'s citizen charter commits to restoring a non-working street light within a stated number of working days of a complaint; that period has long passed.','The darkness on a residential street with a bus stop creates a foreseeable risk to pedestrians, particularly women and older residents returning after dusk, and one injury has already occurred.','Residents have exhausted the ordinary channel (the portal complaint) without result.'].join('\n'),
+  prayer:['Direct the electrical division to restore all nine non-functioning lights on 4th Main Road, Ward 12, within seven days of receipt of this representation.','Inform the undersigned of the name and contact of the officer responsible for street-light maintenance in Ward 12.','Cause the Sahaaya complaint no. 2026/0417 to be closed only after a resident of the road has confirmed restoration.','Acknowledge this representation in writing.'].join('\n'),
+  annex:['Sahaaya portal complaint no. 2026/0417 dated 14 July 2026, with status screenshot dated 20 August 2026','Photographs of the nine poles, taken at 8 p.m. on 18 August 2026, with pole numbers','Outpatient slip dated 2 August 2026 (name redacted)','List of 42 signatory households'].join('\n'),
+  place:'Bengaluru',date:'2026-08-22',blankRows:false,sigs:[{name:'A. Resident',desig:'Secretary, 4th Main RWA, No. 22',id:''},{name:'B. Resident',desig:'No. 7, 4th Main Road',id:''},{name:'C. Resident',desig:'No. 31, 4th Main Road',id:''}]}); save(); msg('Example loaded. Names and facts are invented.'); };
+// boot
+{ let o=null; const m=location.hash.match(/#p=([A-Za-z0-9_-]+)/); if(m){ try{ const s=m[1].replace(/-/g,'+').replace(/_/g,'/'); o=JSON.parse(decodeURIComponent(escape(atob(s+'==='.slice(0,(4-s.length%4)%4))))); msg('Draft loaded from the link.'); }catch(e){} }
+  if(!o){ try{ o=JSON.parse(localStorage.getItem(KEY)); }catch(e){} }
+  if(o) apply(o); else { $('#date').value=new Date().toISOString().slice(0,10); renderSigs(); render(); } }
+</script>
+</body>
+</html>

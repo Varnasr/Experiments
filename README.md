@@ -197,6 +197,33 @@ cigarette equivalent. Model estimates, not station readings, and the page says s
 
 ---
 
+### Petition Builder
+
+A representation, memorandum or petition drafted in the accepted form from its
+parts (addressee, subject, facts, grounds, prayer, annexures, signatories), in
+four variants: to a public authority, to the Lok Sabha or a State Assembly, to a
+minister or legislator, and to a court registry or professional body. Print,
+Word (.doc) and Markdown export; the draft can be shared as a link that carries
+it in the URL. Nothing leaves the browser.
+
+**Directory:** `petition-builder/`
+**Stage:** Active
+
+---
+
+### Household Library Builder
+
+A catalogue for the books in a house: add by ISBN or title with metadata and
+covers from Open Library, by hand, from a pasted list or a Goodreads or
+LibraryThing CSV; shelves, owners, reading status, lending with days out, a
+subject and author chart, and a force-directed map of books joined by shared
+subject. JSON backup and CSV export; the catalogue lives in the browser only.
+
+**Directory:** `library-builder/`
+**Stage:** Active
+
+---
+
 ### Motor Accident Compensation Calculator
 
 Fatal-accident compensation under section 166 of the Motor Vehicles Act, computed
@@ -344,6 +371,8 @@ Experiments/
 ├── promise-costing/                    # manifesto promises against the state budget
 ├── statutory-interest/                 # MSMED, CPC s.34, Arbitration s.31(7), NI Act
 ├── air-quality/                        # a year of PM2.5 against WHO and NAAQS, live
+├── petition-builder/                   # representations and petitions in the accepted form
+├── library-builder/                    # household book catalogue, Open Library lookups
 ├── court-translator/
 │   └── index.html                      # Court Petition Translator UI
 ├── aicc_analysis/

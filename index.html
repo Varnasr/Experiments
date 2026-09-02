@@ -413,12 +413,25 @@
                 <li>Hand-rolled SVG for the daily line and the monthly bars with hover; tolerant of a series the API does not return.</li>
             </ul><span class="verified">Verified: a recorded Delhi year reproduces in Python (365 days, 86.2 µg/m³ annual mean, 260 days over India's 24-hour limit, 1,431 cigarette equivalents).</span></div>
         </article>
+        <article class="card" id="petition">
+            <div class="doodle"><svg viewBox="0 0 64 64" filter="url(#wobble)"><path d="M16 6h26l10 10v42H16z"/><path d="M42 6v10h10"/><path d="M22 26h22M22 34h22M22 42h14"/><path d="M22 50h8M36 50h10"/></svg></div>
+            <h3><a href="petition-builder/">Petition Builder</a><span class="badge b-law">Law</span><span class="badge b-tool">Tool</span></h3>
+            <p class="summary">A representation, memorandum or petition drafted in the accepted form: addressee, subject, facts, grounds, prayer, annexures and a signatory sheet, in four variants from a municipal office to the Lok Sabha, with print, Word and Markdown export and a link that carries the draft to co-signatories.</p>
+            <p class="tech">Article 350 · House petition rules · .doc export without a library · draft encoded in the URL</p>
+            <span class="open">Open the tool →</span>
+            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button></div>
+            <div class="pop"><b>In plain words.</b> Officials read the shape of a petition before they read its words. Fill in who it goes to, what it is about, what happened, why they should act and what you want, add the names, and the page lays it out the way a clerk expects to see it, ready to print or send as a Word file.</div>
+            <div class="notes"><ul>
+                <li>Four templates share one form model; facts and grounds number continuously, the prayer restarts, annexures are lettered. The Word export is an HTML document served with Word's MIME type, which Word and LibreOffice open with the layout intact, so no library is needed.</li>
+                <li>The shareable link packs the draft into the URL fragment as base64url JSON, so a co-signatory sees the same draft with no server. The draft is also kept in local storage and can be exported as JSON.</li>
+            </ul><span class="verified">Verified: the example renders every section and the signatory table headless; the House form switches opening, closing and countersignature line.</span></div>
+        </article>
     </div>
 </div></section>
 
 <!-- 06 Personal -->
 <section class="block tint" id="personal"><div class="wrap">
-    <div class="sec-head"><div class="num">06</div><div><div class="sub">Personal</div><h2>Built for the two children in the house</h2><p>The most-used things on this page.</p></div></div>
+    <div class="sec-head"><div class="num">06</div><div><div class="sub">Personal</div><h2>Built for the two children in the house, and the shelves they read from</h2><p>The most-used things on this page.</p></div></div>
     <div class="cards">
         <article class="card" id="littlek">
             <div class="doodle"><svg viewBox="0 0 64 64" filter="url(#wobble)"><path d="M12 30h16v16H12z"/><path d="M28 22h16v16H28z"/><path d="M14 46h16v10H14z"/><path d="M18 40l4-6 4 6" stroke-width="1.8"/><path d="M33 33c0-4 6-4 6 0 0 3-6 3-6 6M36 32v-6" stroke-width="1.8"/><path d="M48 10l4 8-8 2z"/><path d="M50 18l-10 30"/></svg></div>
@@ -439,6 +452,19 @@
             <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button></div>
             <div class="pop"><b>In plain words.</b> A thirteen-year-old's exam companion. Pick a chapter, read the notes, answer questions and see why an answer is right or wrong, then let the mistakes book bring back what you got wrong until the answers stick.</div>
             <div class="notes"><ul><li>All content in one HTML file as structured data, a doodle per chapter as inline SVG; one marking engine across question types; spaced repetition on the mistakes book; content checked against the NCERT texts.</li></ul></div>
+        </article>
+        <article class="card" id="library">
+            <div class="doodle"><svg viewBox="0 0 64 64" filter="url(#wobble)"><path d="M10 14h8v40h-8zM20 14h8v40h-8zM30 18l7-2 10 36-7 2z"/><path d="M6 54h52"/><path d="M13 22h2M23 22h2"/></svg></div>
+            <h3><a href="library-builder/">Household Library Builder</a><span class="badge b-family">Family</span><span class="badge b-tool">Tool</span></h3>
+            <p class="summary">Catalogue the books in a house: add by ISBN or title with authors, year, subjects and covers from Open Library, or by hand, list or CSV; shelve them, track who is reading what and who borrowed which book, and see the shelves as a subject map. Kept in the browser only.</p>
+            <p class="tech">Open Library books and search APIs · Goodreads CSV import · force-directed subject map in plain SVG</p>
+            <span class="open">Open the tool →</span>
+            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button></div>
+            <div class="pop"><b>In plain words.</b> A house with a few hundred books has a library and no catalogue. Type an ISBN and the book appears with its cover; tell it which room it lives in and who has borrowed it; and look at the whole collection as a map of subjects rather than a list. The replacement for the family library that used to live on this page, without the family's data.</div>
+            <div class="notes"><ul>
+                <li>Records come from openlibrary.org's books and search endpoints (both send CORS headers); covers from covers.openlibrary.org. Duplicates are refused by ISBN or by title and first author. A hand-written CSV parser handles Goodreads' quoted ISBN cells.</li>
+                <li>The map is a seeded force layout (repulsion, spring on shared subjects, centring) run for 220 iterations in the page and drawn as static SVG with hover; subjects shared by more than forty books are ignored as uninformative.</li>
+            </ul><span class="verified">Verified headless against recorded Open Library responses: ISBN lookup, title search, every view, filters and persistence.</span></div>
         </article>
     </div>
 </div></section>
