@@ -20,6 +20,64 @@ Not everything here is polished. That's the point.
 
 ## Current Projects
 
+### Causal Inference Workbench
+
+Difference-in-differences, event studies and synthetic control, computed entirely in
+the browser from a long-format panel. TWFE DiD with cluster-robust standard errors
+(fixed effects removed by alternating demeaning); a dynamic event study, plain or
+Sun–Abraham (2021) interaction-weighted for staggered adoption, with a pre-trend Wald
+test; Abadie-style synthetic control by projected gradient on the simplex with
+placebo-in-space inference. Data from a seeded simulator with a known true effect, a
+CSV upload, or a live World Bank country panel.
+
+**Directory:** `causal-workbench/`
+**Stage:** Active
+
+---
+
+### Poverty & Inequality Lab
+
+Grouped-data poverty and inequality analysis after Datt (1998): General Quadratic and
+Beta Lorenz curves fitted to decile shares, Gini/Theil/MLD/Atkinson/Palma from the
+fitted quantile function, FGT poverty measures at any line with a sensitivity curve,
+Datt–Ravallion growth–redistribution decomposition (plus the Shapley version) and a
+growth incidence curve between two surveys. Deciles and means are pulled live from
+the World Bank's Poverty and Inequality Platform (2021 PPP), and one click compares
+the page's grouped-data answers with PIP's microdata figures.
+
+**Directory:** `poverty-lab/`
+**Stage:** Active
+
+---
+
+### Survey Data Auditor
+
+Field-data quality checks in one HTML file: exact and near-duplicate interviews,
+Benford's law on amounts (Nigrini MAD and χ²), age heaping (Whipple and Myers),
+straightlining, interview duration and timing, missingness, rounding, robust outliers,
+and an enumerator profile that z-scores every metric and produces a call-back list.
+Exports a Markdown report and a CSV of flagged interviews. Ships with a seeded,
+clearly labelled simulated dataset with six planted problems.
+
+**Directory:** `survey-audit/`
+**Stage:** Active
+
+---
+
+### Motor Accident Compensation Calculator
+
+Fatal-accident compensation under section 166 of the Motor Vehicles Act, computed
+step by step with the authority for each line: Sarla Verma multiplier, Pranay Sethi
+future prospects and conventional heads with the 10% triennial enhancement, personal
+expense deductions, consortium per dependant (Magma, Somwati, Sameem Begum), interest
+under section 171. Where the case law is split it offers both readings and names the
+contrary line.
+
+**Directory:** `compensation-calculator/`
+**Stage:** Active
+
+---
+
 ### Court Petition Translator (Hindi → English)
 
 An AI-powered tool for translating Hindi Supreme Court and High Court petitions into formal legal English.
@@ -148,6 +206,10 @@ Projects in this repo follow a simple lifecycle:
 ```
 Experiments/
 ├── index.html                          # Experiments index page
+├── causal-workbench/                   # DiD, event study, synthetic control
+├── poverty-lab/                        # Lorenz curves, FGT, Datt–Ravallion, live PIP
+├── survey-audit/                       # field-data quality checks
+├── compensation-calculator/            # MV Act fatal-claim awards, step by step
 ├── court-translator/
 │   └── index.html                      # Court Petition Translator UI
 ├── chamber-petition/

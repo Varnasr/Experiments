@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Survey Data Auditor — Experiments</title>
+<meta name="description" content="Field-data quality checks for household and programme surveys, run in the browser: duplicates, Benford's law, age heaping, straightlining, interview duration, missingness and enumerator profiles.">
+<link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231B6B4A'/><path d='M8 17 l5 5 l11 -12' stroke='white' stroke-width='3.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+<style>
+  :root { --bg:#fafafa; --surface:#fff; --border:#e5e7eb; --text:#1a1a2e; --dim:#4b5563; --muted:#9ca3af; --accent:#1B6B4A; --accent-soft:#e6f2ec; --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --grid:#eceef1; --good:#1B6B4A; --warn:#b45309; --bad:#b91c1c; --mono:ui-monospace,SFMono-Regular,Menlo,monospace; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--text); line-height:1.55; }
+  a { color:var(--accent); }
+  header { border-bottom:1px solid var(--border); background:#fff; }
+  .wrap { max-width:1080px; margin:0 auto; padding:0 1.25rem; }
+  header .wrap { display:flex; align-items:baseline; justify-content:space-between; gap:1rem; padding:.9rem 1.25rem; flex-wrap:wrap; }
+  header h1 { font-family:Georgia,serif; font-size:1.35rem; font-weight:400; }
+  header h1 small { font-size:.8rem; color:var(--muted); margin-left:.5rem; }
+  header nav a { font-size:.85rem; margin-left:1rem; text-decoration:none; }
+  main { padding:1.5rem 0 3rem; }
+  .lede { color:var(--dim); font-size:.95rem; max-width:66ch; margin-bottom:1.25rem; }
+  .grid { display:grid; grid-template-columns:300px 1fr; gap:1.25rem; align-items:start; }
+  @media (max-width:860px){ .grid { grid-template-columns:1fr; } }
+  .panel { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1rem 1.15rem; margin-bottom:1rem; }
+  .panel h2 { font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; margin-bottom:.7rem; display:flex; align-items:center; gap:.5rem; flex-wrap:wrap; }
+  label { display:block; font-size:.8rem; color:var(--dim); margin:.5rem 0 .2rem; }
+  select, input[type=number] { width:100%; font:inherit; font-size:.9rem; padding:.4rem .5rem; border:1px solid var(--border); border-radius:6px; background:#fff; color:var(--text); }
+  input[type=file] { font-size:.85rem; max-width:100%; }
+  button { font:inherit; font-size:.88rem; padding:.5rem .9rem; border-radius:6px; border:1px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer; }
+  button.secondary { background:#fff; color:var(--accent); }
+  button:disabled { opacity:.5; cursor:default; }
+  .stat { display:inline-block; margin:.25rem 1.25rem .25rem 0; }
+  .stat b { display:block; font-size:1.4rem; font-family:Georgia,serif; font-weight:400; }
+  .stat span { font-size:.75rem; color:var(--muted); }
+  table { border-collapse:collapse; width:100%; font-size:.83rem; margin:.5rem 0; }
+  th, td { text-align:right; padding:.28rem .5rem; border-bottom:1px solid var(--border); font-variant-numeric:tabular-nums; white-space:nowrap; }
+  th:first-child, td:first-child { text-align:left; }
+  th { color:var(--dim); font-weight:600; font-size:.74rem; position:sticky; top:0; background:#fff; }
+  .tscroll { overflow-x:auto; max-height:360px; overflow-y:auto; }
+  .note { font-size:.82rem; color:var(--dim); margin-top:.4rem; }
+  .sev { display:inline-block; font-size:.68rem; font-weight:700; padding:1px 8px; border-radius:99px; letter-spacing:.03em; text-transform:none; }
+  .sev-ok { background:var(--accent-soft); color:var(--good); } .sev-warn { background:#fef3c7; color:var(--warn); } .sev-bad { background:#fee2e2; color:var(--bad); } .sev-na { background:#f3f4f6; color:var(--muted); }
+  .finding { font-size:.9rem; margin:.3rem 0 .5rem; }
+  .chart { width:100%; height:auto; display:block; margin:.4rem 0; }
+  .chart text { font-family:inherit; font-size:11px; fill:var(--dim); }
+  .legend { display:flex; gap:1rem; flex-wrap:wrap; font-size:.8rem; color:var(--dim); margin:.2rem 0; }
+  .legend i { display:inline-block; width:12px; height:12px; vertical-align:-2px; margin-right:.35rem; border-radius:2px; }
+  .tip { position:fixed; pointer-events:none; background:#1a1a2e; color:#fff; font-size:.75rem; padding:.3rem .5rem; border-radius:4px; display:none; z-index:9; white-space:nowrap; }
+  details { margin-top:.5rem; font-size:.85rem; color:var(--dim); } summary { cursor:pointer; color:var(--accent); }
+  code { font-family:var(--mono); font-size:.8em; background:#f3f4f6; padding:.05em .3em; border-radius:3px; }
+  .mini { font-size:.78rem; color:var(--muted); }
+  .flagged { color:var(--bad); font-weight:600; }
+  .summary-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:.5rem; margin-top:.5rem; }
+  .sg { border:1px solid var(--border); border-radius:8px; padding:.5rem .7rem; font-size:.78rem; color:var(--dim); }
+  .sg b { display:block; font-size:.95rem; color:var(--text); font-weight:600; margin:.2rem 0; }
+  footer { border-top:1px solid var(--border); padding:1.25rem; text-align:center; font-size:.8rem; color:var(--muted); }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>Survey Data Auditor <small>field-data quality checks, in the browser</small></h1>
+  <nav><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/survey-audit">Source</a></nav>
+</div></header>
+<main><div class="wrap">
+<p class="lede">The checks a monitoring team runs on a survey dataset before anyone estimates anything: duplicated and near-duplicated interviews, Benford's law on amounts, age heaping (Whipple and Myers), straightlining in rating batteries, interview length and timing, missingness, and an enumerator-by-enumerator profile that says who to call. Drop in a CSV; it never leaves your machine.</p>
+
+<div class="grid">
+<div>
+  <div class="panel">
+    <h2>Data</h2>
+    <label>Survey CSV (one row per interview)</label>
+    <input type="file" id="file" accept=".csv,text/csv">
+    <p class="mini" style="margin:.5rem 0">or</p>
+    <button class="secondary" id="demo">Load the demo dataset</button>
+    <p class="mini" style="margin-top:.4rem">The demo is simulated (seeded) with six planted problems, so every check has something to find. It is labelled as such throughout.</p>
+  </div>
+  <div class="panel" id="mapPanel" style="display:none">
+    <h2>Column roles</h2>
+    <p class="mini">Guessed from the header names. Correct anything wrong and re-run.</p>
+    <label>Interview ID</label><select id="rId"></select>
+    <label>Enumerator</label><select id="rEnum"></select>
+    <label>Respondent age</label><select id="rAge"></select>
+    <label>Interview start (date-time)</label><select id="rStart"></select>
+    <label>Interview end (date-time)</label><select id="rEnd"></select>
+    <label>Duration in minutes (if no start/end)</label><select id="rDur"></select>
+    <label>Benford columns (open-ended amounts)</label><select id="rBenford" multiple size="4"></select>
+    <label>Rating battery (straightlining)</label><select id="rLikert" multiple size="4"></select>
+    <p style="margin-top:.7rem"><button id="run">Run the audit</button></p>
+  </div>
+</div>
+
+<div>
+  <div class="panel" id="overview"><h2>Overview</h2><div class="note">Load a dataset to begin.</div></div>
+  <div id="results"></div>
+  <div class="panel" id="exportPanel" style="display:none"><h2>Export</h2>
+    <button class="secondary" id="dlReport">Download report (Markdown)</button>
+    <button class="secondary" id="dlFlags">Download flagged interviews (CSV)</button>
+    <p class="note">The Markdown report lists every check, its statistic and its verdict. The CSV lists each flagged interview with the reasons, ready for a call-back list.</p>
+  </div>
+</div>
+</div>
+</div></main>
+<div class="tip" id="tip"></div>
+<footer>Part of <a href="../">Experiments</a> by Varna Sri Raman · Idealog Works · MIT licence · Runs entirely in your browser.</footer>
+
+<script>
+'use strict';
+const $=s=>document.querySelector(s);
+const fmt=(x,d=2)=>(x==null||!isFinite(x))?'—':Number(x).toLocaleString('en-IN',{maximumFractionDigits:d});
+const pct=(x,d=1)=>(x==null||!isFinite(x))?'—':(100*x).toFixed(d)+'%';
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
+function randn(r){let u=0,v=0;while(!u)u=r();while(!v)v=r();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);}
+function lgamma(x){const c=[76.18009172947146,-86.50532032941677,24.01409824083091,-1.231739572450155,0.1208650973866179e-2,-0.5395239384953e-5];let y=x,t=x+5.5;t-=(x+0.5)*Math.log(t);let s=1.000000000190015;for(let j=0;j<6;j++)s+=c[j]/++y;return -t+Math.log(2.5066282746310005*s/x);}
+function chi2Upper(x,k){if(x<=0)return 1;const a=k/2,z=x/2,g=lgamma(a);if(z<a+1){let sum=1/a,del=sum,ap=a;for(let n=0;n<500;n++){ap++;del*=z/ap;sum+=del;if(Math.abs(del)<Math.abs(sum)*1e-14)break;}return Math.max(0,1-sum*Math.exp(-z+a*Math.log(z)-g));}let b=z+1-a,c=1e300,d=1/b,h=d;for(let i=1;i<500;i++){const an=-i*(i-a);b+=2;d=an*d+b;if(Math.abs(d)<1e-300)d=1e-300;c=b+an/c;if(Math.abs(c)<1e-300)c=1e-300;d=1/d;const del=d*c;h*=del;if(Math.abs(del-1)<1e-14)break;}return Math.exp(-z+a*Math.log(z)-g)*h;}
+const median=a=>{const s=a.filter(v=>isFinite(v)).sort((x,y)=>x-y);if(!s.length)return NaN;const m=s.length>>1;return s.length%2?s[m]:(s[m-1]+s[m])/2;};
+const mean=a=>{const s=a.filter(v=>isFinite(v));return s.length?s.reduce((x,y)=>x+y,0)/s.length:NaN;};
+const sd=a=>{const s=a.filter(v=>isFinite(v));if(s.length<2)return NaN;const m=mean(s);return Math.sqrt(s.reduce((x,y)=>x+(y-m)**2,0)/(s.length-1));};
+const pv=p=>p<0.001?'<0.001':p.toFixed(3);
+
+// ── charts ──
+const tip=$('#tip'); document.addEventListener('mousemove',e=>{const t=e.target.closest&&e.target.closest('[data-tip]');if(t){tip.innerHTML=t.getAttribute('data-tip');tip.style.display='block';tip.style.left=(e.clientX+12)+'px';tip.style.top=(e.clientY-10)+'px';}else tip.style.display='none';});
+function barChart(cats, series, opts={}){ const W=760,H=opts.height||240,m={l:48,r:12,t:12,b:30},pw=W-m.l-m.r,ph=H-m.t-m.b; const all=series.flatMap(s=>s.values).concat(opts.line?opts.line.values:[]).filter(isFinite); let y1=Math.max(...all,0)*1.08||1, y0=0; const Y=v=>m.t+ph-(v-y0)/(y1-y0)*ph; const bw=pw/cats.length, gw=(bw*0.8)/series.length;
+  let g=`<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(opts.title||'bar chart')}">`; [0,0.25,0.5,0.75,1].map(f=>y0+f*(y1-y0)).forEach(v=>{g+=`<line x1="${m.l}" x2="${W-m.r}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--grid)"/><text x="${m.l-6}" y="${Y(v)+4}" text-anchor="end">${opts.pct?pct(v,0):fmt(v,1)}</text>`;});
+  const every=Math.ceil(cats.length/24);
+  cats.forEach((c,i)=>{ const x=m.l+i*bw+bw*0.1; series.forEach((s,j)=>{ const v=s.values[i]; if(!isFinite(v))return; g+=`<rect x="${x+j*gw+1}" y="${Y(v)}" width="${Math.max(gw-2,1)}" height="${Math.max(Y(0)-Y(v),0)}" rx="2" fill="${s.color}" data-tip="${esc(s.name)} · ${esc(c)}: ${opts.pct?pct(v):fmt(v,2)}"/>`; }); if(i%every===0) g+=`<text x="${x+bw*0.4}" y="${H-m.b+16}" text-anchor="middle">${esc(String(c).slice(0,10))}</text>`; });
+  if(opts.line){ let d=''; cats.forEach((c,i)=>{ d+=(d?'L':'M')+(m.l+i*bw+bw/2)+','+Y(opts.line.values[i]); }); g+=`<path d="${d}" fill="none" stroke="${opts.line.color}" stroke-width="2"/>`; cats.forEach((c,i)=>{ g+=`<circle cx="${m.l+i*bw+bw/2}" cy="${Y(opts.line.values[i])}" r="3.5" fill="${opts.line.color}" stroke="#fff" stroke-width="1.5" data-tip="${esc(opts.line.name)} · ${esc(c)}: ${opts.pct?pct(opts.line.values[i]):fmt(opts.line.values[i],3)}"/>`; }); }
+  return g+'</svg>'; }
+function hbars(items, opts={}){ const W=760, rh=18, H=items.length*rh+10, lw=opts.lw||150, max=Math.max(...items.map(i=>i.value),opts.max||0)||1; let g=`<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(opts.title||'bars')}">`;
+  items.forEach((it,i)=>{ const y=5+i*rh; const w=(it.value/max)*(W-lw-60); g+=`<text x="${lw-6}" y="${y+13}" text-anchor="end">${esc(String(it.label).slice(0,22))}</text><rect x="${lw}" y="${y+3}" width="${Math.max(w,0)}" height="${rh-6}" rx="2" fill="${it.color||'var(--s1)'}" data-tip="${esc(it.tip||it.label)}"/><text x="${lw+w+5}" y="${y+13}">${opts.pct?pct(it.value):fmt(it.value,2)}</text>`; });
+  return g+'</svg>'; }
+
+// ── CSV ──
+function parseCSV(text){const rows=[];let row=[],f='',q=false;for(let i=0;i<text.length;i++){const c=text[i];if(q){if(c==='"'){if(text[i+1]==='"'){f+='"';i++;}else q=false;}else f+=c;}else{if(c==='"')q=true;else if(c===','){row.push(f);f='';}else if(c==='\n'||c==='\r'){if(c==='\r'&&text[i+1]==='\n')i++;row.push(f);rows.push(row);row=[];f='';}else f+=c;}}if(f!==''||row.length){row.push(f);rows.push(row);}return rows.filter(r=>r.length>1||r[0]!=='');}
+let data=null;
+function loadTable(head, rows, label, demo){ data={head:head.map(h=>h.trim()), rows, label, demo}; profileColumns(); guessRoles(); $('#mapPanel').style.display='block'; $('#results').innerHTML=''; $('#exportPanel').style.display='none'; renderOverview(); }
+$('#file').onchange=e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{const rows=parseCSV(rd.result);loadTable(rows[0],rows.slice(1),`${f.name} (${rows.length-1} rows)`,false);};rd.readAsText(f);};
+
+// ── column profiling ──
+let cols=[];
+const isMissing=v=>v==null||/^\s*$/.test(v)||/^(NA|N\/A|NaN|null|\.|-|-99|-999|999|\.a)$/i.test(String(v).trim());
+const numRe=/^[-+]?(\d[\d,]*)?(\.\d+)?([eE][-+]?\d+)?%?$/;
+const toNum=v=>{ const s=String(v).replace(/[₹$\s]/g,''); return numRe.test(s)&&/\d/.test(s)?parseFloat(s.replace(/[,%]/g,'')):NaN; };
+function profileColumns(){ cols=data.head.map((name,i)=>{ const raw=data.rows.map(r=>r[i]??''); const present=raw.filter(v=>!isMissing(v)); const nums=present.map(toNum); const numOk=present.length&&nums.filter(isFinite).length/present.length>0.95; const dateOk=!numOk&&present.length&&present.slice(0,200).filter(v=>!isNaN(Date.parse(v))&&/\d{2,4}[-\/]\d{1,2}/.test(v)).length/Math.min(present.length,200)>0.9; const uniq=new Set(present).size;
+  return {name,i,kind:present.length?(numOk?'num':dateOk?'date':'cat'):'empty', nMissing:raw.length-present.length, values:numOk?raw.map(v=>isMissing(v)?NaN:toNum(v)):null, raw, uniq}; }); }
+function fill(sel, none){ const s=$(sel); s.innerHTML=(none?'<option value="">— none —</option>':'')+cols.map(c=>`<option value="${c.i}">${esc(c.name)} (${c.kind})</option>`).join(''); }
+function guessRoles(){ ['#rId','#rEnum','#rAge','#rStart','#rEnd','#rDur'].forEach(s=>fill(s,true)); ['#rBenford','#rLikert'].forEach(s=>fill(s,false));
+  const pick=(sel,re,kind)=>{ const c=cols.find(c=>re.test(c.name)&&(!kind||c.kind===kind)); if(c) $(sel).value=c.i; };
+  pick('#rId',/^(interview_?id|_?uuid|key|id|hhid|hh_id|caseid|resp_?id)$/i); pick('#rEnum',/enum|interviewer|surveyor|collector|fieldworker|staff/i); pick('#rAge',/^(resp_?age|age|age_years|hh_head_age|age_resp)$/i,'num'); pick('#rStart',/^(start|starttime|start_time|begin|interview_start)$/i); pick('#rEnd',/^(end|endtime|end_time|finish|interview_end)$/i); pick('#rDur',/duration|minutes|interview_length|^dur/i,'num');
+  const ben=$('#rBenford'); cols.forEach(c=>{ if(c.kind!=='num')return; const v=c.values.filter(x=>isFinite(x)&&x>0).sort((a,b)=>a-b); if(v.length<50)return; const lo=v[Math.floor(v.length*0.05)], hi=v[Math.floor(v.length*0.95)]; if(lo>0&&hi/lo>=10 && /income|expend|consum|spend|amount|value|price|cost|revenue|sales|loan|saving|wage|earn|yield|output|rupee|inr|rs|salary|remit|asset|turnover/i.test(c.name)) [...ben.options].find(o=>+o.value===c.i).selected=true; });
+  const lik=$('#rLikert'); cols.forEach(c=>{ if(c.kind!=='num')return; const v=c.values.filter(isFinite); if(v.length<30)return; const ints=v.every(x=>Number.isInteger(x)); const mx=Math.max(...v),mn=Math.min(...v); const u=new Set(v).size; if(ints&&mn>=0&&mx<=10&&u>=3&&u<=11&&!/age|size|hh|num|count|n_|children|members|rooms|acres|id$/i.test(c.name)) [...lik.options].find(o=>+o.value===c.i).selected=true; });
+}
+
+// ── demo dataset (simulated; every problem below is planted on purpose) ──
+$('#demo').onclick=()=>{ const r=mulberry32(20260901); const enums=['E01','E02','E03','E04','E05','E06','E07','E08']; const villages=['Amarpur','Bhagalpur','Chausa','Dumri','Ekangarsarai','Fatehpur','Gaya Rural','Hilsa','Islampur','Jehanabad']; const head=['interview_id','enumerator','village','start_time','end_time','resp_age','resp_sex','hh_size','land_acres','income_month','expend_month','consent','q1_trust','q2_access','q3_quality','q4_fair','q5_safety','q6_voice','has_toilet','mobile_owner','gps_lat','gps_lon']; const rows=[]; let id=1000;
+  const pad=n=>String(n).padStart(2,'0'); const dt=(d,h,mi)=>{ const t=new Date(Date.UTC(2026,7,d,h,mi)); return `${t.getUTCFullYear()}-${pad(t.getUTCMonth()+1)}-${pad(t.getUTCDate())} ${pad(t.getUTCHours())}:${pad(t.getUTCMinutes())}:00`; };
+  const benfordish=()=>Math.exp(Math.log(1500)+randn(r)*0.9);
+  for(let k=0;k<640;k++){ const en=enums[Math.floor(r()*8)]; const vil=villages[Math.floor(r()*10)]; const day=1+Math.floor(r()*20); let hour=8+Math.floor(r()*10), min=Math.floor(r()*60); let dur=25+Math.round(randn(r)*7+(r()<0.1?15:0));
+    let age=18+Math.floor(r()*60); const sex=r()<0.52?'F':'M'; const hh=1+Math.floor(Math.abs(randn(r))*2.5+2); let land=r()<0.35?0:+(Math.abs(randn(r))*2.2).toFixed(2); let inc=Math.round(benfordish()), exp=Math.round(inc*(0.6+r()*0.5)); let lik=[0,0,0,0,0,0].map(()=>1+Math.floor(r()*5)); const toilet=r()<0.6?'yes':'no', mob=r()<0.75?'yes':'no'; const lat=(25.2+r()*0.6).toFixed(5), lon=(85.0+r()*0.7).toFixed(5);
+    if(en==='E03'){ dur=Math.max(6,Math.round(8+randn(r)*3)); const v=1+Math.floor(r()*5); if(r()<0.7) lik=[v,v,v,v,v,v]; inc=Math.round(1000+r()*9000); exp=Math.round(1000+r()*9000); } // fast, straightlines, invents amounts with uniform first digits
+    if(en==='E07' && r()<0.75) age=Math.round(age/5)*5; // heaps ages on 0 and 5
+    if(en==='E06' && r()<0.35){ inc=NaN; exp=NaN; } if(en==='E06'&&r()<0.25) land=NaN; // leaves fields blank
+    if(en==='E02' && r()<0.12){ hour=22+Math.floor(r()*2); } // night interviews
+    if(r()<0.02) age=age+70; // impossible ages
+    const eh=hour+Math.floor((min+dur)/60), em=(min+dur)%60;
+    const row=[String(id++),en,vil,dt(day,hour,min),dt(day,eh,em),String(age),sex,String(hh),isFinite(land)?String(land):'',isFinite(inc)?String(inc):'',isFinite(exp)?String(exp):'','yes',...lik.map(String),toilet,mob,lat,lon]; rows.push(row);
+    if(en==='E05' && r()<0.08){ const dup=row.slice(); dup[0]=String(id++); dup[3]=dt(day,hour+1,min); dup[4]=dt(day,eh+1,em); rows.push(dup); } // copies interviews with a new id and shifted time
+  }
+  loadTable(head, rows, `Demo dataset — simulated household survey, ${rows.length} interviews, 8 enumerators`, true); };
+
+function renderOverview(){ const numCols=cols.filter(c=>c.kind==='num').length, catCols=cols.filter(c=>c.kind==='cat').length, dateCols=cols.filter(c=>c.kind==='date').length; const totalCells=data.rows.length*data.head.length, miss=cols.reduce((a,c)=>a+c.nMissing,0);
+  $('#overview').innerHTML=`<h2>Overview</h2><div class="note">${esc(data.label)}${data.demo?' · <b>simulated data with planted problems</b>':''}</div><span class="stat"><b>${fmt(data.rows.length,0)}</b><span>interviews</span></span><span class="stat"><b>${data.head.length}</b><span>columns</span></span><span class="stat"><b>${numCols} / ${catCols} / ${dateCols}</b><span>numeric / categorical / date</span></span><span class="stat"><b>${pct(miss/totalCells)}</b><span>cells missing</span></span>`; }
+
+// ── audit ──
+let report=[], flags=new Map();
+function flag(i,reason){ if(!flags.has(i)) flags.set(i,[]); const l=flags.get(i); if(!l.includes(reason)) l.push(reason); }
+const sevLabel={ok:'looks fine',warn:'worth a look',bad:'problem',na:'not run'};
+function card(id,title,sev,finding,body,how){ return `<div class="panel" id="${id}"><h2>${esc(title)} <span class="sev sev-${sev}">${sevLabel[sev]}</span></h2><div class="finding">${finding}</div>${body||''}${how?`<details><summary>Method</summary><p>${how}</p></details>`:''}</div>`; }
+function byGroup(keyArr){ const g=new Map(); keyArr.forEach((k,i)=>{ if(!g.has(k)) g.set(k,[]); g.get(k).push(i); }); return g; }
+
+$('#run').onclick=()=>{ report=[]; flags=new Map(); const out=[]; const R=data.rows, n=R.length;
+  const gi=s=>{ const v=$(s).value; return v===''?null:+v; }; const iId=gi('#rId'), iEn=gi('#rEnum'), iAge=gi('#rAge'), iSt=gi('#rStart'), iEd=gi('#rEnd'), iDu=gi('#rDur'); const iBen=[...$('#rBenford').selectedOptions].map(o=>+o.value), iLik=[...$('#rLikert').selectedOptions].map(o=>+o.value);
+  const enumOf=i=>iEn==null?'(all)':(R[i][iEn]||'(blank)'); const groups=byGroup(R.map((_,i)=>enumOf(i))); const enums=[...groups.keys()].sort(); const idOf=i=>iId==null?String(i+1):R[i][iId];
+  const prof=new Map(enums.map(e=>[e,{n:groups.get(e).length}]));
+
+  // 1. Missingness
+  { const items=cols.filter(c=>c.i!==iId).map(c=>({label:c.name,value:c.nMissing/n,tip:`${c.name}: ${c.nMissing} missing of ${n}`,color:c.nMissing/n>0.2?'var(--s2)':'var(--s1)'})).sort((a,b)=>b.value-a.value).slice(0,25); const worst=items[0];
+    const perEnum=enums.map(e=>{ const idx=groups.get(e); const cells=idx.length*cols.length; const miss=idx.reduce((a,i)=>a+cols.filter(c=>isMissing(R[i][c.i]??'')).length,0); prof.get(e).miss=miss/cells; return miss/cells; }); const mm=mean(perEnum), ms=sd(perEnum); const hi=enums.filter((e,k)=>ms>0&&(perEnum[k]-mm)/ms>2);
+    const sev=worst&&worst.value>0.2?'bad':worst&&worst.value>0.05?'warn':'ok'; report.push({check:'Missingness',stat:`worst column ${worst?worst.label+' '+pct(worst.value):'—'}`,sev});
+    out.push(card('c-miss','Missingness',sev,`${worst&&worst.value>0?`Highest missing share is <b>${esc(worst.label)}</b> at ${pct(worst.value)}.`:'No missing cells.'} ${hi.length?`Enumerator${hi.length>1?'s':''} <b>${hi.join(', ')}</b> leave${hi.length>1?'':'s'} far more blank than colleagues (over 2 SD above the mean rate).`:'No enumerator stands out on blanks.'}`, hbars(items,{pct:true,title:'missing share by column'})+(iEn!=null?`<div class="legend"><span><i style="background:var(--s1)"></i>share of cells missing, by enumerator</span></div>`+barChart(enums,[{name:'missing share',color:'var(--s1)',values:perEnum}],{pct:true,height:180}):''),`Blank, NA, N/A, ".", "-", -99, -999 and 999 are treated as missing. Per-enumerator rates compare each enumerator with the mean and SD across all enumerators.`)); }
+
+  // 2. Duplicates
+  { const skip=new Set([iId,iSt,iEd].filter(v=>v!=null)); const keyCols=cols.filter(c=>!skip.has(c.i)).map(c=>c.i); const key=i=>keyCols.map(j=>R[i][j]).join(''); const seen=new Map(); let exact=0; const exactPairs=[];
+    R.forEach((_,i)=>{ const k=key(i); if(seen.has(k)){ exact++; exactPairs.push([seen.get(k),i]); flag(i,`exact duplicate of ${idOf(seen.get(k))}`);} else seen.set(k,i); });
+    let near=0; const nearPairs=[]; const cap=4000; const sample=n>cap; const cand=sample?R.map((_,i)=>i).filter(()=>Math.random()<cap/n):R.map((_,i)=>i);
+    const grp=iEn!=null?byGroup(cand.map(i=>enumOf(i))):new Map([['all',cand]]); const exactSet=new Set(exactPairs.map(p=>p[1]));
+    for(const idx of grp.values()){ for(let a=0;a<idx.length;a++) for(let b=a+1;b<idx.length;b++){ const i=idx[a],j=idx[b]; if(exactSet.has(j)||exactSet.has(i)) continue; let same=0; for(const c of keyCols) if(R[i][c]===R[j][c]) same++; if(same/keyCols.length>=0.9){ near++; nearPairs.push([i,j,same/keyCols.length]); flag(j,`near-duplicate of ${idOf(i)} (${Math.round(100*same/keyCols.length)}% identical)`); } } }
+    const involve=new Map(); [...exactPairs,...nearPairs].forEach(p=>{ const e=enumOf(p[1]); involve.set(e,(involve.get(e)||0)+1); }); enums.forEach(e=>prof.get(e).dup=(involve.get(e)||0)/groups.get(e).length);
+    const top=[...involve].sort((a,b)=>b[1]-a[1]).slice(0,3); const sev=(exact+near)/n>0.03?'bad':(exact+near)>0?'warn':'ok'; report.push({check:'Duplicates',stat:`${exact} exact, ${near} near (≥90% identical)`,sev});
+    const tbl=[...exactPairs.map(p=>[idOf(p[0]),idOf(p[1]),enumOf(p[1]),'100%']),...nearPairs.map(p=>[idOf(p[0]),idOf(p[1]),enumOf(p[1]),Math.round(100*p[2])+'%'])].slice(0,60);
+    out.push(card('c-dup','Duplicate interviews',sev,`<b>${exact}</b> exact duplicate${exact===1?'':'s'} and <b>${near}</b> near-duplicate${near===1?'':'s'} (identical on at least 90% of fields, with ID and timestamps ignored)${sample?', on a random sample of '+cap+' interviews':''}. ${top.length?`Most involved: ${top.map(t=>`<b>${esc(t[0])}</b> (${t[1]})`).join(', ')}.`:''}`, tbl.length?`<div class="tscroll"><table><tr><th>Original</th><th>Duplicate</th><th>Enumerator</th><th>Identical</th></tr>${tbl.map(r=>`<tr>${r.map(v=>`<td>${esc(v)}</td>`).join('')}</tr>`).join('')}</table></div>`:'',`Exact duplicates hash every column except the ID and timestamps. Near-duplicates compare pairs within the same enumerator (above 4,000 interviews a random sample is compared) and flag pairs identical on 90% or more of columns. A copied interview with the time and ID changed is the commonest form of fabrication in field data, and a duplicate-ID check never sees it.`)); }
+
+  // 3. Benford
+  { const B=[1,2,3,4,5,6,7,8,9].map(d=>Math.log10(1+1/d)); const firstDigit=v=>{ const s=String(Math.abs(v)).replace(/^0+\.?0*/,'').replace('.',''); const d=+s[0]; return d>=1&&d<=9?d:null; };
+    const runBen=vals=>{ const ds=vals.map(firstDigit).filter(d=>d); const N=ds.length; if(N<50) return null; const obs=B.map((_,k)=>ds.filter(d=>d===k+1).length/N); const chi=obs.reduce((a,o,k)=>a+N*(o-B[k])**2/B[k],0); const mad=obs.reduce((a,o,k)=>a+Math.abs(o-B[k]),0)/9; return {obs,N,chi,p:chi2Upper(chi,8),mad}; };
+    const nig=mad=>mad<0.006?'close conformity':mad<0.012?'acceptable conformity':mad<0.015?'marginal conformity':'nonconformity';
+    if(!iBen.length){ out.push(card('c-ben',"Benford's law",'na','No amount columns selected. Pick income, expenditure or yield columns in the sidebar.')); report.push({check:'Benford',stat:'not run',sev:'na'}); }
+    else iBen.forEach(ci=>{ const c=cols[ci]; const all=runBen(c.values.filter(v=>isFinite(v)&&v!==0)); if(!all){ out.push(card('c-ben'+ci,`Benford's law: ${c.name}`,'na','Fewer than 50 non-zero values.')); return; }
+      const perE=enums.map(e=>runBen(groups.get(e).map(i=>c.values[i]).filter(v=>isFinite(v)&&v!==0))); enums.forEach((e,k)=>{ if(perE[k]) prof.get(e).mad=Math.max(prof.get(e).mad||0,perE[k].mad); });
+      const bad=enums.filter((e,k)=>perE[k]&&perE[k].p<0.01); const sev=all.mad>=0.015?'bad':all.mad>=0.012||bad.length?'warn':'ok'; report.push({check:`Benford: ${c.name}`,stat:`MAD ${all.mad.toFixed(4)} (${nig(all.mad)}), chi-square(8)=${all.chi.toFixed(1)}, p=${pv(all.p)}`,sev});
+      out.push(card('c-ben'+ci,`Benford's law: ${c.name}`,sev,`First-digit MAD <b>${all.mad.toFixed(4)}</b>: ${nig(all.mad)} by Nigrini's cut-offs. χ²(8) = ${all.chi.toFixed(1)}, p = ${pv(all.p)}, N = ${all.N}. ${bad.length?`Enumerators whose digits reject Benford at p &lt; 0.01: <b>${bad.join(', ')}</b>.`:'No enumerator individually rejects Benford at p &lt; 0.01.'}`,
+        `<div class="legend"><span><i style="background:var(--s1)"></i>observed first-digit share</span><span><i style="background:var(--s2)"></i>Benford expectation</span></div>`+barChart(['1','2','3','4','5','6','7','8','9'],[{name:'observed',color:'var(--s1)',values:all.obs}],{pct:true,height:200,line:{name:'Benford',color:'var(--s2)',values:B}})+
+        (iEn!=null?`<div class="tscroll"><table><tr><th>Enumerator</th><th>N</th><th>MAD</th><th>Verdict</th><th>χ² p</th></tr>${enums.map((e,k)=>perE[k]?`<tr><td>${esc(e)}</td><td>${perE[k].N}</td><td>${perE[k].mad.toFixed(4)}</td><td>${perE[k].N>=500?nig(perE[k].mad):'(MAD cut-offs need N ≥ 500)'}</td><td class="${perE[k].p<0.01?'flagged':''}">${pv(perE[k].p)}</td></tr>`:`<tr><td>${esc(e)}</td><td colspan="4">too few values</td></tr>`).join('')}</table></div>`:''),
+        `Benford's law says the leading digit of amounts that span several orders of magnitude is 1 about 30% of the time and 9 about 4.6%. Fabricated amounts tend to spread digits evenly. The mean absolute deviation (MAD) across the nine digits is compared with Nigrini's (2012) first-digit thresholds: below 0.006 close, 0.006 to 0.012 acceptable, 0.012 to 0.015 marginal, above 0.015 nonconformity. The χ² test is over-sensitive in large samples and MAD is unreliable in small ones, so the overall verdict uses MAD and the per-enumerator verdict (typically under 100 amounts each) uses χ² at p &lt; 0.01. Benford is only meaningful for open-ended amounts, not for bounded scores, ages or codes.`)); }); }
+
+  // 4. Age heaping
+  { if(iAge==null){ out.push(card('c-age','Age heaping','na','No age column selected.')); report.push({check:'Age heaping',stat:'not run',sev:'na'}); }
+    else { const ages=cols[iAge].values; const whipple=idx=>{ const a=idx.map(i=>ages[i]).filter(v=>isFinite(v)&&v>=23&&v<=62); if(a.length<30) return null; const h=a.filter(v=>v%5===0).length; return 5*h/a.length*100; };
+      const whippleSig=idx=>{ const a=idx.map(i=>ages[i]).filter(v=>isFinite(v)&&v>=23&&v<=62); if(a.length<30) return false; const p=a.filter(v=>v%5===0).length/a.length; return (p-0.2)/Math.sqrt(0.16/a.length)>2; };
+      const myers=idx=>{ const a=idx.map(i=>ages[i]).filter(v=>isFinite(v)&&v>=10&&v<=89); if(a.length<100) return null; const blended=new Array(10).fill(0); for(let d=0;d<10;d++){ let s1=0,s2=0; a.forEach(v=>{ if(v%10!==d) return; if(v>=10+d&&v<=79+d) s1++; if(v>=20+d&&v<=89+d) s2++; }); blended[d]=(d+1)*s1+(9-d)*s2; } const tot=blended.reduce((x,y)=>x+y,0); return blended.reduce((x,y)=>x+Math.abs(y/tot*100-10),0)/2; };
+      const all=R.map((_,i)=>i); const W=whipple(all), M=myers(all); const perW=enums.map(e=>whipple(groups.get(e))); enums.forEach((e,k)=>prof.get(e).whipple=perW[k]);
+      const impossible=all.filter(i=>isFinite(ages[i])&&(ages[i]<0||ages[i]>110)); impossible.forEach(i=>flag(i,`implausible age ${ages[i]}`));
+      const dist=new Array(10).fill(0); all.forEach(i=>{ const v=ages[i]; if(isFinite(v)&&v>=10&&v<=89) dist[v%10]++; }); const dt=dist.reduce((x,y)=>x+y,0)||1;
+      const wv=W==null?'':W<105?'highly accurate':W<110?'fairly accurate':W<125?'approximate':W<175?'rough':'very rough'; const sev=W==null?'na':W>=125?'bad':W>=110?'warn':'ok'; const badE=enums.filter((e,k)=>perW[k]!=null&&perW[k]>=125&&whippleSig(groups.get(e)));
+      report.push({check:'Age heaping',stat:`Whipple ${W==null?'—':W.toFixed(1)} (${wv}), Myers ${M==null?'—':M.toFixed(1)}, ${impossible.length} implausible ages`,sev});
+      out.push(card('c-age','Age heaping',sev,`Whipple's index <b>${W==null?'—':W.toFixed(1)}</b> (${wv} on the UN scale, where 100 is no heaping and 500 is every age on 0 or 5). Myers' blended index <b>${M==null?'—':M.toFixed(1)}</b> (0 = no digit preference). ${impossible.length?`<b>${impossible.length}</b> age${impossible.length===1?'':'s'} outside 0–110.`:''} ${badE.length?`Enumerators heaping heavily (Whipple at least 125 and the 0/5 share significantly above 20%): <b>${badE.join(', ')}</b>.`:''}`,
+        `<div class="legend"><span><i style="background:var(--s1)"></i>share of ages 10–89 by terminal digit; each should be near 10%</span></div>`+barChart(['0','1','2','3','4','5','6','7','8','9'],[{name:'terminal digit share',color:'var(--s1)',values:dist.map(v=>v/dt)}],{pct:true,height:180})+(iEn!=null?`<div class="legend"><span><i style="background:var(--s1)"></i>Whipple's index by enumerator (100 = none, 125 = UN threshold for "rough")</span></div>`+barChart(enums,[{name:"Whipple",color:'var(--s1)',values:perW.map(v=>v==null?NaN:v)}],{height:180}):''),
+        `Whipple's index is five times the share of ages 23 to 62 that end in 0 or 5, times 100. Below 105 is "highly accurate", 105 to 110 "fairly accurate", 110 to 125 "approximate", 125 to 175 "rough", above 175 "very rough" (the United Nations Demographic Yearbook convention). Myers' blended index sums, for each terminal digit, a weighted count over ages 10 to 89 that removes the effect of the age distribution itself, and reports half the sum of absolute deviations from 10%; 0 is no preference and 90 is every age ending in one digit. Heaping is normal where birth registration is weak; heaping that is much worse for one enumerator than colleagues in the same villages is a data-collection problem, not a population trait.`)); } }
+
+  // 5. Straightlining
+  { if(iLik.length<3){ out.push(card('c-sl','Straightlining','na','Select at least three rating columns to check for straightlining.')); report.push({check:'Straightlining',stat:'not run',sev:'na'}); }
+    else { const isSL=i=>{ const v=iLik.map(j=>cols[j].values[i]).filter(isFinite); return v.length>=3 ? v.every(x=>x===v[0]) : null; };
+      const all=R.map((_,i)=>i); let s=0,c=0; all.forEach(i=>{ const r=isSL(i); if(r==null) return; c++; if(r){ s++; flag(i,'straightlined rating battery'); } }); const overall=c?s/c:NaN;
+      const perE=enums.map(e=>{ let s=0,c=0; groups.get(e).forEach(i=>{ const r=isSL(i); if(r==null) return; c++; if(r) s++; }); const rate=c?s/c:NaN; prof.get(e).sl=rate; return rate; });
+      const m=mean(perE), sdv=sd(perE); const badE=enums.filter((e,k)=>isFinite(perE[k])&&(perE[k]>0.3||(sdv>0&&(perE[k]-m)/sdv>2))); const sev=overall>0.25?'bad':overall>0.1||badE.length?'warn':'ok';
+      const cats=new Set(iLik.flatMap(j=>cols[j].values.filter(isFinite))).size; const chance=Math.pow(cats,1-iLik.length);
+      report.push({check:'Straightlining',stat:`${pct(overall)} of interviews identical across ${iLik.length} items (chance about ${pct(chance,2)})`,sev});
+      out.push(card('c-sl','Straightlining',sev,`<b>${pct(overall)}</b> of interviews give the identical answer to all ${iLik.length} rating items (${iLik.map(j=>esc(cols[j].name)).join(', ')}). If answers were unrelated to each other the rate would be about ${pct(chance,2)}; some clustering is real, but a rate far above colleagues is a satisficing or fabrication signal. ${badE.length?`Stand-outs: <b>${badE.join(', ')}</b>.`:''}`, iEn!=null?`<div class="legend"><span><i style="background:var(--s1)"></i>share of interviews straightlined, by enumerator</span></div>`+barChart(enums,[{name:'straightlined',color:'var(--s1)',values:perE}],{pct:true,height:180}):'',
+        `A battery is straightlined when every item in it has the same value. The chance benchmark assumes independent uniform answers over the number of categories observed, which overstates chance for correlated items, so read it as a floor. Enumerators are flagged above 30% or more than two standard deviations above the mean rate.`)); } }
+
+  // 6. Duration and timing
+  { let dur=null, starts=null; const parseDT=v=>{ const s=String(v||'').trim(); if(!s) return new Date(NaN); const d=new Date(s.replace(' ','T')); return isNaN(d)?new Date(s):d; };
+    if(iSt!=null&&iEd!=null){ starts=R.map(r=>parseDT(r[iSt])); dur=R.map((r,i)=>{ const a=starts[i], b=parseDT(r[iEd]); return isNaN(a)||isNaN(b)?NaN:(b-a)/60000; }); } else if(iDu!=null) dur=cols[iDu].values; if(!starts&&iSt!=null) starts=R.map(r=>parseDT(r[iSt]));
+    if(!dur&&!starts){ out.push(card('c-dur','Interview duration and timing','na','No start/end or duration column selected.')); report.push({check:'Duration',stat:'not run',sev:'na'}); }
+    else { let body='', finding=[], sev='ok', stat=[];
+      if(dur){ const med=median(dur); const short=R.map((_,i)=>i).filter(i=>isFinite(dur[i])&&dur[i]<0.4*med); short.forEach(i=>flag(i,`very short interview (${dur[i].toFixed(0)} min against a median of ${med.toFixed(0)})`)); const neg=dur.filter(v=>isFinite(v)&&v<=0).length; const perE=enums.map(e=>{ const m=median(groups.get(e).map(i=>dur[i])); prof.get(e).dur=m; return m; }); const fastE=enums.filter((e,k)=>isFinite(perE[k])&&perE[k]<0.5*med);
+        finding.push(`Median interview <b>${fmt(med,0)} minutes</b>; <b>${short.length}</b> interview${short.length===1?'':'s'} took less than 40% of that${neg?`, and ${neg} ended before starting`:''}. ${fastE.length?`Enumerator${fastE.length>1?'s':''} <b>${fastE.join(', ')}</b>: median under half the overall median.`:''}`); if(short.length/n>0.05||fastE.length) sev='bad'; else if(short.length) sev='warn'; stat.push(`median ${med.toFixed(0)} min, ${short.length} under 40% of median`);
+        if(iEn!=null) body+=`<div class="legend"><span><i style="background:var(--s1)"></i>median duration in minutes, by enumerator</span></div>`+barChart(enums,[{name:'median minutes',color:'var(--s1)',values:perE}],{height:180}); }
+      if(starts){ const hrs=starts.map(d=>isNaN(d)?NaN:d.getHours()); const nightSet=new Set(); R.forEach((_,i)=>{ if(isFinite(hrs[i])&&(hrs[i]<6||hrs[i]>=21)){ nightSet.add(i); flag(i,`started at ${starts[i].getHours()}:${String(starts[i].getMinutes()).padStart(2,'0')}`); } }); const perN=enums.map(e=>groups.get(e).filter(i=>nightSet.has(i)).length/groups.get(e).length); enums.forEach((e,k)=>prof.get(e).night=perN[k]); const hist=new Array(24).fill(0); hrs.forEach(h=>{ if(isFinite(h)) hist[h]++; });
+        finding.push(`<b>${nightSet.size}</b> interview${nightSet.size===1?'':'s'} started before 06:00 or after 21:00.`); if(nightSet.size/n>0.03&&sev!=='bad') sev='warn'; stat.push(`${nightSet.size} outside 06:00–21:00`);
+        body+=`<div class="legend"><span><i style="background:var(--s1)"></i>interviews by start hour</span></div>`+barChart(hist.map((_,h)=>String(h)),[{name:'interviews',color:'var(--s1)',values:hist}],{height:160});
+        if(iEn!=null){ const dayKey=i=>isNaN(starts[i])?null:starts[i].toISOString().slice(0,10); const perDay=enums.map(e=>{ const m=new Map(); groups.get(e).forEach(i=>{ const k=dayKey(i); if(k) m.set(k,(m.get(k)||0)+1); }); return Math.max(0,...m.values()); }); body+=`<div class="legend"><span><i style="background:var(--s1)"></i>most interviews completed in one day, by enumerator</span></div>`+barChart(enums,[{name:'max per day',color:'var(--s1)',values:perDay}],{height:160}); } }
+      report.push({check:'Duration and timing',stat:stat.join('; '),sev}); out.push(card('c-dur','Interview duration and timing',sev,finding.join(' '),body,`Duration is end minus start when both exist, else the duration column. An interview shorter than 40% of the median cannot have asked every question; the threshold is a convention, not a law, so adjust it to the questionnaire. Night-time starts are a signal in household surveys and normal in some others (health facilities, markets), so read them against the design.`)); } }
+
+  // 7. Rounding of measurements
+  { const cont=cols.filter(c=>c.kind==='num'&&c.i!==iAge&&!iLik.includes(c.i)&&c.i!==iId&&c.i!==iDu&&!iBen.includes(c.i)).filter(c=>{ const v=c.values.filter(isFinite); return v.filter(x=>x!==0).length>=100 && new Set(v).size>30 && v.some(x=>!Number.isInteger(x)); });
+    if(cont.length){ const res=cont.map(c=>{ const v=c.values.filter(x=>isFinite(x)&&x!==0); const dig=v.map(x=>Math.round(Math.abs(x)*100)%10); const cnt=new Array(10).fill(0); dig.forEach(d=>cnt[d]++); const N=dig.length; const chi=cnt.reduce((a,o)=>a+(o-N/10)**2/(N/10),0); return {c,cnt,N,chi,p:chi2Upper(chi,9),zero:cnt[0]/N}; });
+      const worst=res.slice().sort((a,b)=>b.zero-a.zero)[0]; const sev=worst.zero>0.5?'warn':'ok'; report.push({check:'Rounding',stat:`${worst.c.name}: ${pct(worst.zero)} of second decimals are 0`,sev});
+      out.push(card('c-ld','Rounding of measurements',sev,`For decimal measures (land, weights, distances) the last recorded digit should be roughly uniform if an instrument was read. <b>${esc(worst.c.name)}</b> has ${pct(worst.zero)} of second-decimal digits equal to 0 (χ²(9) = ${worst.chi.toFixed(1)}, p = ${pv(worst.p)}). Heavy rounding is not fabrication, but it caps the precision any analysis can claim.`, `<div class="tscroll"><table><tr><th>Column</th><th>N</th><th>second decimal = 0</th><th>χ²(9)</th><th>p</th></tr>${res.map(r=>`<tr><td>${esc(r.c.name)}</td><td>${r.N}</td><td>${pct(r.zero)}</td><td>${r.chi.toFixed(1)}</td><td>${pv(r.p)}</td></tr>`).join('')}</table></div>`,`The second decimal digit is tallied and tested against a uniform distribution with a χ² test on 9 degrees of freedom. Exact zeros are excluded (a landless household is not a rounding). Only columns with at least 100 non-zero values, more than 30 distinct values and some non-integers are tested; GPS coordinates will show as fine, which is a useful negative control.`)); } }
+
+  // 8. Outliers
+  { const res=cols.filter(c=>c.kind==='num'&&c.i!==iId&&!iLik.includes(c.i)&&!/lat|lon|gps/i.test(c.name)).map(c=>{ const v=c.values; const med=median(v); const madv=median(v.map(x=>Math.abs(x-med))); if(!(madv>0)) return null; const o=[]; v.forEach((x,i)=>{ if(isFinite(x)&&Math.abs(x-med)/(1.4826*madv)>5) o.push(i); }); return {c,med,madv,out:o}; }).filter(Boolean).filter(r=>r.out.length);
+    res.forEach(r=>r.out.slice(0,500).forEach(i=>flag(i,`${r.c.name} = ${r.c.values[i]} (robust z above 5)`))); const tot=res.reduce((a,r)=>a+r.out.length,0); const sev=tot/n>0.05?'warn':'ok'; report.push({check:'Outliers',stat:`${tot} values with |robust z| > 5 across ${res.length} columns`,sev});
+    out.push(card('c-out','Outliers',sev,`<b>${tot}</b> value${tot===1?'':'s'} more than 5 robust standard deviations from the column median${res.length?', in '+res.map(r=>`<b>${esc(r.c.name)}</b> (${r.out.length})`).join(', '):''}.`, res.length?`<div class="tscroll"><table><tr><th>Column</th><th>Median</th><th>MAD</th><th>Outliers</th><th>Examples</th></tr>${res.map(r=>`<tr><td>${esc(r.c.name)}</td><td>${fmt(r.med)}</td><td>${fmt(r.madv)}</td><td>${r.out.length}</td><td>${r.out.slice(0,4).map(i=>fmt(r.c.values[i])).join(', ')}</td></tr>`).join('')}</table></div>`:'',`Robust z = |x − median| / (1.4826 × median absolute deviation). The 1.4826 factor makes the MAD comparable to a standard deviation under normality. Extreme values are listed, not deleted: a large landholding may be true.`)); }
+
+  // 9. Enumerator profile
+  if(iEn!=null){ const metrics=[['miss','missing share',v=>pct(v),'hi'],['dup','duplicate involvement',v=>pct(v),'hi'],['mad','Benford MAD',v=>v==null?'—':v.toFixed(4),'hi'],['whipple','Whipple',v=>v==null?'—':v.toFixed(0),'hi'],['sl','straightlining',v=>pct(v),'hi'],['dur','median minutes',v=>fmt(v,0),'lo'],['night','night starts',v=>pct(v),'hi']].filter(m=>enums.some(e=>isFinite(prof.get(e)[m[0]])));
+    const z=(m,e)=>{ const vals=enums.map(x=>prof.get(x)[m[0]]); const mu=mean(vals), s=sd(vals); const v=prof.get(e)[m[0]]; return (s>0&&isFinite(v))?(v-mu)/s:0; }; const isFlag=(m,e)=>{ const zz=z(m,e); return (m[3]==='hi'&&zz>2)||(m[3]==='lo'&&zz<-2); };
+    const scores=new Map(enums.map(e=>[e,metrics.filter(m=>isFlag(m,e)).length])); const ranked=enums.slice().sort((a,b)=>scores.get(b)-scores.get(a)); const worst=ranked.filter(e=>scores.get(e)>=2); const sev=worst.length?'bad':ranked.some(e=>scores.get(e)===1)?'warn':'ok'; report.push({check:'Enumerator profile',stat:worst.length?`call back: ${worst.join(', ')}`:'no enumerator flagged on two or more checks',sev});
+    out.unshift(card('c-enum','Who to call',sev,worst.length?`<b>${worst.join(', ')}</b> ${worst.length>1?'are':'is'} more than two standard deviations from colleagues on at least two checks. Start the call-backs there.`:'No enumerator is an outlier on two or more checks at once.',`<div class="tscroll"><table><tr><th>Enumerator</th><th>n</th>${metrics.map(m=>`<th>${m[1]}</th>`).join('')}<th>flags</th></tr>${ranked.map(e=>{ const p=prof.get(e); return `<tr><td>${esc(e)}</td><td>${p.n}</td>${metrics.map(m=>`<td class="${isFlag(m,e)?'flagged':''}">${m[2](p[m[0]])}</td>`).join('')}<td>${scores.get(e)}</td></tr>`; }).join('')}</table></div>`,`Each metric is compared across enumerators; a value more than two standard deviations in the bad direction counts as one flag, and two flags put an enumerator on the call-back list. This is triage, not proof: an enumerator assigned the remotest villages will legitimately have longer interviews and more blanks. With fewer than five enumerators the standard deviation is too noisy to trust.`)); }
+
+  $('#results').innerHTML=out.join(''); $('#exportPanel').style.display='block';
+  const nf=flags.size; const summ=`<div class="summary-grid">${report.map(r=>`<div class="sg"><span class="sev sev-${r.sev}">${sevLabel[r.sev]}</span><b>${esc(r.check)}</b>${esc(r.stat)}</div>`).join('')}</div><p class="note" style="margin-top:.6rem"><b>${nf}</b> interview${nf===1?'':'s'} flagged for at least one reason (${pct(nf/n)}).</p>`;
+  renderOverview(); $('#overview').insertAdjacentHTML('beforeend',summ);
+
+  $('#dlReport').onclick=()=>{ const md=`# Survey data audit\n\n${data.label}${data.demo?' (simulated demo data with planted problems)':''}\nRun ${new Date().toISOString().slice(0,16).replace('T',' ')} · ${n} interviews · ${data.head.length} columns\n\n| Check | Result | Verdict |\n|---|---|---|\n${report.map(r=>`| ${r.check} | ${r.stat} | ${sevLabel[r.sev]} |`).join('\n')}\n\n## Flagged interviews (${nf})\n\n${[...flags].map(([i,rs])=>`- ${idOf(i)} (${enumOf(i)}): ${rs.join('; ')}`).join('\n')}\n`; dl(md,'survey-audit-report.md','text/markdown'); };
+  $('#dlFlags').onclick=()=>{ const q=s=>'"'+String(s).replace(/"/g,'""')+'"'; const csv=['interview_id,enumerator,reasons',...[...flags].map(([i,rs])=>`${q(idOf(i))},${q(enumOf(i))},${q(rs.join('; '))}`)].join('\n'); dl(csv,'survey-audit-flags.csv','text/csv'); };
+};
+function dl(content,name,type){ const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([content],{type})); a.download=name; a.click(); }
+</script>
+</body>
+</html>
