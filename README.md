@@ -6,7 +6,7 @@
 
 **Experimental prototypes, proof-of-concepts, and sandbox projects.**
 
-A scratchpad for building and testing ideas quickly before they graduate into dedicated repositories — or get quietly retired.
+A scratchpad for building and testing ideas quickly before they graduate into dedicated repositories, or get retired.
 
 ---
 
@@ -224,8 +224,8 @@ An AI-powered tool for translating Hindi Supreme Court and High Court petitions 
 2. The raw translation is refined by Llama 3.3 70B (via Groq) with a legal-terminology-aware prompt that corrects terms like याचिकाकर्ता → Petitioner, माननीय → Hon'ble, अनुच्छेद → Article, etc.
 
 **Environment variables required:**
-- `SARVAM_API_KEY` — from [Sarvam AI dashboard](https://dashboard.sarvam.ai)
-- `GROQ_API_KEY` — from [Groq console](https://console.groq.com) (free tier)
+- `SARVAM_API_KEY`: from [Sarvam AI dashboard](https://dashboard.sarvam.ai)
+- `GROQ_API_KEY`: from [Groq console](https://console.groq.com) (free tier)
 
 **Usage:** Open `court-translator/index.html` in the browser (via Netlify deploy). Paste Hindi petition text and click Translate.
 
@@ -240,7 +240,7 @@ A static HTML signature-collection page for an AOR Supreme Court petition, migra
 
 ---
 
-### AICC Observers — DCC Readiness Grading
+### AICC Observers: DCC Readiness Grading
 
 Methodology, data, and grading outputs for evaluating AICC-appointed District Observers on their preparation for District Congress Committee (DCC) membership recommendations. Six components scored: district report submission, proposed names, daily activity reports, supporting documents, potential leaders, non-political influencers.
 
@@ -248,12 +248,12 @@ Methodology, data, and grading outputs for evaluating AICC-appointed District Ob
 **Stage:** Congress-facing deliverable
 
 **Files:**
-- `grading_system.py` — scoring engine (weights, thresholds, joins documented in module docstring + commit history)
-- `extract_candidates.py` — pulls candidate-level detail from the AICC portal (requires `AICC_USERNAME`/`AICC_PASSWORD` env vars)
-- `consolidated_district_grading.csv` — 592-district A/B/C/D grading
-- `candidates_detailed.csv` — 2,413 candidate-level profiles
-- `all_timestamps.csv` — 9,104 per-record submission timestamps (authoritative count source)
-- `*.json` — raw API extracts (district_reports, proposed_names, attachments, daily_reports, potential_leaders, political_influencers)
+- `grading_system.py`: scoring engine (weights, thresholds, joins documented in module docstring + commit history)
+- `extract_candidates.py`: pulls candidate-level detail from the AICC portal (requires `AICC_USERNAME`/`AICC_PASSWORD` env vars)
+- `consolidated_district_grading.csv`: 592-district A/B/C/D grading
+- `candidates_detailed.csv`: 2,413 candidate-level profiles
+- `all_timestamps.csv`: 9,104 per-record submission timestamps (authoritative count source)
+- `*.json`: raw API extracts (district_reports, proposed_names, attachments, daily_reports, potential_leaders, political_influencers)
 
 ---
 
@@ -261,7 +261,7 @@ Methodology, data, and grading outputs for evaluating AICC-appointed District Ob
 
 A playful Class 1 CBSE worksheet generator for a young learner, with a structured course running alongside it.
 
-**Free practice** covers English (phonics, reading, grammar), Hindi (वर्ण, शब्द, गिनती, विलोम), Maths (number sense, add/subtract, shapes & patterns), and EVS — 36 activity types in all. Every worksheet is freshly randomised, with three difficulty levels, 4–10 questions per sheet, on-screen answer checking (with confetti for perfect scores), a printable answer key, Word/Google Docs export, and a local practice-history tracker.
+**Free practice** covers English (phonics, reading, grammar), Hindi (वर्ण, शब्द, गिनती, विलोम), Maths (number sense, add/subtract, shapes & patterns), and EVS: 36 activity types in all. Every worksheet is freshly randomised, with three difficulty levels, 4–10 questions per sheet, on-screen answer checking (with confetti for perfect scores), a printable answer key, Word/Google Docs export, and a local practice-history tracker.
 
 **The course** adds what a generator alone cannot: an order. 161 lessons across 39 modules and four paths, each lesson stating its rule in plain language, generating questions scoped to exactly that rule, and opening the next step at 80%.
 
@@ -272,12 +272,12 @@ A playful Class 1 CBSE worksheet generator for a young learner, with a structure
 | हिंदी | 9 | 33 | स्वर → व्यंजन (क–ञ, ट–न, प–ह) → बिना मात्रा के शब्द → आ/इ/ई की मात्रा → उ/ऊ/ए/ऐ → ओ/औ/अनुस्वार → वाक्य, विलोम, गिनती |
 | EVS · My world | 8 | 30 | Myself → family and home → food → clothes and seasons → plants → animals → the world around me → people who help us |
 
-Following a synthetic-phonics scope and sequence, the reading path introduces sounds before letters and letters in the order that makes words fastest, and includes eight decodable readers across six stages — each using only the sounds taught by that point — with word-by-word read-along audio. Every lesson also carries a short note for the grown-up explaining the rule and how to teach it.
+Following a synthetic-phonics scope and sequence, the reading path introduces sounds before letters and letters in the order that makes words fastest, and includes eight decodable readers across six stages, each using only the sounds taught by that point, with word-by-word read-along audio. Every lesson also carries a short note for the grown-up explaining the rule and how to teach it.
 
 **Directory:** `kundendu-worksheets/`
 **Stage:** Active
 
-Installable PWA — add it to a phone or tablet home screen and it works fully offline after the first visit. Single dependency-free HTML file plus a small service worker; open `kundendu-worksheets/index.html` or visit it on the deployed site.
+Installable PWA: add it to a phone or tablet home screen and it works fully offline after the first visit. Single dependency-free HTML file plus a small service worker; open `kundendu-worksheets/index.html` or visit it on the deployed site.
 
 ---
 
@@ -292,7 +292,7 @@ Installable and offline-capable, with no framework or external dependency. Open 
 
 ---
 
-### WhoGaveTheOrder.in — graduated
+### WhoGaveTheOrder.in (graduated)
 
 A citizen-led public accountability platform asking one question systematically: when state power is used against citizens, who authorised it?
 
@@ -330,7 +330,7 @@ Projects in this repo follow a simple lifecycle:
 | **Prototype** | Quick build to test feasibility or demonstrate an idea |
 | **Active** | In use or being shared with collaborators |
 | **Graduated** | Moved to its own dedicated repository |
-| **Archived** | No longer maintained — kept for reference |
+| **Archived** | No longer maintained; kept for reference |
 
 ---
 
@@ -407,10 +407,10 @@ open index.html
 
 ## Part of OpenStacks for Change
 
-This repository is part of the [OpenStacks for Change](https://github.com/Varnasr/OpenStacks-for-Change) ecosystem — an open-source toolkit for development research, evaluation, and program design.
+This repository is part of the [OpenStacks for Change](https://github.com/Varnasr/OpenStacks-for-Change) ecosystem, an open-source toolkit for development research, evaluation, and program design.
 
 ---
 
 ## License
 
-MIT License — see [LICENSE](LICENSE) for details.
+MIT License. See [LICENSE](LICENSE) for details.

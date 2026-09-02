@@ -43,7 +43,7 @@ node tools/drive-pdf-extractor/extract-drive-pdf.js \
 
 ## Caveats
 
-- Output is a **rasterized** PDF — selectable text and vector content from
+- Output is a **rasterized** PDF: selectable text and vector content from
   the original are not preserved.
 - Page size is taken from the first image's natural dimensions; mixed-size
   documents fall back to the first page's orientation for subsequent pages.

@@ -831,16 +831,16 @@ function statusLabel(s) {
 }
 
 function noSnippetReason(f) {
-  if (f.ext === '.epub' && !f.snippet) return `No preview yet — re-run the catalogue builder for epub support.`;
-  if (f.ext === '.pdf' && f.size > 100 * 1024 * 1024) return `No preview — file is over 100 MB so the catalogue skipped it.`;
-  if (f.ext !== '.pdf' && f.ext !== '.epub') return `No preview — ${f.ext.replace('.','').toUpperCase()} files don't get text extraction.`;
-  return `No preview available — this PDF may be a scan, encrypted, or have no text on its first pages.`;
+  if (f.ext === '.epub' && !f.snippet) return `No preview yet; re-run the catalogue builder for epub support.`;
+  if (f.ext === '.pdf' && f.size > 100 * 1024 * 1024) return `No preview: the file is over 100 MB so the catalogue skipped it.`;
+  if (f.ext !== '.pdf' && f.ext !== '.epub') return `No preview: ${f.ext.replace('.','').toUpperCase()} files don't get text extraction.`;
+  return `No preview available: this PDF may be a scan, encrypted, or have no text on its first pages.`;
 }
 
 // Hero: featured (random) book of the day
 function renderHero() {
   const cont = document.getElementById('featured-container');
-  // Pick a "featured" — random but stable per day per user
+  // Pick a "featured": random but stable per day per user
   const today = new Date().toISOString().slice(0, 10);
   const stored = JSON.parse(localStorage.getItem(FEATURED_KEY) || '{}');
   let f;
@@ -950,7 +950,7 @@ function openModal(f) {
       <div>
         <label class="block text-xs ink-muted mb-1.5 font-medium uppercase tracking-wide">Status (${escapeHtml(activeUser)})</label>
         <select id="modal-status" class="input-base w-full">
-          <option value="">— not set —</option>
+          <option value="">(not set)</option>
           <option value="toread" ${status==='toread'?'selected':''}>📚 To read</option>
           <option value="reading" ${status==='reading'?'selected':''}>📖 Currently reading</option>
           <option value="read" ${status==='read'?'selected':''}>✅ Read</option>

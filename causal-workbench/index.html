@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Causal Inference Workbench — Experiments</title>
+<title>Causal Inference Workbench · Experiments</title>
 <meta name="description" content="Difference-in-differences, event studies and synthetic control, computed entirely in your browser. Bring a panel CSV, simulate one with a known effect, or pull a live country panel from the World Bank.">
 <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231B6B4A'/><path d='M7 22 L14 15 L19 19 L26 9' stroke='white' stroke-width='3' fill='none' stroke-linecap='round'/></svg>">
 <style>
@@ -385,7 +385,7 @@ function runDiD(){
   const cohorts=[...new Set([...panel.adopt.values()].filter(g=>g!=null))]; let tbl='';
   if(cohorts.length===1){ const g=cohorts[0]; const m=(tr,post)=>{ const v=rows.filter(r=>((panel.adopt.get(r.u)!=null)===tr)&&((r.t>=g)===post)).map(r=>r.y); return v.length?v.reduce((a,b)=>a+b,0)/v.length:NaN; }; const Tp=m(true,true),Tb=m(true,false),Cp=m(false,true),Cb=m(false,false); const did=(Tp-Tb)-(Cp-Cb);
     tbl=`<table><tr><th></th><th>Before</th><th>After</th><th>Change</th></tr><tr><td>Treated</td><td>${fmt(Tb)}</td><td>${fmt(Tp)}</td><td>${fmt(Tp-Tb)}</td></tr><tr><td>Control</td><td>${fmt(Cb)}</td><td>${fmt(Cp)}</td><td>${fmt(Cp-Cb)}</td></tr><tr><td><b>Difference-in-differences</b></td><td></td><td></td><td><b>${fmt(did)}</b></td></tr></table><p class="mini">The 2×2 means table and the regression coefficient agree only for a balanced panel; with missing cells the regression is the one to report.</p>`; }
-  let truthNote=''; if(panel.truth){ const ks=rows.filter(r=>r.D===1).map(r=>r.t-panel.adopt.get(r.u)); const avg=ks.reduce((a,k)=>a+panel.truth(k),0)/ks.length; truthNote=`<div class="ok">Simulated truth: the average effect over the treated observations is ${fmt(avg)}. The TWFE estimate ${Math.abs(b-avg)<crit*se?'covers it':'does not cover it'} at 95%.${cohorts.length>1?' With staggered adoption and effects that grow with k, TWFE is biased even under parallel trends — compare the Sun–Abraham event study.':''}</div>`; }
+  let truthNote=''; if(panel.truth){ const ks=rows.filter(r=>r.D===1).map(r=>r.t-panel.adopt.get(r.u)); const avg=ks.reduce((a,k)=>a+panel.truth(k),0)/ks.length; truthNote=`<div class="ok">Simulated truth: the average effect over the treated observations is ${fmt(avg)}. The TWFE estimate ${Math.abs(b-avg)<crit*se?'covers it':'does not cover it'} at 95%.${cohorts.length>1?' With staggered adoption and effects that grow with k, TWFE is biased even under parallel trends; compare the Sun–Abraham event study.':''}</div>`; }
   $('#didOut').innerHTML=`<span class="stat"><b>${fmt(b)}</b><span>δ (ATT, TWFE)</span></span><span class="stat"><b>${fmt(se)}</b><span>cluster SE (${fit.G} clusters)</span></span><span class="stat"><b>[${fmt(b-crit*se,2)}, ${fmt(b+crit*se,2)}]</b><span>95% CI (t, ${fit.G-1} df)</span></span><span class="stat"><b>${p<0.001?'<0.001':fmt(p,3)}</b><span>p-value</span></span>${tbl}${truthNote}${cohorts.length>1?'<div class="warn">Staggered adoption detected. The single TWFE coefficient is a weighted average of many 2×2 comparisons, some of which use already-treated units as controls. Prefer the event study below.</div>':''}`;
   $('#didPanel').style.display='block';
 }

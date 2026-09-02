@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Air You Breathed — Experiments</title>
+<title>A Year of Air · Experiments</title>
 <meta name="description" content="A year of PM2.5 and PM10 for any place in India from Open-Meteo's air quality model: the annual mean against the WHO guideline and India's standard, days over the 24-hour limits, the cumulative dose in cigarette equivalents, and the monthly pattern.">
 <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231B6B4A'/><path d='M6 14c4-4 8 4 12 0s6-4 8 0M6 22c4-4 8 4 12 0s6-4 8 0' stroke='white' stroke-width='2.4' fill='none' stroke-linecap='round'/></svg>">
 <style>
@@ -44,7 +44,7 @@
 </head>
 <body>
 <header><div class="wrap">
-  <h1>The Air You Breathed <small>a year of PM2.5 for any place in India</small></h1>
+  <h1>A Year of Air <small>a year of PM2.5 for any place in India</small></h1>
   <nav><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/air-quality">Source</a></nav>
 </div></header>
 <main><div class="wrap">
@@ -68,7 +68,7 @@
 </div>
 <div>
   <div class="panel"><h2>The year <span class="pill" id="yrPill"></span></h2><div id="year" class="note">Choose a place and fetch.</div>
-    <details><summary>How the numbers are made</summary><p>Hourly concentrations come from Open-Meteo's air quality API, which serves the Copernicus CAMS global and European models re-analysed and forecast on a grid of roughly 11 km; they are model estimates, not station readings, and they run smoother than a CPCB monitor next to a road. Daily means are the mean of the 24 hourly values; a day counts as breaching a 24-hour limit when its daily mean exceeds it. The cigarette equivalent uses the Berkeley Earth rule of thumb that a day at 22 µg/m³ of PM2.5 is comparable in mortality risk to one cigarette, so the year's equivalent is the sum of daily means divided by 22. It is a communication device, not a dose-response model.</p></details></div>
+    <details><summary>How the numbers are made</summary><p>Hourly concentrations come from Open-Meteo's air quality API, which serves the Copernicus CAMS global and European models re-analysed and forecast on a grid of roughly 11 km; they are model estimates rather than station readings, and they run smoother than a CPCB monitor next to a road. Daily means are the mean of the 24 hourly values; a day counts as breaching a 24-hour limit when its daily mean exceeds it. The cigarette equivalent uses the Berkeley Earth rule of thumb that a day at 22 µg/m³ of PM2.5 is comparable in mortality risk to one cigarette, so the year's equivalent is the sum of daily means divided by 22. It is a way of communicating a dose rather than a dose-response model.</p></details></div>
   <div class="panel"><h2>Day by day</h2><div id="daily"></div></div>
   <div class="panel"><h2>Month by month</h2><div id="monthly"></div></div>
 </div>

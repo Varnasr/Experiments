@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Women in the NFHS — Experiments</title>
+<title>Women in the NFHS · Experiments</title>
 <meta name="description" content="Women's health, work, assets, agency and safety across India's states and NFHS rounds, pulled live from the DHS Program API: state rankings, change between rounds, breakdowns by wealth, residence, education and age, with approximate confidence intervals.">
 <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231B6B4A'/><circle cx='16' cy='11' r='4' stroke='white' stroke-width='2.2' fill='none'/><path d='M16 15v9M11 20h10M13 28l3-4 3 4' stroke='white' stroke-width='2.2' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
 <style>
@@ -116,7 +116,7 @@ async function load(id){ $('#status').textContent='Fetching from the DHS API…'
   try{ let all=[], page=1, pages=1; do{ const r=await fetch(`${API}?countryIds=IA&indicatorIds=${encodeURIComponent(id)}&breakdown=all&f=json&perpage=5000&page=${page}`); if(!r.ok) throw new Error('HTTP '+r.status); const j=await r.json(); all=all.concat(j.Data||[]); pages=j.TotalPages||1; page++; } while(page<=pages && page<6);
     if(!all.length) throw new Error('no rows for '+id); rows=all; meta={id, label:all[0].Indicator};
     const surveys=[...new Set(rows.map(r=>r.SurveyId))].sort(); $('#survey').innerHTML=surveys.map(s=>`<option value="${s}">${ROUND[s]||s}</option>`).join(''); $('#survey').value=surveys[surveys.length-1];
-    $('#prev').innerHTML='<option value="">— none —</option>'+surveys.map(s=>`<option value="${s}">${ROUND[s]||s}</option>`).join(''); $('#prev').value=surveys.length>1?surveys[surveys.length-2]:'';
+    $('#prev').innerHTML='<option value="">none</option>'+surveys.map(s=>`<option value="${s}">${ROUND[s]||s}</option>`).join(''); $('#prev').value=surveys.length>1?surveys[surveys.length-2]:'';
     $('#status').textContent=`${rows.length} rows across ${surveys.length} rounds.`; $('#dl').disabled=false; render(); }
   catch(e){ $('#status').textContent='Could not load: '+e.message+'. The DHS API may be slow; try again, or check the indicator ID.'; } }
 // DHS lists NFHS-5's Jammu, Kashmir & Ladakh as a parent row followed by '..Jammu & Kashmir' and '..Ladakh'; keep the split rows and drop the parent.

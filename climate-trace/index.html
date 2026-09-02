@@ -13,9 +13,9 @@
   gtag('config', 'G-JRCMEB9TBW', { anonymize_ip: true });
 </script>
 
-<meta name="description" content="India Climate Emissions Dashboard — live Climate TRACE data on greenhouse-gas emissions, top emitters, and multi-year trends. An ImpactMojo project.">
+<meta name="description" content="India Climate Emissions Dashboard, live Climate TRACE data on greenhouse-gas emissions, top emitters, and multi-year trends. An ImpactMojo project.">
 <meta property="og:title" content="India Climate Emissions Dashboard | ImpactMojo">
-<meta property="og:description" content="Greenhouse-gas emissions tracking with live Climate TRACE API data — multi-year trends, sector breakdown, top emitting plants.">
+<meta property="og:description" content="Greenhouse-gas emissions tracking with live Climate TRACE API data, multi-year trends, sector breakdown, top emitting plants.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://climatetrace.impactmojo.in/">
 
@@ -239,7 +239,7 @@ This dashboard renders interactive charts with JavaScript. Please enable JavaScr
 
 <section class="hero">
     <h1>India <span>Climate Emissions</span></h1>
-    <p>Greenhouse-gas emissions across India — sourced live from <a href="https://climatetrace.org" target="_blank" rel="noopener">Climate TRACE</a>'s satellite-verified, facility-level inventory. Multi-year totals, gas composition, and the country's biggest emitting plants.</p>
+    <p>Greenhouse-gas emissions across India, sourced live from <a href="https://climatetrace.org" target="_blank" rel="noopener">Climate TRACE</a>'s satellite-verified, facility-level inventory. Multi-year totals, gas composition, and the country's biggest emitting plants.</p>
     <div class="badge"><iconify-icon icon="mdi:satellite-variant" aria-hidden="true"></iconify-icon> Climate TRACE API v6 · <span id="badgeRange">latest inventory</span></div>
 </section>
 
@@ -382,7 +382,7 @@ function zero() { return { co2: 0, ch4: 0, n2o: 0, co2e_100yr: 0, co2e_20yr: 0, 
 async function fetchTopAssets(subsector, limit) {
     // Use `subsectors` (not `sectors`): the v6 assets endpoint ignores the coarse
     // `sectors` filter and leaks other subsectors into the result. Fetch a generous
-    // pool then sort/slice client-side — the endpoint doesn't reliably honour
+    // pool then sort/slice client-side, the endpoint doesn't reliably honour
     // sortBy/sortOrder, so we rank by emissions ourselves.
     const url = `${API}/assets?countries=IND&subsectors=${subsector}&limit=${limit * 6}&sortBy=co2e_100yr&sortOrder=desc&since=${LATEST}&to=${LATEST}`;
     try {
@@ -518,14 +518,14 @@ function gasCo2e(latest) {
 
 function renderInsights(d) {
     const out = [];
-    // Only compare years that actually returned data — a failed fetch yields 0 and
+    // Only compare years that actually returned data, a failed fetch yields 0 and
     // would otherwise produce "rose Infinity%" or spurious swings.
     const nz = d.totals.filter(t => t.co2e_100yr > 0);
     if (nz.length >= 2) {
         const a = nz[0], b = nz[nz.length - 1];
         const change = (b.co2e_100yr / a.co2e_100yr - 1) * 100;
         const verb = change >= 0 ? 'rose' : 'fell';
-        out.push(`<strong>Total CO₂e</strong> ${verb} ${Math.abs(change).toFixed(0)}% from ${a.year} (${fmt.bt(a.co2e_100yr)}) to ${b.year} (${fmt.bt(b.co2e_100yr)}). India's emissions trajectory remains structural — driven by power, industry and transport scaling with the economy.`);
+        out.push(`<strong>Total CO₂e</strong> ${verb} ${Math.abs(change).toFixed(0)}% from ${a.year} (${fmt.bt(a.co2e_100yr)}) to ${b.year} (${fmt.bt(b.co2e_100yr)}). India's emissions are driven by power, industry and transport scaling with the economy.`);
     }
     const latest = nz.length ? nz[nz.length - 1] : d.totals[d.totals.length - 1];
     if (latest.world?.co2e_100yr) {
@@ -535,11 +535,11 @@ function renderInsights(d) {
     }
     if (latest.co2 && latest.ch4) {
         const ch4Co2eShare = (gasCo2e(latest).ch4 / latest.co2e_100yr * 100).toFixed(0);
-        out.push(`<strong>Methane is significant</strong> — on a 100-yr GWP basis, CH₄ accounts for roughly ${ch4Co2eShare}% of India's CO₂e total, reflecting a large agriculture and waste footprint.`);
+        out.push(`<strong>Methane matters</strong>: on a 100-yr GWP basis, CH₄ accounts for roughly ${ch4Co2eShare}% of India's CO₂e total, reflecting a large agriculture and waste footprint.`);
     }
     if (d.power.length) {
         const coal = d.power.filter(a => /coal/i.test(a.assetType)).length;
-        out.push(`<strong>Power dominates</strong> the largest-emitter list — ${coal} of the top ${d.power.length} are coal-fired thermal plants, many operated by NTPC and other state utilities.`);
+        out.push(`<strong>Power dominates</strong> the largest-emitter list: ${coal} of the top ${d.power.length} are coal-fired thermal plants, many operated by NTPC and other state utilities.`);
     }
     document.getElementById('insightsGrid').innerHTML = out.length ? out.map(t => `<div class="insight">${t}</div>`).join('') : '<div class="insight">Insights unavailable.</div>';
 }

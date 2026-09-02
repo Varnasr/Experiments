@@ -154,7 +154,7 @@
                         <div class="upload-zone" id="upload-zone">
                             <div class="upload-zone-icon">&#128196;</div>
                             <div class="upload-zone-title">Drop file here or click to browse</div>
-                            <div class="upload-zone-sub">PDF, DOCX, or image (JPG, PNG, TIFF) &mdash; up to 50 pages</div>
+                            <div class="upload-zone-sub">PDF, DOCX, or image (JPG, PNG, TIFF), up to 50 pages</div>
                             <input type="file" id="file-input" accept=".pdf,.docx,.doc,.jpg,.jpeg,.png,.tiff,.tif,.bmp,.webp">
                         </div>
 
@@ -211,7 +211,7 @@
         <div class="info-box">
             <h4>How it works</h4>
             <p><strong>Document extraction:</strong> Text is extracted entirely in your browser. Digital PDFs use PDF.js. Scanned PDFs and images use Tesseract.js with Hindi (Devanagari) OCR. Word documents (.docx) use mammoth.js. No files are uploaded to any server for extraction.</p>
-            <p><strong>Translation:</strong> Extracted Hindi text is sent to Sarvam AI (<code>sarvam-translate:v1</code>, formal mode) for translation, then refined by Llama 3.3 70B (via Groq) with a legal-terminology-aware prompt &mdash; &ldquo;Petitioner&rdquo; not &ldquo;applicant&rdquo;, &ldquo;Hon'ble&rdquo; not &ldquo;honourable&rdquo;, &ldquo;disposed of&rdquo; not &ldquo;resolved&rdquo;, etc.</p>
+            <p><strong>Translation:</strong> Extracted Hindi text is sent to Sarvam AI (<code>sarvam-translate:v1</code>, formal mode) for translation, then refined by Llama 3.3 70B (via Groq) with a prompt that fixes the terms of art: &ldquo;Petitioner&rdquo; for &ldquo;applicant&rdquo;, &ldquo;Hon'ble&rdquo; for &ldquo;honourable&rdquo;, &ldquo;disposed of&rdquo; for &ldquo;resolved&rdquo;.</p>
         </div>
 
         <div class="info-box warning-box">
@@ -387,7 +387,7 @@
             }
 
             if (!text.trim()) {
-                setProgress(100, 'No text found. The document may be a scanned image — trying OCR...');
+                setProgress(100, 'No text found. The document may be a scanned image; trying OCR...');
                 if (ext === 'pdf') {
                     text = await ocrPdf();
                 }
