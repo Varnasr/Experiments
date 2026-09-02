@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Survey Data Auditor — Experiments</title>
+<title>Survey Data Auditor · Experiments</title>
 <meta name="description" content="Field-data quality checks for household and programme surveys, run in the browser: duplicates, Benford's law, age heaping, straightlining, interview duration, missingness and enumerator profiles.">
 <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231B6B4A'/><path d='M8 17 l5 5 l11 -12' stroke='white' stroke-width='3.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
 <style>
@@ -143,7 +143,7 @@ const numRe=/^[-+]?(\d[\d,]*)?(\.\d+)?([eE][-+]?\d+)?%?$/;
 const toNum=v=>{ const s=String(v).replace(/[₹$\s]/g,''); return numRe.test(s)&&/\d/.test(s)?parseFloat(s.replace(/[,%]/g,'')):NaN; };
 function profileColumns(){ cols=data.head.map((name,i)=>{ const raw=data.rows.map(r=>r[i]??''); const present=raw.filter(v=>!isMissing(v)); const nums=present.map(toNum); const numOk=present.length&&nums.filter(isFinite).length/present.length>0.95; const dateOk=!numOk&&present.length&&present.slice(0,200).filter(v=>!isNaN(Date.parse(v))&&/\d{2,4}[-\/]\d{1,2}/.test(v)).length/Math.min(present.length,200)>0.9; const uniq=new Set(present).size;
   return {name,i,kind:present.length?(numOk?'num':dateOk?'date':'cat'):'empty', nMissing:raw.length-present.length, values:numOk?raw.map(v=>isMissing(v)?NaN:toNum(v)):null, raw, uniq}; }); }
-function fill(sel, none){ const s=$(sel); s.innerHTML=(none?'<option value="">— none —</option>':'')+cols.map(c=>`<option value="${c.i}">${esc(c.name)} (${c.kind})</option>`).join(''); }
+function fill(sel, none){ const s=$(sel); s.innerHTML=(none?'<option value="">none</option>':'')+cols.map(c=>`<option value="${c.i}">${esc(c.name)} (${c.kind})</option>`).join(''); }
 function guessRoles(){ ['#rId','#rEnum','#rAge','#rStart','#rEnd','#rDur'].forEach(s=>fill(s,true)); ['#rBenford','#rLikert'].forEach(s=>fill(s,false));
   const pick=(sel,re,kind)=>{ const c=cols.find(c=>re.test(c.name)&&(!kind||c.kind===kind)); if(c) $(sel).value=c.i; };
   pick('#rId',/^(interview_?id|_?uuid|key|id|hhid|hh_id|caseid|resp_?id)$/i); pick('#rEnum',/enum|interviewer|surveyor|collector|fieldworker|staff/i); pick('#rAge',/^(resp_?age|age|age_years|hh_head_age|age_resp)$/i,'num'); pick('#rStart',/^(start|starttime|start_time|begin|interview_start)$/i); pick('#rEnd',/^(end|endtime|end_time|finish|interview_end)$/i); pick('#rDur',/duration|minutes|interview_length|^dur/i,'num');
@@ -166,7 +166,7 @@ $('#demo').onclick=()=>{ const r=mulberry32(20260901); const enums=['E01','E02',
     const row=[String(id++),en,vil,dt(day,hour,min),dt(day,eh,em),String(age),sex,String(hh),isFinite(land)?String(land):'',isFinite(inc)?String(inc):'',isFinite(exp)?String(exp):'','yes',...lik.map(String),toilet,mob,lat,lon]; rows.push(row);
     if(en==='E05' && r()<0.08){ const dup=row.slice(); dup[0]=String(id++); dup[3]=dt(day,hour+1,min); dup[4]=dt(day,eh+1,em); rows.push(dup); } // copies interviews with a new id and shifted time
   }
-  loadTable(head, rows, `Demo dataset — simulated household survey, ${rows.length} interviews, 8 enumerators`, true); };
+  loadTable(head, rows, `Demo dataset: simulated household survey, ${rows.length} interviews, 8 enumerators`, true); };
 
 function renderOverview(){ const numCols=cols.filter(c=>c.kind==='num').length, catCols=cols.filter(c=>c.kind==='cat').length, dateCols=cols.filter(c=>c.kind==='date').length; const totalCells=data.rows.length*data.head.length, miss=cols.reduce((a,c)=>a+c.nMissing,0);
   $('#overview').innerHTML=`<h2>Overview</h2><div class="note">${esc(data.label)}${data.demo?' · <b>simulated data with planted problems</b>':''}</div><span class="stat"><b>${fmt(data.rows.length,0)}</b><span>interviews</span></span><span class="stat"><b>${data.head.length}</b><span>columns</span></span><span class="stat"><b>${numCols} / ${catCols} / ${dateCols}</b><span>numeric / categorical / date</span></span><span class="stat"><b>${pct(miss/totalCells)}</b><span>cells missing</span></span>`; }

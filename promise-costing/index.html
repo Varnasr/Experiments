@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Manifesto Promise Costing — Experiments</title>
+<title>Manifesto Promise Costing · Experiments</title>
 <meta name="description" content="Cost a set of manifesto promises against a state's budget: beneficiaries times uptake times unit cost for each promise, with low and high ranges, set against revenue receipts, total expenditure, GSDP and the fiscal deficit, with a Monte Carlo band and a tornado of which assumption matters most.">
 <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23572e91'/><path d='M7 22h18' stroke='white' stroke-width='2.4' stroke-linecap='round'/><path d='M10 22V12M16 22V8M22 22v-6' stroke='%23ff9911' stroke-width='3' stroke-linecap='round'/></svg>">
 <style>
@@ -60,7 +60,7 @@
   <nav><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/promise-costing">Source</a></nav>
 </div></header>
 <main><div class="wrap">
-<p class="lede">A manifesto promise is a number nobody writes down: so many households, times the share that will claim, times the amount each gets, every year. This page writes it down. Enter each promise as a range for beneficiaries, uptake and unit cost, enter the state's fiscal aggregates from its own budget or the RBI's <em>State Finances: A Study of Budgets</em>, and the page returns the annual bill as a share of revenue receipts, expenditure and GSDP, the fiscal deficit it implies against the 3 per cent norm, a Monte Carlo band from the ranges, and a tornado showing which assumption drives the total. The example is illustrative, with round numbers labelled as such; the arithmetic is the point.</p>
+<p class="lede">A manifesto promise has a cost that is rarely written down: so many households, times the share that will claim, times the amount each gets, every year. This page does that arithmetic. Enter each promise as a range for beneficiaries, uptake and unit cost, enter the state's fiscal aggregates from its own budget or the RBI's <em>State Finances: A Study of Budgets</em>, and the page returns the annual bill as a share of revenue receipts, expenditure and GSDP, the fiscal deficit it implies against the 3 per cent norm, a Monte Carlo band from the ranges, and a tornado showing which assumption drives the total. The example is illustrative, with round numbers labelled as such.</p>
 
 <div class="grid">
 <div>
@@ -90,7 +90,7 @@
   <div class="panel"><h2>Uncertainty: Monte Carlo on the ranges</h2><div id="mc"></div></div>
   <div class="panel"><h2>Which assumption matters: tornado</h2><div id="tornado"></div></div>
   <details><summary>How the numbers are made</summary>
-    <p>Annual cost of a recurring promise in year t = beneficiaries × uptake × unit cost × (1 + growth)<sup>t−1</sup>, in rupees, converted to crore. A one-off promise costs total ÷ years in each year it runs. The share of revenue receipts, expenditure and GSDP in year t divides by the aggregate grown at the nominal GSDP growth rate (revenue receipts grow at buoyancy × GSDP growth). The implied fiscal deficit adds the promises' cost to the entered deficit on the assumption that nothing else changes, which is the honest baseline: the page does not know what will be cut to pay for them. The "financing needed" line says what own-tax revenue would have to rise by, in per cent, to hold the deficit where it is.</p>
+    <p>Annual cost of a recurring promise in year t = beneficiaries × uptake × unit cost × (1 + growth)<sup>t−1</sup>, in rupees, converted to crore. A one-off promise costs total ÷ years in each year it runs. The share of revenue receipts, expenditure and GSDP in year t divides by the aggregate grown at the nominal GSDP growth rate (revenue receipts grow at buoyancy × GSDP growth). The implied fiscal deficit adds the promises' cost to the entered deficit on the assumption that nothing else changes, which is the only baseline the page can compute, since it does not know what would be cut to pay for them. The "financing needed" line says what own-tax revenue would have to rise by, in per cent, to hold the deficit where it is.</p>
     <p>The Monte Carlo draws 4,000 manifestos, each promise's three quantities from independent triangular distributions with the entered low, mode and high, and reports the 5th, 50th and 95th percentiles of the first-year bill. Correlation between promises (a good year for enrolment in one scheme is a good year in another) is not modelled, so the band is narrower than reality. The tornado holds everything at its mode and moves one quantity at a time to its low and its high, ranking by the swing; it is the one-at-a-time sensitivity that a budget officer would do by hand.</p>
     <p>What is not here: the revenue a promise might generate (a road, a school), behavioural responses, the difference between announcing and disbursing, or the Centre's share in centrally sponsored schemes. Put those into the unit cost or the uptake if you have a view. The Fiscal Responsibility and Budget Management norm of 3 per cent of GSDP is the Fifteenth Finance Commission's baseline for states; several states' own Acts and the Centre's borrowing consent set the operative limit in a given year.</p>
   </details>
