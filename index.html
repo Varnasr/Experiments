@@ -426,6 +426,19 @@
                 <li>The shareable link packs the draft into the URL fragment as base64url JSON, so a co-signatory sees the same draft with no server. The draft is also kept in local storage and can be exported as JSON.</li>
             </ul><span class="verified">Verified: the example renders every section and the signatory table headless; the House form switches opening, closing and countersignature line.</span></div>
         </article>
+        <article class="card" id="flipbook">
+            <div class="doodle"><svg viewBox="0 0 64 64" filter="url(#wobble)"><path d="M6 14h22c3 0 4 2 4 4v34c0-2-1-4-4-4H6z"/><path d="M58 14H36c-3 0-4 2-4 4v34c0-2 1-4 4-4h22z"/><path d="M40 22c6-4 12-2 14 2"/><path d="M12 24h10M12 30h10M12 36h6"/></svg></div>
+            <h3><a href="flipbook/">Flipbook Maker</a><span class="badge b-tool">Tool</span></h3>
+            <p class="summary">Drop a PDF and get a page-turning book with a hard cover and facing spreads that flip under the mouse or a finger, then download it as one HTML file with the pages and the page-turn engine inside. The file works offline, on a phone, and on any web host. The PDF never leaves the browser.</p>
+            <p class="tech">PDF.js rendering in a Web Worker · StPageFlip · self-contained export with JPEG pages inlined</p>
+            <span class="open">Open the tool →</span>
+            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button></div>
+            <div class="pop"><b>In plain words.</b> The flipbook services charge a subscription, watermark the result and keep your file on their servers. This does the same thing in the browser: an annual report, a magazine or a child's picture book becomes a book you can leaf through, and the file you download needs nothing else to open.</div>
+            <div class="notes"><ul>
+                <li>Each PDF page is drawn to a canvas at the width you choose (1000 to 2400px) and stored as a JPEG at the quality you set; title and author are read from the PDF's own metadata. The book is a StPageFlip instance with hard cover, facing spreads, single pages on narrow screens, keyboard and thumbnail navigation.</li>
+                <li>Export fetches the page-flip library text and writes it into the file together with the page images as data URLs, so the result is one HTML document with no external requests; a 20-page A4 report at 1400px is about 2 MB.</li>
+            </ul><span class="verified">Verified: a seven-page PDF generated headless renders in full, the title is read from its metadata, buttons, keys and thumbnails turn pages, and the exported file opens from disk with no network request and turns pages.</span></div>
+        </article>
     </div>
 </div></section>
 

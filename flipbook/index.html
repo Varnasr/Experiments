@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flipbook Maker · Experiments</title>
+<meta name="description" content="Turn a PDF into a page-turning flipbook in the browser: pages rendered locally with PDF.js, real page-flip physics, cover and facing spreads, then export one self-contained HTML file that works offline and can be hosted anywhere. Nothing is uploaded.">
+<link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23572e91'/><path d='M6 8h9v18H6zM17 8h9v18h-9z' fill='white'/><path d='M17 8c3 2 5 6 5 9s-2 7-5 9' fill='%23ff9911'/></svg>">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
+<style>
+  :root { --bg:#fafafa; --surface:#fff; --border:#e5e7eb; --text:#1a1a2e; --dim:#4b5563; --muted:#9ca3af; --accent:#572e91; --accent-soft:#efe9f7; --orange:#ff9911; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--text); line-height:1.55; }
+  a { color:var(--accent); }
+  header { border-bottom:1px solid var(--border); background:#fff; }
+  .wrap { max-width:1320px; margin:0 auto; padding:0 1.25rem; }
+  header .wrap { display:flex; align-items:baseline; justify-content:space-between; gap:1rem; padding:.9rem 1.25rem; flex-wrap:wrap; }
+  header h1 { font-family:Georgia,serif; font-size:1.35rem; font-weight:400; }
+  header h1 small { font-size:.8rem; color:var(--muted); margin-left:.5rem; }
+  header nav a { font-size:.85rem; margin-left:1rem; text-decoration:none; }
+  main { padding:1.5rem 0 3rem; }
+  .lede { color:var(--dim); font-size:.95rem; max-width:72ch; margin-bottom:1.25rem; }
+  .grid { display:grid; grid-template-columns:330px 1fr; gap:1.25rem; align-items:start; }
+  @media (max-width:960px){ .grid { grid-template-columns:1fr; } }
+  .panel { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1rem 1.15rem; margin-bottom:1rem; }
+  .panel h2 { font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; margin-bottom:.7rem; }
+  label { display:block; font-size:.78rem; color:var(--dim); margin:.45rem 0 .15rem; }
+  select, input[type=text], input[type=number], input[type=color] { width:100%; font:inherit; font-size:.88rem; padding:.36rem .5rem; border:1px solid var(--border); border-radius:6px; background:#fff; color:var(--text); }
+  input[type=color] { height:2.2rem; padding:.15rem; }
+  input[type=range] { width:100%; }
+  .row { display:flex; gap:.4rem; } .row > * { flex:1; min-width:0; }
+  button { font:inherit; font-size:.84rem; padding:.42rem .75rem; border-radius:6px; border:1px solid var(--border); background:#fff; color:var(--text); cursor:pointer; }
+  button.go { border-color:var(--accent); background:var(--accent); color:#fff; }
+  button:disabled { opacity:.5; cursor:default; }
+  .btns { display:flex; gap:.4rem; flex-wrap:wrap; margin-top:.5rem; }
+  .mini { font-size:.76rem; color:var(--muted); }
+  .note { font-size:.82rem; color:var(--dim); margin-top:.5rem; }
+  .drop { border:2px dashed #c9b5e6; border-radius:10px; padding:1.4rem 1rem; text-align:center; color:var(--dim); font-size:.9rem; cursor:pointer; background:#fcfbfe; }
+  .drop.over { background:var(--accent-soft); border-color:var(--accent); }
+  .drop b { color:var(--accent); }
+  .prog { height:8px; background:#eee; border-radius:4px; overflow:hidden; margin-top:.6rem; } .prog i { display:block; height:100%; background:var(--accent); width:0; transition:width .15s; }
+  .stage { border-radius:12px; padding:2.5% 3%; min-height:420px; display:flex; align-items:center; justify-content:center; position:relative; transition:background .2s; }
+  .stage.paper { background:#e9e2d3; } .stage.dark { background:#17171b; } .stage.custom { background:var(--custom,#334155); }
+  .stage .empty { color:#6b7280; font-size:.95rem; text-align:center; max-width:40ch; }
+  .stage.dark .empty { color:#9ca3af; }
+  #book { width:100%; }
+  #book .page { background:#fff; box-shadow:0 0 6px rgba(0,0,0,.25); }
+  #book .page img { width:100%; height:100%; object-fit:contain; display:block; background:#fff; }
+  #book .page.--left { border-right:1px solid rgba(0,0,0,.15); } #book .page.--right { border-left:1px solid rgba(0,0,0,.15); }
+  .tools { display:flex; gap:.4rem; align-items:center; flex-wrap:wrap; margin:.7rem 0; }
+  .tools .pg { font-variant-numeric:tabular-nums; font-size:.85rem; color:var(--dim); margin:0 .4rem; }
+  .thumbs { display:flex; gap:.4rem; overflow-x:auto; padding:.4rem 0; }
+  .thumbs img { height:72px; border:2px solid transparent; border-radius:3px; cursor:pointer; background:#fff; box-shadow:0 1px 3px rgba(0,0,0,.2); flex:none; }
+  .thumbs img.on { border-color:var(--orange); }
+  .warn { background:#fff7ed; border:1px solid #fed7aa; color:#9a3412; padding:.5rem .7rem; border-radius:6px; font-size:.83rem; margin:.5rem 0; }
+  details { margin-top:.5rem; font-size:.84rem; color:var(--dim); } summary { cursor:pointer; color:var(--accent); }
+  footer { border-top:1px solid var(--border); padding:1.25rem; text-align:center; font-size:.8rem; color:var(--muted); }
+  :fullscreen .stage { border-radius:0; min-height:100vh; padding:2vh 2vw; }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>Flipbook Maker <small>a PDF into a page-turning book, and one file you can host</small></h1>
+  <nav><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/flipbook">Source</a></nav>
+</div></header>
+<main><div class="wrap">
+<p class="lede">Drop a PDF. Each page is drawn to an image in this browser, the pages are bound into a book with a cover and facing spreads that turn under the mouse or a finger, and the result can be exported as a single HTML file with the pages and the page-turn engine inside it. That file works offline, opens on a phone, and can be put on any web host or sent as an attachment. Nothing is uploaded anywhere; the only network requests are for the two open-source libraries the page loads, PDF.js and StPageFlip.</p>
+
+<div class="grid">
+<div>
+  <div class="panel"><h2>1. The PDF</h2>
+    <div class="drop" id="drop"><b>Choose a PDF</b> or drop one here<br><span class="mini">Reports, magazines, children's books, portfolios. Pages are rendered at the size you set below.</span></div>
+    <input type="file" id="file" accept="application/pdf,.pdf" hidden>
+    <label>Render width per page (pixels)</label><select id="width"><option value="900">900, small and quick</option><option value="1400" selected>1400, sharp on most screens</option><option value="2000">2000, print-like, larger file</option></select>
+    <label>JPEG quality: <span id="qv">0.85</span></label><input type="range" id="quality" min="0.5" max="0.95" step="0.05" value="0.85">
+    <div class="prog"><i id="bar"></i></div><p class="mini" id="status">No file yet.</p>
+  </div>
+  <div class="panel"><h2>2. The book</h2>
+    <div class="row"><div><label>Title</label><input type="text" id="title" placeholder="from the PDF if it has one"></div><div><label>Author</label><input type="text" id="author"></div></div>
+    <label>Background</label><div class="row"><select id="theme"><option value="paper">Paper</option><option value="dark" selected>Dark</option><option value="custom">Colour</option></select><input type="color" id="colour" value="#334155"></div>
+    <label><input type="checkbox" id="cover" checked> First page is a cover (shown alone, hard)</label>
+    <label><input type="checkbox" id="portrait" checked> One page at a time on narrow screens</label>
+    <label>Turn speed</label><select id="speed"><option value="600">Quick</option><option value="900" selected>Natural</option><option value="1400">Slow</option></select>
+    <div class="btns"><button id="rebuild" disabled>Rebuild the book</button></div>
+  </div>
+  <div class="panel"><h2>3. Export</h2>
+    <div class="btns"><button class="go" id="export" disabled>Download flipbook (.html)</button></div>
+    <p class="mini" id="size"></p>
+    <p class="mini">One file, pages embedded as JPEG, engine inlined. Put it on Netlify, GitHub Pages, a Google Drive link or a USB stick; it needs no server and no internet.</p>
+  </div>
+</div>
+
+<div>
+  <div class="stage dark" id="stage"><p class="empty">The book appears here. Choose a PDF on the left.</p><div id="book" hidden></div></div>
+  <div class="tools"><button id="first" disabled>⇤ First</button><button id="prev" disabled>← Previous</button><span class="pg" id="pg"></span><button id="next" disabled>Next →</button><button id="last" disabled>Last ⇥</button><button id="full" disabled>Full screen</button><span class="mini" style="margin-left:auto">Arrow keys turn pages; drag a corner to flip.</span></div>
+  <div class="thumbs" id="thumbs"></div>
+  <details><summary>How it works, and what to expect</summary>
+    <p>PDF.js (Mozilla's PDF renderer, the one inside Firefox) draws each page onto a canvas at the width you choose and the canvas is saved as a JPEG. StPageFlip (an open-source page-turn library) binds the images into a book: a hard cover shown alone, then facing pages, with a corner that lifts and folds as you drag it. Text in the PDF becomes pixels, so the flipbook is not searchable and links inside the PDF do not survive; that is the trade for a book that turns. A 40-page report at 1400 pixels and quality 0.85 comes to roughly 6 to 10 MB as one file; drop the width or the quality for something lighter, or raise them for print-quality artwork. Scanned PDFs render as they are. Password-protected PDFs will not open.</p>
+  </details>
+</div>
+</div>
+</div></main>
+<footer>Part of <a href="../">Experiments</a> by Varna Sri Raman · Idealog Works · MIT licence · Rendering and export happen in your browser; the PDF never leaves it.</footer>
+<script>
+'use strict';
+const $=s=>document.querySelector(s); const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const PDFJS_WORKER='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+const FLIP_SRC='https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js';
+let pages=[]; // data URLs
+let dims=null; // {w,h} of first page
+let flip=null; let fileName='book';
+$('#quality').oninput=()=>$('#qv').textContent=(+$('#quality').value).toFixed(2);
+$('#theme').onchange=applyTheme; $('#colour').oninput=applyTheme;
+function applyTheme(){ const t=$('#theme').value; const st=$('#stage'); st.className='stage '+t; st.style.setProperty('--custom',$('#colour').value); }
+function status(t){ $('#status').textContent=t; }
+
+async function workerReady(){ if(pdfjsLib.GlobalWorkerOptions.workerSrc) return; try{ const r=await fetch(PDFJS_WORKER); if(!r.ok) throw 0; const b=await r.blob(); pdfjsLib.GlobalWorkerOptions.workerSrc=URL.createObjectURL(b); }catch(e){ pdfjsLib.GlobalWorkerOptions.workerSrc=PDFJS_WORKER; } }
+
+const drop=$('#drop'); drop.onclick=()=>$('#file').click();
+['dragenter','dragover'].forEach(ev=>drop.addEventListener(ev,e=>{ e.preventDefault(); drop.classList.add('over'); }));
+['dragleave','drop'].forEach(ev=>drop.addEventListener(ev,e=>{ e.preventDefault(); drop.classList.remove('over'); }));
+drop.addEventListener('drop',e=>{ const f=e.dataTransfer.files[0]; if(f) render(f); });
+$('#file').onchange=e=>{ const f=e.target.files[0]; if(f) render(f); e.target.value=''; };
+
+async function render(file){ if(file.type&&file.type!=='application/pdf'&&!/\.pdf$/i.test(file.name)){ status('That is not a PDF.'); return; }
+  fileName=file.name.replace(/\.pdf$/i,''); status('Opening…'); $('#bar').style.width='0'; pages=[]; dims=null;
+  try{ await workerReady(); const buf=await file.arrayBuffer(); const pdf=await pdfjsLib.getDocument({data:buf}).promise; const n=pdf.numPages; const W=+$('#width').value, Q=+$('#quality').value;
+    try{ const meta=await pdf.getMetadata(); if(meta&&meta.info){ if(!$('#title').value&&meta.info.Title) $('#title').value=meta.info.Title; if(!$('#author').value&&meta.info.Author) $('#author').value=meta.info.Author; } }catch(e){}
+    if(!$('#title').value) $('#title').value=fileName;
+    const canvas=document.createElement('canvas'); const ctx=canvas.getContext('2d',{alpha:false});
+    for(let i=1;i<=n;i++){ const page=await pdf.getPage(i); const v0=page.getViewport({scale:1}); const scale=W/v0.width; const vp=page.getViewport({scale}); canvas.width=Math.round(vp.width); canvas.height=Math.round(vp.height); ctx.fillStyle='#fff'; ctx.fillRect(0,0,canvas.width,canvas.height); await page.render({canvasContext:ctx,viewport:vp}).promise; pages.push(canvas.toDataURL('image/jpeg',Q)); if(!dims) dims={w:canvas.width,h:canvas.height}; page.cleanup(); $('#bar').style.width=(i/n*100)+'%'; status(`Rendered page ${i} of ${n}`); }
+    pdf.destroy(); status(`${n} pages rendered at ${W}px wide. ${mb(pages)} of images.`); build(); ['#rebuild','#export','#first','#prev','#next','#last','#full'].forEach(s=>$(s).disabled=false); }
+  catch(e){ status('Could not open that PDF: '+(e.message||e)); }
+}
+const mb=arr=>{ const bytes=arr.reduce((a,d)=>a+Math.round((d.length-d.indexOf(',')-1)*0.75),0); return (bytes/1048576).toFixed(1)+' MB'; };
+
+function build(){ if(!pages.length) return; if(flip){ try{ flip.destroy(); }catch(e){} flip=null; } const book=$('#book'); book.innerHTML=''; book.hidden=false; $('#stage .empty').hidden=true;
+  const ratio=dims.h/dims.w; const stageW=$('#stage').clientWidth*0.94; const pw=Math.min(Math.floor(stageW/2), Math.floor((window.innerHeight*0.78)/ratio)); const ph=Math.round(pw*ratio);
+  flip=new St.PageFlip(book,{width:pw,height:ph,size:'stretch',minWidth:200,maxWidth:1200,minHeight:200,maxHeight:1600,showCover:$('#cover').checked,usePortrait:$('#portrait').checked,maxShadowOpacity:.45,flippingTime:+$('#speed').value,mobileScrollSupport:false,drawShadow:true,autoSize:true});
+  flip.loadFromImages(pages); flip.on('flip',e=>{ setPg(e.data); }); setPg(0); thumbs(); }
+function setPg(i){ const n=pages.length; $('#pg').textContent=`${i+1} / ${n}`; document.querySelectorAll('#thumbs img').forEach((im,k)=>im.classList.toggle('on',k===i)); const on=document.querySelector('#thumbs img.on'); if(on) on.scrollIntoView({block:'nearest',inline:'nearest'}); }
+function thumbs(){ $('#thumbs').innerHTML=pages.map((d,i)=>`<img src="${d}" alt="page ${i+1}" data-i="${i}" loading="lazy">`).join(''); document.querySelectorAll('#thumbs img').forEach(im=>im.onclick=()=>flip.turnToPage(+im.dataset.i)); }
+$('#rebuild').onclick=build; $('#first').onclick=()=>flip&&flip.turnToPage(0); $('#last').onclick=()=>flip&&flip.turnToPage(pages.length-1); $('#prev').onclick=()=>flip&&flip.flipPrev(); $('#next').onclick=()=>flip&&flip.flipNext();
+$('#full').onclick=()=>{ const st=$('#stage'); if(document.fullscreenElement) document.exitFullscreen(); else st.requestFullscreen&&st.requestFullscreen(); };
+document.addEventListener('fullscreenchange',()=>setTimeout(build,150));
+document.addEventListener('keydown',e=>{ if(!flip||/input|textarea|select/i.test(e.target.tagName)) return; if(e.key==='ArrowRight'||e.key==='PageDown'){ flip.flipNext(); e.preventDefault(); } if(e.key==='ArrowLeft'||e.key==='PageUp'){ flip.flipPrev(); e.preventDefault(); } });
+let rt; window.addEventListener('resize',()=>{ clearTimeout(rt); rt=setTimeout(()=>{ if(pages.length) build(); },250); });
+
+// Export: one self-contained HTML file
+let flipCode=null;
+async function getFlipCode(){ if(flipCode) return flipCode; const r=await fetch(FLIP_SRC); if(!r.ok) throw new Error('could not fetch the page-flip library for inlining'); flipCode=(await r.text()).replace(/<\/script/gi,'<\\/script'); return flipCode; }
+$('#export').onclick=async()=>{ if(!pages.length) return; $('#export').disabled=true; status('Building the file…'); try{ const lib=await getFlipCode(); const html=exportHtml(lib); const b=new Blob([html],{type:'text/html'}); const a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download=(fileName||'flipbook').replace(/[^\w.-]+/g,'-')+'-flipbook.html'; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),4000); $('#size').textContent='Exported: '+(b.size/1048576).toFixed(1)+' MB, '+pages.length+' pages.'; status('Exported.'); }catch(e){ status('Export failed: '+e.message); } $('#export').disabled=false; };
+function exportHtml(lib){ const t=$('#title').value||fileName, au=$('#author').value, theme=$('#theme').value, colour=$('#colour').value, cover=$('#cover').checked, portrait=$('#portrait').checked, speed=+$('#speed').value; const bg=theme==='paper'?'#e9e2d3':theme==='dark'?'#17171b':colour; const fg=theme==='paper'?'#3b3b3b':'#e5e7eb';
+  const cfg=JSON.stringify({cover,portrait,speed,ratio:dims.h/dims.w,title:t,author:au});
+  return `<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${esc(t)}${au?' · '+esc(au):''}</title>
+<style>
+html,body{margin:0;height:100%;background:${bg};color:${fg};font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;overflow:hidden}
+.top{position:fixed;top:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;padding:.6rem 1rem;font-size:.85rem;opacity:.85;z-index:5}
+.top b{font-family:Georgia,serif;font-weight:400;font-size:1rem}
+#stage{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:3.2rem 2vw 3.4rem}
+#book .page{background:#fff;box-shadow:0 0 8px rgba(0,0,0,.3)} #book .page img{width:100%;height:100%;object-fit:contain;display:block;background:#fff}
+.bar{position:fixed;bottom:0;left:0;right:0;display:flex;gap:.4rem;align-items:center;justify-content:center;padding:.6rem;z-index:5}
+.bar button{font:inherit;font-size:.85rem;padding:.4rem .8rem;border-radius:6px;border:1px solid rgba(128,128,128,.5);background:rgba(255,255,255,.08);color:inherit;cursor:pointer}
+.bar button:hover{background:rgba(255,255,255,.2)} .pg{font-variant-numeric:tabular-nums;min-width:5rem;text-align:center}
+</style></head><body>
+<div class="top"><b>${esc(t)}</b><span>${esc(au)}</span></div>
+<div id="stage"><div id="book"></div></div>
+<div class="bar"><button id="first" title="First page">⇤</button><button id="prev">← Previous</button><span class="pg" id="pg"></span><button id="next">Next →</button><button id="last" title="Last page">⇥</button><button id="full">Full screen</button></div>
+<script>${lib}<\/script>
+<script>
+(function(){var P=${JSON.stringify(pages)};var C=${cfg};var flip=null;function build(){if(flip){try{flip.destroy()}catch(e){}}var el=document.getElementById('book');el.innerHTML='';var W=window.innerWidth-40,H=window.innerHeight-110;var pw=Math.min(Math.floor(W/2),Math.floor(H/C.ratio));var ph=Math.round(pw*C.ratio);flip=new St.PageFlip(el,{width:pw,height:ph,size:'stretch',minWidth:200,maxWidth:1400,minHeight:200,maxHeight:1800,showCover:C.cover,usePortrait:C.portrait,maxShadowOpacity:.45,flippingTime:C.speed,mobileScrollSupport:false,drawShadow:true,autoSize:true});flip.loadFromImages(P);flip.on('flip',function(e){pg(e.data)});pg(0)}
+function pg(i){document.getElementById('pg').textContent=(i+1)+' / '+P.length}
+document.getElementById('prev').onclick=function(){flip.flipPrev()};document.getElementById('next').onclick=function(){flip.flipNext()};document.getElementById('first').onclick=function(){flip.turnToPage(0)};document.getElementById('last').onclick=function(){flip.turnToPage(P.length-1)};
+document.getElementById('full').onclick=function(){if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen()};
+document.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' ')flip.flipNext();if(e.key==='ArrowLeft'||e.key==='PageUp')flip.flipPrev()});
+var t;window.addEventListener('resize',function(){clearTimeout(t);t=setTimeout(build,250)});build();})();
+<\/script></body></html>`; }
+</script>
+</body>
+</html>
