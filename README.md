@@ -224,6 +224,19 @@ subject. JSON backup and CSV export; the catalogue lives in the browser only.
 
 ---
 
+### Flipbook Maker
+
+A PDF becomes a page-turning book in the browser: each page rendered to an
+image with PDF.js, bound into a StPageFlip book with a hard cover, facing
+spreads and single pages on narrow screens, and exported as one HTML file with
+the pages and the page-turn engine inlined. The export works offline, on a
+phone, and on any static host. The PDF is never uploaded.
+
+**Directory:** `flipbook/`
+**Stage:** Active
+
+---
+
 ### Motor Accident Compensation Calculator
 
 Fatal-accident compensation under section 166 of the Motor Vehicles Act, computed
@@ -373,6 +386,7 @@ Experiments/
 ├── air-quality/                        # a year of PM2.5 against WHO and NAAQS, live
 ├── petition-builder/                   # representations and petitions in the accepted form
 ├── library-builder/                    # household book catalogue, Open Library lookups
+├── flipbook/                           # PDF to page-turning book, self-contained export
 ├── court-translator/
 │   └── index.html                      # Court Petition Translator UI
 ├── aicc_analysis/
