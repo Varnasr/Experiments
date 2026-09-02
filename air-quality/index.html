@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Air You Breathed — Experiments</title>
+<meta name="description" content="A year of PM2.5 and PM10 for any place in India from Open-Meteo's air quality model: the annual mean against the WHO guideline and India's standard, days over the 24-hour limits, the cumulative dose in cigarette equivalents, and the monthly pattern.">
+<link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231B6B4A'/><path d='M6 14c4-4 8 4 12 0s6-4 8 0M6 22c4-4 8 4 12 0s6-4 8 0' stroke='white' stroke-width='2.4' fill='none' stroke-linecap='round'/></svg>">
+<style>
+  :root { --bg:#fafafa; --surface:#fff; --border:#e5e7eb; --text:#1a1a2e; --dim:#4b5563; --muted:#9ca3af; --accent:#1B6B4A; --accent-soft:#e6f2ec; --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --grid:#eceef1; --mono:ui-monospace,SFMono-Regular,Menlo,monospace; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--text); line-height:1.55; }
+  a { color:var(--accent); }
+  header { border-bottom:1px solid var(--border); background:#fff; }
+  .wrap { max-width:1080px; margin:0 auto; padding:0 1.25rem; }
+  header .wrap { display:flex; align-items:baseline; justify-content:space-between; gap:1rem; padding:.9rem 1.25rem; flex-wrap:wrap; }
+  header h1 { font-family:Georgia,serif; font-size:1.35rem; font-weight:400; }
+  header h1 small { font-size:.8rem; color:var(--muted); margin-left:.5rem; }
+  header nav a { font-size:.85rem; margin-left:1rem; text-decoration:none; }
+  main { padding:1.5rem 0 3rem; }
+  .lede { color:var(--dim); font-size:.95rem; max-width:66ch; margin-bottom:1.25rem; }
+  .grid { display:grid; grid-template-columns:300px 1fr; gap:1.25rem; align-items:start; }
+  @media (max-width:860px){ .grid { grid-template-columns:1fr; } }
+  .panel { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1rem 1.15rem; margin-bottom:1rem; }
+  .panel h2 { font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; margin-bottom:.7rem; }
+  label { display:block; font-size:.8rem; color:var(--dim); margin:.5rem 0 .2rem; }
+  select, input[type=number], input[type=date] { width:100%; font:inherit; font-size:.9rem; padding:.4rem .5rem; border:1px solid var(--border); border-radius:6px; background:#fff; color:var(--text); }
+  .row { display:flex; gap:.5rem; } .row > * { flex:1; }
+  button { font:inherit; font-size:.88rem; padding:.5rem .9rem; border-radius:6px; border:1px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer; } button:disabled { opacity:.5; }
+  .stat { display:inline-block; margin:.25rem 1.25rem .25rem 0; vertical-align:top; }
+  .stat b { display:block; font-size:1.4rem; font-family:Georgia,serif; font-weight:400; } .stat span { font-size:.75rem; color:var(--muted); }
+  table { border-collapse:collapse; width:100%; font-size:.84rem; margin:.5rem 0; }
+  th, td { text-align:right; padding:.3rem .5rem; border-bottom:1px solid var(--border); font-variant-numeric:tabular-nums; }
+  th:first-child, td:first-child { text-align:left; } th { color:var(--dim); font-weight:600; font-size:.75rem; }
+  .note { font-size:.82rem; color:var(--dim); margin-top:.5rem; }
+  .chart { width:100%; height:auto; display:block; margin:.4rem 0; } .chart text { font-family:inherit; font-size:11px; fill:var(--dim); }
+  .legend { display:flex; gap:1rem; flex-wrap:wrap; font-size:.8rem; color:var(--dim); margin:.2rem 0; } .legend i { display:inline-block; width:14px; height:3px; vertical-align:middle; margin-right:.35rem; border-radius:2px; }
+  .tip { position:fixed; pointer-events:none; background:#1a1a2e; color:#fff; font-size:.75rem; padding:.3rem .5rem; border-radius:4px; display:none; z-index:9; white-space:nowrap; }
+  details { margin-top:.5rem; font-size:.85rem; color:var(--dim); } summary { cursor:pointer; color:var(--accent); }
+  .mini { font-size:.78rem; color:var(--muted); }
+  .pill { display:inline-block; font-size:.7rem; padding:1px 7px; border-radius:99px; background:var(--accent-soft); color:var(--accent); font-weight:600; margin-left:.4rem; vertical-align:middle; text-transform:none; letter-spacing:0; }
+  footer { border-top:1px solid var(--border); padding:1.25rem; text-align:center; font-size:.8rem; color:var(--muted); }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>The Air You Breathed <small>a year of PM2.5 for any place in India</small></h1>
+  <nav><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/air-quality">Source</a></nav>
+</div></header>
+<main><div class="wrap">
+<p class="lede">Air quality is reported as a number for today. Exposure is what a year of those numbers adds up to. This page pulls hourly PM2.5, PM10, nitrogen dioxide and ozone for any place in India from Open-Meteo's air quality service, and reports the year the way an epidemiologist would read it: the annual mean against the WHO guideline and India's own standard, how many days breached the 24-hour limits, the cumulative dose in cigarette equivalents, and which months did the damage.</p>
+
+<div class="grid">
+<div>
+  <div class="panel">
+    <h2>Place and period</h2>
+    <label>City</label><select id="city"></select>
+    <div class="row"><div><label>Latitude</label><input type="number" id="lat" step="0.01"></div><div><label>Longitude</label><input type="number" id="lon" step="0.01"></div></div>
+    <div class="row"><div><label>From</label><input type="date" id="from"></div><div><label>To</label><input type="date" id="to"></div></div>
+    <p class="mini">The archive runs from mid-2022. A full year is the meaningful unit; the WHO and Indian annual limits are annual means.</p>
+    <p style="margin-top:.6rem"><button id="go">Fetch and compute</button></p>
+    <p class="mini" id="status"></p>
+  </div>
+  <div class="panel"><h2>Limits used</h2>
+    <table><tr><th>Pollutant</th><th>WHO 2021</th><th>India NAAQS 2009</th></tr><tr><td>PM2.5 annual</td><td>5</td><td>40</td></tr><tr><td>PM2.5 24-hour</td><td>15</td><td>60</td></tr><tr><td>PM10 annual</td><td>15</td><td>60</td></tr><tr><td>PM10 24-hour</td><td>45</td><td>100</td></tr><tr><td>NO₂ annual</td><td>10</td><td>40</td></tr><tr><td>NO₂ 24-hour</td><td>25</td><td>80</td></tr></table>
+    <p class="mini">µg/m³. WHO Global Air Quality Guidelines (2021); Indian National Ambient Air Quality Standards notified 18 November 2009.</p>
+  </div>
+</div>
+<div>
+  <div class="panel"><h2>The year <span class="pill" id="yrPill"></span></h2><div id="year" class="note">Choose a place and fetch.</div>
+    <details><summary>How the numbers are made</summary><p>Hourly concentrations come from Open-Meteo's air quality API, which serves the Copernicus CAMS global and European models re-analysed and forecast on a grid of roughly 11 km; they are model estimates, not station readings, and they run smoother than a CPCB monitor next to a road. Daily means are the mean of the 24 hourly values; a day counts as breaching a 24-hour limit when its daily mean exceeds it. The cigarette equivalent uses the Berkeley Earth rule of thumb that a day at 22 µg/m³ of PM2.5 is comparable in mortality risk to one cigarette, so the year's equivalent is the sum of daily means divided by 22. It is a communication device, not a dose-response model.</p></details></div>
+  <div class="panel"><h2>Day by day</h2><div id="daily"></div></div>
+  <div class="panel"><h2>Month by month</h2><div id="monthly"></div></div>
+</div>
+</div>
+</div></main>
+<div class="tip" id="tip"></div>
+<footer>Part of <a href="../">Experiments</a> by Varna Sri Raman · Idealog Works · MIT licence · Data from Open-Meteo (CAMS), fetched live; computation in the browser.</footer>
+<script>
+'use strict';
+const $=s=>document.querySelector(s); const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); const fmt=(x,d=1)=>(x==null||!isFinite(x))?'—':Number(x).toLocaleString('en-IN',{maximumFractionDigits:d,minimumFractionDigits:0});
+const tip=$('#tip'); document.addEventListener('mousemove',e=>{const t=e.target.closest&&e.target.closest('[data-tip]');if(t){tip.innerHTML=t.getAttribute('data-tip');tip.style.display='block';tip.style.left=(e.clientX+12)+'px';tip.style.top=(e.clientY-10)+'px';}else tip.style.display='none';});
+const CITIES=[['Delhi',28.61,77.21],['Mumbai',19.08,72.88],['Kolkata',22.57,88.36],['Chennai',13.08,80.27],['Hyderabad',17.39,78.49],['Bengaluru',12.97,77.59],['Ahmedabad',23.02,72.57],['Jaipur',26.91,75.79],['Lucknow',26.85,80.95],['Kanpur',26.45,80.33],['Varanasi',25.32,82.99],['Patna',25.59,85.14],['Gaya',24.79,85.00],['Ranchi',23.34,85.31],['Bhubaneswar',20.30,85.82],['Raipur',21.25,81.63],['Nagpur',21.15,79.09],['Bhopal',23.26,77.41],['Surat',21.17,72.83],['Guwahati',26.14,91.74],['Chandigarh',30.73,76.78],['Thiruvananthapuram',8.52,76.94],['Ghaziabad',28.67,77.42],['Gurugram',28.46,77.03]];
+$('#city').innerHTML=CITIES.map((c,i)=>`<option value="${i}">${c[0]}</option>`).join('')+'<option value="custom">Custom (enter coordinates)</option>';
+function setCity(){ const v=$('#city').value; if(v!=='custom'){ $('#lat').value=CITIES[+v][1]; $('#lon').value=CITIES[+v][2]; } } $('#city').onchange=setCity; setCity(); ['#lat','#lon'].forEach(s=>$(s).oninput=()=>{ $('#city').value='custom'; });
+{ const t=new Date(); t.setDate(t.getDate()-2); const f=new Date(t); f.setFullYear(f.getFullYear()-1); f.setDate(f.getDate()+1); $('#to').value=t.toISOString().slice(0,10); $('#from').value=f.toISOString().slice(0,10); }
+const LIM={pm25:{who:5,who24:15,in:40,in24:60},pm10:{who:15,who24:45,in:60,in24:100},no2:{who:10,who24:25,in:40,in24:80}};
+$('#go').onclick=async()=>{ const lat=+$('#lat').value, lon=+$('#lon').value, from=$('#from').value, to=$('#to').value; $('#status').textContent='Fetching hourly data…'; $('#go').disabled=true;
+  try{ const r=await fetch(`https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${lat}&longitude=${lon}&hourly=pm2_5,pm10,nitrogen_dioxide,ozone&timezone=Asia%2FKolkata&start_date=${from}&end_date=${to}`); if(!r.ok) throw new Error('HTTP '+r.status); const j=await r.json(); const H=j.hourly; if(!H||!H.time.length) throw new Error('no data');
+    const col=k=>Array.isArray(H[k])?H[k]:[]; const P25=col('pm2_5'),P10=col('pm10'),NO2=col('nitrogen_dioxide'),O3=col('ozone'); const days=new Map(); H.time.forEach((t,i)=>{ const d=t.slice(0,10); if(!days.has(d)) days.set(d,{pm25:[],pm10:[],no2:[],o3:[]}); const o=days.get(d); if(P25[i]!=null) o.pm25.push(P25[i]); if(P10[i]!=null) o.pm10.push(P10[i]); if(NO2[i]!=null) o.no2.push(NO2[i]); if(O3[i]!=null) o.o3.push(O3[i]); });
+    const mean=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:NaN; const D=[...days].map(([d,o])=>({d,pm25:mean(o.pm25),pm10:mean(o.pm10),no2:mean(o.no2),o3:o.o3.length?Math.max(...o.o3):NaN})).filter(x=>isFinite(x.pm25)); const n=D.length;
+    const ann=k=>mean(D.map(x=>x[k]).filter(isFinite)); const over=(k,lim)=>D.filter(x=>x[k]>lim).length; const cig=D.reduce((a,x)=>a+x.pm25,0)/22; const worst=D.slice().sort((a,b)=>b.pm25-a.pm25)[0]; const best=D.slice().sort((a,b)=>a.pm25-b.pm25)[0];
+    const name=(CITIES[+$('#city').value]||[])[0]||`${lat}, ${lon}`; $('#yrPill').textContent=`${name} · ${D[0].d} to ${D[n-1].d} · ${n} days`;
+    const grade=v=>v<=LIM.pm25.who?'within the WHO guideline':v<=LIM.pm25.in?'above the WHO guideline but within India\'s standard':`${(v/LIM.pm25.in).toFixed(1)} times India's own standard, ${(v/LIM.pm25.who).toFixed(0)} times the WHO guideline`;
+    $('#year').innerHTML=`<span class="stat"><b>${fmt(ann('pm25'))}</b><span>PM2.5 annual mean, µg/m³ (${grade(ann('pm25'))})</span></span><span class="stat"><b>${over('pm25',LIM.pm25.in24)}</b><span>days over India's 24-hour PM2.5 limit (60)</span></span><span class="stat"><b>${over('pm25',LIM.pm25.who24)}</b><span>days over the WHO 24-hour guideline (15)</span></span><span class="stat"><b>${fmt(cig,0)}</b><span>cigarette equivalents for the year (${fmt(cig/n*7,1)} a week)</span></span><span class="stat"><b>${fmt(ann('pm10'))}</b><span>PM10 annual mean (WHO 15, India 60)</span></span><span class="stat"><b>${fmt(ann('no2'))}</b><span>NO₂ annual mean (WHO 10, India 40)</span></span>
+    <table><tr><th>Pollutant</th><th>Annual mean</th><th>Days over WHO 24-h</th><th>Days over India 24-h</th><th>Worst day</th></tr>${[['PM2.5','pm25'],['PM10','pm10'],['NO₂','no2']].map(([l,k])=>{ const w=D.filter(x=>isFinite(x[k])).sort((a,b)=>b[k]-a[k])[0]; return `<tr><td>${l}</td><td>${fmt(ann(k))}</td><td>${over(k,LIM[k].who24)}</td><td>${over(k,LIM[k].in24)}</td><td>${w?fmt(w[k])+' on '+w.d:'not returned'}</td></tr>`; }).join('')}</table><p class="note">Worst PM2.5 day ${worst.d} at ${fmt(worst.pm25)} µg/m³; cleanest ${best.d} at ${fmt(best.pm25)}. Days are calendar days in Indian Standard Time.</p>`;
+    $('#daily').innerHTML=`<div class="legend"><span><i style="background:var(--s1)"></i>daily mean PM2.5</span><span><i style="background:#9ca3af"></i>India 24-h standard 60</span><span><i style="background:var(--s3)"></i>WHO 24-h guideline 15</span></div>`+dailyChart(D);
+    const months=new Map(); D.forEach(x=>{ const m=x.d.slice(0,7); if(!months.has(m)) months.set(m,[]); months.get(m).push(x.pm25); }); const M=[...months].map(([m,v])=>({m,v:mean(v),over:v.filter(x=>x>60).length}));
+    $('#monthly').innerHTML=`<div class="legend"><span><i style="background:var(--s2)"></i>monthly mean PM2.5</span></div>`+monthChart(M)+`<table><tr><th>Month</th><th>Mean PM2.5</th><th>Days over 60</th><th>Cigarette equivalents</th></tr>${M.map(x=>`<tr><td>${x.m}</td><td>${fmt(x.v)}</td><td>${x.over}</td><td>${fmt(x.v*months.get(x.m).length/22,0)}</td></tr>`).join('')}</table>`;
+    $('#status').textContent='Done.'; } catch(e){ $('#status').textContent='Failed: '+e.message; } $('#go').disabled=false; };
+function dailyChart(D){ const W=760,H=240,m={l:44,r:12,t:12,b:28},pw=W-m.l-m.r,ph=H-m.t-m.b; const y1=Math.max(...D.map(x=>x.pm25),70)*1.05; const X=i=>m.l+i/(D.length-1)*pw, Y=v=>m.t+ph-v/y1*ph; let g=`<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="daily PM2.5">`; [0,0.25,0.5,0.75,1].forEach(f=>{ const v=f*y1; g+=`<line x1="${m.l}" x2="${W-m.r}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--grid)"/><text x="${m.l-6}" y="${Y(v)+4}" text-anchor="end">${fmt(v,0)}</text>`; }); g+=`<line x1="${m.l}" x2="${W-m.r}" y1="${Y(60)}" y2="${Y(60)}" stroke="#9ca3af" stroke-dasharray="4 3"/><line x1="${m.l}" x2="${W-m.r}" y1="${Y(15)}" y2="${Y(15)}" stroke="var(--s3)" stroke-dasharray="4 3"/>`; let d=''; D.forEach((x,i)=>{ d+=(i?'L':'M')+X(i)+','+Y(x.pm25); }); g+=`<path d="${d}" fill="none" stroke="var(--s1)" stroke-width="1.5"/>`; D.forEach((x,i)=>{ if(i%3===0) g+=`<rect x="${X(i)-pw/D.length/2}" y="${m.t}" width="${pw/D.length*3}" height="${ph}" fill="transparent" data-tip="${x.d}: PM2.5 ${fmt(x.pm25)}, PM10 ${fmt(x.pm10)}, NO₂ ${fmt(x.no2)}"/>`; }); D.forEach((x,i)=>{ if(x.d.endsWith('-01')) g+=`<text x="${X(i)}" y="${H-m.b+16}" text-anchor="middle">${x.d.slice(0,7)}</text>`; }); return g+'</svg>'; }
+function monthChart(M){ const W=760,H=200,m={l:44,r:12,t:12,b:28},pw=W-m.l-m.r,ph=H-m.t-m.b; const y1=Math.max(...M.map(x=>x.v),40)*1.1; const bw=pw/M.length; const Y=v=>m.t+ph-v/y1*ph; let g=`<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="monthly PM2.5">`; [0,0.5,1].forEach(f=>{ const v=f*y1; g+=`<line x1="${m.l}" x2="${W-m.r}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--grid)"/><text x="${m.l-6}" y="${Y(v)+4}" text-anchor="end">${fmt(v,0)}</text>`; }); g+=`<line x1="${m.l}" x2="${W-m.r}" y1="${Y(40)}" y2="${Y(40)}" stroke="#9ca3af" stroke-dasharray="4 3"/><text x="${W-m.r}" y="${Y(40)-4}" text-anchor="end">India annual 40</text>`; M.forEach((x,i)=>{ const X=m.l+i*bw; g+=`<rect x="${X+bw*0.15}" y="${Y(x.v)}" width="${bw*0.7}" height="${Y(0)-Y(x.v)}" rx="2" fill="var(--s2)" data-tip="${x.m}: ${fmt(x.v)} µg/m³, ${x.over} days over 60"/><text x="${X+bw/2}" y="${H-m.b+16}" text-anchor="middle">${x.m.slice(5)}</text>`; }); return g+'</svg>'; }
+</script>
+</body>
+</html>
