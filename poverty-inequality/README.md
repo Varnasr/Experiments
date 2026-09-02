@@ -1,6 +1,6 @@
-# Poverty & Inequality Lab
+# Poverty & Inequality Explorer
 
-Live at **https://varnasr-experiments.netlify.app/poverty-lab/**
+Live at **https://varnasr-experiments.netlify.app/poverty-inequality/**
 
 Grouped-data poverty and inequality analysis in the browser, in the tradition of
 POVCAL and Datt's (1998) *Computational tools for poverty measurement and

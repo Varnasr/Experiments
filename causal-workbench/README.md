@@ -47,3 +47,15 @@ written in plain Python on the same simulated panel: δ agreed to 6 decimals and
 standard error to 4.
 
 No dependencies. One HTML file. MIT.
+
+## Regression discontinuity (added September 2026)
+
+A fourth estimator with its own data (an outcome, a running variable, a cutoff):
+local linear regression on each side of the cutoff with triangular kernel
+weights, HC1 standard errors (the conventional interval; the bias-corrected
+Calonico–Cattaneo–Titiunik interval is not implemented), the Imbens–Kalyanaraman
+(2012) plug-in bandwidth with a manual override, a bandwidth-sensitivity band from
+half to twice the chosen bandwidth, placebo cutoffs at the median of each side,
+and a simplified McCrary (2008) density test on binned counts. The simulator
+plants a known jump and, optionally, manipulation just below the cutoff so the
+density test has something to find.
