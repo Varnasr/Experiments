@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Election Expenditure Ledger — Experiments</title>
+<meta name="description" content="A running account of a candidate's election expenses against the Election Commission ceiling: the section 77 accounting period, heads of expenditure, burn rate and projection, the section 78 lodging deadline, and a CSV that can be handed to the expenditure observer. Stored in the browser only.">
+<link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23572e91'/><path d='M8 24V12M14 24V8M20 24v-8M26 24V14' stroke='white' stroke-width='2.4' stroke-linecap='round'/><path d='M6 26h20' stroke='%23ff9911' stroke-width='2.4' stroke-linecap='round'/></svg>">
+<style>
+  :root { --bg:#fafafa; --surface:#fff; --border:#e5e7eb; --text:#1a1a2e; --dim:#4b5563; --muted:#9ca3af; --accent:#572e91; --accent-soft:#efe9f7; --orange:#ff9911; --mono:ui-monospace,SFMono-Regular,Menlo,monospace; --grid:#eee; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--text); line-height:1.55; }
+  a { color:var(--accent); }
+  header { border-bottom:1px solid var(--border); background:#fff; }
+  .wrap { max-width:1180px; margin:0 auto; padding:0 1.25rem; }
+  header .wrap { display:flex; align-items:baseline; justify-content:space-between; gap:1rem; padding:.9rem 1.25rem; flex-wrap:wrap; }
+  header h1 { font-family:Georgia,serif; font-size:1.35rem; font-weight:400; }
+  header h1 small { font-size:.8rem; color:var(--muted); margin-left:.5rem; }
+  header nav a { font-size:.85rem; margin-left:1rem; text-decoration:none; }
+  main { padding:1.5rem 0 3rem; }
+  .lede { color:var(--dim); font-size:.95rem; max-width:70ch; margin-bottom:1.25rem; }
+  .grid { display:grid; grid-template-columns:360px 1fr; gap:1.25rem; align-items:start; }
+  @media (max-width:900px){ .grid { grid-template-columns:1fr; } }
+  .panel { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1rem 1.15rem; margin-bottom:1rem; }
+  .panel h2 { font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; margin-bottom:.7rem; }
+  label { display:block; font-size:.8rem; color:var(--dim); margin:.5rem 0 .2rem; }
+  select, input[type=text], input[type=number], input[type=date], textarea { width:100%; font:inherit; font-size:.9rem; padding:.4rem .5rem; border:1px solid var(--border); border-radius:6px; background:#fff; color:var(--text); }
+  .row { display:flex; gap:.5rem; } .row > * { flex:1; }
+  button { font:inherit; font-size:.85rem; padding:.45rem .8rem; border-radius:6px; border:1px solid var(--border); background:#fff; color:var(--text); cursor:pointer; }
+  button.go { border-color:var(--accent); background:var(--accent); color:#fff; }
+  button.danger { color:#b91c1c; }
+  .btns { display:flex; gap:.4rem; flex-wrap:wrap; margin-top:.6rem; }
+  .stat { display:inline-block; margin:.25rem 1.5rem .4rem 0; vertical-align:top; max-width:230px; }
+  .stat b { display:block; font-size:1.35rem; font-family:Georgia,serif; font-weight:400; } .stat span { font-size:.75rem; color:var(--muted); line-height:1.3; display:block; }
+  .total { font-size:1.9rem !important; }
+  table { border-collapse:collapse; width:100%; font-size:.84rem; margin:.5rem 0; }
+  th, td { text-align:right; padding:.3rem .5rem; border-bottom:1px solid var(--border); font-variant-numeric:tabular-nums; vertical-align:top; }
+  th:first-child, td:first-child, td.l, th.l { text-align:left; } th { color:var(--dim); font-weight:600; font-size:.75rem; white-space:nowrap; }
+  td .x { color:#b91c1c; background:none; border:none; padding:0 .2rem; font-size:.9rem; }
+  .tscroll { overflow:auto; max-height:420px; }
+  .law { background:var(--accent-soft); border-radius:8px; padding:.7rem .9rem; font-size:.85rem; color:#2f1a52; margin:.6rem 0; }
+  .law b { display:block; margin-bottom:.2rem; }
+  .note { font-size:.82rem; color:var(--dim); margin-top:.5rem; }
+  .warn { background:#fff7ed; border:1px solid #fed7aa; color:#9a3412; padding:.5rem .7rem; border-radius:6px; font-size:.83rem; margin:.5rem 0; }
+  .bad { background:#fef2f2; border-color:#fecaca; color:#991b1b; }
+  .mini { font-size:.78rem; color:var(--muted); }
+  .bar { height:14px; background:#eee; border-radius:7px; overflow:hidden; margin:.4rem 0; position:relative; }
+  .bar i { display:block; height:100%; background:var(--accent); }
+  .bar i.over { background:#b91c1c; }
+  svg.chart { width:100%; height:auto; font-size:11px; fill:var(--dim); }
+  .tip { position:fixed; pointer-events:none; background:#1a1a2e; color:#fff; padding:.35rem .55rem; border-radius:5px; font-size:.78rem; display:none; z-index:10; max-width:280px; }
+  .legend { display:flex; gap:1rem; flex-wrap:wrap; font-size:.78rem; color:var(--dim); margin:.3rem 0; } .legend i { display:inline-block; width:12px; height:12px; border-radius:2px; vertical-align:-2px; margin-right:.3rem; }
+  .flag { display:inline-block; font-size:.7rem; padding:0 .35rem; border-radius:4px; background:#fef2f2; color:#991b1b; margin-left:.3rem; }
+  footer { border-top:1px solid var(--border); padding:1.25rem; text-align:center; font-size:.8rem; color:var(--muted); }
+  @media print { header nav, .btns, footer, .grid > div:first-child, .tip { display:none; } .grid { grid-template-columns:1fr; } .tscroll { max-height:none; overflow:visible; } body { background:#fff; } }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>Election Expenditure Ledger <small>a candidate's running account against the ceiling</small></h1>
+  <nav><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/expense-ledger">Source</a></nav>
+</div></header>
+<main><div class="wrap">
+<p class="lede">Section 77 of the Representation of the People Act 1951 makes every candidate keep a separate and correct account of election expenses from the date of nomination to the date the result is declared, and Rule 90 of the Conduct of Elections Rules 1961 caps the total. This page keeps that account: enter each expense as it happens, and the ledger shows the total by head, how fast the money is going, where the campaign will land on counting day at the present rate, and the date by which the account must be lodged. Everything stays in this browser. Export the CSV for the expenditure observer or the election agent.</p>
+
+<div class="grid">
+<div>
+  <div class="panel"><h2>The election</h2>
+    <label>Candidate</label><input type="text" id="cand" placeholder="Name as on the nomination paper">
+    <label>Constituency</label><input type="text" id="const" placeholder="e.g. 12 Bengaluru South">
+    <div class="row"><div><label>House</label><select id="house"><option value="ls">Lok Sabha</option><option value="vs">Legislative Assembly</option></select></div><div><label>State or Union territory</label><select id="state"></select></div></div>
+    <label>Ceiling (₹) <span class="mini">pre-filled from Rule 90 as amended 6 January 2022; edit if the notification for your state differs</span></label><input type="number" id="ceil" step="100000">
+    <div class="row"><div><label>Nomination filed</label><input type="date" id="dNom"></div><div><label>Poll day</label><input type="date" id="dPoll"></div></div>
+    <label>Result declared (or expected)</label><input type="date" id="dRes">
+    <label>Cash payment threshold to flag (₹) <span class="mini">ECI instructs that no single cash payment to a person or entity exceed this; the current figure is ₹10,000, check the compendium</span></label><input type="number" id="cashCap" value="10000" step="1000">
+  </div>
+  <div class="panel"><h2>Add an expense</h2>
+    <div class="row"><div><label>Date</label><input type="date" id="eDate"></div><div><label>Amount (₹)</label><input type="number" id="eAmt" step="100" placeholder="0"></div></div>
+    <label>Head</label><select id="eHead"></select>
+    <label>Description</label><input type="text" id="eDesc" placeholder="e.g. 2,000 A4 handbills, Sri Printers">
+    <div class="row"><div><label>Paid by</label><select id="ePaid"><option>Candidate</option><option>Party</option><option>Other person or entity</option></select></div><div><label>Mode</label><select id="eMode"><option>Bank transfer</option><option>Cheque</option><option>UPI</option><option>Cash</option><option>In kind (notified rate)</option></select></div></div>
+    <div class="row"><div><label>Voucher or bill no.</label><input type="text" id="eVch"></div><div><label>Units × rate (optional)</label><input type="text" id="eRate" placeholder="e.g. 20 × 350"></div></div>
+    <div class="btns"><button class="go" id="add">Add to ledger</button><button id="example">Load an example</button></div>
+    <p class="mini" id="addMsg"></p>
+  </div>
+  <div class="panel"><h2>Ledger file</h2>
+    <div class="btns"><button id="csvOut">Export CSV</button><button id="csvIn">Import CSV</button><input type="file" id="csvFile" accept=".csv,text/csv" hidden><button id="print">Print</button><button class="danger" id="clear">Clear ledger</button></div>
+    <p class="mini">Saved automatically in this browser's local storage. Nothing is sent anywhere. The CSV columns are date, head, description, amount, paid by, mode, voucher, units and rate.</p>
+  </div>
+</div>
+
+<div>
+  <div class="panel" id="summary"><h2>Where the campaign stands</h2><div id="sum"></div></div>
+  <div class="panel"><h2>Cumulative spend against the ceiling</h2><div id="chart"></div></div>
+  <div class="panel"><h2>By head</h2><div id="heads"></div></div>
+  <div class="panel"><h2>Entries</h2><div id="entries" class="tscroll"></div></div>
+  <div class="law"><b>Section 77(1), Representation of the People Act 1951</b>"Every candidate at an election shall, either by himself or by his election agent, keep a separate and correct account of all expenditure in connection with the election incurred or authorized by him or by his election agent between the date on which he has been nominated and the date of declaration of the result thereof, both dates inclusive." Explanation 1 excludes expenditure by a political party or by any other association, body of persons or individual, other than the candidate or his election agent, on general party propaganda; expenditure by any person with the candidate's authorisation is the candidate's.</div>
+  <div class="law"><b>Section 77(3) and Rule 90</b>"The total of the said expenditure shall not exceed such amount as may be prescribed." Rule 90 of the Conduct of Elections Rules 1961, as amended by the notification of 6 January 2022, sets the maximum at ₹95 lakh for a parliamentary constituency in the larger states and ₹75 lakh in the smaller states and Union territories, and at ₹40 lakh and ₹28 lakh for an assembly constituency. The previous figures (₹70 lakh / ₹54 lakh and ₹28 lakh / ₹20 lakh) dated from 2014, with a 10 per cent interim increase in October 2020.</div>
+  <div class="law"><b>Section 78 and section 10A</b>Every contesting candidate must lodge the account with the district election officer "within thirty days from the date of election of the returned candidate". Failure to lodge it in the time and manner required, without good reason or justification, lets the Election Commission disqualify the candidate for three years under section 10A. Exceeding the ceiling is a corrupt practice under section 123(6), a ground for setting aside the election on an election petition.</div>
+  <p class="note">The heads follow the register the Election Commission's expenditure observers work from: public meetings and rallies, campaign materials, vehicles, print and electronic media advertisements, digital campaigning, campaign workers, offices and accommodation, refreshments, and items attributed at the district rate card. Where a state's notification sets a different ceiling from the one pre-filled here, the ceiling box is editable and the page uses the edited figure everywhere. The classification of states into the two bands reproduces the pattern of the 2014 and 2022 notifications; check the notification for the election in hand before relying on it.</p>
+</div>
+</div>
+</div></main>
+<div class="tip" id="tip"></div>
+<footer>Part of <a href="../">Experiments</a> by Varna Sri Raman · Idealog Works · MIT licence · Not legal advice; the Act, the Rules and the Commission's instructions control.</footer>
+<script>
+'use strict';
+const $=s=>document.querySelector(s); const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const inr=x=>'₹'+Math.round(x).toLocaleString('en-IN'); const lakh=x=>(x/1e5).toLocaleString('en-IN',{maximumFractionDigits:2})+' lakh';
+const fmtD=d=>d?new Date(d+'T00:00:00').toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}):'—';
+const days=(a,b)=>Math.round((new Date(b+'T00:00:00')-new Date(a+'T00:00:00'))/86400000);
+const addDays=(d,n)=>{ const x=new Date(d+'T00:00:00'); x.setDate(x.getDate()+n); return x.toISOString().slice(0,10); };
+const tip=$('#tip'); document.addEventListener('mousemove',e=>{const t=e.target.closest&&e.target.closest('[data-tip]');if(t){tip.innerHTML=t.getAttribute('data-tip');tip.style.display='block';tip.style.left=(e.clientX+12)+'px';tip.style.top=(e.clientY-10)+'px';}else tip.style.display='none';});
+
+// Ceilings: Rule 90, Conduct of Elections Rules 1961, as amended 6 January 2022. Band B (the lower figure) follows the pattern of the 2014 and 2022 notifications: Arunachal Pradesh, Goa, Sikkim and the Union territories other than Delhi for Lok Sabha; the eight north-eastern and hill states other than Assam plus Goa and Puducherry for assemblies.
+const LS_BIG=9500000, LS_SMALL=7500000, VS_BIG=4000000, VS_SMALL=2800000;
+const STATES=[['Andhra Pradesh',1,1],['Arunachal Pradesh',0,0],['Assam',1,1],['Bihar',1,1],['Chhattisgarh',1,1],['Goa',0,0],['Gujarat',1,1],['Haryana',1,1],['Himachal Pradesh',1,1],['Jharkhand',1,1],['Karnataka',1,1],['Kerala',1,1],['Madhya Pradesh',1,1],['Maharashtra',1,1],['Manipur',1,0],['Meghalaya',1,0],['Mizoram',1,0],['Nagaland',1,0],['Odisha',1,1],['Punjab',1,1],['Rajasthan',1,1],['Sikkim',0,0],['Tamil Nadu',1,1],['Telangana',1,1],['Tripura',1,0],['Uttar Pradesh',1,1],['Uttarakhand',1,1],['West Bengal',1,1],['NCT of Delhi',1,1],['Jammu and Kashmir',1,1],['Puducherry',0,0],['Andaman and Nicobar Islands',0,null],['Chandigarh',0,null],['Dadra and Nagar Haveli and Daman and Diu',0,null],['Ladakh',0,null],['Lakshadweep',0,null]];
+$('#state').innerHTML=STATES.map((s,i)=>`<option value="${i}">${s[0]}</option>`).join('');
+function defaultCeil(){ const s=STATES[+$('#state').value]; const h=$('#house').value; if(h==='ls') return s[1]?LS_BIG:LS_SMALL; if(s[2]===null) return 0; return s[2]?VS_BIG:VS_SMALL; }
+function setCeil(){ const c=defaultCeil(); $('#ceil').value=c||''; render(); }
+$('#house').onchange=setCeil; $('#state').onchange=setCeil;
+
+const HEADS=['Public meetings, rallies and processions','Campaign materials (posters, banners, handbills, flags)','Vehicles and fuel','Print and electronic media advertisements','Websites, social media, bulk SMS and digital advertising','Campaign workers and volunteers','Offices, accommodation and furniture','Refreshments and food for workers','Items at the district rate card (in kind, attributed by observer)','Star campaigner or party expenditure attributed to the candidate','Other'];
+$('#eHead').innerHTML=HEADS.map(h=>`<option>${h}</option>`).join('');
+
+const KEY='expense-ledger-v1';
+let S={meta:{},entries:[]};
+function load(){ try{ const j=JSON.parse(localStorage.getItem(KEY)); if(j&&j.entries) S=j; }catch(e){} const m=S.meta||{}; if(m.cand) $('#cand').value=m.cand; if(m.const) $('#const').value=m.const; if(m.house) $('#house').value=m.house; if(m.state!=null) $('#state').value=m.state; if(m.ceil) $('#ceil').value=m.ceil; else $('#ceil').value=defaultCeil(); if(m.dNom) $('#dNom').value=m.dNom; if(m.dPoll) $('#dPoll').value=m.dPoll; if(m.dRes) $('#dRes').value=m.dRes; if(m.cashCap) $('#cashCap').value=m.cashCap; }
+function save(){ S.meta={cand:$('#cand').value,const:$('#const').value,house:$('#house').value,state:$('#state').value,ceil:+$('#ceil').value,dNom:$('#dNom').value,dPoll:$('#dPoll').value,dRes:$('#dRes').value,cashCap:+$('#cashCap').value}; try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(e){} }
+['#cand','#const','#ceil','#dNom','#dPoll','#dRes','#cashCap'].forEach(s=>$(s).addEventListener('input',()=>{ save(); render(); }));
+
+$('#add').onclick=()=>{ const d=$('#eDate').value, a=+$('#eAmt').value; if(!d||!(a>0)){ $('#addMsg').textContent='A date and a positive amount are needed.'; return; } S.entries.push({date:d,head:$('#eHead').value,desc:$('#eDesc').value.trim(),amt:a,paid:$('#ePaid').value,mode:$('#eMode').value,vch:$('#eVch').value.trim(),rate:$('#eRate').value.trim()}); $('#eAmt').value=''; $('#eDesc').value=''; $('#eVch').value=''; $('#eRate').value=''; $('#addMsg').textContent='Added.'; save(); render(); };
+function del(i){ S.entries.splice(i,1); save(); render(); }
+$('#clear').onclick=()=>{ if(confirm('Remove every entry from this browser?')){ S.entries=[]; save(); render(); } };
+$('#print').onclick=()=>window.print();
+
+$('#example').onclick=()=>{ if(S.entries.length&&!confirm('Replace the current ledger with the example?')) return; $('#cand').value='A. Candidate'; $('#const').value='Illustrative assembly constituency'; $('#house').value='vs'; $('#state').value=STATES.findIndex(s=>s[0]==='Karnataka'); $('#ceil').value=VS_BIG; $('#dNom').value='2026-04-06'; $('#dPoll').value='2026-04-28'; $('#dRes').value='2026-05-02'; $('#cashCap').value=10000;
+  const ex=[['2026-04-06','Offices, accommodation and furniture','Campaign office rent, 30 days',45000,'Candidate','Bank transfer','R-1','1 × 45000'],['2026-04-06','Campaign materials (posters, banners, handbills, flags)','20,000 handbills and 200 flex banners, Sri Printers',186000,'Candidate','Cheque','B-11',''],['2026-04-07','Vehicles and fuel','Two Boleros with driver, 22 days at rate card',242000,'Candidate','Bank transfer','V-2','2 × 22 × 5500'],['2026-04-08','Public meetings, rallies and processions','Nomination rally: stage, sound, 500 chairs, tent',148000,'Candidate','UPI','M-1',''],['2026-04-09','Campaign workers and volunteers','40 workers × 20 days × ₹400 (rate card)',320000,'Candidate','Bank transfer','W-1','40 × 20 × 400'],['2026-04-10','Refreshments and food for workers','Tea and lunch packets, 40 persons, 20 days at rate card',96000,'Candidate','Cash','F-1','800 × 120'],['2026-04-12','Websites, social media, bulk SMS and digital advertising','Bulk SMS 3 lakh messages, and boosted posts',82000,'Candidate','Bank transfer','D-1',''],['2026-04-14','Print and electronic media advertisements','Quarter-page in two dailies, 3 insertions',210000,'Party','Bank transfer','A-3',''],['2026-04-16','Items at the district rate card (in kind, attributed by observer)','Loudspeaker sets and generator attributed by the observer',38000,'Other person or entity','In kind (notified rate)','O-1',''],['2026-04-18','Public meetings, rallies and processions','Ward meetings, 12 venues',124000,'Candidate','UPI','M-2',''],['2026-04-19','Campaign materials (posters, banners, handbills, flags)','Caps and badges, 5,000',60000,'Candidate','Cash','B-12',''],['2026-04-20','Star campaigner or party expenditure attributed to the candidate','Share of star campaigner rally (attributed 1/6)',180000,'Party','Bank transfer','P-1',''],['2026-04-22','Public meetings, rallies and processions','Road show: vehicles, sound, permissions',260000,'Candidate','Bank transfer','M-3',''],['2026-04-24','Campaign workers and volunteers','Booth agents on poll day, 220 × ₹500',110000,'Candidate','Bank transfer','W-2','220 × 500']];
+  S.entries=ex.map(e=>({date:e[0],head:e[1],desc:e[2],amt:e[3],paid:e[4],mode:e[5],vch:e[6],rate:e[7]})); save(); render(); };
+
+$('#csvOut').onclick=()=>{ const q=s=>'"'+String(s??'').replace(/"/g,'""')+'"'; const rows=[['date','head','description','amount','paid_by','mode','voucher','units_rate']].concat(S.entries.map(e=>[e.date,e.head,e.desc,e.amt,e.paid,e.mode,e.vch,e.rate])); const csv=rows.map(r=>r.map(q).join(',')).join('\n'); const meta=`# ${$('#cand').value} · ${$('#const').value} · ceiling ${$('#ceil').value} · nomination ${$('#dNom').value} · result ${$('#dRes').value}\n`; const b=new Blob([meta+csv],{type:'text/csv'}); const a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='election-expenses.csv'; a.click(); };
+$('#csvIn').onclick=()=>$('#csvFile').click();
+$('#csvFile').onchange=e=>{ const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ const rows=parseCSV(r.result.replace(/^#.*\n/,'')); const h=rows.shift().map(x=>x.trim().toLowerCase()); const ix=n=>h.indexOf(n); const add=rows.filter(x=>x.length>1).map(x=>({date:x[ix('date')],head:x[ix('head')]||'Other',desc:x[ix('description')]||'',amt:+x[ix('amount')]||0,paid:x[ix('paid_by')]||'Candidate',mode:x[ix('mode')]||'',vch:x[ix('voucher')]||'',rate:x[ix('units_rate')]||''})).filter(x=>x.date&&x.amt>0); S.entries=S.entries.concat(add); save(); render(); $('#addMsg').textContent=add.length+' rows imported.'; }; r.readAsText(f); e.target.value=''; };
+function parseCSV(t){ const rows=[]; let row=[],cur='',q=false; for(let i=0;i<t.length;i++){ const c=t[i]; if(q){ if(c==='"'){ if(t[i+1]==='"'){ cur+='"'; i++; } else q=false; } else cur+=c; } else if(c==='"') q=true; else if(c===','){ row.push(cur); cur=''; } else if(c==='\n'||c==='\r'){ if(c==='\r'&&t[i+1]==='\n') i++; row.push(cur); rows.push(row); row=[]; cur=''; } else cur+=c; } if(cur!==''||row.length){ row.push(cur); rows.push(row); } return rows; }
+
+function render(){ const ceil=+$('#ceil').value||0, nom=$('#dNom').value, poll=$('#dPoll').value, res=$('#dRes').value, cap=+$('#cashCap').value||0; const E=S.entries.slice().sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:0); const total=E.reduce((a,e)=>a+e.amt,0); const today=new Date().toISOString().slice(0,10);
+  const outside=E.filter(e=>(nom&&e.date<nom)||(res&&e.date>res)); const cash=E.filter(e=>e.mode==='Cash'&&cap&&e.amt>cap); const other=E.filter(e=>e.paid==='Other person or entity');
+  const asOf=res&&today>res?res:today; const elapsed=nom?Math.max(0,days(nom,asOf)+1):0; const span=nom&&res?days(nom,res)+1:0; const rate=elapsed?total/elapsed:0; const proj=span?total+rate*Math.max(0,span-elapsed):total; const lodge=res?addDays(res,30):'';
+  let warns=''; if(!ceil) warns+='<div class="warn">No ceiling set: enter the figure from the Rule 90 notification for this election.</div>'; if(ceil&&total>ceil) warns+=`<div class="warn bad">The ledger already exceeds the ceiling by ${inr(total-ceil)}. Exceeding the prescribed limit is a corrupt practice under section 123(6).</div>`; else if(ceil&&proj>ceil) warns+=`<div class="warn">At the present rate (${inr(rate)} a day) the campaign would end at about ${inr(proj)}, ${inr(proj-ceil)} over the ceiling. Daily spend for the remaining ${Math.max(0,span-elapsed)} days must fall to ${inr(Math.max(0,(ceil-total)/Math.max(1,span-elapsed)))}.</div>`; if(outside.length) warns+=`<div class="warn">${outside.length} entr${outside.length>1?'ies fall':'y falls'} outside the accounting period (${fmtD(nom)} to ${fmtD(res)}). Expenditure before nomination on preparation is outside section 77, but expenditure after nomination on things arranged earlier is inside it; check each one.</div>`; if(cash.length) warns+=`<div class="warn">${cash.length} cash payment${cash.length>1?'s':''} above ${inr(cap)}: the Commission's instructions require payment above the threshold by cheque, draft or account transfer from the separate election bank account.</div>`; if(other.length) warns+=`<div class="warn">${other.length} entr${other.length>1?'ies':'y'} paid by another person or entity: Explanation 1 to section 77(1) counts such expenditure as the candidate's when authorised by the candidate or the election agent; the observer will attribute it at the rate card.</div>`;
+  const pct=ceil?total/ceil*100:0;
+  $('#sum').innerHTML=warns+`<span class="stat"><b class="total">${inr(total)}</b><span>spent to date · ${E.length} entries</span></span><span class="stat"><b>${ceil?inr(ceil):'—'}</b><span>ceiling (Rule 90)${ceil?', '+lakh(ceil):''}</span></span><span class="stat"><b>${ceil?inr(Math.max(0,ceil-total)):'—'}</b><span>headroom</span></span><span class="stat"><b>${ceil?pct.toFixed(1)+'%':'—'}</b><span>of the ceiling used</span></span><span class="stat"><b>${elapsed?inr(rate):'—'}</b><span>a day, over ${elapsed} of ${span||'?'} accounting days</span></span><span class="stat"><b>${span?inr(proj):'—'}</b><span>projected total on ${fmtD(res)} at the present rate</span></span><span class="stat"><b>${lodge?fmtD(lodge):'—'}</b><span>last day to lodge the account (section 78: 30 days from the result)</span></span>
+  <div class="bar"><i class="${pct>100?'over':''}" style="width:${Math.min(100,pct)}%"></i></div><p class="mini">${$('#cand').value||'Candidate'} · ${$('#const').value||'constituency'} · ${$('#house').value==='ls'?'Lok Sabha':'Assembly'} · ${STATES[+$('#state').value][0]} · nomination ${fmtD(nom)} · poll ${fmtD(poll)} · result ${fmtD(res)}</p>`;
+  // by head
+  const byH=new Map(HEADS.map(h=>[h,0])); E.forEach(e=>byH.set(e.head,(byH.get(e.head)||0)+e.amt)); const rowsH=[...byH].filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]); const mx=rowsH.length?rowsH[0][1]:1;
+  $('#heads').innerHTML=rowsH.length?`<table><tr><th>Head</th><th>Amount</th><th>Share</th><th></th></tr>${rowsH.map(([h,v])=>`<tr><td class="l">${esc(h)}</td><td>${inr(v)}</td><td>${(v/total*100).toFixed(1)}%</td><td style="width:32%"><div class="bar" style="margin:0"><i style="width:${v/mx*100}%"></i></div></td></tr>`).join('')}<tr><th class="l">Total</th><th>${inr(total)}</th><th>100%</th><th></th></tr></table>`:'<p class="note">No entries yet.</p>';
+  // entries
+  $('#entries').innerHTML=E.length?`<table><tr><th>Date</th><th class="l">Head</th><th class="l">Description</th><th>Amount</th><th class="l">Paid by</th><th class="l">Mode</th><th class="l">Voucher</th><th>Cumulative</th><th></th></tr>${(()=>{ let c=0; return E.map(e=>{ c+=e.amt; const i=S.entries.indexOf(e); const fl=((nom&&e.date<nom)||(res&&e.date>res)?'<span class="flag">outside period</span>':'')+(e.mode==='Cash'&&cap&&e.amt>cap?'<span class="flag">cash above threshold</span>':''); return `<tr><td class="l" style="white-space:nowrap">${fmtD(e.date)}</td><td class="l">${esc(e.head)}</td><td class="l">${esc(e.desc)}${e.rate?' <span class="mini">('+esc(e.rate)+')</span>':''}${fl}</td><td>${inr(e.amt)}</td><td class="l">${esc(e.paid)}</td><td class="l">${esc(e.mode)}</td><td class="l">${esc(e.vch)}</td><td>${inr(c)}</td><td><button class="x" data-i="${i}" title="Remove">×</button></td></tr>`; }).join(''); })()}</table>`:'<p class="note">Add an expense on the left, load the example, or import a CSV.</p>';
+  $('#entries').querySelectorAll('.x').forEach(b=>b.onclick=()=>del(+b.dataset.i));
+  $('#chart').innerHTML=chart(E,ceil,nom,res,rate,elapsed,span);
+}
+function chart(E,ceil,nom,res,rate,elapsed,span){ if(!E.length) return '<p class="note">The chart draws once there are entries.</p>'; const W=760,H=260,m={l:60,r:16,t:14,b:30},pw=W-m.l-m.r,ph=H-m.t-m.b; const d0=nom||E[0].date; const d1=res&&res>E[E.length-1].date?res:E[E.length-1].date; const n=Math.max(1,days(d0,d1)); let c=0; const pts=E.map(e=>{ c+=e.amt; return {x:days(d0,e.date),y:c,e}; }); const projEnd=span?c+rate*Math.max(0,span-elapsed):c; const ymax=Math.max(ceil||0,c,projEnd)*1.08||1; const X=x=>m.l+Math.max(0,Math.min(n,x))/n*pw, Y=y=>m.t+ph-y/ymax*ph;
+  let g=`<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="cumulative expenditure">`; [0,.25,.5,.75,1].forEach(f=>{ const v=f*ymax; g+=`<line x1="${m.l}" x2="${W-m.r}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--grid)"/><text x="${m.l-6}" y="${Y(v)+4}" text-anchor="end">${(v/1e5).toFixed(1)}L</text>`; });
+  if(ceil) g+=`<line x1="${m.l}" x2="${W-m.r}" y1="${Y(ceil)}" y2="${Y(ceil)}" stroke="#b91c1c" stroke-dasharray="5 4"/><text x="${W-m.r}" y="${Y(ceil)-4}" text-anchor="end" fill="#b91c1c">ceiling ${lakh(ceil)}</text>`;
+  // step line
+  let d=`M${X(0)},${Y(0)}`; let last=0; pts.forEach(p=>{ d+=` L${X(p.x)},${Y(last)} L${X(p.x)},${Y(p.y)}`; last=p.y; }); g+=`<path d="${d}" fill="none" stroke="var(--accent)" stroke-width="2"/>`;
+  if(span&&elapsed<span){ const xe=Math.min(n,elapsed-1); g+=`<line x1="${X(xe)}" y1="${Y(c)}" x2="${X(days(d0,res))}" y2="${Y(projEnd)}" stroke="var(--orange)" stroke-width="2" stroke-dasharray="3 3"/><text x="${X(days(d0,res))}" y="${Y(projEnd)-6}" text-anchor="end" fill="#c2410c">projected ${lakh(projEnd)}</text>`; }
+  pts.forEach(p=>{ g+=`<circle cx="${X(p.x)}" cy="${Y(p.y)}" r="3.5" fill="var(--accent)" data-tip="${esc(fmtD(p.e.date))}: ${esc(p.e.desc||p.e.head)} ${inr(p.e.amt)} (cumulative ${inr(p.y)})"/>`; });
+  const ticks=Math.min(8,n); for(let i=0;i<=ticks;i++){ const x=Math.round(i*n/ticks); g+=`<text x="${X(x)}" y="${H-m.b+16}" text-anchor="middle">${fmtD(addDays(d0,x)).replace(/ \d{4}$/,'')}</text>`; }
+  if(nom&&$('#dPoll').value){ const xp=days(d0,$('#dPoll').value); if(xp>=0&&xp<=n) g+=`<line x1="${X(xp)}" x2="${X(xp)}" y1="${m.t}" y2="${m.t+ph}" stroke="#9ca3af" stroke-dasharray="2 3"/><text x="${X(xp)+4}" y="${m.t+12}">poll</text>`; }
+  return g+'</svg><div class="legend"><span><i style="background:var(--accent)"></i>cumulative spend</span><span><i style="background:var(--orange)"></i>projection at the present daily rate</span><span><i style="background:#b91c1c"></i>Rule 90 ceiling</span></div>';
+}
+load(); $('#eDate').value=new Date().toISOString().slice(0,10); render();
+</script>
+</body>
+</html>

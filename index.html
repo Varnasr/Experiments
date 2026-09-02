@@ -361,6 +361,58 @@
             <div class="pop"><b>In plain words.</b> Some documents shared on Google Drive can be read but not downloaded. This script reads them the way you would, page by page, and saves what it sees as a normal PDF you can keep and search.</div>
             <div class="notes"><ul><li>Playwright drives Chromium through the Drive viewer until every page canvas has rendered, exports each as an image and stitches them with jsPDF at the original dimensions. Runs locally; nothing is uploaded.</li></ul></div>
         </article>
+        <article class="card" id="ledger">
+            <div class="doodle"><svg viewBox="0 0 64 64" filter="url(#wobble)"><path d="M10 54V22M22 54V12M34 54V30M46 54V18"/><path d="M6 54h52"/><path d="M6 14h52" stroke-dasharray="4 3"/><path d="M50 24l6 6M56 24l-6 6"/></svg></div>
+            <h3><a href="expense-ledger/">Election Expenditure Ledger</a><span class="badge b-law">Law</span><span class="badge b-tool">Tool</span></h3>
+            <p class="summary">A candidate's running account under section 77 of the Representation of the People Act: entries by head against the Rule 90 ceiling, burn rate and a projection to counting day, the section 78 lodging deadline, and flags for cash above the threshold, spending outside the period and expenditure by others.</p>
+            <p class="tech">s.77, s.78, s.10A RPA 1951 · Rule 90 CER 1961 (2022) · localStorage · CSV</p>
+            <span class="open">Open the tool →</span>
+            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button></div>
+            <div class="pop"><b>In plain words.</b> Every candidate must keep a day-by-day account of what the campaign spends, and the total has a legal cap. Type in each bill as it comes; the page keeps the total, shows how fast the money is going, says where the campaign will land on counting day at that pace, and tells you the last day to file the account. Nothing leaves your browser.</div>
+            <div class="notes"><ul>
+                <li>Ceiling pre-filled by house and state from the Rule 90 amendment of 6 January 2022 (₹95 / ₹75 lakh; ₹40 / ₹28 lakh), editable because the state banding is reproduced from the notification pattern rather than read from each notification.</li>
+                <li>Accounting period from nomination to declaration, both inclusive; burn rate over elapsed accounting days; the projection is linear; the step chart marks the poll day. A hand-written CSV parser handles quoted commas so descriptions round-trip.</li>
+            </ul><span class="verified">Verified: the example ledger's fourteen entries sum to ₹21,01,000 by hand; a ₹12,000 cash entry raises the flag.</span></div>
+        </article>
+        <article class="card" id="promise">
+            <div class="doodle"><svg viewBox="0 0 64 64" filter="url(#wobble)"><path d="M14 10h36v44H14z"/><path d="M22 20h20M22 28h20M22 36h12"/><path d="M8 48c6-8 12-8 18 0s12 8 18 0"/><path d="M44 44l4 4 8-10"/></svg></div>
+            <h3><a href="promise-costing/">Manifesto Promise Costing</a><span class="badge b-data">Data</span><span class="badge b-research">Research</span></h3>
+            <p class="summary">Beneficiaries × uptake × unit cost for each promise, with low and high ranges, against a state's revenue receipts, expenditure, GSDP and fiscal deficit: a multi-year path against the 3% norm, a Monte Carlo band and a tornado of which assumption matters.</p>
+            <p class="tech">triangular Monte Carlo · one-at-a-time tornado · RBI State Finances inputs</p>
+            <span class="open">Open the tool →</span>
+            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button></div>
+            <div class="pop"><b>In plain words.</b> Parties promise free electricity, a monthly transfer, a loan waiver. Each one is a number: how many people, how many will claim, how much each. This page adds them up and sets the sum beside the state's own budget, so you can see whether the promises cost a tenth of the revenue or half of it, and what the deficit would be if they were simply borrowed.</div>
+            <div class="notes"><ul>
+                <li>Each promise carries low, likely and high for beneficiaries, uptake and unit cost; recurring promises grow at a unit-cost rate, one-off promises are spread over their years. Aggregates are entered by hand from the state budget or the RBI study; the default is an illustrative state, labelled as such.</li>
+                <li>4,000 draws from independent triangular distributions give the 5th to 95th percentile of the first-year bill and the share of draws that breach the deficit norm; the tornado moves one input at a time from low to high and ranks by swing.</li>
+            </ul><span class="verified">Verified: the six example promises reproduce by hand (₹31,500 crore, 15.7% of revenue receipts, deficit 3.0% to 5.0% of GSDP).</span></div>
+        </article>
+        <article class="card" id="interest">
+            <div class="doodle"><svg viewBox="0 0 64 64" filter="url(#wobble)"><path d="M8 52C20 50 30 40 34 26s8-16 22-14"/><path d="M8 56h48"/><path d="M14 40a3 3 0 1 0 0 .1M40 22a3 3 0 1 0 0 .1"/><path d="M50 6l4 4-4 4"/></svg></div>
+            <h3><a href="statutory-interest/">Statutory Interest Calculator</a><span class="badge b-law">Law</span></h3>
+            <p class="summary">Interest the way Indian statutes prescribe it, with the section quoted: MSMED Act s.16 (three times the bank rate, monthly rests), CPC s.34 on decrees, Arbitration Act s.31(7) on awards, the Negotiable Instruments Act limits on a bounced cheque, and plain simple or compound with the schedule.</p>
+            <p class="tech">MSMED ss.15–16 · CPC s.34 · A&amp;C Act s.31(7) · NI Act ss.138, 143A, 148 · actual/365</p>
+            <span class="open">Open the tool →</span>
+            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button></div>
+            <div class="pop"><b>In plain words.</b> When a buyer pays a small supplier late, or a court decrees a sum, or an arbitrator awards one, the law fixes the interest, and the rules differ. Pick the situation, enter the amount and the dates, and the page computes the interest month by month with the section it is applying printed beside the working.</div>
+            <div class="notes"><ul>
+                <li>MSMED: the 45-day cap on the agreed period, interest from the day after, compound with monthly rests at 3 × the RBI bank rate the reader enters. CPC: three simple-interest periods with the 6% post-decree ceiling and the commercial-transaction proviso. Arbitration: post-award at current rate + 2 on the sum plus pre-award interest (Hyder Consulting, 2015), with the principal-only alternative shown.</li>
+                <li>Every compounding schedule prints each period's opening balance, interest and closing balance; stub periods are simple; day count actual over 365.</li>
+            </ul><span class="verified">Verified: all five default cases reproduce in Python to the rupee (MSMED ₹86,430; decree ₹2,65,315; award ₹8,74,473).</span></div>
+        </article>
+        <article class="card" id="air">
+            <div class="doodle"><svg viewBox="0 0 64 64" filter="url(#wobble)"><path d="M10 40c8-10 16-10 24 0s16 10 22 0"/><path d="M10 28c8-10 16-10 24 0s16 10 22 0" stroke-dasharray="3 3"/><path d="M14 54c0-6 6-8 10-4 4-4 12-2 10 4"/><path d="M40 10l4 6M50 8l-2 8"/></svg></div>
+            <h3><a href="air-quality/">A Year of Air</a><span class="badge b-climate">Climate</span><span class="badge b-data">Data</span></h3>
+            <p class="summary">A year of hourly PM2.5, PM10 and NO₂ for any Indian city or coordinate, live from Open-Meteo's CAMS archive, reduced to what the standards ask: annual means against WHO 2021 and NAAQS 2009, days over each 24-hour limit, month by month, and the cigarette equivalent.</p>
+            <p class="tech">Open-Meteo air quality API (CAMS) · WHO 2021 · NAAQS 2009 · Berkeley Earth rule</p>
+            <span class="open">Open the tool →</span>
+            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button></div>
+            <div class="pop"><b>In plain words.</b> Pick a city. The page fetches every hour of the past year's fine-particle pollution, works out the daily averages, counts how many days broke the Indian limit and the WHO guideline, and says how many cigarettes a year of that air is comparable to. Model estimates, not a monitor by the road, and the page says so.</div>
+            <div class="notes"><ul>
+                <li>8,760 hourly rows fetched in one request with an IST timezone; daily means of 24 hourly values; a day breaches a 24-hour limit when its mean exceeds it; the cigarette equivalent is the sum of daily PM2.5 divided by 22.</li>
+                <li>Hand-rolled SVG for the daily line and the monthly bars with hover; tolerant of a series the API does not return.</li>
+            </ul><span class="verified">Verified: a recorded Delhi year reproduces in Python (365 days, 86.2 µg/m³ annual mean, 260 days over India's 24-hour limit, 1,431 cigarette equivalents).</span></div>
+        </article>
     </div>
 </div></section>
 
