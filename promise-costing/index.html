@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manifesto Promise Costing — Experiments</title>
+<meta name="description" content="Cost a set of manifesto promises against a state's budget: beneficiaries times uptake times unit cost for each promise, with low and high ranges, set against revenue receipts, total expenditure, GSDP and the fiscal deficit, with a Monte Carlo band and a tornado of which assumption matters most.">
+<link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23572e91'/><path d='M7 22h18' stroke='white' stroke-width='2.4' stroke-linecap='round'/><path d='M10 22V12M16 22V8M22 22v-6' stroke='%23ff9911' stroke-width='3' stroke-linecap='round'/></svg>">
+<style>
+  :root { --bg:#fafafa; --surface:#fff; --border:#e5e7eb; --text:#1a1a2e; --dim:#4b5563; --muted:#9ca3af; --accent:#572e91; --accent-soft:#efe9f7; --orange:#ff9911; --grid:#eee; --s1:#572e91; --s2:#99459a; --s3:#ff9911; --s4:#1B6B4A; --s5:#0e7490; --s6:#b45309; --s7:#6b7280; --s8:#be185d; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--text); line-height:1.55; }
+  a { color:var(--accent); }
+  header { border-bottom:1px solid var(--border); background:#fff; }
+  .wrap { max-width:1200px; margin:0 auto; padding:0 1.25rem; }
+  header .wrap { display:flex; align-items:baseline; justify-content:space-between; gap:1rem; padding:.9rem 1.25rem; flex-wrap:wrap; }
+  header h1 { font-family:Georgia,serif; font-size:1.35rem; font-weight:400; }
+  header h1 small { font-size:.8rem; color:var(--muted); margin-left:.5rem; }
+  header nav a { font-size:.85rem; margin-left:1rem; text-decoration:none; }
+  main { padding:1.5rem 0 3rem; }
+  .lede { color:var(--dim); font-size:.95rem; max-width:72ch; margin-bottom:1.25rem; }
+  .grid { display:grid; grid-template-columns:400px 1fr; gap:1.25rem; align-items:start; }
+  @media (max-width:960px){ .grid { grid-template-columns:1fr; } }
+  .panel { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1rem 1.15rem; margin-bottom:1rem; }
+  .panel h2 { font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; margin-bottom:.7rem; }
+  label { display:block; font-size:.78rem; color:var(--dim); margin:.45rem 0 .15rem; }
+  select, input[type=text], input[type=number] { width:100%; font:inherit; font-size:.88rem; padding:.35rem .45rem; border:1px solid var(--border); border-radius:6px; background:#fff; color:var(--text); }
+  .row { display:flex; gap:.4rem; } .row > * { flex:1; min-width:0; }
+  .r3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:.4rem; }
+  .r3 span { font-size:.68rem; color:var(--muted); display:block; }
+  button { font:inherit; font-size:.85rem; padding:.45rem .8rem; border-radius:6px; border:1px solid var(--border); background:#fff; color:var(--text); cursor:pointer; }
+  button.go { border-color:var(--accent); background:var(--accent); color:#fff; }
+  .btns { display:flex; gap:.4rem; flex-wrap:wrap; margin-top:.6rem; }
+  .promise { border:1px solid var(--border); border-radius:8px; padding:.6rem .7rem; margin:.5rem 0; background:#fcfbfe; }
+  .promise .hd { display:flex; justify-content:space-between; align-items:center; gap:.5rem; }
+  .promise .hd input { font-weight:600; }
+  .promise .x { border:none; background:none; color:#b91c1c; font-size:1.1rem; padding:0 .3rem; }
+  .stat { display:inline-block; margin:.25rem 1.4rem .4rem 0; vertical-align:top; max-width:250px; }
+  .stat b { display:block; font-size:1.3rem; font-family:Georgia,serif; font-weight:400; } .stat span { font-size:.74rem; color:var(--muted); line-height:1.3; display:block; }
+  .total { font-size:1.9rem !important; }
+  table { border-collapse:collapse; width:100%; font-size:.83rem; margin:.5rem 0; }
+  th, td { text-align:right; padding:.3rem .45rem; border-bottom:1px solid var(--border); font-variant-numeric:tabular-nums; vertical-align:top; }
+  th:first-child, td:first-child { text-align:left; } th { color:var(--dim); font-weight:600; font-size:.74rem; white-space:nowrap; }
+  .note { font-size:.82rem; color:var(--dim); margin-top:.5rem; }
+  .warn { background:#fff7ed; border:1px solid #fed7aa; color:#9a3412; padding:.5rem .7rem; border-radius:6px; font-size:.83rem; margin:.5rem 0; }
+  .bad { background:#fef2f2; border-color:#fecaca; color:#991b1b; }
+  .ok { background:#ecfdf5; border-color:#a7f3d0; color:#065f46; }
+  .mini { font-size:.76rem; color:var(--muted); }
+  svg.chart { width:100%; height:auto; font-size:11px; fill:var(--dim); }
+  .tip { position:fixed; pointer-events:none; background:#1a1a2e; color:#fff; padding:.35rem .55rem; border-radius:5px; font-size:.78rem; display:none; z-index:10; max-width:300px; }
+  .legend { display:flex; gap:.9rem; flex-wrap:wrap; font-size:.76rem; color:var(--dim); margin:.3rem 0; } .legend i { display:inline-block; width:11px; height:11px; border-radius:2px; vertical-align:-1px; margin-right:.3rem; }
+  details { margin-top:.5rem; font-size:.84rem; color:var(--dim); } summary { cursor:pointer; color:var(--accent); }
+  footer { border-top:1px solid var(--border); padding:1.25rem; text-align:center; font-size:.8rem; color:var(--muted); }
+  @media print { header nav, .btns, footer, .tip { display:none; } .grid { grid-template-columns:1fr; } body { background:#fff; } }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>Manifesto Promise Costing <small>what the promises add up to, against the state's own budget</small></h1>
+  <nav><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/promise-costing">Source</a></nav>
+</div></header>
+<main><div class="wrap">
+<p class="lede">A manifesto promise is a number nobody writes down: so many households, times the share that will claim, times the amount each gets, every year. This page writes it down. Enter each promise as a range for beneficiaries, uptake and unit cost, enter the state's fiscal aggregates from its own budget or the RBI's <em>State Finances: A Study of Budgets</em>, and the page returns the annual bill as a share of revenue receipts, expenditure and GSDP, the fiscal deficit it implies against the 3 per cent norm, a Monte Carlo band from the ranges, and a tornado showing which assumption drives the total. The example is illustrative, with round numbers labelled as such; the arithmetic is the point.</p>
+
+<div class="grid">
+<div>
+  <div class="panel"><h2>State fiscal aggregates (₹ crore, one year)</h2>
+    <label>State or label</label><input type="text" id="stName" value="Illustrative state (round numbers, not a real budget)">
+    <div class="row"><div><label>Revenue receipts</label><input type="number" id="rr" value="200000" step="1000"></div><div><label>of which own tax revenue</label><input type="number" id="otr" value="110000" step="1000"></div></div>
+    <div class="row"><div><label>Total expenditure</label><input type="number" id="te" value="240000" step="1000"></div><div><label>of which capital outlay</label><input type="number" id="co" value="40000" step="1000"></div></div>
+    <div class="row"><div><label>GSDP</label><input type="number" id="gsdp" value="1600000" step="10000"></div><div><label>Fiscal deficit</label><input type="number" id="fd" value="48000" step="1000"></div></div>
+    <div class="row"><div><label>Revenue deficit (negative if surplus)</label><input type="number" id="rd" value="8000" step="1000"></div><div><label>Committed expenditure (salaries, pensions, interest)</label><input type="number" id="ce" value="100000" step="1000"></div></div>
+    <div class="row"><div><label>Nominal GSDP growth, % a year</label><input type="number" id="g" value="10" step="0.5"></div><div><label>Revenue buoyancy (revenue growth ÷ GSDP growth)</label><input type="number" id="buoy" value="1.0" step="0.1"></div></div>
+    <div class="row"><div><label>Years to project</label><input type="number" id="yrs" value="5" min="1" max="10"></div><div><label>Fiscal deficit norm, % GSDP</label><input type="number" id="fdNorm" value="3" step="0.5"></div></div>
+    <p class="mini">Where to find these: the state's Budget at a Glance and the RBI's annual State Finances: A Study of Budgets (Appendix tables on revenue receipts, expenditure, deficits and GSDP). Use one year's figures throughout, the budget estimate or the revised estimate, and say which.</p>
+  </div>
+
+  <div class="panel"><h2>Promises</h2>
+    <div id="promises"></div>
+    <div class="btns"><button id="addP">Add a promise</button><button id="example">Load the example</button><button class="go" id="run">Cost the manifesto</button></div>
+    <p class="mini">Each promise: beneficiaries (persons, households, units) × uptake share × unit cost per year, optionally growing each year. Enter low, most likely and high for the three quantities; the Monte Carlo draws each from a triangular distribution on those three points. A one-off promise (a capital project) is spread evenly over the years you give it.</p>
+    <div class="btns"><button id="jsonOut">Export JSON</button><button id="jsonIn">Import JSON</button><input type="file" id="jsonFile" accept=".json" hidden></div>
+  </div>
+</div>
+
+<div>
+  <div class="panel"><h2>The bill</h2><div id="bill"></div></div>
+  <div class="panel"><h2>Promise by promise, first full year</h2><div id="byP"></div></div>
+  <div class="panel"><h2>Over the years, against the fiscal deficit norm</h2><div id="path"></div></div>
+  <div class="panel"><h2>Uncertainty: Monte Carlo on the ranges</h2><div id="mc"></div></div>
+  <div class="panel"><h2>Which assumption matters: tornado</h2><div id="tornado"></div></div>
+  <details><summary>How the numbers are made</summary>
+    <p>Annual cost of a recurring promise in year t = beneficiaries × uptake × unit cost × (1 + growth)<sup>t−1</sup>, in rupees, converted to crore. A one-off promise costs total ÷ years in each year it runs. The share of revenue receipts, expenditure and GSDP in year t divides by the aggregate grown at the nominal GSDP growth rate (revenue receipts grow at buoyancy × GSDP growth). The implied fiscal deficit adds the promises' cost to the entered deficit on the assumption that nothing else changes, which is the honest baseline: the page does not know what will be cut to pay for them. The "financing needed" line says what own-tax revenue would have to rise by, in per cent, to hold the deficit where it is.</p>
+    <p>The Monte Carlo draws 4,000 manifestos, each promise's three quantities from independent triangular distributions with the entered low, mode and high, and reports the 5th, 50th and 95th percentiles of the first-year bill. Correlation between promises (a good year for enrolment in one scheme is a good year in another) is not modelled, so the band is narrower than reality. The tornado holds everything at its mode and moves one quantity at a time to its low and its high, ranking by the swing; it is the one-at-a-time sensitivity that a budget officer would do by hand.</p>
+    <p>What is not here: the revenue a promise might generate (a road, a school), behavioural responses, the difference between announcing and disbursing, or the Centre's share in centrally sponsored schemes. Put those into the unit cost or the uptake if you have a view. The Fiscal Responsibility and Budget Management norm of 3 per cent of GSDP is the Fifteenth Finance Commission's baseline for states; several states' own Acts and the Centre's borrowing consent set the operative limit in a given year.</p>
+  </details>
+</div>
+</div>
+</div></main>
+<div class="tip" id="tip"></div>
+<footer>Part of <a href="../">Experiments</a> by Varna Sri Raman · Idealog Works · MIT licence · The example budget is illustrative; enter a real one from the state budget or the RBI study.</footer>
+<script>
+'use strict';
+const $=s=>document.querySelector(s); const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const cr=x=>(x==null||!isFinite(x))?'—':'₹'+Math.round(x).toLocaleString('en-IN')+' cr'; const pct=(x,d=1)=>(x==null||!isFinite(x))?'—':x.toFixed(d)+'%'; const num=(x,d=0)=>(x==null||!isFinite(x))?'—':Number(x).toLocaleString('en-IN',{maximumFractionDigits:d});
+const tip=$('#tip'); document.addEventListener('mousemove',e=>{const t=e.target.closest&&e.target.closest('[data-tip]');if(t){tip.innerHTML=t.getAttribute('data-tip');tip.style.display='block';tip.style.left=(e.clientX+12)+'px';tip.style.top=(e.clientY-10)+'px';}else tip.style.display='none';});
+const COL=['var(--s1)','var(--s2)','var(--s3)','var(--s4)','var(--s5)','var(--s6)','var(--s7)','var(--s8)'];
+const KEY='promise-costing-v1';
+let P=[];
+const blank=()=>({name:'New promise',kind:'recurring',unitLabel:'households',b:[0,0,0],u:[0.8,0.9,1],c:[0,0,0],growth:0,years:0});
+function renderP(){ $('#promises').innerHTML=P.map((p,i)=>`<div class="promise" data-i="${i}"><div class="hd"><input type="text" data-k="name" value="${esc(p.name)}"><button class="x" title="Remove">×</button></div>
+  <div class="row"><div><label>Kind</label><select data-k="kind"><option value="recurring"${p.kind==='recurring'?' selected':''}>Recurring, every year</option><option value="oneoff"${p.kind==='oneoff'?' selected':''}>One-off, spread over years</option></select></div><div><label>Beneficiary unit</label><input type="text" data-k="unitLabel" value="${esc(p.unitLabel)}"></div></div>
+  <label>Beneficiaries (${esc(p.unitLabel)}) <span class="mini">low · likely · high</span></label><div class="r3"><input type="number" data-k="b0" value="${p.b[0]}"><input type="number" data-k="b1" value="${p.b[1]}"><input type="number" data-k="b2" value="${p.b[2]}"></div>
+  <label>Uptake share (0 to 1)</label><div class="r3"><input type="number" step="0.05" min="0" max="1" data-k="u0" value="${p.u[0]}"><input type="number" step="0.05" min="0" max="1" data-k="u1" value="${p.u[1]}"><input type="number" step="0.05" min="0" max="1" data-k="u2" value="${p.u[2]}"></div>
+  <label>${p.kind==='oneoff'?'Total cost per beneficiary, ₹ (one-off)':'Unit cost per beneficiary per year, ₹'}</label><div class="r3"><input type="number" data-k="c0" value="${p.c[0]}"><input type="number" data-k="c1" value="${p.c[1]}"><input type="number" data-k="c2" value="${p.c[2]}"></div>
+  <div class="row"><div><label>${p.kind==='oneoff'?'Spread over how many years':'Unit cost growth, % a year'}</label><input type="number" step="0.5" data-k="${p.kind==='oneoff'?'years':'growth'}" value="${p.kind==='oneoff'?(p.years||1):p.growth}"></div><div><label>First-year cost at the likely values</label><input type="text" readonly value="${cr(cost1(p))}"></div></div></div>`).join('');
+  $('#promises').querySelectorAll('[data-k]').forEach(el=>el.addEventListener('change',()=>{ const i=+el.closest('.promise').dataset.i, k=el.dataset.k, v=el.value; const p=P[i]; if(k==='name'||k==='unitLabel'||k==='kind') p[k]=v; else if(/^[buc]\d$/.test(k)) p[k[0]][+k[1]]=+v; else p[k]=+v; save(); renderP(); }));
+  $('#promises').querySelectorAll('.x').forEach(b=>b.onclick=()=>{ P.splice(+b.closest('.promise').dataset.i,1); save(); renderP(); });
+}
+function cost1(p,b=p.b[1],u=p.u[1],c=p.c[1]){ const tot=b*u*c/1e7; return p.kind==='oneoff'?tot/Math.max(1,p.years||1):tot; }
+function costY(p,t,b=p.b[1],u=p.u[1],c=p.c[1]){ if(p.kind==='oneoff'){ const n=Math.max(1,p.years||1); return t<=n?b*u*c/1e7/n:0; } return b*u*c/1e7*Math.pow(1+(p.growth||0)/100,t-1); }
+function save(){ try{ localStorage.setItem(KEY,JSON.stringify({P,fiscal:fiscal()})); }catch(e){} }
+function fiscal(){ const o={}; ['stName','rr','otr','te','co','gsdp','fd','rd','ce','g','buoy','yrs','fdNorm'].forEach(k=>o[k]=$('#'+k).value); return o; }
+function loadFiscal(f){ if(!f) return; Object.keys(f).forEach(k=>{ if($('#'+k)) $('#'+k).value=f[k]; }); }
+$('#addP').onclick=()=>{ P.push(blank()); save(); renderP(); };
+$('#example').onclick=()=>{ P=[
+  {name:'Monthly transfer to women heads of household',kind:'recurring',unitLabel:'women',b:[9000000,10000000,11500000],u:[0.75,0.85,0.95],c:[12000,12000,12000],growth:0,years:0},
+  {name:'Free electricity up to 200 units',kind:'recurring',unitLabel:'households',b:[10000000,12000000,13000000],u:[0.6,0.7,0.8],c:[6000,7200,9000],growth:5,years:0},
+  {name:'Free bus travel for women',kind:'recurring',unitLabel:'women riders a day',b:[2500000,3500000,4500000],u:[1,1,1],c:[5500,6500,8000],growth:6,years:0},
+  {name:'Unemployment allowance for graduates, 2 years',kind:'recurring',unitLabel:'graduates',b:[400000,500000,700000],u:[0.4,0.55,0.7],c:[36000,36000,36000],growth:0,years:0},
+  {name:'Farm loan waiver up to ₹2 lakh',kind:'oneoff',unitLabel:'farmer accounts',b:[2000000,2500000,3000000],u:[0.7,0.8,0.9],c:[80000,100000,130000],growth:0,years:3},
+  {name:'10 kg free rice per person per month',kind:'recurring',unitLabel:'ration-card persons',b:[30000000,35000000,38000000],u:[0.9,0.95,1],c:[1400,1600,1900],growth:4,years:0}
+ ]; loadFiscal({stName:'Illustrative state (round numbers, not a real budget)',rr:200000,otr:110000,te:240000,co:40000,gsdp:1600000,fd:48000,rd:8000,ce:100000,g:10,buoy:1.0,yrs:5,fdNorm:3}); save(); renderP(); run(); };
+$('#jsonOut').onclick=()=>{ const b=new Blob([JSON.stringify({P,fiscal:fiscal()},null,1)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='manifesto-costing.json'; a.click(); };
+$('#jsonIn').onclick=()=>$('#jsonFile').click(); $('#jsonFile').onchange=e=>{ const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{ const j=JSON.parse(r.result); if(Array.isArray(j.P)) P=j.P; loadFiscal(j.fiscal); save(); renderP(); run(); }catch(err){ alert('Not a costing file.'); } }; r.readAsText(f); e.target.value=''; };
+['rr','otr','te','co','gsdp','fd','rd','ce','g','buoy','yrs','fdNorm','stName'].forEach(k=>$('#'+k).addEventListener('change',()=>{ save(); }));
+
+// triangular draw
+function tri(lo,mo,hi){ if(hi<=lo) return mo; const u=Math.random(); const fc=(mo-lo)/(hi-lo); return u<fc?lo+Math.sqrt(u*(hi-lo)*(mo-lo)):hi-Math.sqrt((1-u)*(hi-lo)*(hi-mo)); }
+function quant(a,q){ const s=a.slice().sort((x,y)=>x-y); const i=(s.length-1)*q, lo=Math.floor(i), hi=Math.ceil(i); return s[lo]+(s[hi]-s[lo])*(i-lo); }
+
+function run(){ const F={}; ['rr','otr','te','co','gsdp','fd','rd','ce','g','buoy','yrs','fdNorm'].forEach(k=>F[k]=+$('#'+k).value); const Y=Math.max(1,Math.min(10,F.yrs|0)); const g=F.g/100; if(!P.length){ $('#bill').innerHTML='<p class="note">Add a promise or load the example.</p>'; ['#byP','#path','#mc','#tornado'].forEach(s=>$(s).innerHTML=''); return; }
+  const c1=P.map(p=>cost1(p)); const T1=c1.reduce((a,b)=>a+b,0);
+  const s=v=>F.rr?T1/F.rr*100:NaN; const fdNew=F.fd+T1; const fdPct=F.gsdp?F.fd/F.gsdp*100:NaN, fdNewPct=F.gsdp?fdNew/F.gsdp*100:NaN; const rdNew=F.rd+T1; const room=F.gsdp?F.fdNorm/100*F.gsdp-F.fd:NaN; const need=F.otr?T1/F.otr*100:NaN; const disc=F.te-F.ce;
+  let verdict=''; if(isFinite(fdNewPct)){ verdict=fdNewPct<=F.fdNorm?`<div class="warn ok">Financed by borrowing alone, the promises leave the fiscal deficit at ${pct(fdNewPct)} of GSDP, inside the ${F.fdNorm}% norm, with ${cr(room-T1)} of room left in year one.</div>`:`<div class="warn${fdNewPct>F.fdNorm+2?' bad':''}">Financed by borrowing alone, the promises take the fiscal deficit from ${pct(fdPct)} to ${pct(fdNewPct)} of GSDP against a ${F.fdNorm}% norm: ${cr(T1-room)} a year must come from new revenue or from cuts, which is ${pct(need)} more own-tax revenue or ${pct(disc>0?T1/disc*100:NaN)} of the discretionary (non-committed) budget.</div>`; }
+  $('#bill').innerHTML=verdict+`<span class="stat"><b class="total">${cr(T1)}</b><span>first-year cost of ${P.length} promises at the likely values</span></span><span class="stat"><b>${pct(s())}</b><span>of revenue receipts (${cr(F.rr)})</span></span><span class="stat"><b>${pct(F.te?T1/F.te*100:NaN)}</b><span>of total expenditure (${cr(F.te)})</span></span><span class="stat"><b>${pct(F.gsdp?T1/F.gsdp*100:NaN,2)}</b><span>of GSDP (${cr(F.gsdp)})</span></span><span class="stat"><b>${pct(F.otr?T1/F.otr*100:NaN)}</b><span>of own tax revenue; the rise needed to pay for them without borrowing</span></span><span class="stat"><b>${pct(F.co?T1/F.co*100:NaN)}</b><span>of capital outlay (${cr(F.co)}), the usual casualty</span></span><span class="stat"><b>${pct(fdPct)} → ${pct(fdNewPct)}</b><span>fiscal deficit, % GSDP, before and after, all else equal</span></span><span class="stat"><b>${cr(F.rd)} → ${cr(rdNew)}</b><span>revenue deficit (recurring promises are revenue expenditure)</span></span><p class="mini">${esc($('#stName').value)} · aggregates as entered, ₹ crore · promises' cost in year one at the most likely beneficiaries, uptake and unit cost.</p>`;
+  // by promise
+  $('#byP').innerHTML=`<table><tr><th>Promise</th><th>Beneficiaries</th><th>Uptake</th><th>Unit cost ₹</th><th>Year 1 cost</th><th>Share of bill</th><th>% revenue receipts</th><th>Low to high</th></tr>${P.map((p,i)=>`<tr><td><i style="display:inline-block;width:9px;height:9px;border-radius:2px;background:${COL[i%8]};margin-right:.35rem"></i>${esc(p.name)}${p.kind==='oneoff'?' <span class="mini">(one-off over '+(p.years||1)+' yrs)</span>':''}</td><td>${num(p.b[1])} ${esc(p.unitLabel)}</td><td>${num(p.u[1]*100)}%</td><td>${num(p.c[1])}</td><td>${cr(c1[i])}</td><td>${pct(c1[i]/T1*100)}</td><td>${pct(F.rr?c1[i]/F.rr*100:NaN)}</td><td>${cr(cost1(p,p.b[0],p.u[0],p.c[0]))} to ${cr(cost1(p,p.b[2],p.u[2],p.c[2]))}</td></tr>`).join('')}<tr><th>Total</th><th></th><th></th><th></th><th>${cr(T1)}</th><th>100%</th><th>${pct(s())}</th><th>${cr(P.reduce((a,p)=>a+cost1(p,p.b[0],p.u[0],p.c[0]),0))} to ${cr(P.reduce((a,p)=>a+cost1(p,p.b[2],p.u[2],p.c[2]),0))}</th></tr></table>`+stackBar(c1);
+  // path
+  const rows=[]; for(let t=1;t<=Y;t++){ const gs=F.gsdp*Math.pow(1+g,t-1), rr=F.rr*Math.pow(1+g*F.buoy,t-1), te=F.te*Math.pow(1+g,t-1), fd=F.fd*Math.pow(1+g,t-1); const byp=P.map(p=>costY(p,t)); const tot=byp.reduce((a,b)=>a+b,0); rows.push({t,gs,rr,te,fd,byp,tot,fdPct:fd/gs*100,fdNewPct:(fd+tot)/gs*100}); }
+  $('#path').innerHTML=pathChart(rows,F.fdNorm)+`<table><tr><th>Year</th><th>Promises' cost</th><th>% revenue receipts</th><th>% GSDP</th><th>Fiscal deficit % GSDP, baseline</th><th>with promises, all else equal</th><th>Norm</th></tr>${rows.map(r=>`<tr><td>Year ${r.t}</td><td>${cr(r.tot)}</td><td>${pct(r.tot/r.rr*100)}</td><td>${pct(r.tot/r.gs*100,2)}</td><td>${pct(r.fdPct)}</td><td>${pct(r.fdNewPct)}</td><td>${r.fdNewPct>F.fdNorm?'<span style="color:#b91c1c">over</span>':'within'}</td></tr>`).join('')}</table><p class="note">The baseline deficit is scaled with GSDP, so it stays at ${pct(fdPct)}; revenue receipts grow at buoyancy ${F.buoy} × ${F.g}% nominal growth. A one-off promise falls out of the path after its spread years; a recurring promise with cost growth rises faster than revenue when its growth exceeds ${(g*F.buoy*100).toFixed(1)}%.</p>`;
+  // Monte Carlo
+  const N=4000; const draws=new Array(N); const perP=P.map(()=>new Array(N)); for(let k=0;k<N;k++){ let t=0; P.forEach((p,i)=>{ const v=cost1(p,tri(p.b[0],p.b[1],p.b[2]),tri(p.u[0],p.u[1],p.u[2]),tri(p.c[0],p.c[1],p.c[2])); perP[i][k]=v; t+=v; }); draws[k]=t; }
+  const q05=quant(draws,.05), q50=quant(draws,.5), q95=quant(draws,.95), mean=draws.reduce((a,b)=>a+b,0)/N; const pOver=isFinite(room)?draws.filter(d=>d>room).length/N:NaN;
+  $('#mc').innerHTML=`<span class="stat"><b>${cr(q50)}</b><span>median first-year bill</span></span><span class="stat"><b>${cr(q05)} to ${cr(q95)}</b><span>90% band (5th to 95th percentile)</span></span><span class="stat"><b>${cr(mean)}</b><span>mean (above the median when ranges skew high)</span></span><span class="stat"><b>${pct(F.rr?q95/F.rr*100:NaN)}</b><span>of revenue receipts at the 95th percentile</span></span>${isFinite(pOver)?`<span class="stat"><b>${pct(pOver*100,0)}</b><span>of draws breach the ${F.fdNorm}% deficit norm if borrowed</span></span>`:''}`+histo(draws,room)+`<table><tr><th>Promise</th><th>P5</th><th>Median</th><th>P95</th><th>Spread (P95 − P5)</th></tr>${P.map((p,i)=>`<tr><td>${esc(p.name)}</td><td>${cr(quant(perP[i],.05))}</td><td>${cr(quant(perP[i],.5))}</td><td>${cr(quant(perP[i],.95))}</td><td>${cr(quant(perP[i],.95)-quant(perP[i],.05))}</td></tr>`).join('')}</table><p class="note">${N.toLocaleString('en-IN')} draws, triangular on each promise's low, likely and high, independent across promises and across the three quantities within a promise.</p>`;
+  // tornado
+  const items=[]; P.forEach((p,i)=>{ [['b','beneficiaries'],['u','uptake'],['c','unit cost']].forEach(([k,l])=>{ if(p[k][2]<=p[k][0]) return; const lo=T1-c1[i]+cost1(p,k==='b'?p.b[0]:p.b[1],k==='u'?p.u[0]:p.u[1],k==='c'?p.c[0]:p.c[1]); const hi=T1-c1[i]+cost1(p,k==='b'?p.b[2]:p.b[1],k==='u'?p.u[2]:p.u[1],k==='c'?p.c[2]:p.c[1]); items.push({label:p.name+': '+l,lo,hi,swing:hi-lo,col:COL[i%8]}); }); }); items.sort((a,b)=>b.swing-a.swing);
+  $('#tornado').innerHTML=items.length?tornadoChart(items.slice(0,12),T1)+`<p class="note">Each bar moves one quantity from its low to its high with everything else at the likely value; the base is ${cr(T1)}. The top bar is the assumption to argue about first.</p>`:'<p class="note">Give at least one promise a range (low below high) to see the tornado.</p>';
+}
+function stackBar(c){ const T=c.reduce((a,b)=>a+b,0)||1; let x=0; return `<svg class="chart" viewBox="0 0 760 34" role="img" aria-label="share of bill by promise">${c.map((v,i)=>{ const w=v/T*760; const r=`<rect x="${x}" y="4" width="${Math.max(0,w-1)}" height="26" fill="${COL[i%8]}" data-tip="${esc(P[i].name)}: ${cr(v)} (${pct(v/T*100)})"/>`; x+=w; return r; }).join('')}</svg>`; }
+function pathChart(rows,norm){ const W=760,H=230,m={l:48,r:16,t:14,b:28},pw=W-m.l-m.r,ph=H-m.t-m.b; const ymax=Math.max(norm,...rows.map(r=>r.fdNewPct))*1.15; const X=i=>m.l+(rows.length>1?i/(rows.length-1):0.5)*pw, Y=v=>m.t+ph-v/ymax*ph; let g=`<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="fiscal deficit path">`; [0,.25,.5,.75,1].forEach(f=>{ const v=f*ymax; g+=`<line x1="${m.l}" x2="${W-m.r}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--grid)"/><text x="${m.l-6}" y="${Y(v)+4}" text-anchor="end">${v.toFixed(1)}%</text>`; }); g+=`<line x1="${m.l}" x2="${W-m.r}" y1="${Y(norm)}" y2="${Y(norm)}" stroke="#b91c1c" stroke-dasharray="5 4"/><text x="${W-m.r}" y="${Y(norm)-4}" text-anchor="end" fill="#b91c1c">norm ${norm}% of GSDP</text>`; const line=(k,col)=>{ let d=''; rows.forEach((r,i)=>{ d+=(i?'L':'M')+X(i)+','+Y(r[k]); }); g+=`<path d="${d}" fill="none" stroke="${col}" stroke-width="2"/>`; rows.forEach((r,i)=>{ g+=`<circle cx="${X(i)}" cy="${Y(r[k])}" r="3.5" fill="${col}" data-tip="Year ${r.t}: ${pct(r[k])} of GSDP; promises ${cr(r.tot)}"/>`; }); }; line('fdPct','#9ca3af'); line('fdNewPct','var(--accent)'); rows.forEach((r,i)=>{ g+=`<text x="${X(i)}" y="${H-m.b+16}" text-anchor="middle">Year ${r.t}</text>`; }); return g+'</svg><div class="legend"><span><i style="background:#9ca3af"></i>fiscal deficit, baseline</span><span><i style="background:var(--accent)"></i>with the promises, borrowed</span><span><i style="background:#b91c1c"></i>norm</span></div>'; }
+function histo(d,room){ const W=760,H=150,m={l:10,r:10,t:10,b:26},pw=W-m.l-m.r,ph=H-m.t-m.b; const lo=quant(d,.005), hi=quant(d,.995); const nb=40; const bins=new Array(nb).fill(0); d.forEach(v=>{ const i=Math.min(nb-1,Math.max(0,Math.floor((v-lo)/(hi-lo)*nb))); bins[i]++; }); const mx=Math.max(...bins); const X=v=>m.l+(v-lo)/(hi-lo)*pw; let g=`<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="distribution of the first-year bill">`; bins.forEach((b,i)=>{ const x0=lo+i*(hi-lo)/nb, x1=x0+(hi-lo)/nb; g+=`<rect x="${X(x0)}" y="${m.t+ph-b/mx*ph}" width="${pw/nb-1}" height="${b/mx*ph}" fill="var(--s2)" data-tip="${cr(x0)} to ${cr(x1)}: ${b} of ${d.length} draws"/>`; }); [.05,.5,.95].forEach(q=>{ const v=quant(d,q); g+=`<line x1="${X(v)}" x2="${X(v)}" y1="${m.t}" y2="${m.t+ph}" stroke="#1a1a2e" stroke-dasharray="3 3"/><text x="${X(v)}" y="${H-m.b+14}" text-anchor="middle">P${q*100} ${cr(v)}</text>`; }); if(isFinite(room)&&room>lo&&room<hi) g+=`<line x1="${X(room)}" x2="${X(room)}" y1="${m.t}" y2="${m.t+ph}" stroke="#b91c1c" stroke-width="2"/><text x="${X(room)+4}" y="${m.t+12}" fill="#b91c1c">deficit room ${cr(room)}</text>`; return g+'</svg>'; }
+function tornadoChart(items,base){ const W=760,rh=22,m={l:300,r:70,t:10,b:24},pw=W-m.l-m.r; const H=m.t+m.b+items.length*rh; const lo=Math.min(base,...items.map(i=>i.lo)), hi=Math.max(base,...items.map(i=>i.hi)); const X=v=>m.l+(v-lo)/(hi-lo||1)*pw; let g=`<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="tornado">`; g+=`<line x1="${X(base)}" x2="${X(base)}" y1="${m.t}" y2="${H-m.b}" stroke="#1a1a2e"/>`; items.forEach((it,i)=>{ const y=m.t+i*rh; g+=`<text x="${m.l-8}" y="${y+rh/2+4}" text-anchor="end">${esc(it.label.length>44?it.label.slice(0,42)+'…':it.label)}</text><rect x="${X(it.lo)}" y="${y+3}" width="${X(base)-X(it.lo)}" height="${rh-6}" fill="#c7d2fe" data-tip="${esc(it.label)} at its low: ${cr(it.lo)}"/><rect x="${X(base)}" y="${y+3}" width="${X(it.hi)-X(base)}" height="${rh-6}" fill="${it.col}" data-tip="${esc(it.label)} at its high: ${cr(it.hi)}"/><text x="${X(it.hi)+4}" y="${y+rh/2+4}">${num((it.hi-it.lo))} cr</text>`; }); g+=`<text x="${X(base)}" y="${H-6}" text-anchor="middle">base ${cr(base)}</text>`; return g+'</svg>'; }
+$('#run').onclick=run;
+{ let j=null; try{ j=JSON.parse(localStorage.getItem(KEY)); }catch(e){} if(j&&Array.isArray(j.P)&&j.P.length){ P=j.P; loadFiscal(j.fiscal); renderP(); run(); } else { $('#example').click(); } }
+</script>
+</body>
+</html>
