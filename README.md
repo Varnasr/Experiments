@@ -323,18 +323,6 @@ Installable and offline-capable, with no framework or external dependency. Open 
 
 ---
 
-### WhoGaveTheOrder.in (graduated)
-
-A citizen-led public accountability platform asking one question systematically: when state power is used against citizens, who authorised it?
-
-**Moved to its own repository on 17 August 2026** with its full history, and now lives at [whogavetheorder.netlify.app](https://whogavetheorder.netlify.app). `/whogavetheorder/*` on this site 301s there.
-
-**Stage:** Graduated
-
-Built as a structured evidence archive rather than a campaign site: a six-state evidence grammar applied to every statement, a chain-of-command map that keeps *has authority* and *is evidenced to have authorised this action* as separate claims, an RTI register with a live reply-due clock, and an editorial console whose integrity checks run in public. Its research data is kept in a private repository and is available on request.
-
----
-
 ### Drive PDF Extractor
 
 A small Node + Playwright tool that captures view-only Google Drive PDFs (the kind you can read but not download) and writes them out as a normal PDF.
