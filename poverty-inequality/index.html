@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Poverty & Inequality Explorer — Experiments</title>
+<title>Poverty & Inequality Explorer · Experiments</title>
 <meta name="description" content="Fit Lorenz curves to grouped distribution data, compute Gini, Theil, Atkinson and FGT poverty measures at any line, decompose poverty change into growth and redistribution, and draw growth incidence curves. Pulls live decile data from the World Bank's Poverty and Inequality Platform.">
 <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231B6B4A'/><path d='M7 25 L25 7 M7 25 Q18 24 25 7' stroke='white' stroke-width='2.5' fill='none' stroke-linecap='round'/></svg>">
 <style>
@@ -57,7 +57,7 @@
   <nav><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/poverty-inequality">Source</a></nav>
 </div></header>
 <main><div class="wrap">
-<p class="lede">Most published distribution data is grouped: ten decile shares and a mean, not a microdata file. This page does what POVCAL did with such data. It fits parametric Lorenz curves (General Quadratic and Beta), recovers the whole quantile function, and from that computes Gini, Theil, mean log deviation, Atkinson, the Palma ratio and the Foster–Greer–Thorbecke poverty measures at any line; between two surveys it decomposes the change in poverty into growth and redistribution and draws the growth incidence curve. Decile data can be pulled live from the World Bank's Poverty and Inequality Platform, or typed in.</p>
+<p class="lede">Most published distribution data is grouped: ten decile shares and a mean rather than a microdata file. This page does what POVCAL did with such data. It fits parametric Lorenz curves (General Quadratic and Beta), recovers the whole quantile function, and from that computes Gini, Theil, mean log deviation, Atkinson, the Palma ratio and the Foster–Greer–Thorbecke poverty measures at any line; between two surveys it decomposes the change in poverty into growth and redistribution and draws the growth incidence curve. Decile data can be pulled live from the World Bank's Poverty and Inequality Platform, or typed in.</p>
 
 <div class="grid">
 <div>
@@ -68,7 +68,7 @@
       <label>Country</label><select id="country"><option value="">Loading countries…</option></select>
       <p class="mini" id="pipStatus"></p>
       <label>Survey (the distribution analysed)</label><select id="surveyA" disabled><option>Pick a country first</option></select>
-      <label>Compare with another survey (optional)</label><select id="surveyB" disabled><option>—</option></select>
+      <label>Compare with another survey (optional)</label><select id="surveyB" disabled><option>none</option></select>
       <p class="mini">Means and lines are per person per day in 2021 PPP dollars; deciles are shares of total welfare. Source rows are national, urban or rural, consumption or income, as PIP labels them.</p>
     </div>
     <div class="tab" id="src-manual">
@@ -92,7 +92,7 @@
 <div>
   <div class="panel" id="fitPanel"><h2>Lorenz curve <span class="pill" id="fitPill"></span></h2><div id="fitOut" class="note">Choose a distribution to begin.</div></div>
   <div class="panel" id="ineqPanel" style="display:none"><h2>Inequality</h2><div id="ineqOut"></div>
-    <details><summary>How these are computed</summary><p>Every measure is computed from the fitted quantile function y(p) = μ·L′(p) on a grid of 4,000 population points, so the numbers are those of the fitted curve, not of the ten points. Gini = 1 − 2∫L(p)dp. Theil T = ∫(y/μ)ln(y/μ)dp; mean log deviation = ∫ln(μ/y)dp; Atkinson(ε) = 1 − [∫(y/μ)<sup>1−ε</sup>dp]<sup>1/(1−ε)</sup>, with the geometric-mean form at ε = 1. The Palma ratio is the top 10% share over the bottom 40% share, read off the fitted curve. The “from the points” Gini is the trapezoid on the raw cumulative shares, which is always a lower bound because it assumes equality within each decile.</p></details></div>
+    <details><summary>How these are computed</summary><p>Every measure is computed from the fitted quantile function y(p) = μ·L′(p) on a grid of 4,000 population points, so the numbers are those of the fitted curve rather than of the ten points. Gini = 1 − 2∫L(p)dp. Theil T = ∫(y/μ)ln(y/μ)dp; mean log deviation = ∫ln(μ/y)dp; Atkinson(ε) = 1 − [∫(y/μ)<sup>1−ε</sup>dp]<sup>1/(1−ε)</sup>, with the geometric-mean form at ε = 1. The Palma ratio is the top 10% share over the bottom 40% share, read off the fitted curve. The “from the points” Gini is the trapezoid on the raw cumulative shares, which is always a lower bound because it assumes equality within each decile.</p></details></div>
   <div class="panel" id="povPanel" style="display:none"><h2>Poverty</h2><div id="povOut"></div>
     <details><summary>How these are computed</summary><p>The headcount H is the p at which the fitted quantile y(p) crosses the line z, found by bisection. FGT<sub>α</sub> = ∫<sub>0</sub><sup>H</sup>(1 − y(p)/z)<sup>α</sup>dp: α = 0 is the headcount, α = 1 the poverty gap (mean shortfall as a share of the line, over the whole population), α = 2 the squared gap that weights the poorest most. Watts = ∫<sub>0</sub><sup>H</sup> ln(z/y)dp. The sensitivity curve re-solves H for a range of lines; a steep curve near the chosen line means the headcount is fragile to where the line is drawn.</p></details></div>
   <div class="panel" id="chgPanel" style="display:none"><h2>Change between surveys <span class="pill">Datt–Ravallion</span></h2><div id="chgOut"></div>
@@ -150,7 +150,7 @@ function setStatus(s){ $('#status').textContent=s; }
 async function loadCountries(){ try{ const r=await fetch(`${PIP}/aux?table=countries&format=json`); const j=await r.json(); j.sort((a,b)=>a.country_name.localeCompare(b.country_name)); $('#country').innerHTML='<option value="">Choose a country…</option>'+j.map(c=>`<option value="${c.country_code}">${esc(c.country_name)} (${c.country_code})</option>`).join(''); $('#country').value='IND'; loadSurveys(); } catch(e){ $('#country').innerHTML='<option value="">Could not load the country list</option>'; $('#pipStatus').textContent='PIP is not reachable from this browser right now; type a distribution in instead.'; } }
 async function loadSurveys(){ const c=$('#country').value; if(!c) return; $('#pipStatus').textContent='Fetching surveys…'; $('#surveyA').disabled=$('#surveyB').disabled=true;
   try{ const r=await fetch(`${PIP}/pip?country=${c}&year=all&povline=3.0&format=json`); const j=await r.json(); if(!Array.isArray(j)||!j.length) throw new Error('no surveys'); pipRows=j.sort((a,b)=>a.reporting_year-b.reporting_year||a.reporting_level.localeCompare(b.reporting_level));
-    const opt=(r,i)=>`<option value="${i}">${r.reporting_year} · ${r.reporting_level} · ${r.welfare_type} · ${r.survey_acronym||''}</option>`; $('#surveyA').innerHTML=pipRows.map(opt).join(''); $('#surveyB').innerHTML='<option value="">— none —</option>'+pipRows.map(opt).join('');
+    const opt=(r,i)=>`<option value="${i}">${r.reporting_year} · ${r.reporting_level} · ${r.welfare_type} · ${r.survey_acronym||''}</option>`; $('#surveyA').innerHTML=pipRows.map(opt).join(''); $('#surveyB').innerHTML='<option value="">none</option>'+pipRows.map(opt).join('');
     const nat=pipRows.map((r,i)=>r.reporting_level==='national'?i:-1).filter(i=>i>=0); const last=nat.length?nat[nat.length-1]:pipRows.length-1; $('#surveyA').value=last; const prevNat=nat.length>1?nat[nat.length-2]:''; $('#surveyB').value=prevNat;
     $('#surveyA').disabled=$('#surveyB').disabled=false; $('#pipStatus').textContent=`${pipRows.length} survey rows for ${c}.`; usePip(); } catch(e){ $('#pipStatus').textContent='No PIP data for this country.'; } }
 function rowToDist(r){ const shares=[1,2,3,4,5,6,7,8,9,10].map(k=>r['decile'+k]); return {label:`${r.country_name} ${r.reporting_year} (${r.reporting_level}, ${r.welfare_type}, ${r.survey_acronym||'survey'})`, shares, mean:r.mean, unit:'$/day (2021 PPP)', meta:r}; }

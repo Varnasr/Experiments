@@ -11,9 +11,9 @@ chambers instead of work-stations.
 - **Form name**: `aor-petition` (id `69e0c835009c6c0008de271a`)
 - **Notification email**: submissions sent to **devvrat.SCAORA@gmail.com**
 - **Notification hook ID**: `69e0c8a0add950870abd4b78`
-- **No git integration** — deploys happen via Netlify API / drag-drop
+- **No git integration**, deploys happen via Netlify API / drag-drop
 
-## Architecture
+## Structure
 
 - Single static `index.html` (no build step)
 - Form submits to Netlify Forms (`name="aor-petition"`)

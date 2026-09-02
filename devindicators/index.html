@@ -17,9 +17,9 @@
 </script>
 
 <!-- SEO -->
-<meta name="description" content="India Development Indicators — interactive dashboard tracking GDP, health, education, infrastructure and digital access using live World Bank Open Data. An ImpactMojo project.">
+<meta name="description" content="India Development Indicators: interactive dashboard tracking GDP, health, education, infrastructure and digital access using live World Bank Open Data. An ImpactMojo project.">
 <meta property="og:title" content="India Development Indicators | ImpactMojo">
-<meta property="og:description" content="Interactive dashboard tracking India's progress across economic, health, education and digital indicators — powered by the World Bank API.">
+<meta property="og:description" content="Interactive dashboard tracking India's progress across economic, health, education and digital indicators, powered by the World Bank API.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://devindicators.impactmojo.in/">
 
@@ -29,7 +29,7 @@
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230EA5E9'/><text x='16' y='22' text-anchor='middle' font-family='Inter,sans-serif' font-size='18' font-weight='700' fill='%23ffffff'>I</text></svg>">
 <meta name="theme-color" content="#0EA5E9">
 
-<!-- Fonts (Amaranth + Inter + JetBrains Mono — ImpactMojo system) -->
+<!-- Fonts (Amaranth + Inter + JetBrains Mono, ImpactMojo system) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Amaranth:wght@400;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -466,7 +466,7 @@ This dashboard renders interactive charts with JavaScript. Please enable JavaScr
 <!-- ── Hero ─────────────────────────────────────────────────── -->
 <section class="hero">
     <h1>India <span>Development Indicators</span></h1>
-    <p>Tracking India's progress across economic growth, health, education, infrastructure and digital access — with live data from the World Bank Open Data API.</p>
+    <p>Tracking India's progress across economic growth, health, education, infrastructure and digital access, with live data from the World Bank Open Data API.</p>
     <div class="badge" id="rangeBadge"><iconify-icon icon="mdi:database-outline" aria-hidden="true"></iconify-icon> World Bank Open Data · 2000–present</div>
 </section>
 
@@ -651,33 +651,33 @@ const INDICATORS = {
     sectorSrv:    { code: 'NV.SRV.TOTL.ZS',    label: 'Services % GDP',         unit: '%' }
 };
 
-// Hardcoded data — these don't have free public APIs
+// Hardcoded data: these don't have free public APIs
 // Source: India Union Budget 2024-25 (Capital Outlay, ₹ trillion). Approximate.
 const INFRA_SPENDING = {
     labels: ['Roads', 'Railways', 'Defence Capex', 'Renewable Energy', 'Urban (PMAY)', 'Telecom', 'Ports & Shipping'],
     values: [2.78, 2.65, 1.72, 0.92, 0.84, 0.75, 0.34]
 };
 
-// Source: UNDP Sub-national HDI (Global Data Lab) — latest available (2022).
+// Source: UNDP Sub-national HDI (Global Data Lab), latest available (2022).
 const STATE_HDI = {
     states: ['Kerala', 'Goa', 'Delhi', 'Mizoram', 'Punjab', 'Sikkim', 'Tamil Nadu', 'Himachal Pradesh', 'Maharashtra', 'Haryana'],
     values: [0.782, 0.766, 0.760, 0.733, 0.725, 0.722, 0.720, 0.717, 0.711, 0.706]
 };
 
-// HDI for India (UNDP Human Development Report 2025, 2023 data) — static KPI, no free API
+// HDI for India (UNDP Human Development Report 2025, 2023 data), static KPI, no free API
 const NATIONAL_HDI = { value: 0.685, year: 2023, rank: '130/193' };
 
 const TIMELINE = [
     { year: '2014', title: 'Make in India',                  desc: 'Flagship campaign to lift the manufacturing share of GDP and attract foreign investment across 25 priority sectors.' },
     { year: '2015', title: 'Digital India',                  desc: 'Programme to expand broadband access, e-governance and digital literacy as foundations of a knowledge economy.' },
     { year: '2015', title: 'Smart Cities Mission',           desc: 'Selection of 100 cities for urban-renewal investment in core infrastructure, mobility and citizen services.' },
-    { year: '2016', title: 'Demonetisation',                 desc: 'Withdrawal of ₹500 and ₹1,000 notes — declared aim was curbing illicit cash; downstream effect was a sharp push toward digital payments.' },
+    { year: '2016', title: 'Demonetisation',                 desc: 'Withdrawal of ₹500 and ₹1,000 notes, declared aim was curbing illicit cash; downstream effect was a sharp push toward digital payments.' },
     { year: '2017', title: 'Goods &amp; Services Tax',           desc: 'GST consolidated state and central indirect taxes into a single national market for goods and services.' },
     { year: '2019', title: 'Jal Jeevan Mission',             desc: 'Drive to deliver tap-water connections to every rural household by 2024.' },
-    { year: '2020', title: 'National Education Policy',      desc: 'NEP 2020 — first comprehensive overhaul of the education system in 34 years.' },
+    { year: '2020', title: 'National Education Policy',      desc: 'NEP 2020: first full overhaul of the education system in 34 years.' },
     { year: '2020', title: 'Aatmanirbhar Bharat',            desc: 'Self-reliance package (₹20 lakh crore) launched during the COVID-19 shock, mixing relief, credit and structural reform.' },
     { year: '2022', title: '5G Rollout',                     desc: 'India launched 5G services with one of the fastest national rollouts globally, targeting full geographic coverage.' },
-    { year: '2023', title: 'Chandrayaan-3',                  desc: 'India became the first country to land near the lunar south pole — a milestone for the civil space programme.' },
+    { year: '2023', title: 'Chandrayaan-3',                  desc: 'India became the first country to land near the lunar south pole, a milestone for the civil space programme.' },
     { year: '2023', title: 'UPI &gt; 10B txns/month',           desc: 'Unified Payments Interface cemented India as the global leader in real-time digital payments.' },
     { year: '2024', title: 'Semiconductor Push',             desc: 'Approvals for multiple domestic chip-fabrication plants under the Semiconductor Mission.' },
     { year: '2025', title: 'Union Budget 2025-26',           desc: 'Record capital-expenditure outlay of ₹11.21 lakh crore (~3.1% of GDP), alongside a new-regime income-tax overhaul that made annual income up to ₹12 lakh effectively tax-free.' }
@@ -941,7 +941,7 @@ function renderInsights(data) {
     }
     if (data.life.length >= 2) {
         const a = data.life[0], b = data.life[data.life.length - 1];
-        out.push(`<strong>Life expectancy</strong> rose ${(b.value-a.value).toFixed(1)} years over the period — from ${a.value.toFixed(1)} (${a.year}) to ${b.value.toFixed(1)} (${b.year}).`);
+        out.push(`<strong>Life expectancy</strong> rose ${(b.value-a.value).toFixed(1)} years over the period, from ${a.value.toFixed(1)} (${a.year}) to ${b.value.toFixed(1)} (${b.year}).`);
     }
     if (data.infant.length >= 2) {
         const a = data.infant[0], b = data.infant[data.infant.length - 1];
@@ -954,11 +954,11 @@ function renderInsights(data) {
     }
     if (data.electricity.length) {
         const b = data.electricity[data.electricity.length - 1];
-        out.push(`<strong>Electricity access</strong> stood at ${b.value.toFixed(1)}% by ${b.year} — Saubhagya (2017) was pivotal for last-mile household electrification.`);
+        out.push(`<strong>Electricity access</strong> stood at ${b.value.toFixed(1)}% by ${b.year}: Saubhagya (2017) drove last-mile household electrification.`);
     }
     if (data.sectorSrv.length) {
         const b = data.sectorSrv[data.sectorSrv.length - 1];
-        out.push(`<strong>Services dominate</strong> the economy, contributing ${b.value.toFixed(1)}% of GDP in ${b.year} — a structural shift from agriculture-led growth.`);
+        out.push(`<strong>Services dominate</strong> the economy, contributing ${b.value.toFixed(1)}% of GDP in ${b.year}, a shift away from agriculture-led growth.`);
     }
     const grid = document.getElementById('insightsGrid');
     grid.innerHTML = out.length ? out.map(t => `<div class="insight">${t}</div>`).join('') : '<div class="insight">No insights available for the selected range.</div>';
@@ -1036,10 +1036,10 @@ function renderAll(data) {
         showEmpty('chartAccess');
     }
 
-    // Infrastructure (vertical bar — hardcoded budget data)
+    // Infrastructure (vertical bar, hardcoded budget data)
     makeBar('chartInfra', INFRA_SPENDING.labels, INFRA_SPENDING.values, readVar('--accent-2'), v => '₹' + v.toFixed(2) + 'T', { label: 'Capex (₹ trillion)' });
 
-    // State HDI (horizontal bar — hardcoded UNDP)
+    // State HDI (horizontal bar, hardcoded UNDP)
     makeBar('chartHdi', STATE_HDI.states, STATE_HDI.values, readVar('--accent'), v => v.toFixed(3), { label: 'HDI', horizontal: true, maxBarThickness: 22 });
 
     // CO2 (line)

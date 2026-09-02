@@ -29,13 +29,13 @@ Re-run **Build catalogue.command** to refresh `catalog.json` and generate covers
 
 ## What's stored where
 
-- **`catalog.json`** — generated metadata for every file. Re-built by the .command.
-- **`thumbnails/<id>.jpg`** — cover image for each PDF (first page rendered at 240px wide).
-- **Per-user state (reading lists, status, lent-to, notes)** — in your **browser's localStorage**, separate from `catalog.json`. Stays even when the catalogue is rebuilt. Lives only in the browser you used to enter it. Open the catalogue from a different device or browser → fresh state.
+- **`catalog.json`**: generated metadata for every file. Re-built by the .command.
+- **`thumbnails/<id>.jpg`**: cover image for each PDF (first page rendered at 240px wide).
+- **Per-user state (reading lists, status, lent-to, notes)**: in your **browser's localStorage**, separate from `catalog.json`. Stays even when the catalogue is rebuilt. Lives only in the browser you used to enter it. Open the catalogue from a different device or browser → fresh state.
 
 ## Sharing across devices
 
-Because this folder lives in your Dropbox folder, opening `index.html` from another Mac with Dropbox synced gives you the same view. **But** the per-user state (reading lists, notes, lending) is per-browser, so each device tracks its own copy. To sync state across devices, you'd need to push it to a backend — a future enhancement.
+Because this folder lives in your Dropbox folder, opening `index.html` from another Mac with Dropbox synced gives you the same view. **But** the per-user state (reading lists, notes, lending) is per-browser, so each device tracks its own copy. To sync state across devices, you'd need to push it to a backend, a later addition.
 
 ## Putting this in a private GitHub repo
 
@@ -69,7 +69,7 @@ Catalogue/
 
 ## Troubleshooting
 
-- **"Could not load catalog.json"** — run **Build catalogue.command** first.
-- **Files don't open when clicked** — `file://` links require opening `index.html` from your local disk (Finder → double-click). They won't work if you opened the HTML over HTTPS.
-- **Covers missing** — re-run the .command. If still missing, the PDF likely failed to render (corrupt or password-protected).
-- **"Could not find a Library folder"** — the build script walks up to 6 parent directories looking for `Library/`. Make sure this `Catalogue/` folder is inside `Family Room/` (or wherever your Library lives).
+- **"Could not load catalog.json"**: run **Build catalogue.command** first.
+- **Files don't open when clicked**: `file://` links require opening `index.html` from your local disk (Finder → double-click). They won't work if you opened the HTML over HTTPS.
+- **Covers missing**: re-run the .command. If still missing, the PDF likely failed to render (corrupt or password-protected).
+- **"Could not find a Library folder"**: the build script walks up to 6 parent directories looking for `Library/`. Make sure this `Catalogue/` folder is inside `Family Room/` (or wherever your Library lives).
