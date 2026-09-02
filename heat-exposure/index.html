@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Heat and Outdoor Work — Experiments</title>
+<meta name="description" content="Hour-by-hour heat stress for outdoor workers from live weather: wet-bulb globe temperature estimated from Open-Meteo forecasts, the ACGIH/ISO work–rest screening limits by workload, safe working hours per day, wages lost, and a 35-year trend in dangerous-heat days for any place in India.">
+<link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231B6B4A'/><circle cx='16' cy='16' r='5' stroke='white' stroke-width='2.2' fill='none'/><path d='M16 5v3M16 24v3M5 16h3M24 16h3M8.2 8.2l2.1 2.1M21.7 21.7l2.1 2.1M8.2 23.8l2.1-2.1M21.7 10.3l2.1-2.1' stroke='white' stroke-width='2.2' stroke-linecap='round'/></svg>">
+<style>
+  :root { --bg:#fafafa; --surface:#fff; --border:#e5e7eb; --text:#1a1a2e; --dim:#4b5563; --muted:#9ca3af; --accent:#1B6B4A; --accent-soft:#e6f2ec; --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#4a3aa7; --grid:#eceef1; --b100:#e6f2ec; --b75:#fef9c3; --b50:#fed7aa; --b25:#fecaca; --b0:#f3c7c7; --mono:ui-monospace,SFMono-Regular,Menlo,monospace; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--text); line-height:1.55; }
+  a { color:var(--accent); }
+  header { border-bottom:1px solid var(--border); background:#fff; }
+  .wrap { max-width:1080px; margin:0 auto; padding:0 1.25rem; }
+  header .wrap { display:flex; align-items:baseline; justify-content:space-between; gap:1rem; padding:.9rem 1.25rem; flex-wrap:wrap; }
+  header h1 { font-family:Georgia,serif; font-size:1.35rem; font-weight:400; }
+  header h1 small { font-size:.8rem; color:var(--muted); margin-left:.5rem; }
+  header nav a { font-size:.85rem; margin-left:1rem; text-decoration:none; }
+  main { padding:1.5rem 0 3rem; }
+  .lede { color:var(--dim); font-size:.95rem; max-width:66ch; margin-bottom:1.25rem; }
+  .grid { display:grid; grid-template-columns:320px 1fr; gap:1.25rem; align-items:start; }
+  @media (max-width:860px){ .grid { grid-template-columns:1fr; } }
+  .panel { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1rem 1.15rem; margin-bottom:1rem; }
+  .panel h2 { font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; margin-bottom:.7rem; }
+  label { display:block; font-size:.8rem; color:var(--dim); margin:.5rem 0 .2rem; }
+  select, input[type=text], input[type=number] { width:100%; font:inherit; font-size:.9rem; padding:.4rem .5rem; border:1px solid var(--border); border-radius:6px; background:#fff; color:var(--text); }
+  .row { display:flex; gap:.5rem; } .row > * { flex:1; }
+  button { font:inherit; font-size:.88rem; padding:.5rem .9rem; border-radius:6px; border:1px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer; }
+  button.secondary { background:#fff; color:var(--accent); } button:disabled { opacity:.5; cursor:default; }
+  .stat { display:inline-block; margin:.25rem 1.25rem .25rem 0; vertical-align:top; }
+  .stat b { display:block; font-size:1.4rem; font-family:Georgia,serif; font-weight:400; } .stat span { font-size:.75rem; color:var(--muted); }
+  table { border-collapse:collapse; width:100%; font-size:.83rem; margin:.5rem 0; }
+  th, td { text-align:right; padding:.28rem .5rem; border-bottom:1px solid var(--border); font-variant-numeric:tabular-nums; white-space:nowrap; }
+  th:first-child, td:first-child { text-align:left; } th { color:var(--dim); font-weight:600; font-size:.74rem; }
+  .tscroll { overflow:auto; max-height:380px; }
+  .note { font-size:.82rem; color:var(--dim); margin-top:.5rem; }
+  .warn { background:#fff7ed; border:1px solid #fed7aa; color:#9a3412; padding:.5rem .7rem; border-radius:6px; font-size:.83rem; margin:.5rem 0; }
+  .chart { width:100%; height:auto; display:block; margin:.4rem 0; } .chart text { font-family:inherit; font-size:11px; fill:var(--dim); }
+  .legend { display:flex; gap:.9rem; flex-wrap:wrap; font-size:.8rem; color:var(--dim); margin:.2rem 0; } .legend i { display:inline-block; width:12px; height:12px; border-radius:2px; vertical-align:-2px; margin-right:.35rem; border:1px solid #ddd; }
+  .tip { position:fixed; pointer-events:none; background:#1a1a2e; color:#fff; font-size:.75rem; padding:.3rem .5rem; border-radius:4px; display:none; z-index:9; white-space:nowrap; }
+  details { margin-top:.5rem; font-size:.85rem; color:var(--dim); } summary { cursor:pointer; color:var(--accent); }
+  .mini { font-size:.78rem; color:var(--muted); } code { font-family:var(--mono); font-size:.8em; background:#f3f4f6; padding:.05em .3em; border-radius:3px; }
+  .day { display:grid; grid-template-columns:90px 1fr 120px; gap:.6rem; align-items:center; padding:.35rem 0; border-bottom:1px solid var(--border); font-size:.84rem; }
+  .strip { display:flex; height:22px; border-radius:4px; overflow:hidden; }
+  .strip span { flex:1; } .strip span.h100{background:var(--b100)} .strip span.h75{background:var(--b75)} .strip span.h50{background:var(--b50)} .strip span.h25{background:var(--b25)} .strip span.h0{background:#e11d48}
+  .pill { display:inline-block; font-size:.7rem; padding:1px 7px; border-radius:99px; background:var(--accent-soft); color:var(--accent); font-weight:600; margin-left:.4rem; vertical-align:middle; text-transform:none; letter-spacing:0; }
+  footer { border-top:1px solid var(--border); padding:1.25rem; text-align:center; font-size:.8rem; color:var(--muted); }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>Heat and Outdoor Work <small>WBGT · safe hours · wages lost · 35-year trend</small></h1>
+  <nav><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/heat-exposure">Source</a></nav>
+</div></header>
+<main><div class="wrap">
+<p class="lede">Heat is a labour question before it is a health one. The people who work outdoors through an Indian summer, on farms, at brick kilns, on construction sites and on public-works schemes where women are most of the workforce, lose hours, wages and safety as the wet-bulb globe temperature climbs. This page takes live weather for any place in India, estimates WBGT hour by hour, applies the occupational screening limits by workload, and reports how many working hours are safe each day this week, what the lost hours cost, and how the count of dangerous-heat days has changed since 1991.</p>
+
+<div class="grid">
+<div>
+  <div class="panel">
+    <h2>Place</h2>
+    <label>City</label><select id="city"></select>
+    <div class="row"><div><label>Latitude</label><input type="number" id="lat" step="0.01"></div><div><label>Longitude</label><input type="number" id="lon" step="0.01"></div></div>
+  </div>
+  <div class="panel">
+    <h2>Work</h2>
+    <label>Workload</label>
+    <select id="load"><option value="light">Light (sitting, standing, light arm work)</option><option value="moderate" selected>Moderate (walking, moderate lifting, weeding, carrying)</option><option value="heavy">Heavy (digging, pick and shovel, brick carrying)</option><option value="vheavy">Very heavy (intense pace, near-maximal effort)</option></select>
+    <label>Acclimatisation</label>
+    <select id="accl"><option value="accl" selected>Acclimatised (works in this heat routinely)</option><option value="unaccl">Unacclimatised (first 1–2 weeks, after illness, new migrants)</option></select>
+    <label>Exposure</label>
+    <select id="sun"><option value="sun" selected>In the sun</option><option value="shade">In shade or under cover</option></select>
+    <div class="row"><div><label>Workday starts</label><input type="number" id="h0" value="7" min="0" max="23"></div><div><label>ends (hour)</label><input type="number" id="h1" value="17" min="1" max="24"></div></div>
+  </div>
+  <div class="panel">
+    <h2>Wages</h2>
+    <div class="row"><div><label>Workers</label><input type="number" id="workers" value="100" min="1"></div><div><label>Daily wage (₹)</label><input type="number" id="wage" value="300" min="0" step="10"></div></div>
+    <p class="mini">Enter the local rate: the MGNREGA wage is notified per state each April, and casual agricultural and construction wages differ by district and by sex.</p>
+    <p style="margin-top:.6rem"><button id="go">Fetch and compute</button></p>
+    <p class="mini" id="status"></p>
+  </div>
+</div>
+<div>
+  <div class="panel"><h2>This week <span class="pill" id="wkPill"></span></h2><div id="week" class="note">Choose a place and fetch.</div>
+    <details><summary>How the hours are judged</summary><p>WBGT is estimated each hour from air temperature and relative humidity with the Australian Bureau of Meteorology approximation, WBGT = 0.567·T + 0.393·e + 3.94, where e is water-vapour pressure in hPa, e = (RH/100)·6.105·exp(17.27·T/(237.7+T)). The approximation assumes moderately high solar radiation and light wind, so it overstates the hazard in shade and at night; for the shade setting, and for hours with little solar radiation, the page instead uses 0.7·T<sub>w</sub> + 0.3·T with the natural wet-bulb from Stull's (2011) formula. The hourly WBGT is then compared with the ACGIH threshold limit values (acclimatised) or action limits (unacclimatised) for the chosen workload: the table gives the highest WBGT at which work can occupy 75–100%, 50–75%, 25–50% and 0–25% of each hour, and the page assigns each hour the largest allocation still permitted (100, 75, 50 or 25% of the hour, or none). Hours lost are the hour fractions not permitted, summed over the workday. Wages lost are lost hours over workday hours, times the daily wage, times the number of workers.</p></details></div>
+  <div class="panel"><h2>Since 1991 <span class="pill" id="trPill"></span></h2><div id="trend" class="note"></div>
+    <details><summary>How the trend is built</summary><p>Daily maximum temperature and daily mean relative humidity from the Open-Meteo historical reanalysis (ERA5-based, roughly 10 km cells, so a city's value is an area average and understates urban heat islands). Each day's peak WBGT is estimated with the same approximation, and for each year March to June the page counts days whose peak WBGT reached the 75–100% limit (continuous work no longer permitted) and the 0–25% limit (almost no work permitted) for the chosen workload and acclimatisation. The line is an ordinary least squares trend through the yearly counts, quoted as days per decade with a 95% confidence interval.</p></details></div>
+</div>
+</div>
+</div></main>
+<div class="tip" id="tip"></div>
+<footer>Part of <a href="../">Experiments</a> by Varna Sri Raman · Idealog Works · MIT licence · Weather from Open-Meteo (open-meteo.com), fetched live; computation in the browser. This is screening guidance, not medical advice; heat illness needs shade, water, rest and a clinic.</footer>
+
+<script>
+'use strict';
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt=(x,d=1)=>(x==null||!isFinite(x))?'—':Number(x).toLocaleString('en-IN',{maximumFractionDigits:d,minimumFractionDigits:0});
+const tip=$('#tip'); document.addEventListener('mousemove',e=>{const t=e.target.closest&&e.target.closest('[data-tip]');if(t){tip.innerHTML=t.getAttribute('data-tip');tip.style.display='block';tip.style.left=(e.clientX+12)+'px';tip.style.top=(e.clientY-10)+'px';}else tip.style.display='none';});
+const CITIES=[['Delhi',28.61,77.21],['Mumbai',19.08,72.88],['Kolkata',22.57,88.36],['Chennai',13.08,80.27],['Hyderabad',17.39,78.49],['Bengaluru',12.97,77.59],['Ahmedabad',23.02,72.57],['Jaipur',26.91,75.79],['Jodhpur',26.24,73.02],['Lucknow',26.85,80.95],['Varanasi',25.32,82.99],['Patna',25.59,85.14],['Gaya',24.79,85.00],['Ranchi',23.34,85.31],['Bhubaneswar',20.30,85.82],['Raipur',21.25,81.63],['Nagpur',21.15,79.09],['Bhopal',23.26,77.41],['Surat',21.17,72.83],['Vijayawada',16.51,80.65],['Guwahati',26.14,91.74],['Chandigarh',30.73,76.78],['Thiruvananthapuram',8.52,76.94],['Nashik',19.99,73.79]];
+$('#city').innerHTML=CITIES.map((c,i)=>`<option value="${i}">${c[0]}</option>`).join('')+'<option value="custom">Custom (enter coordinates)</option>';
+function setCity(){ const v=$('#city').value; if(v!=='custom'){ $('#lat').value=CITIES[+v][1]; $('#lon').value=CITIES[+v][2]; } } $('#city').onchange=setCity; setCity();
+['#lat','#lon'].forEach(s=>$(s).oninput=()=>{ $('#city').value='custom'; });
+
+// ── heat physics ──
+const vp=(T,rh)=>rh/100*6.105*Math.exp(17.27*T/(237.7+T)); // hPa
+const wbgtSun=(T,rh)=>0.567*T+0.393*vp(T,rh)+3.94; // ABM approximation
+const stullTw=(T,rh)=>T*Math.atan(0.151977*Math.sqrt(rh+8.313659))+Math.atan(T+rh)-Math.atan(rh-1.676331)+0.00391838*Math.pow(rh,1.5)*Math.atan(0.023101*rh)-4.686035;
+const wbgtShade=(T,rh)=>0.7*stullTw(T,rh)+0.3*T;
+// ACGIH TLV (acclimatised) and action limit (unacclimatised) screening criteria, °C WBGT, by allocation of work in a cycle: [75–100%, 50–75%, 25–50%, 0–25%]
+const TLV={accl:{light:[31.0,31.0,32.0,32.5],moderate:[28.0,29.0,30.0,31.5],heavy:[null,27.5,29.0,30.5],vheavy:[null,null,28.0,30.0]},unaccl:{light:[28.0,28.5,29.5,30.0],moderate:[25.0,26.0,27.0,29.0],heavy:[null,24.0,25.5,28.0],vheavy:[null,null,24.5,27.0]}};
+const ALLOC=[1,0.75,0.5,0.25];
+function allowed(w,load,accl){ const lim=TLV[accl][load]; for(let i=0;i<4;i++){ if(lim[i]!=null && w<=lim[i]) return ALLOC[i]; } return 0; }
+const cls=a=>a>=1?'h100':a>=0.75?'h75':a>=0.5?'h50':a>=0.25?'h25':'h0';
+
+// ── fetch and compute ──
+$('#go').onclick=async()=>{ const lat=+$('#lat').value, lon=+$('#lon').value, load=$('#load').value, accl=$('#accl').value, sun=$('#sun').value==='sun', h0=+$('#h0').value, h1=+$('#h1').value, workers=+$('#workers').value, wage=+$('#wage').value; if(!(h1>h0)){ alert('The workday must end after it starts.'); return; }
+  $('#status').textContent='Fetching the forecast…'; $('#go').disabled=true;
+  try{ const fr=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,relative_humidity_2m,shortwave_radiation,wind_speed_10m&timezone=Asia%2FKolkata&forecast_days=7`); if(!fr.ok) throw new Error('forecast HTTP '+fr.status); const f=await fr.json(); const H=f.hourly;
+    const days=new Map(); H.time.forEach((t,i)=>{ const d=t.slice(0,10), hr=+t.slice(11,13); const T=H.temperature_2m[i], rh=H.relative_humidity_2m[i], rad=H.shortwave_radiation[i]??0; if(T==null||rh==null) return; const w=(sun&&rad>=50)?wbgtSun(T,rh):wbgtShade(T,rh); if(!days.has(d)) days.set(d,[]); days.get(d).push({hr,T,rh,rad,w,a:allowed(w,load,accl)}); });
+    const lim=TLV[accl][load]; const limTxt=lim.map((v,i)=>v==null?'—':v+'°C').join(' / ');
+    let html=`<div class="legend"><span><i style="background:var(--b100)"></i>full hour</span><span><i style="background:var(--b75)"></i>45 min work, 15 rest</span><span><i style="background:var(--b50)"></i>30 / 30</span><span><i style="background:var(--b25)"></i>15 work, 45 rest</span><span><i style="background:#e11d48"></i>no work</span></div><p class="mini">Limits for ${load==='vheavy'?'very heavy':load} work, ${accl==='accl'?'acclimatised':'unacclimatised'}: ${limTxt} WBGT for 75–100 / 50–75 / 25–50 / 0–25% of each hour. Workday ${h0}:00 to ${h1}:00, ${sun?'in the sun':'in shade'}.</p>`;
+    let totLost=0, nDays=0; const rows=[]; for(const [d,hrs] of days){ const work=hrs.filter(h=>h.hr>=h0&&h.hr<h1); if(work.length<(h1-h0)) continue; nDays++; const lost=work.reduce((a,h)=>a+(1-h.a),0); totLost+=lost; const peak=Math.max(...hrs.map(h=>h.w)); const peakH=hrs.find(h=>h.w===peak).hr; const safe=work.filter(h=>h.a>=1).map(h=>h.hr); const windows=[]; safe.forEach(h=>{ const last=windows[windows.length-1]; if(last&&last[1]===h) last[1]=h+1; else windows.push([h,h+1]); });
+      const dt=new Date(d+'T00:00:00'); const lab=dt.toLocaleDateString('en-IN',{weekday:'short',day:'numeric',month:'short'});
+      html+=`<div class="day"><div><b>${esc(lab)}</b><br><span class="mini">peak ${fmt(peak)}° at ${peakH}:00</span></div><div class="strip">${work.map(h=>`<span class="${cls(h.a)}" data-tip="${h.hr}:00 · ${fmt(h.T)}°C, RH ${h.rh}%, WBGT ${fmt(h.w)}°C · ${h.a?Math.round(h.a*60)+' min work':'no work'}"></span>`).join('')}</div><div><b>${fmt(lost)}</b> h lost<br><span class="mini">${windows.length?'full work '+windows.map(w=>`${w[0]}–${w[1]}`).join(', '):'no full hours'}</span></div></div>`;
+      rows.push({d:lab,peak,peakH,lost,safe:windows}); }
+    const hours=h1-h0; const lostWages=totLost/hours*wage*workers; const lostFrac=totLost/(nDays*hours);
+    $('#wkPill').textContent=`${(CITIES[+$('#city').value]||[])[0]||'custom point'} · ${nDays} days · forecast fetched ${new Date().toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'})}`;
+    $('#week').innerHTML=`<span class="stat"><b>${fmt(totLost)}</b><span>working hours lost over ${nDays} days (${fmt(100*lostFrac,0)}% of the workday)</span></span><span class="stat"><b>₹${fmt(lostWages,0)}</b><span>wages lost, ${workers} workers at ₹${wage}/day</span></span><span class="stat"><b>${fmt(Math.max(...rows.map(r=>r.peak)))}°C</b><span>peak WBGT this week</span></span>`+html+(sun?'<p class="note">Shifting the workday earlier is the cheapest intervention there is: change the start and end hours above to see how many lost hours a 6:00 start recovers.</p>':'');
+    // trend
+    $('#status').textContent='Fetching 35 years of daily weather…'; $('#trPill').textContent='';
+    const ar=await fetch(`https://archive-api.open-meteo.com/v1/archive?latitude=${lat}&longitude=${lon}&start_date=1991-01-01&end_date=${new Date().getFullYear()-1}-12-31&daily=temperature_2m_max,relative_humidity_2m_mean&timezone=Asia%2FKolkata`); if(!ar.ok) throw new Error('archive HTTP '+ar.status); const a=await ar.json(); const D=a.daily;
+    const perYear=new Map(); D.time.forEach((t,i)=>{ const y=+t.slice(0,4), m=+t.slice(5,7); if(m<3||m>6) return; const T=D.temperature_2m_max[i], rh=D.relative_humidity_2m_mean[i]; if(T==null||rh==null) return; const w=sun?wbgtSun(T,rh):wbgtShade(T,rh); if(!perYear.has(y)) perYear.set(y,{n:0,over:0,severe:0}); const o=perYear.get(y); o.n++; const top=lim.find(v=>v!=null), bottom=lim[3]; if(w>top) o.over++; if(w>bottom) o.severe++; });
+    const yrs=[...perYear.keys()].sort(); const over=yrs.map(y=>perYear.get(y).over), sev=yrs.map(y=>perYear.get(y).severe);
+    const trend=(xs,ys)=>{ const n=xs.length, mx=xs.reduce((a,b)=>a+b,0)/n, my=ys.reduce((a,b)=>a+b,0)/n; let sxx=0,sxy=0; xs.forEach((x,i)=>{ sxx+=(x-mx)**2; sxy+=(x-mx)*(ys[i]-my); }); const b=sxy/sxx, a0=my-b*mx; const sse=ys.reduce((s,y,i)=>s+(y-a0-b*xs[i])**2,0); const se=Math.sqrt(sse/(n-2)/sxx); return {a:a0,b,se}; };
+    const t1=trend(yrs,over), t2=trend(yrs,sev); const first=over.slice(0,10).reduce((a,b)=>a+b,0)/10, last=over.slice(-10).reduce((a,b)=>a+b,0)/10;
+    $('#trPill').textContent=`${yrs[0]}–${yrs[yrs.length-1]}, March to June`;
+    $('#trend').innerHTML=`<span class="stat"><b>${fmt(last,0)}</b><span>days a year above the continuous-work limit, last 10 years (was ${fmt(first,0)} in ${yrs[0]}–${yrs[9]})</span></span><span class="stat"><b>${t1.b*10>=0?'+':''}${fmt(t1.b*10)}</b><span>days per decade (95% CI ${fmt(t1.b*10-1.96*t1.se*10)} to ${fmt(t1.b*10+1.96*t1.se*10)})</span></span><span class="stat"><b>${fmt(sev.slice(-10).reduce((a,b)=>a+b,0)/10,0)}</b><span>days a year above the almost-no-work limit, last 10 years (${t2.b*10>=0?'+':''}${fmt(t2.b*10)} per decade)</span></span>
+    <div class="legend"><span><i style="background:var(--s2)"></i>days above the continuous-work limit (${lim.find(v=>v!=null)}°C)</span><span><i style="background:#e11d48"></i>days above the almost-no-work limit (${lim[3]}°C)</span><span><i style="background:#9ca3af"></i>linear trend</span></div>`+trendChart(yrs,over,sev,t1);
+    $('#status').textContent='Done.'; } catch(e){ $('#status').textContent='Failed: '+e.message; } $('#go').disabled=false; };
+function trendChart(yrs,over,sev,t){ const W=760,H=240,m={l:44,r:16,t:14,b:30},pw=W-m.l-m.r,ph=H-m.t-m.b; const y1=Math.max(...over,10)*1.08; const X=y=>m.l+(y-yrs[0])/(yrs[yrs.length-1]-yrs[0])*pw, Y=v=>m.t+ph-v/y1*ph; const bw=pw/yrs.length; let g=`<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="trend">`; [0,0.25,0.5,0.75,1].forEach(f=>{ const v=f*y1; g+=`<line x1="${m.l}" x2="${W-m.r}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--grid)"/><text x="${m.l-6}" y="${Y(v)+4}" text-anchor="end">${fmt(v,0)}</text>`; });
+  yrs.forEach((y,i)=>{ const x=X(y)-bw/2; g+=`<rect x="${x+1}" y="${Y(over[i])}" width="${Math.max(bw-2,1)}" height="${Y(0)-Y(over[i])}" fill="var(--s2)" opacity=".75" data-tip="${y}: ${over[i]} days above the continuous-work limit, ${sev[i]} above the almost-no-work limit"/><rect x="${x+1}" y="${Y(sev[i])}" width="${Math.max(bw-2,1)}" height="${Y(0)-Y(sev[i])}" fill="#e11d48" data-tip="${y}: ${sev[i]} days above the almost-no-work limit"/>`; if(y%5===0) g+=`<text x="${X(y)}" y="${H-m.b+16}" text-anchor="middle">${y}</text>`; });
+  g+=`<line x1="${X(yrs[0])}" y1="${Y(t.a+t.b*yrs[0])}" x2="${X(yrs[yrs.length-1])}" y2="${Y(t.a+t.b*yrs[yrs.length-1])}" stroke="#4b5563" stroke-width="2" stroke-dasharray="5 4"/>`; return g+'</svg>'; }
+</script>
+</body>
+</html>

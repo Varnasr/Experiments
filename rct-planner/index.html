@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RCT Planner — Experiments</title>
+<meta name="description" content="Power and minimum detectable effect for individual and cluster-randomised trials, with intra-cluster correlation, covariate adjustment, attrition, imperfect take-up and multiple outcomes; then a seeded, stratified randomiser that takes a baseline CSV and returns assignments with a balance table and a randomisation record.">
+<link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231B6B4A'/><circle cx='10' cy='11' r='3' fill='white'/><circle cx='22' cy='11' r='3' stroke='white' stroke-width='2' fill='none'/><circle cx='10' cy='22' r='3' stroke='white' stroke-width='2' fill='none'/><circle cx='22' cy='22' r='3' fill='white'/></svg>">
+<style>
+  :root { --bg:#fafafa; --surface:#fff; --border:#e5e7eb; --text:#1a1a2e; --dim:#4b5563; --muted:#9ca3af; --accent:#1B6B4A; --accent-soft:#e6f2ec; --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#4a3aa7; --grid:#eceef1; --mono:ui-monospace,SFMono-Regular,Menlo,monospace; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--text); line-height:1.55; }
+  a { color:var(--accent); }
+  header { border-bottom:1px solid var(--border); background:#fff; }
+  .wrap { max-width:1080px; margin:0 auto; padding:0 1.25rem; }
+  header .wrap { display:flex; align-items:baseline; justify-content:space-between; gap:1rem; padding:.9rem 1.25rem; flex-wrap:wrap; }
+  header h1 { font-family:Georgia,serif; font-size:1.35rem; font-weight:400; }
+  header h1 small { font-size:.8rem; color:var(--muted); margin-left:.5rem; }
+  header nav a { font-size:.85rem; margin-left:1rem; text-decoration:none; }
+  main { padding:1.5rem 0 3rem; }
+  .lede { color:var(--dim); font-size:.95rem; max-width:66ch; margin-bottom:1.25rem; }
+  .top-tabs { display:flex; gap:.25rem; border-bottom:1px solid var(--border); margin-bottom:1.25rem; }
+  .top-tabs button { font:inherit; font-size:.95rem; background:none; border:none; color:var(--dim); padding:.5rem .9rem; border-bottom:2px solid transparent; cursor:pointer; }
+  .top-tabs button.on { color:var(--accent); border-bottom-color:var(--accent); font-weight:600; }
+  .view { display:none; } .view.on { display:block; }
+  .grid { display:grid; grid-template-columns:330px 1fr; gap:1.25rem; align-items:start; }
+  @media (max-width:860px){ .grid { grid-template-columns:1fr; } }
+  .panel { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1rem 1.15rem; margin-bottom:1rem; }
+  .panel h2 { font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; margin-bottom:.7rem; }
+  label { display:block; font-size:.8rem; color:var(--dim); margin:.5rem 0 .2rem; }
+  select, input[type=text], input[type=number] { width:100%; font:inherit; font-size:.9rem; padding:.4rem .5rem; border:1px solid var(--border); border-radius:6px; background:#fff; color:var(--text); }
+  input[type=file] { font-size:.85rem; max-width:100%; }
+  .row { display:flex; gap:.5rem; } .row > * { flex:1; }
+  button { font:inherit; font-size:.88rem; padding:.5rem .9rem; border-radius:6px; border:1px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer; }
+  button.secondary { background:#fff; color:var(--accent); } button:disabled { opacity:.5; cursor:default; }
+  .stat { display:inline-block; margin:.25rem 1.25rem .25rem 0; vertical-align:top; }
+  .stat b { display:block; font-size:1.4rem; font-family:Georgia,serif; font-weight:400; } .stat span { font-size:.75rem; color:var(--muted); }
+  table { border-collapse:collapse; width:100%; font-size:.84rem; margin:.5rem 0; }
+  th, td { text-align:right; padding:.3rem .5rem; border-bottom:1px solid var(--border); font-variant-numeric:tabular-nums; white-space:nowrap; }
+  th:first-child, td:first-child { text-align:left; } th { color:var(--dim); font-weight:600; font-size:.75rem; }
+  .tscroll { overflow:auto; max-height:380px; }
+  .note { font-size:.82rem; color:var(--dim); margin-top:.5rem; }
+  .warn { background:#fff7ed; border:1px solid #fed7aa; color:#9a3412; padding:.5rem .7rem; border-radius:6px; font-size:.83rem; margin:.5rem 0; }
+  .ok { background:var(--accent-soft); color:var(--accent); padding:.5rem .7rem; border-radius:6px; font-size:.83rem; margin:.5rem 0; }
+  .chart { width:100%; height:auto; display:block; margin:.4rem 0; } .chart text { font-family:inherit; font-size:11px; fill:var(--dim); }
+  .legend { display:flex; gap:1rem; flex-wrap:wrap; font-size:.8rem; color:var(--dim); margin:.2rem 0; } .legend i { display:inline-block; width:14px; height:3px; vertical-align:middle; margin-right:.35rem; border-radius:2px; }
+  .tip { position:fixed; pointer-events:none; background:#1a1a2e; color:#fff; font-size:.75rem; padding:.3rem .5rem; border-radius:4px; display:none; z-index:9; white-space:nowrap; }
+  details { margin-top:.5rem; font-size:.85rem; color:var(--dim); } summary { cursor:pointer; color:var(--accent); }
+  .mini { font-size:.78rem; color:var(--muted); } code { font-family:var(--mono); font-size:.8em; background:#f3f4f6; padding:.05em .3em; border-radius:3px; }
+  pre { font-family:var(--mono); font-size:.78rem; background:#f8f9fa; border:1px solid var(--border); border-radius:6px; padding:.6rem .8rem; white-space:pre-wrap; color:var(--dim); }
+  .sig { color:#b91c1c; font-weight:600; }
+  footer { border-top:1px solid var(--border); padding:1.25rem; text-align:center; font-size:.8rem; color:var(--muted); }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>RCT Planner <small>power · minimum detectable effect · stratified randomisation</small></h1>
+  <nav><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/rct-planner">Source</a></nav>
+</div></header>
+<main><div class="wrap">
+<p class="lede">Two things every field trial needs before it starts and rarely has in one place: an honest answer to “how small an effect could we detect with this sample?”, allowing for clustering, attrition, imperfect take-up and the number of outcomes; and a randomisation that is stratified, seeded, reproducible and documented, with a balance table produced at the moment of the draw. Both run in the browser. The baseline you upload for randomising never leaves it.</p>
+
+<div class="top-tabs"><button data-v="power" class="on">Power and MDE</button><button data-v="rand">Randomise a baseline</button></div>
+
+<!-- ───────────── Power ───────────── -->
+<div class="view on" id="v-power">
+<div class="grid">
+<div>
+  <div class="panel">
+    <h2>Outcome</h2>
+    <label>Type</label><select id="otype"><option value="cont">Continuous (mean)</option><option value="bin">Binary (proportion)</option></select>
+    <div id="contIn"><label>Standard deviation in the control group</label><input type="number" id="sd" value="1" step="0.1" min="0.0001"><p class="mini">Enter 1 to work in standard-deviation units.</p></div>
+    <div id="binIn" style="display:none"><label>Control-group proportion</label><input type="number" id="p0" value="0.30" step="0.01" min="0.01" max="0.99"></div>
+    <label>Share of variance explained by covariates (R²)</label><input type="number" id="r2" value="0" step="0.05" min="0" max="0.95">
+    <p class="mini">A baseline measure of the outcome typically gives R² of 0.3 to 0.6; its square root is what matters, so a weak baseline buys little.</p>
+  </div>
+  <div class="panel">
+    <h2>Design</h2>
+    <label>Unit of randomisation</label><select id="design"><option value="ind">Individuals or households</option><option value="clu">Clusters (villages, schools, clinics)</option></select>
+    <div id="indIn"><label>Total sample size N (after attrition)</label><input type="number" id="N" value="1000" min="10"></div>
+    <div id="cluIn" style="display:none"><div class="row"><div><label>Number of clusters J</label><input type="number" id="J" value="60" min="4"></div><div><label>Units per cluster m</label><input type="number" id="m" value="20" min="1"></div></div><label>Intra-cluster correlation ρ</label><input type="number" id="icc" value="0.05" step="0.01" min="0" max="0.99"><p class="mini">Typical ρ: 0.01 to 0.05 for health outcomes across villages, 0.1 to 0.2 for test scores across schools.</p></div>
+    <label>Share assigned to treatment P</label><input type="number" id="P" value="0.5" step="0.05" min="0.05" max="0.95">
+    <div class="row"><div><label>Significance α (two-sided)</label><input type="number" id="alpha" value="0.05" step="0.01" min="0.001" max="0.5"></div><div><label>Power 1 − β</label><input type="number" id="power" value="0.8" step="0.05" min="0.5" max="0.99"></div></div>
+  </div>
+  <div class="panel">
+    <h2>Real-world adjustments</h2>
+    <label>Expected attrition (share lost at endline)</label><input type="number" id="attr" value="0.10" step="0.05" min="0" max="0.9">
+    <div class="row"><div><label>Take-up in treatment</label><input type="number" id="tu1" value="1" step="0.05" min="0" max="1"></div><div><label>Take-up in control</label><input type="number" id="tu0" value="0" step="0.05" min="0" max="1"></div></div>
+    <label>Number of primary outcomes tested</label><input type="number" id="nout" value="1" min="1" max="50">
+    <p class="mini">Bonferroni: α is divided by the number of outcomes. Holm and Romero–Wolf are less conservative but cannot be planned for in closed form.</p>
+    <label>Target effect (to report power and required sample)</label><input type="number" id="target" value="0.2" step="0.01">
+    <p style="margin-top:.6rem"><button id="calc">Compute</button></p>
+  </div>
+</div>
+<div>
+  <div class="panel"><h2>Minimum detectable effect</h2><div id="mdeOut"></div>
+    <details><summary>Formula</summary><p>Following Bloom (1995) and Duflo, Glennerster and Kremer (2007): MDE = (t<sub>1−α/2</sub> + t<sub>1−β</sub>) · √[1 / (P(1−P))] · √[σ²(1−R²) / N] for individual randomisation, and the same with N = J·m and the design effect √[1 + (m−1)ρ] for cluster randomisation, with degrees of freedom N−2 or J−2 for the t quantiles. Attrition scales N by (1 − attrition) before the calculation, and imperfect compliance divides the intention-to-treat MDE by the difference in take-up to give the detectable effect on compliers (Wald/LATE). For a binary outcome σ² = p<sub>0</sub>(1 − p<sub>0</sub>). Multiple outcomes replace α by α/k. The required sample for a target effect inverts the same expression by bisection.</p></details></div>
+  <div class="panel"><h2>Sensitivity</h2><div id="sensOut"></div></div>
+</div>
+</div>
+</div>
+
+<!-- ───────────── Randomise ───────────── -->
+<div class="view" id="v-rand">
+<div class="grid">
+<div>
+  <div class="panel">
+    <h2>Baseline</h2>
+    <label>Baseline CSV (one row per unit)</label><input type="file" id="file" accept=".csv,text/csv">
+    <p class="mini" style="margin:.5rem 0">or</p><button class="secondary" id="demo">Use a demo baseline</button>
+    <p class="mini" style="margin-top:.4rem">The demo is a simulated 720-household baseline in 36 villages with the covariates a typical survey has. It is labelled as such.</p>
+  </div>
+  <div class="panel" id="randSetup" style="display:none">
+    <h2>Randomisation</h2>
+    <label>Unit ID column</label><select id="rId"></select>
+    <label>Randomise at the level of</label><select id="rLevel"><option value="unit">Each row (individual or household)</option><option value="cluster">A cluster column (all rows in a cluster get the same arm)</option></select>
+    <div id="rClusterIn" style="display:none"><label>Cluster column</label><select id="rCluster"></select></div>
+    <label>Stratify on (hold Ctrl or Cmd for several)</label><select id="rStrata" multiple size="5"></select>
+    <label>Bins for numeric stratifiers (quantiles)</label><input type="number" id="rBins" value="3" min="2" max="10">
+    <label>Arms and allocation (comma-separated shares)</label><input type="text" id="rArms" value="Control 0.5, Treatment 0.5">
+    <label>Seed</label><input type="number" id="rSeed" value="20260902">
+    <label>Balance table covariates (numeric)</label><select id="rBal" multiple size="5"></select>
+    <p style="margin-top:.6rem"><button id="randGo">Randomise</button></p>
+    <p class="mini" id="randStatus"></p>
+  </div>
+</div>
+<div>
+  <div class="panel" id="randSummary"><h2>Assignment</h2><div class="note">Load a baseline to begin.</div></div>
+  <div class="panel" id="balPanel" style="display:none"><h2>Balance at the draw</h2><div id="balOut"></div>
+    <details><summary>How to read it</summary><p>Means by arm for each covariate, the difference between the first two arms, and the p-value of a two-sample t-test with unequal variances (Welch). With k covariates you should expect about k/20 of them to differ at the 5% level by chance; stratification makes imbalance on the stratifiers impossible and on correlated covariates unlikely. The joint test at the bottom regresses the treatment indicator on all covariates and reports the F-statistic; it is the statistic to quote. A “bad draw” is not a reason to redraw unless you committed to a re-randomisation rule in advance and record every draw.</p></details></div>
+  <div class="panel" id="recPanel" style="display:none"><h2>Randomisation record</h2><pre id="recOut"></pre><p><button class="secondary" id="dlAssign">Download assignments (CSV)</button> <button class="secondary" id="dlRec">Download record (text)</button></p>
+    <p class="note">The record has everything needed to reproduce the draw: the seed, the algorithm, the strata and their sizes, the arms and shares, and a digest of the input file. Put it in the pre-analysis plan.</p></div>
+</div>
+</div>
+</div>
+</div></main>
+<div class="tip" id="tip"></div>
+<footer>Part of <a href="../">Experiments</a> by Varna Sri Raman · Idealog Works · MIT licence · Computation in the browser; uploaded baselines never leave it.</footer>
+
+<script>
+'use strict';
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt=(x,d=3)=>(x==null||!isFinite(x))?'—':Number(x).toLocaleString('en-IN',{maximumFractionDigits:d,minimumFractionDigits:0});
+const pct=(x,d=1)=>(x==null||!isFinite(x))?'—':(100*x).toFixed(d)+'%';
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
+function randn(r){let u=0,v=0;while(!u)u=r();while(!v)v=r();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);}
+const tip=$('#tip'); document.addEventListener('mousemove',e=>{const t=e.target.closest&&e.target.closest('[data-tip]');if(t){tip.innerHTML=t.getAttribute('data-tip');tip.style.display='block';tip.style.left=(e.clientX+12)+'px';tip.style.top=(e.clientY-10)+'px';}else tip.style.display='none';});
+document.querySelectorAll('.top-tabs button').forEach(b=>b.onclick=()=>{ document.querySelectorAll('.top-tabs button').forEach(x=>x.classList.toggle('on',x===b)); document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on',v.id==='v-'+b.dataset.v)); });
+
+// ── distributions ──
+function lgamma(x){const c=[76.18009172947146,-86.50532032941677,24.01409824083091,-1.231739572450155,0.1208650973866179e-2,-0.5395239384953e-5];let y=x,t=x+5.5;t-=(x+0.5)*Math.log(t);let s=1.000000000190015;for(let j=0;j<6;j++)s+=c[j]/++y;return -t+Math.log(2.5066282746310005*s/x);}
+function betacf(a,b,x){let m2,aa,c=1,d=1-(a+b)*x/(a+1);if(Math.abs(d)<1e-300)d=1e-300;d=1/d;let h=d;for(let m=1;m<=300;m++){m2=2*m;aa=m*(b-m)*x/((a-1+m2)*(a+m2));d=1+aa*d;if(Math.abs(d)<1e-300)d=1e-300;c=1+aa/c;if(Math.abs(c)<1e-300)c=1e-300;d=1/d;h*=d*c;aa=-(a+m)*(a+b+m)*x/((a+m2)*(a+1+m2));d=1+aa*d;if(Math.abs(d)<1e-300)d=1e-300;c=1+aa/c;if(Math.abs(c)<1e-300)c=1e-300;d=1/d;const del=d*c;h*=del;if(Math.abs(del-1)<3e-14)break;}return h;}
+function ibeta(a,b,x){if(x<=0)return 0;if(x>=1)return 1;const bt=Math.exp(lgamma(a+b)-lgamma(a)-lgamma(b)+a*Math.log(x)+b*Math.log(1-x));return x<(a+1)/(a+b+2)?bt*betacf(a,b,x)/a:1-bt*betacf(b,a,1-x)/b;}
+function tCdf(t,df){if(!isFinite(df)||df>1e7)return normCdf(t);const x=df/(df+t*t);const p=0.5*ibeta(df/2,0.5,x);return t>0?1-p:p;}
+function normCdf(z){return 0.5*(1+erf(z/Math.SQRT2));}
+function erf(x){const s=x<0?-1:1;x=Math.abs(x);const t=1/(1+0.3275911*x);const y=1-(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-0.284496736)*t+0.254829592)*t*Math.exp(-x*x);return s*y;}
+function tInv(p,df){let lo=-50,hi=50;for(let i=0;i<100;i++){const mid=(lo+hi)/2;if(tCdf(mid,df)<p)lo=mid;else hi=mid;}return (lo+hi)/2;}
+function fCdfUpper(F,d1,d2){ if(F<=0) return 1; return ibeta(d2/2,d1/2,d2/(d2+d1*F)); }
+
+// ── power ──
+function readPower(){ const o={type:$('#otype').value,sd:+$('#sd').value,p0:+$('#p0').value,r2:+$('#r2').value,design:$('#design').value,N:+$('#N').value,J:+$('#J').value,m:+$('#m').value,icc:+$('#icc').value,P:+$('#P').value,alpha:+$('#alpha').value,power:+$('#power').value,attr:+$('#attr').value,tu1:+$('#tu1').value,tu0:+$('#tu0').value,nout:Math.max(1,Math.round(+$('#nout').value)),target:+$('#target').value}; o.sigma2=o.type==='bin'?o.p0*(1-o.p0):o.sd*o.sd; return o; }
+function mde(o, N, J){ // returns ITT MDE for given effective N (individuals) or J clusters
+  const a=o.alpha/o.nout; let n=N, df, deff=1; if(o.design==='clu'){ n=J*o.m; df=Math.max(J-2,1); deff=1+(o.m-1)*o.icc; } else df=Math.max(n-2,1);
+  const ta=tInv(1-a/2,df), tb=tInv(o.power,df); return (ta+tb)*Math.sqrt(1/(o.P*(1-o.P)))*Math.sqrt(o.sigma2*(1-o.r2)*deff/n); }
+function powerFor(o,effect,N,J){ const a=o.alpha/o.nout; let n=N, df, deff=1; if(o.design==='clu'){ n=J*o.m; df=Math.max(J-2,1); deff=1+(o.m-1)*o.icc; } else df=Math.max(n-2,1); const se=Math.sqrt(1/(o.P*(1-o.P)))*Math.sqrt(o.sigma2*(1-o.r2)*deff/n); const ta=tInv(1-a/2,df); const lam=Math.abs(effect)/se; return 1-tCdf(ta-lam,df)+tCdf(-ta-lam,df); }
+$('#otype').onchange=()=>{ $('#contIn').style.display=$('#otype').value==='cont'?'block':'none'; $('#binIn').style.display=$('#otype').value==='bin'?'block':'none'; };
+$('#design').onchange=()=>{ $('#indIn').style.display=$('#design').value==='ind'?'block':'none'; $('#cluIn').style.display=$('#design').value==='clu'?'block':'none'; };
+$('#calc').onclick=()=>{ const o=readPower(); const keep=1-o.attr; const Neff=Math.floor(o.N*keep), Jeff=o.J, meff=o.m*keep; const oc={...o,m:meff}; const itt=o.design==='clu'?mde(oc,null,Jeff):mde(o,Neff,null); const comp=Math.max(o.tu1-o.tu0,1e-9); const late=itt/comp; const unit=o.type==='bin'?'percentage points':(o.sd===1?'SD':'units');
+  const show=v=>o.type==='bin'?fmt(100*v,1):fmt(v,3); const sdUnits=o.type==='bin'?null:itt/o.sd;
+  // required sample for target
+  let need=null; if(o.target>0){ if(o.design==='clu'){ let lo=4,hi=100000; for(let i=0;i<60;i++){ const mid=Math.floor((lo+hi)/2); if(mde(oc,null,mid)*(1/comp)>o.target) lo=mid+1; else hi=mid; } need=`${hi} clusters of ${o.m} (${hi*o.m} units enrolled)`; } else { let lo=10,hi=1e7; for(let i=0;i<60;i++){ const mid=Math.floor((lo+hi)/2); if(mde(o,Math.floor(mid*keep),null)*(1/comp)>o.target) lo=mid+1; else hi=mid; } need=`${fmt(hi,0)} units enrolled (${fmt(Math.floor(hi*keep),0)} after attrition)`; } }
+  const pw=o.target>0?(o.design==='clu'?powerFor(oc,o.target*comp,null,Jeff):powerFor(o,o.target*comp,Neff,null)):null;
+  $('#mdeOut').innerHTML=`<span class="stat"><b>${show(itt)}</b><span>MDE, intention to treat (${unit})</span></span>${sdUnits!=null&&o.sd!==1?`<span class="stat"><b>${fmt(sdUnits,3)}</b><span>in SD units</span></span>`:''}${comp<1?`<span class="stat"><b>${show(late)}</b><span>MDE on compliers (÷ ${fmt(comp,2)} take-up difference)</span></span>`:''}<span class="stat"><b>${o.design==='clu'?`${Jeff} × ${fmt(meff,1)}`:fmt(Neff,0)}</b><span>${o.design==='clu'?'clusters × units after attrition':'analysed sample after attrition'}</span></span>${o.design==='clu'?`<span class="stat"><b>${fmt(1+(meff-1)*o.icc,2)}</b><span>design effect 1 + (m−1)ρ</span></span>`:''}${o.nout>1?`<span class="stat"><b>${fmt(o.alpha/o.nout,4)}</b><span>α per outcome (Bonferroni, ${o.nout} outcomes)</span></span>`:''}
+  ${need?`<div class="ok">To detect an effect of ${o.type==='bin'?fmt(100*o.target,1)+' percentage points':fmt(o.target,3)+' '+unit}${comp<1?' on compliers':''} with power ${pct(o.power,0)}: <b>${need}</b>. With the current design, power for that effect is <b>${pct(pw)}</b>.</div>`:''}
+  <p class="note">${o.type==='bin'?`Control proportion ${pct(o.p0)}, so σ² = ${fmt(o.sigma2,4)}.`:`σ = ${o.sd}.`} R² = ${o.r2} removes ${pct(1-Math.sqrt(1-o.r2),0)} of the MDE. ${o.attr>0?`Attrition of ${pct(o.attr,0)} is applied before the calculation; it only costs power if it is unrelated to treatment, and biases the estimate if it is not.`:''}</p>`;
+  // sensitivity curves
+  const pts=[]; if(o.design==='clu'){ for(let J=8;J<=Math.max(4*o.J,40);J+=Math.max(2,Math.round(o.J/15))) pts.push({x:J,y:mde({...oc},null,J)/comp}); } else { for(let N=50;N<=Math.max(4*o.N,400);N+=Math.max(10,Math.round(o.N/25))) pts.push({x:N,y:mde(o,Math.floor(N*keep),null)/comp}); }
+  const icc=[]; if(o.design==='clu') for(let r=0;r<=0.3;r+=0.01) icc.push({x:r,y:mde({...oc,icc:r},null,Jeff)/comp});
+  const pw2=[]; const maxE=o.type==='bin'?0.3:Math.max(3*itt,0.5); for(let e=0;e<=maxE;e+=maxE/60) pw2.push({x:e,y:o.design==='clu'?powerFor(oc,e*comp,null,Jeff):powerFor(o,e*comp,Neff,null)});
+  $('#sensOut').innerHTML=`<div class="legend"><span><i style="background:var(--s1)"></i>MDE${comp<1?' on compliers':''} against ${o.design==='clu'?'number of clusters':'sample size enrolled'}</span></div>`+lineChart([{name:'MDE',color:'var(--s1)',x:pts.map(p=>p.x),y:pts.map(p=>p.y)}],{vline:o.design==='clu'?o.J:o.N,vlabel:'current',xlabel:o.design==='clu'?'clusters J':'N enrolled',ylabel:'MDE',yzero:true})+(icc.length?`<div class="legend"><span><i style="background:var(--s2)"></i>MDE against intra-cluster correlation, at J = ${Jeff}</span></div>`+lineChart([{name:'MDE',color:'var(--s2)',x:icc.map(p=>p.x),y:icc.map(p=>p.y)}],{vline:o.icc,vlabel:'assumed ρ',xlabel:'ρ',ylabel:'MDE',yzero:true,xfrac:true}):'')+`<div class="legend"><span><i style="background:var(--s3)"></i>power against true effect${comp<1?' on compliers':''}, current design</span></div>`+lineChart([{name:'power',color:'var(--s3)',x:pw2.map(p=>p.x),y:pw2.map(p=>p.y)}],{hline:o.power,vline:o.target>0?o.target:null,vlabel:'target',xlabel:'effect',ylabel:'power',y0:0,y1:1,xfrac:true});
+};
+function niceTicks(lo,hi,n=5){ if(lo===hi){lo-=1;hi+=1;} const raw=(hi-lo)/n, mag=10**Math.floor(Math.log10(raw)); const r=raw/mag; const step=(r<1.5?1:r<3?2:r<7?5:10)*mag; const t=[]; for(let v=Math.ceil(lo/step)*step; v<=hi+1e-9; v+=step) t.push(+v.toFixed(10)); return t; }
+function lineChart(series, opts={}){ const W=760,H=opts.height||240,m={l:56,r:16,t:14,b:36},pw=W-m.l-m.r,ph=H-m.t-m.b; const xs=series.flatMap(s=>s.x), ys=series.flatMap(s=>s.y).filter(isFinite); let x0=Math.min(...xs), x1=Math.max(...xs), y0=opts.y0??Math.min(...ys), y1=opts.y1??Math.max(...ys); if(opts.yzero){y0=Math.min(0,y0);} if(opts.y0==null){const pad=(y1-y0)*0.06||1;y1+=pad;} const X=v=>m.l+(v-x0)/(x1-x0||1)*pw, Y=v=>m.t+ph-(v-y0)/(y1-y0||1)*ph;
+  let g=`<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="chart">`; niceTicks(y0,y1).forEach(v=>{ g+=`<line x1="${m.l}" x2="${W-m.r}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--grid)"/><text x="${m.l-6}" y="${Y(v)+4}" text-anchor="end">${fmt(v,2)}</text>`; }); niceTicks(x0,x1,8).forEach(v=>{ g+=`<text x="${X(v)}" y="${H-m.b+16}" text-anchor="middle">${fmt(v,2)}</text>`; });
+  if(opts.hline!=null) g+=`<line x1="${m.l}" x2="${W-m.r}" y1="${Y(opts.hline)}" y2="${Y(opts.hline)}" stroke="#9ca3af" stroke-dasharray="4 3"/>`; if(opts.vline!=null) g+=`<line x1="${X(opts.vline)}" x2="${X(opts.vline)}" y1="${m.t}" y2="${m.t+ph}" stroke="#9ca3af" stroke-dasharray="4 3"/><text x="${X(opts.vline)+4}" y="${m.t+10}">${esc(opts.vlabel||'')}</text>`;
+  series.forEach(s=>{ let d=''; s.x.forEach((x,i)=>{ const v=s.y[i]; if(!isFinite(v)) return; d+=(d?'L':'M')+X(x)+','+Y(v); }); g+=`<path d="${d}" fill="none" stroke="${s.color}" stroke-width="2"/>`; s.x.forEach((x,i)=>{ const v=s.y[i]; if(!isFinite(v)) return; g+=`<circle cx="${X(x)}" cy="${Y(v)}" r="7" fill="transparent" data-tip="${esc(s.name)} · ${fmt(x,3)}: ${fmt(v,3)}"/>`; }); });
+  if(opts.ylabel) g+=`<text transform="translate(12,${m.t+ph/2}) rotate(-90)" text-anchor="middle">${esc(opts.ylabel)}</text>`; if(opts.xlabel) g+=`<text x="${m.l+pw/2}" y="${H-4}" text-anchor="middle">${esc(opts.xlabel)}</text>`; return g+'</svg>'; }
+$('#calc').click();
+
+// ── randomiser ──
+function parseCSV(text){const rows=[];let row=[],f='',q=false;for(let i=0;i<text.length;i++){const c=text[i];if(q){if(c==='"'){if(text[i+1]==='"'){f+='"';i++;}else q=false;}else f+=c;}else{if(c==='"')q=true;else if(c===','){row.push(f);f='';}else if(c==='\n'||c==='\r'){if(c==='\r'&&text[i+1]==='\n')i++;row.push(f);rows.push(row);row=[];f='';}else f+=c;}}if(f!==''||row.length){row.push(f);rows.push(row);}return rows.filter(r=>r.length>1||r[0]!=='');}
+let base=null; // {head, rows, label, digest}
+async function digest(text){ try{ const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(text)); return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('').slice(0,16); } catch(e){ return 'n/a'; } }
+async function loadBase(head,rows,label,text){ base={head:head.map(h=>h.trim()),rows,label,digest:await digest(text)}; const opts=base.head.map((h,i)=>`<option value="${i}">${esc(h)}</option>`).join(''); ['#rId','#rCluster','#rStrata','#rBal'].forEach(s=>$(s).innerHTML=opts);
+  const isNum=i=>rows.filter(r=>r[i]!=='').every(r=>isFinite(parseFloat(r[i]))); const idi=base.head.findIndex(h=>/id$|^id|hhid|uid/i.test(h)); if(idi>=0) $('#rId').value=idi; const ci=base.head.findIndex(h=>/village|cluster|school|clinic|psu|ward|gp$/i.test(h)); if(ci>=0) $('#rCluster').value=ci;
+  [...$('#rBal').options].forEach(o=>{ const i=+o.value; o.selected=isNum(i)&&i!==idi&&i!==ci&&new Set(rows.map(r=>r[i])).size>2; }); [...$('#rStrata').options].forEach(o=>{ const i=+o.value; o.selected=/district|block|village|stratum|strata|region|gender|sex/i.test(base.head[i])&&i!==idi; });
+  $('#randSetup').style.display='block'; $('#randSummary').innerHTML=`<h2>Assignment</h2><div class="note">${esc(label)}: ${rows.length} rows, ${base.head.length} columns. Input digest ${base.digest}.</div>`; $('#balPanel').style.display=$('#recPanel').style.display='none'; }
+$('#file').onchange=e=>{ const f=e.target.files[0]; if(!f) return; const rd=new FileReader(); rd.onload=()=>{ const rows=parseCSV(rd.result); loadBase(rows[0],rows.slice(1),f.name,rd.result); }; rd.readAsText(f); };
+$('#demo').onclick=()=>{ const r=mulberry32(4242); const head=['hh_id','district','village','hh_size','land_acres','female_head','head_age','head_schooling','monthly_consumption','has_toilet','bank_account']; const rows=[]; const districts=['Gaya','Nawada','Aurangabad']; let id=1;
+  for(let v=1;v<=36;v++){ const d=districts[(v-1)%3]; const vEff=randn(r)*0.15; for(let h=0;h<20;h++){ const fh=r()<0.18?1:0; const age=Math.round(45+randn(r)*12); const sch=Math.max(0,Math.round(5+randn(r)*4-(fh?2:0))); const land=r()<0.4?0:+(Math.abs(randn(r))*1.8).toFixed(2); const cons=Math.round(Math.exp(8.4+vEff+0.05*sch+0.08*land+randn(r)*0.35)); rows.push([String(id++),d,'V'+String(v).padStart(2,'0'),String(2+Math.floor(Math.abs(randn(r))*2+2)),String(land),String(fh),String(age),String(sch),String(cons),r()<0.55?'1':'0',r()<0.7?'1':'0']); } }
+  loadBase(head,rows,'Demo baseline (simulated, 720 households in 36 villages)',head.join(',')+'\n'+rows.map(x=>x.join(',')).join('\n')); };
+$('#rLevel').onchange=()=>{ $('#rClusterIn').style.display=$('#rLevel').value==='cluster'?'block':'none'; };
+
+function quantBins(vals,k){ const s=vals.filter(isFinite).sort((a,b)=>a-b); const cuts=[]; for(let i=1;i<k;i++) cuts.push(s[Math.floor(i*s.length/k)]); return v=>{ if(!isFinite(v)) return 'missing'; let b=0; while(b<cuts.length&&v>=cuts[b]) b++; return 'q'+(b+1); }; }
+function welch(a,b){ const n1=a.length,n2=b.length; if(n1<2||n2<2) return {d:NaN,p:NaN}; const m1=a.reduce((x,y)=>x+y,0)/n1, m2=b.reduce((x,y)=>x+y,0)/n2; const v1=a.reduce((x,y)=>x+(y-m1)**2,0)/(n1-1), v2=b.reduce((x,y)=>x+(y-m2)**2,0)/(n2-1); const se=Math.sqrt(v1/n1+v2/n2); if(!(se>0)) return {d:m1-m2,p:1}; const t=(m1-m2)/se; const df=(v1/n1+v2/n2)**2/((v1/n1)**2/(n1-1)+(v2/n2)**2/(n2-1)); return {d:m1-m2,p:2*(1-tCdf(Math.abs(t),df))}; }
+function jointF(y,X){ // regress binary y on X (with intercept); F for all slopes = 0
+  const n=y.length,k=X[0].length; const A=Array.from({length:k+1},()=>new Float64Array(k+1)), b=new Float64Array(k+1); for(let i=0;i<n;i++){ const x=[1,...X[i]]; for(let a=0;a<=k;a++){ b[a]+=x[a]*y[i]; for(let c=0;c<=k;c++) A[a][c]+=x[a]*x[c]; } }
+  const M=A.map((r,i)=>[...r,b[i]]); for(let i=0;i<=k;i++){ let p=i; for(let r=i+1;r<=k;r++) if(Math.abs(M[r][i])>Math.abs(M[p][i])) p=r; [M[i],M[p]]=[M[p],M[i]]; if(Math.abs(M[i][i])<1e-12) return null; for(let r=0;r<=k;r++){ if(r===i) continue; const f=M[r][i]/M[i][i]; for(let c=i;c<=k+1;c++) M[r][c]-=f*M[i][c]; } } const beta=M.map((r,i)=>r[k+1]/r[i]);
+  const ym=y.reduce((a,c)=>a+c,0)/n; let sse=0,sst=0; for(let i=0;i<n;i++){ let f=beta[0]; for(let a=0;a<k;a++) f+=beta[a+1]*X[i][a]; sse+=(y[i]-f)**2; sst+=(y[i]-ym)**2; } const F=((sst-sse)/k)/(sse/(n-k-1)); return {F,p:fCdfUpper(F,k,n-k-1),df1:k,df2:n-k-1}; }
+let assign=null, record='';
+$('#randGo').onclick=()=>{ if(!base) return; const R=base.rows, iId=+$('#rId').value, level=$('#rLevel').value, iCl=+$('#rCluster').value, strata=[...$('#rStrata').selectedOptions].map(o=>+o.value).filter(i=>i!==iId&&!(level==='cluster'&&i===iCl)), bins=+$('#rBins').value, seed=+$('#rSeed').value, bal=[...$('#rBal').selectedOptions].map(o=>+o.value);
+  const arms=$('#rArms').value.split(',').map(s=>s.trim()).filter(Boolean).map(s=>{ const m=s.match(/^(.*?)\s+([\d.]+)$/); return m?{name:m[1],w:+m[2]}:{name:s,w:1}; }); const wsum=arms.reduce((a,x)=>a+x.w,0); arms.forEach(a=>a.w/=wsum); if(arms.length<2){ alert('Give at least two arms.'); return; }
+  // units to randomise
+  let units; if(level==='cluster'){ const map=new Map(); R.forEach((r,i)=>{ const c=r[iCl]; if(!map.has(c)) map.set(c,[]); map.get(c).push(i); }); units=[...map].map(([c,idx])=>({key:c,rows:idx})); } else units=R.map((r,i)=>({key:r[iId]||String(i+1),rows:[i]}));
+  // strata values per unit (cluster-level: mode for text, mean for numeric)
+  const isNum=i=>R.filter(r=>r[i]!=='').every(r=>isFinite(parseFloat(r[i]))); const binners=strata.map(i=>isNum(i)?quantBins(units.map(u=>u.rows.reduce((a,j)=>a+parseFloat(R[j][i]),0)/u.rows.length),bins):null);
+  units.forEach(u=>{ u.stratum=strata.map((i,k)=>{ if(binners[k]){ const v=u.rows.reduce((a,j)=>a+parseFloat(R[j][i]),0)/u.rows.length; return `${base.head[i]}=${binners[k](v)}`; } const cnt=new Map(); u.rows.forEach(j=>cnt.set(R[j][i],(cnt.get(R[j][i])||0)+1)); return `${base.head[i]}=${[...cnt].sort((a,b)=>b[1]-a[1])[0][0]}`; }).join(' | ')||'(none)'; });
+  // seeded permuted-block assignment within strata
+  const rng=mulberry32(seed); const groups=new Map(); units.forEach(u=>{ if(!groups.has(u.stratum)) groups.set(u.stratum,[]); groups.get(u.stratum).push(u); });
+  const stratumInfo=[]; const carry=arms.map(()=>0); for(const [s,us] of groups){ // shuffle
+    for(let i=us.length-1;i>0;i--){ const j=Math.floor(rng()*(i+1)); [us[i],us[j]]=[us[j],us[i]]; }
+    // build assignment list of length n respecting shares: largest-remainder, then shuffle the list
+    const n=us.length; const raw=arms.map((a,i)=>Math.max(0,a.w*n+carry[i])); const base_=raw.map(Math.floor); let rem=n-base_.reduce((a,b)=>a+b,0); const order=raw.map((v,i)=>({i,f:v-Math.floor(v),r:rng()})).sort((a,b)=>b.f-a.f||a.r-b.r); for(let k=0;k<rem;k++) base_[order[k%order.length].i]++; arms.forEach((a,i)=>{ carry[i]=a.w*n+carry[i]-base_[i]; }); const list=[]; base_.forEach((c,i)=>{ for(let k=0;k<c;k++) list.push(i); }); for(let i=list.length-1;i>0;i--){ const j=Math.floor(rng()*(i+1)); [list[i],list[j]]=[list[j],list[i]]; }
+    us.forEach((u,i)=>u.arm=arms[list[i]].name); stratumInfo.push({s,n,counts:arms.map((a,i)=>base_[i])}); }
+  // per-row assignment
+  const rowArm=new Array(R.length); units.forEach(u=>u.rows.forEach(j=>rowArm[j]=u.arm)); assign=R.map((r,i)=>({id:r[iId]||String(i+1),cluster:level==='cluster'?r[iCl]:'',stratum:units.find(u=>u.rows.includes(i))?.stratum||'',arm:rowArm[i]}));
+  const counts=arms.map(a=>({name:a.name,units:units.filter(u=>u.arm===a.name).length,rows:rowArm.filter(x=>x===a.name).length}));
+  $('#randSummary').innerHTML=`<h2>Assignment</h2>${counts.map(c=>`<span class="stat"><b>${c.units}</b><span>${esc(c.name)}${level==='cluster'?` clusters (${c.rows} rows)`:''}</span></span>`).join('')}<div class="note">${units.length} ${level==='cluster'?'clusters':'units'} randomised within ${groups.size} strat${groups.size===1?'um':'a'} by permuted blocks, seed ${seed}.</div>${stratumInfo.some(x=>x.n<arms.length*2)?'<div class="warn">Some strata have fewer units than twice the number of arms; allocation in those strata cannot match the target shares. Coarsen the stratification.</div>':''}<details><summary>Strata (${groups.size})</summary><div class="tscroll"><table><tr><th>Stratum</th><th>Units</th>${arms.map(a=>`<th>${esc(a.name)}</th>`).join('')}</tr>${stratumInfo.map(x=>`<tr><td>${esc(x.s)}</td><td>${x.n}</td>${x.counts.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</table></div></details>`;
+  // balance
+  const armNames=arms.map(a=>a.name); const rowsBy=n=>R.map((r,i)=>i).filter(i=>rowArm[i]===n); let nsig=0; const balRows=bal.map(i=>{ const vals=armNames.map(n=>rowsBy(n).map(j=>parseFloat(R[j][i])).filter(isFinite)); const w=welch(vals[0],vals[1]); if(w.p<0.05) nsig++; return `<tr><td>${esc(base.head[i])}</td>${vals.map(v=>`<td>${fmt(v.reduce((a,b)=>a+b,0)/v.length,3)}</td>`).join('')}<td>${fmt(w.d,3)}</td><td class="${w.p<0.05?'sig':''}">${fmt(w.p,3)}</td></tr>`; });
+  let joint=null; if(bal.length){ const idx=R.map((r,i)=>i).filter(i=>rowArm[i]===armNames[0]||rowArm[i]===armNames[1]); const ok=idx.filter(i=>bal.every(c=>isFinite(parseFloat(R[i][c])))); joint=jointF(ok.map(i=>rowArm[i]===armNames[1]?1:0), ok.map(i=>bal.map(c=>parseFloat(R[i][c])))); }
+  $('#balOut').innerHTML=bal.length?`<div class="tscroll"><table><tr><th>Covariate</th>${armNames.map(n=>`<th>mean, ${esc(n)}</th>`).join('')}<th>${esc(armNames[0])} − ${esc(armNames[1])}</th><th>p (Welch)</th></tr>${balRows.join('')}</table></div><p class="note">${nsig} of ${bal.length} covariates differ at 5% between the first two arms (about ${(bal.length/20).toFixed(1)} expected by chance).${joint?` Joint test: F(${joint.df1}, ${joint.df2}) = ${fmt(joint.F,2)}, p = ${fmt(joint.p,3)}.`:''}${level==='cluster'?' Cluster randomisation: these row-level tests understate the true uncertainty; the joint F on cluster means would be the strict version.':''}</p>`:'<p class="note">No balance covariates selected.</p>'; $('#balPanel').style.display='block';
+  record=`RANDOMISATION RECORD\nDate: ${new Date().toISOString()}\nInput: ${base.label} (${R.length} rows, SHA-256 prefix ${base.digest})\nUnit of randomisation: ${level==='cluster'?'cluster column "'+base.head[iCl]+'" ('+units.length+' clusters)':'each row, ID column "'+base.head[iId]+'" ('+units.length+' units)'}\nStrata: ${strata.length?strata.map(i=>base.head[i]+(binners[strata.indexOf(i)]?' ('+bins+' quantile bins)':'')).join(', '):'none'} → ${groups.size} strata\nArms and shares: ${arms.map(a=>a.name+' '+a.w.toFixed(3)).join(', ')}\nAlgorithm: within each stratum, units shuffled with a seeded mulberry32 generator (seed ${seed}); arm counts set by largest remainder of share × stratum size plus the remainder carried over from earlier strata (so small strata still add up to the target split overall), ties broken by the same generator; the list of arm labels shuffled and assigned in order (permuted block within stratum).\nResult: ${counts.map(c=>c.name+' '+c.units).join(', ')}\nBalance: ${nsig} of ${bal.length} covariates differ at 5% between the first two arms${joint?'; joint F('+joint.df1+','+joint.df2+') = '+joint.F.toFixed(2)+', p = '+joint.p.toFixed(3):''}\nReproduce: load the same file in this tool with the same settings and seed; the digest above confirms the file is identical.`;
+  $('#recOut').textContent=record; $('#recPanel').style.display='block'; $('#randStatus').textContent='Done.';
+};
+$('#dlAssign').onclick=()=>{ if(!assign) return; const q=s=>'"'+String(s??'').replace(/"/g,'""')+'"'; const csv=['id,cluster,stratum,arm',...assign.map(a=>[a.id,a.cluster,a.stratum,a.arm].map(q).join(','))].join('\n'); dl(csv,'assignments.csv','text/csv'); };
+$('#dlRec').onclick=()=>dl(record,'randomisation-record.txt','text/plain');
+function dl(content,name,type){ const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([content],{type})); a.download=name; a.click(); }
+</script>
+</body>
+</html>
