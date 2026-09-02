@@ -35,7 +35,7 @@ CSV upload, or a live World Bank country panel.
 
 ---
 
-### Poverty & Inequality Lab
+### Poverty & Inequality Explorer
 
 Grouped-data poverty and inequality analysis after Datt (1998): General Quadratic and
 Beta Lorenz curves fitted to decile shares, Gini/Theil/MLD/Atkinson/Palma from the
@@ -45,7 +45,7 @@ growth incidence curve between two surveys. Deciles and means are pulled live fr
 the World Bank's Poverty and Inequality Platform (2021 PPP), and one click compares
 the page's grouped-data answers with PIP's microdata figures.
 
-**Directory:** `poverty-lab/`
+**Directory:** `poverty-inequality/`
 **Stage:** Active
 
 ---
@@ -60,6 +60,82 @@ Exports a Markdown report and a CSV of flagged interviews. Ships with a seeded,
 clearly labelled simulated dataset with six planted problems.
 
 **Directory:** `survey-audit/`
+**Stage:** Active
+
+---
+
+### Women in the NFHS
+
+Women's health, work, assets, agency and safety across India's states and the
+five NFHS rounds, pulled live from the DHS Program API: national trend, a
+state dumbbell chart against a comparison round, breakdowns by wealth, residence,
+education and age, approximate confidence intervals from the unweighted n and a
+chosen design effect, and CSV export. Twenty curated indicators plus any DHS ID.
+
+**Directory:** `women-indicators/`
+**Stage:** Active
+
+---
+
+### Heat and Outdoor Work
+
+Hour-by-hour WBGT from live Open-Meteo forecasts for any place in India, the
+ACGIH/ISO work–rest screening limits by workload and acclimatisation, safe working
+hours per day, wages lost for a workforce, and a 35-year trend in dangerous-heat
+days from the ERA5-based archive. Framed around the outdoor work that falls on
+women.
+
+**Directory:** `heat-exposure/`
+**Stage:** Active
+
+---
+
+### Wage Gap Decomposition
+
+Oaxaca–Blinder decomposition of a wage gap in the browser: two-fold (four
+reference-coefficient choices) and three-fold forms, detailed contributions by
+variable, bootstrap standard errors, HC1 regressions; upload microdata or use a
+simulated sample with a known penalty. Reproduced exactly by an independent
+Python implementation.
+
+**Directory:** `wage-gap/`
+**Stage:** Active
+
+---
+
+### RCT Planner
+
+Power and minimum detectable effect for individual and cluster designs (ICC,
+covariate R², attrition, take-up, multiple outcomes), required sample by
+bisection, sensitivity curves; and a seeded, stratified, permuted-block
+randomiser for an uploaded baseline with a balance table, joint F-test and a
+randomisation record for the pre-analysis plan.
+
+**Directory:** `rct-planner/`
+**Stage:** Active
+
+---
+
+### Cost–Benefit Calculator
+
+NPV, BCR, IRR, payback and cost per outcome for cost, benefit and outcome
+streams with ranges; Monte Carlo over every input with the probability the
+programme pays off; a tornado chart of what drives the answer. Verified to the
+cent against an independent calculation.
+
+**Directory:** `cost-benefit/`
+**Stage:** Active
+
+---
+
+### Land Acquisition Compensation Calculator
+
+The RFCTLARR Act 2013 formula line by line: section 26 market value, First
+Schedule factor, section 29 assets, 100% solatium, the 12% additional amount, and
+every Second Schedule rehabilitation entitlement, each with its authority cited;
+with a comparison to the 1894 Act.
+
+**Directory:** `land-acquisition/`
 **Stage:** Active
 
 ---
@@ -207,9 +283,15 @@ Projects in this repo follow a simple lifecycle:
 Experiments/
 ├── index.html                          # Experiments index page
 ├── causal-workbench/                   # DiD, event study, synthetic control
-├── poverty-lab/                        # Lorenz curves, FGT, Datt–Ravallion, live PIP
+├── poverty-inequality/                 # Lorenz curves, FGT, Datt–Ravallion, live PIP
 ├── survey-audit/                       # field-data quality checks
 ├── compensation-calculator/            # MV Act fatal-claim awards, step by step
+├── women-indicators/                   # NFHS women's indicators, live DHS API
+├── heat-exposure/                      # WBGT, safe hours, wages lost, 35-year trend
+├── wage-gap/                           # Oaxaca–Blinder decomposition
+├── rct-planner/                        # power/MDE and stratified randomiser
+├── cost-benefit/                       # NPV/BCR/IRR with Monte Carlo
+├── land-acquisition/                   # RFCTLARR 2013 compensation
 ├── court-translator/
 │   └── index.html                      # Court Petition Translator UI
 ├── chamber-petition/

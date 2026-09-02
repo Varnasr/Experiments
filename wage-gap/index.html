@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wage Gap Decomposition — Experiments</title>
+<meta name="description" content="Oaxaca–Blinder decomposition of the gender wage gap in the browser: two-fold and three-fold decompositions, four reference-coefficient choices, detailed contributions by variable, and bootstrap standard errors. Upload microdata or use a simulated dataset with a known structure.">
+<link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231B6B4A'/><path d='M7 24h6V12H7zM19 24h6V8h-6z' stroke='white' stroke-width='2.2' fill='none' stroke-linejoin='round'/><path d='M13 10h6' stroke='white' stroke-width='2.2' stroke-dasharray='2 2'/></svg>">
+<style>
+  :root { --bg:#fafafa; --surface:#fff; --border:#e5e7eb; --text:#1a1a2e; --dim:#4b5563; --muted:#9ca3af; --accent:#1B6B4A; --accent-soft:#e6f2ec; --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#4a3aa7; --grid:#eceef1; --mono:ui-monospace,SFMono-Regular,Menlo,monospace; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--text); line-height:1.55; }
+  a { color:var(--accent); }
+  header { border-bottom:1px solid var(--border); background:#fff; }
+  .wrap { max-width:1080px; margin:0 auto; padding:0 1.25rem; }
+  header .wrap { display:flex; align-items:baseline; justify-content:space-between; gap:1rem; padding:.9rem 1.25rem; flex-wrap:wrap; }
+  header h1 { font-family:Georgia,serif; font-size:1.35rem; font-weight:400; }
+  header h1 small { font-size:.8rem; color:var(--muted); margin-left:.5rem; }
+  header nav a { font-size:.85rem; margin-left:1rem; text-decoration:none; }
+  main { padding:1.5rem 0 3rem; }
+  .lede { color:var(--dim); font-size:.95rem; max-width:66ch; margin-bottom:1.25rem; }
+  .grid { display:grid; grid-template-columns:320px 1fr; gap:1.25rem; align-items:start; }
+  @media (max-width:860px){ .grid { grid-template-columns:1fr; } }
+  .panel { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1rem 1.15rem; margin-bottom:1rem; }
+  .panel h2 { font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; margin-bottom:.7rem; }
+  label { display:block; font-size:.8rem; color:var(--dim); margin:.5rem 0 .2rem; }
+  select, input[type=text], input[type=number] { width:100%; font:inherit; font-size:.9rem; padding:.4rem .5rem; border:1px solid var(--border); border-radius:6px; background:#fff; color:var(--text); }
+  input[type=file] { font-size:.85rem; max-width:100%; }
+  .row { display:flex; gap:.5rem; } .row > * { flex:1; }
+  button { font:inherit; font-size:.88rem; padding:.5rem .9rem; border-radius:6px; border:1px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer; }
+  button.secondary { background:#fff; color:var(--accent); } button:disabled { opacity:.5; cursor:default; }
+  .tabs { display:flex; gap:.25rem; border-bottom:1px solid var(--border); margin-bottom:.75rem; }
+  .tabs button { background:none; border:none; color:var(--dim); padding:.45rem .7rem; border-bottom:2px solid transparent; border-radius:0; }
+  .tabs button.on { color:var(--accent); border-bottom-color:var(--accent); font-weight:600; }
+  .tab { display:none; } .tab.on { display:block; }
+  .stat { display:inline-block; margin:.25rem 1.25rem .25rem 0; vertical-align:top; }
+  .stat b { display:block; font-size:1.4rem; font-family:Georgia,serif; font-weight:400; } .stat span { font-size:.75rem; color:var(--muted); }
+  table { border-collapse:collapse; width:100%; font-size:.84rem; margin:.5rem 0; }
+  th, td { text-align:right; padding:.3rem .5rem; border-bottom:1px solid var(--border); font-variant-numeric:tabular-nums; }
+  th:first-child, td:first-child { text-align:left; } th { color:var(--dim); font-weight:600; font-size:.75rem; }
+  .note { font-size:.82rem; color:var(--dim); margin-top:.5rem; }
+  .warn { background:#fff7ed; border:1px solid #fed7aa; color:#9a3412; padding:.5rem .7rem; border-radius:6px; font-size:.83rem; margin:.5rem 0; }
+  .ok { background:var(--accent-soft); color:var(--accent); padding:.5rem .7rem; border-radius:6px; font-size:.83rem; margin:.5rem 0; }
+  .chart { width:100%; height:auto; display:block; margin:.4rem 0; } .chart text { font-family:inherit; font-size:11px; fill:var(--dim); }
+  .legend { display:flex; gap:1rem; flex-wrap:wrap; font-size:.8rem; color:var(--dim); margin:.2rem 0; } .legend i { display:inline-block; width:12px; height:12px; border-radius:2px; vertical-align:-2px; margin-right:.35rem; }
+  .tip { position:fixed; pointer-events:none; background:#1a1a2e; color:#fff; font-size:.75rem; padding:.3rem .5rem; border-radius:4px; display:none; z-index:9; white-space:nowrap; }
+  details { margin-top:.5rem; font-size:.85rem; color:var(--dim); } summary { cursor:pointer; color:var(--accent); }
+  .mini { font-size:.78rem; color:var(--muted); } code { font-family:var(--mono); font-size:.8em; background:#f3f4f6; padding:.05em .3em; border-radius:3px; }
+  .pill { display:inline-block; font-size:.7rem; padding:1px 7px; border-radius:99px; background:var(--accent-soft); color:var(--accent); font-weight:600; margin-left:.4rem; vertical-align:middle; text-transform:none; letter-spacing:0; }
+  footer { border-top:1px solid var(--border); padding:1.25rem; text-align:center; font-size:.8rem; color:var(--muted); }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>Wage Gap Decomposition <small>Oaxaca–Blinder · explained and unexplained</small></h1>
+  <nav><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/wage-gap">Source</a></nav>
+</div></header>
+<main><div class="wrap">
+<p class="lede">Women earn less than men in every labour force survey India has run. How much of that is because women and men differ in education, experience, sector and location, and how much because the same characteristics are paid differently? The Oaxaca–Blinder decomposition answers that with two wage regressions. This page runs it in the browser on your own microdata, with the choices that change the answer made explicit: which group's coefficients are the reference, whether to use the two-fold or three-fold form, and how much of the “unexplained” part depends on how categorical variables are coded.</p>
+
+<div class="grid">
+<div>
+  <div class="panel">
+    <h2>Data</h2>
+    <div class="tabs" id="srcTabs"><button data-src="sim" class="on">Simulate</button><button data-src="csv">Upload CSV</button></div>
+    <div class="tab on" id="src-sim">
+      <p class="mini">A labour-force-style sample where the true wage equation differs by sex in a known way, so the decomposition can be checked against how the data were made.</p>
+      <div class="row"><div><label>Workers</label><input type="number" id="simN" value="4000" min="200" max="50000"></div><div><label>Seed</label><input type="number" id="simSeed" value="11"></div></div>
+      <label>Women's intercept penalty (log points)</label><input type="number" id="simPen" value="-0.15" step="0.01">
+      <label>Women's extra return to a year of education</label><input type="number" id="simEduDiff" value="0.01" step="0.005">
+      <label>Women's mean years of experience relative to men</label><input type="number" id="simExpDiff" value="-4" step="0.5">
+      <p style="margin-top:.6rem"><button id="simGo">Generate</button></p>
+    </div>
+    <div class="tab" id="src-csv">
+      <p class="mini">One row per worker. A wage column, a two-valued group column (e.g. sex), and covariates. Text columns are expanded into dummies against their most common category.</p>
+      <label>File</label><input type="file" id="csvFile" accept=".csv,text/csv">
+      <div id="csvMap" style="display:none">
+        <label>Wage column</label><select id="cY"></select>
+        <label><input type="checkbox" id="cLog" checked> Take the natural log of wages</label>
+        <label>Group column</label><select id="cG"></select>
+        <label>Reference (advantaged) group value</label><select id="cGA"></select>
+        <label>Covariates</label><select id="cX" multiple size="6"></select>
+        <p style="margin-top:.6rem"><button id="csvGo">Load</button></p>
+      </div>
+    </div>
+  </div>
+  <div class="panel">
+    <h2>Decomposition</h2>
+    <label>Reference coefficients β*</label>
+    <select id="ref"><option value="pooledD">Pooled regression with a group dummy (Jann 2008)</option><option value="pooled">Pooled regression without the dummy (Neumark 1988)</option><option value="A">Advantaged group's coefficients (men)</option><option value="B">Disadvantaged group's coefficients (women)</option></select>
+    <label>Bootstrap replications for standard errors</label><input type="number" id="boot" value="200" min="0" max="1000">
+    <p style="margin-top:.6rem"><button id="run" disabled>Decompose</button></p>
+    <p class="mini" id="status"></p>
+  </div>
+</div>
+
+<div>
+  <div class="panel" id="sumPanel"><h2>The gap</h2><div id="sumOut" class="note">Generate or load data, then decompose.</div></div>
+  <div class="panel" id="twoPanel" style="display:none"><h2>Two-fold decomposition <span class="pill" id="refPill"></span></h2><div id="twoOut"></div>
+    <details><summary>What is being computed</summary><p>With ȳ<sub>A</sub> − ȳ<sub>B</sub> the mean gap in log wages (men minus women by default), and separate OLS fits β<sub>A</sub>, β<sub>B</sub>, the two-fold decomposition is (X̄<sub>A</sub> − X̄<sub>B</sub>)′β* + [X̄<sub>A</sub>′(β<sub>A</sub> − β*) + X̄<sub>B</sub>′(β* − β<sub>B</sub>)]. The first term is the part of the gap due to differences in characteristics valued at the reference prices β* (the “explained” or endowments part); the second is due to differences in returns, including the intercept (the “unexplained” part, sometimes read as discrimination, which it is only if the model has every productive characteristic in it). β* from the pooled regression with a group dummy is Jann's (2008) recommendation, because omitting the dummy lets the group difference leak into the slope coefficients. Detailed contributions are shown for each variable; for dummies the unexplained detail depends on which category is the base (Oaxaca and Ransom 1999), which is why only the totals are invariant.</p></details></div>
+  <div class="panel" id="threePanel" style="display:none"><h2>Three-fold decomposition <span class="pill">from the disadvantaged group's viewpoint</span></h2><div id="threeOut"></div>
+    <details><summary>What is being computed</summary><p>Endowments E = (X̄<sub>A</sub> − X̄<sub>B</sub>)′β<sub>B</sub>, coefficients C = X̄<sub>B</sub>′(β<sub>A</sub> − β<sub>B</sub>), and the interaction I = (X̄<sub>A</sub> − X̄<sub>B</sub>)′(β<sub>A</sub> − β<sub>B</sub>): what women would gain with men's characteristics at women's prices, what they would gain with men's prices at their own characteristics, and the cross term that belongs to neither.</p></details></div>
+  <div class="panel" id="regPanel" style="display:none"><h2>The two regressions</h2><div id="regOut"></div></div>
+</div>
+</div>
+</div></main>
+<div class="tip" id="tip"></div>
+<footer>Part of <a href="../">Experiments</a> by Varna Sri Raman · Idealog Works · MIT licence · Everything is computed in your browser; uploaded data never leaves it.</footer>
+
+<script>
+'use strict';
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt=(x,d=3)=>(x==null||!isFinite(x))?'—':Number(x).toFixed(d);
+const pct=(x,d=1)=>(x==null||!isFinite(x))?'—':(100*x).toFixed(d)+'%';
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
+function randn(r){let u=0,v=0;while(!u)u=r();while(!v)v=r();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);}
+const tip=$('#tip'); document.addEventListener('mousemove',e=>{const t=e.target.closest&&e.target.closest('[data-tip]');if(t){tip.innerHTML=t.getAttribute('data-tip');tip.style.display='block';tip.style.left=(e.clientX+12)+'px';tip.style.top=(e.clientY-10)+'px';}else tip.style.display='none';});
+
+// ── linear algebra ──
+function cholSolve(A,B){ const k=A.length; const L=Array.from({length:k},()=>new Float64Array(k)); for(let i=0;i<k;i++){ for(let j=0;j<=i;j++){ let s=A[i][j]; for(let p=0;p<j;p++) s-=L[i][p]*L[j][p]; if(i===j){ if(s<=1e-12) throw new Error('A regressor is collinear (a dummy with no variation in one group, or a perfectly predicted column).'); L[i][i]=Math.sqrt(s);} else L[i][j]=s/L[j][j]; } } const m=B[0].length, X=Array.from({length:k},()=>new Float64Array(m)); for(let c=0;c<m;c++){ const y=new Float64Array(k); for(let i=0;i<k;i++){ let s=B[i][c]; for(let p=0;p<i;p++) s-=L[i][p]*y[p]; y[i]=s/L[i][i]; } for(let i=k-1;i>=0;i--){ let s=y[i]; for(let p=i+1;p<k;p++) s-=L[p][i]*X[p][c]; X[i][c]=s/L[i][i]; } } return X; }
+function ols(X,y){ const n=y.length,k=X[0].length; const A=Array.from({length:k},()=>new Float64Array(k)), b=Array.from({length:k},()=>new Float64Array(1)); for(let i=0;i<n;i++){ const x=X[i]; for(let a=0;a<k;a++){ b[a][0]+=x[a]*y[i]; for(let c=a;c<k;c++) A[a][c]+=x[a]*x[c]; } } for(let a=0;a<k;a++) for(let c=0;c<a;c++) A[a][c]=A[c][a]; const beta=cholSolve(A,b).map(r=>r[0]); let sse=0; for(let i=0;i<n;i++){ let f=0; for(let a=0;a<k;a++) f+=X[i][a]*beta[a]; sse+=(y[i]-f)**2; } const ym=y.reduce((a,b)=>a+b,0)/n; const sst=y.reduce((a,v)=>a+(v-ym)**2,0); // HC1 robust SEs
+  const XtXi=cholSolve(A,Array.from({length:k},(_,i)=>{const r=new Float64Array(k);r[i]=1;return r;})); const meat=Array.from({length:k},()=>new Float64Array(k)); for(let i=0;i<n;i++){ let f=0; for(let a=0;a<k;a++) f+=X[i][a]*beta[a]; const e=y[i]-f; for(let a=0;a<k;a++) for(let c=0;c<k;c++) meat[a][c]+=X[i][a]*X[i][c]*e*e; } const se=new Array(k).fill(0).map((_,a)=>{ let v=0; for(let p=0;p<k;p++) for(let q=0;q<k;q++) v+=XtXi[a][p]*meat[p][q]*XtXi[q][a]; return Math.sqrt(v*n/(n-k)); });
+  return {beta,se,r2:1-sse/sst,n,k}; }
+const mean=a=>a.reduce((x,y)=>x+y,0)/a.length;
+
+// ── data ──
+let D=null; // {y:[], g:[] (1 = advantaged A, 0 = B), X:[[...]] without intercept, names:[], labelA, labelB, truth?}
+function setStatus(s){ $('#status').textContent=s; }
+$('#simGo').onclick=()=>{ const n=+$('#simN').value, r=mulberry32(+$('#simSeed').value||1), pen=+$('#simPen').value, eduDiff=+$('#simEduDiff').value, expDiff=+$('#simExpDiff').value; const y=[],g=[],X=[];
+  for(let i=0;i<n;i++){ const female=r()<0.45; const edu=Math.max(0,Math.round(8+randn(r)*4+(female?-1:0))); const exp=Math.max(0,Math.round(14+randn(r)*8+(female?expDiff:0))); const urban=r()<(female?0.42:0.5)?1:0; const formal=r()<(female?0.22:0.38)?1:0;
+    const lw=4.2+(0.08+(female?eduDiff:0))*edu+0.035*exp-0.0005*exp*exp+0.18*urban+0.35*formal+(female?pen:0)+randn(r)*0.45; y.push(lw); g.push(female?0:1); X.push([edu,exp,exp*exp/100,urban,formal]); }
+  D={y,g,X,names:['Years of education','Years of experience','Experience² / 100','Urban','Formal sector'],labelA:'Men',labelB:'Women',logged:true,truth:{pen,eduDiff,expDiff}}; $('#run').disabled=false; setStatus(`Simulated ${n} workers, ${g.filter(v=>!v).length} women.`); $('#sumOut').innerHTML=`<div class="note">Simulated sample: log wage = 4.2 + (0.08${eduDiff?` ${eduDiff>0?'+':'−'} ${Math.abs(eduDiff)} for women`:''})·education + 0.035·experience − 0.0005·experience² + 0.18·urban + 0.35·formal ${pen?`${pen<0?'−':'+'} ${Math.abs(pen)} for women`:''} + noise. Women have ${expDiff} years of experience on average relative to men, one year less education, and lower urban and formal-sector shares.</div>`; document.querySelectorAll('#twoPanel,#threePanel,#regPanel').forEach(p=>p.style.display='none'); };
+
+// CSV
+let csv=null;
+function parseCSV(text){const rows=[];let row=[],f='',q=false;for(let i=0;i<text.length;i++){const c=text[i];if(q){if(c==='"'){if(text[i+1]==='"'){f+='"';i++;}else q=false;}else f+=c;}else{if(c==='"')q=true;else if(c===','){row.push(f);f='';}else if(c==='\n'||c==='\r'){if(c==='\r'&&text[i+1]==='\n')i++;row.push(f);rows.push(row);row=[];f='';}else f+=c;}}if(f!==''||row.length){row.push(f);rows.push(row);}return rows.filter(r=>r.length>1||r[0]!=='');}
+$('#csvFile').onchange=e=>{ const f=e.target.files[0]; if(!f) return; const rd=new FileReader(); rd.onload=()=>{ const rows=parseCSV(rd.result); csv={head:rows[0].map(h=>h.trim()),rows:rows.slice(1)}; const opts=csv.head.map((h,i)=>`<option value="${i}">${esc(h)}</option>`).join(''); $('#cY').innerHTML=opts; $('#cG').innerHTML=opts; $('#cX').innerHTML=opts; const gi=csv.head.findIndex(h=>/sex|gender|female|male|group/i.test(h)); if(gi>=0) $('#cG').value=gi; const yi=csv.head.findIndex(h=>/wage|earn|income|salary|pay/i.test(h)); if(yi>=0) $('#cY').value=yi; fillGA(); $('#csvMap').style.display='block'; }; rd.readAsText(f); };
+function fillGA(){ const gi=+$('#cG').value; const vals=[...new Set(csv.rows.map(r=>r[gi]))].filter(v=>v!=='').slice(0,10); $('#cGA').innerHTML=vals.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join(''); const male=vals.find(v=>/^(m|male|men|1)$/i.test(String(v).trim())); if(male!=null) $('#cGA').value=male; }
+$('#cG').onchange=fillGA;
+$('#csvGo').onclick=()=>{ const yi=+$('#cY').value, gi=+$('#cG').value, ga=$('#cGA').value, xi=[...$('#cX').selectedOptions].map(o=>+o.value).filter(i=>i!==yi&&i!==gi); if(!xi.length){ alert('Choose at least one covariate.'); return; } const lg=$('#cLog').checked;
+  const cols=xi.map(i=>{ const raw=csv.rows.map(r=>(r[i]??'').trim()); const nums=raw.map(v=>parseFloat(v)); const numeric=raw.filter(v=>v!=='').every((v,k)=>isFinite(parseFloat(v))); if(numeric) return {name:csv.head[i],kind:'num',vals:nums}; const cnt=new Map(); raw.forEach(v=>cnt.set(v,(cnt.get(v)||0)+1)); const base=[...cnt].sort((a,b)=>b[1]-a[1])[0][0]; const cats=[...cnt.keys()].filter(c=>c!==base&&c!==''); return {name:csv.head[i],kind:'cat',base,cats,raw}; });
+  const y=[],g=[],X=[],names=[]; cols.forEach(c=>{ if(c.kind==='num') names.push(c.name); else c.cats.forEach(k=>names.push(`${c.name} = ${k} (vs ${c.base})`)); });
+  csv.rows.forEach((r,j)=>{ let w=parseFloat(r[yi]); if(!isFinite(w)) return; if(lg){ if(w<=0) return; w=Math.log(w); } const gv=(r[gi]??'').trim(); if(gv==='') return; const x=[]; let ok=true; cols.forEach(c=>{ if(c.kind==='num'){ const v=c.vals[j]; if(!isFinite(v)) ok=false; x.push(v);} else c.cats.forEach(k=>x.push(c.raw[j]===k?1:0)); }); if(!ok) return; y.push(w); g.push(gv===ga?1:0); X.push(x); });
+  const nB=g.filter(v=>!v).length; if(y.length<30||nB<10||y.length-nB<10){ alert('Too few usable rows in one of the groups.'); return; }
+  const other=[...new Set(csv.rows.map(r=>(r[gi]??'').trim()))].filter(v=>v!==ga&&v!=='')[0]||'other';
+  D={y,g,X,names,labelA:ga,labelB:other,logged:lg,truth:null}; $('#run').disabled=false; setStatus(`${y.length} usable rows: ${y.length-nB} ${ga}, ${nB} ${other}.`); $('#sumOut').innerHTML=`<div class="note">${csv.rows.length} rows read, ${y.length} usable. Group A (reference, advantaged) = ${esc(ga)}; group B = ${esc(other)}. ${lg?'Wages logged.':'Wages in levels.'}</div>`; };
+$('#srcTabs').addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return; [...$('#srcTabs').children].forEach(x=>x.classList.toggle('on',x===b)); document.querySelectorAll('#src-sim,#src-csv').forEach(x=>x.classList.toggle('on',x.id==='src-'+b.dataset.src)); });
+
+// ── decomposition ──
+function decompose(y,g,X,ref){ const k=X[0].length; const idxA=[],idxB=[]; g.forEach((v,i)=>(v?idxA:idxB).push(i)); const withI=idx=>idx.map(i=>[1,...X[i]]); const yA=idxA.map(i=>y[i]), yB=idxB.map(i=>y[i]);
+  const fA=ols(withI(idxA),yA), fB=ols(withI(idxB),yB); const XA=[1,...Array.from({length:k},(_,j)=>mean(idxA.map(i=>X[i][j])))], XB=[1,...Array.from({length:k},(_,j)=>mean(idxB.map(i=>X[i][j])))];
+  let bs; if(ref==='A') bs=fA.beta; else if(ref==='B') bs=fB.beta; else { const all=y.map((_,i)=>i); const Xp=all.map(i=>ref==='pooledD'?[1,...X[i],g[i]]:[1,...X[i]]); const fp=ols(Xp,y); bs=fp.beta.slice(0,k+1); }
+  const gap=mean(yA)-mean(yB); const expl=[],unexpl=[]; for(let j=0;j<=k;j++){ expl.push((XA[j]-XB[j])*bs[j]); unexpl.push(XA[j]*(fA.beta[j]-bs[j])+XB[j]*(bs[j]-fB.beta[j])); }
+  const E=[],C=[],I=[]; for(let j=0;j<=k;j++){ E.push((XA[j]-XB[j])*fB.beta[j]); C.push(XB[j]*(fA.beta[j]-fB.beta[j])); I.push((XA[j]-XB[j])*(fA.beta[j]-fB.beta[j])); }
+  return {gap,yA:mean(yA),yB:mean(yB),expl,unexpl,E,C,I,fA,fB,XA,XB,bs,nA:idxA.length,nB:idxB.length}; }
+const sum=a=>a.reduce((x,y)=>x+y,0);
+
+$('#run').onclick=()=>{ if(!D) return; const ref=$('#ref').value, B=+$('#boot').value; setStatus('Computing…'); setTimeout(()=>{ try{
+  const r=decompose(D.y,D.g,D.X,ref); const names=['Intercept',...D.names];
+  // bootstrap
+  let se=null; if(B>0){ const acc={gap:[],ex:[],un:[],E:[],C:[],I:[],exj:names.map(()=>[]),unj:names.map(()=>[])}; const rng=mulberry32(12345); const n=D.y.length; for(let b=0;b<B;b++){ const idx=Array.from({length:n},()=>Math.floor(rng()*n)); const yb=idx.map(i=>D.y[i]), gb=idx.map(i=>D.g[i]), Xb=idx.map(i=>D.X[i]); try{ const rb=decompose(yb,gb,Xb,ref); acc.gap.push(rb.gap); acc.ex.push(sum(rb.expl)); acc.un.push(sum(rb.unexpl)); acc.E.push(sum(rb.E)); acc.C.push(sum(rb.C)); acc.I.push(sum(rb.I)); rb.expl.forEach((v,j)=>acc.exj[j].push(v)); rb.unexpl.forEach((v,j)=>acc.unj[j].push(v)); }catch(e){} } const sd=a=>{ if(a.length<5) return NaN; const m=mean(a); return Math.sqrt(a.reduce((x,v)=>x+(v-m)**2,0)/(a.length-1)); }; se={gap:sd(acc.gap),ex:sd(acc.ex),un:sd(acc.un),E:sd(acc.E),C:sd(acc.C),I:sd(acc.I),exj:acc.exj.map(sd),unj:acc.unj.map(sd)}; }
+  const ex=sum(r.expl), un=sum(r.unexpl); const lg=D.logged; const ratio=lg?Math.exp(-r.gap):null;
+  $('#sumOut').innerHTML=`<span class="stat"><b>${fmt(r.gap)}</b><span>mean gap in ${lg?'log wages':'wages'}, ${esc(D.labelA)} − ${esc(D.labelB)}${se?` (SE ${fmt(se.gap)})`:''}</span></span>${lg?`<span class="stat"><b>${pct(1-ratio)}</b><span>${esc(D.labelB)} earn this much less (1 − e<sup>−gap</sup>)</span></span>`:''}<span class="stat"><b>${fmt(r.yA)} / ${fmt(r.yB)}</b><span>group means (n = ${r.nA} / ${r.nB})</span></span>${D.truth?`<div class="ok">Simulated truth: the intercept penalty is ${D.truth.pen} and women's return to education differs by ${D.truth.eduDiff}; the “unexplained” total should be close to ${fmt(-(D.truth.pen)-(D.truth.eduDiff)*r.XB[1],3)} at women's mean education (penalty plus the return difference times mean education), and the education and experience rows of the explained part should be positive because men have more of both.</div>`:''}`;
+  const bar=(items,title)=>{ const W=760,rh=22,lw=230,H=items.length*rh+30; const mx=Math.max(...items.map(i=>Math.abs(i.v)),1e-9)*1.15; const X=v=>lw+(W-lw-40)/2+v/mx*(W-lw-40)/2; let g=`<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(title)}"><line x1="${X(0)}" x2="${X(0)}" y1="6" y2="${H-20}" stroke="#9ca3af"/>`; items.forEach((it,i)=>{ const y=8+i*rh; const x0=Math.min(X(0),X(it.v)), w=Math.abs(X(it.v)-X(0)); g+=`<text x="${lw-8}" y="${y+14}" text-anchor="end">${esc(it.name.slice(0,34))}</text><rect x="${x0}" y="${y+4}" width="${Math.max(w,1)}" height="${rh-8}" rx="2" fill="${it.color}" data-tip="${esc(it.name)}: ${fmt(it.v,4)}${isFinite(it.se)?' (SE '+fmt(it.se,4)+')':''}"/>${isFinite(it.se)?`<line x1="${X(it.v-1.96*it.se)}" x2="${X(it.v+1.96*it.se)}" y1="${y+rh/2}" y2="${y+rh/2}" stroke="#1a1a2e" stroke-width="1.5"/>`:''}<text x="${it.v>=0?X(it.v)+1.96*(isFinite(it.se)?(X(it.se)-X(0)):0)+6:X(it.v)-1.96*(isFinite(it.se)?(X(it.se)-X(0)):0)-6}" y="${y+14}" text-anchor="${it.v>=0?'start':'end'}">${fmt(it.v,3)}</text>`; }); g+=`<text x="${X(0)}" y="${H-4}" text-anchor="middle">0</text>`; return g+'</svg>'; };
+  $('#refPill').textContent=$('#ref').selectedOptions[0].text;
+  const items=[{name:'Explained (endowments), total',v:ex,se:se?se.ex:NaN,color:'var(--s1)'},{name:'Unexplained (coefficients), total',v:un,se:se?se.un:NaN,color:'var(--s2)'}];
+  const detail=names.map((n,j)=>({j,n})).filter(x=>x.j>0);
+  $('#twoOut').innerHTML=`<span class="stat"><b>${fmt(ex)}</b><span>explained by characteristics (${pct(ex/r.gap)} of the gap)${se?`, SE ${fmt(se.ex)}`:''}</span></span><span class="stat"><b>${fmt(un)}</b><span>unexplained (${pct(un/r.gap)} of the gap)${se?`, SE ${fmt(se.un)}`:''}</span></span>`+bar(items,'two-fold totals')+`<p class="mini"><b>Explained part, by variable</b>: how much of the gap is because ${esc(D.labelA)} and ${esc(D.labelB)} differ in each characteristic, valued at β*.</p>`+bar(detail.map(x=>({name:x.n,v:r.expl[x.j],se:se?se.exj[x.j]:NaN,color:'var(--s1)'})),'explained detail')+`<p class="mini"><b>Unexplained part, by variable</b>: how much is because each characteristic is paid differently. The intercept row carries whatever is not tied to a measured characteristic. Rows for dummy variables shift if you change the base category; the total does not.</p>`+bar(detail.concat([{j:0,n:'Intercept (group shift)'}]).map(x=>({name:x.n,v:r.unexpl[x.j],se:se?se.unj[x.j]:NaN,color:'var(--s2)'})),'unexplained detail')+(se?`<p class="mini">Standard errors from ${B} bootstrap replications of the whole procedure (both regressions and the decomposition), resampling workers with replacement.</p>`:'');
+  $('#twoPanel').style.display='block';
+  const E=sum(r.E),C=sum(r.C),I=sum(r.I);
+  $('#threeOut').innerHTML=`<table><tr><th>Component</th><th>Value</th>${se?'<th>Bootstrap SE</th>':''}<th>Share of gap</th><th>Reading</th></tr><tr><td>Endowments E</td><td>${fmt(E)}</td>${se?`<td>${fmt(se.E)}</td>`:''}<td>${pct(E/r.gap)}</td><td style="text-align:left;white-space:normal">what ${esc(D.labelB)} would gain with ${esc(D.labelA)}'s characteristics at their own returns</td></tr><tr><td>Coefficients C</td><td>${fmt(C)}</td>${se?`<td>${fmt(se.C)}</td>`:''}<td>${pct(C/r.gap)}</td><td style="text-align:left;white-space:normal">what ${esc(D.labelB)} would gain from ${esc(D.labelA)}'s returns on their own characteristics</td></tr><tr><td>Interaction I</td><td>${fmt(I)}</td>${se?`<td>${fmt(se.I)}</td>`:''}<td>${pct(I/r.gap)}</td><td style="text-align:left;white-space:normal">the cross term: differences in characteristics and in returns occurring together</td></tr><tr><td><b>Gap</b></td><td><b>${fmt(r.gap)}</b></td>${se?`<td>${fmt(se.gap)}</td>`:''}<td>100%</td><td></td></tr></table>`;
+  $('#threePanel').style.display='block';
+  $('#regOut').innerHTML=`<table><tr><th>Variable</th><th>β ${esc(D.labelA)}</th><th>SE</th><th>β ${esc(D.labelB)}</th><th>SE</th><th>β* (reference)</th><th>X̄ ${esc(D.labelA)}</th><th>X̄ ${esc(D.labelB)}</th></tr>${names.map((n,j)=>`<tr><td>${esc(n)}</td><td>${fmt(r.fA.beta[j])}</td><td>${fmt(r.fA.se[j])}</td><td>${fmt(r.fB.beta[j])}</td><td>${fmt(r.fB.se[j])}</td><td>${fmt(r.bs[j])}</td><td>${fmt(r.XA[j])}</td><td>${fmt(r.XB[j])}</td></tr>`).join('')}</table><p class="mini">R² ${fmt(r.fA.r2,3)} (${esc(D.labelA)}, n = ${r.nA}) and ${fmt(r.fB.r2,3)} (${esc(D.labelB)}, n = ${r.nB}); heteroskedasticity-robust (HC1) standard errors.</p>`;
+  $('#regPanel').style.display='block'; setStatus('Done.'); } catch(e){ setStatus('Error: '+e.message); } },20); };
+$('#simGo').click();
+</script>
+</body>
+</html>

@@ -67,7 +67,7 @@
 </head>
 <body>
 <header><div class="wrap">
-  <h1>Causal Inference Workbench <small>DiD · event study · synthetic control</small></h1>
+  <h1>Causal Inference Workbench <small>DiD · event study · synthetic control · regression discontinuity</small></h1>
   <nav><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/causal-workbench">Source</a></nav>
 </div></header>
 
@@ -170,6 +170,27 @@
     <div id="esOut"></div>
     <details><summary>What is being estimated</summary>
       <p>Relative time k = t − g<sub>i</sub>, where g<sub>i</sub> is the adoption period. The plain version regresses y on unit and period effects plus an indicator for every k in the window (endpoints binned), omitting k = −1. The Sun–Abraham (2021) version interacts each cohort with each k, uses never-treated units as the comparison, and averages cohort-specific coefficients with weights equal to each cohort’s share of the treated units observed at that k; its standard errors come from the delta method on the full coefficient covariance. Pre-period coefficients near zero are the parallel-trends check; the simulator’s “steeper pre-trend” box shows what a violation looks like.</p>
+    </details>
+  </div>
+
+  <div class="panel" id="rdPanel">
+    <h2>Regression discontinuity <span class="pill">local linear · triangular kernel · IK bandwidth</span></h2>
+    <p class="mini">A separate estimator with its own data: an outcome, a running variable and a cutoff. Eligibility thresholds (a BPL score, a land ceiling, an age or marks cutoff) make this the natural design in India.</p>
+    <div class="tabs" id="rdTabs"><button data-src="sim" class="on">Simulate</button><button data-src="csv">Upload CSV</button></div>
+    <div class="tab on" id="rd-sim">
+      <div class="row"><div><label>Observations</label><input type="number" id="rdN" value="2000" min="100" max="50000"></div><div><label>True jump τ at the cutoff</label><input type="number" id="rdTau" value="1" step="0.25"></div><div><label>Noise SD</label><input type="number" id="rdSD" value="1" step="0.25"></div><div><label>Seed</label><input type="number" id="rdSeed" value="1"></div></div>
+      <label><input type="checkbox" id="rdManip"> Let units just below the cutoff manipulate across it (a density bump the McCrary test should catch)</label>
+      <p style="margin-top:.5rem"><button class="secondary" id="rdSimGo">Generate</button></p>
+    </div>
+    <div class="tab" id="rd-csv">
+      <label>File (columns: a running variable and an outcome)</label><input type="file" id="rdFile" accept=".csv,text/csv">
+      <div id="rdMap" style="display:none" class="row"><div><label>Running variable</label><select id="rdX"></select></div><div><label>Outcome</label><select id="rdY"></select></div><div><label>Cutoff</label><input type="number" id="rdC" value="0" step="any"></div></div>
+      <p style="margin-top:.5rem"><button class="secondary" id="rdCsvGo">Load</button></p>
+    </div>
+    <div class="row" style="margin-top:.5rem"><div><label>Bandwidth</label><select id="rdBw"><option value="ik">Imbens–Kalyanaraman (2012)</option><option value="manual">Enter by hand</option></select></div><div><label>Manual bandwidth</label><input type="number" id="rdH" value="0.5" step="any" min="0"></div><div><label>&nbsp;</label><button id="rdRun">Estimate</button></div></div>
+    <div id="rdOut" style="margin-top:.6rem"></div>
+    <details><summary>What is being estimated</summary>
+      <p>τ = lim<sub>x↓c</sub> E[y|x] − lim<sub>x↑c</sub> E[y|x], estimated by two local linear regressions, one on each side of the cutoff, with triangular kernel weights that fall to zero at the bandwidth h (Hahn, Todd and van der Klaauw 2001). Standard errors are heteroskedasticity-robust (HC1) from the two weighted fits; this is the “conventional” interval, not the bias-corrected one of Calonico, Cattaneo and Titiunik (2014), which the page does not implement. The default bandwidth follows Imbens and Kalyanaraman (2012): a pilot bandwidth gives the density at the cutoff and the conditional variances on each side, cubic and then quadratic fits give the second derivatives, a regularisation term guards against tiny curvature, and the plug-in constant for the triangular kernel is 3.4375. The bandwidth-sensitivity plot re-estimates τ from half to twice that bandwidth. The McCrary (2008) test bins the running variable, fits the density on each side of the cutoff with a local linear regression on the bin heights, and tests whether the log density jumps; a jump means units are sorting across the cutoff and the design is compromised. Placebo cutoffs re-run the estimator at the median of each side, where no effect should appear.</p>
     </details>
   </div>
 
@@ -434,6 +455,52 @@ $('#runBtn').onclick=()=>{ if(!panel) return; setStatus('Running…'); setTimeou
   try{ runES(); }catch(e){ errs.push('Event study: '+e.message); $('#esPanel').style.display='none'; }
   try{ runSC(); }catch(e){ errs.push('Synthetic control: '+e.message); $('#scPanel').style.display='none'; }
   setStatus(errs.length?errs.join(' · '):'Done.'); },30); };
+
+// ───────────────────────── regression discontinuity ─────────────────────────
+let RD=null; // {x:[], y:[], c, truth}
+$('#rdTabs').addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return; [...$('#rdTabs').children].forEach(x=>x.classList.toggle('on',x===b)); document.querySelectorAll('#rd-sim,#rd-csv').forEach(x=>x.classList.toggle('on',x.id==='rd-'+b.dataset.src)); });
+$('#rdSimGo').onclick=()=>{ const n=+$('#rdN').value, tau=+$('#rdTau').value, sd=+$('#rdSD').value, rng=mulberry32(+$('#rdSeed').value||1), manip=$('#rdManip').checked; const x=[],y=[]; for(let i=0;i<n;i++){ let xi=rng()*2-1; if(manip && xi<0 && xi>-0.15 && rng()<0.6) xi=rng()*0.15; x.push(xi); y.push(1+0.5*xi+0.3*xi*xi+(xi>=0?tau:0)+randn(rng)*sd); } RD={x,y,c:0,truth:tau,label:`Simulated: y = 1 + 0.5x + 0.3x² + ${tau}·1[x ≥ 0] + noise${manip?', with manipulation just below the cutoff':''}`}; runRD(); };
+let rdCsv=null; $('#rdFile').onchange=e=>{ const f=e.target.files[0]; if(!f) return; const rd=new FileReader(); rd.onload=()=>{ const rows=parseCSV(rd.result); rdCsv={head:rows[0].map(h=>h.trim()),rows:rows.slice(1)}; const opts=rdCsv.head.map((h,i)=>`<option value="${i}">${esc(h)}</option>`).join(''); $('#rdX').innerHTML=opts; $('#rdY').innerHTML=opts; const xi=rdCsv.head.findIndex(h=>/score|running|dist|age|x$|margin|index/i.test(h)); if(xi>=0) $('#rdX').value=xi; const yi=rdCsv.head.findIndex(h=>/^y$|outcome|result|income|enrol|test/i.test(h)); if(yi>=0) $('#rdY').value=yi; $('#rdMap').style.display='flex'; }; rd.readAsText(f); };
+$('#rdCsvGo').onclick=()=>{ if(!rdCsv) return; const ix=+$('#rdX').value, iy=+$('#rdY').value, c=+$('#rdC').value; const x=[],y=[]; rdCsv.rows.forEach(r=>{ const a=parseFloat(r[ix]), b=parseFloat(r[iy]); if(isFinite(a)&&isFinite(b)){ x.push(a); y.push(b); } }); if(x.length<50){ alert('Need at least 50 rows.'); return; } RD={x,y,c,truth:null,label:`CSV: ${x.length} rows, cutoff ${c}.`}; runRD(); };
+function wls(xs,ys,ws,deg){ // weighted polynomial fit; returns {beta, V (HC1)}
+  const k=deg+1,n=xs.length; const X=xs.map(x=>{ const r=[]; for(let d=0;d<k;d++) r.push(Math.pow(x,d)); return r; }); const A=Array.from({length:k},()=>new Float64Array(k)), b=new Float64Array(k); for(let i=0;i<n;i++){ for(let a=0;a<k;a++){ b[a]+=ws[i]*X[i][a]*ys[i]; for(let c=0;c<k;c++) A[a][c]+=ws[i]*X[i][a]*X[i][c]; } }
+  const Ai=invPD(A.map(r=>Array.from(r))); const beta=new Array(k).fill(0).map((_,a)=>{ let s=0; for(let c=0;c<k;c++) s+=Ai[a][c]*b[c]; return s; }); const meat=Array.from({length:k},()=>new Float64Array(k)); let ne=0; for(let i=0;i<n;i++){ if(ws[i]<=0) continue; ne++; let f=0; for(let a=0;a<k;a++) f+=X[i][a]*beta[a]; const e=ys[i]-f; for(let a=0;a<k;a++) for(let c=0;c<k;c++) meat[a][c]+=ws[i]*ws[i]*X[i][a]*X[i][c]*e*e; } const V=Array.from({length:k},()=>new Float64Array(k)); for(let a=0;a<k;a++) for(let c=0;c<k;c++){ let s=0; for(let p=0;p<k;p++) for(let q=0;q<k;q++) s+=Ai[a][p]*meat[p][q]*Ai[q][c]; V[a][c]=s*ne/Math.max(ne-k,1); } return {beta,V,n:ne}; }
+function rdFit(x,y,c,h){ const L=[],R=[]; x.forEach((v,i)=>{ const d=v-c; if(Math.abs(d)<h){ const w=1-Math.abs(d)/h; (d<0?L:R).push([d,y[i],w]); } }); if(L.length<5||R.length<5) return null; const fl=wls(L.map(p=>p[0]),L.map(p=>p[1]),L.map(p=>p[2]),1), fr=wls(R.map(p=>p[0]),R.map(p=>p[1]),R.map(p=>p[2]),1); return {tau:fr.beta[0]-fl.beta[0], se:Math.sqrt(fr.V[0][0]+fl.V[0][0]), nl:L.length, nr:R.length, fl, fr}; }
+function ikBandwidth(x,y,c){ // Imbens & Kalyanaraman (2012), triangular kernel
+  const N=x.length; const mx=x.reduce((a,b)=>a+b,0)/N; const Sx=Math.sqrt(x.reduce((a,v)=>a+(v-mx)**2,0)/(N-1)); const h1=1.84*Sx*Math.pow(N,-0.2);
+  const inL=[],inR=[]; x.forEach((v,i)=>{ if(v<c&&v>=c-h1) inL.push(i); if(v>=c&&v<=c+h1) inR.push(i); }); if(inL.length<4||inR.length<4) return null;
+  const varOf=idx=>{ const m=idx.reduce((a,i)=>a+y[i],0)/idx.length; return idx.reduce((a,i)=>a+(y[i]-m)**2,0)/(idx.length-1); }; const s2L=varOf(inL), s2R=varOf(inR); const f=(inL.length+inR.length)/(2*N*h1);
+  // step 2: third derivative from a cubic with a jump on the sample between the side medians
+  const left=x.filter(v=>v<c).sort((a,b)=>a-b), right=x.filter(v=>v>=c).sort((a,b)=>a-b); const medL=left[Math.floor(left.length/2)], medR=right[Math.floor(right.length/2)];
+  const idx=x.map((v,i)=>i).filter(i=>x[i]>=medL&&x[i]<=medR); const Xc=idx.map(i=>{ const d=x[i]-c; return [1,x[i]>=c?1:0,d,d*d,d*d*d]; }); const k=5; const A=Array.from({length:k},()=>new Float64Array(k)), b=new Float64Array(k); idx.forEach((i,r)=>{ for(let a=0;a<k;a++){ b[a]+=Xc[r][a]*y[i]; for(let q=0;q<k;q++) A[a][q]+=Xc[r][a]*Xc[r][q]; } }); let m3; try{ const Ai=invPD(A.map(r=>Array.from(r))); m3=6*[0,1,2,3,4].reduce((s,q)=>s+Ai[4][q]*b[q],0); } catch(e){ return null; }
+  const NL=left.length, NR=right.length; const h2L=3.56*Math.pow(s2L/(f*Math.max(m3*m3,0.01)),1/7)*Math.pow(NL,-1/7), h2R=3.56*Math.pow(s2R/(f*Math.max(m3*m3,0.01)),1/7)*Math.pow(NR,-1/7);
+  const quad=(side)=>{ const h2=side<0?h2L:h2R; const pts=[]; x.forEach((v,i)=>{ const d=v-c; if(side<0?(d<0&&d>=-h2):(d>=0&&d<=h2)) pts.push([d,y[i]]); }); if(pts.length<4) return null; const fit=wls(pts.map(p=>p[0]),pts.map(p=>p[1]),pts.map(()=>1),2); return {m2:2*fit.beta[2],n:pts.length,h2}; };
+  const qL=quad(-1), qR=quad(1); if(!qL||!qR) return null; const rL=2160*s2L/(qL.n*Math.pow(qL.h2,4)), rR=2160*s2R/(qR.n*Math.pow(qR.h2,4));
+  const h=3.4375*Math.pow((s2L+s2R)/(f*((qR.m2-qL.m2)**2+rL+rR)),0.2)*Math.pow(N,-0.2); return {h,f,s2L,s2R,m2L:qL.m2,m2R:qR.m2,h1};
+}
+function mccrary(x,c,h){ // simplified McCrary (2008): bin, then local linear density on each side
+  const N=x.length; const mx=x.reduce((a,b)=>a+b,0)/N; const Sx=Math.sqrt(x.reduce((a,v)=>a+(v-mx)**2,0)/(N-1)); const b=2*Sx*Math.pow(N,-0.5); const bins=new Map(); x.forEach(v=>{ const k=Math.floor((v-c)/b); bins.set(k,(bins.get(k)||0)+1); }); const kmin=Math.min(...bins.keys()), kmax=Math.max(...bins.keys()); const pts=[]; for(let k=kmin;k<=kmax;k++){ pts.push({mid:c+(k+0.5)*b, dens:(bins.get(k)||0)/(N*b)}); }
+  const side=s=>{ const P=pts.filter(p=>s<0?p.mid<c:p.mid>=c).map(p=>({d:p.mid-c,y:p.dens})).filter(p=>Math.abs(p.d)<h); if(P.length<3) return null; const fit=wls(P.map(p=>p.d),P.map(p=>p.y),P.map(p=>1-Math.abs(p.d)/h),1); return Math.max(fit.beta[0],1e-9); }; const fL=side(-1), fR=side(1); if(fL==null||fR==null) return null; const theta=Math.log(fR)-Math.log(fL); const se=Math.sqrt((1/(N*h))*(24/5)*(1/fR+1/fL)); return {theta,se,z:theta/se,p:2*(1-normCdf(Math.abs(theta/se))),fL,fR,b,pts}; }
+function runRD(){ if(!RD) return; const {x,y,c}=RD; const ik=ikBandwidth(x,y,c); let h; if($('#rdBw').value==='manual'||!ik){ h=+$('#rdH').value; if(!(h>0)){ $('#rdOut').innerHTML='<div class="warn">Enter a positive bandwidth.</div>'; return; } } else { h=ik.h; $('#rdH').value=+h.toPrecision(3); }
+  const fit=rdFit(x,y,c,h); if(!fit){ $('#rdOut').innerHTML='<div class="warn">Too few observations within the bandwidth on one side.</div>'; return; } const z=fit.tau/fit.se, p=2*(1-normCdf(Math.abs(z)));
+  // sensitivity
+  const hs=[],ts=[],lo=[],hi=[]; for(let m=0.5;m<=2.001;m+=0.1){ const f=rdFit(x,y,c,h*m); if(!f) continue; hs.push(+(h*m).toPrecision(3)); ts.push(f.tau); lo.push(f.tau-1.96*f.se); hi.push(f.tau+1.96*f.se); }
+  // placebos
+  const left=x.filter(v=>v<c).sort((a,b)=>a-b), right=x.filter(v=>v>=c).sort((a,b)=>a-b); const pl=[[left[Math.floor(left.length/2)],'left median'],[right[Math.floor(right.length/2)],'right median']].map(([cc,name])=>{ const idx=x.map((v,i)=>i).filter(i=>cc<c?x[i]<c:x[i]>=c); const f=rdFit(idx.map(i=>x[i]),idx.map(i=>y[i]),cc,h); return {name,cc,f}; });
+  const mc=mccrary(x,c,h*2);
+  // binned scatter
+  const nb=40; const xmin=Math.min(...x), xmax=Math.max(...x); const bw=(xmax-xmin)/nb; const bins=Array.from({length:nb},()=>[]); x.forEach((v,i)=>{ let k=Math.floor((v-xmin)/bw); if(k>=nb) k=nb-1; bins[k].push(y[i]); }); const bx=[],by=[]; bins.forEach((b,k)=>{ if(b.length){ bx.push(xmin+(k+0.5)*bw); by.push(b.reduce((a,v)=>a+v,0)/b.length); } });
+  const lineL=[],lineLy=[],lineR=[],lineRy=[]; for(let d=-h;d<=0;d+=h/20){ lineL.push(c+d); lineLy.push(fit.fl.beta[0]+fit.fl.beta[1]*d); } for(let d=0;d<=h;d+=h/20){ lineR.push(c+d); lineRy.push(fit.fr.beta[0]+fit.fr.beta[1]*d); }
+  $('#rdOut').innerHTML=`<div class="note">${esc(RD.label)}</div><span class="stat"><b>${fmt(fit.tau)}</b><span>τ at the cutoff</span></span><span class="stat"><b>${fmt(fit.se)}</b><span>SE (HC1, conventional)</span></span><span class="stat"><b>[${fmt(fit.tau-1.96*fit.se,2)}, ${fmt(fit.tau+1.96*fit.se,2)}]</b><span>95% CI</span></span><span class="stat"><b>${p<0.001?'<0.001':fmt(p,3)}</b><span>p-value</span></span><span class="stat"><b>${fmt(h,3)}</b><span>bandwidth${ik&&$('#rdBw').value!=='manual'?' (IK)':''}</span></span><span class="stat"><b>${fit.nl} / ${fit.nr}</b><span>observations within h, left / right</span></span>
+  ${RD.truth!=null?`<div class="ok">Simulated truth τ = ${RD.truth}: the interval ${Math.abs(fit.tau-RD.truth)<1.96*fit.se?'covers it':'does not cover it'}.</div>`:''}
+  <div class="legend"><span><i style="background:#9ca3af"></i>binned means of y</span><span><i style="background:var(--s1)"></i>local linear fit within h, each side</span></div>`
+  +lineChart([{name:'binned mean',color:'#9ca3af',x:bx,y:by,points:true,width:0,opacity:0},{name:'left fit',color:'var(--s1)',x:lineL,y:lineLy,width:2.5,silent:true},{name:'right fit',color:'var(--s1)',x:lineR,y:lineRy,width:2.5,silent:true}],{vline:c,vlabel:'cutoff',xlabel:'running variable',ylabel:'outcome',xfrac:true,title:'regression discontinuity'})
+  +`<div class="legend"><span><i style="background:var(--s2)"></i>τ across bandwidths, with 95% band</span></div>`+lineChart([{name:'τ',color:'var(--s2)',x:hs,y:ts,band:{lo,hi},points:true}],{hline:RD.truth!=null?RD.truth:0,vline:h,vlabel:'chosen h',xlabel:'bandwidth',ylabel:'τ',xfrac:true,title:'bandwidth sensitivity'})
+  +`<table><tr><th>Check</th><th>Estimate</th><th>SE</th><th>p</th><th>Reading</th></tr>${pl.map(q=>`<tr><td>Placebo cutoff at ${q.name} (${fmt(q.cc,3)})</td><td>${q.f?fmt(q.f.tau):'—'}</td><td>${q.f?fmt(q.f.se):'—'}</td><td>${q.f?fmt(2*(1-normCdf(Math.abs(q.f.tau/q.f.se))),3):'—'}</td><td style="text-align:left">should be near zero</td></tr>`).join('')}${mc?`<tr><td>McCrary density test (log f₊ − log f₋)</td><td>${fmt(mc.theta)}</td><td>${fmt(mc.se)}</td><td>${fmt(mc.p,3)}</td><td style="text-align:left">${mc.p<0.05?'<b>density jumps at the cutoff: sorting is likely</b>':'no evidence of sorting'}</td></tr>`:''}</table>`
+  +(ik?`<p class="mini">IK inputs: density at the cutoff ${fmt(ik.f,3)}, conditional variances ${fmt(ik.s2L,3)} / ${fmt(ik.s2R,3)}, second derivatives ${fmt(ik.m2L,3)} / ${fmt(ik.m2R,3)}, pilot bandwidth ${fmt(ik.h1,3)}.</p>`:'')+(mc?`<div class="legend"><span><i style="background:var(--s3)"></i>density of the running variable (bin width ${fmt(mc.b,3)})</span></div>`+lineChart([{name:'density',color:'var(--s3)',x:mc.pts.map(p=>p.mid),y:mc.pts.map(p=>p.dens),points:true}],{vline:c,vlabel:'cutoff',xlabel:'running variable',ylabel:'density',yzero:true,xfrac:true,title:'McCrary'}):'');
+}
+$('#rdRun').onclick=runRD; $('#rdBw').onchange=()=>{ if(RD) runRD(); };
+$('#rdSimGo').click();
 $('#simGo').click();
 </script>
 </body>

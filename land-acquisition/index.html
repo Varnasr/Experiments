@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Land Acquisition Compensation Calculator — Experiments</title>
+<meta name="description" content="Compensation and rehabilitation entitlements under the Right to Fair Compensation and Transparency in Land Acquisition, Rehabilitation and Resettlement Act, 2013: section 26 market value, the First Schedule multiplier, solatium, the 12% additional amount and every Second Schedule entitlement, with the section cited on each line.">
+<link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231B6B4A'/><path d='M6 22l8-6 6 4 6-8' stroke='white' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/><path d='M6 26h20' stroke='white' stroke-width='2.4' stroke-linecap='round'/></svg>">
+<style>
+  :root { --bg:#fafafa; --surface:#fff; --border:#e5e7eb; --text:#1a1a2e; --dim:#4b5563; --muted:#9ca3af; --accent:#1B6B4A; --accent-soft:#e6f2ec; --mono:ui-monospace,SFMono-Regular,Menlo,monospace; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--text); line-height:1.55; }
+  a { color:var(--accent); }
+  header { border-bottom:1px solid var(--border); background:#fff; }
+  .wrap { max-width:1080px; margin:0 auto; padding:0 1.25rem; }
+  header .wrap { display:flex; align-items:baseline; justify-content:space-between; gap:1rem; padding:.9rem 1.25rem; flex-wrap:wrap; }
+  header h1 { font-family:Georgia,serif; font-size:1.35rem; font-weight:400; }
+  header h1 small { font-size:.8rem; color:var(--muted); margin-left:.5rem; }
+  header nav a { font-size:.85rem; margin-left:1rem; text-decoration:none; }
+  main { padding:1.5rem 0 3rem; }
+  .lede { color:var(--dim); font-size:.95rem; max-width:66ch; margin-bottom:1.25rem; }
+  .grid { display:grid; grid-template-columns:350px 1fr; gap:1.25rem; align-items:start; }
+  @media (max-width:860px){ .grid { grid-template-columns:1fr; } }
+  .panel { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1rem 1.15rem; margin-bottom:1rem; }
+  .panel h2 { font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; margin-bottom:.7rem; }
+  label { display:block; font-size:.8rem; color:var(--dim); margin:.5rem 0 .2rem; }
+  select, input[type=text], input[type=number], input[type=date] { width:100%; font:inherit; font-size:.9rem; padding:.4rem .5rem; border:1px solid var(--border); border-radius:6px; background:#fff; color:var(--text); }
+  .row { display:flex; gap:.5rem; } .row > * { flex:1; }
+  button { font:inherit; font-size:.88rem; padding:.5rem .9rem; border-radius:6px; border:1px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer; }
+  button.secondary { background:#fff; color:var(--accent); }
+  .total { font-family:Georgia,serif; font-size:1.9rem; font-weight:400; }
+  .stat { display:inline-block; margin:.25rem 1.5rem .25rem 0; vertical-align:top; }
+  .stat b { display:block; font-size:1.3rem; font-family:Georgia,serif; font-weight:400; } .stat span { font-size:.75rem; color:var(--muted); }
+  table { border-collapse:collapse; width:100%; font-size:.86rem; margin:.5rem 0; }
+  th, td { text-align:left; padding:.4rem .5rem; border-bottom:1px solid var(--border); vertical-align:top; }
+  td.num, th.num { text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; }
+  th { color:var(--dim); font-weight:600; font-size:.75rem; }
+  tr.tot td { font-weight:600; border-top:2px solid var(--border); }
+  .auth { font-size:.76rem; color:var(--muted); display:block; margin-top:.15rem; }
+  .note { font-size:.82rem; color:var(--dim); margin-top:.5rem; }
+  .warn { background:#fff7ed; border:1px solid #fed7aa; color:#9a3412; padding:.5rem .7rem; border-radius:6px; font-size:.83rem; margin:.5rem 0; }
+  details { margin-top:.5rem; font-size:.85rem; color:var(--dim); } summary { cursor:pointer; color:var(--accent); }
+  .mini { font-size:.78rem; color:var(--muted); }
+  .chk { display:flex; gap:.5rem; align-items:flex-start; font-size:.84rem; color:var(--dim); margin:.35rem 0; } .chk input { margin-top:.25rem; }
+  footer { border-top:1px solid var(--border); padding:1.25rem; text-align:center; font-size:.8rem; color:var(--muted); }
+  @media print { header nav, .grid > div:first-child, footer, #printBtn { display:none; } .grid { grid-template-columns:1fr; } body { background:#fff; } .panel { border:none; padding:0; } }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>Land Acquisition Compensation Calculator <small>RFCTLARR Act, 2013</small></h1>
+  <nav><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/land-acquisition">Source</a></nav>
+</div></header>
+<main><div class="wrap">
+<p class="lede">The 2013 Act replaced the 1894 law's discretion with a formula: a market value fixed by the higher of three benchmarks, multiplied in rural areas by a factor the state notifies, plus the value of what stands on the land, plus a solatium of 100%, plus 12% a year for the time the acquisition takes, and then a separate schedule of rehabilitation and resettlement entitlements for every affected family. This page computes the award from those rules and cites the section or schedule item beside each line, for a landowner, a panchayat, a collector's office or a student reading the Act for the first time.</p>
+
+<div class="grid">
+<div>
+  <div class="panel">
+    <h2>The land</h2>
+    <div class="row"><div><label>Area acquired (hectares)</label><input type="number" id="area" value="1.2" min="0" step="0.01"></div><div><label>Area type</label><select id="areaType"><option value="rural">Rural</option><option value="urban">Urban</option></select></div></div>
+    <label>Circle rate under the Indian Stamp Act (₹ per hectare)</label><input type="number" id="circle" value="2500000" step="10000">
+    <label>Average of the highest 50% of registered sale prices for similar land in the nearest village or vicinity over the last three years (₹ per hectare)</label><input type="number" id="avg" value="3200000" step="10000">
+    <label>Consented amount, if acquisition is for a private company or PPP (₹ per hectare; 0 if none)</label><input type="number" id="consent" value="0" step="10000">
+    <label>Multiplication factor for rural land (1.00 to 2.00, as notified by the state for the distance from the urban area)</label><input type="number" id="factor" value="1.5" min="1" max="2" step="0.05">
+    <label>Value of assets attached to the land: buildings, trees, wells, standing crops (₹)</label><input type="number" id="assets" value="400000" step="10000">
+    <div class="row"><div><label>Date of section 4(2) notification (social impact study)</label><input type="date" id="dNot" value="2024-01-15"></div><div><label>Date of award or possession, whichever earlier</label><input type="date" id="dAward" value="2026-03-01"></div></div>
+    <label>Base for the 12% additional amount</label>
+    <select id="base12"><option value="mv">Market value (serial 1)</option><option value="mvf">Market value × factor (serials 1 × 2)</option></select>
+  </div>
+  <div class="panel">
+    <h2>The affected family</h2>
+    <label>Number of affected families</label><input type="number" id="fam" value="1" min="1">
+    <div class="chk"><input type="checkbox" id="displaced" checked><span>Family is displaced (loses its house)</span></div>
+    <div class="chk"><input type="checkbox" id="urbanHouseCash"><span>Urban displaced family opts for cash in lieu of a house</span></div>
+    <label>Employment / one-time payment / annuity (item 3)</label>
+    <select id="item3"><option value="annuity">Annuity of ₹2,000 a month for 20 years, indexed</option><option value="lump">One-time payment of ₹5,00,000</option><option value="job">Employment at not less than minimum wage (no cash)</option></select>
+    <div class="row"><div><label>Discount rate for valuing the annuity (% a year)</label><input type="number" id="disc" value="8" step="0.5"></div><div><label>Assumed CPI indexation (% a year)</label><input type="number" id="cpi" value="5" step="0.5"></div></div>
+    <div class="chk"><input type="checkbox" id="sched"><span>Scheduled Caste or Scheduled Tribe family in a Scheduled Area (additional ₹50,000 under item 4)</span></div>
+    <div class="chk"><input type="checkbox" id="cattle"><span>Loses a cattle shed or petty shop (item 6)</span></div>
+    <div class="chk"><input type="checkbox" id="artisan"><span>Artisan, small trader or self-employed, whose trade is affected (item 7)</span></div>
+    <div class="chk"><input type="checkbox" id="irrig"><span>Irrigation project: land for land in the command area (item 2), shown as a note</span></div>
+    <p style="margin-top:.7rem"><button id="calc">Compute</button> <button class="secondary" id="printBtn">Print</button></p>
+  </div>
+</div>
+<div>
+  <div class="panel" id="out"></div>
+  <div class="panel"><h2>Where this page stops</h2><p class="note">It applies the Act as enacted by Parliament with the amounts in the First and Second Schedules. Several states have amended the Act, exempted categories of projects from the social impact assessment and consent requirements, or notified their own multiplication factors, and the Second Schedule permits states to set amounts above the minimums; the page takes the factor you enter and the central minimums for everything else. It does not compute the Scheduled Areas provisions in sections 41 and 42 beyond the item 4 addition, the section 46 private-purchase threshold, income-tax treatment (compensation under the Act is exempt under section 96), or interest on delayed payment under section 80. An award, not this page, is the authority.</p></div>
+</div>
+</div>
+</div></main>
+<footer>Part of <a href="../">Experiments</a> by Varna Sri Raman · Idealog Works · MIT licence · Not legal advice.</footer>
+
+<script>
+'use strict';
+const $=s=>document.querySelector(s);
+const inr=x=>'₹'+Math.round(x).toLocaleString('en-IN');
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+$('#printBtn').onclick=()=>window.print();
+function compute(){ const area=+$('#area').value, rural=$('#areaType').value==='rural', circle=+$('#circle').value, avg=+$('#avg').value, consent=+$('#consent').value, factor=rural?+$('#factor').value:1, assets=+$('#assets').value, fam=Math.max(1,+$('#fam').value||1), displaced=$('#displaced').checked, cash=$('#urbanHouseCash').checked, item3=$('#item3').value, disc=+$('#disc').value/100, cpi=+$('#cpi').value/100, sched=$('#sched').checked, cattle=$('#cattle').checked, artisan=$('#artisan').checked, irrig=$('#irrig').checked;
+  const rows=[]; const add=(head,calc,amount,auth,cls)=>rows.push({head,calc,amount,auth,cls});
+  const perHa=Math.max(circle,avg,consent); const which=perHa===consent&&consent>0?'the consented amount':perHa===avg?'the average of the highest 50% of sale deeds':'the circle rate';
+  const mv=perHa*area; add('Market value of the land', `higher of ₹${circle.toLocaleString('en-IN')}, ₹${avg.toLocaleString('en-IN')}${consent>0?', ₹'+consent.toLocaleString('en-IN'):''} per hectare (${which}) × ${area} ha`, mv, 'Section 26(1): the higher of (a) the Stamp Act value, (b) the average sale price of similar land in the nearest village or vicinity, computed from the highest 50% of sale deeds in the preceding three years, and (c) any consented amount for a private or PPP project. First Schedule, serial 1', '');
+  const mvf=mv*factor; add('Multiplied by the factor', rural?`× ${factor} (rural; the state notifies 1.00 to 2.00 by distance from the urban area)`:'× 1.00 (urban)', mvf, 'Section 26(2) and First Schedule, serial 2: rural land is multiplied by a factor between one and two notified by the appropriate government; urban land by one', '');
+  add('Value of assets attached to the land or building', 'as assessed', assets, 'Section 29 (buildings, trees, standing crops and other immovable property valued by a competent engineer or agricultural specialist); First Schedule, serial 3', '');
+  const sub=mvf+assets; add('Compensation before solatium', '', sub, 'First Schedule, serials 1 × 2 + 3', 'tot');
+  const sol=sub; add('Solatium', '100% of the amount above', sol, 'Section 30(1) and First Schedule, serial 4: solatium equivalent to one hundred per cent of the market value multiplied by the factor plus the value of assets', '');
+  const d1=new Date($('#dNot').value), d2=new Date($('#dAward').value); const days=(isNaN(d1)||isNaN(d2))?0:Math.max(0,(d2-d1)/86400000); const base=$('#base12').value==='mv'?mv:mvf; const add12=base*0.12*days/365;
+  add('Additional amount at 12% a year', `${inr(base)} × 12% × ${Math.round(days)} days ÷ 365`, add12, 'Section 30(3): twelve per cent per annum on the market value from the date of the section 4(2) notification of the social impact study to the date of the award or of taking possession, whichever is earlier. Whether the base is the market value alone or the multiplied value is not settled uniformly across awards; the selector applies your choice', '');
+  const land=sub+sol+add12; add('Total compensation for the land', '', land, 'First Schedule, serial 6 (final award = serial 5 total + additional amount)', 'tot');
+  // R&R
+  const rr=[]; const addRR=(head,calc,amount,auth)=>rr.push({head,calc,amount,auth});
+  if(displaced){ if(rural) addRR('House', 'a constructed house to Pradhan Mantri Awas Yojana (formerly Indira Awas Yojana) specifications, or its cost in cash if the family prefers', null, 'Second Schedule, item 1: rural displaced families get a constructed house; the amount is the cost of that house, not a fixed rupee figure'); else addRR('House', cash?'cash in lieu of a house (urban family opting out)':'a constructed house of at least 50 square metres of plinth area', cash?150000:null, 'Second Schedule, item 1: urban displaced families get a house of not less than 50 sq m plinth area, or one lakh fifty thousand rupees if they opt out'); }
+  if(item3==='lump') addRR('One-time payment in lieu of employment', 'per affected family', 500000, 'Second Schedule, item 3(b): five lakh rupees per affected family'); else if(item3==='job') addRR('Employment', 'a job for at least one member at not less than the minimum wage, in the project or through training and skill development', null, 'Second Schedule, item 3(a)'); else { let pv=0; for(let m=0;m<240;m++){ const pay=2000*Math.pow(1+cpi,Math.floor(m/12)); pv+=pay/Math.pow(1+disc,m/12); } addRR('Annuity', `₹2,000 a month for 20 years, rising ${(100*cpi).toFixed(0)}% a year with the CPI; present value at ${(100*disc).toFixed(1)}%`, pv, 'Second Schedule, item 3(c): two thousand rupees per month per family for twenty years, with appropriate indexation to the Consumer Price Index for Agricultural Labourers. The nominal total is ₹4,80,000 before indexation; the figure shown is a present value on the rates you set'); }
+  addRR('Subsistence grant', '₹3,000 a month for twelve months', 36000+(sched?50000:0), 'Second Schedule, item 4: three thousand rupees per month for one year from the date of the award'+(sched?'; plus fifty thousand rupees for Scheduled Caste and Scheduled Tribe families displaced from Scheduled Areas':''));
+  addRR('Transportation cost', 'one-time, for shifting the family, building materials, belongings and cattle', 50000, 'Second Schedule, item 5: fifty thousand rupees');
+  if(cattle) addRR('Cattle shed or petty shop', 'one-time', 25000, 'Second Schedule, item 6: financial assistance of at least twenty-five thousand rupees for construction of a cattle shed or petty shop');
+  if(artisan) addRR('Artisan, small trader or self-employed', 'one-time', 25000, 'Second Schedule, item 7: financial assistance of at least twenty-five thousand rupees');
+  addRR('Resettlement allowance', 'one-time', 50000, 'Second Schedule, item 9: fifty thousand rupees');
+  if(irrig) addRR('Land for land', 'at least one acre in the command area of the project for each affected family whose land is acquired for an irrigation project (SC/ST families: land equivalent to that acquired, up to two and a half acres)', null, 'Second Schedule, item 2');
+  addRR('Stamp duty and registration', 'on the land or house allotted, borne by the requiring body; allotment free of encumbrance, in the names of both spouses where the affected person is married', null, 'Second Schedule, item 10');
+  const rrCash=rr.reduce((a,x)=>a+(x.amount||0),0)*fam; const total=land+rrCash;
+  $('#out').innerHTML=`<h2>Award</h2><span class="stat"><b class="total">${inr(land)}</b><span>compensation for the land</span></span><span class="stat"><b>${inr(rrCash)}</b><span>cash rehabilitation and resettlement, ${fam} famil${fam===1?'y':'ies'}</span></span><span class="stat"><b>${inr(total)}</b><span>total in cash, plus in-kind entitlements</span></span><span class="stat"><b>${inr(land/area)}</b><span>per hectare</span></span>
+  <table><tr><th>Compensation for the land</th><th>Working</th><th class="num">Amount</th></tr>${rows.map(r=>`<tr class="${r.cls||''}"><td>${esc(r.head)}<span class="auth">${esc(r.auth)}</span></td><td>${esc(r.calc)}</td><td class="num">${inr(r.amount)}</td></tr>`).join('')}</table>
+  <table><tr><th>Rehabilitation and resettlement, per affected family</th><th>Provision</th><th class="num">Cash value</th></tr>${rr.map(r=>`<tr><td>${esc(r.head)}<span class="auth">${esc(r.auth)}</span></td><td>${esc(r.calc)}</td><td class="num">${r.amount==null?'in kind':inr(r.amount)}</td></tr>`).join('')}<tr class="tot"><td>Cash entitlements per family</td><td></td><td class="num">${inr(rrCash/fam)}</td></tr></table>
+  <p class="note">Market value was set by ${which}. ${rural?`Factor ${factor} applied; check the state's notification for this distance band.`:'Urban land: no multiplication.'} The Second Schedule amounts are minimums that the appropriate government may raise; the Act's own figures are used. Compensation under the Act is exempt from income tax (section 96).</p>
+  <details><summary>Compare with the 1894 Act</summary><p>Under the Land Acquisition Act, 1894, the award was the market value under section 23(1) plus a solatium of 30% under section 23(2) and an additional 12% a year under section 23(1A), with no multiplication factor, no separate rehabilitation schedule and no consent requirement. On these inputs, the 1894 arithmetic would give roughly ${inr((mv+assets)*1.3+mv*0.12*days/365)} for the land against ${inr(land)} under the 2013 Act, before any rehabilitation entitlements. The difference is the point of the 2013 Act.</p></details>`; }
+$('#calc').onclick=compute; document.querySelectorAll('input,select').forEach(el=>el.addEventListener('change',compute)); compute();
+</script>
+</body>
+</html>
