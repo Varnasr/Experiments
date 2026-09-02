@@ -35,25 +35,6 @@
 # Graduated out of this sandbox on 17 August 2026 to Varnasr/WhoGaveTheOrder,
 # serving from whogavetheorder.netlify.app. 301 rather than 302: the move is
 # permanent, and anything already shared should follow it for good.
-# Private material that must never be served, even if a stale copy reappears
-[[redirects]]
-  from = "/chamber-petition/*"
-  to = "/404.html"
-  status = 404
-  force = true
-
-[[redirects]]
-  from = "/Nilaya_Pothi/*"
-  to = "/404.html"
-  status = 404
-  force = true
-
-[[redirects]]
-  from = "/nilaya_pothi/*"
-  to = "/404.html"
-  status = 404
-  force = true
-
 [[redirects]]
   from = "/whogavetheorder/*"
   to = "https://whogavetheorder.netlify.app/:splat"
