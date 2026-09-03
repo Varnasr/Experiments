@@ -6,7 +6,6 @@
 <title>Flipbook Maker · Experiments</title>
 <meta name="description" content="Turn a PDF into a page-turning flipbook in the browser: pages rendered locally with PDF.js, real page-flip physics, cover and facing spreads, then export one self-contained HTML file that works offline and can be hosted anywhere. Nothing is uploaded.">
 <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23572e91'/><path d='M6 8h9v18H6zM17 8h9v18h-9z' fill='white'/><path d='M17 8c3 2 5 6 5 9s-2 7-5 9' fill='%23ff9911'/></svg>">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
 <style>
   :root { --bg:#fafafa; --surface:#fff; --border:#e5e7eb; --text:#1a1a2e; --dim:#4b5563; --muted:#9ca3af; --accent:#572e91; --accent-soft:#efe9f7; --orange:#ff9911; }
@@ -105,7 +104,8 @@
 <script>
 'use strict';
 const $=s=>document.querySelector(s); const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const PDFJS_WORKER='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+const PDFJS_LIB='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/5.4.296/pdf.min.mjs';
+const PDFJS_WORKER='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/5.4.296/pdf.worker.min.mjs';
 const FLIP_SRC='https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js';
 let pages=[]; // data URLs
 let dims=null; // {w,h} of first page
@@ -115,7 +115,14 @@ $('#theme').onchange=applyTheme; $('#colour').oninput=applyTheme;
 function applyTheme(){ const t=$('#theme').value; const st=$('#stage'); st.className='stage '+t; st.style.setProperty('--custom',$('#colour').value); }
 function status(t){ $('#status').textContent=t; }
 
-async function workerReady(){ if(pdfjsLib.GlobalWorkerOptions.workerSrc) return; try{ const r=await fetch(PDFJS_WORKER); if(!r.ok) throw 0; const b=await r.blob(); pdfjsLib.GlobalWorkerOptions.workerSrc=URL.createObjectURL(b); }catch(e){ pdfjsLib.GlobalWorkerOptions.workerSrc=PDFJS_WORKER; } }
+// PDF.js is ESM from v5 on, so it is imported on demand rather than loaded by a
+// script tag. The worker is handed the CDN URL directly: a module worker built
+// from a blob: URL has a different origin, which breaks the import inside it.
+let pdfjsLib=null;
+async function workerReady(){ if(pdfjsLib) return pdfjsLib;
+  pdfjsLib=await import(PDFJS_LIB);
+  pdfjsLib.GlobalWorkerOptions.workerSrc=PDFJS_WORKER;
+  return pdfjsLib; }
 
 const drop=$('#drop'); drop.onclick=()=>$('#file').click();
 ['dragenter','dragover'].forEach(ev=>drop.addEventListener(ev,e=>{ e.preventDefault(); drop.classList.add('over'); }));
