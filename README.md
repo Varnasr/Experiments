@@ -64,6 +64,22 @@ clearly labelled simulated dataset with six planted problems.
 
 ---
 
+### Old City SIR 2026: deletion explorer
+
+Every elector on the pre-revision rolls of Charminar, Yakutpura, Malakpet,
+Chandrayangutta and Bahadurpura in the 2026 Special Intensive Revision, sorted
+into struck off, kept but summoned to a hearing, or untouched, and readable down
+to the polling part: 16,57,207 electors, 6,62,063 of them deleted (39.9%), across
+1,158 parts. Deletion rate by age band, by sex, by name-estimated religion and by
+linkage to the 2002 roll; the ECI reason codes and the seven rules that send an
+elector to a hearing; the hearing calendar with cases per slot; and a sortable
+table of every part against the 2023 result. Aggregates only, no names.
+
+**Directory:** `hyd-sir/`
+**Stage:** Active
+
+---
+
 ### Women in the NFHS
 
 Women's health, work, assets, agency and safety across India's states and the
@@ -372,6 +388,7 @@ Experiments/
 ├── promise-costing/                    # manifesto promises against the state budget
 ├── statutory-interest/                 # MSMED, CPC s.34, Arbitration s.31(7), NI Act
 ├── air-quality/                        # a year of PM2.5 against WHO and NAAQS, live
+├── hyd-sir/                            # Old City SIR 2026 deletions, by polling part
 ├── petition-builder/                   # representations and petitions in the accepted form
 ├── library-builder/                    # household book catalogue, Open Library lookups
 ├── flipbook/                           # PDF to page-turning book, self-contained export
