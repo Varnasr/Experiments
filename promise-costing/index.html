@@ -164,6 +164,6 @@ function tornadoChart(items,base){ const W=760,rh=22,m={l:300,r:70,t:10,b:24},pw
 $('#run').onclick=run;
 { let j=null; try{ j=JSON.parse(localStorage.getItem(KEY)); }catch(e){} if(j&&Array.isArray(j.P)&&j.P.length){ P=j.P; loadFiscal(j.fiscal); renderP(); run(); } else { $('#example').click(); } }
 </script>
-<script src="../js/dyslexia-font.js" defer></script>
+<script src="../js/dyslexia-font.js" data-accent="var(--purple2)" data-radius="99px" defer></script>
 </body>
 </html>
