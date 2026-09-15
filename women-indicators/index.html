@@ -160,5 +160,6 @@ $('#ind').onchange=()=>load($('#ind').value); $('#indGo').onclick=()=>{ const v=
 $('#dl').onclick=()=>{ const q=s=>'"'+String(s??'').replace(/"/g,'""')+'"'; const csv=['survey,round,category,label,value,n_weighted,n_unweighted',...rows.map(r=>[r.SurveyId,ROUND[r.SurveyId]||'',r.CharacteristicCategory,r.CharacteristicLabel,r.Value,r.DenominatorWeighted,r.DenominatorUnweighted].map(q).join(','))].join('\n'); const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'})); a.download=`nfhs-${meta.id}.csv`; a.click(); };
 load($('#ind').value);
 </script>
+<script src="../js/dyslexia-font.js" data-accent="var(--purple2)" data-radius="99px" defer></script>
 </body>
 </html>

@@ -163,5 +163,6 @@ $('#nGo').onclick=()=>{ const P=+$('#nAmt').value, d0=$('#nDate').value, pay=$('
 $('#pGo').onclick=()=>{ const P=+$('#pAmt').value, r=+$('#pRate').value, f=$('#pFrom').value, t=$('#pTo').value, m=$('#pMethod').value; let html; if(m==='simple'){ const d=days(f,t); const i=simple(P,r,d); html=`<span class="stat"><b class="total">${inr(i)}</b><span>simple interest, ${d} days</span></span><span class="stat"><b>${inr(P+i)}</b><span>total</span></span><p class="note">${inr2(P)} × ${r}% × ${d} ÷ 365.</p>`; } else { const c=compoundPeriodic(P,r,f,t,m==='monthly'?1:m==='quarterly'?3:12); html=`<span class="stat"><b class="total">${inr(c.total)}</b><span>compound interest, ${m} rests</span></span><span class="stat"><b>${inr(c.balance)}</b><span>total</span></span>`+sched(c.rows); } $('#pOut').innerHTML='<h2>Working</h2>'+html; };
 $('#mGo').click(); $('#cGo').click(); $('#aGo').click(); $('#nGo').click(); $('#pGo').click();
 </script>
+<script src="../js/dyslexia-font.js" data-accent="var(--purple2)" data-radius="99px" defer></script>
 </body>
 </html>
