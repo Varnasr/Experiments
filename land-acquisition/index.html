@@ -127,5 +127,6 @@ function compute(){ const area=+$('#area').value, rural=$('#areaType').value==='
   <details><summary>Compare with the 1894 Act</summary><p>Under the Land Acquisition Act, 1894, the award was the market value under section 23(1) plus a solatium of 30% under section 23(2) and an additional 12% a year under section 23(1A), with no multiplication factor, no separate rehabilitation schedule and no consent requirement. On these inputs, the 1894 arithmetic would give roughly ${inr((mv+assets)*1.3+mv*0.12*days/365)} for the land against ${inr(land)} under the 2013 Act, before any rehabilitation entitlements. The difference is the point of the 2013 Act.</p></details>`; }
 $('#calc').onclick=compute; document.querySelectorAll('input,select').forEach(el=>el.addEventListener('change',compute)); compute();
 </script>
+<script src="../js/dyslexia-font.js" data-accent="var(--purple2)" data-radius="99px" defer></script>
 </body>
 </html>

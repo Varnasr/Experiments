@@ -140,5 +140,6 @@ function hist(a,base){ const W=760,H=200,m={l:40,r:16,t:10,b:30},pw=W-m.l-m.r,ph
 function tornado(sw,base){ const W=760,rh=22,lw=220,H=sw.length*rh+30; const vals=sw.flatMap(s=>[s.lo,s.hi,base]); const lo=Math.min(...vals), hi=Math.max(...vals); const X=v=>lw+(v-lo)/(hi-lo||1)*(W-lw-40); let g=`<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="tornado">`; g+=`<line x1="${X(base)}" x2="${X(base)}" y1="6" y2="${H-22}" stroke="#9ca3af"/>`; sw.forEach((s,i)=>{ const y=8+i*rh; g+=`<text x="${lw-8}" y="${y+14}" text-anchor="end">${esc(s.name.slice(0,32))}</text>`; [[s.lo,'var(--s2)','low'],[s.hi,'var(--s1)','high']].forEach(([v,c,l])=>{ const x0=Math.min(X(v),X(base)), w=Math.abs(X(v)-X(base)); g+=`<rect x="${x0}" y="${y+4}" width="${Math.max(w,1)}" height="${rh-8}" fill="${c}" data-tip="${esc(s.name)} at ${l}: NPV ${fmt(v,1)}"/>`; }); }); [lo,base,hi].forEach(v=>{ g+=`<text x="${X(v)}" y="${H-6}" text-anchor="middle">${fmt(v,0)}</text>`; }); return g+'</svg>'; }
 $('#run').onclick=compute; $('#demo').click();
 </script>
+<script src="../js/dyslexia-font.js" data-accent="var(--purple2)" data-radius="99px" defer></script>
 </body>
 </html>

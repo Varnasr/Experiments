@@ -129,7 +129,7 @@
 
 <div class="top"><div class="wrap">
     <a class="brand" href="#"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#572e91"/><path d="M11 6h10M13 6v9l-6 10a2 2 0 0 0 2 3h14a2 2 0 0 0 2-3l-6-10V6" stroke="#ff9911" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Experiments</a>
-    <nav><a href="#econ">Econometrics</a><a href="#women">Women &amp; climate</a><a href="#field">Field</a><a href="#law">Law</a><a href="#personal">Personal</a><a href="#stack">How it's built</a><a class="cta" href="https://github.com/Varnasr/Experiments">GitHub</a></nav>
+    <nav data-dyslexia-slot><a href="#econ">Econometrics</a><a href="#women">Women &amp; climate</a><a href="#field">Field</a><a href="#law">Law</a><a href="#personal">Personal</a><a href="#stack">How it's built</a><a class="cta" href="https://github.com/Varnasr/Experiments">GitHub</a></nav>
 </div></div>
 
 <header class="hero">
@@ -138,7 +138,7 @@
         <div>
             <div class="eyebrow">Varna Sri Raman · Idealog Works</div>
             <h1>Tools that <span>show their working</span>, built to be read as much as used.</h1>
-            <p>I am a development economist and a lawyer. This is where the experiments live: econometrics that runs in the page, poverty and inequality from grouped data, survey audits, women's and climate data pulled live, and legal calculators that cite the paragraph beside every rupee.</p>
+            <p>I am a development economist and a licensed social justice worker. This is where the experiments live: econometrics that runs in the page, poverty and inequality from grouped data, survey audits, women's and climate data pulled live, and legal calculators that cite the paragraph beside every rupee.</p>
             <p>Hover over any card for what it does in plain words; open "how it's built" for the method and what it was checked against. One HTML file per tool, no dependencies, and nothing you type in leaves your browser.</p>
             <a class="btn btn-orange" href="#econ">Browse the tools</a><a class="btn btn-ghost" href="https://github.com/Varnasr/Experiments">Source on GitHub</a>
         </div>
@@ -536,5 +536,6 @@ document.querySelectorAll('.card').forEach(card => {
 // fade cards in as they scroll into view; show everything at once if the observer is unavailable
 if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) { document.body.classList.add('fade'); const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { rootMargin:'0px 0px -6% 0px' }); document.querySelectorAll('.card').forEach(c => io.observe(c)); setTimeout(() => document.body.classList.remove('fade'), 2500); }
 </script>
+<script src="js/dyslexia-font.js" data-accent="var(--purple2)" data-radius="99px" defer></script>
 </body>
 </html>

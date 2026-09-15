@@ -183,7 +183,8 @@ document.getElementById('prev').onclick=function(){flip.flipPrev()};document.get
 document.getElementById('full').onclick=function(){if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen()};
 document.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' ')flip.flipNext();if(e.key==='ArrowLeft'||e.key==='PageUp')flip.flipPrev()});
 var t;window.addEventListener('resize',function(){clearTimeout(t);t=setTimeout(build,250)});build();})();
-<\/script></body></html>`; }
+<\/script><script src="../js/dyslexia-font.js" data-accent="var(--purple2)" data-radius="99px" defer></script>
+</body></html>`; }
 </script>
 </body>
 </html>
