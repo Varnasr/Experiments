@@ -392,6 +392,12 @@ ul.mindlist ul li::marker{color:var(--bhue)}
   .mindwrap .mindfall{display:none}
 }
 
+.checkbar{margin:14px 0 0; padding:11px 14px; background:var(--sunk);
+  border:1.5px solid var(--rule); border-left:4px solid var(--c4); border-radius:12px;
+  font-size:.9rem; line-height:1.6}
+.checkbar b{font-family:"Bricolage Grotesque",sans-serif; letter-spacing:-.01em}
+.checkbar a{color:var(--ink); text-underline-offset:3px}
+
 /* ---- check the book ----------------------------------------------
    The second layer. What the chapter says, what is actually the case,
    and what to write in the exam, kept visibly apart so he can hold both
@@ -6790,7 +6796,7 @@ function checkBlock(sid, n){
      and `typeof` on a const still in its temporal dead zone throws. */
   const rows = (typeof CHECK_DATA === 'undefined') ? null : CHECK_DATA[sid + n];
   if(!rows || !rows.length) return '';
-  return `<div class="check"><p class="section-rule"><span class="eyebrow">Check the book</span></p>`
+  return `<div class="check" id="chk-${sid}${n}"><p class="section-rule"><span class="eyebrow">Check the book</span></p>`
     + rows.map(r => {
         const k = CHECK_KIND[r.k] || CHECK_KIND.thin;
         return `<article class="chk" style="--kh:${k.c}">
@@ -6810,6 +6816,22 @@ function checkBlock(sid, n){
     + `</div>`;
 }
 
+/* An index of this subject's corrections. Without it they are findable
+   only by opening the right chapter, which means the ones he most needs
+   are the ones he is least likely to meet. */
+function checkIndex(sid, chapters){
+  if(typeof CHECK_DATA === 'undefined') return '';
+  const rows = chapters
+    .filter(c => CHECK_DATA[sid + c.n])
+    .map(c => ({n:c.n, title:c.title, k:CHECK_DATA[sid + c.n].length}));
+  if(!rows.length) return '';
+  const total = rows.reduce((a, r) => a + r.k, 0);
+  const list = rows.map(r =>
+    `<a href="#chk-${sid}${r.n}">ch ${r.n}, ${r.title}</a>`).join(' &middot; ');
+  return `<p class="checkbar"><b>Check the book:</b> ${total} note${total === 1 ? '' : 's'}`
+       + ` on where this book is wrong, thin, or taking a side it does not admit is a side.`
+       + ` They sit under the chapter, after the notes. ${list}</p>`;
+}
 function renderLearn(){
   const S = subj(), cs = visibleChapters();
   const exam = cs.filter(c => c.exam), rest = cs.filter(c => !c.exam);
@@ -6823,7 +6845,7 @@ function renderLearn(){
     hin:'Class VIII Hindi, from the NCERT <em>\u092e\u0932\u094d\u0939\u093e\u0930</em> textbook: not Vasant, which it replaced. The ten \u092a\u093e\u0920 are listed with their \u0935\u093f\u0927\u093e and what to note as you read; the \u0935\u094d\u092f\u093e\u0915\u0930\u0923 sections after them, \u0938\u0902\u0927\u093f, \u0938\u092e\u093e\u0938, \u0905\u0932\u0902\u0915\u093e\u0930, \u0915\u093e\u0930\u0915, are where the marks go, and those carry the drills.',
     skt:'Class VIII Sanskrit, from the NCERT <em>\u0930\u0941\u091a\u093f\u0930\u093e \u092d\u093e\u0917 \u0969</em> textbook. The twelve lessons are listed with what each title means; the grammar sections that follow, \u0936\u092c\u094d\u0926\u0930\u0942\u092a, \u0927\u093e\u0924\u0941\u0930\u0942\u092a, \u0915\u093e\u0930\u0915, \u0938\u0928\u094d\u0927\u093f, are where the marks are, and those carry the drills.'
   };
-  $('#learnLede').innerHTML = LEDE[S.id] || '';
+  $('#learnLede').innerHTML = (LEDE[S.id] || '') + checkIndex(S.id, S.chapters);
   /* "18 chapters" is true but unhelpful for the language subjects, where the
      lessons and the grammar sections are quite different animals. */
   const lessons = S.chapters.filter(c => !c.bank).length;
