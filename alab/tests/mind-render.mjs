@@ -56,70 +56,96 @@ const open = async (w, h) => {
   p.on('pageerror', e => errs.push(String(e)));
   p.on('console', m => { if (m.type() === 'error') errs.push(m.text()); });
   await p.goto(BASE, { waitUntil: 'load' });
-  await p.click('button[data-subj="sst"]');
   await p.click('#tab-learn');
-  await p.waitForTimeout(400);
+  await p.waitForTimeout(300);
   return { p, errs };
 };
 
-/* ---- a screen with room for the tree ---- */
-const { p, errs } = await open(1100, 900);
-const r = await p.evaluate(() => {
+/* Expected per subject: how many chapters, and how many of them carry a
+   mind map. A subject still on the arrow-line fallback shows 0 maps and
+   that is not a failure; a subject that drops from what it had is. */
+const SUBJECTS = [
+  { id:'sci',  chapters:13, maps:13 },
+  { id:'math', chapters:14, maps:14 },
+  { id:'skt',  chapters:19, maps:19 },
+  { id:'hin',  chapters:18, maps:18 },
+  { id:'eng',  chapters:8,  maps:8  },
+  { id:'sst',  chapters:15, maps:15 },
+  { id:'ct',   chapters:5,  maps:5  }
+];
+const CHECKS = { sst:6, math:2, ct:1 };   /* check-the-book entries, by subject */
+
+const measure = () => {
   const svgs = [...document.querySelectorAll('#learnList svg.mind')];
   const over = [];
   svgs.forEach((s, si) => {
-    /* Same columns mindSVG() lays out into, read off the element so the
-       two cannot drift apart silently. */
+    /* The columns are read off the element, not restated here, so the
+       test and the layout cannot drift apart without one of them moving. */
     const W = s.viewBox.baseVal.width, H = s.viewBox.baseVal.height;
-    const LEAF_L = +s.querySelector('.t-leaf')?.getAttribute('x') || 439;
-    const BR_L = +s.querySelector('.t-br')?.getAttribute('x') || 200;
+    const BR_L = +(s.querySelector('.t-br')?.getAttribute('x') ?? 200);
     [...s.querySelectorAll('text')].forEach(t => {
       const bb = t.getBBox(), cls = t.getAttribute('class');
       const lim = cls === 't-leaf' ? W - 10 : cls === 't-br' ? BR_L + 176 : W;
       if (bb.x + bb.width > lim + 1)
-        over.push({ ch: si + 1, cls, by: +(bb.x + bb.width - lim).toFixed(1),
+        over.push({ i: si + 1, cls, by: +(bb.x + bb.width - lim).toFixed(1),
                     text: t.textContent.slice(0, 44) });
       if (bb.y < -1 || bb.y + bb.height > H + 1)
-        over.push({ ch: si + 1, cls, vertical: true, text: t.textContent.slice(0, 30) });
+        over.push({ i: si + 1, cls, vertical: true, text: t.textContent.slice(0, 30) });
     });
   });
   return {
-    n: svgs.length,
+    cards: document.querySelectorAll('#learnList .syl').length,
+    maps: svgs.length,
     visible: svgs.filter(s => s.getBoundingClientRect().width > 100).length,
-    lists: [...document.querySelectorAll('#learnList .mindfall')]
-             .filter(e => getComputedStyle(e).display !== 'none').length,
+    labelled: svgs.filter(s => s.querySelector('title')?.textContent.trim()).length,
+    fallbackShown: [...document.querySelectorAll('#learnList .mindfall')]
+                     .filter(e => getComputedStyle(e).display !== 'none').length,
+    fallbacks: document.querySelectorAll('#learnList .mindfall').length,
+    arrowLines: document.querySelectorAll('#learnList .cmap').length,
     checks: document.querySelectorAll('#learnList .chk').length,
-    labelled: [...document.querySelectorAll('#learnList svg.mind')]
-                .filter(s => s.querySelector('title')?.textContent.trim()).length,
+    treesShown: svgs.filter(s => getComputedStyle(s).display !== 'none').length,
     over
   };
-});
-say(r.n === 15, `15 mind maps rendered (got ${r.n})`);
-say(r.visible === r.n, `every tree visible on a wide screen (${r.visible}/${r.n})`);
-say(r.labelled === r.n, `every tree has a <title> for a screen reader (${r.labelled}/${r.n})`);
-say(r.lists === 0, `nested-list fallback hidden on a wide screen (${r.lists} showing)`);
-say(r.checks === 6, `6 check-the-book entries rendered (got ${r.checks})`);
-say(r.over.length === 0, `no text overflows its column (${r.over.length} over)`);
-r.over.slice(0, 8).forEach(o => console.log('       ' + JSON.stringify(o)));
+};
+
+/* ---- a screen with room for the tree ---- */
+const { p, errs } = await open(1100, 900);
+let totalMaps = 0;
+for (const sub of SUBJECTS) {
+  await p.click(`button[data-subj="${sub.id}"]`);
+  await p.waitForTimeout(250);
+  const r = await p.evaluate(measure);
+  totalMaps += r.maps;
+  say(r.cards === sub.chapters, `${sub.id}: ${sub.chapters} chapters listed (got ${r.cards})`);
+  say(r.maps === sub.maps, `${sub.id}: ${sub.maps} mind maps (got ${r.maps})`);
+  say(r.maps + r.arrowLines === r.cards,
+      `${sub.id}: every card has a map or the arrow line (${r.maps}+${r.arrowLines} vs ${r.cards})`);
+  say(r.visible === r.maps, `${sub.id}: every tree visible on a wide screen (${r.visible}/${r.maps})`);
+  say(r.labelled === r.maps, `${sub.id}: every tree has a <title> (${r.labelled}/${r.maps})`);
+  say(r.fallbackShown === 0, `${sub.id}: nested list hidden on a wide screen (${r.fallbackShown} showing)`);
+  say(r.checks === (CHECKS[sub.id] || 0),
+      `${sub.id}: ${CHECKS[sub.id] || 0} check-the-book entries (got ${r.checks})`);
+  say(r.over.length === 0, `${sub.id}: no text overflows its column (${r.over.length} over)`);
+  r.over.slice(0, 6).forEach(o => console.log('       ' + JSON.stringify(o)));
+}
+say(totalMaps === SUBJECTS.reduce((a, s) => a + s.maps, 0), `${totalMaps} mind maps in total`);
 const real = errs.filter(realError);
 say(real.length === 0, `no page errors (${real.length})`);
 real.slice(0, 4).forEach(e => console.log('       ' + e.slice(0, 160)));
 
 /* ---- a phone ---- */
 const { p: m, errs: merrs } = await open(390, 844);
-const mr = await m.evaluate(() => ({
-  scrollW: document.documentElement.scrollWidth,
-  clientW: document.documentElement.clientWidth,
-  trees: [...document.querySelectorAll('#learnList svg.mind')]
-           .filter(s => getComputedStyle(s).display !== 'none').length,
-  lists: [...document.querySelectorAll('#learnList .mindfall')]
-           .filter(e => getComputedStyle(e).display !== 'none').length,
-  chk: document.querySelectorAll('#learnList .chk').length
-}));
-say(mr.scrollW <= mr.clientW, `no sideways scroll at 390px (${mr.scrollW} vs ${mr.clientW})`);
-say(mr.trees === 0, `tree hidden on a phone (${mr.trees} showing)`);
-say(mr.lists === 15, `all 15 nested lists shown on a phone (got ${mr.lists})`);
-say(mr.chk === 6, `check entries present on a phone (got ${mr.chk})`);
+for (const sub of SUBJECTS.filter(s => s.maps)) {
+  await m.click(`button[data-subj="${sub.id}"]`);
+  await m.waitForTimeout(250);
+  const r = await m.evaluate(measure);
+  const w = await m.evaluate(() => [document.documentElement.scrollWidth,
+                                   document.documentElement.clientWidth]);
+  say(w[0] <= w[1], `${sub.id}: no sideways scroll at 390px (${w[0]} vs ${w[1]})`);
+  say(r.treesShown === 0, `${sub.id}: tree hidden on a phone (${r.treesShown} showing)`);
+  say(r.fallbackShown === sub.maps, `${sub.id}: all ${sub.maps} nested lists shown (got ${r.fallbackShown})`);
+  say(r.checks === (CHECKS[sub.id] || 0), `${sub.id}: check entries present on a phone (got ${r.checks})`);
+}
 say(merrs.filter(realError).length === 0, 'no page errors on a phone');
 
 await b.close();
