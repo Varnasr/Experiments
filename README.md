@@ -328,14 +328,32 @@ Installable PWA: add it to a phone or tablet home screen and it works fully offl
 
 ---
 
-### Agastya's Science Lab
+### A Lab
 
-A mobile-first Class VIII science revision app built around Agastya's Sardar Patel Vidyalaya Semester 1 syllabus: microorganisms, health, electricity, forces, pressure in solids and liquids, and the particulate nature of matter. Each chapter has focused multiple-choice practice with immediate explanations, plus a mixed exam mode and private on-device progress tracking.
+Year-round CBSE Class VIII revision across seven subjects, from the current NCERT
+books: science (*Curiosity*), maths (*Ganita Prakash*), social science (*Exploring
+Society: India and Beyond*), Hindi (*Malhar*), Sanskrit (*Ruchira 3*), English
+grammar, and the CBSE computational thinking and AI handbook. Every chapter carries
+a mind map, notes, and a question bank that marks instantly and explains why an
+answer is wrong. Around them: printable worksheets, mock papers in the CBSE pattern,
+a mistakes book on a spaced-repetition schedule, and a countdown that works backwards
+from the next exam date.
 
-**Directory:** `agastya-science/`
+It also carries a second layer, **Check the book**. The notes follow the textbook,
+because the paper is set from the textbook. Where the textbook is wrong, thin, or
+handing a reader one side of a live argument as settled fact, a panel under the notes
+says what is actually the case, names the source, and then says what to write in the
+exam anyway. Marks and accuracy are different problems and a thirteen-year-old should
+not have to choose. Entries need a dated source, a named case, a statute or a
+published figure; social science chapters 3, 5 and 15 carry the first six.
+
+**Directory:** `alab/`
 **Stage:** Active
 
-Installable and offline-capable, with no framework or external dependency. Open `agastya-science/index.html` to use it locally.
+Installable and offline-capable, with no framework or external dependency. Open
+`alab/index.html` to use it locally, or visit [alab.cloud](https://alab.cloud).
+`alab/tests/mind-render.mjs` is the render check for the mind maps: it measures every
+text node in a real browser rather than trusting the layout arithmetic.
 
 ---
 
