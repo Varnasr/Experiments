@@ -335,7 +335,8 @@ books: science (*Curiosity*), maths (*Ganita Prakash*), social science (*Explori
 Society: India and Beyond*), Hindi (*Malhar*), Sanskrit (*Ruchira 3*), English
 grammar, and the CBSE computational thinking and AI handbook. Every chapter carries
 a mind map, notes, and a question bank that marks instantly and explains why an
-answer is wrong. Around them: printable worksheets, mock papers in the CBSE pattern,
+answer is wrong: 1,362 questions across multiple choice, true/false, fill-in,
+numerical, assertion-reason, matching and written answers. Around them: printable worksheets, mock papers in the CBSE pattern,
 a mistakes book on a spaced-repetition schedule, and a countdown that works backwards
 from the next exam date.
 
@@ -357,8 +358,15 @@ the face-recognition study it describes.
 
 Installable and offline-capable, with no framework or external dependency. Open
 `alab/index.html` to use it locally, or visit [alab.cloud](https://alab.cloud).
-`alab/tests/mind-render.mjs` is the render check for the mind maps: it measures every
-text node in a real browser rather than trusting the layout arithmetic.
+Three checks live in `alab/tests/`, all needing `playwright-core` and a local
+server. `mind-render.mjs` measures every text node in a real browser rather than
+trusting the layout arithmetic. `bank-check.mjs` reads the assembled question
+bank out of the running page and looks for answer indices past the end of their
+options, chapters that offer practice with nothing behind them, and duplicate
+question stems, which matter because a question's identity in the mistakes book
+is a hash of its text. `smoke.mjs` drives practice, worksheet and mock paper in
+every subject, since adding data is exactly the change that leaves the data
+valid and a view broken.
 
 ---
 
