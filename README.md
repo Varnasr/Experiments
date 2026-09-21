@@ -335,8 +335,9 @@ books: science (*Curiosity*), maths (*Ganita Prakash*), social science (*Explori
 Society: India and Beyond*), Hindi (*Malhar*), Sanskrit (*Ruchira 3*), English
 grammar, and the CBSE computational thinking and AI handbook. Every chapter carries
 a mind map, notes, and a question bank that marks instantly and explains why an
-answer is wrong: 1,362 questions across multiple choice, true/false, fill-in,
-numerical, assertion-reason, matching and written answers. Around them: printable worksheets, mock papers in the CBSE pattern,
+answer is wrong: 1,546 questions across multiple choice, true/false, fill-in,
+numerical, assertion-reason, matching and written answers, every chapter of
+every subject covered. Around them: printable worksheets, mock papers in the CBSE pattern,
 a mistakes book on a spaced-repetition schedule, and a countdown that works backwards
 from the next exam date.
 
