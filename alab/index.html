@@ -9,7 +9,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <meta name="theme-color" content="#0E7C74">
-<meta name="description" content="Revision notes, practice sets, printable worksheets and a mock paper for CBSE Class 8 Science, Semester 1, plus notes for the rest of Class VIII science and maths.">
+<meta name="description" content="Year-round revision for CBSE Class 8: mind maps, notes and practice across seven subjects, printable worksheets and a mock paper, and a layer that says where the textbook is wrong and what to write in the exam anyway.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap">
@@ -357,6 +357,65 @@ footer.foot{max-width:920px; margin:0 auto; padding:26px 18px 40px; color:var(--
   :root[data-compact-xs] .qbar #quitBtn{font-size:.68rem; padding:13px 8px}
 
 /* ---- print ---- */
+
+/* ---- mind maps ---------------------------------------------------
+   A chapter's map used to be one line of arrows. That is a summary, not
+   a map: an arrow chain cannot show that one branch carries four things
+   under it and the next carries two. Drawn twice from the same data, an
+   SVG tree where there is room for one and a nested list on a phone,
+   which is where this actually gets read. Colour never carries text:
+   every label is --ink or --ink-2 on the card and the hues live in the
+   rules, links and bullets, so no label can fail contrast in either
+   theme. That is deliberate, --c4 on this paper is 3.5:1.
+   ------------------------------------------------------------------ */
+.mindwrap{margin:13px 0 0}
+.mindwrap .mind{display:none; width:100%; height:auto}
+.mind .m-core{fill:none; stroke:var(--hue); stroke-width:2}
+.mind .m-link{fill:none; stroke-width:1.4; opacity:.55}
+.mind .m-rule{stroke-width:2.5; stroke-linecap:round}
+.mind text{font-family:"Figtree",system-ui,sans-serif; fill:var(--ink)}
+.mind .t-core{font-family:"Bricolage Grotesque",sans-serif; font-weight:800; font-size:12.5px}
+.mind .t-br{font-weight:700; font-size:12.5px}
+.mind .t-leaf{font-size:11.5px; fill:var(--ink-2)}
+.mindcore{display:inline-block; margin:0 0 9px; padding:6px 12px;
+  font-family:"Bricolage Grotesque",sans-serif; font-weight:800; font-size:.76rem;
+  letter-spacing:.04em; text-transform:uppercase; color:var(--ink);
+  border:2px solid color-mix(in srgb,var(--hue) 55%,transparent); border-radius:10px}
+ul.mindlist{margin:0; padding:0; list-style:none}
+ul.mindlist > li{margin-top:11px; padding-left:11px; border-left:2.5px solid var(--bhue)}
+ul.mindlist > li > b{display:block; font-size:.91rem; letter-spacing:-.01em}
+ul.mindlist ul{margin:4px 0 0; padding-left:17px}
+ul.mindlist ul li{font-size:.86rem; color:var(--ink-2); margin-top:3px; line-height:1.5}
+ul.mindlist ul li::marker{color:var(--bhue)}
+@media (min-width:760px){
+  .mindwrap .mind{display:block}
+  .mindwrap .mindfall{display:none}
+}
+
+/* ---- check the book ----------------------------------------------
+   The second layer. What the chapter says, what is actually the case,
+   and what to write in the exam, kept visibly apart so he can hold both
+   without confusing which is which. The kind badge is --ink-2, not the
+   flag colour, for the contrast reason above.
+   ------------------------------------------------------------------ */
+.check{margin:17px 0 0; display:flex; flex-direction:column; gap:12px}
+.chk{padding:13px 15px; background:var(--sunk); border:1.5px solid var(--rule);
+  border-left:4px solid var(--kh); border-radius:12px}
+.chk .kind{display:flex; align-items:center; gap:7px; margin:0 0 5px;
+  font-family:"IBM Plex Mono",monospace; font-size:.67rem; text-transform:uppercase;
+  letter-spacing:.07em; color:var(--ink-2)}
+.chk .kind i{width:7px; height:7px; border-radius:50%; background:var(--kh); flex:0 0 auto}
+.chk h4{margin:0; font-size:.97rem; letter-spacing:-.01em; line-height:1.4}
+.chk .lab{margin:12px 0 4px; font-family:"IBM Plex Mono",monospace; font-size:.67rem;
+  text-transform:uppercase; letter-spacing:.06em; color:var(--ink-3)}
+.chk p{margin:0; font-size:.9rem; line-height:1.62}
+.chk p + p{margin-top:7px}
+.chk blockquote{margin:0; padding:8px 13px; background:var(--surface);
+  border-left:2px solid var(--rule); border-radius:0 9px 9px 0;
+  font-style:italic; color:var(--ink-2); font-size:.89rem; line-height:1.6}
+.chk .src{margin-top:11px; font-size:.77rem; color:var(--ink-3)}
+.chk .src a{color:var(--ink-2)}
+
 @media print{
   @page{margin:14mm}
   header.mast,.noprint,footer.foot{display:none !important}
@@ -368,6 +427,10 @@ footer.foot{max-width:920px; margin:0 auto; padding:26px 18px 40px; color:var(--
   .q .lines i{border-bottom:1px solid #bbb}
   .answerkey{page-break-before:always; border-top:2px solid #000}
   .syl,.card{border:1px solid #bbb; background:#fff}
+  .mindwrap .mind{display:block}
+  .mindwrap .mindfall{display:none}
+  .chk{background:#fff; border:1px solid #bbb; border-left:4px solid #555}
+  .chk blockquote{background:#fff}
 }
 </style>
 <script>
@@ -433,7 +496,7 @@ footer.foot{max-width:920px; margin:0 auto; padding:26px 18px 40px; color:var(--
         <button data-subj="sst" aria-pressed="false">Social Science</button>
         <button data-subj="ct" aria-pressed="false">AI &amp; Thinking</button>
       </div>
-      <button class="filter" id="examFilter" aria-pressed="false">September exam only</button>
+      <button class="filter" id="examFilter" aria-pressed="false">Exam chapters only</button>
     </div>
     <nav class="tabs" role="tablist" aria-label="Sections">
       <button class="tab" role="tab" id="tab-today" aria-selected="true" data-view="today">Today</button>
@@ -3569,6 +3632,413 @@ const HIN_ART  = ['globe','leaf','heart','script','lamp','press','arrows','bell'
 const SKT_HUES = ['var(--c4)','var(--c6)','var(--c2)','var(--c5)','var(--c7)','var(--c3)'];
 const SKT_ART  = ['book','leaf','bolt','arrows','knot','heart','globe','press','globe','lamp','quill','particles','shield',
                   'script','bell','flow','knot','moon','chip'];
+/* ============================================================
+   SST MIND MAPS
+   Keyed by chapter number, read by the sst entry in SUBJECTS below.
+   Written from the chapter itself, not from the correction layer: the
+   map is what the paper is set from. Where the chapter is wrong, the
+   CHECK entry under the same number says so separately.
+   Keep a leaf under about eighty characters. Longer and it wraps to
+   three lines in the tree and the branch starts to crowd its neighbour.
+   ============================================================ */
+const SST_MIND = {
+1:{core:'Natural resources', b:[
+  {t:'What counts as one', k:[
+    'Occurs in Nature and is of value to humans',
+    'Needs both a use and the means to use it',
+    'So the list grows as technology grows: uranium was rock before it was fuel']},
+  {t:'Renewable', k:[
+    'Replace themselves: sunlight, wind, water, forests',
+    'Renewable up to a rate, not without limit',
+    'Cut faster than it regrows and a forest behaves like a non-renewable']},
+  {t:'Non-renewable', k:[
+    'Coal, petroleum, minerals',
+    'Not replaced on any timescale that helps us',
+    'Aim: judicious use, and alternatives while there is still time']},
+  {t:'The resource curse', k:[
+    'Resource-rich country ends up less developed than one without',
+    'A pattern, not a law: it can be overcome',
+    'The chapter&rsquo;s answer is investment in technology and in skills']},
+  {t:'The argument', k:[
+    'Resources are not simply there to be taken',
+    'How a country uses them decides wealth or trap']}
+]},
+2:{core:'Reshaping the political map', b:[
+  {t:'Invasions', k:[
+    'Turkic, Afghan and Mughal forces, over several centuries',
+    'Widespread destruction; old dynasties fell']},
+  {t:'The churn', k:[
+    'Continuous warfare, shifting alliances, conquest',
+    'Boundaries redrawn again and again: that is the chapter title']},
+  {t:'Persecution', k:[
+    'Buddhists, Jains, Hindus, Sikhs, Zoroastrians and tribal communities',
+    'The chapter adds that some rulers were far more broad-minded than others']},
+  {t:'Wealth and trade', k:[
+    'Agriculture and trade expanded; links with the wider world grew',
+    'The wealth did not reach far: ordinary subjects stayed poor']},
+  {t:'Resilience', k:[
+    'Towns, cities and temples rebuilt after each disruption',
+    'Cultural traditions carried through',
+    'Indigenous and foreign elements blended into new forms']}
+]},
+3:{core:'The Marathas', b:[
+  {t:'Founding', k:[
+    'Chhatrapati Shivaji Maharaj, 17th century',
+    'A kingdom built in the teeth of Mughal power']},
+  {t:'Resistance', k:[
+    'Decades of war with the Mughals',
+    'The hard experience gained is what made the 18th-century expansion possible']},
+  {t:'The machinery', k:[
+    'Hundreds of forts: the core of the state, not just its defence',
+    'A navy that held off European naval power',
+    'And did so without the latest technology of the day']},
+  {t:'Expansion', k:[
+    'Pan-Indian reach in the 18th century',
+    'The chapter&rsquo;s claim: the British took India more from the Marathas than from anyone else']},
+  {t:'Cultural effect', k:[
+    'New confidence among Indians in many regions',
+    'Fed a wider revival and innovation']},
+  {t:'Revision note', k:[
+    'Keep the four strands apart: founding, resistance, machinery, culture',
+    'Questions are set on one at a time']}
+]},
+4:{core:'The colonial era', b:[
+  {t:'Why they came', k:[
+    'Portuguese, Dutch, French and British, all drawn by India&rsquo;s wealth',
+    'They fought each other; the British won out']},
+  {t:'What it cost', k:[
+    'Ruthless taxation policy',
+    'Severe famines and millions of deaths',
+    'Deindustrialisation, presented as deliberate policy rather than accident']},
+  {t:'How it was held', k:[
+    'Administrative structures, legal systems, educational institutions',
+    'Governing the society, not merely holding the territory']},
+  {t:'The other Europeans', k:[
+    'Portuguese Goa: conversion and cultural transformation, long-lasting divisions',
+    'French Pondicherry: assimilation, and a small culturally French elite']},
+  {t:'Resistance', k:[
+    'Uprisings from the late 18th century onward',
+    'The Great Rebellion of 1857 threatened colonial rule for a time',
+    'Most risings, that one included, were brutally repressed']},
+  {t:'The other direction', k:[
+    '19th century: India&rsquo;s classical culture reached the West',
+    'Largely through translated Sanskrit texts, and left a lasting mark']}
+]},
+5:{core:'Universal franchise', b:[
+  {t:'One adult, one vote', k:[
+    'Every adult citizen, one vote of equal weight',
+    'No bar of wealth, education, caste, religion or sex',
+    'Adopted from the very first general election, unusual for its time']},
+  {t:'A responsibility too', k:[
+    'The chapter presses this: the vote has to be taken seriously',
+    'Voter awareness matters as much as turnout']},
+  {t:'Making it possible', k:[
+    'Not enough that people may vote; participation has to be made possible',
+    'Machinery for remote areas, for disabled voters, for those away from home']},
+  {t:'Election Commission', k:[
+    'A Constitutional body, independent by design',
+    'Conducts all elections: Parliament, state legislatures, President, Vice-President']},
+  {t:'At the polling booth', k:[
+    'Name on the electoral roll, then the EVM',
+    'VVPAT shows the slip through a window, and it drops into a sealed box',
+    'The chapter says voters are given the slip: see the note below']},
+  {t:'The challenges', k:[
+    'The chapter&rsquo;s answer to them is citizens, not machinery',
+    'Vigilance and awareness on the part of voters']}
+]},
+6:{core:'Parliamentary system', b:[
+  {t:'The three organs', k:[
+    'Legislature makes the laws',
+    'Executive implements them',
+    'Judiciary ensures they follow the Constitution',
+    'If you learn one sentence from this chapter, learn that one']},
+  {t:'Lok Sabha', k:[
+    'House of the People, the Lower House',
+    'Directly elected on universal adult franchise']},
+  {t:'Rajya Sabha', k:[
+    'Council of States, the Upper House, indirectly elected',
+    'Seats allocated to the states: this is how the federal spirit enters Parliament']},
+  {t:'Who is who', k:[
+    'The President is part of Parliament and is head of state',
+    'The Prime Minister heads the Council of Ministers, the working executive']},
+  {t:'Design goals', k:[
+    'Power shared, decisions debated openly, leaders held accountable',
+    'The same balance is repeated at the Centre and in the states']},
+  {t:'The candid note', k:[
+    'Checks and balances are what protect citizens&rsquo; rights',
+    'The chapter adds that Parliament&rsquo;s functioning needs to be more productive']}
+]},
+7:{core:'Factors of production', b:[
+  {t:'The four', k:[
+    'Land: the natural resources',
+    'Labour: human effort',
+    'Capital: the tools and money used to produce',
+    'Entrepreneurship: organises the other three and carries the risk']},
+  {t:'How they work', k:[
+    'Used in a particular proportion, complementary, interconnected',
+    'No single factor produces anything alone, so proportion matters as much as quantity']},
+  {t:'Human capital', k:[
+    'The knowledge, skills, experience and ability of people',
+    'Not a headcount: what those people can actually do']},
+  {t:'How it is built', k:[
+    'Education, training, health, use of technology, social context',
+    'All five are things a country can invest in']},
+  {t:'The close', k:[
+    'These resources produce the goods and services society runs on',
+    'And need to be preserved and used judiciously, as in chapter 1']}
+]},
+8:{core:'World geography', b:[
+  {t:'The features', k:[
+    'Mountains, plateaus, plains, deserts, grasslands',
+    'Rivers and oceans']},
+  {t:'The mechanism', k:[
+    'Tectonic movements, erosion, deposition',
+    'Those three words are what the chapter is built on']},
+  {t:'Why they matter', k:[
+    'They influence climate and decide which ecosystems can exist',
+    'They shape where people settle, what can be farmed, where trade runs',
+    'Landforms are not scenery']},
+  {t:'Human damage', k:[
+    'Deforestation, overuse of resources, pollution']},
+  {t:'The consequences', k:[
+    'Desertification, loss of biodiversity, climate change',
+    'Each is a knock-on effect of the same disturbance, not a separate problem']},
+  {t:'The purpose', k:[
+    'Understand the features well enough to manage them wisely',
+    'Stated plainly: for sustainable development']}
+]},
+9:{core:'Road to independence', b:[
+  {t:'The shape of it', k:[
+    'Long and complex, with advances and reverses',
+    'Immense suffering and sacrifice; not a single smooth march']},
+  {t:'Moderates', k:[
+    'Wanted autonomy for India within the British Empire',
+    'Hoped gradual reform would be enough']},
+  {t:'Nationalists', k:[
+    'Worked for outright independence and mass awakening',
+    'Swaraj, Swadeshi, boycott']},
+  {t:'Revolutionaries', k:[
+    'Believed violent acts would unsettle the colonial power',
+    'And lead to an armed uprising']},
+  {t:'Gandhi', k:[
+    'Nonviolence, the method of satyagraha, mass mobilisation',
+    'Drew in numbers no earlier approach had reached']},
+  {t:'Triumph and tragedy', k:[
+    'The movement unified the subcontinent',
+    'It could not settle the political Hindu-Muslim question',
+    '1947: independence, and a Partition that left a deep scar']}
+]},
+10:{core:'Indian architecture', b:[
+  {t:'The scale of it', k:[
+    'Among the richest and most diverse heritages in the world',
+    'The chapter admits its own selection leaves out thousands of monuments']},
+  {t:'The intention', k:[
+    'Buddhist, Jain and Hindu architecture connects the human with the cosmic',
+    'Aims at expressing beauty and order',
+    'Proportion and plan carry the meaning: design, not decoration']},
+  {t:'Islamic architecture', k:[
+    'Shares a reliance on advanced construction technique',
+    'The engineering is as much the achievement as the appearance']},
+  {t:'Neglect', k:[
+    'Many lesser-known monuments are in poor condition',
+    'Government bodies are responsible in theory and cannot manage it in practice']},
+  {t:'The civic close', k:[
+    'Much will be lost unless citizens feel responsible too',
+    'Tied to the Fundamental Duty to value and preserve our composite culture']}
+]},
+11:{core:'The judiciary', b:[
+  {t:'What it is', k:[
+    'One of the three pillars, beside the legislature and the executive']},
+  {t:'Two roles', k:[
+    'Ensuring justice is served',
+    'Ensuring laws are made within the framework of the Constitution',
+    'The second is what makes it a check rather than merely a court']},
+  {t:'Independence', k:[
+    'The Constitution prescribes a separation of powers',
+    'The judiciary must stay independent of the other two organs',
+    'That independence is the condition on which checking works at all']},
+  {t:'The structure', k:[
+    'Supreme Court of India at the apex, in New Delhi',
+    'High Courts at state level',
+    'Subordinate courts below them']},
+  {t:'The volume', k:[
+    'An enormous number of cases across those levels',
+    'Alternative dispute resolution exists because courts alone cannot carry it']},
+  {t:'The citizen&rsquo;s part', k:[
+    'Bringing social concerns to the court&rsquo;s notice',
+    'Rights of people, animals and nature; the judiciary largely acts on what reaches it']}
+]},
+12:{core:'Rights and duties', b:[
+  {t:'Rights with teeth', k:[
+    'The Constitution guarantees fundamental rights',
+    'And you can go to court for a remedy if they are violated',
+    'A right with no remedy is only a sentiment']},
+  {t:'Discrimination', k:[
+    'On caste, religion, gender, or a choice such as clothing',
+    'Against fundamental rights: not merely unkind, unconstitutional']},
+  {t:'Together, not apart', k:[
+    'You cannot fulfil one while ignoring the other',
+    'Claiming a right you will not extend to others is not citizenship']},
+  {t:'What it asks of you', k:[
+    'Live your rights while respecting everyone else&rsquo;s',
+    'Inclusion needs deliberate action; it does not follow from the rules being written down']},
+  {t:'The everyday version', k:[
+    'Speak up against unfairness, follow the law, help others feel included',
+    'A peaceful society is built through ordinary choices, words and actions']}
+]},
+13:{core:'Population', b:[
+  {t:'Demography', k:[
+    'The study of a population&rsquo;s size and structure, and how it changes',
+    'Births, deaths and migration: the only three ways it can change']},
+  {t:'Demographic transition', k:[
+    'High birth and death rates',
+    'Then deaths fall first, and the population grows fast',
+    'Then low birth and death rates']},
+  {t:'The far end', k:[
+    'Many developed countries: shrinking and ageing populations',
+    'Fewer workers supporting more dependants, which is a real economic problem']},
+  {t:'Demographic dividend', k:[
+    'India&rsquo;s large young workforce',
+    'An opportunity, not an achievement',
+    'It pays only if those young people are educated, employed and healthy']},
+  {t:'And it closes', k:[
+    'The window is open only for a while',
+    'India&rsquo;s own population will begin to fall in coming decades',
+    'A census is generally conducted every ten years']}
+]},
+14:{core:'India&rsquo;s cities', b:[
+  {t:'What a city is', k:[
+    'A large settlement and a centre of diverse economic and cultural activity',
+    'The concentration and variety is the interesting part, not the size']},
+  {t:'Why they grow', k:[
+    'Locational advantage',
+    'Business clusters',
+    'Tourism',
+    'Efficient infrastructure',
+    'Learn those four: they are the standard answer']},
+  {t:'What growth brings', k:[
+    'Air and water pollution, slums, loss of green space',
+    'Traffic congestion and mounting waste']},
+  {t:'The answer', k:[
+    'Not to stop growth but to plan it',
+    'Dynamically, keeping pace with changing needs, and sustainably']},
+  {t:'Rural and urban', k:[
+    'Cities depend on rural areas for food, water, materials and workers',
+    'Urbanisation reshapes rural areas in turn',
+    'That two-way dependence is a favourite question']}
+]},
+15:{core:'Cultural currents', b:[
+  {t:'Where it happened', k:[
+    'In everyday things: art, music, language, clothing, food',
+    'Not only in courts and monuments']},
+  {t:'Bhakti', k:[
+    'Grew stronger, and worked as a unifying force through political instability',
+    'Taught the oneness of God and the equality of people',
+    'Broke down rigid social barriers',
+    'Began far earlier and far wider than this chapter suggests: see below']},
+  {t:'Sufi', k:[
+    'A bridge between cultures: unity, devotion, music',
+    'Asked together with bhakti, as parallel movements with a shared effect']},
+  {t:'Music', k:[
+    'Evolved while keeping its own identity',
+    'Two streams: Hindustani in the North, Carnatic in the South']},
+  {t:'Painting and building', k:[
+    'Miniature painting: Rajput and Mughal exchange in technique, colour, composition',
+    'Architecture blended traditions; temples rebuilt, read as resilience']},
+  {t:'Learning', k:[
+    'Major universities destroyed, education continued through decentralised systems',
+    'Groundbreaking mathematics, calculus in particular',
+    'Scholars translated between Sanskrit and Persian']}
+]}
+};
+
+/* ============================================================
+   CHECK THE BOOK
+   Keyed subject id + chapter number. Read by checkBlock().
+
+   The standard for an entry, so this stays worth trusting: a dated
+   source, a named case, a statute, or a published figure. Three kinds
+   only. `wrong` means the chapter states something that is not so.
+   `thin` means what it says is true and leaves out the part that
+   changes the meaning. `contested` means it hands you the end of a
+   live argument as though it were a settled fact.
+
+   Every entry ends with what to write in the exam, and that is not a
+   formality. A boy who writes the truth on a paper set from the book
+   loses the mark and learns that being right is punished. Both layers,
+   kept apart, is the only version of this that is honest AND useful.
+   ============================================================ */
+const CHECK_DATA = {
+
+'sst3':[
+{k:'contested',
+ h:'Taking India &ldquo;more from the Marathas than any other power&rdquo; is a ranking, not a fact',
+ book:'The British took India more from the Marathas than from any other Indian power.',
+ real:[
+  'There is a real case for it. The Marathas were the largest Indian power the East India Company had to destroy, and it took three wars to do it: 1775&ndash;82, 1803&ndash;05 and 1817&ndash;18. After the last one the Peshwa&rsquo;s dominion was annexed and no Indian rival of comparable size was left standing.',
+  'There is a case against it that is just as strong. The Company&rsquo;s empire was built on Bengal, taken from the Nawab at Plassey in 1757, confirmed at Buxar in 1764, and made permanent in 1765 by the grant of the Diwani of Bengal, Bihar and Orissa, which handed the Company the land revenue that paid for every later war, the Maratha wars included. Mysore under Haidar Ali and Tipu Sultan took four wars between 1767 and 1799. Punjab under the Sikhs held out until 1849.',
+  'So which power the British took India from depends on what you count. On revenue and on chronology the answer is Bengal. On territory and on final resistance it is the Marathas. Stating one of these as a bare fact gives you the end of an argument without the argument, and the argument is the more useful thing to own.'],
+ exam:'Write the chapter&rsquo;s sentence, because that is what the paper is set from. Then, if there is room, add what the claim rests on: the three Anglo-Maratha wars between 1775 and 1818 destroyed the largest surviving Indian power. That reads as understanding rather than recall.',
+ src:[{t:'Anglo-Maratha Wars, 1775&ndash;1818'},{t:'Grant of the Diwani, 12 August 1765'}]}
+],
+
+'sst5':[
+{k:'wrong',
+ h:'The voter never receives the VVPAT slip',
+ book:'VVPAT gives voters a printed slip to confirm their vote, creating a paper trail that can be used for recounts or checks if needed.',
+ real:[
+  'The slip is printed, but it is never handed over. It appears behind a transparent window on the VVPAT unit for about seven seconds, long enough to read the serial number, the name and the symbol of the candidate you chose, and then falls into a sealed drop box attached to the machine. You leave the booth with nothing in your hand.',
+  'That is not a detail of the design, it is the point of it. A slip you could carry out would be proof of how you voted, and proof is exactly what makes a vote buyable and a voter threatenable. The secret ballot works only because nobody, you included, can demonstrate afterwards which button you pressed.',
+  'There is a procedure if the slip does not match what you pressed. Rule 49MA of the Conduct of Elections Rules, 1961 lets you tell the presiding officer, sign a declaration, and cast a test vote under observation. If the slip is wrong, polling on that machine stops. If your declaration turns out to be false, you can be prosecuted for furnishing false information: the penalty is there because a false complaint would otherwise be a cheap way to stop polling in a booth.'],
+ exam:'Write that the VVPAT prints a slip carrying the serial number, name and symbol of the candidate, shows it through a transparent window for about seven seconds, and then drops it into a sealed box. That earns the mark and is also true. Do not write that the voter is given the slip.',
+ src:[{t:'Conduct of Elections Rules, 1961, rule 49MA'},{t:'Election Commission of India, VVPAT'}]},
+
+{k:'wrong',
+ h:'There is no VVPAT recount on demand',
+ book:'&hellip; creating a paper trail that can be used for recounts or checks if needed.',
+ real:[
+  'VVPAT slips are counted, but only for five polling stations per assembly constituency or assembly segment, drawn by lot in front of the candidates. The number was one until the Supreme Court raised it to five on 8 April 2019 in <i>N. Chandrababu Naidu v Union of India</i>.',
+  'A candidate who loses and suspects the machines cannot ask for the slips to be counted. On 26 April 2024, in <i>Association for Democratic Reforms v Election Commission of India</i>, a bench of Justices Sanjiv Khanna and Dipankar Datta refused to order the counting of all VVPAT slips. What it allowed instead is much narrower: the candidates placed second or third may apply in writing within seven days of the result to have the burnt memory of up to 5% of the machines in a constituency checked by the manufacturers&rsquo; engineers, naming the machines by polling station or serial number, at their own cost, refunded if tampering is found.',
+  'So the paper trail is a sample audit, not a remedy. Whether five polling stations out of a constituency is a large enough sample is a live public argument. Knowing that it is an argument is worth more than knowing the number.'],
+ exam:'Asked what VVPAT is for, write: it lets the voter verify that the vote went to the intended candidate, and it allows the electronic count to be audited against the slips of five randomly selected polling stations per assembly constituency. The words &ldquo;five randomly selected&rdquo; are what separate a precise answer from a vague one.',
+ src:[{t:'ADR v ECI, 26 April 2024', u:'https://www.scobserver.in/cases/vvpats-for-voter-verification-association-for-democratic-reforms-v-election-commission-of-india/'},
+      {t:'Nine VVPAT cases in the Supreme Court', u:'https://www.scobserver.in/journal/from-swamy-to-adr-nine-cases-about-vvpat-before-the-supreme-court-of-india/'}]},
+
+{k:'thin',
+ h:'&ldquo;Adult&rdquo; has meant eighteen only since 1989',
+ book:'Universal adult franchise&hellip; every adult citizen gets one vote, of equal weight. India adopted this from the very first general election.',
+ real:[
+  'The first half is true and worth being proud of. Article 326 put universal adult franchise in the Constitution from the start, and the general election of 1951&ndash;52 was held on it. That was genuinely unusual: Britain had reached full adult suffrage only in 1928, Switzerland did not give women the federal vote until 1971, and the United States was still using literacy tests to keep Black citizens off the rolls until the Voting Rights Act of 1965.',
+  'But &ldquo;adult&rdquo; meant twenty-one for the first four decades. The Constitution (Sixty-first Amendment) Act, 1988 lowered it to eighteen with effect from 28 March 1989, so the first general election in which eighteen-year-olds could vote was that of 1989. A book that says &ldquo;every adult&rdquo; and leaves it there hides a change that added about fifty million voters at one stroke.'],
+ exam:'The expected answer is every citizen aged eighteen and above, and that is correct today. If a question asks what changed, or asks you to date something, the 61st Amendment of 1988, in force from 1989, is the fact worth carrying.',
+ src:[{t:'Constitution of India, Article 326'},{t:'Constitution (Sixty-first Amendment) Act, 1988'}]}
+],
+
+'sst15':[
+{k:'thin',
+ h:'Bhakti did not begin in the 13th century, and it is not a Maharashtra story',
+ book:'The bhakti tradition grew stronger and worked as a unifying force through periods of political instability. &mdash; The chapter gives bhakti no starting point and no map.',
+ real:[
+  'The earliest bhakti is Tamil, and about six centuries older than this chapter&rsquo;s window. The <b>Alvars</b>, devotees of Vishnu, and the <b>Nayanars</b>, devotees of Shiva, composed in Tamil between roughly the 6th and 9th centuries. The Alvars include Andal, a woman; the Nayanars include Karaikkal Ammaiyar, also a woman, and Nandanar, who was from an untouchable caste.',
+  'It moved across the subcontinent over centuries rather than all at once. <b>Karnataka</b>: Basavanna and the Virashaivas in the 12th century, who rejected caste and temple worship outright. <b>Maharashtra</b>: Jnaneshwar, whose Marathi <i>Jnaneshwari</i> dates from about 1290, then Namdev, Eknath, and Tukaram in the 17th century. <b>Kashmir</b>: Lal Ded in the 14th. <b>Gujarat</b>: Narsinh Mehta in the 15th. <b>The north</b>: Ramananda, then Kabir, Ravidas and Guru Nanak (1469&ndash;1539), Mirabai in Rajasthan, Surdas, and Tulsidas, who began the <i>Ramcharitmanas</i> in 1574. <b>Bengal</b>: Chaitanya (1486&ndash;1533). <b>Assam</b>: Shankaradeva (1449&ndash;1568).',
+  'Maharashtra is therefore one region inside a movement that ran from the Kaveri to the Brahmaputra across roughly a thousand years, in almost every regional language. Treating it as the home of bhakti gets both the map and the calendar wrong. NCERT&rsquo;s own earlier Class 7 chapter, &ldquo;Devotional Paths to the Divine&rdquo;, taught the wider picture, so this is ground the syllabus used to cover and no longer does.'],
+ exam:'The chapter&rsquo;s answer, bhakti as a unifying force teaching the oneness of God and the equality of people, is what the paper wants, and it is not wrong. Add one line of range to it: from the Tamil Alvars and Nayanars of the 6th to 9th centuries through to Tukaram in the 17th, in nearly every region and every regional language. One sentence turns a vague answer into a specific one, and examiners pay for specifics.',
+ src:[{t:'NCERT, <i>Our Pasts II</i>, &ldquo;Devotional Paths to the Divine&rdquo;'},
+      {t:'Jnaneshwari, c. 1290; Ramcharitmanas, begun 1574'}]},
+
+{k:'thin',
+ h:'Bhakti opened worship to everyone; it did not abolish caste',
+ book:'Bhakti saints promoted the oneness of God and the equality of people, and broke down rigid social barriers.',
+ real:[
+  'The claim holds for who could be a saint and who could be heard. Kabir was a weaver, Ravidas a leather worker, Namdev a tailor, Tukaram a grain-seller, Janabai a domestic servant. They composed in Marathi, Hindi, Punjabi, Tamil and Bengali rather than in Sanskrit, so their verse reached people who were shut out of scriptural religion altogether. That opening was real and, for its time, radical.',
+  'It does not hold for the society outside devotion. Caste went on deciding land, labour, marriage, and access to temples and wells right through the period and long after it: the Mahad satyagraha of 1927, in which Ambedkar led people to drink from a public tank, was fought over exactly that. Some bhakti traditions were themselves firmly brahminical, and several of the communities that produced the most radical saints stayed at the bottom of the social order.',
+  'The accurate sentence is that bhakti opened a space in which birth did not decide your standing before God, and that this did not carry over into property, work or marriage. &ldquo;Broke down rigid social barriers&rdquo; invites you to write that bhakti ended caste, which is a much larger claim than the evidence supports.'],
+ exam:'Write the chapter&rsquo;s answer, and if the question gives you room add the qualifier &ldquo;within devotion&rdquo;. Then name an example: Kabir the weaver, Ravidas the leather worker. A named example is usually worth a mark on its own.',
+ src:[{t:'Mahad satyagraha, 20 March 1927'},{t:'Kabir, Ravidas, Namdev, Janabai: 15th&ndash;17th c. verse'}]}
+]
+
+};
+
 const SUBJECTS = {
   sci:{
     id:'sci', name:'Science', book:'Curiosity', hasExam:true,
@@ -3588,7 +4058,8 @@ const SUBJECTS = {
   sst:{
     id:'sst', name:'Social Science', book:'Exploring Society: India and Beyond', hasExam:false,
     chapters:SST.map(c => ({key:'sst'+c.n, n:c.n, title:c.title, sub:c.sub,
-                       hue:c.hue, exam:false, bank:true, map:c.map, notes:c.notes, art:c.art}))
+                       hue:c.hue, exam:false, bank:true, map:c.map, mind:SST_MIND[c.n],
+                       notes:c.notes, art:c.art}))
   },
   ct:{
     id:'ct', name:'AI & Thinking', book:'CT &amp; AI Student Handbook', publisher:'CBSE', hasExam:false,
@@ -3624,15 +4095,178 @@ function visibleChapters(){
 }
 
 /* ---------- learn ---------- */
+/* ============================================================
+   MIND MAPS
+   `mind` is {core, b:[{t, k:[...]}]}. One data shape, two renderings:
+   an SVG tree on a screen wide enough to hold one, and a nested list
+   below 760px, because a tree that needs sideways scrolling on a phone
+   is a tree nobody reads. Both are in the DOM; CSS shows one. That also
+   keeps the accessible content honest, the SVG carries a <title> and a
+   <desc> and the list is real markup, so whichever is displayed says
+   the same thing to a screen reader.
+
+   Text is wrapped here rather than by the browser because SVG does not
+   wrap, and <foreignObject> does not print reliably. A character count
+   is an estimate, so the counts below were set by measuring the real
+   thing: tests/mind-render.mjs loads every map in Chromium and compares
+   each text node's getBBox against its column. At 41 characters two
+   leaves ran 1.4px and 2.6px past the edge, which is why it is 38.
+   It measures in the fallback font, since Google Fonts does not load in
+   the sandbox, and the fallback is wider than Figtree, so passing there
+   means passing in the real one.
+
+   A chapter with no `mind` falls back to the old arrow line, so adding
+   maps one subject at a time never leaves a card empty.
+   ============================================================ */
+const MIND_HUES = ['var(--c6)','var(--c3)','var(--c7)','var(--c4)','var(--c5)','var(--c2)'];
+/* An entity is several characters and one glyph. Measure what renders. */
+const glyphLen = s => String(s).replace(/&[a-z]+;/gi, 'x').length;
+function wrapGlyphs(text, max){
+  const out = []; let cur = '';
+  String(text).split(/\s+/).forEach(w => {
+    if(!cur){ cur = w; return; }
+    if(glyphLen(cur) + 1 + glyphLen(w) <= max) cur += ' ' + w;
+    else { out.push(cur); cur = w; }
+  });
+  if(cur) out.push(cur);
+  return out;
+}
+const esc = s => String(s).replace(/<[^>]+>/g, '');
+
+function mindSVG(m, hue){
+  const PAD = 12, CORE_X = 4, CORE_W = 152, BR_X = 200, BR_W = 176, LF_X = 424, LF_W = 280;
+  const LINE = 15, VPAD = 7, LEAF_GAP = 9, BR_GAP = 20;
+  const W = LF_X + LF_W + PAD;
+
+  const branches = m.b.map((b, i) => {
+    const t = wrapGlyphs(b.t, 23);
+    const leaves = (b.k || []).map(k => {
+      const l = wrapGlyphs(k, 38);
+      return { l: l, h: l.length * LINE + VPAD };
+    });
+    const leafH = leaves.reduce((a, x) => a + x.h, 0) + Math.max(0, leaves.length - 1) * LEAF_GAP;
+    const labH = t.length * LINE + 14;           /* label plus its rule */
+    return { t: t, leaves: leaves, h: Math.max(leafH, labH), hue: MIND_HUES[i % MIND_HUES.length] };
+  });
+
+  const bodyH = branches.reduce((a, b) => a + b.h, 0) + Math.max(0, branches.length - 1) * BR_GAP;
+  const H = bodyH + PAD * 2, cy = H / 2;
+
+  /* Baseline of the first of n lines in a block centred on `mid`. */
+  const first = (mid, n) => mid - (n - 1) * LINE / 2 + 4;
+
+  let y = PAD, body = '';
+  branches.forEach(b => {
+    const bcy = y + b.h / 2;
+    body += `<path class="m-link" d="M${CORE_X + CORE_W} ${cy.toFixed(1)}`
+          + ` C${CORE_X + CORE_W + 46} ${cy.toFixed(1)}, ${BR_X - 46} ${bcy.toFixed(1)},`
+          + ` ${BR_X} ${bcy.toFixed(1)}" style="stroke:${b.hue}"/>`;
+
+    /* Label sits above its own rule, both centred on the branch. */
+    const labTop = bcy - (b.t.length * LINE + 14) / 2;
+    const y0 = labTop + 12;
+    body += `<text class="t-br" x="${BR_X}" y="${y0.toFixed(1)}">`
+          + b.t.map((l, i) => `<tspan x="${BR_X}" dy="${i ? LINE : 0}">${l}</tspan>`).join('')
+          + `</text>`;
+    const ruleW = Math.min(BR_W, Math.max(26, Math.max.apply(null, b.t.map(glyphLen)) * 6.5));
+    const ruleY = y0 + (b.t.length - 1) * LINE + 8;
+    body += `<line class="m-rule" x1="${BR_X}" y1="${ruleY.toFixed(1)}"`
+          + ` x2="${(BR_X + ruleW).toFixed(1)}" y2="${ruleY.toFixed(1)}" stroke="${b.hue}"/>`;
+
+    let ly = bcy - (b.leaves.reduce((a, x) => a + x.h, 0)
+                    + Math.max(0, b.leaves.length - 1) * LEAF_GAP) / 2;
+    b.leaves.forEach(lf => {
+      const lcy = ly + lf.h / 2;
+      body += `<path class="m-link" d="M${BR_X + BR_W} ${bcy.toFixed(1)}`
+            + ` C${BR_X + BR_W + 28} ${bcy.toFixed(1)}, ${LF_X - 28} ${lcy.toFixed(1)},`
+            + ` ${LF_X} ${lcy.toFixed(1)}" style="stroke:${b.hue}"/>`
+            + `<circle cx="${LF_X + 4}" cy="${lcy.toFixed(1)}" r="3" fill="${b.hue}"/>`
+            + `<text class="t-leaf" x="${LF_X + 15}" y="${first(lcy, lf.l.length).toFixed(1)}">`
+            + lf.l.map((l, i) => `<tspan x="${LF_X + 15}" dy="${i ? LINE : 0}">${l}</tspan>`).join('')
+            + `</text>`;
+      ly += lf.h + LEAF_GAP;
+    });
+    y += b.h + BR_GAP;
+  });
+
+  const core = wrapGlyphs(m.core, 19), coreH = core.length * LINE + 18;
+  const cx = CORE_X + CORE_W / 2;
+  body += `<rect class="m-core" x="${CORE_X}" y="${(cy - coreH / 2).toFixed(1)}"`
+        + ` width="${CORE_W}" height="${coreH}" rx="10"/>`
+        + `<text class="t-core" x="${cx}" y="${first(cy, core.length).toFixed(1)}" text-anchor="middle">`
+        + core.map((l, i) => `<tspan x="${cx}" dy="${i ? LINE : 0}">${l}</tspan>`).join('')
+        + `</text>`;
+
+  const desc = m.b.map(b => esc(b.t) + ': ' + (b.k || []).map(esc).join('; ')).join('. ');
+  return `<svg class="mind" viewBox="0 0 ${W} ${H.toFixed(0)}" role="img"`
+       + ` style="--hue:${hue}" aria-label="Mind map: ${esc(m.core)}">`
+       + `<title>Mind map: ${esc(m.core)}</title><desc>${desc}</desc>${body}</svg>`;
+}
+
+function mindFallback(m){
+  return `<div class="mindfall"><p class="mindcore">${m.core}</p><ul class="mindlist">`
+       + m.b.map((b, i) => `<li style="--bhue:${MIND_HUES[i % MIND_HUES.length]}"><b>${b.t}</b>`
+           + ((b.k && b.k.length) ? `<ul>${b.k.map(k => `<li>${k}</li>`).join('')}</ul>` : '')
+           + `</li>`).join('')
+       + `</ul></div>`;
+}
+
+function mindBlock(c){
+  if(!c.mind) return `<p class="cmap">${c.map}</p>`;
+  return `<div class="mindwrap">${mindSVG(c.mind, c.hue)}${mindFallback(c.mind)}</div>`;
+}
+
+/* ============================================================
+   CHECK THE BOOK
+   Two layers, kept apart. The notes above follow the chapter, because
+   that is what the paper is set from. This says where the chapter is
+   wrong, thin, or taking one side of an argument it does not tell you
+   is an argument, and then says what to write in the exam anyway.
+   Marks and truth are different problems; pretending otherwise costs
+   him one or the other.
+
+   The rule for adding an entry: a dated source, a named case, a statute
+   or a published figure. "A historian says" is not an entry.
+   ============================================================ */
+const CHECK_KIND = {
+  wrong:     {l:'The book is wrong here',    c:'var(--bad)'},
+  thin:      {l:'The book is thin here',     c:'var(--c4)'},
+  contested: {l:'The book is taking a side', c:'var(--c2)'}
+};
+function checkBlock(sid, n){
+  /* Read at call time, not at load: CHECK_DATA is declared further down,
+     and `typeof` on a const still in its temporal dead zone throws. */
+  const rows = (typeof CHECK_DATA === 'undefined') ? null : CHECK_DATA[sid + n];
+  if(!rows || !rows.length) return '';
+  return `<div class="check"><p class="section-rule"><span class="eyebrow">Check the book</span></p>`
+    + rows.map(r => {
+        const k = CHECK_KIND[r.k] || CHECK_KIND.thin;
+        return `<article class="chk" style="--kh:${k.c}">
+          <p class="kind"><i></i>${k.l}</p>
+          <h4>${r.h}</h4>
+          <p class="lab">What the chapter says</p>
+          <blockquote>${r.book}</blockquote>
+          <p class="lab">What is actually the case</p>
+          ${r.real.map(x => `<p>${x}</p>`).join('')}
+          <p class="lab">Writing this in the exam</p>
+          <p>${r.exam}</p>
+          ${r.src && r.src.length ? `<p class="src">Sources: ` + r.src.map(x =>
+              x.u ? `<a href="${x.u}" target="_blank" rel="noopener">${x.t}</a>` : x.t
+            ).join(' &middot; ') + `</p>` : ''}
+        </article>`;
+      }).join('')
+    + `</div>`;
+}
+
 function renderLearn(){
   const S = subj(), cs = visibleChapters();
   const exam = cs.filter(c => c.exam), rest = cs.filter(c => !c.exam);
 
   const LEDE = {
-    sci:'Class VIII science, from the NCERT <em>Curiosity</em> textbook: all thirteen chapters. The six in the September paper come first, boiled down to what actually gets asked; the rest of the book follows, and every chapter has questions behind it.',
+    sci:'Class VIII science, from the NCERT <em>Curiosity</em> textbook: all thirteen chapters. The six that were set in the September paper are grouped first, boiled down to what actually gets asked; the rest of the book follows, and every chapter has questions behind it.',
     math:'Class VIII mathematics, from the NCERT <em>Ganita Prakash</em> textbook: all fourteen chapters across Part 1 and Part 2.',
     eng:'Class VIII English: grammar, usage, vocabulary and the writing formats. Deliberately not the reader: an MCQ on a poem tests whether you recognise the answer, not whether you can read or write about it. This is the half of the paper that drills, and it is the same whichever reader your school sets.',
-    sst:'Class VIII Social Science, from the NCERT <em>Exploring Society: India and Beyond</em> textbook: both parts, fifteen chapters, spanning geography, history, civics, economics and heritage. The notes follow the book&rsquo;s own end-of-chapter summaries.',
+    sst:'Class VIII Social Science, from the NCERT <em>Exploring Society: India and Beyond</em> textbook: both parts, fifteen chapters, spanning geography, history, civics, economics and heritage. Every chapter opens with a mind map. The notes follow the book, because the paper is set from the book. Where the book is wrong, thin, or handing you one side of an argument without saying so, a <b>Check the book</b> panel says what is actually the case, gives the source, and then says what to write in the exam anyway.',
     ct:'Computational Thinking and Artificial Intelligence, from the CBSE Class 8 Student Handbook. Part 1 of that handbook works through the first seven chapters of <em>Ganita Prakash</em>, which are already in the Maths tab, so chapter 1 here covers the thinking skills themselves and the four AI chapters carry the new material.',
     hin:'Class VIII Hindi, from the NCERT <em>\u092e\u0932\u094d\u0939\u093e\u0930</em> textbook: not Vasant, which it replaced. The ten \u092a\u093e\u0920 are listed with their \u0935\u093f\u0927\u093e and what to note as you read; the \u0935\u094d\u092f\u093e\u0915\u0930\u0923 sections after them, \u0938\u0902\u0927\u093f, \u0938\u092e\u093e\u0938, \u0905\u0932\u0902\u0915\u093e\u0930, \u0915\u093e\u0930\u0915, are where the marks go, and those carry the drills.',
     skt:'Class VIII Sanskrit, from the NCERT <em>\u0930\u0941\u091a\u093f\u0930\u093e \u092d\u093e\u0917 \u0969</em> textbook. The twelve lessons are listed with what each title means; the grammar sections that follow, \u0936\u092c\u094d\u0926\u0930\u0942\u092a, \u0927\u093e\u0924\u0941\u0930\u0942\u092a, \u0915\u093e\u0930\u0915, \u0938\u0928\u094d\u0927\u093f, are where the marks are, and those carry the drills.'
@@ -3654,10 +4288,11 @@ function renderLearn(){
       ${doodle(c.art, c.hue)}
       <p class="chapno">${c.n ? 'Chapter ' + c.n : 'Beyond the exam'}${c.exam && c.n === 6 ? ' &middot; 6.1 only' : ''}</p>
       <h3>${c.title}<span style="font-weight:600; color:var(--ink-3)">: ${c.sub}</span></h3>
-      <p class="cmap">${c.map}</p>
+      ${mindBlock(c)}
       <ul style="margin:12px 0 0; padding-left:19px; display:flex; flex-direction:column; gap:9px">
         ${c.notes.map(n => `<li>${n}</li>`).join('')}
       </ul>
+      ${checkBlock(S.id, c.n)}
       ${c.bank ? `<p style="margin:14px 0 0"><button class="btn" data-practise="${c.n}">Practise chapter ${c.n}</button></p>` : ''}
     </div>`;
 
@@ -3666,7 +4301,7 @@ function renderLearn(){
     : '';
 
   $('#learnList').innerHTML = S.hasExam
-    ? section('In the September paper', exam) + section('Rest of the syllabus, not in this paper', rest)
+    ? section('Set in the September paper', exam) + section('The rest of the book', rest)
     : cs.map(card).join('');
 
   $$('#learnList [data-practise]').forEach(b => b.addEventListener('click', () => {
