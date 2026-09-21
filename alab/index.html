@@ -3632,6 +3632,1683 @@ const HIN_ART  = ['globe','leaf','heart','script','lamp','press','arrows','bell'
 const SKT_HUES = ['var(--c4)','var(--c6)','var(--c2)','var(--c5)','var(--c7)','var(--c3)'];
 const SKT_ART  = ['book','leaf','bolt','arrows','knot','heart','globe','press','globe','lamp','quill','particles','shield',
                   'script','bell','flow','knot','moon','chip'];
+/* SANSKRIT MIND MAPS, NCERT रुचिरा भाग ३. Thirteen पाठ and six grammar
+   sections. The पाठ maps carry स्रोत, विधा, the central भाव and the line
+   worth memorising, which is what the questions are set on; the grammar
+   maps carry the paradigm and the slip that loses the mark. */
+const SKT_MIND = {
+1:{core:'सुभाषितानि', b:[
+  {t:'व्युत्पत्ति', k:[
+    'सु + भाषित. सु = सुन्दर या मधुर, भाषित = वचन',
+    'अतः सुभाषित = सुन्दर वचन',
+    'यही व्युत्पत्ति सबसे अधिक पूछी जाती है']},
+  {t:'पाँच स्रोत', k:[
+    'सूक्तिमञ्जरी, नीतिशतकम्, मनुस्मृतिः',
+    'शिशुपालवधम्, पञ्चतन्त्रम्',
+    'स्रोत का नाम भी प्रश्न में आता है']},
+  {t:'प्रश्न के तीन रूप', k:[
+    'प्रत्येक श्लोक स्वतंत्र है और अकेले पूछा जाता है',
+    'अन्वय, अर्थ और भाव']},
+  {t:'छन्द', k:[
+    'श्लोक अनुष्टुप् में हैं',
+    'ऊँचे स्वर में लय के साथ पढ़िए',
+    'कण्ठस्थ करने का सबसे तेज़ उपाय']},
+  {t:'अन्वय', k:[
+    'अलग से लिखकर याद कीजिए',
+    'अर्थ भूलने पर भी अन्वय से अर्थ निकल आता है']}
+]},
+2:{core:'बिलस्य वाणी', b:[
+  {t:'स्रोत', k:[
+    'पञ्चतन्त्रम्, तृतीय तन्त्र काकोलूकीयम्',
+    'मूल लेखक विष्णुशर्मा']},
+  {t:'पञ्चतन्त्र का ढाँचा', k:[
+    'पाँच खण्ड, जिन्हें तन्त्र कहा गया है',
+    'गद्य-पद्य रूप में कथाएँ, पात्र मुख्यतः पशु-पक्षी',
+    'यह ढाँचा स्वयं एक प्रश्न है']},
+  {t:'शीर्षक ही कुंजी', k:[
+    '&lsquo;बिल की वाणी मैंने कभी नहीं सुनी&rsquo;',
+    'जो गुफा बोलकर बुलाए, वह संदेह के योग्य है']},
+  {t:'नीति', k:[
+    'नीतिकथा का उत्तर सदा उसकी नीति होती है',
+    'चतुर पात्र संदेह पर तुरंत विश्वास नहीं करता',
+    'वह पहले परीक्षा लेता है']},
+  {t:'व्याकरण', k:[
+    'कथा में आए लङ् लकार के धातुरूप अलग लिख लीजिए',
+    'संस्कृत की कथाएँ प्रायः इसी लकार में चलती हैं']}
+]},
+3:{core:'डिजीभारतम्', b:[
+  {t:'विधा और विषय', k:[
+    'निबन्धात्मक पाठ',
+    '&lsquo;डिजिटल इंडिया&rsquo; के मूल भाव पर']},
+  {t:'मुख्य बात', k:[
+    'वैज्ञानिक प्रगति के वे आयाम जिनमें एक क्लिक से बहुत कुछ होता है']},
+  {t:'पुस्तक का कथन', k:[
+    'इंटरनेट ने जीवन को कितना सरल बना दिया है',
+    'हम भौगोलिक दृष्टि से एक-दूसरे के अत्यन्त निकट आ गए हैं']},
+  {t:'नयी शब्दावली', k:[
+    'संगणकः, जालम्, चलभाषः, विद्युत्पत्रम्',
+    'इन्हें अर्थ सहित लिख लीजिए: यही पाठ का असली लाभ है']},
+  {t:'प्रश्न का रूप', k:[
+    'विषय आधुनिक है, अतः प्रश्न &lsquo;लाभ क्या हैं&rsquo; के रूप में',
+    'लाभों की सूची बिंदुओं में बनाइए']}
+]},
+4:{core:'सदैव पुरतो निधेहि चरणम्', b:[
+  {t:'रचनाकार और विधा', k:[
+    'श्रीधर भास्कर वर्णेकर द्वारा विरचित गीत',
+    'पुस्तक उन्हें राष्ट्रवादी कवि बताती है']},
+  {t:'शीर्षक का अर्थ', k:[
+    '&lsquo;सदा आगे की ओर चरण रखो&rsquo;']},
+  {t:'भाव', k:[
+    'चुनौतियों को स्वीकार करते हुए आगे बढ़ने का आह्वान']},
+  {t:'दो शब्द', k:[
+    'जागरण तथा कर्मठता',
+    'ये दोनों उत्तर में अवश्य आने चाहिए']},
+  {t:'गीत की लय', k:[
+    'पंक्तियाँ लौटती हैं',
+    'जहाँ-जहाँ शीर्षक-पंक्ति दोहरायी जाए, निशान लगाइए']},
+  {t:'उत्तर की विधि', k:[
+    'भाव पूछा जाए तो केवल अनुवाद न लिखिए',
+    'बताइए कि कवि पाठक से क्या करवाना चाहता है']}
+]},
+5:{core:'कण्टकेनैव कण्टकम्', b:[
+  {t:'स्रोत और विधा', k:[
+    'मध्यप्रदेश के डिण्डोरी ज़िले की लोककथा',
+    'परधानों के बीच प्रचलित, पञ्चतन्त्र की शैली में']},
+  {t:'सार', k:[
+    'संकट में चतुराई एवं प्रत्युत्पन्नमतित्व से बाहर निकला जा सकता है',
+    'यही उत्तर है']},
+  {t:'आरम्भ', k:[
+    'आसीत् कश्चित् चञ्चलो नाम व्याधः',
+    'वह पक्षियों और मृगों के ग्रहण से जीविका चलाता था']},
+  {t:'शीर्षक का अर्थ', k:[
+    '&lsquo;काँटे से ही काँटा&rsquo;',
+    'संकट का उपाय प्रायः संकट के भीतर ही होता है']},
+  {t:'तैयारी', k:[
+    'प्रश्न पात्र, घटनाक्रम और सन्देश पूछते हैं',
+    'पढ़ते-पढ़ते पात्रों की छोटी सूची बनाइए']}
+]},
+6:{core:'गृहं शून्यं सुतां विना', b:[
+  {t:'उद्देश्य', k:[
+    'कन्याओं की हत्या पर रोक',
+    'और उनकी शिक्षा सुनिश्चित करने की प्रेरणा']},
+  {t:'पुस्तक का कथन', k:[
+    'लड़के और लड़कियों के बीच भेद-भाव आज भी यत्र-तत्र दिखता है',
+    'जिसे दूर किए जाने की आवश्यकता है']},
+  {t:'शैली', k:[
+    'संवादात्मक, सरल संस्कृत में',
+    'अतः ऊँचे स्वर में पढ़ने योग्य']},
+  {t:'शीर्षक ही तर्क है', k:[
+    '&lsquo;पुत्री के बिना घर सूना है&rsquo;',
+    'भाव पूछे जाने पर यहीं से आरम्भ कीजिए']},
+  {t:'प्रश्न का रूप', k:[
+    '&lsquo;लेखक किस बात पर बल देता है&rsquo;',
+    'कारणों को बिंदुओं में लिखिए']}
+]},
+7:{core:'भारतजनताऽहम्', b:[
+  {t:'रचनाकार', k:[
+    'आधुनिक कविकुलशिरोमणि डॉ. रमाकान्त शुक्ल',
+    'उनके काव्य भारतजनताऽहम् से साभार उद्धृत']},
+  {t:'विषय', k:[
+    'भारतीय जनता के सरोकार, विविध कौशल और विविध रुचियाँ',
+    'कवि बताते हैं कि जनता की क्या-क्या विशेषताएँ हैं']},
+  {t:'बोलने वाला &lsquo;मैं&rsquo;', k:[
+    'कोई व्यक्ति नहीं, स्वयं भारत की जनता है',
+    'उत्तम पुरुष में लिखी कविता का यही सबसे बड़ा प्रश्न']},
+  {t:'तैयारी', k:[
+    'जो-जो विशेषताएँ गिनायी गयी हैं, उनकी सूची बनाइए',
+    'प्रश्न प्रायः सीधे उसी सूची से आता है']},
+  {t:'पूछिए', k:[
+    'जनता अपने विषय में क्या दावा करती है',
+    'और वह दावा किस उदाहरण से पुष्ट होता है']}
+]},
+8:{core:'संसारसागरस्य नायकाः', b:[
+  {t:'स्रोत', k:[
+    'अनुपम मिश्र की कृति &lsquo;आज भी खरे हैं तालाब&rsquo;',
+    'उसके अध्याय &lsquo;संसार सागर के नायक&rsquo; से']},
+  {t:'गजधर', k:[
+    'विलुप्त होते पारम्परिक ज्ञान, कौशल और शिल्प के धनी',
+    'यह शब्द अवश्य याद रखिए']},
+  {t:'संसार सागर', k:[
+    'पानी के लिए मानव-निर्मित तालाब और बावड़ी',
+    'लेखक ने इन्हें संसार सागर के रूप में देखा है']},
+  {t:'केंद्रीय प्रश्न', k:[
+    'पाठ उन कारीगरों का सम्मान करता है जिनका नाम कहीं नहीं लिखा गया',
+    'लेखक उन्हें &lsquo;नायक&rsquo; क्यों कहते हैं']},
+  {t:'प्रासंगिकता', k:[
+    'जल-संरक्षण आज का विषय है',
+    'अतः &lsquo;आज इसकी क्या प्रासंगिकता है&rsquo; वाला प्रश्न बनता है']}
+]},
+9:{core:'सप्तभगिन्यः', b:[
+  {t:'व्युत्पत्ति', k:[
+    'उत्तर-पूर्व के सात राज्यों को दी गयी उपाधि',
+    'यह व्युत्पत्ति ही पहला प्रश्न है']},
+  {t:'पुस्तक का कथन', k:[
+    'इन राज्यों का प्राकृतिक सौन्दर्य अत्यन्त विलक्षण है']},
+  {t:'पाठ का आधार', k:[
+    'इन्हीं राज्यों का सांस्कृतिक और सामाजिक वैशिष्ट्य']},
+  {t:'स्थान-नाम', k:[
+    'संस्कृत में सीखने योग्य',
+    'उन्हें सामान्य नामों के साथ जोड़कर लिखिए']},
+  {t:'व्याकरण', k:[
+    'इस पाठ में प्रत्यय का अभ्यास भी दिया गया है']}
+]},
+10:{core:'नीतिनवनीतम्', b:[
+  {t:'स्रोत और नाम', k:[
+    'मनुस्मृति के कतिपय श्लोकों का संकलन',
+    'नवनीत का अर्थ ताज़ा मक्खन, अर्थात् नीति का सार']},
+  {t:'पहला विषय', k:[
+    'माता-पिता और गुरुजनों को आदर और सेवा से प्रसन्न करना',
+    'ऐसे अभिवादनशील मनुष्य को मिलने वाले लाभ']},
+  {t:'और दो', k:[
+    'सुख-दुख में समान रहना',
+    'अन्तरात्मा को आनन्दित करने वाले कार्य करना']},
+  {t:'प्रश्न का रूप', k:[
+    'प्रत्येक श्लोक स्वतंत्र है और अकेले पूछा जाता है',
+    'एक-एक करके अर्थ सहित याद कीजिए']},
+  {t:'छन्द', k:[
+    'ये श्लोक भी अनुष्टुप् में हैं',
+    'लय पकड़ लीजिए, कण्ठस्थ करना सरल हो जाएगा']}
+]},
+11:{core:'सावित्री बाई फुले', b:[
+  {t:'पाठ का आरम्भ', k:[
+    'शिक्षा हमारा अधिकार है']},
+  {t:'पुस्तक का कथन', k:[
+    'कई समुदाय इससे लम्बे समय तक वंचित रहे',
+    'उन्हें यह अधिकार पाने के लिए लम्बा संघर्ष करना पड़ा',
+    'लड़कियों को और ज़्यादा अवरोध झेलना पड़ा']},
+  {t:'विषय', k:[
+    'उस संघर्ष का नेतृत्व करने वाली महिला शिरोमणि',
+    'प्रातः स्मरणीय एवं अनुकरणीय सावित्री बाई फुले का योगदान']},
+  {t:'जीवनचरित के प्रश्न', k:[
+    'दिनांक, स्थान और कार्य पूछते हैं',
+    'इन तीनों की छोटी तालिका बनाते चलिए']},
+  {t:'पूछिए', k:[
+    'उन्होंने किन बाधाओं का सामना किया',
+    'उत्तर में केवल उपलब्धि नहीं, विरोध भी लिखिए']}
+]},
+12:{core:'कः रक्षति कः रक्षितः', b:[
+  {t:'विधा और विषय', k:[
+    'संवादात्मक पाठ, सरल संस्कृत में',
+    'स्वच्छता तथा पर्यावरण सुधार']},
+  {t:'पुस्तक के शब्दों में', k:[
+    'नदियों को प्रदूषित न करें, वृक्षों को न काटें',
+    'अपितु अधिकाधिक वृक्षारोपण करें',
+    'और धरा को शस्यश्यामला बनाएँ']},
+  {t:'प्लास्टिक', k:[
+    'पाठ में इसकी चर्चा भी है',
+    'आज के सन्दर्भ में सबसे अधिक पूछा जाने वाला बिंदु']},
+  {t:'शीर्षक ही उत्तर है', k:[
+    '&lsquo;कौन रक्षा करता है, कौन रक्षित है?&rsquo;',
+    'जो पर्यावरण की रक्षा करता है, वही उसके द्वारा रक्षित होता है']},
+  {t:'तैयारी', k:[
+    'संवाद-रूप के कारण यह पुस्तक का सबसे सरल पाठ है',
+    'ऊँचे स्वर में पढ़िए']}
+]},
+13:{core:'भारतस्वर्णभूमिः', b:[
+  {t:'रचनाकार', k:[
+    'डॉ. कृष्णचन्द्र त्रिपाठी',
+    'विषय: भारत के गौरव का गुणगान']},
+  {t:'पाँच बिंदु', k:[
+    'खाद्यान्न सम्पन्नता, कलानुराग, प्राविधिक प्रवीणता',
+    'वन एवं सामरिक शक्ति',
+    'ये पाँच ही उत्तर का ढाँचा हैं']},
+  {t:'प्राचीन और आधुनिक', k:[
+    'प्राचीन परम्परा और संस्कृति',
+    'तथा आधुनिक मिसाइल क्षमता एवं परमाणु शक्ति',
+    'दोनों साथ गाए गए हैं']},
+  {t:'उत्तर की विधि', k:[
+    'कवि ने देश की सामर्थ्य-शक्ति दिखायी है',
+    'पुराने और नए, दोनों प्रकार के उदाहरण दीजिए']},
+  {t:'स्वर', k:[
+    'यह पुस्तक का अन्तिम पाठ है और स्वर उत्सव का है',
+    'दो-तीन पंक्तियाँ कण्ठस्थ कर लीजिए']}
+]},
+14:{core:'शब्दरूपाणि', b:[
+  {t:'The grid', k:[
+    'Seven विभक्ति, three वचन, plus सम्बोधन',
+    'Twenty-four forms per word',
+    'Learn them as a grid, never as a list']},
+  {t:'बालक', k:[
+    'अकारान्त पुल्लिङ्ग',
+    'बालकः, बालकौ, बालकाः &middot; बालकम्, बालकौ, बालकान्',
+    'बालकेन, बालकाभ्याम्, बालकैः &middot; बालकस्य, बालकयोः, बालकानाम्']},
+  {t:'लता', k:[
+    'आकारान्त स्त्रीलिङ्ग',
+    'लता, लते, लताः &middot; लताम्, लते, लताः',
+    'लतया, लताभ्याम्, लताभिः &middot; लतायाम्, लतयोः, लतासु']},
+  {t:'फल', k:[
+    'नपुंसकलिङ्ग. Differs from बालक only in the first two cases',
+    'फलम्, फले, फलानि for both प्रथमा and द्वितीया',
+    'Everything after is identical, so one gets you most of the other']},
+  {t:'नदी और मुनि', k:[
+    'नदी, नद्यौ, नद्यः &middot; नदीम्, नद्यौ, नदीः',
+    'नद्याम्, नद्योः, नदीषु',
+    'मुनि: मुनिः, मुनी, मुनयः']},
+  {t:'सर्वनाम', k:[
+    'अस्मद्: अहम्, आवाम्, वयम् &middot; माम्, मया, मम, मयि',
+    'युष्मद्: त्वम्, युवाम्, यूयम् &middot; त्वाम्, त्वया, तव, त्वयि',
+    'Neither has a सम्बोधन: you cannot call out to &ldquo;I&rdquo;',
+    'तद् shifts by gender: सः, सा, तत्']}
+]},
+15:{core:'धातुरूपाणि', b:[
+  {t:'How a verb works', k:[
+    'It carries person and number inside it, so the pronoun is often dropped',
+    'Three persons &times; three numbers = nine forms per लकार',
+    'The order is always प्रथम, मध्यम, उत्तम']},
+  {t:'लट्, present', k:[
+    'पठति, पठतः, पठन्ति',
+    'पठसि, पठथः, पठथ &middot; पठामि, पठावः, पठामः']},
+  {t:'लृट्, future', k:[
+    'Marked by -ष्य-',
+    'पठिष्यति, पठिष्यतः, पठिष्यन्ति &middot; पठिष्यामि']},
+  {t:'लङ्, past', k:[
+    'Marked by the अ- in front',
+    'अपठत्, अपठताम्, अपठन् &middot; अपठम्, अपठाव, अपठाम',
+    'Stories are told in this लकार']},
+  {t:'लोट् और विधिलिङ्', k:[
+    'लोट्, command: पठतु, पठ, पठानि',
+    'विधिलिङ्, should: पठेत्, पठेः, पठेयम्']},
+  {t:'The four asked most', k:[
+    'भू &rarr; भवति. गम् &rarr; गच्छति, the stem changes, watch it',
+    'कृ &rarr; करोति, कुरुतः, कुर्वन्ति',
+    'अस् is irregular: अस्ति, स्तः, सन्ति; and in लङ्, आसीत्, आस्ताम्, आसन्']}
+]},
+16:{core:'कारकम्', b:[
+  {t:'The distinction', k:[
+    'कारक is the role a noun plays; विभक्ति is the ending that shows it',
+    'They mostly line up, but not always',
+    'सम्बन्ध is a relation between two nouns, not a role in the action']},
+  {t:'प्रथमा और द्वितीया', k:[
+    'प्रथमा: कर्ता, the doer. रामः पठति',
+    'द्वितीया: कर्म, what is acted on. रामः पुस्तकं पठति']},
+  {t:'तृतीया', k:[
+    'करण, the instrument, by or with. बालकः लेखन्या लिखति',
+    'Also with सह, साकम्, सार्धम् and अलम्']},
+  {t:'चतुर्थी', k:[
+    'सम्प्रदान, the recipient, for or to. निर्धनाय धनं ददाति',
+    'Also after नमः, स्वस्ति, स्वाहा: रामाय नमः']},
+  {t:'पञ्चमी', k:[
+    'अपादान, moving away from. वृक्षात् पत्रं पतति',
+    'Also after भीत, विना, ऋते, बहिः and पूर्वम्']},
+  {t:'षष्ठी और सप्तमी', k:[
+    'षष्ठी: सम्बन्ध, of. रामस्य पुस्तकम्',
+    'सप्तमी: अधिकरण, place or time. वृक्षे खगाः सन्ति',
+    'The odd list: अभितः, परितः, उभयतः, सर्वतः, प्रति, विना take द्वितीया']}
+]},
+17:{core:'सन्धिः', b:[
+  {t:'What it is', k:[
+    'What happens where one word ends and the next begins',
+    'To split one, work backwards from the rule. Do not guess']},
+  {t:'दीर्घ', k:[
+    'Two similar vowels make the long one',
+    'विद्या + आलयः = विद्यालयः. गिरि + ईशः = गिरीशः']},
+  {t:'गुण और वृद्धि', k:[
+    'गुण: देव + इन्द्रः = देवेन्द्रः. सूर्य + उदयः = सूर्योदयः',
+    'वृद्धि: एक + एकम् = एकैकम्. जल + ओघः = जलौघः']},
+  {t:'यण् और अयादि', k:[
+    'यण्: इति + अपि = इत्यपि. सु + आगतम् = स्वागतम्',
+    'अयादि: ने + अनम् = नयनम्. पौ + अकः = पावकः']},
+  {t:'व्यञ्जनसन्धि', k:[
+    'त् + च = च्च. सत् + चित् = सच्चित्',
+    'त् + ज = ज्ज. सत् + जनः = सज्जनः',
+    'त् + श = च्छ. त् + ल = ल्ल']},
+  {t:'विसर्गसन्धि', k:[
+    'निः + बलः = निर्बलः. दुः + जनः = दुर्जनः',
+    'मनः + रथः = मनोरथः',
+    'रामः + अस्ति = रामोऽस्ति. Note the अवग्रह marking the swallowed अ']}
+]},
+18:{core:'संख्या और काल', b:[
+  {t:'१ to १०', k:[
+    'एकम्, द्वे, त्रीणि, चत्वारि, पञ्च',
+    'षट्, सप्त, अष्ट, नव, दश',
+    'The first four change by gender; from पञ्च onwards they do not']},
+  {t:'११ to २०', k:[
+    'एकादश, द्वादश, त्रयोदश, चतुर्दश, पञ्चदश',
+    'षोडश, सप्तदश, अष्टादश, नवदश, विंशतिः']},
+  {t:'The tens', k:[
+    'विंशतिः, त्रिंशत्, चत्वारिंशत्, पञ्चाशत्, षष्टिः',
+    'सप्ततिः, अशीतिः, नवतिः, शतम्',
+    '19 is often एकोनविंशतिः: one less than twenty']},
+  {t:'वासराः', k:[
+    'रविवासरः, सोमवासरः, मङ्गलवासरः, बुधवासरः',
+    'गुरुवासरः, शुक्रवासरः, शनिवासरः']},
+  {t:'मासाः', k:[
+    'चैत्रः, वैशाखः, ज्येष्ठः, आषाढः, श्रावणः, भाद्रपदः',
+    'आश्विनः, कार्तिकः, मार्गशीर्षः, पौषः, माघः, फाल्गुनः']},
+  {t:'Time', k:[
+    'अधुना कति वादनम्? what time is it now',
+    'Answer with the number plus वादनम्: सप्त वादनम्']}
+]},
+19:{core:'उपसर्ग, अव्यय, प्रत्यय', b:[
+  {t:'उपसर्ग', k:[
+    'Goes in front of a धातु and bends its meaning, sometimes to the opposite',
+    'हृ = carry. आहृ = bring. प्रहृ = strike. संहृ = gather. विहृ = wander',
+    'There are twenty-two: प्र, परा, अप, सम्, अनु, अव, निस्, वि, आ, नि&hellip;']},
+  {t:'अव्यय', k:[
+    'Never change form: no विभक्ति, no वचन, no लिङ्ग',
+    'That is the definition, and it is often the question']},
+  {t:'Place', k:[
+    'अत्र, तत्र, कुत्र, सर्वत्र, यत्र',
+    'उपरि, अधः, बहिः, अन्तः, पुरतः, पृष्ठतः']},
+  {t:'Time', k:[
+    'अद्य, श्वः, ह्यः, परश्वः',
+    'अधुना or इदानीम्, सदा, कदा, कदापि']},
+  {t:'Joining', k:[
+    'च, वा, तु, अपि, एव, हि, खलु',
+    'अलम्, शनैः, उच्चैः, नीचैः']},
+  {t:'प्रत्यय', k:[
+    'क्त्वा makes having done on a bare root: पठ् + क्त्वा = पठित्वा',
+    'ल्यप् does the same when the root already has an उपसर्ग: आगत्य',
+    'तुमुन् makes in order to: पठितुम्',
+    'क्त्वा where ल्यप् is needed is the commonest slip']}
+]}
+};
+
+/* HINDI MIND MAPS, NCERT मल्हार. The ten पाठ map onto what a question is
+   actually set on: विधा, रचनाकार, केंद्रीय भाव, and the line worth quoting.
+   The व्याकरण chapters map onto the rule and the भेद. Devanagari is wider
+   per cluster than Latin, so the leaves here are shorter; the wrap is
+   measured rather than counted, so the layout follows on its own. */
+const HIN_MIND = {
+1:{core:'स्वदेश', b:[
+  {t:'रचनाकार और विधा', k:[
+    'गयाप्रसाद शुक्ल &lsquo;सनेही&rsquo;',
+    'देशप्रेम की कविता']},
+  {t:'याद करने की पंक्ति', k:[
+    '&lsquo;वह हृदय नहीं है पत्थर है, जिसमें स्वदेश का प्यार नहीं।&rsquo;',
+    'सबसे अधिक यही पूछी जाती है']},
+  {t:'खादी का प्रतीक', k:[
+    'रेशे-रेशे में भाई का प्यार',
+    'माँ-बहनों का सत्कार, बच्चों का दुलार',
+    'केवल कपड़ा नहीं, स्वदेशी भावना']},
+  {t:'गर्व और प्रतिरोध', k:[
+    '&lsquo;अन्यायी का अपमान&rsquo; और &lsquo;माता का मान&rsquo; साथ-साथ']},
+  {t:'अंतिम भाव', k:[
+    'खादी की रीत तन पर मुसकाती है',
+    'तब &lsquo;नव जीवन की नई ज्योति&rsquo; जग जाती है',
+    'भाव स्पष्ट करने के प्रश्न प्रायः यहीं से']},
+  {t:'पढ़ने की विधि', k:[
+    'हर पंक्ति के आगे एक शब्द में भाव लिखिए',
+    'गर्व, प्रेम, आह्वान. ढाँचा स्वयं दिख जाएगा']}
+]},
+2:{core:'दो गौरैया', b:[
+  {t:'रचनाकार और विधा', k:[
+    'भीष्म साहनी की कहानी']},
+  {t:'आरंभ', k:[
+    '&lsquo;घर में हम तीन ही व्यक्ति रहते हैं&rsquo;',
+    'पर पिताजी कहते हैं यह घर सराय बना हुआ है',
+    'असली मालिक कोई और हैं']},
+  {t:'आँगन का पेड़', k:[
+    'आम के पेड़ पर तोते, कौवे, गौरैयाँ',
+    'पिताजी को लगता है हर पक्षी पता लिखवाकर आता है']},
+  {t:'हास्य', k:[
+    'बीसियों चूहे रात-भर धमाचौकड़ी मचाते हैं',
+    'एक अँगीठी के पीछे, दूसरा टंकी पर. बिल्ली भी झाँकती है']},
+  {t:'मूल भाव', k:[
+    'पिताजी की झुँझलाहट और माँ का ममत्व',
+    'अंत में मनुष्य और पक्षियों का सह-अस्तित्व']},
+  {t:'तैयारी', k:[
+    'पात्रों की सूची बनाकर हर एक के आगे एक पंक्ति',
+    'चरित्र-चित्रण के प्रश्न इसी से हल होते हैं']}
+]},
+3:{core:'एक आशीर्वाद', b:[
+  {t:'रचनाकार और विधा', k:[
+    'दुष्यंत कुमार की कविता']},
+  {t:'आरंभ', k:[
+    '&lsquo;जा, तेरे स्वप्न बड़े हों।&rsquo;']},
+  {t:'आशीर्वाद किसका', k:[
+    'धन या सुख का नहीं, बड़े सपनों का',
+    'प्रश्न यही पूछता है: कवि क्या माँग रहा है, और क्यों']},
+  {t:'साथ का गद्यांश', k:[
+    'डॉ. ए.पी.जे. अब्दुल कलाम',
+    'उस &lsquo;लंबी छलाँग&rsquo; की बात जिसका मानवता को इंतज़ार था',
+    'दोनों साथ पढ़िए: भाव एक ही है']},
+  {t:'गतिविधि', k:[
+    'ख्यातिप्राप्त व्यक्तियों की संघर्ष-यात्रा पढ़िए',
+    'सपनों के लिए क्या योजना बनाई, क्या संघर्ष किए']},
+  {t:'तैयारी', k:[
+    'छोटी कविता है, पूरी याद कर लीजिए',
+    'दो पंक्तियाँ उद्धृत करने से उत्तर तुरंत बेहतर होता है']}
+]},
+4:{core:'हरिद्वार', b:[
+  {t:'रचनाकार और विधा', k:[
+    'भारतेंदु हरिश्चंद्र, आधुनिक हिंदी के जनक',
+    'विधा: पत्र']},
+  {t:'संबोधन', k:[
+    '&lsquo;श्रीमान् कविवचनसुधा संपादक महाशय&rsquo;']},
+  {t:'चार बातें नोट कीजिए', k:[
+    'पत्र किसने लिखा, किसे लिखा, कहाँ से लिखा',
+    'संबोधन, तिथि और समापन क्या हैं',
+    'विधा स्वयं परीक्षा में आती है']},
+  {t:'प्रश्न का रूप', k:[
+    '&lsquo;लेखक ने क्या देखा और कैसा अनुभव किया&rsquo;',
+    'दृश्य और भाव को नोट्स में अलग-अलग रखिए']},
+  {t:'भाषा', k:[
+    'पुरानी है, पर सजीव',
+    'कठिन शब्द पृष्ठ के नीचे शब्दार्थ में: उतार लीजिए']},
+  {t:'खोजबीन', k:[
+    'भारतेंदु का प्रसिद्ध नाटक अंधेर नगरी']}
+]},
+5:{core:'कबीर के दोहे', b:[
+  {t:'सबसे प्रसिद्ध दोहा', k:[
+    '&lsquo;साँच बराबर तप नहीं, झूठ बराबर पाप।&rsquo;',
+    '&lsquo;जाके हिरदे साँच है, ता के हिरदे आप।।&rsquo;']},
+  {t:'तीन तरह के प्रश्न', k:[
+    'शाब्दिक अर्थ, भाव, और संदेश',
+    'पूरा दोहा याद कीजिए: आधे दोहे पर कुछ नहीं मिलता']},
+  {t:'भाषा', k:[
+    'कबीर की भाषा सधुक्कड़ी है: मिली-जुली, सीधी-सादी',
+    'कठिन शब्दों के अर्थ अलग से लिख लीजिए']},
+  {t:'पाठ का दूसरा भाग', k:[
+    'अटल बिहारी वाजपेयी की कविता &lsquo;कदम मिलाकर चलना होगा&rsquo;',
+    '&lsquo;जीवन को शत-शत आहुति में, जलना होगा, गलना होगा।&rsquo;']},
+  {t:'परिचय', k:[
+    'पुस्तक उन्हें भारत के पूर्व प्रधानमंत्री और कवि-लेखक बताती है',
+    'दोनों रचनाएँ साथ पूछी जा सकती हैं']}
+]},
+6:{core:'एक टोकरी भर मिट्टी', b:[
+  {t:'रचनाकार और विधा', k:[
+    'माधवराव सप्रे की कहानी',
+    'हिंदी की आरंभिक कहानियों में गिनी जाती है']},
+  {t:'कथावस्तु', k:[
+    'ज़मींदार के महल के पास एक ग़रीब, अनाथ वृद्धा की झोंपड़ी']},
+  {t:'मार्मिक प्रसंग', k:[
+    'कहानी का मोड़ वही एक टोकरी मिट्टी है',
+    'वह क्षण चिह्नित कीजिए जहाँ पाठक की सहानुभूति पलटती है']},
+  {t:'प्रतीक', k:[
+    'टोकरी भर मिट्टी केवल मिट्टी नहीं है',
+    'प्रतीक वाले प्रश्न में वस्तु और अर्थ, दोनों लिखिए']},
+  {t:'तैयारी', k:[
+    'कहानी छोटी है पर अंत ज़ोरदार',
+    'सारांश छह-सात वाक्यों में अपने शब्दों में लिखिए']},
+  {t:'आगे', k:[
+    'पुस्तक हितोपदेश की ओर संकेत करती है']}
+]},
+7:{core:'मत बाँधो', b:[
+  {t:'रचनाकार और विधा', k:[
+    'महादेवी वर्मा की कविता',
+    'वे छायावाद की प्रमुख कवयित्री हैं']},
+  {t:'आह्वान', k:[
+    '&lsquo;इन सपनों के पंख न काटो, इन सपनों की गति मत बाँधो!&rsquo;']},
+  {t:'केंद्रीय प्रश्न', k:[
+    'क्या बाँधा जा रहा है, और कौन कह रहा है']},
+  {t:'आवृत्ति', k:[
+    '&lsquo;मत बाँधो&rsquo; बार-बार लौटता है',
+    'चिह्नित कीजिए वह कहाँ-कहाँ आता है',
+    'प्रश्न यही पूछता है: दोहराने से क्या होता है']},
+  {t:'पहचान', k:[
+    'भाषा कोमल है पर आग्रह दृढ़',
+    'यही विरोधाभास उनकी पहचान है']},
+  {t:'आगे', k:[
+    'उनकी प्रसिद्ध रचना गिल्लू पढ़ लीजिए']}
+]},
+8:{core:'नए मेहमान', b:[
+  {t:'विधा', k:[
+    'एकांकी']},
+  {t:'परिभाषा याद रखिए', k:[
+    'एक ही दृश्य, थोड़े पात्र, एक स्थिति, शीघ्र समापन',
+    'यह अपने आप में एक प्रश्न है']},
+  {t:'स्थिति', k:[
+    'किराये का छोटा मकान, असुविधाएँ और गरमी',
+    'रात में सोने की तैयारी, तभी दो अनजान मेहमान आ जाते हैं']},
+  {t:'मंच-निर्देश', k:[
+    '&lsquo;स्थान: भारत का कोई बड़ा नगर; गरमी की ऋतु, रात के आठ बजे।&rsquo;',
+    'एकांकी में स्थान और समय संवाद जितने ही महत्वपूर्ण']},
+  {t:'कहावत', k:[
+    '&lsquo;मान न मान मैं तेरा मेहमान&rsquo;',
+    'अर्थ और प्रसंग, दोनों पूछे जाते हैं']},
+  {t:'आतिथ्य', k:[
+    'अंत में आतिथ्य पर एक गद्यांश',
+    'निराला जी में वही पुरातन संस्कार जो ग्रामीण किसान में मिलता है',
+    '&lsquo;अतिथिदेवो भव&rsquo; की परंपरा']}
+]},
+9:{core:'आदमी का अनुपात', b:[
+  {t:'रचनाकार और विधा', k:[
+    'गिरिजा कुमार माथुर की कविता']},
+  {t:'आरंभ', k:[
+    '&lsquo;दो व्यक्ति कमरे में, कमरे से छोटे&hellip;&rsquo;',
+    'वहीं से प्रश्न खड़ा होता है']},
+  {t:'शीर्षक ही प्रश्न है', k:[
+    'आदमी का अनुपात किससे नापा जाए',
+    'कविता जो उत्तर देती है, वही केंद्रीय भाव है']},
+  {t:'तुलनाएँ', k:[
+    'कवि जो तुलनाएँ करते हैं, उन्हें चिह्नित कीजिए',
+    'तुलना प्रायः उपमा या रूपक होती है',
+    'अलंकार का नाम लिख देने पर अलग अंक मिलता है']},
+  {t:'तर्क', k:[
+    'बड़ेपन की साधारण परिभाषाओं पर प्रश्न',
+    'आकार, पद, धन. उत्तर में यही तर्क खोलिए']},
+  {t:'आगे', k:[
+    'अंतरिक्ष, कल्पना चावला, सुनीता विलियम्स, मंगलयान',
+    'मनुष्य के छोटे और बड़े होने का वही प्रश्न']}
+]},
+10:{core:'तरुण के स्वप्न', b:[
+  {t:'रचनाकार और विधा', k:[
+    'नेताजी सुभाषचंद्र बोस',
+    'विधा: उद्बोधन']},
+  {t:'स्रोत', k:[
+    'मांडले जेल से लिखे पत्रों से लिया गया',
+    'दक्षिण कलकत्ता सेवक-समिति के श्री अनिलचंद्र विश्वास को']},
+  {t:'स्वप्न', k:[
+    'स्वाधीन, संपन्न समाज और राष्ट्र',
+    'जिसमें व्यक्ति सब दृष्टियों से खुल सके']},
+  {t:'उद्बोधन क्या है', k:[
+    'जगाने के लिए लिखा गया संबोधन, और वह भी युवाओं के लिए',
+    'पूछा यही जाता है: लेखक युवाओं से क्या अपेक्षा रखता है']},
+  {t:'उत्तर की विधि', k:[
+    'अपेक्षाओं को बिंदुओं में लिखिए, गद्य में नहीं',
+    'सूची याद रखना आसान है और उत्तर स्पष्ट बनता है']},
+  {t:'पत्र-रूप', k:[
+    'जेल से लिखा गया पत्र किस परिस्थिति में लिखा गया',
+    'यह भी प्रश्न बनता है']}
+]},
+11:{core:'संधि', b:[
+  {t:'What it is', k:[
+    'The change where two sounds meet; संधि-विच्छेद is undoing it',
+    'Both are asked, and splitting is harder: practise that more']},
+  {t:'दीर्घ', k:[
+    'Same vowels give the long one',
+    'विद्या + आलय = विद्यालय, कवि + ईश = कवीश']},
+  {t:'गुण', k:[
+    'अ/आ + इ/ई = ए, + उ/ऊ = ओ, + ऋ = अर्',
+    'देव + इन्द्र = देवेन्द्र, महा + उत्सव = महोत्सव']},
+  {t:'वृद्धि', k:[
+    'अ/आ + ए/ऐ = ऐ, + ओ/औ = औ',
+    'एक + एक = एकैक, महा + औषध = महौषध']},
+  {t:'यण् और अयादि', k:[
+    'यण्: इ, उ, ऋ before an unlike vowel become य्, व्, र्',
+    'अति + अधिक = अत्यधिक, सु + आगत = स्वागत',
+    'अयादि: ए, ऐ, ओ, औ before a vowel become अय्, आय्, अव्, आव्']},
+  {t:'व्यंजन और विसर्ग', k:[
+    'सत् + जन = सज्जन, उत् + लास = उल्लास',
+    'निः + बल = निर्बल, मनः + रथ = मनोरथ']}
+]},
+12:{core:'समास', b:[
+  {t:'The move', k:[
+    'समास joins two words and drops the connector',
+    'समास-विग्रह puts it back',
+    'To name the भेद, ask which word carries the weight']},
+  {t:'तत्पुरुष', k:[
+    'The second word matters; a विभक्ति is dropped',
+    'राजा का पुत्र = राजपुत्र']},
+  {t:'कर्मधारय और द्विगु', k:[
+    'कर्मधारय: one word describes the other, नीलकमल',
+    'द्विगु: the first word is a number, त्रिलोक, नवरत्न']},
+  {t:'द्वंद्व', k:[
+    'Both matter equally and &lsquo;और&rsquo; is dropped',
+    'माता और पिता = माता-पिता']},
+  {t:'बहुव्रीहि', k:[
+    'Neither word matters; together they point at a third thing',
+    'नीला है कंठ जिसका = नीलकंठ, अर्थात् शिव',
+    'If the answer is somebody not named in the compound, it is this']},
+  {t:'अव्ययीभाव', k:[
+    'The first word is an अव्यय and the whole becomes one',
+    'प्रति दिन = प्रतिदिन, यथा शक्ति = यथाशक्ति']}
+]},
+13:{core:'अलंकार', b:[
+  {t:'Decide this first', k:[
+    'Beauty in the sound: शब्दालंकार',
+    'Beauty in the meaning: अर्थालंकार',
+    'Deciding that halves the work']},
+  {t:'शब्दालंकार', k:[
+    'अनुप्रास: the same letter repeating',
+    'यमक: the same word twice with different meanings',
+    'श्लेष: one word carrying two meanings at once']},
+  {t:'उपमा', k:[
+    'An open comparison with सा, सी, जैसा, सम',
+    '&lsquo;मुख चंद्रमा के समान&rsquo;. The comparing word is always there']},
+  {t:'रूपक', k:[
+    'No comparing word: the two are called one and the same',
+    '&lsquo;चरण-कमल&rsquo;',
+    'उपमा says like; रूपक says is. The most-asked distinction here']},
+  {t:'उत्प्रेक्षा', k:[
+    'A supposition, marked by मानो, जनु, ज्यों',
+    '&lsquo;मानो सोना बरस रहा हो&rsquo;']},
+  {t:'दो और', k:[
+    'अतिशयोक्ति: exaggeration beyond the possible',
+    'मानवीकरण: nature given human behaviour, &lsquo;लहरें नाच रही हैं&rsquo;']}
+]},
+14:{core:'कारक', b:[
+  {t:'What it is', k:[
+    'The noun&rsquo;s relation to the verb',
+    'The परसर्ग (ने, को, से&hellip;) is the sign of it',
+    'Learn the signs as a chant: half the questions go on the sign alone']},
+  {t:'Trap one: से', k:[
+    'करण is the means: चाकू से काटा',
+    'अपादान is separation: पेड़ से पत्ता गिरा',
+    'Ask whether something is used or left behind']},
+  {t:'Trap two: को', k:[
+    'कर्म is what the action falls on: राम ने श्याम को देखा',
+    'सम्प्रदान is who benefits: राम ने श्याम को पुस्तक दी']},
+  {t:'सम्बन्ध', k:[
+    'का, की, के. Not really a relation to the verb at all',
+    'It joins two nouns, so some books count it apart']},
+  {t:'सम्बोधन', k:[
+    'No परसर्ग of its own',
+    'Marked by हे, अरे, ओ and an exclamation']}
+]},
+15:{core:'काल और वाच्य', b:[
+  {t:'Why together', k:[
+    'काल is the time of the action',
+    'वाच्य is whose side the sentence is told from',
+    'Both are read off the verb']},
+  {t:'वर्तमान', k:[
+    'सामान्य: वह पढ़ता है. अपूर्ण: वह पढ़ रहा है',
+    'पूर्ण: वह पढ़ चुका है. सन्दिग्ध: वह पढ़ता होगा']},
+  {t:'भूत', k:[
+    'सामान्य: उसने पढ़ा. आसन्न: उसने पढ़ा है. पूर्ण: उसने पढ़ा था',
+    'अपूर्ण: वह पढ़ रहा था. सन्दिग्ध: उसने पढ़ा होगा',
+    'हेतुहेतुमद्: यदि वह पढ़ता तो पास होता']},
+  {t:'भविष्य', k:[
+    'सामान्य: वह पढ़ेगा. सम्भाव्य: सम्भव है वह पढ़े']},
+  {t:'तीन वाच्य', k:[
+    'कर्तृवाच्य: राम पत्र लिखता है',
+    'कर्मवाच्य: राम के द्वारा पत्र लिखा जाता है',
+    'भाववाच्य: मुझसे चला नहीं जाता. The verb is always singular']},
+  {t:'The quick test', k:[
+    'भाववाच्य is only ever built from अकर्मक verbs',
+    'If the verb takes an object, it cannot be भाववाच्य']}
+]},
+16:{core:'उपसर्ग और प्रत्यय', b:[
+  {t:'The difference', k:[
+    'उपसर्ग goes in front, प्रत्यय behind',
+    'Both change the meaning of the root word',
+    'Telling them apart is a matter of where they sit']},
+  {t:'संस्कृत उपसर्ग', k:[
+    'प्र (प्रबल), परा (पराजय), अप (अपमान), सम् (संगम)',
+    'अनु (अनुशासन), वि (विजय), नि (निवास), अधि (अधिकार)',
+    'अति, सु, उत्, अभि, प्रति, परि, उप']},
+  {t:'हिंदी के अपने', k:[
+    'अन (अनपढ़), भर (भरपेट), कु (कुपुत्र)',
+    'दु (दुबला), बिन (बिनब्याहा), औ (औगुन)']},
+  {t:'उर्दू-फ़ारसी से', k:[
+    'बे (बेईमान), ला (लापरवाह), खुश (खुशबू)',
+    'गैर (गैरहाज़िर), हर (हररोज़), ना (नालायक)']},
+  {t:'दो तरह के प्रत्यय', k:[
+    'कृत् attach to a verb root: लिख + आवट = लिखावट',
+    'तद्धित attach to a noun or adjective: मानव + ता = मानवता']},
+  {t:'In the exam', k:[
+    'The question is usually &lsquo;अलग कीजिए&rsquo;',
+    'Write both halves: the affix alone loses half the mark']}
+]},
+17:{core:'मुहावरे और लोकोक्तियाँ', b:[
+  {t:'The difference', k:[
+    'A मुहावरा is a phrase, fitted into a sentence, changing form',
+    'A लोकोक्ति is a complete saying, quoted whole',
+    'This is asked directly']},
+  {t:'मुहावरे', k:[
+    'आँखों का तारा, नाक में दम करना',
+    'दाँतों तले उँगली दबाना, लोहे के चने चबाना',
+    'अपना उल्लू सीधा करना, टेढ़ी खीर, पानी-पानी होना']},
+  {t:'और', k:[
+    'घी के दिये जलाना, आँख का काँटा',
+    'श्रीगणेश करना, हाथ मलना']},
+  {t:'लोकोक्तियाँ', k:[
+    'अब पछताए होत क्या जब चिड़िया चुग गई खेत',
+    'नाच न जाने आँगन टेढ़ा, अंधों में काना राजा',
+    'दूर के ढोल सुहावने']},
+  {t:'Where marks go', k:[
+    'On वाक्य-प्रयोग, not on meaning',
+    'Use the मुहावरा, do not explain it',
+    '&lsquo;उसे लोहे के चने चबाने पड़े&rsquo;, not a definition in a sentence']}
+]},
+18:{core:'शब्द-भण्डार', b:[
+  {t:'What this is', k:[
+    'Pure vocabulary and pure marks',
+    'Nothing to understand, only to collect',
+    'Keep a notebook page for each of the four']},
+  {t:'पर्यायवाची', k:[
+    'सूर्य: रवि, भानु, दिनकर, दिवाकर, आदित्य',
+    'जल: नीर, पानी, वारि, अंबु, तोय',
+    'आँख: नेत्र, चक्षु, लोचन, दृग. फूल: पुष्प, सुमन, कुसुम']},
+  {t:'विलोम', k:[
+    'आदि&ndash;अंत, ज्ञान&ndash;अज्ञान, सरल&ndash;कठिन',
+    'उत्थान&ndash;पतन, आय&ndash;व्यय, अनुराग&ndash;विराग']},
+  {t:'अनेकार्थी', k:[
+    'One word, several meanings',
+    'कनक (सोना, धतूरा), हरि (विष्णु, सिंह, इन्द्र, सर्प)',
+    'अंबर (आकाश, वस्त्र), कर (हाथ, टैक्स, किरण)']},
+  {t:'एक शब्द', k:[
+    'जो कभी न मरे: अमर. जिसका कोई शत्रु न हो: अजातशत्रु',
+    'जो सब कुछ जानता हो: सर्वज्ञ. जो पढ़ा-लिखा न हो: निरक्षर',
+    'रात में घूमने वाला: निशाचर. जो बहुत बोलता हो: वाचाल']}
+]}
+};
+
+/* ENGLISH MIND MAPS. Grammar and the writing formats, not the reader.
+   Each map leads on the rule and then on the error the paper actually
+   sets, because that is what the marks are for. */
+const ENG_MIND = {
+1:{core:'Tenses', b:[
+  {t:'The grid', k:[
+    'Three times, four aspects, twelve tenses',
+    'Lay it out once and the topic stops being a list to memorise']},
+  {t:'Simple', k:[
+    'A fact or a habit',
+    'She writes every morning. She wrote yesterday. She will write tomorrow']},
+  {t:'Continuous', k:[
+    'Action in progress: be + -ing',
+    'She is writing. She was writing. She will be writing']},
+  {t:'Perfect', k:[
+    'Completion before a point in time: have + past participle',
+    'She has written. She had written. She will have written']},
+  {t:'Perfect continuous', k:[
+    'How long it has been going on: have been + -ing',
+    'She has been writing for an hour']},
+  {t:'The two errors', k:[
+    'Present perfect with a finished time: I have seen him yesterday is wrong',
+    'Yesterday is over, so it is I saw him yesterday',
+    'And mixing tenses in one sentence: came in and sits down']}
+]},
+2:{core:'Active and passive', b:[
+  {t:'The difference', k:[
+    'Active puts the doer first: Rama wrote the letter',
+    'Passive puts the thing done to first: The letter was written by Rama']},
+  {t:'The conversion', k:[
+    'Move the object to the front',
+    'Put the verb into be + past participle, in the same tense',
+    'Move the subject to the end after by']},
+  {t:'Keep the tense', k:[
+    'writes &rarr; is written. wrote &rarr; was written',
+    'has written &rarr; has been written. will write &rarr; will be written']},
+  {t:'Pronouns change', k:[
+    'They move from subject to object position',
+    'I &rarr; me, he &rarr; him, she &rarr; her, we &rarr; us, they &rarr; them']},
+  {t:'The trick question', k:[
+    'Only transitive verbs, ones that take an object, have a passive',
+    'He slept has no object, so it has no passive form']},
+  {t:'Dropping the doer', k:[
+    'The by phrase goes when the doer is unknown or unimportant',
+    'The window was broken. That is a reason to use the passive, not a mistake']}
+]},
+3:{core:'Reported speech', b:[
+  {t:'The two forms', k:[
+    'Direct gives the exact words in quotation marks: He said, I am tired',
+    'Indirect reports them: He said that he was tired']},
+  {t:'Backshift', k:[
+    'If the reporting verb is past, the reported verb steps back one',
+    'present &rarr; past, past &rarr; past perfect',
+    'will &rarr; would, can &rarr; could, may &rarr; might']},
+  {t:'Pronouns', k:[
+    'Change to match the new speaker',
+    'I have finished my work, she said &rarr; She said that she had finished hers']},
+  {t:'Time and place', k:[
+    'now &rarr; then, today &rarr; that day, tomorrow &rarr; the next day',
+    'yesterday &rarr; the previous day, here &rarr; there, this &rarr; that']},
+  {t:'Questions', k:[
+    'They lose the question form: no do, no question mark, normal word order',
+    'He asked, Where do you live? &rarr; He asked where I lived',
+    'For yes/no questions use if or whether']},
+  {t:'Commands', k:[
+    'They take to: Sit down, he said &rarr; He told me to sit down',
+    'Requests use requested, orders use ordered or told']},
+  {t:'The exception', k:[
+    'A universal truth does not shift',
+    'The teacher said that the earth revolves round the sun, not revolved']}
+]},
+4:{core:'The small words', b:[
+  {t:'A or an', k:[
+    'By sound, not by letter',
+    'An hour, because the h is silent',
+    'A university, because it begins with a yoo sound']},
+  {t:'The', k:[
+    'For something already known or unique: the sun, the Ganga',
+    'No article before an uncountable or plural noun used in general',
+    'Honesty is the best policy, not The honesty']},
+  {t:'Countable or not', k:[
+    'Many and few go with countable nouns',
+    'Much and little with uncountable: many books, much water']},
+  {t:'A few or few', k:[
+    'A few means some; few means hardly any',
+    'A few friends came is cheerful; Few friends came is not',
+    'Same for a little and little']},
+  {t:'Time prepositions', k:[
+    'at for a point: at 5 o&rsquo;clock',
+    'on for a day or date: on Monday',
+    'in for a longer period: in June, in 2026']},
+  {t:'Since or for', k:[
+    'Since takes a point in time, for takes a length',
+    'since Monday, for three days. This pair is in nearly every paper']},
+  {t:'Fixed pairs', k:[
+    'No rule generates them, so learn them whole',
+    'good at, afraid of, interested in, different from, married to',
+    'angry with a person, angry at a thing, depend on, insist on']}
+]},
+5:{core:'Subject-verb agreement', b:[
+  {t:'The core rule', k:[
+    'The verb agrees with the subject, not the nearest noun',
+    'The box of chocolates is on the table: the subject is box']},
+  {t:'Joined by and', k:[
+    'Two subjects take a plural verb: Ram and Shyam are here',
+    'Unless they name one thing: Bread and butter is my breakfast']},
+  {t:'Either and neither', k:[
+    'The verb agrees with the nearer subject',
+    'Neither the students nor the teacher was present',
+    'Reverse the order and the verb changes']},
+  {t:'Always singular', k:[
+    'Each, every, everyone, somebody, nobody, either, neither',
+    'However many people they cover: Everyone has arrived']},
+  {t:'Collective nouns', k:[
+    'Singular when the group acts as one: The team is playing well',
+    'Plural when the members act separately: The team are arguing']},
+  {t:'Looks can deceive', k:[
+    'Singular though plural-looking: news, mathematics, physics, politics',
+    'Always plural: scissors, trousers, spectacles']},
+  {t:'The distractor phrase', k:[
+    'along with, as well as, together with, in addition to',
+    'None of them changes the subject',
+    'The captain, along with his players, was present']}
+]},
+6:{core:'Punctuation and editing', b:[
+  {t:'Capitals', k:[
+    'First word of a sentence, the pronoun I, proper nouns',
+    'Days, months, titles, and the first word inside a quotation']},
+  {t:'The apostrophe', k:[
+    'Two jobs, and neither is making a plural',
+    'Possession: the boy&rsquo;s book, the boys&rsquo; books',
+    'Contraction: can&rsquo;t, it&rsquo;s meaning it is']},
+  {t:'Its or it&rsquo;s', k:[
+    'Its is possessive; it&rsquo;s means it is',
+    'The single most common error in the paper, and a mark every time']},
+  {t:'The comma', k:[
+    'Separates items in a list, marks off a phrase',
+    'And comes before the quotation: He said, Come in',
+    'The full stop or comma goes inside the closing quotation mark']},
+  {t:'Editing tasks', k:[
+    'Exactly one error per line, usually a small word',
+    'A wrong article, a missing preposition, a verb that does not agree',
+    'Read for those before hunting for something clever']},
+  {t:'Omission tasks', k:[
+    'A word has been left out',
+    'Copy the format asked for: word before, missing word, word after',
+    'Marks go for the format as much as for the word']}
+]},
+7:{core:'Vocabulary', b:[
+  {t:'How to hold it', k:[
+    'Nothing to work out, everything to have collected',
+    'Keep a running page for each kind and add from whatever you read']},
+  {t:'Confused pairs', k:[
+    'The most reliable marks in the paper',
+    'accept/except, affect/effect, advice/advise, principal/principle',
+    'stationary/stationery, lose/loose, weather/whether, their/there/they&rsquo;re']},
+  {t:'Phrasal verbs', k:[
+    'They mean nothing like their parts, so learn them whole',
+    'call off, put off, give up, look after',
+    'break down, turn up, run out of']},
+  {t:'Idioms', k:[
+    'a piece of cake, once in a blue moon',
+    'let the cat out of the bag, hit the nail on the head, in hot water']},
+  {t:'One-word substitutes', k:[
+    'one who cannot read or write: illiterate',
+    'one who eats only plants: herbivore',
+    'a speech made without preparation: impromptu',
+    'something that cannot be avoided: inevitable']},
+  {t:'How to learn one', k:[
+    'Write the word, its meaning, and a sentence of your own',
+    'The sentence is what makes it stick; the meaning alone rarely does']}
+]},
+8:{core:'Writing', b:[
+  {t:'Format first', k:[
+    'Format carries marks of its own',
+    'A brilliant letter in the wrong format loses them',
+    'A plain one in the right format keeps them']},
+  {t:'Notice', k:[
+    'Institution, the word NOTICE, date, heading',
+    'Body: what, when, where, who. Then name and designation',
+    'Put it in a box, about 50 words: an announcement, not an essay']},
+  {t:'Formal letter', k:[
+    'Sender&rsquo;s address, date, receiver&rsquo;s designation and address, subject line',
+    'Salutation Sir or Madam, then three short paragraphs',
+    'Why you are writing, the detail, what you want. Yours faithfully']},
+  {t:'Informal letter', k:[
+    'Your address, date, Dear Ravi, body, Yours affectionately',
+    'No subject line. The tone may relax; the format does not']},
+  {t:'Paragraph', k:[
+    'One topic sentence, three or four developing it, one closing sentence',
+    'Do not start a new idea in the last line']},
+  {t:'Story', k:[
+    'Use the given outline in order, keep one tense throughout',
+    'Give it an ending rather than stopping, and add a title',
+    'Marks go more often for wandering off the outline than for plain language']},
+  {t:'Word limits', k:[
+    'They are real: well over or well under costs marks',
+    'Learn what 50, 100 and 150 words look like in your own handwriting']}
+]}
+};
+
+/* CT & AI MIND MAPS, from the CBSE Class 8 Student Handbook. */
+const CT_MIND = {
+1:{core:'Computational thinking', b:[
+  {t:'What it is', k:[
+    'A way of solving problems, not a way of using computers',
+    'You can do all of it on paper',
+    'Six skills, worth knowing by name because that is how they are asked']},
+  {t:'Decomposition', k:[
+    'Break a big problem into smaller ones you can actually attack']},
+  {t:'Pattern recognition', k:[
+    'Notice what repeats, so you solve it once instead of many times']},
+  {t:'Abstraction', k:[
+    'Strip away the detail that does not matter for this problem',
+    'A metro map is abstraction: the lines are not the real shape of the track',
+    'And that is exactly why the map is useful']},
+  {t:'The other three', k:[
+    'Algorithm design: steps in an order that works for every case',
+    'Data analysis: read what the numbers actually say',
+    'Troubleshooting: find where it went wrong rather than starting again']},
+  {t:'The distinction', k:[
+    'Automation follows fixed rules; AI learns from data and adapts',
+    'A car wash that sprays for thirty seconds regardless is automation',
+    'One that looks at the car and decides is AI']}
+]},
+2:{core:'AI project lifecycle', b:[
+  {t:'It is a loop', k:[
+    'Six stages, and they repeat: a lifecycle, not a line']},
+  {t:'1 Define the problem', k:[
+    'The first and most important step',
+    'Ask the question most people skip: does this even need AI?',
+    'If fixed rules would do, use fixed rules. That is often the better answer']},
+  {t:'2 Collect and prepare', k:[
+    'Sensors, surveys, websites, historical records',
+    'Raw data arrives with missing values, duplicates and irrelevant entries',
+    'Garbage In, Garbage Out is the handbook&rsquo;s phrase for skipping this']},
+  {t:'3 and 4', k:[
+    'Build and train: the system studies the data and learns its patterns',
+    'Evaluate: test on data it has not seen',
+    'If it does badly, go back, usually to the data and not the model']},
+  {t:'5 and 6', k:[
+    'Deploy: put it to real use',
+    'Monitor and maintain: the world changes',
+    'A model trained on last year&rsquo;s data slowly stops matching this year&rsquo;s']},
+  {t:'The worked example', k:[
+    'Predicting whether a student will score above 75&percnt;',
+    'Inputs: attendance, study hours, previous marks, class participation',
+    'The final result is what is predicted']}
+]},
+3:{core:'Where AI is at work', b:[
+  {t:'The four things it does', k:[
+    'Analyses data, recognises patterns',
+    'Learns from experience, makes predictions or decisions',
+    'Questions are set on each, so list them separately']},
+  {t:'Healthcare', k:[
+    'Reading medical scans, predicting risk from history and lifestyle',
+    'Assistants that answer questions and remind patients about medicines',
+    'Remote monitoring through wearable devices']},
+  {t:'Environment', k:[
+    'Monitoring pollution, spotting plastic waste in satellite images',
+    'Tracking wildlife populations, managing waste, checking soil health']},
+  {t:'Getting around', k:[
+    'Self-driving cars, navigation apps finding the quickest route',
+    'Voice-controlled appliances, thermostats that learn what you like']},
+  {t:'Farming and school', k:[
+    'Predicting crop yields and soil needs',
+    'Personalised learning, smart tutoring, accessible virtual classrooms']},
+  {t:'No-code tools', k:[
+    'Build and train a model without writing any code',
+    'Teachable Machine is the one the handbook uses',
+    'So a real AI project is possible this year, before learning to program']}
+]},
+4:{core:'Data and fairness', b:[
+  {t:'The one sentence', k:[
+    'AI finds patterns in the examples it was shown',
+    'Whatever is over-represented it gets good at',
+    'Whatever is under-represented it gets worse at']},
+  {t:'The handbook&rsquo;s example', k:[
+    'Many pictures of cricket bats, few of badminton rackets',
+    'The model guesses cricket bat most of the time',
+    'Not because bats are commoner in the world, but in its world']},
+  {t:'What bias does', k:[
+    'Rejects deserving candidates, spreads stereotypes',
+    'Ignores minority groups, makes incorrect predictions']},
+  {t:'Face recognition', k:[
+    'Joy Buolamwini tested systems from major technology companies',
+    'They worked well for light-skinned men, badly for darker-skinned women',
+    'One did not detect her face until she put on a white mask',
+    'The cause was the training data, not the code']},
+  {t:'Translation', k:[
+    'वह डॉक्टर है comes back as He is a doctor',
+    'Though the Hindi does not say which gender',
+    'The training data simply held more male doctors']},
+  {t:'Three fixes', k:[
+    'Bias check: test whether it treats different groups differently',
+    'Human supervision: review important decisions instead of trusting them',
+    'Transparency: be able to explain how the decision was made',
+    'None of them is automatic']}
+]},
+5:{core:'Ethics', b:[
+  {t:'The second question', k:[
+    'People first ask what a technology can do',
+    'Ethics asks what it should do',
+    'Fair, respecting privacy, helping society, and accountable']},
+  {t:'Privacy', k:[
+    'Not hiding from the world: having control over your own information',
+    'Apps collect names, locations, photographs, health data, contacts',
+    'Misused: identity theft, financial fraud, damage to reputation']},
+  {t:'Four questions first', k:[
+    'Why is this information needed? Who will see it?',
+    'How long is it stored? Can I delete it later?',
+    'Never share an OTP, password, bank details or PIN. With anyone. Ever']},
+  {t:'Misinformation', k:[
+    'Incorrect information passed on, and AI has made it easy to produce',
+    'Fake images, fake articles, imitated voices, misleading video',
+    'It reaches opinion, elections, reputations, trust and social harmony']},
+  {t:'Before forwarding', k:[
+    'Check the source, verify against trusted sites',
+    'Read past the headline, and think critically',
+    'A fake message spreads far faster than the correction does']},
+  {t:'Accountability', k:[
+    'When an AI system gets something wrong, who answers for it?',
+    'The people who designed it, trained it and chose to deploy it',
+    'Responsibility does not transfer to a machine']}
+]}
+};
+
+/* MATHS MIND MAPS, Ganita Prakash Parts 1 and 2, chapters 1 to 14. A maths
+   map is worth less than a history one, because a method is a sequence and
+   not a hierarchy, so these lead on the rule and then the places it is
+   usually got wrong. That is where the marks go. */
+const MATH_MIND = {
+1:{core:'Squares and cubes', b:[
+  {t:'Perfect squares', k:[
+    'A whole number times itself: 1, 4, 9, 16, 25, 36',
+    'They end only in 0, 1, 4, 5, 6 or 9',
+    'So anything ending 2, 3, 7 or 8 is never one: check before working']},
+  {t:'Perfect cubes', k:[
+    'A number times itself three times: 1, 8, 27, 64, 125',
+    'A cube of a negative number stays negative: (&minus;3)&sup3; = &minus;27',
+    'Which is not true of squares']},
+  {t:'The odd-number gap', k:[
+    'Consecutive squares differ by 1, 3, 5, 7&hellip; in order',
+    'So the sum of the first n odd numbers is n&sup2;']},
+  {t:'Roots by factorising', k:[
+    'Split into primes and pair them: 324 = 2&times;2&times;3&times;3&times;3&times;3',
+    'So &radic;324 = 2&times;3&times;3 = 18',
+    'For a cube root, group the primes in threes instead']},
+  {t:'Worth memorising', k:[
+    'Squares to 20 and cubes to 10',
+    'Almost every question here starts by recognising one']}
+]},
+2:{core:'Exponents', b:[
+  {t:'The notation', k:[
+    'a&#8319; is a multiplied by itself n times',
+    'a is the base, n is the exponent']},
+  {t:'The three laws', k:[
+    'Same base, multiplying: add the exponents',
+    'Dividing: subtract them',
+    'A power of a power: multiply them']},
+  {t:'Power zero', k:[
+    'Anything non-zero to the power 0 is 1',
+    'Not a special case: it follows from a&#8319; &divide; a&#8319; = a&#8304;']},
+  {t:'Negative exponents', k:[
+    'a&#8315;&#8319; = 1/a&#8319;, so 2&#8315;&sup3; = 1/8 and not &minus;8',
+    'The single most common slip in the chapter']},
+  {t:'Standard form', k:[
+    'k &times; 10&#8319; with 1 &le; k &lt; 10',
+    'Large numbers take a positive power, small ones a negative power',
+    'Comparing two: the power of ten decides first, k only if they match']}
+]},
+3:{core:'Number systems', b:[
+  {t:'Additive systems', k:[
+    'A Roman numeral is read by adding, sometimes subtracting',
+    'XXVII is 10+10+5+1+1']},
+  {t:'Why they failed', k:[
+    'Unwieldy fast, with no easy way to write very large numbers',
+    'And no way to calculate with them on paper']},
+  {t:'Place value', k:[
+    'The same digit means a different amount depending on where it stands',
+    'The 3 in 328 means three hundreds']},
+  {t:'Zero', k:[
+    'Place value needs a symbol for nothing in this place',
+    'The Indian invention of zero as a number, not just a gap',
+    'That is what made the modern system work']},
+  {t:'How it travelled', k:[
+    'From India through the Arab world into Europe',
+    'Which is why the digits are called Hindu-Arabic']},
+  {t:'The point of it', k:[
+    'Comparison: what each system could and could not do',
+    'And why the one we use won']}
+]},
+4:{core:'Quadrilaterals', b:[
+  {t:'Start here', k:[
+    'The angles of any quadrilateral add to 360&deg;',
+    'Every angle-chasing question begins with that']},
+  {t:'Parallelogram', k:[
+    'Both pairs of opposite sides parallel',
+    'Opposite sides equal, opposite angles equal',
+    'Adjacent angles add to 180&deg;; diagonals bisect each other']},
+  {t:'Rectangle and rhombus', k:[
+    'Rectangle: a parallelogram with a right angle; diagonals equal',
+    'Rhombus: a parallelogram with all sides equal; diagonals meet at right angles']},
+  {t:'Square', k:[
+    'Both at once: all sides equal, all angles right',
+    'So diagonals are equal, bisect each other, and are perpendicular']},
+  {t:'Kite and trapezium', k:[
+    'Kite: two distinct pairs of adjacent equal sides',
+    'One diagonal bisects the other at right angles',
+    'Trapezium: just one pair of parallel sides']},
+  {t:'Learn it as a tree', k:[
+    'Every square is a rhombus and a rectangle',
+    'And every one of those is a parallelogram']}
+]},
+5:{core:'Factors and multiples', b:[
+  {t:'The two words', k:[
+    'A factor divides a number exactly; a multiple is what you get by multiplying',
+    'Every number is a factor and a multiple of itself']},
+  {t:'Primes', k:[
+    'Exactly two factors, 1 and itself',
+    '1 is not prime: it has only one factor',
+    'Every whole number above 1 breaks into primes in exactly one way']},
+  {t:'Divisibility tests', k:[
+    'By 2 if it ends even; by 5 if it ends 0 or 5; by 10 if it ends 0',
+    'By 3 or 9 if the digit sum does; by 4 if the last two digits do',
+    'By 11 from the alternating digit sum']},
+  {t:'HCF and LCM', k:[
+    'HCF: largest number dividing both. LCM: smallest both divide into',
+    'From primes: HCF takes the lowest power of each shared prime',
+    'LCM takes the highest power of every prime']},
+  {t:'The check', k:[
+    'HCF &times; LCM = the product of the two numbers',
+    'A fast way to catch a wrong answer']},
+  {t:'Digit puzzles', k:[
+    'They are place-value arguments in disguise',
+    'Write the number as 10a + b and the pattern usually falls out']}
+]},
+6:{core:'Distributing', b:[
+  {t:'The one rule', k:[
+    'a(b + c) = ab + ac',
+    'Everything in this chapter is that rule, forwards or backwards']},
+  {t:'Forwards', k:[
+    'Mental arithmetic: 7 &times; 103 = 7 &times; (100 + 3) = 700 + 21 = 721']},
+  {t:'Backwards', k:[
+    'Factorisation: pull the common factor out of 6x + 9 to get 3(2x + 3)']},
+  {t:'The square identity', k:[
+    '(a + b)&sup2; = a&sup2; + 2ab + b&sup2;',
+    'The middle term is the one people forget',
+    '(a + b)&sup2; is never a&sup2; + b&sup2;']},
+  {t:'The other two', k:[
+    '(a &minus; b)&sup2; = a&sup2; &minus; 2ab + b&sup2;',
+    '(a + b)(a &minus; b) = a&sup2; &minus; b&sup2;',
+    'Which turns 102 &times; 98 into 100&sup2; &minus; 2&sup2; = 9996 in one step']},
+  {t:'Both directions', k:[
+    'Spotting a&sup2; &minus; b&sup2; in a question is usually the whole solution']}
+]},
+7:{core:'Ratio and proportion', b:[
+  {t:'A ratio', k:[
+    'Compares two quantities of the same kind, and has no units',
+    '15 : 20 and 3 : 4 are the same ratio']},
+  {t:'Proportion', k:[
+    'Four quantities in proportion: a : b = c : d',
+    'Then a &times; d = b &times; c, which solves most questions here']},
+  {t:'Unitary method', k:[
+    'Find the value of one unit first, then scale',
+    'If 6 pens cost &#8377;90, one costs &#8377;15, so 10 cost &#8377;150']},
+  {t:'Direct proportion', k:[
+    'Doubling one doubles the other',
+    'The ratio stays constant: x / y = k']},
+  {t:'The usual trap', k:[
+    'Check the units match before writing a ratio, and simplify at the end',
+    'Comparing km with m is where it goes wrong']},
+  {t:'Sense check', k:[
+    'If the answer is bigger where it should plainly be smaller',
+    'The proportion is the wrong way up']}
+]},
+8:{core:'Percentage and money', b:[
+  {t:'Percentage', k:[
+    'A fraction with denominator 100',
+    'Multiply a fraction by 100 to convert; divide by 100 to go back']},
+  {t:'Percentage change', k:[
+    'Always measured against the original: change &divide; original &times; 100',
+    'Using the new amount as the base is the usual error']},
+  {t:'Profit and loss', k:[
+    'Worked out on the cost price, never the selling price',
+    'Profit% = profit / CP &times; 100']},
+  {t:'Discount', k:[
+    'Worked out on the marked price, not the cost price',
+    'Which is how a shop can give a discount and still profit']},
+  {t:'Simple interest', k:[
+    'SI = P &times; R &times; T / 100',
+    'Same every year, because it is always charged on the original principal']},
+  {t:'Compound interest', k:[
+    'Interest on interest: A = P(1 + R/100)&#7511;',
+    'Always exceeds simple interest after the first period']}
+]},
+9:{core:'Right triangles', b:[
+  {t:'The theorem', k:[
+    'The square on the hypotenuse equals the sum of the squares on the other two',
+    'a&sup2; + b&sup2; = c&sup2;']},
+  {t:'Find it first', k:[
+    'The hypotenuse is opposite the right angle, and always the longest',
+    'Identify it before substituting anything']},
+  {t:'The name', k:[
+    'The result is in the Baudhayana Sulbasutra, centuries before Pythagoras',
+    'Which is why the book names them together']},
+  {t:'Triples', k:[
+    '3-4-5, 5-12-13, 8-15-17, 7-24-25',
+    'Any multiple of a triple is also one, so 6-8-10 works']},
+  {t:'The converse', k:[
+    'If a&sup2; + b&sup2; = c&sup2; for the three sides, the triangle is right-angled',
+    'That is how you prove a corner is square']},
+  {t:'Where it turns up', k:[
+    'Ladders against walls, diagonals of rectangles',
+    'And the shortest distance across a field']}
+]},
+10:{core:'Inverse proportion', b:[
+  {t:'The rule', k:[
+    'One grows as the other shrinks, and the product stays constant',
+    'x &times; y = k']},
+  {t:'Recognising it', k:[
+    'More workers, less time. More speed, less time for the same distance',
+    'Ask whether doubling one should double or halve the other']},
+  {t:'Which formula', k:[
+    'Direct: x&#8321;/y&#8321; = x&#8322;/y&#8322;',
+    'Inverse: x&#8321;y&#8321; = x&#8322;y&#8322;',
+    'Choosing the wrong one is the main source of lost marks']},
+  {t:'Scale', k:[
+    '1 : 50 000 means one unit on the map is 50 000 of the same on the ground',
+    'Convert to sensible units before answering']},
+  {t:'Pie charts', k:[
+    'Sector angle = (part / total) &times; 360&deg;',
+    'All sectors must sum to 360&deg;',
+    'Backwards: given an angle, the share is angle / 360&deg;']}
+]},
+11:{core:'Solids and nets', b:[
+  {t:'The three counts', k:[
+    'Faces are flat surfaces, edges are where two faces meet, vertices are corners',
+    'Count them systematically, not by eye']},
+  {t:'Nets', k:[
+    'A flat shape that folds into a solid',
+    'The same solid usually has several valid nets: a cube has eleven']},
+  {t:'Views', k:[
+    'Top, front and side views of one solid can look completely different',
+    'A question may give two and ask for the third']},
+  {t:'Euler&rsquo;s relation', k:[
+    'F + V &minus; E = 2 for many convex polyhedra',
+    'For a cube: 6 + 8 &minus; 12 = 2']},
+  {t:'Fractals', k:[
+    'A shape that repeats itself at smaller and smaller scales',
+    'The Koch snowflake and the Sierpinski triangle are the standard examples']}
+]},
+12:{core:'Handling data', b:[
+  {t:'Organise first', k:[
+    'A frequency table turns a list of raw values into something readable',
+    'Organise before you calculate']},
+  {t:'The three averages', k:[
+    'Mean: total divided by how many',
+    'Median: the middle value once sorted, or the mean of the middle two',
+    'Mode: the most frequent value']},
+  {t:'Which to use', k:[
+    'The mean is pulled about by one extreme value; the median is not',
+    'Which is why the median is fairer for something like income']},
+  {t:'Bar or histogram', k:[
+    'A bar graph compares separate categories: its bars have gaps',
+    'A histogram shows continuous grouped data: its bars touch']},
+  {t:'The other two', k:[
+    'A double bar graph compares two sets side by side',
+    'A line graph shows change over time']},
+  {t:'Where marks go', k:[
+    'Reading the axes and the scale correctly',
+    'Before doing any arithmetic at all']}
+]},
+13:{core:'Algebra', b:[
+  {t:'What a letter does', k:[
+    'It stands for any number',
+    'Writing a pattern with a letter turns it always seems to work into a proof']},
+  {t:'The standard move', k:[
+    'Call the number n, write what the puzzle does to it, simplify',
+    'The trick becomes obvious once the n cancels']},
+  {t:'Writing things down', k:[
+    'Consecutive: n, n+1, n+2. Even: 2n. Odd: 2n+1',
+    'A two-digit number is 10a + b']},
+  {t:'Why the trick works', k:[
+    'Reversing a two-digit number gives 10b + a',
+    'The difference is 9(a &minus; b): which is why it is always a multiple of 9']},
+  {t:'Like terms', k:[
+    'Same letters and powers can be added: 3x + 4x = 7x',
+    '3x + 4x&sup2; cannot be combined at all']},
+  {t:'Testing a formula', k:[
+    'Try it on a case you did not use to build it',
+    'That catches most mistakes']}
+]},
+14:{core:'Area', b:[
+  {t:'The basics', k:[
+    'Rectangle: length &times; breadth',
+    'Triangle: &frac12; &times; base &times; height',
+    'The height is perpendicular to the base you chose, not a slanted side']},
+  {t:'Two more', k:[
+    'Parallelogram: base &times; height',
+    'Trapezium: &frac12; &times; (sum of the parallel sides) &times; the distance between them']},
+  {t:'Diagonals', k:[
+    'Rhombus or kite: &frac12; &times; product of the diagonals']},
+  {t:'Composite shapes', k:[
+    'Cut into rectangles and triangles',
+    'Or take the whole rectangle and subtract the missing piece']},
+  {t:'Surface area', k:[
+    'Cuboid: 2(lb + bh + hl). Cube: 6a&sup2;',
+    'Volume is a different quantity: cm&sup2; for area, cm&sup3; for volume']},
+  {t:'Where marks go', k:[
+    'Every length in the same unit before multiplying',
+    'And state the unit in the answer',
+    'Lost here far more often than in the arithmetic']}
+]}
+};
+
+/* SCIENCE MIND MAPS. Chapter numbers follow NCERT Curiosity, so 1 and 8 to
+   13 are the chapters outside the September paper and 2 to 7 are the ones
+   that were in it. One lookup covers both, because the numbers do not
+   collide. Same rules as SST_MIND: a leaf under about eighty characters,
+   and no colour behind any text. */
+const SCI_MIND = {
+1:{core:'How science works', b:[
+  {t:'A testable question', k:[
+    'Does a paper plane fly farther with longer wings? can be tested',
+    'Which plane is nicest? cannot: that is taste, not evidence']},
+  {t:'A hypothesis', k:[
+    'A possible answer, stated plainly enough that an experiment can knock it down',
+    'Just as useful when it turns out wrong: that narrows the field']},
+  {t:'A fair test', k:[
+    'Change one thing: the independent variable',
+    'Measure what happens: the dependent variable',
+    'Keep everything else the same: the controlled variables',
+    'Change two at once and you cannot tell which did the work']},
+  {t:'Measuring', k:[
+    'Right instrument, right unit, eye level with the mark',
+    'Take the reading more than once',
+    'One measurement is an anecdote; three are data']},
+  {t:'Tables and graphs', k:[
+    'For finding patterns, not for decoration',
+    'What you changed in the first column, what you measured in the second']},
+  {t:'Concluding', k:[
+    'Say only what the evidence supports',
+    'Four plants on a windowsill do not settle what all plants need',
+    'An unexpected result usually points at a variable you did not control']}
+]},
+2:{core:'Microbes and the cell', b:[
+  {t:'Seeing them', k:[
+    'Robert Hooke, 1665: box-like compartments in cork, and he called them cells',
+    'Leeuwenhoek ground his own lenses and saw living microbes first']},
+  {t:'The cell', k:[
+    'The structural and functional unit of life',
+    'Membrane decides what enters and leaves; cytoplasm holds; nucleus directs',
+    'Plant cells add a cell wall, chloroplasts and a large vacuole']},
+  {t:'Bacteria are different', k:[
+    'No membrane-bound nucleus',
+    'Genetic material lies loose in a region called the nucleoid',
+    'That one fact separates them from plant and animal cells']},
+  {t:'Five groups', k:[
+    'Bacteria, fungi, protozoa, algae, viruses',
+    'A virus works only inside a host cell: hence the living/non-living border']},
+  {t:'The useful ones', k:[
+    'Lactobacillus sets curd; yeast raises dough',
+    'Rhizobium fixes nitrogen in the root nodules of legumes',
+    'Decomposers make humus; Penicillium gives penicillin']},
+  {t:'The harmful ones', k:[
+    'Pathogens cause disease; other microbes spoil food',
+    'They need warmth and moisture: every preservation method removes one']}
+]},
+3:{core:'Health and disease', b:[
+  {t:'What health means', k:[
+    'WHO: complete physical, mental and social well-being',
+    'Not merely the absence of disease. Not ill is not the same as healthy']},
+  {t:'Two kinds', k:[
+    'Communicable: air, water, food, contact or a vector',
+    'Non-communicable: diabetes, asthma, anaemia, and no contact spreads them']},
+  {t:'Vectors', k:[
+    'The mosquito is the vector, not the disease',
+    'Female Anopheles carries Plasmodium: malaria',
+    'Aedes breeds in clean stagnant water, bites by day: dengue, chikungunya']},
+  {t:'Immunity', k:[
+    'A vaccine holds a weakened or killed pathogen',
+    'The body makes antibodies and keeps memory cells',
+    'So the real infection is recognised and beaten quickly later']},
+  {t:'Antibiotics', k:[
+    'Act on bacteria only: useless against a cold',
+    'Misuse helps bacteria become resistant',
+    'A prescribed course is always finished']},
+  {t:'Deficiencies', k:[
+    'A &rarr; night blindness, C &rarr; scurvy, D &rarr; rickets, B1 &rarr; beriberi',
+    'Iron &rarr; anaemia, iodine &rarr; goitre, protein &rarr; kwashiorkor',
+    'Learn the table as one block']}
+]},
+4:{core:'Current and magnetism', b:[
+  {t:'Heating effect', k:[
+    'Current warms any wire it passes through',
+    'Depends on the current, the resistance, and the time it flows',
+    'Resistance depends on material, length and thickness']},
+  {t:'The materials', k:[
+    'Nichrome in heaters, irons, toasters: high resistance, high melting point',
+    'Tungsten for filaments: melts at about 3380&nbsp;&deg;C']},
+  {t:'Fuses', k:[
+    'A thin wire of low melting point, in series in the live wire',
+    'Melts and breaks the circuit past a safe current',
+    'An MCB does the same and can be switched back on']},
+  {t:'Excess current', k:[
+    'Overloading: too many appliances on one socket',
+    'Short circuit: live and neutral touching directly']},
+  {t:'Oersted, 1820', k:[
+    'A compass near a current-carrying wire is deflected',
+    'Reverse the current and the deflection reverses',
+    'Every current has a magnetic field around it']},
+  {t:'Electromagnets', k:[
+    'A coil on a soft-iron core, magnetic only while current flows',
+    'Stronger with more turns, more current, an iron core',
+    'Drives the electric bell, scrapyard crane, motors, loudspeakers']}
+]},
+5:{core:'Force and friction', b:[
+  {t:'What a force is', k:[
+    'A push or a pull, always between two objects',
+    'One applying it, one receiving it. SI unit: the newton (N)']},
+  {t:'What it can change', k:[
+    'Speed, direction of motion, or shape',
+    'It cannot change mass']},
+  {t:'Balanced or not', k:[
+    'Balanced forces leave the state of motion alone',
+    'Unbalanced forces change it',
+    'Along a line: same direction adds, opposite subtracts']},
+  {t:'Contact and not', k:[
+    'Contact: muscular, friction, tension',
+    'Non-contact: gravitational, magnetic, electrostatic']},
+  {t:'Friction', k:[
+    'Opposes relative motion, acts along the surfaces',
+    'Static &gt; sliding &gt; rolling: which is why wheels and ball bearings exist',
+    'Rougher surfaces and harder pressing both increase it']},
+  {t:'Mass and weight', k:[
+    'Mass is the quantity of matter and never changes',
+    'Weight is the Earth&rsquo;s pull: W = m &times; g, in newtons',
+    'Smaller on the Moon; the mass is the same there']}
+]},
+6:{core:'Pressure', b:[
+  {t:'The definition', k:[
+    'Force on unit area: P = F / A',
+    'Unit is the pascal; 1 Pa = 1 N/m&sup2;']},
+  {t:'Sharp or broad', k:[
+    'Same force, smaller area, more pressure: knives, needles, nails',
+    'Same force, larger area, less: bag straps, tractor tyres, railway sleepers',
+    'A camel&rsquo;s foot is the same idea']},
+  {t:'Where marks are lost', k:[
+    'Turn a mass into a force first: W = m &times; g',
+    'Convert cm&sup2; to m&sup2;: 1 cm&sup2; = 0.0001 m&sup2;',
+    'The division is rarely the problem']},
+  {t:'Liquids', k:[
+    'Press on the base and on the walls',
+    'At a given depth, equally in all directions']},
+  {t:'Depth', k:[
+    'Liquid pressure increases with depth',
+    'The lowest hole in a bottle squirts farthest',
+    'A dam is built thicker at the bottom']},
+  {t:'Scope', k:[
+    'Only section 6.1 was examinable in the September paper',
+    'Winds, storms and cyclones were not in it']}
+]},
+7:{core:'Particles of matter', b:[
+  {t:'The model', k:[
+    'Matter is made of extremely small particles',
+    'They have space between them, move continuously and at random',
+    'And they attract one another']},
+  {t:'The evidence', k:[
+    'Sugar dissolves in a full glass without overflowing: space',
+    'Permanganate colours still water, a scent crosses a room: motion']},
+  {t:'Diffusion', k:[
+    'Fastest in gases, slower in liquids, negligible in solids',
+    'Faster in all of them when hotter']},
+  {t:'Three states', k:[
+    'Solid: close, strong attraction, shape and volume fixed',
+    'Liquid: looser, volume fixed, shape not',
+    'Gas: far apart, attraction negligible, highly compressible']},
+  {t:'Change of state', k:[
+    'Melting, freezing, boiling, condensation, sublimation',
+    'Camphor, naphthalene, dry ice go straight solid to gas',
+    'Temperature stays constant: the heat goes into breaking the forces']},
+  {t:'Evaporation', k:[
+    'Surface only, at any temperature, and it cools what is left',
+    'Faster with heat, wind, surface area and dry air',
+    'Kelvin: K = &deg;C + 273']}
+]},
+8:{core:'Nature of matter', b:[
+  {t:'The first split', k:[
+    'Everything is a pure substance or a mixture',
+    'Pure: same composition throughout, fixed properties. A mixture is not']},
+  {t:'Elements', k:[
+    'One kind of atom; cannot be broken down chemically',
+    'Hydrogen, oxygen, iron, gold',
+    'Only about a hundred, and everything else is built from them']},
+  {t:'Compounds', k:[
+    'Two or more elements chemically combined in a fixed ratio',
+    'Properties nothing like the ingredients&rsquo;',
+    'Sodium burns in water, chlorine is poison; together, table salt']},
+  {t:'Mixtures', k:[
+    'Components keep their own properties, in any proportion',
+    'Air, sea water, brass, soil',
+    'Hence weak tea or strong tea, but never weak water']},
+  {t:'Homo or hetero', k:[
+    'Homogeneous looks the same throughout: salt in water, air, brass',
+    'Heterogeneous does not: sand in water, oil and water, muesli']},
+  {t:'Separating', k:[
+    'Particle size: sieving, filtration',
+    'Density: sedimentation, decantation, winnowing',
+    'Solubility: evaporation, crystallisation. Boiling point: distillation',
+    'Ask what is different before you ask what to do']}
+]},
+9:{core:'Solutions', b:[
+  {t:'The three words', k:[
+    'Solute dissolves, solvent does the dissolving, the result is a solution',
+    'Water is the universal solvent: a compliment, not a literal claim']},
+  {t:'Dilute or concentrated', k:[
+    'Only compare how much solute sits in the same amount of solvent',
+    'Relative words, not measurements']},
+  {t:'Saturated', k:[
+    'Holds all the solute it can at that temperature',
+    'Add more and it settles at the bottom, undissolved']},
+  {t:'Solubility', k:[
+    'Largest mass of solute that dissolves in 100&nbsp;g of solvent',
+    'At a stated temperature: quote it or the number means nothing']},
+  {t:'Temperature', k:[
+    'Most solids dissolve better in a hot solvent',
+    'Gases do the opposite: warm water holds less oxygen',
+    'Which is why fish suffer in a heated pond and warm fizz goes flat']},
+  {t:'Rate or amount', k:[
+    'Stirring, warming and grinding finer all make it dissolve faster',
+    'Only warming changes how much finally dissolves',
+    'Two different questions']}
+]},
+10:{core:'Light', b:[
+  {t:'How we see', k:[
+    'Light travels in straight lines',
+    'We see something when light from it reaches the eye',
+    'Either light it gives out or light it reflects']},
+  {t:'Laws of reflection', k:[
+    'Angle of incidence equals angle of reflection',
+    'Incident ray, reflected ray and normal lie in one plane']},
+  {t:'Smooth or rough', k:[
+    'Smooth gives regular reflection and an image',
+    'Rough gives diffuse reflection and none',
+    'The laws hold in both: it is the surface that differs, not the light']},
+  {t:'Plane mirror image', k:[
+    'Virtual, erect, same size',
+    'As far behind as the object is in front',
+    'Laterally inverted: which is why AMBULANCE is painted reversed']},
+  {t:'Refraction', k:[
+    'Light changes speed crossing into a new medium, so it bends',
+    'A pencil looks broken at the water line',
+    'A pool always looks shallower than it is']},
+  {t:'Lenses', k:[
+    'Convex: thicker in the middle, converges, can throw a real image',
+    'And works as a magnifying glass',
+    'Concave: thinner in the middle, diverges, never makes a real image']}
+]},
+11:{core:'Keeping time', b:[
+  {t:'Periodic motion', k:[
+    'Any motion that repeats in equal intervals',
+    'Every clock ever built is a periodic motion being counted',
+    'A pendulum, a quartz crystal, an oscillating atom']},
+  {t:'The day', k:[
+    'The Earth spins once on its axis in about 24 hours',
+    'The Sun does not cross the sky: we turn under it, west to east']},
+  {t:'The year', k:[
+    'One revolution around the Sun, about 365&frac14; days',
+    'The leftover quarter is why a leap day is added every fourth February']},
+  {t:'The month', k:[
+    'The Moon makes no light of its own',
+    'We see whatever part of its sunlit half faces us',
+    'New, waxing crescent, first quarter, full, waning, new: about 29&frac12; days',
+    'The Earth&rsquo;s shadow explains an eclipse, not the phases']},
+  {t:'Seasons', k:[
+    'From the tilt of the axis, not from distance to the Sun',
+    'The hemisphere leaning towards the Sun gets more direct light, longer days']},
+  {t:'Calendars', k:[
+    'Sundials, water clocks and lunar calendars are built on these cycles',
+    'They need constant correction: day, month and year do not divide neatly']}
+]},
+12:{core:'Ecosystems', b:[
+  {t:'What one is', k:[
+    'Every living thing in a place, plus the non-living surroundings',
+    'Light, air, water, soil, temperature']},
+  {t:'Who does what', k:[
+    'Producers: green plants, making food by photosynthesis',
+    'Consumers: herbivores, carnivores, omnivores',
+    'Decomposers: bacteria and fungi returning nutrients from the dead']},
+  {t:'Food chains', k:[
+    'One path of energy, always starting at a producer',
+    'Arrows point the way the energy travels',
+    'Grass &rarr; grasshopper &rarr; frog &rarr; snake']},
+  {t:'Webs, not chains', k:[
+    'Most animals eat several things, so feeding is a web',
+    'That is what makes an ecosystem tough',
+    'And why removing one species can still ripple through many']},
+  {t:'Energy and matter', k:[
+    'Energy flows one way, some lost as heat at every step',
+    'So there are always far fewer tigers than deer',
+    'Matter is different: carbon, nitrogen and water cycle and are reused']},
+  {t:'Relationships', k:[
+    'Mutualism, both gain: bee and flower',
+    'Parasitism, one gains at the other&rsquo;s cost: tick and dog',
+    'Competition: two want the same limited thing']}
+]},
+13:{core:'Our home, Earth', b:[
+  {t:'Four systems', k:[
+    'Geosphere: rock and soil. Hydrosphere: all its water',
+    'Atmosphere: the air. Biosphere: everything alive',
+    'They interact without pause']},
+  {t:'What life needs', k:[
+    'Liquid water, a temperature that keeps it liquid',
+    'A breathable atmosphere, and a supply of nutrients',
+    'Distance from the Sun hands the Earth the first two']},
+  {t:'The atmosphere', k:[
+    'Supplies oxygen and carbon dioxide',
+    'Traps enough heat to hold the average near 15&nbsp;&deg;C, not about &minus;18&nbsp;&deg;C',
+    'Ozone absorbs most of the ultraviolet']},
+  {t:'Fresh water', k:[
+    'Only about 2.5&percnt; of the Earth&rsquo;s water is fresh, and most is locked in ice',
+    'The water cycle keeps returning it: evaporation, condensation, precipitation']},
+  {t:'Renewable or not', k:[
+    'Renewable is replaced as fast as we use it: sunlight, wind, a replanted forest',
+    'Non-renewable is not: coal, petroleum, minerals',
+    'That single difference is the whole argument']},
+  {t:'Human reach', k:[
+    'Fossil fuels warm the atmosphere; felling strips the biosphere',
+    'Plastic and effluent load the hydrosphere',
+    'Reduce, reuse, recycle is a small handle on a large problem']}
+]}
+};
+
 /* ============================================================
    SST MIND MAPS
    Keyed by chapter number, read by the sst entry in SUBJECTS below.
@@ -3970,6 +5647,46 @@ const SST_MIND = {
    ============================================================ */
 const CHECK_DATA = {
 
+'math3':[
+{k:'thin',
+ h:'What India invented was zero as a <i>number</i>, and the date is knowable',
+ book:'Place value needs a symbol for &lsquo;nothing in this place&rsquo;. The Indian invention of zero as a number, not just a gap, is what made the modern system work.',
+ real:[
+  'The sentence is right, and the chapter is right to make the distinction, but it leaves out the part that makes the claim checkable. A <i>placeholder</i> zero, a mark meaning this column is empty, was used in Babylonian cuneiform from around the 3rd century BCE and independently by the Maya. Neither treated it as a quantity you could compute with.',
+  'What is Indian is zero as a number in its own right, with rules for using it. <b>Brahmagupta&rsquo;s <i>Brahmasphutasiddhanta</i>, 628 CE</b>, gives the first known statement of them: a number minus itself is zero, zero added to a number leaves it unchanged, and so on. He also tried dividing by zero and got it wrong, which is itself worth knowing, because it shows somebody working at the edge of a new idea rather than reciting a finished one.',
+  'For the written symbol, the oldest undisputed inscribed zero in India is in the <b>Gwalior temple inscription of 876 CE</b>. The <i>Bakhshali manuscript</i> carries a dot used as a placeholder and radiocarbon dating published in 2017 put some of its folios as early as the 3rd to 4th century CE, but the dating is disputed by historians of mathematics, because the manuscript&rsquo;s folios appear to be of different ages. Treat it as contested rather than settled.'],
+ exam:'The chapter&rsquo;s answer is what is wanted: place value needs a symbol for an empty place, and India&rsquo;s contribution was to treat zero as a number rather than a gap. If you can add one date, use Brahmagupta and 628 CE. A date with a name attached reads very differently from &ldquo;ancient India&rdquo;.',
+ src:[{t:'Brahmagupta, <i>Brahmasphutasiddhanta</i>, 628 CE'},
+      {t:'Gwalior inscription, 876 CE'},
+      {t:'Bakhshali manuscript radiocarbon dating, Bodleian Library, 2017 (disputed)'}]}
+],
+
+'math9':[
+{k:'thin',
+ h:'Baudhayana is not the only earlier source, and none of them left a proof',
+ book:'The result appears in the Baudhayana Sulbasutra centuries before Pythagoras, which is why the book names them together.',
+ real:[
+  'True, and the fuller story is more interesting than the priority claim. The <i>Baudhayana Sulbasutra</i>, usually dated to around 800 BCE, states the rule for the diagonal of a rectangle in so many words, and the Sulbasutras use it to lay out fire altars accurately. Pythagoras lived around 570 to 495 BCE, so the Indian statement is some three centuries earlier.',
+  'It is earlier still elsewhere. The Babylonian clay tablet <b>Plimpton 322</b>, dated to roughly 1800 BCE, lists numbers that form Pythagorean triples, which means the relationship was being used a thousand years before Baudhayana. Chinese mathematics has it in the <i>Zhoubi Suanjing</i>. Several cultures found it, which is what usually happens with a result this useful.',
+  'What none of these early sources gives is a <b>proof</b> in the sense mathematics later means it: an argument showing the rule must hold for every right-angled triangle rather than checking that it does for the ones you tried. That is the part attributed to the Greek tradition, and it is why the name stuck there. The honest summary is that the result is much older and much more widely found than the name suggests, and that naming a theorem is about transmission and record, not about who was cleverest.'],
+ exam:'Write what the chapter says: the result is in the Baudhayana Sulbasutra centuries before Pythagoras, which is why both names are used. If a question asks why it matters, the sentence worth having is that several traditions found the relationship independently and the Greek contribution was the general proof.',
+ src:[{t:'Baudhayana Sulbasutra, c. 800 BCE'},
+      {t:'Plimpton 322, Babylonian, c. 1800 BCE'},
+      {t:'Zhoubi Suanjing, Chinese'}]}
+],
+
+'ct4':[
+{k:'thin',
+ h:'The face-recognition study has a name, a date and numbers',
+ book:'Joy Buolamwini tested face-recognition systems from major technology companies and found they worked well for light-skinned men but made far more mistakes on women and on people with darker skin.',
+ real:[
+  'Correct, and worth knowing properly, because &ldquo;far more mistakes&rdquo; is exactly the kind of phrase that makes a finding easy to wave away. The study is <b><i>Gender Shades</i>, by Joy Buolamwini and Timnit Gebru, published in 2018</b>. They tested the commercial gender-classification systems of Microsoft, IBM and Face++ on a set of faces balanced across skin tone and sex.',
+  'The headline number: on one of the systems, the error rate for lighter-skinned men was <b>0.8%</b> and for darker-skinned women <b>34.7%</b>. Not a slightly worse system for some people. A system that was right forty-three times out of forty-four for one group and wrong about one time in three for another.',
+  'The part the handbook leaves out is what happened next, and it is the encouraging half. Because the failure was published with numbers, the companies could not treat it as opinion, and within months they retrained on more balanced data and the gaps narrowed sharply. That is the argument for measuring bias rather than debating it: a number is something an engineer can be held to.'],
+ exam:'The handbook&rsquo;s answer, that unbalanced training data produces a system that works badly for under-represented groups, is what the question wants. If you can name the study and one number, do: <i>Gender Shades</i>, 2018, 0.8% against 34.7%. A specific figure is worth more than an adjective.',
+ src:[{t:'Buolamwini &amp; Gebru, Gender Shades, PMLR 2018', u:'https://proceedings.mlr.press/v81/buolamwini18a.html'}]}
+],
+
 'sst3':[
 {k:'contested',
  h:'Taking India &ldquo;more from the Marathas than any other power&rdquo; is a ranking, not a fact',
@@ -4044,16 +5761,18 @@ const SUBJECTS = {
     id:'sci', name:'Science', book:'Curiosity', hasExam:true,
     chapters:[
       ...CHAPTERS.map(c => ({key:'sci'+c.n, n:c.n, title:c.name, sub:c.sub, hue:hue(c.n),
-                             exam:true, bank:true, map:LEARN[c.n].map, notes:LEARN[c.n].notes,
+                             exam:true, bank:true, map:LEARN[c.n].map, mind:SCI_MIND[c.n],
+                             notes:LEARN[c.n].notes,
                              art:{2:'microbe',3:'heart',4:'bolt',5:'arrows',6:'press',7:'particles'}[c.n]})),
       ...BEYOND.science.map(c => ({key:'sci'+c.n, n:c.n, title:c.title, sub:c.sub,
-                             hue:c.hue, exam:false, bank:true, map:c.map, notes:c.notes,
-                             art:c.art}))
+                             hue:c.hue, exam:false, bank:true, map:c.map, mind:SCI_MIND[c.n],
+                             notes:c.notes, art:c.art}))
     ]},
   eng:{
     id:'eng', name:'English', book:'Grammar, usage and writing', publisher:null, hasExam:false,
     chapters:ENG.map(c => ({key:'eng'+c.n, n:c.n, title:c.title, sub:c.sub,
-                       hue:c.hue, exam:false, bank:true, map:c.map, notes:c.notes, art:c.art}))
+                       hue:c.hue, exam:false, bank:true, map:c.map, mind:ENG_MIND[c.n],
+                       notes:c.notes, art:c.art}))
   },
   sst:{
     id:'sst', name:'Social Science', book:'Exploring Society: India and Beyond', hasExam:false,
@@ -4064,25 +5783,26 @@ const SUBJECTS = {
   ct:{
     id:'ct', name:'AI & Thinking', book:'CT &amp; AI Student Handbook', publisher:'CBSE', hasExam:false,
     chapters:CTAI.map(c => ({key:'ct'+c.n, n:c.n, title:c.title, sub:c.sub,
-                        hue:c.hue, exam:false, bank:true, map:c.map, notes:c.notes, art:c.art}))
+                        hue:c.hue, exam:false, bank:true, map:c.map, mind:CT_MIND[c.n],
+                        notes:c.notes, art:c.art}))
   },
   hin:{
     id:'hin', name:'Hindi', book:'\u092e\u0932\u094d\u0939\u093e\u0930 (Malhar)', hasExam:false, script:'deva',
     chapters:HIN.map((c,i) => ({key:'hin'+c.n, n:c.n, title:c.title, sub:c.sub,
                            hue:HIN_HUES[i % HIN_HUES.length], exam:false, bank:!c.lesson,
-                           map:c.map, notes:c.notes, art:HIN_ART[i]}))
+                           map:c.map, mind:HIN_MIND[c.n], notes:c.notes, art:HIN_ART[i]}))
   },
   skt:{
     id:'skt', name:'Sanskrit', book:'\u0930\u0941\u091a\u093f\u0930\u093e \u092d\u093e\u0917 \u0969 (Ruchira 3)', hasExam:false, script:'deva',
     chapters:SKT.map((c,i) => ({key:'skt'+c.n, n:c.n, title:c.title, sub:c.sub,
                            hue:SKT_HUES[i % SKT_HUES.length], exam:false, bank:!c.lesson,
-                           map:c.map, notes:c.notes, art:SKT_ART[i]}))
+                           map:c.map, mind:SKT_MIND[c.n], notes:c.notes, art:SKT_ART[i]}))
   },
   math:{
     id:'math', name:'Mathematics', book:'Ganita Prakash', hasExam:false,
     chapters:MATHS.map((c,i) => ({key:'math'+c.n, n:c.n, title:c.title, sub:c.sub,
                              hue:MATH_HUES[i % MATH_HUES.length], exam:false, bank:true,
-                             map:c.map, notes:c.notes,
+                             map:c.map, mind:MATH_MIND[c.n], notes:c.notes,
                              art:['square','power','numerals','quad','primes','distrib','ratio',
                                   'percent','pythag','ratio','solids','graph','algebra','area'][i]}))
   }
@@ -4105,55 +5825,99 @@ function visibleChapters(){
    <desc> and the list is real markup, so whichever is displayed says
    the same thing to a screen reader.
 
-   Text is wrapped here rather than by the browser because SVG does not
-   wrap, and <foreignObject> does not print reliably. A character count
-   is an estimate, so the counts below were set by measuring the real
-   thing: tests/mind-render.mjs loads every map in Chromium and compares
-   each text node's getBBox against its column. At 41 characters two
-   leaves ran 1.4px and 2.6px past the edge, which is why it is 38.
-   It measures in the fallback font, since Google Fonts does not load in
-   the sandbox, and the fallback is wider than Figtree, so passing there
-   means passing in the real one.
+   Text is wrapped against a canvas measurement of the real font rather
+   than a character count; see the note above MIND_FONT for why, and
+   tests/mind-render.mjs for the check that it holds.
 
    A chapter with no `mind` falls back to the old arrow line, so adding
    maps one subject at a time never leaves a card empty.
    ============================================================ */
 const MIND_HUES = ['var(--c6)','var(--c3)','var(--c7)','var(--c4)','var(--c5)','var(--c2)'];
-/* An entity is several characters and one glyph. Measure what renders. */
-const glyphLen = s => String(s).replace(/&[a-z]+;/gi, 'x').length;
-function wrapGlyphs(text, max){
-  const out = []; let cur = '';
-  String(text).split(/\s+/).forEach(w => {
+
+/* Wrapping. SVG will not wrap and <foreignObject> does not print reliably,
+   so the wrap happens here. It used to be a character count, which is a
+   poor proxy for width even in Latin (the render test caught two leaves
+   1.4px and 2.6px over) and a useless one in Devanagari, where a word is
+   more code points than it is clusters and every cluster is wider. So ask
+   the browser: a canvas 2D context measures in the real font.
+
+   Two things that measurement needs and a character count did not. An
+   entity has to be decoded before it is measured, because &rarr; is one
+   glyph and seven characters. And the measurement is only right once the
+   webfont has arrived, so the Learn view re-renders on fonts.ready.
+
+   The character count survives as a fallback for anywhere without a
+   canvas, so the function cannot fail outright. */
+const MIND_FONT = {
+  leaf: '11.5px Figtree, system-ui, sans-serif',
+  br:   '700 12.5px Figtree, system-ui, sans-serif',
+  core: '800 12.5px "Bricolage Grotesque", sans-serif'
+};
+const MIND_FONT_DEVA = {
+  leaf: '12px "Noto Sans Devanagari", Figtree, system-ui, sans-serif',
+  br:   '600 12.5px "Noto Sans Devanagari", Figtree, system-ui, sans-serif',
+  core: '700 12.5px "Noto Sans Devanagari", "Bricolage Grotesque", sans-serif'
+};
+let _mctx = null, _decoder = null;
+function textWidth(str, font){
+  try{
+    if(!_mctx) _mctx = document.createElement('canvas').getContext('2d');
+    if(!_mctx) return null;
+    _mctx.font = font;
+    return _mctx.measureText(str).width;
+  }catch(e){ return null; }
+}
+/* &rarr; is one glyph and seven characters; measure the glyph. */
+function decodeEntities(str){
+  if(!/&[a-z#0-9]+;/i.test(str)) return str;
+  try{
+    if(!_decoder) _decoder = document.createElement('textarea');
+    _decoder.innerHTML = str;
+    return _decoder.value;
+  }catch(e){ return str.replace(/&[a-z#0-9]+;/gi, 'x'); }
+}
+const glyphLen = s => decodeEntities(String(s)).length;
+/* maxPx is the column; maxCh is the fallback when nothing can be measured. */
+function wrapText(text, maxPx, maxCh, font){
+  const words = String(text).split(/\s+/), out = [];
+  let cur = '';
+  const fits = line => {
+    const w = textWidth(decodeEntities(line), font);
+    return w === null ? glyphLen(line) <= maxCh : w <= maxPx;
+  };
+  words.forEach(w => {
     if(!cur){ cur = w; return; }
-    if(glyphLen(cur) + 1 + glyphLen(w) <= max) cur += ' ' + w;
+    if(fits(cur + ' ' + w)) cur += ' ' + w;
     else { out.push(cur); cur = w; }
   });
   if(cur) out.push(cur);
   return out;
 }
-const esc = s => String(s).replace(/<[^>]+>/g, '');
+const esc = s => decodeEntities(String(s).replace(/<[^>]+>/g, ''));
 
-function mindSVG(m, hue){
+function mindSVG(m, hue, deva){
   const PAD = 12, CORE_X = 4, CORE_W = 152, BR_X = 200, BR_W = 176, LF_X = 424, LF_W = 280;
-  const LINE = 15, VPAD = 7, LEAF_GAP = 9, BR_GAP = 20;
+  /* Devanagari matras sit above and below the line, so it needs the room. */
+  const LINE = deva ? 19 : 15, VPAD = deva ? 9 : 7, LEAF_GAP = 9, BR_GAP = 20;
+  const F = deva ? MIND_FONT_DEVA : MIND_FONT;
   const W = LF_X + LF_W + PAD;
+  const LEAF_PX = W - 10 - (LF_X + 15), BR_PX = BR_W - 4, CORE_PX = CORE_W - 16;
 
   const branches = m.b.map((b, i) => {
-    const t = wrapGlyphs(b.t, 23);
+    const t = wrapText(b.t, BR_PX, 23, F.br);
     const leaves = (b.k || []).map(k => {
-      const l = wrapGlyphs(k, 38);
+      const l = wrapText(k, LEAF_PX, 38, F.leaf);
       return { l: l, h: l.length * LINE + VPAD };
     });
     const leafH = leaves.reduce((a, x) => a + x.h, 0) + Math.max(0, leaves.length - 1) * LEAF_GAP;
-    const labH = t.length * LINE + 14;           /* label plus its rule */
+    const labH = t.length * LINE + 14;
     return { t: t, leaves: leaves, h: Math.max(leafH, labH), hue: MIND_HUES[i % MIND_HUES.length] };
   });
 
   const bodyH = branches.reduce((a, b) => a + b.h, 0) + Math.max(0, branches.length - 1) * BR_GAP;
   const H = bodyH + PAD * 2, cy = H / 2;
-
   /* Baseline of the first of n lines in a block centred on `mid`. */
-  const first = (mid, n) => mid - (n - 1) * LINE / 2 + 4;
+  const first = (mid, n) => mid - (n - 1) * LINE / 2 + (deva ? 5 : 4);
 
   let y = PAD, body = '';
   branches.forEach(b => {
@@ -4162,13 +5926,13 @@ function mindSVG(m, hue){
           + ` C${CORE_X + CORE_W + 46} ${cy.toFixed(1)}, ${BR_X - 46} ${bcy.toFixed(1)},`
           + ` ${BR_X} ${bcy.toFixed(1)}" style="stroke:${b.hue}"/>`;
 
-    /* Label sits above its own rule, both centred on the branch. */
-    const labTop = bcy - (b.t.length * LINE + 14) / 2;
-    const y0 = labTop + 12;
+    const y0 = bcy - (b.t.length * LINE + 14) / 2 + (deva ? 14 : 12);
     body += `<text class="t-br" x="${BR_X}" y="${y0.toFixed(1)}">`
           + b.t.map((l, i) => `<tspan x="${BR_X}" dy="${i ? LINE : 0}">${l}</tspan>`).join('')
           + `</text>`;
-    const ruleW = Math.min(BR_W, Math.max(26, Math.max.apply(null, b.t.map(glyphLen)) * 6.5));
+    const measured = Math.max.apply(null,
+      b.t.map(l => textWidth(decodeEntities(l), F.br) ?? glyphLen(l) * 6.5));
+    const ruleW = Math.min(BR_W, Math.max(26, measured));
     const ruleY = y0 + (b.t.length - 1) * LINE + 8;
     body += `<line class="m-rule" x1="${BR_X}" y1="${ruleY.toFixed(1)}"`
           + ` x2="${(BR_X + ruleW).toFixed(1)}" y2="${ruleY.toFixed(1)}" stroke="${b.hue}"/>`;
@@ -4189,7 +5953,7 @@ function mindSVG(m, hue){
     y += b.h + BR_GAP;
   });
 
-  const core = wrapGlyphs(m.core, 19), coreH = core.length * LINE + 18;
+  const core = wrapText(m.core, CORE_PX, 19, F.core), coreH = core.length * LINE + 18;
   const cx = CORE_X + CORE_W / 2;
   body += `<rect class="m-core" x="${CORE_X}" y="${(cy - coreH / 2).toFixed(1)}"`
         + ` width="${CORE_W}" height="${coreH}" rx="10"/>`
@@ -4198,8 +5962,8 @@ function mindSVG(m, hue){
         + `</text>`;
 
   const desc = m.b.map(b => esc(b.t) + ': ' + (b.k || []).map(esc).join('; ')).join('. ');
-  return `<svg class="mind" viewBox="0 0 ${W} ${H.toFixed(0)}" role="img"`
-       + ` style="--hue:${hue}" aria-label="Mind map: ${esc(m.core)}">`
+  return `<svg class="mind${deva ? ' mind-deva' : ''}" viewBox="0 0 ${W} ${H.toFixed(0)}"`
+       + ` role="img" style="--hue:${hue}" aria-label="Mind map: ${esc(m.core)}">`
        + `<title>Mind map: ${esc(m.core)}</title><desc>${desc}</desc>${body}</svg>`;
 }
 
@@ -4211,9 +5975,19 @@ function mindFallback(m){
        + `</ul></div>`;
 }
 
-function mindBlock(c){
+function mindBlock(c, deva){
   if(!c.mind) return `<p class="cmap">${c.map}</p>`;
-  return `<div class="mindwrap">${mindSVG(c.mind, c.hue)}${mindFallback(c.mind)}</div>`;
+  return `<div class="mindwrap">${mindSVG(c.mind, c.hue, deva)}${mindFallback(c.mind)}</div>`;
+}
+
+/* A map wrapped before the webfont arrived was measured in the fallback
+   face, so the lines are laid out for the wrong widths. Draw it again once
+   the real one is in. Runs at most once, and only if Learn is open. */
+if(typeof document !== 'undefined' && document.fonts && document.fonts.ready){
+  document.fonts.ready.then(() => {
+    const v = document.getElementById('view-learn');
+    if(v && !v.hidden && typeof renderLearn === 'function') renderLearn();
+  }).catch(() => {});
 }
 
 /* ============================================================
@@ -4288,7 +6062,7 @@ function renderLearn(){
       ${doodle(c.art, c.hue)}
       <p class="chapno">${c.n ? 'Chapter ' + c.n : 'Beyond the exam'}${c.exam && c.n === 6 ? ' &middot; 6.1 only' : ''}</p>
       <h3>${c.title}<span style="font-weight:600; color:var(--ink-3)">: ${c.sub}</span></h3>
-      ${mindBlock(c)}
+      ${mindBlock(c, S.script === 'deva')}
       <ul style="margin:12px 0 0; padding-left:19px; display:flex; flex-direction:column; gap:9px">
         ${c.notes.map(n => `<li>${n}</li>`).join('')}
       </ul>

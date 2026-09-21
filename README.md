@@ -345,7 +345,12 @@ handing a reader one side of a live argument as settled fact, a panel under the 
 says what is actually the case, names the source, and then says what to write in the
 exam anyway. Marks and accuracy are different problems and a thirteen-year-old should
 not have to choose. Entries need a dated source, a named case, a statute or a
-published figure; social science chapters 3, 5 and 15 carry the first six.
+published figure. Nine so far: three in civics chapter 5 (what a VVPAT slip
+actually does, that there is no recount on demand, and that "adult" meant
+twenty-one until 1989), one in history 3, two in heritage 15 on the reach of
+bhakti and on what it did and did not change, two in maths on zero and on the
+Baudhayana-Pythagoras theorem, and one in the AI handbook putting numbers to
+the face-recognition study it describes.
 
 **Directory:** `alab/`
 **Stage:** Active
