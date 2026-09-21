@@ -58,7 +58,13 @@ const r = await p.evaluate(() => {
     else if (!chapters[sub].has(q.c)) problems.push(`${where}: no such chapter in ${sub}`);
     if (!q.e && q.t !== 'short') problems.push(`${where}: no explanation`);
 
-    /* Identical question text twice in one chapter is a bug, not variety. */
+    /* Identical question text twice in one chapter is not merely
+       repetitive. QID() is subject + chapter + a hash of the question
+       text, so two such questions share one identity: the mistakes book
+       and the seen-list cannot tell them apart, and clearing one clears
+       the other. Generic stems are how this happens in practice, and
+       "Which is correct?" appearing twice in a grammar chapter is the
+       usual way in. */
     const text = norm(q.q || '');
     if (text) {
       const k = key + '|' + text;
