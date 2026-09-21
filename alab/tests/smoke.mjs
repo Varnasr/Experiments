@@ -53,11 +53,18 @@ for (const sub of ['sci', 'math', 'sst', 'eng', 'hin', 'skt', 'ct']) {
     const card = document.querySelector('#qCard');
     if (!card || card.hidden) return null;
     const text = (card.querySelector('.qtext')?.textContent || '').trim();
+    /* A `short` question deliberately has nothing to type into: the
+       learner writes on paper and then reveals the model answer. An
+       earlier version of this assertion demanded an input control and
+       so failed at random, whenever the shuffle happened to put a
+       written-answer question first. */
     const inputs = card.querySelectorAll('.opt, #typed, select.mt').length;
-    return { text: text.slice(0, 60), inputs };
+    const isShort = /Write your answer on paper/i.test(card.textContent);
+    return { text: text.slice(0, 60), inputs, isShort };
   });
-  say(!!q && q.text.length > 3 && q.inputs > 0,
-      `${sub}: practice shows a question with something to answer` + (q ? ` (${q.inputs} inputs)` : ' (no card)'));
+  say(!!q && q.text.length > 3 && (q.inputs > 0 || q.isShort),
+      `${sub}: practice shows an answerable question`
+      + (q ? ` (${q.isShort ? 'written answer' : q.inputs + ' inputs'})` : ' (no card)'));
 
   /* Worksheet and mock paper must produce printable questions. */
   await p.click('#tab-worksheet');
