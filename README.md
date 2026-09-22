@@ -347,12 +347,27 @@ handing a reader one side of a live argument as settled fact, a panel under the 
 says what is actually the case, names the source, and then says what to write in the
 exam anyway. Marks and accuracy are different problems and a thirteen-year-old should
 not have to choose. Entries need a dated source, a named case, a statute or a
-published figure. Nine so far: three in civics chapter 5 (what a VVPAT slip
-actually does, that there is no recount on demand, and that "adult" meant
-twenty-one until 1989), one in history 3, two in heritage 15 on the reach of
-bhakti and on what it did and did not change, two in maths on zero and on the
-Baudhayana-Pythagoras theorem, and one in the AI handbook putting numbers to
-the face-recognition study it describes.
+published figure, and three kinds only: wrong, thin, and taking a side it does
+not admit is a side.
+
+Twenty-seven so far, across five subjects. Social science has six: three in
+civics 5 on what a VVPAT slip actually does, that there is no recount on demand,
+and that "adult" meant twenty-one until 1989; one in history 3 on the Marathas
+claim being a ranking rather than a fact; two in heritage 15 on the reach of
+bhakti and on what it did and did not change. Science has nine, including that
+most vaccines a Class VIII student has had contain no pathogen at all, that the
+year is not 365 and a quarter days and why 1900 was not a leap year, and that a
+mirror reverses front and back rather than left and right. Hindi has nine on the
+Malhar lessons, written in Hindi: that Gayaprasad Shukla published nationalist
+verse under a different pen name because he was a government servant, that the
+Haridwar "letter" is a dispatch to the journal Bharatendu himself edited, that
+Kabir left no manuscript and the three recensions disagree, and that Bose wrote
+the Mandalay letters while held without trial under Regulation III of 1818.
+Maths has two, on zero and on the Baudhayana-Pythagoras theorem, and the AI
+handbook one, putting numbers to the face-recognition study it describes.
+
+The Hindi entries carry Devanagari headings, because an English frame around
+Hindi prose reads as a translation of something.
 
 **Directory:** `alab/`
 **Stage:** Active
