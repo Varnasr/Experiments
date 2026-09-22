@@ -4,16 +4,20 @@
  *   cd alab && ALAB_URL=http://localhost:8199/alab/ node tests/chrome-height.mjs
  *
  * On a 390x844 phone the masthead measured 349px: 41 per cent of the screen
- * given to a title, seven subject pills wrapped over two rows, a filter that
- * did nothing on the tab you land on, and six tabs. Nothing on the page said
- * so, and on a desktop it is invisible, which is why it survived.
+ * given to a title, seven subject pills, a filter that did nothing on the tab
+ * you land on, and six tabs. Nothing on the page said so, and on a desktop it
+ * is invisible, which is why it survived.
  *
- * The budget below is a quarter of the viewport plus a little. It is a real
- * constraint rather than a record of today's number: a row added to the
- * masthead breaks it, which is the point. It also checks that the shrinking
- * did not come from deleting anything — all seven subjects and all six tabs
- * must still be in the DOM and hit a 40px touch target — because that is the
- * cheap way to pass a height budget and the wrong one.
+ * The budget is a third of the viewport. It was a quarter for one build, and
+ * that build bought the difference by scrolling the seven subjects in a
+ * single row — 46px shorter, and wrong: the row ran off the screen edge with
+ * English half-cut, so Social Science and AI & Thinking were reachable only
+ * by a swipe nothing advertised. The pills wrap again and the budget moved to
+ * fit them. Hence the assertion below that every subject is inside the
+ * viewport: the cheap way to pass a height budget is to hide something, and
+ * hiding it off the right edge counts.
+ *
+ * All six tabs and all seven subjects must also hit a 40px touch target.
  */
 import { chromium } from 'playwright-core';
 import { existsSync, readdirSync } from 'node:fs';
@@ -54,18 +58,23 @@ const m = await p.evaluate(() => {
     tabs: tabs.length,
     tabShort: tabs.filter(x => x.getBoundingClientRect().height < 40).length,
     segScrolls: seg.scrollWidth > seg.clientWidth + 1,
+    pillsOnScreen: pills.filter(x => {
+      const r = x.getBoundingClientRect();
+      return r.left >= -1 && r.right <= window.innerWidth + 1;
+    }).length,
     sideways: document.documentElement.scrollWidth > document.documentElement.clientWidth,
     filterOnToday: !document.querySelector('#examFilter').hidden
   };
 });
 
-const budget = Math.round(m.viewport * 0.27);
+const budget = Math.round(m.viewport * 0.33);
 ok(m.header <= budget, `masthead is ${m.header}px of ${m.viewport} (${Math.round(m.header / m.viewport * 100)}%), budget ${budget}px`);
 ok(m.pills === 7, `all seven subjects are still there (${m.pills})`);
 ok(m.pillShort === 0, `every subject pill is a 40px touch target (${m.pillShort} too short)`);
 ok(m.tabs === 6, `all six tabs are still there (${m.tabs})`);
 ok(m.tabShort === 0, `every tab is a 40px touch target (${m.tabShort} too short)`);
-ok(m.segScrolls, 'the subject row scrolls rather than wrapping to a second line');
+ok(m.pillsOnScreen === 7, `all seven subjects are inside the viewport, not off a scroll edge (${m.pillsOnScreen})`);
+ok(!m.segScrolls, 'the subject row wraps rather than scrolling sideways');
 ok(!m.sideways, 'the page itself does not scroll sideways');
 ok(!m.filterOnToday, 'the exam filter is not shown on Today, where it does nothing');
 
@@ -75,14 +84,11 @@ await p.waitForTimeout(200);
 ok(await p.evaluate(() => !document.querySelector('#examFilter').hidden),
    'the exam filter returns on Learn');
 
-/* And the last subject must be reachable, not stranded off the scroll edge. */
+/* Switching subject from the last pill still works and repaints the app. */
 await p.click('[data-subj="ct"]');
-await p.waitForTimeout(600);
-ok(await p.evaluate(() => {
-  const el = document.querySelector('[data-subj="ct"]'), seg = document.querySelector('#subjSeg');
-  const a = el.getBoundingClientRect(), s = seg.getBoundingClientRect();
-  return a.left >= s.left - 1 && a.right <= s.right + 1;
-}), 'choosing the last subject scrolls it into view');
+await p.waitForTimeout(400);
+ok(await p.evaluate(() => document.documentElement.getAttribute('data-subject') === 'ct'),
+   'choosing the last subject switches to it');
 
 ok(errs.length === 0, 'no page errors (' + errs.join(' | ') + ')');
 
