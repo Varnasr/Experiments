@@ -112,8 +112,17 @@ ok(JSON.stringify(stored[0].syl.chapters) === '[2,3]', 'the ticked chapters are 
 
 await p.reload({ waitUntil:'load' });
 await p.waitForTimeout(300);
-const strip = await p.textContent('#examStrip');
-ok(/\b9\b/.test(strip) && /Midterm/i.test(strip), 'after a reload the strip counts down to it: ' + JSON.stringify(strip.trim().slice(0, 70)));
+const strip = (await p.textContent('#examStrip')).replace(/\s+/g, ' ').trim();
+const tile1 = await p.evaluate(() => {
+  const t = document.querySelector('#tiles .tile');
+  return t ? { n: t.querySelector('b').textContent.trim(), label: t.querySelector('small').textContent.trim() } : null;
+});
+ok(tile1 && tile1.n === '9' && /midterm/i.test(tile1.label),
+   'after a reload the first tile counts down to it: ' + JSON.stringify(tile1));
+ok(/Midterm/i.test(strip) && /Syllabus/.test(strip), 'and the strip names it and links to the syllabus: ' + JSON.stringify(strip.slice(0, 70)));
+/* The number appears once. Printing it large in the strip as well as in the
+   tile is how this page came to have two countdowns saying the same thing. */
+ok((strip.match(/\b9\b/g) || []).length === 0, 'the strip does not repeat the tile\'s number');
 ok(!/done/i.test(strip), 'a future exam is not reported as done');
 
 /* ---------- 3. does the syllabus narrow anything ---------- */
@@ -171,11 +180,22 @@ ok(/Nothing coming up/i.test(afterStrip),
 const listText = await p.textContent('#examsList');
 ok(/Unit test/.test(listText) && /done/.test(listText), 'it appears in the list below, marked done');
 
+/* The original defect was not a wrong string, it was a 2.6rem word filling a
+   phone screen. Measure the largest type on the page rather than trusting
+   that the element that carried it is gone. */
 const big = await p.evaluate(() => {
-  const el = document.querySelector('#examStrip .es-n');
-  return el ? parseFloat(getComputedStyle(el).fontSize) : 0;
+  let max = 0, what = '';
+  document.querySelectorAll('#view-today *').forEach(el => {
+    if(el.offsetParent === null && el !== document.body) return;
+    const t = Array.from(el.childNodes).filter(n => n.nodeType === 3)
+                   .map(n => n.textContent.trim()).join('');
+    if(!t) return;
+    const px = parseFloat(getComputedStyle(el).fontSize);
+    if(px > max){ max = px; what = t.slice(0, 30); }
+  });
+  return {max:Math.round(max), what:what};
 });
-ok(big === 0, 'no giant number is drawn when there is nothing to count down to');
+ok(big.max <= 34, `nothing on Today is set larger than 34px when the exam has passed (${big.max}px on ${JSON.stringify(big.what)})`);
 
 /* ---------- 5. the PDF reader ---------- */
 const dir = mkdtempSync(join(tmpdir(), 'alab-pdf-'));
