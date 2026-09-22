@@ -73,7 +73,7 @@ const SUBJECTS = [
   { id:'sst',  chapters:15, maps:15 },
   { id:'ct',   chapters:5,  maps:5  }
 ];
-const CHECKS = { sst:6, math:2, ct:1 };   /* check-the-book entries, by subject */
+const CHECKS = { sst:6, math:2, ct:1, sci:9, hin:9 };   /* check-the-book entries, by subject */
 
 const measure = () => {
   const svgs = [...document.querySelectorAll('#learnList svg.mind')];
