@@ -8,51 +8,105 @@
 <title>A Lab</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
-<meta name="theme-color" content="#0E7C74">
+<meta name="theme-color" content="#10775C">
 <meta name="description" content="Year-round revision for CBSE Class 8: mind maps, notes and practice across seven subjects, printable worksheets and a mock paper, and a layer that says where the textbook is wrong and what to write in the exam anyway.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700;6..12,800&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap">
 <style>
+/* ------------------------------------------------------------------
+   The palette.
+
+   What this replaced was cream paper, a single teal and a grotesque
+   display face: coherent, and read as severe to the thirteen-year-old
+   it is for. BBC Bitesize and Seneca, which are the two things in this
+   space that are actually used by this age group, both do the same
+   three things, and this now does them too: a rounded display face, a
+   saturated accent on a cool near-white rather than a pastel one, and
+   a colour per subject rather than one house colour everywhere.
+
+   The subject colour is the whole mechanism. `data-subject` on <html>
+   redefines --accent, --accent-2 and --accent-soft, so every rule that
+   already said var(--accent) follows the subject with no change: the
+   tabs, the primary button, the focus ring, the filter, the section
+   rules. Science is green, maths blue, Hindi magenta, and switching
+   subject repaints the app.
+
+   Every pair below was measured, not eyeballed, and the numbers are in
+   tests/contrast.mjs, which fails if any of them slips. --ink-3 is the
+   one that moved most: at #938B80 on the old cream it ran 3.0:1, and
+   it carries every eyebrow, hint and caption on the site.
+   ------------------------------------------------------------------ */
 :root{
-  --paper:#FAF6EF; --surface:#FFFFFF; --surface-2:#F3EDE3; --sunk:#F0E9DD;
-  --ink:#231F1B; --ink-2:#5C564E; --ink-3:#938B80;
-  --rule:#E8E0D3; --grid:#EFE8DB;
-  --card-shadow:0 2px 3px rgba(60,45,25,.04), 0 8px 22px rgba(60,45,25,.06);
-  --accent:#0E8F7E; --accent-2:#0A6E61; --accent-soft:#DCF3EF;
-  --good:#1E874F; --good-bg:#E3F4E9; --bad:#C0392B; --bad-bg:#FCE9E5;
-  --c2:#8B45B5; --c3:#C93A5E; --c4:#C1810E; --c5:#6E9020; --c6:#0E8F7E; --c7:#3160C4;
+  --paper:#F4F7FB; --surface:#FFFFFF; --surface-2:#EAF0F8; --sunk:#E1E9F4;
+  --ink:#131A25; --ink-2:#4C5A6E; --ink-3:#5F6E85;
+  --rule:#CBD7E8; --grid:#E6EDF7;
+  --on-accent:#FFFFFF;
+  --card-shadow:0 1px 2px rgba(19,26,37,.04), 0 10px 26px rgba(19,26,37,.06);
+  --r-lg:20px; --r:13px; --r-sm:10px;
+  --accent:#2B54BE; --accent-2:#1E3E93; --accent-soft:#E2E9FB;
+  --good:#146E45; --good-bg:#DEF1E7; --bad:#B5301F; --bad-bg:#FBE4E0;
+  --c2:#7C3FB0; --c3:#C0355A; --c4:#A9750C; --c5:#5E7F1C; --c6:#10775C; --c7:#2B54BE;
 }
+:root[data-subject="sci"] { --accent:#10775C; --accent-2:#0B5844; --accent-soft:#DDF0E9; }
+:root[data-subject="math"]{ --accent:#2B54BE; --accent-2:#1E3E93; --accent-soft:#E2E9FB; }
+:root[data-subject="sst"] { --accent:#A8431F; --accent-2:#7E3116; --accent-soft:#FAE5DC; }
+:root[data-subject="eng"] { --accent:#6A3AA6; --accent-2:#4E2A7B; --accent-soft:#EDE4FA; }
+:root[data-subject="hin"] { --accent:#A32A5E; --accent-2:#7A1E46; --accent-soft:#FBE2EC; }
+:root[data-subject="skt"] { --accent:#7A5A10; --accent-2:#5B430B; --accent-soft:#F6ECD6; }
+:root[data-subject="ct"]  { --accent:#0D6B80; --accent-2:#0A5060; --accent-soft:#DDEFF4; }
+
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --paper:#16140F; --surface:#211E18; --surface-2:#2B2720; --sunk:#1A1712;
-    --ink:#F2EDE4; --ink-2:#BDB5A8; --ink-3:#8D857a;
-    --rule:#38332A; --grid:#1F1C16;
-    --card-shadow:0 2px 3px rgba(0,0,0,.3), 0 8px 22px rgba(0,0,0,.25);
-    --accent:#3FC9B4; --accent-2:#7FE0D2; --accent-soft:#123833;
-    --good:#5BD08D; --good-bg:#16311F; --bad:#EC8478; --bad-bg:#3A231E;
-    --c2:#C79BE8; --c3:#F08AA4; --c4:#E4B252; --c5:#B4D465; --c6:#3FC9B4; --c7:#8AB4F8;
+    --paper:#0F141C; --surface:#18202B; --surface-2:#212B39; --sunk:#131A23;
+    --ink:#EDF2F8; --ink-2:#AEBACA; --ink-3:#8593A6;
+    --rule:#333F50; --grid:#151D26;
+    --on-accent:#0B1018;
+    --card-shadow:0 1px 2px rgba(0,0,0,.34), 0 10px 26px rgba(0,0,0,.28);
+    --accent:#8FB0FF; --accent-2:#B6CCFF; --accent-soft:#182742;
+    --good:#67D79C; --good-bg:#12301F; --bad:#F0907F; --bad-bg:#3A1F1A;
+    --c2:#C3A2F0; --c3:#F293BA; --c4:#DFC169; --c5:#B9D96E; --c6:#4ECFAB; --c7:#8FB0FF;
   }
+  :root:not([data-theme="light"])[data-subject="sci"] { --accent:#4ECFAB; --accent-2:#86E3C7; --accent-soft:#10362C; }
+  :root:not([data-theme="light"])[data-subject="math"]{ --accent:#8FB0FF; --accent-2:#B6CCFF; --accent-soft:#182742; }
+  :root:not([data-theme="light"])[data-subject="sst"] { --accent:#F0A183; --accent-2:#F7C2AE; --accent-soft:#3B2318; }
+  :root:not([data-theme="light"])[data-subject="eng"] { --accent:#C3A2F0; --accent-2:#D9C4F7; --accent-soft:#2A1E40; }
+  :root:not([data-theme="light"])[data-subject="hin"] { --accent:#F293BA; --accent-2:#F8BBD3; --accent-soft:#3A1A29; }
+  :root:not([data-theme="light"])[data-subject="skt"] { --accent:#DFC169; --accent-2:#EBD79A; --accent-soft:#33280F; }
+  :root:not([data-theme="light"])[data-subject="ct"]  { --accent:#6FD0E6; --accent-2:#A2E3F1; --accent-soft:#123039; }
 }
 :root[data-theme="dark"]{
-  --paper:#16140F; --surface:#211E18; --surface-2:#2B2720; --sunk:#1A1712;
-  --ink:#F2EDE4; --ink-2:#BDB5A8; --ink-3:#8D857A;
-  --rule:#38332A; --grid:#1F1C16;
-  --card-shadow:0 2px 3px rgba(0,0,0,.3), 0 8px 22px rgba(0,0,0,.25);
-  --accent:#3FC9B4; --accent-2:#7FE0D2; --accent-soft:#123833;
-  --good:#5BD08D; --good-bg:#16311F; --bad:#EC8478; --bad-bg:#3A231E;
-  --c2:#C79BE8; --c3:#F08AA4; --c4:#E4B252; --c5:#B4D465; --c6:#3FC9B4; --c7:#8AB4F8;
+  --paper:#0F141C; --surface:#18202B; --surface-2:#212B39; --sunk:#131A23;
+  --ink:#EDF2F8; --ink-2:#AEBACA; --ink-3:#8593A6;
+  --rule:#333F50; --grid:#151D26;
+  --on-accent:#0B1018;
+  --card-shadow:0 1px 2px rgba(0,0,0,.34), 0 10px 26px rgba(0,0,0,.28);
+  --accent:#8FB0FF; --accent-2:#B6CCFF; --accent-soft:#182742;
+  --good:#67D79C; --good-bg:#12301F; --bad:#F0907F; --bad-bg:#3A1F1A;
+  --c2:#C3A2F0; --c3:#F293BA; --c4:#DFC169; --c5:#B9D96E; --c6:#4ECFAB; --c7:#8FB0FF;
 }
+:root[data-theme="dark"][data-subject="sci"] { --accent:#4ECFAB; --accent-2:#86E3C7; --accent-soft:#10362C; }
+:root[data-theme="dark"][data-subject="math"]{ --accent:#8FB0FF; --accent-2:#B6CCFF; --accent-soft:#182742; }
+:root[data-theme="dark"][data-subject="sst"] { --accent:#F0A183; --accent-2:#F7C2AE; --accent-soft:#3B2318; }
+:root[data-theme="dark"][data-subject="eng"] { --accent:#C3A2F0; --accent-2:#D9C4F7; --accent-soft:#2A1E40; }
+:root[data-theme="dark"][data-subject="hin"] { --accent:#F293BA; --accent-2:#F8BBD3; --accent-soft:#3A1A29; }
+:root[data-theme="dark"][data-subject="skt"] { --accent:#DFC169; --accent-2:#EBD79A; --accent-soft:#33280F; }
+:root[data-theme="dark"][data-subject="ct"]  { --accent:#6FD0E6; --accent-2:#A2E3F1; --accent-soft:#123039; }
 *{box-sizing:border-box}
 [hidden]{display:none !important}
 body{
   margin:0; color:var(--ink); background-color:var(--paper);
-  font-family:"Figtree","Noto Sans Devanagari",system-ui,-apple-system,sans-serif; font-size:16.5px; line-height:1.62;
+  font-family:"Nunito Sans","Noto Sans Devanagari",system-ui,-apple-system,sans-serif; font-size:16.5px; line-height:1.62;
   -webkit-text-size-adjust:100%;
 }
-h1,h2,h3{font-family:"Bricolage Grotesque","Noto Sans Devanagari","Trebuchet MS",sans-serif; font-weight:800; text-wrap:balance; line-height:1.15; margin:0}
+/* Baloo 2 is the rounded display face, and it carries Devanagari itself,
+   which the grotesque it replaced did not: the Hindi and Sanskrit headings
+   used to fall through to a second family with a different weight axis.
+   Its ascenders are tall, hence 1.2 rather than 1.15, and a rounded face
+   should not be tracked in, hence no negative letter-spacing anywhere. */
+h1,h2,h3{font-family:"Baloo 2","Noto Sans Devanagari","Trebuchet MS",sans-serif; font-weight:700; text-wrap:balance; line-height:1.2; margin:0}
 .mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
-.eyebrow{font-family:"Figtree",sans-serif; font-weight:700; font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3)}
+.eyebrow{font-family:"Nunito Sans",sans-serif; font-weight:800; font-size:.72rem; letter-spacing:.09em; text-transform:uppercase; color:var(--ink-3)}
 a{color:var(--accent-2)}
 :focus-visible{outline:2.5px solid var(--accent); outline-offset:2px; border-radius:3px}
 @media (prefers-reduced-motion: reduce){*{animation:none !important; transition:none !important}}
@@ -64,16 +118,19 @@ header.mast{
   background:var(--surface); border-bottom:1px solid var(--rule);
   position:sticky; top:0; z-index:20;
 }
+/* The one band of subject colour on the page, so switching subject is felt
+   before it is read. 3px, above the sticky bar, and it carries no text. */
+header.mast::before{content:""; display:block; height:3px; background:var(--accent)}
 .mast-in{max-width:920px; margin:0 auto; padding:12px 18px 0; display:flex; flex-direction:column; gap:9px}
 .mast-top{display:flex; align-items:flex-start; gap:14px; flex-wrap:wrap; justify-content:space-between}
-.mast h1{font-size:1.5rem; letter-spacing:-.02em}
+.mast h1{font-size:1.6rem; letter-spacing:0}
 .mast .spectrum{display:flex; gap:3px; margin-top:7px}
-.mast .spectrum i{width:16px; height:4px; border-radius:1px; display:block}
+.mast .spectrum i{width:18px; height:5px; border-radius:99px; display:block}
 .tabs{display:flex; gap:2px; overflow-x:auto; scrollbar-width:thin}
 .tab{
   appearance:none; border:1px solid transparent; border-bottom:none; background:none;
-  font-family:"Figtree",sans-serif; font-weight:600; font-size:.9rem; letter-spacing:.005em;
-  color:var(--ink-2); padding:9px 14px; border-radius:7px 7px 0 0; cursor:pointer; white-space:nowrap;
+  font-family:"Nunito Sans",sans-serif; font-weight:600; font-size:.9rem; letter-spacing:.005em;
+  color:var(--ink-2); padding:9px 15px; border-radius:11px 11px 0 0; cursor:pointer; white-space:nowrap;
   margin-bottom:-1px;
 }
 .tab:hover{color:var(--ink); background:var(--surface-2)}
@@ -82,37 +139,56 @@ header.mast{
 .subjbar .seg{flex:0 0 auto}
 .subjbar .seg button{white-space:nowrap}
 .subjbar .seg button{padding:8px 18px; font-size:.8rem}
-.filter{appearance:none; cursor:pointer; font-family:"Figtree",sans-serif; font-weight:600; font-size:.82rem;
+.filter{appearance:none; cursor:pointer; font-family:"Nunito Sans",sans-serif; font-weight:600; font-size:.82rem;
   letter-spacing:.04em; padding:8px 13px; border-radius:99px; border:1px dashed var(--rule);
   background:none; color:var(--ink-3)}
 .filter:hover{color:var(--ink); border-color:var(--ink-3)}
 .filter[aria-pressed="true"]{background:var(--accent-soft); border-style:solid; border-color:var(--accent); color:var(--accent-2); font-weight:600}
-.booknote{font-family:"Figtree",sans-serif; font-weight:600; font-size:.82rem; color:var(--ink-3)}
-.empty{border:1px dashed var(--rule); border-radius:11px; padding:24px; text-align:center; color:var(--ink-2)}
+.booknote{font-family:"Nunito Sans",sans-serif; font-weight:600; font-size:.82rem; color:var(--ink-3)}
+.empty{border:1px dashed var(--rule); border-radius:var(--r); padding:24px; text-align:center; color:var(--ink-2)}
 .icon-btn{
   appearance:none; background:var(--surface-2); border:1px solid var(--rule); color:var(--ink-2);
-  width:34px; height:34px; border-radius:8px; cursor:pointer; font-size:.95rem; line-height:1; flex:none;
+  width:38px; height:38px; border-radius:99px; cursor:pointer; font-size:.95rem; line-height:1; flex:none;
 }
 .icon-btn:hover{color:var(--ink)}
 
 /* ---- generic ---- */
-.card{background:var(--surface); border:1px solid var(--rule); border-radius:16px; padding:22px; box-shadow:var(--card-shadow)}
+.card{background:var(--surface); border:1px solid var(--rule); border-radius:var(--r-lg); padding:22px; box-shadow:var(--card-shadow)}
 .stack{display:flex; flex-direction:column; gap:18px}
 .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
 .btn{
-  appearance:none; cursor:pointer; font-family:"Figtree",sans-serif; font-size:.9rem; font-weight:600;
-  letter-spacing:.03em; padding:11px 18px; border-radius:9px; border:1px solid var(--rule);
+  appearance:none; cursor:pointer; font-family:"Nunito Sans",sans-serif; font-size:.9rem; font-weight:600;
+  letter-spacing:.01em; padding:11px 18px; border-radius:var(--r); border:1px solid var(--rule);
   background:var(--surface-2); color:var(--ink);
 }
 .btn:hover{border-color:var(--ink-3)}
-.btn.primary{background:var(--accent); border-color:var(--accent); color:#fff}
-:root[data-theme="dark"] .btn.primary,:root:not([data-theme="light"]) .btn.primary{color:#08201F}
-@media (prefers-color-scheme: light){:root:not([data-theme="dark"]) .btn.primary{color:#fff}}
+.btn.primary{background:var(--accent); border-color:var(--accent); color:var(--on-accent)}
 .btn.primary:hover{background:var(--accent-2); border-color:var(--accent-2)}
 .btn:disabled{opacity:.45; cursor:not-allowed}
 .lede{color:var(--ink-2); max-width:62ch}
 .section-rule{display:flex; align-items:center; gap:12px; margin:6px 0}
 .section-rule::after{content:""; flex:1; height:1px; background:var(--rule)}
+
+/* ---- the three tiles ----
+   The brief for this page was that it should answer, above the fold, what to
+   study today, what you are weak at, and what is coming. The middle card
+   answers the first. These answer the other two in one line each, which is
+   the most a thirteen-year-old will read before deciding whether to open the
+   thing. No streak, no flame, no badge: the third tile counts chapters that
+   have questions behind them and how many you have met, which moves because
+   you worked, not because you turned up. */
+.tiles{display:grid; grid-template-columns:repeat(3,1fr); gap:11px}
+.tile{
+  background:var(--surface); border:1px solid var(--rule); border-radius:var(--r-lg);
+  padding:16px 14px; text-align:center; box-shadow:var(--card-shadow);
+}
+.tile b{
+  display:block; font-family:"Baloo 2",sans-serif; font-weight:700; font-size:2rem;
+  line-height:1.05; color:var(--tile-hue,var(--accent));
+}
+.tile span{display:block; margin-top:5px; font-size:.83rem; line-height:1.35; color:var(--ink-2)}
+.tile small{display:block; font-size:.83rem; line-height:1.35; color:var(--ink-2)}
+@media (max-width:420px){ .tile b{font-size:1.7rem} .tile{padding:14px 9px} }
 
 /* ---- exams and syllabus ---- */
 .linkish{
@@ -125,13 +201,8 @@ header.mast{
   background:var(--surface-2); border:1px solid var(--rule); border-radius:12px;
   padding:12px 15px; font-size:.95rem; color:var(--ink-2);
 }
-.examstrip .es-n{
-  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:1.5rem; font-weight:500;
-  color:var(--ink); line-height:1; min-width:1.6em; text-align:right;
-}
-.examstrip .es-body{display:flex; flex-direction:column; flex:1 1 200px; line-height:1.35}
-.examstrip .es-body b{color:var(--ink); font-weight:600}
-.examstrip .es-line{flex:1 1 auto}
+.examstrip .es-line{flex:1 1 auto; line-height:1.4}
+.examstrip .es-line b{color:var(--ink); font-weight:700}
 .examrow{
   display:flex; align-items:center; gap:12px; flex-wrap:wrap;
   border:1px solid var(--rule); border-radius:10px; padding:10px 13px; background:var(--surface-2);
@@ -155,7 +226,7 @@ header.mast{
   padding:18px 14px 48px;
 }
 .exdlg-in{
-  background:var(--surface); border:1px solid var(--rule); border-radius:16px;
+  background:var(--surface); border:1px solid var(--rule); border-radius:var(--r-lg);
   box-shadow:var(--card-shadow); width:100%; max-width:640px; padding:22px;
   display:flex; flex-direction:column; gap:16px;
 }
@@ -163,7 +234,7 @@ header.mast{
 .exf{display:flex; flex-direction:column; gap:6px}
 .exf > label, .exlab{font-weight:600; font-size:.85rem; color:var(--ink-2)}
 .exf input[type="text"], .exf input[type="date"], .exf select, .exf textarea{
-  font-family:"Figtree","Noto Sans Devanagari",system-ui,sans-serif; font-size:.95rem;
+  font-family:"Nunito Sans","Noto Sans Devanagari",system-ui,sans-serif; font-size:.95rem;
   color:var(--ink); background:var(--surface-2);
   border:1px solid var(--rule); border-radius:9px; padding:10px 12px; width:100%;
 }
@@ -171,16 +242,11 @@ header.mast{
 .exf .hint{font-size:.82rem; color:var(--ink-3); line-height:1.45}
 .exkinds{display:flex; gap:6px; flex-wrap:wrap}
 .exkinds button{
-  appearance:none; cursor:pointer; font-family:"Figtree",sans-serif; font-weight:600; font-size:.85rem;
+  appearance:none; cursor:pointer; font-family:"Nunito Sans",sans-serif; font-weight:600; font-size:.85rem;
   border:1px solid var(--rule); background:var(--surface-2); color:var(--ink-2);
   padding:8px 14px; border-radius:99px;
 }
-.exkinds button[aria-pressed="true"]{background:var(--accent); border-color:var(--accent); color:#fff}
-:root[data-theme="dark"] .exkinds button[aria-pressed="true"],
-:root:not([data-theme="light"]) .exkinds button[aria-pressed="true"]{color:#08201F}
-@media (prefers-color-scheme: light){
-  :root:not([data-theme="dark"]) .exkinds button[aria-pressed="true"]{color:#fff}
-}
+.exkinds button[aria-pressed="true"]{background:var(--accent); border-color:var(--accent); color:var(--on-accent)}
 .exgrid{display:grid; grid-template-columns:1fr 1fr; gap:12px}
 @media (max-width:560px){ .exgrid{grid-template-columns:1fr} }
 .chlist{
@@ -222,7 +288,7 @@ header.mast{
 .chip:hover{border-color:var(--ink-3); border-left-color:var(--hue)}
 .chip[aria-pressed="true"]{background:var(--surface-2); box-shadow:inset 0 0 0 1.5px var(--hue)}
 .chip .num{font-family:"IBM Plex Mono",monospace; font-size:.74rem; font-weight:600; color:var(--hue); padding-top:2px}
-.chip .nm{font-family:"Bricolage Grotesque",sans-serif; font-weight:600; font-size:.94rem; line-height:1.25; display:block}
+.chip .nm{font-family:"Baloo 2",sans-serif; font-weight:600; font-size:.94rem; line-height:1.25; display:block}
 .chip .sub{font-family:"IBM Plex Mono",monospace; font-size:.68rem; color:var(--ink-3); letter-spacing:.03em}
 .chip .tick{margin-left:auto; color:var(--hue); font-size:.9rem; opacity:0}
 .chip[aria-pressed="true"] .tick{opacity:1}
@@ -258,7 +324,7 @@ input.answer:focus,select.mt:focus{border-color:var(--accent)}
 .verdict{margin-top:16px; border-radius:10px; padding:13px 15px; border:1px solid; font-size:.95rem}
 .verdict.ok{background:var(--good-bg); border-color:color-mix(in srgb,var(--good) 40%,transparent)}
 .verdict.no{background:var(--bad-bg); border-color:color-mix(in srgb,var(--bad) 40%,transparent)}
-.verdict .vhead{font-family:"Figtree",sans-serif; font-size:.76rem; letter-spacing:.06em; text-transform:uppercase; font-weight:600; display:block; margin-bottom:5px}
+.verdict .vhead{font-family:"Nunito Sans",sans-serif; font-size:.76rem; letter-spacing:.06em; text-transform:uppercase; font-weight:600; display:block; margin-bottom:5px}
 .verdict.ok .vhead{color:var(--good)} .verdict.no .vhead{color:var(--bad)}
 .model{background:var(--sunk); border:1px dashed var(--rule); border-radius:10px; padding:13px 15px; margin-top:14px; font-size:.95rem}
 .progress{height:5px; background:var(--sunk); border-radius:99px; overflow:hidden; margin-top:2px}
@@ -266,7 +332,7 @@ input.answer:focus,select.mt:focus{border-color:var(--accent)}
 .selfcheck{display:flex; gap:8px; margin-top:12px; flex-wrap:wrap}
 
 /* ---- results ---- */
-.score{font-family:"Bricolage Grotesque",sans-serif; font-weight:800; font-size:3.4rem; line-height:1; letter-spacing:-.03em}
+.score{font-family:"Baloo 2",sans-serif; font-weight:700; font-size:3.4rem; line-height:1; letter-spacing:0}
 .bar{display:flex; align-items:center; gap:11px; padding:6px 0; font-size:.9rem}
 .bar .track{flex:1; height:9px; background:var(--sunk); border-radius:99px; overflow:hidden}
 .bar .track i{display:block; height:100%; background:var(--hue); border-radius:99px}
@@ -281,7 +347,7 @@ input.answer:focus,select.mt:focus{border-color:var(--accent)}
 .namebar{display:flex; gap:26px; flex-wrap:wrap; font-family:"IBM Plex Mono",monospace; font-size:.78rem; color:var(--ink-2); margin:16px 0 4px}
 .namebar span{flex:1 1 150px; border-bottom:1px solid var(--rule); padding-bottom:6px}
 .qsec{margin-top:26px}
-.qsec h3{font-family:"Figtree",sans-serif; font-weight:700; font-size:.82rem; letter-spacing:.14em; text-transform:uppercase; font-weight:600; color:var(--ink-2); border-bottom:1px solid var(--rule); padding-bottom:6px; margin-bottom:4px}
+.qsec h3{font-family:"Nunito Sans",sans-serif; font-weight:700; font-size:.82rem; letter-spacing:.14em; text-transform:uppercase; font-weight:600; color:var(--ink-2); border-bottom:1px solid var(--rule); padding-bottom:6px; margin-bottom:4px}
 .qsec .note{font-family:"IBM Plex Mono",monospace; font-size:.7rem; color:var(--ink-3); margin:6px 0 0}
 .q{display:flex; gap:12px; padding:11px 0; border-bottom:1px dotted var(--rule); break-inside:avoid; page-break-inside:avoid}
 .q .n{font-family:"IBM Plex Mono",monospace; font-size:.84rem; color:var(--ink-3); flex:none; width:2.1em; padding-top:2px; font-variant-numeric:tabular-nums}
@@ -339,7 +405,7 @@ input.answer:focus,select.mt:focus{border-color:var(--accent)}
 @media print{.doodle{display:none}}
 .syl h3{font-size:1.1rem; margin-bottom:2px; letter-spacing:-.01em}
 .syl .chapno{
-  display:inline-flex; align-items:center; gap:8px; font-family:"Bricolage Grotesque",sans-serif;
+  display:inline-flex; align-items:center; gap:8px; font-family:"Baloo 2",sans-serif;
   font-weight:800; font-size:.78rem; letter-spacing:.04em; text-transform:uppercase;
   color:var(--hue); background:color-mix(in srgb,var(--hue) 13%,transparent);
   border-radius:99px; padding:5px 12px; margin-bottom:11px;
@@ -355,25 +421,21 @@ input.answer:focus,select.mt:focus{border-color:var(--accent)}
 .syl .tags span{font-family:"IBM Plex Mono",monospace; font-size:.7rem; background:var(--surface-2); border:1px solid var(--rule); border-radius:99px; padding:3px 9px; color:var(--ink-2)}
 
 .fieldset{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
-.seg{display:inline-flex; border:1px solid var(--rule); border-radius:9px; overflow:hidden; background:var(--surface-2)}
+.seg{display:inline-flex; border:1px solid var(--rule); border-radius:var(--r); overflow:hidden; background:var(--surface-2)}
 /* Seven subjects will not sit on one phone-width row. The subject switcher
    wraps instead of overflowing; the small two- and three-way segments inside
    the app (length, mode) keep the single-row pill shape they were drawn for. */
 #subjSeg{flex-wrap:wrap; border:0; background:none; gap:6px; overflow:visible}
-#subjSeg button{border:1px solid var(--rule); border-radius:9px; background:var(--surface-2)}
+#subjSeg button{border:1px solid var(--rule); border-radius:99px; background:var(--surface-2)}
 /* The id selector above outranks .seg button[aria-pressed], so the selected
    subject has to restate its own colours here or it renders white-on-cream
    and becomes invisible. */
-#subjSeg button[aria-pressed="true"]{background:var(--accent); color:#fff; border-color:var(--accent)}
-:root[data-theme="dark"] #subjSeg button[aria-pressed="true"]{color:#08201F}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) #subjSeg button[aria-pressed="true"]{color:#08201F}}
+#subjSeg button[aria-pressed="true"]{background:var(--accent); color:var(--on-accent); border-color:var(--accent)}
 [data-compact] #subjSeg button{padding-left:11px; padding-right:11px; font-size:.84rem}
-.seg button{appearance:none; background:none; border:none; border-right:1px solid var(--rule); font-family:"Figtree",sans-serif; font-weight:600; font-size:.88rem; padding:9px 14px; cursor:pointer; color:var(--ink-2)}
+.seg button{appearance:none; background:none; border:none; border-right:1px solid var(--rule); font-family:"Nunito Sans",sans-serif; font-weight:600; font-size:.88rem; padding:9px 14px; cursor:pointer; color:var(--ink-2)}
 .seg button:last-child{border-right:none}
-.seg button[aria-pressed="true"]{background:var(--accent); color:#fff; font-weight:500}
-:root[data-theme="dark"] .seg button[aria-pressed="true"]{color:#08201F}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .seg button[aria-pressed="true"]{color:#08201F}}
-.lbl{font-family:"Figtree",sans-serif; font-weight:700; font-size:.76rem; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-3)}
+.seg button[aria-pressed="true"]{background:var(--accent); color:var(--on-accent); font-weight:700}
+.lbl{font-family:"Nunito Sans",sans-serif; font-weight:700; font-size:.76rem; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-3)}
 
 footer.foot{max-width:920px; margin:0 auto; padding:26px 18px 40px; color:var(--ink-3); font-size:.82rem; border-top:1px solid var(--rule)}
 
@@ -391,15 +453,39 @@ footer.foot{max-width:920px; margin:0 auto; padding:26px 18px 40px; color:var(--
 
   /* four tabs across, no sideways scrolling to find one */
   :root[data-compact] .tabs{display:grid; grid-template-columns:repeat(3,1fr); gap:4px; overflow:visible; padding-bottom:8px}
-  :root[data-compact] .tab{padding:12px 4px; min-height:46px; font-size:.74rem; text-align:center; letter-spacing:.01em; border-radius:9px; border:1px solid var(--rule); margin-bottom:0}
-  :root[data-compact] .tab[aria-selected="true"]{background:var(--accent); border-color:var(--accent); color:#fff}
+  :root[data-compact] .tab{padding:12px 4px; min-height:46px; font-size:.75rem; text-align:center; letter-spacing:.01em; border-radius:var(--r); border:1px solid var(--rule); margin-bottom:0}
+  :root[data-compact] .tab[aria-selected="true"]{background:var(--accent); border-color:var(--accent); color:var(--on-accent)}
   :root[data-compact] .mast .spectrum{display:none}
-  :root[data-compact] .subjbar{display:grid; grid-template-columns:1fr; gap:8px}
-  :root[data-compact] .subjbar .seg{width:100%}
-  :root[data-compact] .subjbar .seg button{flex:1; padding:12px 6px; min-height:46px}
-  :root[data-compact] .filter{width:100%; text-align:center; padding:11px 13px}
+  /* On a 390x844 phone this masthead was 349px tall: 41 per cent of the
+     screen spent on chrome before a word of the day's work. Three changes,
+     measured in tests/chrome-height.mjs, bring it under a quarter — the
+     title and kicker share a line, the seven subjects scroll in one row
+     rather than wrapping to two, and the exam filter only appears on the
+     tabs where it does anything. Nothing is removed. */
+  :root[data-compact] .subjbar{display:flex; gap:8px; align-items:center}
+  :root[data-compact] #subjSeg{
+    width:auto; flex:1 1 auto; min-width:0;
+    flex-wrap:nowrap; overflow-x:auto; overflow-y:hidden;
+    scrollbar-width:none; -webkit-overflow-scrolling:touch;
+    scroll-snap-type:x proximity; padding-bottom:2px;
+  }
+  :root[data-compact] #subjSeg::-webkit-scrollbar{display:none}
+  /* Seven subjects will not fit and must not wrap to a second row, so they
+     scroll; a row that scrolls with no edge showing reads as a row that ends. */
+  :root[data-compact] #subjSeg{
+    -webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 24px),transparent);
+    mask-image:linear-gradient(90deg,#000 calc(100% - 24px),transparent);
+  }
+  :root[data-compact] #subjSeg button{flex:0 0 auto; padding:9px 15px; min-height:42px; scroll-snap-align:start}
+  :root[data-compact] .filter{flex:0 0 auto; padding:10px 13px; font-size:.78rem}
   :root[data-compact] .mast-top{align-items:center; flex-wrap:nowrap; gap:10px}
-  :root[data-compact] .mast-top > div{min-width:0; flex:1}
+  :root[data-compact] .mast-top > div{min-width:0; flex:1; display:flex; align-items:baseline; gap:9px; flex-wrap:wrap}
+  :root[data-compact] .mast-in{gap:8px}
+  :root[data-compact] .mast h1{font-size:1.28rem}
+  /* The kicker is first in the source because that is the reading order on a
+     desktop, where it sits above the name. Side by side it has to follow. */
+  :root[data-compact] #kicker{margin:0; order:2; font-size:.62rem}
+  :root[data-compact] .subjbar{flex-wrap:nowrap}
 
   :root[data-compact] .card{padding:16px}
   :root[data-compact] .lede{font-size:.97rem}
@@ -466,12 +552,12 @@ footer.foot{max-width:920px; margin:0 auto; padding:26px 18px 40px; color:var(--
 .mind .m-core{fill:none; stroke:var(--hue); stroke-width:2}
 .mind .m-link{fill:none; stroke-width:1.4; opacity:.55}
 .mind .m-rule{stroke-width:2.5; stroke-linecap:round}
-.mind text{font-family:"Figtree",system-ui,sans-serif; fill:var(--ink)}
-.mind .t-core{font-family:"Bricolage Grotesque",sans-serif; font-weight:800; font-size:12.5px}
+.mind text{font-family:"Nunito Sans",system-ui,sans-serif; fill:var(--ink)}
+.mind .t-core{font-family:"Baloo 2",sans-serif; font-weight:700; font-size:12.5px}
 .mind .t-br{font-weight:700; font-size:12.5px}
 .mind .t-leaf{font-size:11.5px; fill:var(--ink-2)}
 .mindcore{display:inline-block; margin:0 0 9px; padding:6px 12px;
-  font-family:"Bricolage Grotesque",sans-serif; font-weight:800; font-size:.76rem;
+  font-family:"Baloo 2",sans-serif; font-weight:700; font-size:.78rem;
   letter-spacing:.04em; text-transform:uppercase; color:var(--ink);
   border:2px solid color-mix(in srgb,var(--hue) 55%,transparent); border-radius:10px}
 ul.mindlist{margin:0; padding:0; list-style:none}
@@ -488,7 +574,7 @@ ul.mindlist ul li::marker{color:var(--bhue)}
 .checkbar{margin:14px 0 0; padding:11px 14px; background:var(--sunk);
   border:1.5px solid var(--rule); border-left:4px solid var(--c4); border-radius:12px;
   font-size:.9rem; line-height:1.6}
-.checkbar b{font-family:"Bricolage Grotesque",sans-serif; letter-spacing:-.01em}
+.checkbar b{font-family:"Baloo 2",sans-serif; letter-spacing:-.01em}
 .checkbar a{color:var(--ink); text-underline-offset:3px}
 
 /* ---- check the book ----------------------------------------------
@@ -619,14 +705,7 @@ ul.mindlist ul li::marker{color:var(--bhue)}
          quiet line and moves to the list below. -->
     <div class="examstrip" id="examStrip" hidden></div>
 
-    <div class="card stack" id="examsCard" style="gap:12px" hidden>
-      <div class="row" style="justify-content:space-between; align-items:baseline">
-        <p class="eyebrow" style="margin:0">Exams</p>
-        <button class="btn" id="addExam">Add an exam</button>
-      </div>
-      <p class="lede" id="examsLede" style="margin:0"></p>
-      <div id="examsList" class="stack" style="gap:8px"></div>
-    </div>
+    <div class="tiles" id="tiles" hidden></div>
 
     <div id="planCard" hidden>
 
@@ -649,6 +728,15 @@ ul.mindlist ul li::marker{color:var(--bhue)}
         </div>
         <div id="missBars"></div>
         <p class="row"><button class="btn" id="startFix">Work through my mistakes</button></p>
+      </div>
+
+      <div class="card stack" id="examsCard" style="gap:12px; margin-top:14px" hidden>
+        <div class="row" style="justify-content:space-between; align-items:baseline">
+          <p class="eyebrow" style="margin:0">Exams</p>
+          <button class="btn" id="addExam">Add an exam</button>
+        </div>
+        <p class="lede" id="examsLede" style="margin:0"></p>
+        <div id="examsList" class="stack" style="gap:8px"></div>
       </div>
 
       <div class="card stack" style="gap:12px; margin-top:14px" id="readyCard" hidden>
@@ -2701,12 +2789,16 @@ function renderExamStrip(){
     return;
   }
   const d = daysTo(e.date);
-  const when = d === 0 ? 'today' : d === 1 ? 'tomorrow' : `in ${d} days`;
   const S = SUBJECTS[e.subject];
+  /* The tile above already carries the number. A second copy of it, larger,
+     is how this page came to shout a date at a boy who had already sat the
+     paper, so the strip is one quiet line: what, when, and a way in. */
+  const line = d === 0 ? 'Today. Good luck.'
+    : d === 1 ? 'Tomorrow. Tonight is for the mistakes book, not new chapters.'
+    : new Date(e.date + 'T00:00:00').toDateString().slice(0, 10).replace(/ (\d)$/, ' $1');
   el.hidden = false;
-  el.innerHTML = `<span class="es-n">${d}</span>
-    <span class="es-body"><b>${examKindLabel(e.kind)}${S ? ' &middot; ' + S.name : ''}</b>
-      <span>${d === 0 ? 'Today. Good luck.' : d === 1 ? 'Tomorrow. Tonight is for the mistakes book, not new chapters.' : `${when}, ${new Date(e.date + 'T00:00:00').toDateString().slice(4)}`}</span></span>
+  el.innerHTML = `<span class="es-line"><b>${examKindLabel(e.kind)}${S ? ' &middot; ' + S.name : ''}</b>
+      &nbsp;${line}</span>
     <button class="linkish" type="button" data-openexams="1">Syllabus</button>`;
 }
 
@@ -2732,10 +2824,50 @@ function renderExamsCard(){
   $('#examsCard').hidden = false;
 }
 
+/* Coverage across the whole subject, which is what the third tile counts. */
+function subjectCoverage(){
+  let seen = 0, total = 0;
+  subj().chapters.filter(c => c.bank).forEach(c => {
+    const cov = coverage(subject, c.n);
+    if(cov){ seen += cov.seen; total += cov.total; }
+  });
+  return {seen:seen, total:total};
+}
+
+function renderTiles(){
+  const el = $('#tiles');
+  if(!el) return;
+  const e = nextExam(), d = e ? daysTo(e.date) : null;
+  const misses = missQsOrdered(subject);
+  const cov = subjectCoverage();
+  const pct = cov.total ? Math.round(cov.seen / cov.total * 100) : 0;
+  const S = subj();
+
+  const tiles = [];
+  if(d !== null){
+    const S2 = SUBJECTS[e.subject];
+    tiles.push([d === 0 ? 'Today' : String(d),
+      (d === 0 ? '' : d === 1 ? 'day to the ' : 'days to the ')
+        + examKindLabel(e.kind).toLowerCase() + (S2 ? ' &middot; ' + S2.name : ''),
+      'var(--accent)']);
+  } else {
+    tiles.push([String(S.chapters.length), 'chapters in ' + S.name, 'var(--accent)']);
+  }
+  tiles.push([String(misses.length),
+    misses.length === 1 ? 'mistake to clear' : 'mistakes to clear',
+    misses.length ? 'var(--bad)' : 'var(--ink-3)']);
+  tiles.push([pct + '&percnt;', 'of ' + S.name + ' questions met', 'var(--good)']);
+
+  el.hidden = false;
+  el.innerHTML = tiles.map(t =>
+    `<div class="tile" style="--tile-hue:${t[2]}"><b>${t[0]}</b><small>${t[1]}</small></div>`).join('');
+}
+
 function renderToday(){
   $('#planCard').hidden = false;
   renderExamStrip();
   renderExamsCard();
+  renderTiles();
   const e = nextExam();
   const d = e ? daysTo(e.date) : null;
 
@@ -7532,12 +7664,21 @@ function visibleChapters(){
 }
 /* The filter button only makes sense when there is something to filter to,
    and it should say which paper it means. */
+/* The four views the filter actually changes. On Today and Syllabus it is a
+   control that does nothing, and on a phone it was costing a whole row of the
+   masthead to say so. */
+const FILTER_VIEWS = ['learn', 'practice', 'worksheet', 'paper'];
+let currentView = 'today';
 function refreshExamFilter(){
   const btn = $('#examFilter');
   if(!btn) return;
   const set = examChapterSet(subject), e = nextExam(subject);
-  btn.hidden = !set;
-  btn.textContent = (e ? examKindLabel(e.kind) : 'Exam') + ' chapters only';
+  btn.hidden = !set || FILTER_VIEWS.indexOf(currentView) === -1;
+  /* "Midterm chapters only" is 300px of a 390px row, and the row it shares is
+     the subject switcher. The short form says the same thing in a third of it. */
+  const compact = document.documentElement.hasAttribute('data-compact');
+  const kind = e ? examKindLabel(e.kind) : 'Exam';
+  btn.textContent = compact ? kind + ' only' : kind + ' chapters only';
   if(!set){ examOnly = false; btn.setAttribute('aria-pressed', 'false'); }
 }
 
@@ -7576,14 +7717,14 @@ const MIND_HUES = ['var(--c6)','var(--c3)','var(--c7)','var(--c4)','var(--c5)','
    The character count survives as a fallback for anywhere without a
    canvas, so the function cannot fail outright. */
 const MIND_FONT = {
-  leaf: '11.5px Figtree, system-ui, sans-serif',
-  br:   '700 12.5px Figtree, system-ui, sans-serif',
-  core: '800 12.5px "Bricolage Grotesque", sans-serif'
+  leaf: '11.5px Nunito Sans, system-ui, sans-serif',
+  br:   '700 12.5px Nunito Sans, system-ui, sans-serif',
+  core: '700 12.5px "Baloo 2", sans-serif'
 };
 const MIND_FONT_DEVA = {
-  leaf: '12px "Noto Sans Devanagari", Figtree, system-ui, sans-serif',
-  br:   '600 12.5px "Noto Sans Devanagari", Figtree, system-ui, sans-serif',
-  core: '700 12.5px "Noto Sans Devanagari", "Bricolage Grotesque", sans-serif'
+  leaf: '12px "Noto Sans Devanagari", Nunito Sans, system-ui, sans-serif',
+  br:   '600 12.5px "Noto Sans Devanagari", Nunito Sans, system-ui, sans-serif',
+  core: '700 12.5px "Noto Sans Devanagari", "Baloo 2", sans-serif'
 };
 let _mctx = null, _decoder = null;
 function textWidth(str, font){
@@ -7869,6 +8010,9 @@ function renderKicker(){
 function gateSubject(){
   /* Devanagari needs looser lines than Latin; the flag drives the CSS above. */
   document.documentElement.setAttribute('data-script', subj().script || 'latn');
+  /* Repaints the app in the subject's colour: every rule already says
+     var(--accent), and data-subject is what redefines it. */
+  document.documentElement.setAttribute('data-subject', subject);
   /* This tab is entirely about the September science paper, its heading, its
      6.1-only note and its revision plan. Under maths it was showing the science
      chapters, so hide it rather than mislabel it. */
@@ -7900,10 +8044,12 @@ function renderSyllabus(){
    WIRING
    ============================================================ */
 function showView(name){
+  currentView = name;
   ['today','learn','practice','worksheet','paper','syllabus'].forEach(v => {
     $('#view-' + v).hidden = v !== name;
     $('#tab-' + v).setAttribute('aria-selected', v === name);
   });
+  refreshExamFilter();
 }
 $$('.tab').forEach(t => t.addEventListener('click', () => showView(t.dataset.view)));
 
@@ -7929,6 +8075,10 @@ $$('#subjSeg button').forEach(b => b.addEventListener('click', () => {
   $('#p-run').hidden = true; $('#p-done').hidden = true; $('#p-setup').hidden = false;
   refreshPool();
   renderLearn(); renderSyllabus(); gateSubject(); renderToday();
+  /* On a phone the seven subjects scroll in one row, so the one just chosen
+     can be off the edge of it. Nearest, not centre: centring jumps the row
+     for a pill that was already fully visible. */
+  b.scrollIntoView({block:'nearest', inline:'nearest', behavior:'smooth'});
   window.scrollTo(0, 0);
 }));
 $('#examFilter').addEventListener('click', () => {
@@ -8013,6 +8163,11 @@ if('serviceWorker' in navigator){
 renderKicker();
 renderLearn();
 gateSubject();
+/* Puts the view in a known state rather than trusting the markup: it is what
+   sets data-subject, and what decides whether the exam filter belongs on the
+   tab you land on. Without it the filter shipped visible on Today, where it
+   does nothing. */
+showView('today');
 renderToday();
 renderSyllabus();
 renderStats();
@@ -8024,7 +8179,8 @@ refreshPool();
      attribute into --dys-accent and every use of it carries a fallback
      (#0EA5E9), so the on and hover states came out sky blue, a colour
      that appears nowhere else here. Pointing it at --accent gives them
-     the site teal #0E8F7E. The idle border stays black by design. -->
+     whichever subject colour is in play. The idle border stays black by
+     design. -->
 <script src="../js/dyslexia-font.js" data-accent="var(--accent)" data-radius="99px" defer></script>
 </body>
 </html>

@@ -18,13 +18,37 @@
  * compares it against the column the layout gave it. At a 41-character
  * leaf it found two lines 1.4px and 2.6px over; hence 38.
  *
- * One caveat worth knowing: Google Fonts does not load in the agent
- * sandbox, so this measures the system fallback rather than Figtree. The
- * fallback is the wider face, which makes the check conservative. The
- * blocked font request is the only network error tolerated below.
+ * On the font, which is the whole point. The wrapping is measured through a
+ * canvas context, so the measurement is only as good as the face it is taken
+ * in, and Google Fonts is unreachable from CI and from the agent sandbox. Run
+ * `bash tests/fetch-fonts.sh <dir>` once and pass ALAB_FONTS=<dir> and this
+ * serves the real Baloo 2 and Nunito Sans from disk, so it measures what a
+ * phone renders. Without it the system fallback is measured instead — a wider
+ * face, so the check stays conservative rather than wrong — and the run says
+ * which of the two it did. The blocked font request is the only network error
+ * tolerated below.
  */
 const BASE = process.env.ALAB_URL || 'http://localhost:8199/';
-import { existsSync, readdirSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
+import { join } from 'node:path';
+
+/* Serve the webfonts from disk when they have been fetched, so the wrapping
+   is measured in the shipped face rather than in whatever the box falls back
+   to. See tests/fetch-fonts.sh. */
+const FONTS = process.env.ALAB_FONTS && existsSync(join(process.env.ALAB_FONTS, 'gf-local.css'))
+  ? process.env.ALAB_FONTS : null;
+const TYPE = { woff2:'font/woff2', woff:'font/woff', ttf:'font/ttf' };
+async function serveFonts(page){
+  if(!FONTS) return;
+  await page.route('https://fonts.googleapis.com/**', r =>
+    r.fulfill({ contentType:'text/css', body:readFileSync(join(FONTS, 'gf-local.css')) }));
+  await page.route('**/fonts/*.woff2', r => {
+    const name = r.request().url().split('/').pop().split('?')[0];
+    const f = join(FONTS, 'fonts', name);
+    if(!existsSync(f)) return r.abort();
+    r.fulfill({ contentType:TYPE.woff2, body:readFileSync(f) });
+  });
+}
 /* Playwright's own default path carries the version it shipped with, so a
    newer playwright-core against an older vendored Chromium looks like "not
    installed". Find whatever is actually on disk instead. */
@@ -56,11 +80,19 @@ const open = async (w, h) => {
   const errs = [];
   p.on('pageerror', e => errs.push(String(e)));
   p.on('console', m => { if (m.type() === 'error') errs.push(m.text()); });
+  await serveFonts(p);
   await p.goto(BASE, { waitUntil: 'load' });
+  /* The Learn view redraws once on document.fonts.ready, because a map
+     wrapped before the webfont arrived is laid out for the wrong widths.
+     Wait for that, or this measures the pre-swap layout. */
+  await p.evaluate(() => document.fonts.ready).catch(() => {});
   await p.click('#tab-learn');
-  await p.waitForTimeout(300);
+  await p.waitForTimeout(FONTS ? 700 : 300);
   return { p, errs };
 };
+console.log(FONTS
+  ? 'measuring in the shipped webfonts (ALAB_FONTS=' + FONTS + ')'
+  : 'measuring in the SYSTEM FALLBACK face: run tests/fetch-fonts.sh and set ALAB_FONTS for the real thing');
 
 /* Expected per subject: how many chapters, and how many of them carry a
    mind map. A subject still on the arrow-line fallback shows 0 maps and
