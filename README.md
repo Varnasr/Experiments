@@ -328,14 +328,61 @@ Installable PWA: add it to a phone or tablet home screen and it works fully offl
 
 ---
 
-### Agastya's Science Lab
+### A Lab
 
-A mobile-first Class VIII science revision app built around Agastya's Sardar Patel Vidyalaya Semester 1 syllabus: microorganisms, health, electricity, forces, pressure in solids and liquids, and the particulate nature of matter. Each chapter has focused multiple-choice practice with immediate explanations, plus a mixed exam mode and private on-device progress tracking.
+Year-round CBSE Class VIII revision across seven subjects, from the current NCERT
+books: science (*Curiosity*), maths (*Ganita Prakash*), social science (*Exploring
+Society: India and Beyond*), Hindi (*Malhar*), Sanskrit (*Ruchira 3*), English
+grammar, and the CBSE computational thinking and AI handbook. Every chapter carries
+a mind map, notes, and a question bank that marks instantly and explains why an
+answer is wrong: 1,546 questions across multiple choice, true/false, fill-in,
+numerical, assertion-reason, matching and written answers, every chapter of
+every subject covered. Around them: printable worksheets, mock papers in the CBSE pattern,
+a mistakes book on a spaced-repetition schedule, and a countdown that works backwards
+from the next exam date.
 
-**Directory:** `agastya-science/`
+It also carries a second layer, **Check the book**. The notes follow the textbook,
+because the paper is set from the textbook. Where the textbook is wrong, thin, or
+handing a reader one side of a live argument as settled fact, a panel under the notes
+says what is actually the case, names the source, and then says what to write in the
+exam anyway. Marks and accuracy are different problems and a thirteen-year-old should
+not have to choose. Entries need a dated source, a named case, a statute or a
+published figure, and three kinds only: wrong, thin, and taking a side it does
+not admit is a side.
+
+Twenty-seven so far, across five subjects. Social science has six: three in
+civics 5 on what a VVPAT slip actually does, that there is no recount on demand,
+and that "adult" meant twenty-one until 1989; one in history 3 on the Marathas
+claim being a ranking rather than a fact; two in heritage 15 on the reach of
+bhakti and on what it did and did not change. Science has nine, including that
+most vaccines a Class VIII student has had contain no pathogen at all, that the
+year is not 365 and a quarter days and why 1900 was not a leap year, and that a
+mirror reverses front and back rather than left and right. Hindi has nine on the
+Malhar lessons, written in Hindi: that Gayaprasad Shukla published nationalist
+verse under a different pen name because he was a government servant, that the
+Haridwar "letter" is a dispatch to the journal Bharatendu himself edited, that
+Kabir left no manuscript and the three recensions disagree, and that Bose wrote
+the Mandalay letters while held without trial under Regulation III of 1818.
+Maths has two, on zero and on the Baudhayana-Pythagoras theorem, and the AI
+handbook one, putting numbers to the face-recognition study it describes.
+
+The Hindi entries carry Devanagari headings, because an English frame around
+Hindi prose reads as a translation of something.
+
+**Directory:** `alab/`
 **Stage:** Active
 
-Installable and offline-capable, with no framework or external dependency. Open `agastya-science/index.html` to use it locally.
+Installable and offline-capable, with no framework or external dependency. Open
+`alab/index.html` to use it locally, or visit [alab.cloud](https://alab.cloud).
+Three checks live in `alab/tests/`, all needing `playwright-core` and a local
+server. `mind-render.mjs` measures every text node in a real browser rather than
+trusting the layout arithmetic. `bank-check.mjs` reads the assembled question
+bank out of the running page and looks for answer indices past the end of their
+options, chapters that offer practice with nothing behind them, and duplicate
+question stems, which matter because a question's identity in the mistakes book
+is a hash of its text. `smoke.mjs` drives practice, worksheet and mock paper in
+every subject, since adding data is exactly the change that leaves the data
+valid and a view broken.
 
 ---
 
