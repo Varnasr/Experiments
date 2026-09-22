@@ -1,13 +1,13 @@
 {
-  "name": "A Lab \u2014 CBSE Class VIII",
+  "name": "A Lab — CBSE Class VIII",
   "short_name": "A Lab",
-  "description": "CBSE Class VIII maths and science: notes, mind maps, practice, worksheets and tests.",
+  "description": "CBSE Class VIII across seven subjects: mind maps, notes, practice, worksheets, mock papers, and a layer that checks the textbook.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#F1F2ED",
-  "theme_color": "#0E7C74",
+  "background_color": "#F4F7FB",
+  "theme_color": "#10775C",
   "icons": [
     {
       "src": "icon.svg",
