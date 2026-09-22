@@ -1,7 +1,8 @@
 /* Structural check on the question bank.
  *
- *   cd alab && python3 -m http.server 8199 &
- *   node tests/bank-check.mjs
+ *   python3 -m http.server 8199 &          # from the REPO ROOT, not alab/:
+ *                                          # the page loads ../js/dyslexia-font.js
+ *   cd alab && ALAB_URL=http://localhost:8199/alab/ node tests/bank-check.mjs
  *
  * It cannot tell you whether 7 x 98 is 686. It can tell you the things
  * that are wrong in a way nobody notices while authoring and every

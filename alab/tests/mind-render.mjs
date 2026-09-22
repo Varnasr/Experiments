@@ -1,7 +1,8 @@
 /* Render check for the mind maps and the check-the-book layer.
  *
- *   cd alab && python3 -m http.server 8199 &
- *   node tests/mind-render.mjs
+ *   python3 -m http.server 8199 &          # from the REPO ROOT, not alab/:
+ *                                          # the page loads ../js/dyslexia-font.js
+ *   cd alab && ALAB_URL=http://localhost:8199/alab/ node tests/mind-render.mjs
  *
  * Needs playwright-core and a Chromium. Neither is vendored here, so the
  * script resolves both and says what is missing rather than failing oddly:

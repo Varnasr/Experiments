@@ -1,7 +1,8 @@
 /* End-to-end smoke test for the views that consume the question bank.
  *
- *   cd alab && python3 -m http.server 8199 &
- *   node tests/smoke.mjs
+ *   python3 -m http.server 8199 &          # from the REPO ROOT, not alab/:
+ *                                          # the page loads ../js/dyslexia-font.js
+ *   cd alab && ALAB_URL=http://localhost:8199/alab/ node tests/smoke.mjs
  *
  * bank-check.mjs validates the data. This drives the app: it starts a
  * practice run in each subject, answers a question and checks that the
