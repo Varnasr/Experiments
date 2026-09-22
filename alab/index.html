@@ -114,6 +114,104 @@ header.mast{
 .section-rule{display:flex; align-items:center; gap:12px; margin:6px 0}
 .section-rule::after{content:""; flex:1; height:1px; background:var(--rule)}
 
+/* ---- exams and syllabus ---- */
+.linkish{
+  appearance:none; border:none; background:none; padding:0; cursor:pointer;
+  font:inherit; font-weight:600; color:var(--accent-2); text-decoration:underline;
+  text-underline-offset:3px;
+}
+.examstrip{
+  display:flex; align-items:center; gap:13px; flex-wrap:wrap;
+  background:var(--surface-2); border:1px solid var(--rule); border-radius:12px;
+  padding:12px 15px; font-size:.95rem; color:var(--ink-2);
+}
+.examstrip .es-n{
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:1.5rem; font-weight:500;
+  color:var(--ink); line-height:1; min-width:1.6em; text-align:right;
+}
+.examstrip .es-body{display:flex; flex-direction:column; flex:1 1 200px; line-height:1.35}
+.examstrip .es-body b{color:var(--ink); font-weight:600}
+.examstrip .es-line{flex:1 1 auto}
+.examrow{
+  display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+  border:1px solid var(--rule); border-radius:10px; padding:10px 13px; background:var(--surface-2);
+}
+.examrow.past{opacity:.62}
+.examrow .er-main{display:flex; flex-direction:column; flex:1 1 150px; min-width:0; line-height:1.35; font-size:.93rem}
+.examrow .er-side{display:flex; align-items:center; gap:10px; margin-left:auto}
+.examrow .er-main span{color:var(--ink-2); font-size:.86rem}
+.examrow .er-when{
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:.82rem; color:var(--ink-2);
+  white-space:nowrap;
+}
+.examrow .btn{padding:7px 13px; font-size:.82rem}
+
+/* The editor. A plain overlay rather than <dialog>, so the scroll and the
+   focus ring behave the same everywhere this gets opened, including inside
+   the installed app on a phone. */
+.exdlg{
+  position:fixed; inset:0; z-index:60; background:rgba(20,16,10,.45);
+  display:flex; align-items:flex-start; justify-content:center; overflow-y:auto;
+  padding:18px 14px 48px;
+}
+.exdlg-in{
+  background:var(--surface); border:1px solid var(--rule); border-radius:16px;
+  box-shadow:var(--card-shadow); width:100%; max-width:640px; padding:22px;
+  display:flex; flex-direction:column; gap:16px;
+}
+.exdlg h2{font-size:1.15rem}
+.exf{display:flex; flex-direction:column; gap:6px}
+.exf > label, .exlab{font-weight:600; font-size:.85rem; color:var(--ink-2)}
+.exf input[type="text"], .exf input[type="date"], .exf select, .exf textarea{
+  font-family:"Figtree","Noto Sans Devanagari",system-ui,sans-serif; font-size:.95rem;
+  color:var(--ink); background:var(--surface-2);
+  border:1px solid var(--rule); border-radius:9px; padding:10px 12px; width:100%;
+}
+.exf textarea{min-height:92px; resize:vertical; line-height:1.5}
+.exf .hint{font-size:.82rem; color:var(--ink-3); line-height:1.45}
+.exkinds{display:flex; gap:6px; flex-wrap:wrap}
+.exkinds button{
+  appearance:none; cursor:pointer; font-family:"Figtree",sans-serif; font-weight:600; font-size:.85rem;
+  border:1px solid var(--rule); background:var(--surface-2); color:var(--ink-2);
+  padding:8px 14px; border-radius:99px;
+}
+.exkinds button[aria-pressed="true"]{background:var(--accent); border-color:var(--accent); color:#fff}
+:root[data-theme="dark"] .exkinds button[aria-pressed="true"],
+:root:not([data-theme="light"]) .exkinds button[aria-pressed="true"]{color:#08201F}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]) .exkinds button[aria-pressed="true"]{color:#fff}
+}
+.exgrid{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+@media (max-width:560px){ .exgrid{grid-template-columns:1fr} }
+.chlist{
+  border:1px solid var(--rule); border-radius:10px; max-height:290px; overflow-y:auto;
+  background:var(--surface-2);
+}
+.chrow{border-bottom:1px solid var(--rule)}
+.chrow:last-child{border-bottom:none}
+.chrow > .chhead{display:flex; align-items:flex-start; gap:10px; padding:9px 12px}
+.chrow input[type="checkbox"]{width:19px; height:19px; margin:2px 0 0; accent-color:var(--accent); flex-shrink:0}
+.chrow .chname{flex:1 1 auto; font-size:.92rem; line-height:1.35; cursor:pointer}
+.chrow .chname small{display:block; color:var(--ink-3); font-size:.78rem}
+.chrow .chtop{
+  appearance:none; border:none; background:none; cursor:pointer; font:inherit;
+  font-size:.78rem; font-weight:600; color:var(--accent-2); padding:0 0 0 8px; white-space:nowrap;
+}
+.toplist{padding:0 12px 11px 42px; display:flex; flex-direction:column; gap:6px}
+.toplist label{display:flex; gap:9px; align-items:flex-start; font-size:.86rem; line-height:1.35; color:var(--ink-2)}
+.toplist input[type="checkbox"]{width:17px; height:17px; margin:1px 0 0; accent-color:var(--accent)}
+.exnote{
+  font-size:.86rem; color:var(--ink-2); background:var(--surface-2);
+  border:1px solid var(--rule); border-left:3px solid var(--accent); border-radius:8px;
+  padding:9px 12px; line-height:1.5;
+}
+.exnote.warn{border-left-color:var(--bad)}
+.exbar{display:flex; gap:9px; flex-wrap:wrap; align-items:center; border-top:1px solid var(--rule); padding-top:14px}
+.exbar .spacer{flex:1 1 auto}
+.pgrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(148px,1fr)); gap:8px}
+.pgrid label{display:flex; align-items:center; gap:8px; font-size:.82rem; color:var(--ink-2)}
+.pgrid input{width:68px; padding:6px 8px; font-size:.85rem}
+
 /* ---- chapter chips ---- */
 .chapters{display:grid; grid-template-columns:repeat(auto-fill,minmax(232px,1fr)); gap:9px}
 .chip{
@@ -217,11 +315,6 @@ input.answer:focus,select.mt:focus{border-color:var(--accent)}
   line-height:1.85;
 }
 [data-script="deva"] .qtext, [data-script="deva"] .sheet .qtext{ font-size:1.06rem; }
-.countdown{display:flex; align-items:baseline; gap:12px; flex-wrap:wrap;
-  padding:18px 20px; border-radius:var(--r); border:1px solid var(--line); background:var(--card)}
-.countdown b{font-family:"Bricolage Grotesque",sans-serif; font-size:2.6rem; line-height:1; color:var(--accent)}
-.countdown span{color:var(--ink-2)}
-[data-compact] .countdown b{font-size:2.1rem}
 .part{display:flex; gap:11px; align-items:flex-start; padding:11px 13px; border-radius:12px;
   border:1px solid var(--line); background:var(--bg-2)}
 .part .n{flex:0 0 auto; width:23px; height:23px; border-radius:50%; display:grid; place-items:center;
@@ -521,18 +614,21 @@ ul.mindlist ul li::marker{color:var(--bhue)}
 <section id="view-today" role="tabpanel" aria-labelledby="tab-today">
   <div class="stack" style="padding-top:24px">
 
-    <div class="card" id="dateCard" hidden>
-      <p class="eyebrow">First, one question</p>
-      <h2 style="font-size:1.15rem; margin:6px 0 8px">When is the exam?</h2>
-      <p class="lede" style="margin-bottom:14px">Put the date in and this page will work backwards from it, what to do today, and how much is left. Nothing is sent anywhere; it stays on this device.</p>
-      <div class="row">
-        <input class="answer" type="date" id="examDate" style="max-width:220px">
-        <button class="btn" id="saveDate">Save</button>
+    <!-- The exam strip. Small on purpose: a date is context for the day's
+         work, not the headline. A date that has passed says so in one
+         quiet line and moves to the list below. -->
+    <div class="examstrip" id="examStrip" hidden></div>
+
+    <div class="card stack" id="examsCard" style="gap:12px" hidden>
+      <div class="row" style="justify-content:space-between; align-items:baseline">
+        <p class="eyebrow" style="margin:0">Exams</p>
+        <button class="btn" id="addExam">Add an exam</button>
       </div>
+      <p class="lede" id="examsLede" style="margin:0"></p>
+      <div id="examsList" class="stack" style="gap:8px"></div>
     </div>
 
     <div id="planCard" hidden>
-      <div class="countdown" id="countdown"></div>
 
       <div class="card stack" style="gap:14px; margin-top:14px">
         <div>
@@ -542,7 +638,7 @@ ul.mindlist ul li::marker{color:var(--bhue)}
         </div>
         <div id="planParts" class="stack" style="gap:9px"></div>
         <p class="row"><button class="btn primary" id="startToday">Start today&rsquo;s session</button>
-          <button class="btn" id="changeDate">Change date</button></p>
+          <button class="btn" id="manageExams">Exams &amp; syllabus</button></p>
       </div>
 
       <div class="card stack" style="gap:12px; margin-top:14px" id="missCard" hidden>
@@ -736,8 +832,8 @@ ul.mindlist ul li::marker{color:var(--bhue)}
 
 </main>
 <footer class="foot">
-  <p>Built for CBSE Class 8 Science, Semester 1, from the NCERT <em>Curiosity</em> textbook. Question bank written for practice, it is not a past paper and not an official CBSE sample paper.</p>
-  <p class="mono" style="font-size:.72rem; letter-spacing:.06em; margin:10px 0 0">Build 4 &middot; 30 August 2026 &middot; 304 questions</p>
+  <p>Revision for CBSE Class 8 across seven subjects, written against the NCERT books each one sets. The question bank is written for practice: it is not a past paper and not an official CBSE sample paper. Where a <b>Check the book</b> panel disagrees with the textbook it gives its source and then says what to write in the exam anyway, because the paper is marked from the book.</p>
+  <p class="mono" style="font-size:.72rem; letter-spacing:.06em; margin:10px 0 0">Build 5 &middot; 22 September 2026 &middot; 1,546 questions</p>
 </footer>
 <script>
 "use strict";
@@ -1925,8 +2021,9 @@ function renderStats(){
    set three weeks before the paper. */
 function defaultChapters(){
   const cs = subj().chapters.filter(c => c.bank);
-  const exam = cs.filter(c => c.exam);
-  return (subj().hasExam && exam.length ? exam : cs).map(c => c.n);
+  const set = examChapterSet(subject);
+  const exam = set ? cs.filter(c => set.has(c.n)) : [];
+  return (exam.length ? exam : cs).map(c => c.n);
 }
 
 
@@ -2006,20 +2103,577 @@ function coverage(sub, n){
   return {seen:all.filter(q => seen[QID(q)]).length, total:all.length};
 }
 
-/* ---------- the plan ---------- */
+/* ---------- the plan ----------
+   All that survives of alab.plan.v1 is the read, so the one exam date it used
+   to hold can be lifted into the exam list once. Nothing writes it any more. */
 const plan = () => readJSON(PLAN_KEY);
-function savePlan(o){ writeJSON(PLAN_KEY, Object.assign(plan(), o)); }
-function daysToExam(){
-  const d = plan().exam; if(!d) return null;
-  const then = new Date(d + 'T00:00:00'), now = new Date(dayKey() + 'T00:00:00');
-  return Math.round((then - now) / 86400000);
+
+/* ============================================================
+   EXAMS AND SYLLABUS
+   The old model was one date in alab.plan.v1 and nothing else, which
+   is why a date that had passed had nowhere to go and the homepage
+   shouted DONE at a boy who had already sat the paper.
+
+   An exam now has a kind, a subject, a date and a syllabus, and there
+   can be several. The syllabus is the useful half: ticked chapters, and
+   within a chapter the branches of its mind map, which are its topics
+   and already exist as data. Textbook page ranges map to chapters
+   through `pages` on the chapter, which the owner fills in once per
+   book (there is no page index in NCERT's files and inventing one
+   would be worse than leaving it empty).
+
+   Nothing is sent anywhere; this stays in localStorage on the device.
+   ============================================================ */
+const EXAM_KEY = 'alab.exams.v1';
+const EXAM_KINDS = [
+  {id:'unit',    label:'Unit test'},
+  {id:'midterm', label:'Midterm'},
+  {id:'annual',  label:'Annual'},
+  {id:'other',   label:'Other'}
+];
+const examsAll = () => { const r = readJSON(EXAM_KEY); return Array.isArray(r.list) ? r.list : []; };
+function saveExams(list){ writeJSON(EXAM_KEY, {list:list}); }
+
+/* One-time lift of the old single date so nobody loses theirs. */
+function migrateOldPlan(){
+  const old = plan().exam;
+  if(!old || readJSON(EXAM_KEY).migrated) return;
+  const list = examsAll();
+  if(!list.some(e => e.date === old)){
+    list.push({id:'m' + Date.now(), kind:'other', name:'Exam', subject:'sci', date:old, syl:{chapters:[], topics:{}, pages:'', note:''}});
+  }
+  writeJSON(EXAM_KEY, {list:list, migrated:true});
+}
+
+const daysTo = d => {
+  if(!d) return null;
+  return Math.round((new Date(d + 'T00:00:00') - new Date(dayKey() + 'T00:00:00')) / 86400000);
+};
+/* The next exam that has not happened; if they have all passed, none.
+   A finished exam is history, not a headline. */
+function nextExam(sub){
+  return examsAll()
+    .filter(e => e.date && daysTo(e.date) >= 0 && (!sub || e.subject === sub))
+    .sort((a, b) => a.date < b.date ? -1 : 1)[0] || null;
+}
+function pastExams(sub){
+  return examsAll()
+    .filter(e => e.date && daysTo(e.date) < 0 && (!sub || e.subject === sub))
+    .sort((a, b) => a.date > b.date ? -1 : 1);
+}
+const examKindLabel = k => (EXAM_KINDS.find(x => x.id === k) || {label:'Exam'}).label;
+
+/* The chapters an exam covers. Empty syllabus means the whole subject:
+   an exam with nothing ticked should not silently hide every chapter. */
+function sylChapters(e){
+  if(!e) return null;
+  const S = SUBJECTS[e.subject];
+  if(!S) return null;
+  const picked = (e.syl && e.syl.chapters) || [];
+  if(!picked.length) return null;
+  return new Set(picked.map(Number));
+}
+/* Topics are the branches of the chapter's mind map. Nothing ticked in a
+   chapter means the whole chapter. */
+function sylTopics(e, n){
+  const t = e && e.syl && e.syl.topics && e.syl.topics[n];
+  return (Array.isArray(t) && t.length) ? t.slice() : null;
+}
+function sylSummary(e){
+  const S = SUBJECTS[e.subject] || {chapters:[]};
+  const ch = (e.syl && e.syl.chapters) || [];
+  if(!ch.length) return 'Whole subject';
+  const tcount = Object.keys((e.syl && e.syl.topics) || {})
+    .filter(k => ch.indexOf(+k) !== -1 && (e.syl.topics[k] || []).length).length;
+  return ch.length + ' of ' + S.chapters.length + ' chapters'
+       + (tcount ? ', ' + tcount + ' narrowed to topics' : '');
+}
+
+/* ---------- the textbook page index ----------
+   "Page 96 to 140" is how a school writes a syllabus and how the boy reads
+   it, so the app has to speak it. There is no page index in NCERT's files
+   and inventing one would be worse than leaving it empty, so the first page
+   of each chapter is typed in once per book, from the book, and kept here.
+   Until that is done a page range resolves to nothing and says so. */
+const PAGES_KEY = 'alab.pages.v1';
+const pageIndexAll = () => readJSON(PAGES_KEY);
+const pageIndex = sub => pageIndexAll()[sub] || {};
+function savePageIndex(sub, map){
+  const all = pageIndexAll();
+  all[sub] = map;
+  writeJSON(PAGES_KEY, all);
+}
+/* "14-40, 96, 101 - 110" and the en dash a PDF will give you. */
+function parseRanges(str){
+  return String(str || '').split(/[,;\n]+/).map(part => {
+    const m = part.match(/(\d+)\s*(?:[-‒-―]\s*(\d+))?/);
+    if(!m) return null;
+    const a = +m[1], b = m[2] ? +m[2] : a;
+    return a <= b ? [a, b] : [b, a];
+  }).filter(Boolean);
+}
+/* Null means there is no page index for this subject yet, which is a
+   different answer from "no chapter is in that range". */
+function chaptersFromPages(sub, str){
+  const idx = pageIndex(sub), S = SUBJECTS[sub];
+  if(!S) return null;
+  const starts = S.chapters
+    .map(c => ({n:c.n, p:+idx[c.n]}))
+    .filter(x => x.p > 0)
+    .sort((a, b) => a.p - b.p);
+  if(!starts.length) return null;
+  const spans = starts.map((x, i) => [x.n, x.p, i + 1 < starts.length ? starts[i + 1].p - 1 : Infinity]);
+  const want = parseRanges(str);
+  if(!want.length) return [];
+  const hit = new Set();
+  spans.forEach(([n, from, to]) => {
+    if(want.some(([a, b]) => a <= to && b >= from)) hit.add(n);
+  });
+  return Array.from(hit).sort((a, b) => a - b);
+}
+
+/* ---------- reading a syllabus somebody else wrote ----------
+   Two ways in, because both happen: the school sends a PDF, or the teacher
+   dictates and it gets typed into WhatsApp. Either way this only ever
+   proposes ticks; nothing is applied without the boy seeing what changed. */
+const normTitle = s => esc(s).toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
+
+function parseSyllabusText(sub, text){
+  const S = SUBJECTS[sub];
+  const hay = ' ' + normTitle(text) + ' ';
+  const out = {byTitle:[], byNumber:[]};
+  if(!S || !hay.trim()) return out;
+  S.chapters.forEach(c => {
+    const t = normTitle(c.title);
+    if(t.length >= 7 && hay.indexOf(t) !== -1){ out.byTitle.push(c.n); return; }
+    /* A bare number is weak evidence, so it has to be introduced by a word
+       that means chapter, in one of the three scripts this app is in. */
+    const kw = '(?:chapter|chap|ch|lesson|unit|adhyay|adhyaya|paath|path|अध्याय|पाठ)';
+    if(new RegExp(kw + '\\s*0*' + c.n + '(?![0-9])', 'i').test(hay)) out.byNumber.push(c.n);
+  });
+  return out;
+}
+
+/* PDF text, without a library, because this app has no dependencies and has
+   to keep working offline. It inflates the FlateDecode streams and pulls the
+   literal strings out of the text operators. That covers a PDF somebody
+   typed. It does not cover a scan, and it does not cover Devanagari in a
+   subset font, so the caller checks what came back and says so plainly
+   rather than pretending it read something. */
+async function inflate(bytes){
+  if(typeof DecompressionStream === 'undefined') return null;
+  for(const fmt of ['deflate', 'deflate-raw']){
+    try{
+      const s = new Blob([bytes]).stream().pipeThrough(new DecompressionStream(fmt));
+      return new Uint8Array(await new Response(s).arrayBuffer());
+    }catch(e){ /* wrong wrapper, try the other */ }
+  }
+  return null;
+}
+function unescapePdf(s){
+  return s.replace(/\\(\d{1,3}|.)/g, (m, c) => {
+    if(/^\d+$/.test(c)) return String.fromCharCode(parseInt(c, 8));
+    return {n:'\n', r:'\n', t:'\t', b:'', f:'', '(':'(', ')':')', '\\':'\\'}[c] !== undefined
+      ? {n:'\n', r:'\n', t:'\t', b:'', f:'', '(':'(', ')':')', '\\':'\\'}[c] : c;
+  });
+}
+function pdfTextFromContent(s){
+  const out = [];
+  /* Literal strings, hex strings, and the operators that end a line. Nested
+     unescaped parens inside a string will cut it short; rare enough to
+     accept, and the worst case is a missed word, not a wrong tick. */
+  const re = /\((?:\\[\s\S]|[^\\()])*\)|<([0-9A-Fa-f\s]+)>|T[dD*]|TJ|Tj|ET/g;
+  let m;
+  while((m = re.exec(s))){
+    const t = m[0];
+    if(t[0] === '(') out.push(unescapePdf(t.slice(1, -1)));
+    else if(t[0] === '<'){
+      const h = m[1].replace(/\s+/g, '');
+      let str = '';
+      for(let i = 0; i + 1 < h.length; i += 2) str += String.fromCharCode(parseInt(h.substr(i, 2), 16));
+      out.push(str);
+    }
+    else if(t === 'Td' || t === 'TD' || t === 'T*' || t === 'ET') out.push('\n');
+  }
+  return out.join('');
+}
+async function pdfText(buf){
+  const bytes = new Uint8Array(buf);
+  const raw = new TextDecoder('latin1').decode(bytes);   /* one char per byte, so indices line up */
+  let text = '', i = 0, guard = 0;
+  while((i = raw.indexOf('stream', i)) !== -1 && guard++ < 4000){
+    if(raw.slice(i - 3, i) === 'end'){ i += 6; continue; }
+    let j = i + 6;
+    if(raw[j] === '\r') j++;
+    if(raw[j] === '\n') j++;
+    const end = raw.indexOf('endstream', j);
+    if(end === -1) break;
+    /* The end-of-line before `endstream` belongs to the file, not to the
+       stream. Leave it on and zlib refuses the whole thing with "junk found
+       after end of compressed data", which is a one-byte reason to read
+       nothing at all. */
+    let k = end;
+    while(k > j && (bytes[k - 1] === 10 || bytes[k - 1] === 13)) k--;
+    const chunk = bytes.subarray(j, k);
+    const flate = /\/FlateDecode/.test(raw.slice(Math.max(0, i - 900), i));
+    let content = null;
+    if(flate){
+      const out = await inflate(chunk);
+      if(out) content = new TextDecoder('latin1').decode(out);
+    } else {
+      content = new TextDecoder('latin1').decode(chunk);
+    }
+    if(content && /\bT[Jj]\b/.test(content)) text += pdfTextFromContent(content) + '\n';
+    i = end + 9;
+  }
+  return text;
+}
+/* Did we actually read words, or glyph numbers from a subset font? */
+function looksLikeText(s){
+  const n = s.length;
+  if(n < 40) return false;
+  const letters = (s.match(/[\p{L}\p{N}\s.,;:()\-/]/gu) || []).length;
+  return letters / n > 0.72;
+}
+
+/* ---------- the editor ---------- */
+const hEsc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
+                           .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+let exDraft = null, exOpenTopics = null, exLastFocus = null;
+
+function blankExam(){
+  return {id:'e' + Date.now().toString(36) + Math.floor(Math.random() * 1e4),
+          kind:'annual', name:'', subject:subject, date:'',
+          syl:{chapters:[], topics:{}, pages:'', note:''}};
+}
+function closeExamEditor(){
+  const d = document.getElementById('examDlg');
+  if(d) d.remove();
+  document.body.style.overflow = '';
+  exDraft = null;
+  if(exLastFocus && exLastFocus.isConnected) exLastFocus.focus();
+}
+
+function openExamEditor(id){
+  const list = examsAll();
+  const found = id ? list.find(e => e.id === id) : null;
+  exDraft = found ? JSON.parse(JSON.stringify(found)) : blankExam();
+  if(!exDraft.syl) exDraft.syl = {chapters:[], topics:{}, pages:'', note:''};
+  if(!Array.isArray(exDraft.syl.chapters)) exDraft.syl.chapters = [];
+  if(!exDraft.syl.topics) exDraft.syl.topics = {};
+  exOpenTopics = null;
+  exLastFocus = document.activeElement;
+
+  const old = document.getElementById('examDlg');
+  if(old) old.remove();
+
+  const wrap = document.createElement('div');
+  wrap.className = 'exdlg';
+  wrap.id = 'examDlg';
+  wrap.innerHTML = `<div class="exdlg-in" role="dialog" aria-modal="true" aria-labelledby="exdlgTitle"></div>`;
+  document.body.appendChild(wrap);
+  document.body.style.overflow = 'hidden';
+
+  wrap.addEventListener('mousedown', ev => { if(ev.target === wrap) closeExamEditor(); });
+  wrap.addEventListener('keydown', ev => { if(ev.key === 'Escape') closeExamEditor(); });
+
+  exRender(!!found);
+  const f = wrap.querySelector('#exName');
+  if(f) f.focus();
+}
+
+function exTopicsOf(sub, n){
+  const S = SUBJECTS[sub];
+  const c = S && S.chapters.find(x => x.n === n);
+  return (c && c.mind && Array.isArray(c.mind.b)) ? c.mind.b.map(b => esc(b.t)) : [];
+}
+
+function exRender(isEdit){
+  const box = document.querySelector('#examDlg .exdlg-in');
+  if(!box || !exDraft) return;
+  const S = SUBJECTS[exDraft.subject] || SUBJECTS.sci;
+  const picked = new Set(exDraft.syl.chapters.map(Number));
+  const idxCount = Object.keys(pageIndex(exDraft.subject)).length;
+
+  const chRows = S.chapters.map(c => {
+    const on = picked.has(c.n);
+    const tops = exTopicsOf(exDraft.subject, c.n);
+    const chosen = exDraft.syl.topics[c.n] || [];
+    const openT = exOpenTopics === c.n;
+    return `<div class="chrow">
+      <div class="chhead">
+        <input type="checkbox" id="exc${c.n}" data-chk="${c.n}"${on ? ' checked' : ''}>
+        <label class="chname" for="exc${c.n}">${hEsc(esc(c.title))}
+          <small>Chapter ${c.n}${chosen.length ? ' &middot; ' + chosen.length + ' of ' + tops.length + ' topics' : ''}${c.bank ? '' : ' &middot; no questions yet'}</small></label>
+        ${tops.length ? `<button type="button" class="chtop" data-tog="${c.n}">${openT ? 'Hide' : 'Topics'}</button>` : ''}
+      </div>
+      ${openT ? `<div class="toplist">${tops.map((t, i) =>
+        `<label><input type="checkbox" data-top="${c.n}" data-ti="${i}"${chosen.indexOf(t) !== -1 ? ' checked' : ''}>${hEsc(t)}</label>`
+      ).join('')}</div>` : ''}
+    </div>`;
+  }).join('');
+
+  box.innerHTML = `
+    <div>
+      <p class="eyebrow">${isEdit ? 'Edit exam' : 'New exam'}</p>
+      <h2 id="exdlgTitle" style="margin-top:6px">What is coming, and what it covers</h2>
+    </div>
+
+    <div class="exf">
+      <span class="exlab">Which exam</span>
+      <div class="exkinds">${EXAM_KINDS.map(k =>
+        `<button type="button" data-kind="${k.id}" aria-pressed="${exDraft.kind === k.id}">${k.label}</button>`).join('')}</div>
+    </div>
+
+    <div class="exgrid">
+      <div class="exf">
+        <label for="exSubject">Subject</label>
+        <select id="exSubject">${Object.keys(SUBJECTS).map(k =>
+          `<option value="${k}"${k === exDraft.subject ? ' selected' : ''}>${hEsc(esc(SUBJECTS[k].name))}</option>`).join('')}</select>
+      </div>
+      <div class="exf">
+        <label for="exDate">Date</label>
+        <input type="date" id="exDate" value="${hEsc(exDraft.date || '')}">
+      </div>
+    </div>
+
+    <div class="exf">
+      <label for="exName">Name it, if there is more than one</label>
+      <input type="text" id="exName" value="${hEsc(exDraft.name || '')}" placeholder="${hEsc(examKindLabel(exDraft.kind))}">
+    </div>
+
+    <div class="exf">
+      <span class="exlab">Syllabus &middot; ${picked.size ? picked.size + ' of ' + S.chapters.length + ' chapters ticked' : 'nothing ticked, so the whole subject counts'}</span>
+      <div class="row" style="gap:8px; margin:2px 0 4px">
+        <button class="btn" type="button" id="exAll" style="padding:7px 12px; font-size:.82rem">Tick all</button>
+        <button class="btn" type="button" id="exNone" style="padding:7px 12px; font-size:.82rem">Clear</button>
+      </div>
+      <div class="chlist">${chRows}</div>
+      <p class="hint">Open <b>Topics</b> on a chapter to narrow it to particular branches of its mind map. A chapter with no topic ticked counts whole.</p>
+    </div>
+
+    <div class="exf">
+      <label for="exPages">Or say it in textbook pages</label>
+      <div class="row" style="gap:8px">
+        <input type="text" id="exPages" value="${hEsc(exDraft.syl.pages || '')}" placeholder="14-40, 96-110" style="flex:1 1 180px">
+        <button class="btn" type="button" id="exPagesGo" style="padding:9px 14px; font-size:.85rem">Tick those chapters</button>
+      </div>
+      ${idxCount
+        ? `<p class="hint">${idxCount} chapter start pages recorded for ${hEsc(esc(S.name))}. <button type="button" class="linkish" id="exPagesEdit">Check or change them</button></p>`
+        : `<p class="hint">Page numbers need the first page of each chapter typed in once, from the book itself. <button type="button" class="linkish" id="exPagesEdit">Fill that in now</button></p>`}
+      <div id="exPagesBox" hidden></div>
+    </div>
+
+    <div class="exf">
+      <label for="exPaste">Or paste the syllabus, or open the school&rsquo;s PDF</label>
+      <textarea id="exPaste" placeholder="Paste the message or the syllabus text here"></textarea>
+      <div class="row" style="gap:8px">
+        <input type="file" id="exFile" accept="application/pdf,.pdf,.txt,text/plain" style="font-size:.82rem; flex:1 1 180px">
+        <button class="btn" type="button" id="exReadGo" style="padding:9px 14px; font-size:.85rem">Read it</button>
+      </div>
+      <div id="exReadOut"></div>
+    </div>
+
+    <div class="exbar">
+      ${isEdit ? `<button class="btn" type="button" id="exDelete">Delete</button>` : ''}
+      <span class="spacer"></span>
+      <button class="btn" type="button" id="exCancel">Cancel</button>
+      <button class="btn primary" type="button" id="exSave">Save</button>
+    </div>`;
+
+  exWire();
+}
+
+function exWire(){
+  const box = document.querySelector('#examDlg .exdlg-in');
+  if(!box) return;
+  const keep = () => {
+    exDraft.name = box.querySelector('#exName').value.trim();
+    exDraft.date = box.querySelector('#exDate').value;
+    exDraft.syl.pages = box.querySelector('#exPages').value.trim();
+  };
+
+  box.querySelectorAll('[data-kind]').forEach(b => b.addEventListener('click', () => {
+    keep(); exDraft.kind = b.dataset.kind; exRender(true);
+  }));
+
+  box.querySelector('#exSubject').addEventListener('change', ev => {
+    keep();
+    if(ev.target.value !== exDraft.subject){
+      /* Chapter 5 in Hindi is not chapter 5 in maths, so carrying the ticks
+         across would be a quiet lie about what the paper covers. */
+      exDraft.subject = ev.target.value;
+      exDraft.syl.chapters = [];
+      exDraft.syl.topics = {};
+      exOpenTopics = null;
+    }
+    exRender(true);
+  });
+
+  box.querySelectorAll('[data-chk]').forEach(cb => cb.addEventListener('change', () => {
+    const n = +cb.dataset.chk;
+    const set = new Set(exDraft.syl.chapters.map(Number));
+    if(cb.checked) set.add(n); else { set.delete(n); delete exDraft.syl.topics[n]; }
+    exDraft.syl.chapters = Array.from(set).sort((a, b) => a - b);
+    keep(); exRender(true);
+  }));
+
+  box.querySelectorAll('[data-tog]').forEach(b => b.addEventListener('click', () => {
+    const n = +b.dataset.tog;
+    exOpenTopics = exOpenTopics === n ? null : n;
+    keep(); exRender(true);
+  }));
+
+  box.querySelectorAll('[data-top]').forEach(cb => cb.addEventListener('change', () => {
+    const n = +cb.dataset.top;
+    const tops = exTopicsOf(exDraft.subject, n);
+    const t = tops[+cb.dataset.ti];
+    const cur = new Set(exDraft.syl.topics[n] || []);
+    if(cb.checked) cur.add(t); else cur.delete(t);
+    exDraft.syl.topics[n] = Array.from(cur);
+    if(!exDraft.syl.topics[n].length) delete exDraft.syl.topics[n];
+    /* Ticking a topic means the chapter is in the paper. */
+    if(cb.checked && exDraft.syl.chapters.indexOf(n) === -1){
+      exDraft.syl.chapters = exDraft.syl.chapters.concat(n).sort((a, b) => a - b);
+    }
+    keep(); exRender(true);
+  }));
+
+  box.querySelector('#exAll').addEventListener('click', () => {
+    keep();
+    exDraft.syl.chapters = SUBJECTS[exDraft.subject].chapters.map(c => c.n).sort((a, b) => a - b);
+    exRender(true);
+  });
+  box.querySelector('#exNone').addEventListener('click', () => {
+    keep(); exDraft.syl.chapters = []; exDraft.syl.topics = {}; exRender(true);
+  });
+
+  /* pages */
+  box.querySelector('#exPagesGo').addEventListener('click', () => {
+    keep();
+    const got = chaptersFromPages(exDraft.subject, exDraft.syl.pages);
+    const out = box.querySelector('#exPagesBox');
+    out.hidden = false;
+    if(got === null){
+      out.innerHTML = `<p class="exnote warn">There is no page index for this book yet, so a page range cannot be turned into chapters. Fill in the first page of each chapter below and it will work from then on.</p>`;
+      exPagesEditor(true);
+      return;
+    }
+    if(!got.length){
+      out.innerHTML = `<p class="exnote warn">No chapter falls in those pages. Check the range, or check the page index.</p>`;
+      return;
+    }
+    const set = new Set(exDraft.syl.chapters.map(Number));
+    got.forEach(n => set.add(n));
+    exDraft.syl.chapters = Array.from(set).sort((a, b) => a - b);
+    const names = got.map(n => 'Ch ' + n).join(', ');
+    exRender(true);
+    const o2 = document.querySelector('#examDlg #exPagesBox');
+    o2.hidden = false;
+    o2.innerHTML = `<p class="exnote">Ticked ${got.length} chapter${got.length > 1 ? 's' : ''} from those pages: ${names}. Untick anything the paper does not actually cover.</p>`;
+  });
+  box.querySelector('#exPagesEdit').addEventListener('click', () => exPagesEditor());
+
+  /* paste or file */
+  box.querySelector('#exReadGo').addEventListener('click', async () => {
+    keep();
+    const out = box.querySelector('#exReadOut');
+    const file = box.querySelector('#exFile').files[0];
+    let text = box.querySelector('#exPaste').value;
+    out.innerHTML = `<p class="exnote">Reading&hellip;</p>`;
+    if(file){
+      try{
+        const buf = await file.arrayBuffer();
+        const isPdf = /\.pdf$/i.test(file.name) || file.type === 'application/pdf';
+        const got = isPdf ? await pdfText(buf) : new TextDecoder().decode(buf);
+        if(isPdf && !looksLikeText(got)){
+          out.innerHTML = `<p class="exnote warn">That PDF did not give up readable text. It is probably a scan or a photograph of the notice, or it uses a font this cannot decode. Type or paste the chapter names into the box above instead and press Read it again.</p>`;
+          return;
+        }
+        text = (text + '\n' + got).trim();
+      }catch(e){
+        out.innerHTML = `<p class="exnote warn">That file could not be opened.</p>`;
+        return;
+      }
+    }
+    if(!text.trim()){
+      out.innerHTML = `<p class="exnote warn">Nothing to read: paste some text, or choose a file.</p>`;
+      return;
+    }
+    const hits = parseSyllabusText(exDraft.subject, text);
+    const all = Array.from(new Set(hits.byTitle.concat(hits.byNumber))).sort((a, b) => a - b);
+    if(!all.length){
+      out.innerHTML = `<p class="exnote warn">No chapter of ${hEsc(esc(SUBJECTS[exDraft.subject].name))} was named in that. Check the subject at the top, then tick the chapters by hand.</p>`;
+      return;
+    }
+    const set = new Set(exDraft.syl.chapters.map(Number));
+    all.forEach(n => set.add(n));
+    exDraft.syl.chapters = Array.from(set).sort((a, b) => a - b);
+    exRender(true);
+    const o2 = document.querySelector('#examDlg #exReadOut');
+    o2.innerHTML = `<p class="exnote">Ticked ${all.length} chapter${all.length > 1 ? 's' : ''}: ${all.map(n => 'Ch ' + n).join(', ')}.
+      ${hits.byTitle.length ? hits.byTitle.length + ' matched by name' : ''}${hits.byTitle.length && hits.byNumber.length ? ', ' : ''}${hits.byNumber.length ? hits.byNumber.length + ' by chapter number alone, which is the weaker match' : ''}.
+      Read the list above and correct it: this guessed, it did not understand.</p>`;
+  });
+
+  /* save, delete, cancel */
+  const del = box.querySelector('#exDelete');
+  if(del) del.addEventListener('click', () => {
+    saveExams(examsAll().filter(e => e.id !== exDraft.id));
+    closeExamEditor();
+    renderToday();
+    refreshExamFilter();
+  });
+  box.querySelector('#exCancel').addEventListener('click', closeExamEditor);
+  box.querySelector('#exSave').addEventListener('click', () => {
+    keep();
+    if(!exDraft.name) exDraft.name = examKindLabel(exDraft.kind);
+    const list = examsAll();
+    const i = list.findIndex(e => e.id === exDraft.id);
+    if(i === -1) list.push(exDraft); else list[i] = exDraft;
+    saveExams(list);
+    closeExamEditor();
+    renderToday();
+    refreshExamFilter();
+  });
+}
+
+/* The page index, typed once per book. Deliberately plain: a number box per
+   chapter, no import, because the only trustworthy source is the book in
+   his hand. */
+function exPagesEditor(force){
+  const box = document.querySelector('#examDlg #exPagesBox');
+  if(!box) return;
+  if(box.dataset.mode === 'index' && !force){ box.hidden = !box.hidden; return; }
+  const S = SUBJECTS[exDraft.subject];
+  const idx = pageIndex(exDraft.subject);
+  box.dataset.mode = 'index';
+  box.hidden = false;
+  box.innerHTML = `<div class="exnote" style="border-left-color:var(--ink-3)">
+      <p style="margin:0 0 9px">First page of each chapter in <b>${hEsc(esc(S.book || S.name))}</b>. Leave a chapter blank if you do not have the number; it is then simply never matched by a page range.</p>
+      <div class="pgrid">${S.chapters.map(c =>
+        `<label title="${hEsc(esc(c.title))}">Ch ${c.n}
+          <input type="number" min="1" max="999" data-pg="${c.n}" value="${idx[c.n] ? hEsc(String(idx[c.n])) : ''}"></label>`).join('')}</div>
+      <p class="row" style="margin:11px 0 0"><button class="btn" type="button" id="exPagesSave" style="padding:8px 14px; font-size:.84rem">Save the page index</button></p>
+    </div>`;
+  box.querySelector('#exPagesSave').addEventListener('click', () => {
+    const map = {};
+    box.querySelectorAll('[data-pg]').forEach(inp => {
+      const v = parseInt(inp.value, 10);
+      if(v > 0) map[inp.dataset.pg] = v;
+    });
+    savePageIndex(exDraft.subject, map);
+    box.innerHTML = `<p class="exnote">Saved ${Object.keys(map).length} page number${Object.keys(map).length === 1 ? '' : 's'}. Page ranges will resolve to chapters from now on.</p>`;
+    box.dataset.mode = '';
+  });
 }
 
 /* Which chapter to work today: the least ready one that is actually examinable.
    Ranking is coverage first, because a chapter you have barely met matters more
    than one you have met and been shaky at. */
 function weakestChapter(){
-  const cs = subj().chapters.filter(c => c.bank && (!subj().hasExam || c.exam));
+  const set = examChapterSet(subject);
+  const cs = subj().chapters.filter(c => c.bank && (!set || set.has(c.n)));
   if(!cs.length) return null;
   const scored = cs.map(c => {
     const cov = coverage(subject, c.n) || {seen:0, total:1};
@@ -2031,18 +2685,59 @@ function weakestChapter(){
   return scored[0];
 }
 
-function renderToday(){
-  const hasDate = !!plan().exam;
-  $('#dateCard').hidden = hasDate;
-  $('#planCard').hidden = !hasDate;
-  if(!hasDate) return;
+/* The strip above the day's work. It is one line unless there is a real
+   reason for two, and a date that has passed never gets a headline: it
+   leaves the strip and joins the finished list. */
+function renderExamStrip(){
+  const e = nextExam(), el = $('#examStrip');
+  if(!e){
+    const done = pastExams();
+    /* With nothing ever entered the card below is already asking for one, so
+       a strip saying the same thing twice is just noise. */
+    el.hidden = !done.length;
+    el.innerHTML = done.length
+      ? `<span class="es-line">Nothing coming up. <button class="linkish" type="button" data-newexam="1">Add the next exam</button> and the day&rsquo;s work goes back to being chosen from its syllabus. The ${done.length} already sat ${done.length > 1 ? 'are' : 'is'} below.</span>`
+      : '';
+    return;
+  }
+  const d = daysTo(e.date);
+  const when = d === 0 ? 'today' : d === 1 ? 'tomorrow' : `in ${d} days`;
+  const S = SUBJECTS[e.subject];
+  el.hidden = false;
+  el.innerHTML = `<span class="es-n">${d}</span>
+    <span class="es-body"><b>${examKindLabel(e.kind)}${S ? ' &middot; ' + S.name : ''}</b>
+      <span>${d === 0 ? 'Today. Good luck.' : d === 1 ? 'Tomorrow. Tonight is for the mistakes book, not new chapters.' : `${when}, ${new Date(e.date + 'T00:00:00').toDateString().slice(4)}`}</span></span>
+    <button class="linkish" type="button" data-openexams="1">Syllabus</button>`;
+}
 
-  const d = daysToExam();
-  $('#countdown').innerHTML = d === null ? ''
-    : d > 1  ? `<b>${d}</b><span>days until the exam, ${new Date(plan().exam + 'T00:00:00').toDateString().slice(4)}</span>`
-    : d === 1 ? `<b>1</b><span>day to go. Tonight is for going over the mistakes book, not for new chapters.</span>`
-    : d === 0 ? `<b>Today</b><span>is the exam. Good luck.</span>`
-    : `<b>Done</b><span>The exam date has passed. Change it below when the next one is set.</span>`;
+function renderExamsCard(){
+  const list = examsAll(), el = $('#examsList');
+  $('#examsLede').textContent = list.length
+    ? 'Ticking chapters here narrows practice, worksheets and the mock paper to what the paper actually covers.'
+    : 'Add an annual exam, a midterm or a unit test, then say which chapters it covers.';
+  el.innerHTML = list.length ? list
+    .slice().sort((a, b) => (a.date || '') < (b.date || '') ? 1 : -1)
+    .map(e => {
+      const d = daysTo(e.date), S = SUBJECTS[e.subject];
+      const when = d === null ? 'no date' : d < 0 ? 'done' : d === 0 ? 'today' : d + ' days';
+      return `<div class="examrow${d !== null && d < 0 ? ' past' : ''}">
+        <div class="er-main">
+          <b>${examKindLabel(e.kind)}${e.name && e.name !== examKindLabel(e.kind) ? ' &middot; ' + e.name : ''}</b>
+          <span>${S ? S.name : ''} &middot; ${sylSummary(e)}</span>
+        </div>
+        <span class="er-side"><span class="er-when">${when}</span>
+          <button class="btn" type="button" data-editexam="${e.id}">Edit</button></span>
+      </div>`;
+    }).join('') : '';
+  $('#examsCard').hidden = false;
+}
+
+function renderToday(){
+  $('#planCard').hidden = false;
+  renderExamStrip();
+  renderExamsCard();
+  const e = nextExam();
+  const d = e ? daysTo(e.date) : null;
 
   const misses = missQsOrdered(subject);
   const fixN = Math.min(misses.length, 8);
@@ -2525,11 +3220,10 @@ function makeWorksheet(){
 
 /* ---------- mock paper: 40 marks, all six chapters ---------- */
 function makePaper(){
-  /* The paper mocks the September exam, so it must never reach into the chapters
-     that exam does not cover, however good those questions are. */
-  const inPaper = subj().hasExam
-    ? (q => subj().chapters.some(c => c.exam && c.n === q.c))
-    : (() => true);
+  /* The paper mocks the exam that is actually coming, so it must never reach
+     into chapters that exam does not cover, however good those questions are. */
+  const set = examChapterSet(subject);
+  const inPaper = set ? (q => set.has(q.c)) : (() => true);
   const byType = t => BANK.filter(q => q.s === subject && inPaper(q) && (Array.isArray(t) ? t.includes(q.t) : q.t === t));
   const spread = (list, k) => {
     /* take from as many different chapters as possible */
@@ -6817,9 +7511,34 @@ const SUBJECTS = {
 };
 let subject = 'sci', examOnly = false;
 const subj = () => SUBJECTS[subject];
+
+/* What counts as "the exam chapters" for a subject. The next exam's ticked
+   syllabus if there is one, otherwise the September science set that was
+   hardcoded before exams were a thing, otherwise nothing. Null means there
+   is no syllabus to narrow to, which is not the same as an empty one. */
+function examChapterSet(sub){
+  sub = sub || subject;
+  const e = nextExam(sub);
+  const fromExam = e ? sylChapters(e) : null;
+  if(fromExam) return fromExam;
+  const S = SUBJECTS[sub];
+  if(S && S.hasExam) return new Set(S.chapters.filter(c => c.exam).map(c => c.n));
+  return null;
+}
 function visibleChapters(){
   const cs = subj().chapters;
-  return (examOnly && subj().hasExam) ? cs.filter(c => c.exam) : cs;
+  const set = examOnly ? examChapterSet(subject) : null;
+  return set ? cs.filter(c => set.has(c.n)) : cs;
+}
+/* The filter button only makes sense when there is something to filter to,
+   and it should say which paper it means. */
+function refreshExamFilter(){
+  const btn = $('#examFilter');
+  if(!btn) return;
+  const set = examChapterSet(subject), e = nextExam(subject);
+  btn.hidden = !set;
+  btn.textContent = (e ? examKindLabel(e.kind) : 'Exam') + ' chapters only';
+  if(!set){ examOnly = false; btn.setAttribute('aria-pressed', 'false'); }
 }
 
 /* ---------- learn ---------- */
@@ -7080,7 +7799,9 @@ function checkIndex(sid, chapters){
 }
 function renderLearn(){
   const S = subj(), cs = visibleChapters();
-  const exam = cs.filter(c => c.exam), rest = cs.filter(c => !c.exam);
+  const eSet = examChapterSet(S.id), eNext = nextExam(S.id);
+  const exam = eSet ? cs.filter(c => eSet.has(c.n)) : [];
+  const rest = eSet ? cs.filter(c => !eSet.has(c.n)) : cs;
 
   const LEDE = {
     sci:'Class VIII science, from the NCERT <em>Curiosity</em> textbook: all thirteen chapters. The six that were set in the September paper are grouped first, boiled down to what actually gets asked; the rest of the book follows, and every chapter has questions behind it.',
@@ -7120,8 +7841,9 @@ function renderLearn(){
     ? `<p class="section-rule"><span class="eyebrow">${label}</span></p>` + rows.map(card).join('')
     : '';
 
-  $('#learnList').innerHTML = S.hasExam
-    ? section('Set in the September paper', exam) + section('The rest of the book', rest)
+  $('#learnList').innerHTML = (exam.length && rest.length)
+    ? section(eNext ? 'In the ' + examKindLabel(eNext.kind).toLowerCase() : 'Set in the September paper', exam)
+      + section('The rest of the book', rest)
     : cs.map(card).join('');
 
   $$('#learnList [data-practise]').forEach(b => b.addEventListener('click', () => {
@@ -7197,8 +7919,7 @@ $$('#subjSeg button').forEach(b => b.addEventListener('click', () => {
   $$('#subjSeg button').forEach(x => x.setAttribute('aria-pressed', 'false'));
   b.setAttribute('aria-pressed', 'true');
   subject = b.dataset.subj;
-  $('#examFilter').hidden = !subj().hasExam;
-  if(!subj().hasExam) { examOnly = false; $('#examFilter').setAttribute('aria-pressed', 'false'); }
+  refreshExamFilter();
   const ns = defaultChapters();
   pSel.clear(); wSel.clear(); ns.forEach(n => { pSel.add(n); wSel.add(n); });
   chapterButtons($('#chapterPicker'), pSel, refreshPool);
@@ -7244,21 +7965,18 @@ $('#selNone').addEventListener('click', () => {
   $$('#chapterPicker .chip').forEach(b => b.setAttribute('aria-pressed', 'false'));
   refreshPool();
 });
-/* Suggest a date three weeks out rather than opening on an empty field. */
-(function(){
-  const d = new Date(); d.setDate(d.getDate() + 21);
-  const f = $('#examDate');
-  if(f && !f.value) f.value = plan().exam || dayKey(d);
-  if(f) f.min = dayKey();
-})();
-$('#saveDate').addEventListener('click', () => {
-  const v = $('#examDate').value;
-  if(!v) return flash('Pick a date first.');
-  savePlan({exam:v}); renderToday();
-});
-$('#changeDate').addEventListener('click', () => {
-  $('#examDate').value = plan().exam || '';
-  $('#dateCard').hidden = false; $('#planCard').hidden = true;
+migrateOldPlan();
+$('#addExam').addEventListener('click', () => openExamEditor(null));
+const toExams = () => {
+  showView('today');
+  $('#examsCard').scrollIntoView({behavior:'smooth', block:'center'});
+};
+$('#manageExams').addEventListener('click', toExams);
+document.addEventListener('click', ev => {
+  if(ev.target.closest('[data-newexam]')){ openExamEditor(null); return; }
+  if(ev.target.closest('[data-openexams]')){ toExams(); return; }
+  const edit = ev.target.closest('[data-editexam]');
+  if(edit) openExamEditor(edit.dataset.editexam);
 });
 $('#startToday').addEventListener('click', startTodaySet);
 $('#startFix').addEventListener('click', startFixSet);
@@ -7301,6 +8019,12 @@ renderStats();
 refreshPool();
 </script>
 <!--/ARTIFACT-B-->
-<script src="../js/dyslexia-font.js" data-accent="var(--purple2)" data-radius="99px" defer></script>
+<!-- The reading-font switch. data-accent was var(--purple2), which A Lab
+     does not define. The toggle still worked: dyslexia-font.js reads the
+     attribute into --dys-accent and every use of it carries a fallback
+     (#0EA5E9), so the on and hover states came out sky blue, a colour
+     that appears nowhere else here. Pointing it at --accent gives them
+     the site teal #0E8F7E. The idle border stays black by design. -->
+<script src="../js/dyslexia-font.js" data-accent="var(--accent)" data-radius="99px" defer></script>
 </body>
 </html>
