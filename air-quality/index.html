@@ -7,7 +7,7 @@
 <meta name="description" content="A year of PM2.5 and PM10 for any place in India from Open-Meteo's air quality model: the annual mean against the WHO guideline and India's standard, days over the 24-hour limits, the cumulative dose in cigarette equivalents, and the monthly pattern.">
 <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231B6B4A'/><path d='M6 14c4-4 8 4 12 0s6-4 8 0M6 22c4-4 8 4 12 0s6-4 8 0' stroke='white' stroke-width='2.4' fill='none' stroke-linecap='round'/></svg>">
 <style>
-  :root { --bg:#fafafa; --surface:#fff; --border:#e5e7eb; --text:#1a1a2e; --dim:#4b5563; --muted:#9ca3af; --accent:#1B6B4A; --accent-soft:#e6f2ec; --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --grid:#eceef1; --mono:ui-monospace,SFMono-Regular,Menlo,monospace; }
+  :root { --bg:#fafafa; --surface:#fff; --border:#e5e7eb; --text:#1a1a2e; --dim:#4b5563; --muted:#6b7280; --accent:#1B6B4A; --accent-soft:#e6f2ec; --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --grid:#eceef1; --mono:ui-monospace,SFMono-Regular,Menlo,monospace; }
   * { box-sizing:border-box; margin:0; padding:0; }
   body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--text); line-height:1.55; }
   a { color:var(--accent); }
@@ -20,6 +20,12 @@
   main { padding:1.5rem 0 3rem; }
   .lede { color:var(--dim); font-size:.95rem; max-width:66ch; margin-bottom:1.25rem; }
   .grid { display:grid; grid-template-columns:300px 1fr; gap:1.25rem; align-items:start; }
+  /* A grid item's default `min-width:auto` lets its min-content size the
+     shared track, so one wide table makes the whole column, and then the
+     page, wider than the phone. This is what makes the scroll wrapper
+     above work: without it the wrapper is simply as wide as its table. */
+  .grid > * { min-width:0; }
+
   @media (max-width:860px){ .grid { grid-template-columns:1fr; } }
   .panel { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1rem 1.15rem; margin-bottom:1rem; }
   .panel h2 { font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; margin-bottom:.7rem; }
@@ -30,6 +36,11 @@
   .stat { display:inline-block; margin:.25rem 1.25rem .25rem 0; vertical-align:top; }
   .stat b { display:block; font-size:1.4rem; font-family:Georgia,serif; font-weight:400; } .stat span { font-size:.75rem; color:var(--muted); }
   table { border-collapse:collapse; width:100%; font-size:.84rem; margin:.5rem 0; }
+  /* A wide table scrolls inside its own box. Without this its columns set
+     the page's min-content width and the whole page scrolls sideways on a
+     phone, which is invisible on a desktop. Not `display:block` on the
+     table: that drops its table semantics from the accessibility tree. */
+  .twrap { overflow-x:auto; max-width:100%; }
   th, td { text-align:right; padding:.3rem .5rem; border-bottom:1px solid var(--border); font-variant-numeric:tabular-nums; }
   th:first-child, td:first-child { text-align:left; } th { color:var(--dim); font-weight:600; font-size:.75rem; }
   .note { font-size:.82rem; color:var(--dim); margin-top:.5rem; }
@@ -54,15 +65,15 @@
 <div>
   <div class="panel">
     <h2>Place and period</h2>
-    <label>City</label><select id="city"></select>
-    <div class="row"><div><label>Latitude</label><input type="number" id="lat" step="0.01"></div><div><label>Longitude</label><input type="number" id="lon" step="0.01"></div></div>
-    <div class="row"><div><label>From</label><input type="date" id="from"></div><div><label>To</label><input type="date" id="to"></div></div>
+    <label for="city">City</label><select id="city"></select>
+    <div class="row"><div><label for="lat">Latitude</label><input type="number" id="lat" step="0.01"></div><div><label for="lon">Longitude</label><input type="number" id="lon" step="0.01"></div></div>
+    <div class="row"><div><label for="from">From</label><input type="date" id="from"></div><div><label for="to">To</label><input type="date" id="to"></div></div>
     <p class="mini">The archive runs from mid-2022. A full year is the meaningful unit; the WHO and Indian annual limits are annual means.</p>
     <p style="margin-top:.6rem"><button id="go">Fetch and compute</button></p>
     <p class="mini" id="status"></p>
   </div>
   <div class="panel"><h2>Limits used</h2>
-    <table><tr><th>Pollutant</th><th>WHO 2021</th><th>India NAAQS 2009</th></tr><tr><td>PM2.5 annual</td><td>5</td><td>40</td></tr><tr><td>PM2.5 24-hour</td><td>15</td><td>60</td></tr><tr><td>PM10 annual</td><td>15</td><td>60</td></tr><tr><td>PM10 24-hour</td><td>45</td><td>100</td></tr><tr><td>NO₂ annual</td><td>10</td><td>40</td></tr><tr><td>NO₂ 24-hour</td><td>25</td><td>80</td></tr></table>
+    <div class="twrap" tabindex="0"><table><tr><th>Pollutant</th><th>WHO 2021</th><th>India NAAQS 2009</th></tr><tr><td>PM2.5 annual</td><td>5</td><td>40</td></tr><tr><td>PM2.5 24-hour</td><td>15</td><td>60</td></tr><tr><td>PM10 annual</td><td>15</td><td>60</td></tr><tr><td>PM10 24-hour</td><td>45</td><td>100</td></tr><tr><td>NO₂ annual</td><td>10</td><td>40</td></tr><tr><td>NO₂ 24-hour</td><td>25</td><td>80</td></tr></table></div>
     <p class="mini">µg/m³. WHO Global Air Quality Guidelines (2021); Indian National Ambient Air Quality Standards notified 18 November 2009.</p>
   </div>
 </div>
@@ -93,10 +104,10 @@ $('#go').onclick=async()=>{ const lat=+$('#lat').value, lon=+$('#lon').value, fr
     const name=(CITIES[+$('#city').value]||[])[0]||`${lat}, ${lon}`; $('#yrPill').textContent=`${name} · ${D[0].d} to ${D[n-1].d} · ${n} days`;
     const grade=v=>v<=LIM.pm25.who?'within the WHO guideline':v<=LIM.pm25.in?'above the WHO guideline but within India\'s standard':`${(v/LIM.pm25.in).toFixed(1)} times India's own standard, ${(v/LIM.pm25.who).toFixed(0)} times the WHO guideline`;
     $('#year').innerHTML=`<span class="stat"><b>${fmt(ann('pm25'))}</b><span>PM2.5 annual mean, µg/m³ (${grade(ann('pm25'))})</span></span><span class="stat"><b>${over('pm25',LIM.pm25.in24)}</b><span>days over India's 24-hour PM2.5 limit (60)</span></span><span class="stat"><b>${over('pm25',LIM.pm25.who24)}</b><span>days over the WHO 24-hour guideline (15)</span></span><span class="stat"><b>${fmt(cig,0)}</b><span>cigarette equivalents for the year (${fmt(cig/n*7,1)} a week)</span></span><span class="stat"><b>${fmt(ann('pm10'))}</b><span>PM10 annual mean (WHO 15, India 60)</span></span><span class="stat"><b>${fmt(ann('no2'))}</b><span>NO₂ annual mean (WHO 10, India 40)</span></span>
-    <table><tr><th>Pollutant</th><th>Annual mean</th><th>Days over WHO 24-h</th><th>Days over India 24-h</th><th>Worst day</th></tr>${[['PM2.5','pm25'],['PM10','pm10'],['NO₂','no2']].map(([l,k])=>{ const w=D.filter(x=>isFinite(x[k])).sort((a,b)=>b[k]-a[k])[0]; return `<tr><td>${l}</td><td>${fmt(ann(k))}</td><td>${over(k,LIM[k].who24)}</td><td>${over(k,LIM[k].in24)}</td><td>${w?fmt(w[k])+' on '+w.d:'not returned'}</td></tr>`; }).join('')}</table><p class="note">Worst PM2.5 day ${worst.d} at ${fmt(worst.pm25)} µg/m³; cleanest ${best.d} at ${fmt(best.pm25)}. Days are calendar days in Indian Standard Time.</p>`;
+    <div class="twrap" tabindex="0"><table><tr><th>Pollutant</th><th>Annual mean</th><th>Days over WHO 24-h</th><th>Days over India 24-h</th><th>Worst day</th></tr>${[['PM2.5','pm25'],['PM10','pm10'],['NO₂','no2']].map(([l,k])=>{ const w=D.filter(x=>isFinite(x[k])).sort((a,b)=>b[k]-a[k])[0]; return `<tr><td>${l}</td><td>${fmt(ann(k))}</td><td>${over(k,LIM[k].who24)}</td><td>${over(k,LIM[k].in24)}</td><td>${w?fmt(w[k])+' on '+w.d:'not returned'}</td></tr>`; }).join('')}</table></div><p class="note">Worst PM2.5 day ${worst.d} at ${fmt(worst.pm25)} µg/m³; cleanest ${best.d} at ${fmt(best.pm25)}. Days are calendar days in Indian Standard Time.</p>`;
     $('#daily').innerHTML=`<div class="legend"><span><i style="background:var(--s1)"></i>daily mean PM2.5</span><span><i style="background:#9ca3af"></i>India 24-h standard 60</span><span><i style="background:var(--s3)"></i>WHO 24-h guideline 15</span></div>`+dailyChart(D);
     const months=new Map(); D.forEach(x=>{ const m=x.d.slice(0,7); if(!months.has(m)) months.set(m,[]); months.get(m).push(x.pm25); }); const M=[...months].map(([m,v])=>({m,v:mean(v),over:v.filter(x=>x>60).length}));
-    $('#monthly').innerHTML=`<div class="legend"><span><i style="background:var(--s2)"></i>monthly mean PM2.5</span></div>`+monthChart(M)+`<table><tr><th>Month</th><th>Mean PM2.5</th><th>Days over 60</th><th>Cigarette equivalents</th></tr>${M.map(x=>`<tr><td>${x.m}</td><td>${fmt(x.v)}</td><td>${x.over}</td><td>${fmt(x.v*months.get(x.m).length/22,0)}</td></tr>`).join('')}</table>`;
+    $('#monthly').innerHTML=`<div class="legend"><span><i style="background:var(--s2)"></i>monthly mean PM2.5</span></div>`+monthChart(M)+`<div class="twrap" tabindex="0"><table><tr><th>Month</th><th>Mean PM2.5</th><th>Days over 60</th><th>Cigarette equivalents</th></tr>${M.map(x=>`<tr><td>${x.m}</td><td>${fmt(x.v)}</td><td>${x.over}</td><td>${fmt(x.v*months.get(x.m).length/22,0)}</td></tr>`).join('')}</table></div>`;
     $('#status').textContent='Done.'; } catch(e){ $('#status').textContent='Failed: '+e.message; } $('#go').disabled=false; };
 function dailyChart(D){ const W=760,H=240,m={l:44,r:12,t:12,b:28},pw=W-m.l-m.r,ph=H-m.t-m.b; const y1=Math.max(...D.map(x=>x.pm25),70)*1.05; const X=i=>m.l+i/(D.length-1)*pw, Y=v=>m.t+ph-v/y1*ph; let g=`<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="daily PM2.5">`; [0,0.25,0.5,0.75,1].forEach(f=>{ const v=f*y1; g+=`<line x1="${m.l}" x2="${W-m.r}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--grid)"/><text x="${m.l-6}" y="${Y(v)+4}" text-anchor="end">${fmt(v,0)}</text>`; }); g+=`<line x1="${m.l}" x2="${W-m.r}" y1="${Y(60)}" y2="${Y(60)}" stroke="#9ca3af" stroke-dasharray="4 3"/><line x1="${m.l}" x2="${W-m.r}" y1="${Y(15)}" y2="${Y(15)}" stroke="var(--s3)" stroke-dasharray="4 3"/>`; let d=''; D.forEach((x,i)=>{ d+=(i?'L':'M')+X(i)+','+Y(x.pm25); }); g+=`<path d="${d}" fill="none" stroke="var(--s1)" stroke-width="1.5"/>`; D.forEach((x,i)=>{ if(i%3===0) g+=`<rect x="${X(i)-pw/D.length/2}" y="${m.t}" width="${pw/D.length*3}" height="${ph}" fill="transparent" data-tip="${x.d}: PM2.5 ${fmt(x.pm25)}, PM10 ${fmt(x.pm10)}, NO₂ ${fmt(x.no2)}"/>`; }); D.forEach((x,i)=>{ if(x.d.endsWith('-01')) g+=`<text x="${X(i)}" y="${H-m.b+16}" text-anchor="middle">${x.d.slice(0,7)}</text>`; }); return g+'</svg>'; }
 function monthChart(M){ const W=760,H=200,m={l:44,r:12,t:12,b:28},pw=W-m.l-m.r,ph=H-m.t-m.b; const y1=Math.max(...M.map(x=>x.v),40)*1.1; const bw=pw/M.length; const Y=v=>m.t+ph-v/y1*ph; let g=`<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="monthly PM2.5">`; [0,0.5,1].forEach(f=>{ const v=f*y1; g+=`<line x1="${m.l}" x2="${W-m.r}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--grid)"/><text x="${m.l-6}" y="${Y(v)+4}" text-anchor="end">${fmt(v,0)}</text>`; }); g+=`<line x1="${m.l}" x2="${W-m.r}" y1="${Y(40)}" y2="${Y(40)}" stroke="#9ca3af" stroke-dasharray="4 3"/><text x="${W-m.r}" y="${Y(40)-4}" text-anchor="end">India annual 40</text>`; M.forEach((x,i)=>{ const X=m.l+i*bw; g+=`<rect x="${X+bw*0.15}" y="${Y(x.v)}" width="${bw*0.7}" height="${Y(0)-Y(x.v)}" rx="2" fill="var(--s2)" data-tip="${x.m}: ${fmt(x.v)} µg/m³, ${x.over} days over 60"/><text x="${X+bw/2}" y="${H-m.b+16}" text-anchor="middle">${x.m.slice(5)}</text>`; }); return g+'</svg>'; }

@@ -7,7 +7,7 @@
 <meta name="description" content="A running account of a candidate's election expenses against the Election Commission ceiling: the section 77 accounting period, heads of expenditure, burn rate and projection, the section 78 lodging deadline, and a CSV that can be handed to the expenditure observer. Stored in the browser only.">
 <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23572e91'/><path d='M8 24V12M14 24V8M20 24v-8M26 24V14' stroke='white' stroke-width='2.4' stroke-linecap='round'/><path d='M6 26h20' stroke='%23ff9911' stroke-width='2.4' stroke-linecap='round'/></svg>">
 <style>
-  :root { --bg:#fafafa; --surface:#fff; --border:#e5e7eb; --text:#1a1a2e; --dim:#4b5563; --muted:#9ca3af; --accent:#572e91; --accent-soft:#efe9f7; --orange:#ff9911; --mono:ui-monospace,SFMono-Regular,Menlo,monospace; --grid:#eee; }
+  :root { --bg:#fafafa; --surface:#fff; --border:#e5e7eb; --text:#1a1a2e; --dim:#4b5563; --muted:#6b7280; --accent:#572e91; --accent-soft:#efe9f7; --orange:#ff9911; --mono:ui-monospace,SFMono-Regular,Menlo,monospace; --grid:#eee; }
   * { box-sizing:border-box; margin:0; padding:0; }
   body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--text); line-height:1.55; }
   a { color:var(--accent); }
@@ -20,6 +20,12 @@
   main { padding:1.5rem 0 3rem; }
   .lede { color:var(--dim); font-size:.95rem; max-width:70ch; margin-bottom:1.25rem; }
   .grid { display:grid; grid-template-columns:360px 1fr; gap:1.25rem; align-items:start; }
+  /* A grid item's default `min-width:auto` lets its min-content size the
+     shared track, so one wide table makes the whole column, and then the
+     page, wider than the phone. This is what makes the scroll wrapper
+     above work: without it the wrapper is simply as wide as its table. */
+  .grid > * { min-width:0; }
+
   @media (max-width:900px){ .grid { grid-template-columns:1fr; } }
   .panel { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1rem 1.15rem; margin-bottom:1rem; }
   .panel h2 { font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; margin-bottom:.7rem; }
@@ -34,10 +40,15 @@
   .stat b { display:block; font-size:1.35rem; font-family:Georgia,serif; font-weight:400; } .stat span { font-size:.75rem; color:var(--muted); line-height:1.3; display:block; }
   .total { font-size:1.9rem !important; }
   table { border-collapse:collapse; width:100%; font-size:.84rem; margin:.5rem 0; }
+  /* A wide table scrolls inside its own box. Without this its columns set
+     the page's min-content width and the whole page scrolls sideways on a
+     phone, which is invisible on a desktop. Not `display:block` on the
+     table: that drops its table semantics from the accessibility tree. */
+  .twrap { overflow-x:auto; max-width:100%; }
   th, td { text-align:right; padding:.3rem .5rem; border-bottom:1px solid var(--border); font-variant-numeric:tabular-nums; vertical-align:top; }
   th:first-child, td:first-child, td.l, th.l { text-align:left; } th { color:var(--dim); font-weight:600; font-size:.75rem; white-space:nowrap; }
   td .x { color:#b91c1c; background:none; border:none; padding:0 .2rem; font-size:.9rem; }
-  .tscroll { overflow:auto; max-height:420px; }
+  .tscroll { overflow:auto; max-width:100%; max-height:420px; }
   .law { background:var(--accent-soft); border-radius:8px; padding:.7rem .9rem; font-size:.85rem; color:#2f1a52; margin:.6rem 0; }
   .law b { display:block; margin-bottom:.2rem; }
   .note { font-size:.82rem; color:var(--dim); margin-top:.5rem; }
@@ -66,20 +77,20 @@
 <div class="grid">
 <div>
   <div class="panel"><h2>The election</h2>
-    <label>Candidate</label><input type="text" id="cand" placeholder="Name as on the nomination paper">
-    <label>Constituency</label><input type="text" id="const" placeholder="e.g. 12 Bengaluru South">
-    <div class="row"><div><label>House</label><select id="house"><option value="ls">Lok Sabha</option><option value="vs">Legislative Assembly</option></select></div><div><label>State or Union territory</label><select id="state"></select></div></div>
-    <label>Ceiling (₹) <span class="mini">pre-filled from Rule 90 as amended 6 January 2022; edit if the notification for your state differs</span></label><input type="number" id="ceil" step="100000">
-    <div class="row"><div><label>Nomination filed</label><input type="date" id="dNom"></div><div><label>Poll day</label><input type="date" id="dPoll"></div></div>
-    <label>Result declared (or expected)</label><input type="date" id="dRes">
-    <label>Cash payment threshold to flag (₹) <span class="mini">ECI instructs that no single cash payment to a person or entity exceed this; the current figure is ₹10,000, check the compendium</span></label><input type="number" id="cashCap" value="10000" step="1000">
+    <label for="cand">Candidate</label><input type="text" id="cand" placeholder="Name as on the nomination paper">
+    <label for="const">Constituency</label><input type="text" id="const" placeholder="e.g. 12 Bengaluru South">
+    <div class="row"><div><label for="house">House</label><select id="house"><option value="ls">Lok Sabha</option><option value="vs">Legislative Assembly</option></select></div><div><label for="state">State or Union territory</label><select id="state"></select></div></div>
+    <label for="ceil">Ceiling (₹) <span class="mini">pre-filled from Rule 90 as amended 6 January 2022; edit if the notification for your state differs</span></label><input type="number" id="ceil" step="100000">
+    <div class="row"><div><label for="dNom">Nomination filed</label><input type="date" id="dNom"></div><div><label for="dPoll">Poll day</label><input type="date" id="dPoll"></div></div>
+    <label for="dRes">Result declared (or expected)</label><input type="date" id="dRes">
+    <label for="cashCap">Cash payment threshold to flag (₹) <span class="mini">ECI instructs that no single cash payment to a person or entity exceed this; the current figure is ₹10,000, check the compendium</span></label><input type="number" id="cashCap" value="10000" step="1000">
   </div>
   <div class="panel"><h2>Add an expense</h2>
-    <div class="row"><div><label>Date</label><input type="date" id="eDate"></div><div><label>Amount (₹)</label><input type="number" id="eAmt" step="100" placeholder="0"></div></div>
-    <label>Head</label><select id="eHead"></select>
-    <label>Description</label><input type="text" id="eDesc" placeholder="e.g. 2,000 A4 handbills, Sri Printers">
-    <div class="row"><div><label>Paid by</label><select id="ePaid"><option>Candidate</option><option>Party</option><option>Other person or entity</option></select></div><div><label>Mode</label><select id="eMode"><option>Bank transfer</option><option>Cheque</option><option>UPI</option><option>Cash</option><option>In kind (notified rate)</option></select></div></div>
-    <div class="row"><div><label>Voucher or bill no.</label><input type="text" id="eVch"></div><div><label>Units × rate (optional)</label><input type="text" id="eRate" placeholder="e.g. 20 × 350"></div></div>
+    <div class="row"><div><label for="eDate">Date</label><input type="date" id="eDate"></div><div><label for="eAmt">Amount (₹)</label><input type="number" id="eAmt" step="100" placeholder="0"></div></div>
+    <label for="eHead">Head</label><select id="eHead"></select>
+    <label for="eDesc">Description</label><input type="text" id="eDesc" placeholder="e.g. 2,000 A4 handbills, Sri Printers">
+    <div class="row"><div><label for="ePaid">Paid by</label><select id="ePaid"><option>Candidate</option><option>Party</option><option>Other person or entity</option></select></div><div><label for="eMode">Mode</label><select id="eMode"><option>Bank transfer</option><option>Cheque</option><option>UPI</option><option>Cash</option><option>In kind (notified rate)</option></select></div></div>
+    <div class="row"><div><label for="eVch">Voucher or bill no.</label><input type="text" id="eVch"></div><div><label for="eRate">Units × rate (optional)</label><input type="text" id="eRate" placeholder="e.g. 20 × 350"></div></div>
     <div class="btns"><button class="go" id="add">Add to ledger</button><button id="example">Load an example</button></div>
     <p class="mini" id="addMsg"></p>
   </div>
@@ -152,9 +163,9 @@ function render(){ const ceil=+$('#ceil').value||0, nom=$('#dNom').value, poll=$
   <div class="bar"><i class="${pct>100?'over':''}" style="width:${Math.min(100,pct)}%"></i></div><p class="mini">${$('#cand').value||'Candidate'} · ${$('#const').value||'constituency'} · ${$('#house').value==='ls'?'Lok Sabha':'Assembly'} · ${STATES[+$('#state').value][0]} · nomination ${fmtD(nom)} · poll ${fmtD(poll)} · result ${fmtD(res)}</p>`;
   // by head
   const byH=new Map(HEADS.map(h=>[h,0])); E.forEach(e=>byH.set(e.head,(byH.get(e.head)||0)+e.amt)); const rowsH=[...byH].filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]); const mx=rowsH.length?rowsH[0][1]:1;
-  $('#heads').innerHTML=rowsH.length?`<table><tr><th>Head</th><th>Amount</th><th>Share</th><th></th></tr>${rowsH.map(([h,v])=>`<tr><td class="l">${esc(h)}</td><td>${inr(v)}</td><td>${(v/total*100).toFixed(1)}%</td><td style="width:32%"><div class="bar" style="margin:0"><i style="width:${v/mx*100}%"></i></div></td></tr>`).join('')}<tr><th class="l">Total</th><th>${inr(total)}</th><th>100%</th><th></th></tr></table>`:'<p class="note">No entries yet.</p>';
+  $('#heads').innerHTML=rowsH.length?`<div class="twrap" tabindex="0"><table><tr><th>Head</th><th>Amount</th><th>Share</th><th></th></tr>${rowsH.map(([h,v])=>`<tr><td class="l">${esc(h)}</td><td>${inr(v)}</td><td>${(v/total*100).toFixed(1)}%</td><td style="width:32%"><div class="bar" style="margin:0"><i style="width:${v/mx*100}%"></i></div></td></tr>`).join('')}<tr><th class="l">Total</th><th>${inr(total)}</th><th>100%</th><th></th></tr></table></div>`:'<p class="note">No entries yet.</p>';
   // entries
-  $('#entries').innerHTML=E.length?`<table><tr><th>Date</th><th class="l">Head</th><th class="l">Description</th><th>Amount</th><th class="l">Paid by</th><th class="l">Mode</th><th class="l">Voucher</th><th>Cumulative</th><th></th></tr>${(()=>{ let c=0; return E.map(e=>{ c+=e.amt; const i=S.entries.indexOf(e); const fl=((nom&&e.date<nom)||(res&&e.date>res)?'<span class="flag">outside period</span>':'')+(e.mode==='Cash'&&cap&&e.amt>cap?'<span class="flag">cash above threshold</span>':''); return `<tr><td class="l" style="white-space:nowrap">${fmtD(e.date)}</td><td class="l">${esc(e.head)}</td><td class="l">${esc(e.desc)}${e.rate?' <span class="mini">('+esc(e.rate)+')</span>':''}${fl}</td><td>${inr(e.amt)}</td><td class="l">${esc(e.paid)}</td><td class="l">${esc(e.mode)}</td><td class="l">${esc(e.vch)}</td><td>${inr(c)}</td><td><button class="x" data-i="${i}" title="Remove">×</button></td></tr>`; }).join(''); })()}</table>`:'<p class="note">Add an expense on the left, load the example, or import a CSV.</p>';
+  $('#entries').innerHTML=E.length?`<div class="twrap" tabindex="0"><table><tr><th>Date</th><th class="l">Head</th><th class="l">Description</th><th>Amount</th><th class="l">Paid by</th><th class="l">Mode</th><th class="l">Voucher</th><th>Cumulative</th><th></th></tr>${(()=>{ let c=0; return E.map(e=>{ c+=e.amt; const i=S.entries.indexOf(e); const fl=((nom&&e.date<nom)||(res&&e.date>res)?'<span class="flag">outside period</span>':'')+(e.mode==='Cash'&&cap&&e.amt>cap?'<span class="flag">cash above threshold</span>':''); return `<tr><td class="l" style="white-space:nowrap">${fmtD(e.date)}</td><td class="l">${esc(e.head)}</td><td class="l">${esc(e.desc)}${e.rate?' <span class="mini">('+esc(e.rate)+')</span>':''}${fl}</td><td>${inr(e.amt)}</td><td class="l">${esc(e.paid)}</td><td class="l">${esc(e.mode)}</td><td class="l">${esc(e.vch)}</td><td>${inr(c)}</td><td><button class="x" data-i="${i}" title="Remove">×</button></td></tr>`; }).join(''); })()}</table></div>`:'<p class="note">Add an expense on the left, load the example, or import a CSV.</p>';
   $('#entries').querySelectorAll('.x').forEach(b=>b.onclick=()=>del(+b.dataset.i));
   $('#chart').innerHTML=chart(E,ceil,nom,res,rate,elapsed,span);
 }

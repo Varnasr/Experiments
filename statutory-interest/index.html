@@ -7,7 +7,7 @@
 <meta name="description" content="Interest the way Indian statutes prescribe it: MSMED Act section 16 (three times the bank rate, compounded monthly), CPC section 34 on decrees, Arbitration Act section 31(7) on awards, Negotiable Instruments Act cheque-bounce compensation, and a plain simple or compound calculator, each with the section quoted.">
 <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231B6B4A'/><path d='M8 22 Q16 4 24 22' stroke='white' stroke-width='2.4' fill='none' stroke-linecap='round'/><path d='M8 26h16' stroke='white' stroke-width='2.4' stroke-linecap='round'/></svg>">
 <style>
-  :root { --bg:#fafafa; --surface:#fff; --border:#e5e7eb; --text:#1a1a2e; --dim:#4b5563; --muted:#9ca3af; --accent:#1B6B4A; --accent-soft:#e6f2ec; --mono:ui-monospace,SFMono-Regular,Menlo,monospace; }
+  :root { --bg:#fafafa; --surface:#fff; --border:#e5e7eb; --text:#1a1a2e; --dim:#4b5563; --muted:#6b7280; --accent:#1B6B4A; --accent-soft:#e6f2ec; --mono:ui-monospace,SFMono-Regular,Menlo,monospace; }
   * { box-sizing:border-box; margin:0; padding:0; }
   body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--text); line-height:1.55; }
   a { color:var(--accent); }
@@ -24,6 +24,12 @@
   .tabs button.on { color:var(--accent); border-bottom-color:var(--accent); font-weight:600; }
   .view { display:none; } .view.on { display:block; }
   .grid { display:grid; grid-template-columns:340px 1fr; gap:1.25rem; align-items:start; }
+  /* A grid item's default `min-width:auto` lets its min-content size the
+     shared track, so one wide table makes the whole column, and then the
+     page, wider than the phone. This is what makes the scroll wrapper
+     above work: without it the wrapper is simply as wide as its table. */
+  .grid > * { min-width:0; }
+
   @media (max-width:860px){ .grid { grid-template-columns:1fr; } }
   .panel { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1rem 1.15rem; margin-bottom:1rem; }
   .panel h2 { font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; margin-bottom:.7rem; }
@@ -35,9 +41,14 @@
   .stat b { display:block; font-size:1.35rem; font-family:Georgia,serif; font-weight:400; } .stat span { font-size:.75rem; color:var(--muted); }
   .total { font-size:1.9rem !important; }
   table { border-collapse:collapse; width:100%; font-size:.84rem; margin:.5rem 0; }
+  /* A wide table scrolls inside its own box. Without this its columns set
+     the page's min-content width and the whole page scrolls sideways on a
+     phone, which is invisible on a desktop. Not `display:block` on the
+     table: that drops its table semantics from the accessibility tree. */
+  .twrap { overflow-x:auto; max-width:100%; }
   th, td { text-align:right; padding:.3rem .5rem; border-bottom:1px solid var(--border); font-variant-numeric:tabular-nums; white-space:nowrap; }
   th:first-child, td:first-child { text-align:left; } th { color:var(--dim); font-weight:600; font-size:.75rem; }
-  .tscroll { overflow:auto; max-height:360px; }
+  .tscroll { overflow:auto; max-width:100%; max-height:360px; }
   .law { background:var(--accent-soft); border-radius:8px; padding:.7rem .9rem; font-size:.85rem; color:#0f4a33; margin:.6rem 0; }
   .law b { display:block; margin-bottom:.2rem; }
   .note { font-size:.82rem; color:var(--dim); margin-top:.5rem; }
@@ -60,11 +71,11 @@
 <!-- MSMED -->
 <div class="view on" id="v-msmed"><div class="grid">
 <div><div class="panel"><h2>Delayed payment to a micro or small enterprise</h2>
-  <label>Amount due (₹)</label><input type="number" id="mAmt" value="500000" step="1000">
-  <label>Date of acceptance or deemed acceptance of goods or services</label><input type="date" id="mAcc" value="2025-10-01">
-  <label>Agreed payment period in writing (days; the Act caps it at 45)</label><input type="number" id="mDays" value="45" min="1" max="45">
-  <label>Date of payment or of computation</label><input type="date" id="mPay" value="2026-09-01">
-  <label>RBI bank rate on the relevant date (% per year)</label><input type="number" id="mBank" value="6.75" step="0.25">
+  <label for="mAmt">Amount due (₹)</label><input type="number" id="mAmt" value="500000" step="1000">
+  <label for="mAcc">Date of acceptance or deemed acceptance of goods or services</label><input type="date" id="mAcc" value="2025-10-01">
+  <label for="mDays">Agreed payment period in writing (days; the Act caps it at 45)</label><input type="number" id="mDays" value="45" min="1" max="45">
+  <label for="mPay">Date of payment or of computation</label><input type="date" id="mPay" value="2026-09-01">
+  <label for="mBank">RBI bank rate on the relevant date (% per year)</label><input type="number" id="mBank" value="6.75" step="0.25">
   <p class="mini">The bank rate is published by the RBI with every monetary policy statement; it has stood at the marginal standing facility rate since 2016. Enter the rate in force for the period.</p>
   <p style="margin-top:.6rem"><button class="go" id="mGo">Compute</button></p>
 </div></div>
@@ -77,14 +88,14 @@
 <!-- CPC -->
 <div class="view" id="v-cpc"><div class="grid">
 <div><div class="panel"><h2>Interest on a money decree</h2>
-  <label>Principal sum adjudged (₹)</label><input type="number" id="cAmt" value="1000000" step="1000">
-  <label>Date of suit</label><input type="date" id="cSuit" value="2022-04-01">
-  <label>Date of decree</label><input type="date" id="cDec" value="2025-06-15">
-  <label>Date of payment</label><input type="date" id="cPay" value="2026-09-01">
-  <label>Rate before the suit, if the court awards it (% per year, simple)</label><input type="number" id="cPre" value="0" step="0.5">
-  <label>Date from which pre-suit interest runs (blank for none)</label><input type="date" id="cPreFrom" value="">
-  <label>Rate pendente lite, suit to decree (% per year, simple)</label><input type="number" id="cPend" value="6" step="0.5">
-  <label>Rate from decree to payment (% per year, simple; 6% ceiling unless a commercial transaction)</label><input type="number" id="cPost" value="6" step="0.5">
+  <label for="cAmt">Principal sum adjudged (₹)</label><input type="number" id="cAmt" value="1000000" step="1000">
+  <label for="cSuit">Date of suit</label><input type="date" id="cSuit" value="2022-04-01">
+  <label for="cDec">Date of decree</label><input type="date" id="cDec" value="2025-06-15">
+  <label for="cPay">Date of payment</label><input type="date" id="cPay" value="2026-09-01">
+  <label for="cPre">Rate before the suit, if the court awards it (% per year, simple)</label><input type="number" id="cPre" value="0" step="0.5">
+  <label for="cPreFrom">Date from which pre-suit interest runs (blank for none)</label><input type="date" id="cPreFrom" value="">
+  <label for="cPend">Rate pendente lite, suit to decree (% per year, simple)</label><input type="number" id="cPend" value="6" step="0.5">
+  <label for="cPost">Rate from decree to payment (% per year, simple; 6% ceiling unless a commercial transaction)</label><input type="number" id="cPost" value="6" step="0.5">
   <label><input type="checkbox" id="cComm"> Debt arises from a commercial transaction (post-decree rate may exceed 6% up to the contractual rate)</label>
   <p style="margin-top:.6rem"><button class="go" id="cGo">Compute</button></p>
 </div></div>
@@ -96,14 +107,14 @@
 <!-- Arbitration -->
 <div class="view" id="v-arb"><div class="grid">
 <div><div class="panel"><h2>Interest on an arbitral award</h2>
-  <label>Sum awarded (₹)</label><input type="number" id="aAmt" value="2500000" step="1000">
-  <label>Date the cause of action arose</label><input type="date" id="aCause" value="2023-01-10">
-  <label>Date of award</label><input type="date" id="aAward" value="2025-08-20">
-  <label>Date of payment</label><input type="date" id="aPay" value="2026-09-01">
-  <label>Pre-award rate directed by the tribunal (% per year, simple; 0 if none)</label><input type="number" id="aPre" value="9" step="0.5">
-  <label>Current rate of interest on the date of award (% per year)</label><input type="number" id="aCur" value="7" step="0.25">
+  <label for="aAmt">Sum awarded (₹)</label><input type="number" id="aAmt" value="2500000" step="1000">
+  <label for="aCause">Date the cause of action arose</label><input type="date" id="aCause" value="2023-01-10">
+  <label for="aAward">Date of award</label><input type="date" id="aAward" value="2025-08-20">
+  <label for="aPay">Date of payment</label><input type="date" id="aPay" value="2026-09-01">
+  <label for="aPre">Pre-award rate directed by the tribunal (% per year, simple; 0 if none)</label><input type="number" id="aPre" value="9" step="0.5">
+  <label for="aCur">Current rate of interest on the date of award (% per year)</label><input type="number" id="aCur" value="7" step="0.25">
   <p class="mini">"Current rate of interest" is defined by section 2(b) of the Interest Act 1978 as the highest of the maximum rates at which interest may be paid on different classes of deposits by scheduled banks. Enter the figure the award or the parties rely on.</p>
-  <label>Post-award rate if the award directs one (% per year; blank to apply current rate + 2)</label><input type="number" id="aPost" value="" step="0.5">
+  <label for="aPost">Post-award rate if the award directs one (% per year; blank to apply current rate + 2)</label><input type="number" id="aPost" value="" step="0.5">
   <p style="margin-top:.6rem"><button class="go" id="aGo">Compute</button></p>
 </div></div>
 <div><div class="panel" id="aOut"></div>
@@ -114,10 +125,10 @@
 <!-- NI Act -->
 <div class="view" id="v-ni"><div class="grid">
 <div><div class="panel"><h2>Dishonoured cheque</h2>
-  <label>Cheque amount (₹)</label><input type="number" id="nAmt" value="300000" step="1000">
-  <label>Date of the cheque</label><input type="date" id="nDate" value="2025-03-01">
-  <label>Date of computation</label><input type="date" id="nPay" value="2026-09-01">
-  <label>Rate of interest the court may add to compensation (% per year, simple; courts commonly use 6 to 9)</label><input type="number" id="nRate" value="9" step="0.5">
+  <label for="nAmt">Cheque amount (₹)</label><input type="number" id="nAmt" value="300000" step="1000">
+  <label for="nDate">Date of the cheque</label><input type="date" id="nDate" value="2025-03-01">
+  <label for="nPay">Date of computation</label><input type="date" id="nPay" value="2026-09-01">
+  <label for="nRate">Rate of interest the court may add to compensation (% per year, simple; courts commonly use 6 to 9)</label><input type="number" id="nRate" value="9" step="0.5">
   <p style="margin-top:.6rem"><button class="go" id="nGo">Compute</button></p>
 </div></div>
 <div><div class="panel" id="nOut"></div>
@@ -129,10 +140,10 @@
 <!-- Plain -->
 <div class="view" id="v-plain"><div class="grid">
 <div><div class="panel"><h2>Simple or compound interest</h2>
-  <label>Principal (₹)</label><input type="number" id="pAmt" value="100000" step="1000">
-  <label>Rate (% per year)</label><input type="number" id="pRate" value="12" step="0.25">
-  <div class="row"><div><label>From</label><input type="date" id="pFrom" value="2024-01-01"></div><div><label>To</label><input type="date" id="pTo" value="2026-09-01"></div></div>
-  <label>Method</label><select id="pMethod"><option value="simple">Simple</option><option value="monthly">Compound, monthly rests</option><option value="quarterly">Compound, quarterly rests</option><option value="yearly">Compound, yearly rests</option></select>
+  <label for="pAmt">Principal (₹)</label><input type="number" id="pAmt" value="100000" step="1000">
+  <label for="pRate">Rate (% per year)</label><input type="number" id="pRate" value="12" step="0.25">
+  <div class="row"><div><label for="pFrom">From</label><input type="date" id="pFrom" value="2024-01-01"></div><div><label for="pTo">To</label><input type="date" id="pTo" value="2026-09-01"></div></div>
+  <label for="pMethod">Method</label><select id="pMethod"><option value="simple">Simple</option><option value="monthly">Compound, monthly rests</option><option value="quarterly">Compound, quarterly rests</option><option value="yearly">Compound, yearly rests</option></select>
   <p style="margin-top:.6rem"><button class="go" id="pGo">Compute</button></p>
 </div></div>
 <div><div class="panel" id="pOut"></div><p class="note">Day count is actual days over 365 for simple interest; compounding applies the periodic rate for each complete period and simple interest for the stub. Both conventions are stated in the working so a court or a counterparty can check them.</p></div></div></div>
@@ -149,17 +160,17 @@ const simple=(P,r,d)=>P*r/100*d/365;
 function compoundMonthly(P,r,from,to){ // monthly rests: interest added at each month-end from 'from'; stub simple
   const rows=[]; let bal=P; let cur=new Date(from); const end=new Date(to); let n=0; while(true){ const next=new Date(cur); next.setMonth(next.getMonth()+1); if(next>end){ const d=days(cur,end); if(d>0){ const i=bal*r/100*d/365; rows.push({from:cur,to:end,days:d,open:bal,int:i,close:bal+i}); bal+=i; } break; } const i=bal*r/100/12; rows.push({from:cur,to:next,days:days(cur,next),open:bal,int:i,close:bal+i}); bal+=i; cur=next; n++; if(n>1200) break; } return {rows,total:bal-P,balance:bal}; }
 function compoundPeriodic(P,r,from,to,months){ const rows=[]; let bal=P; let cur=new Date(from); const end=new Date(to); let n=0; while(true){ const next=new Date(cur); next.setMonth(next.getMonth()+months); if(next>end){ const d=days(cur,end); if(d>0){ const i=bal*r/100*d/365; rows.push({from:cur,to:end,days:d,open:bal,int:i,close:bal+i}); bal+=i; } break; } const i=bal*r/100*months/12; rows.push({from:cur,to:next,days:days(cur,next),open:bal,int:i,close:bal+i}); bal+=i; cur=next; n++; if(n>1200) break; } return {rows,total:bal-P,balance:bal}; }
-const sched=rows=>`<div class="tscroll"><table><tr><th>Period</th><th>Days</th><th>Opening</th><th>Interest</th><th>Closing</th></tr>${rows.map(r=>`<tr><td>${fmtD(r.from)} to ${fmtD(r.to)}</td><td>${r.days}</td><td>${inr2(r.open)}</td><td>${inr2(r.int)}</td><td>${inr2(r.close)}</td></tr>`).join('')}</table></div>`;
+const sched=rows=>`<div class="tscroll" tabindex="0"><table><tr><th>Period</th><th>Days</th><th>Opening</th><th>Interest</th><th>Closing</th></tr>${rows.map(r=>`<tr><td>${fmtD(r.from)} to ${fmtD(r.to)}</td><td>${r.days}</td><td>${inr2(r.open)}</td><td>${inr2(r.int)}</td><td>${inr2(r.close)}</td></tr>`).join('')}</table></div>`;
 
 $('#mGo').onclick=()=>{ const P=+$('#mAmt').value, acc=$('#mAcc').value, dd=Math.min(45,Math.max(1,+$('#mDays').value||45)), pay=$('#mPay').value, bank=+$('#mBank').value; const due=new Date(acc); due.setDate(due.getDate()+dd); const start=new Date(due); start.setDate(start.getDate()+1); const rate=3*bank; if(new Date(pay)<=start){ $('#mOut').innerHTML='<div class="warn">Payment date is on or before the due date: no interest arises.</div>'; return; } const c=compoundMonthly(P,rate,start,pay);
   $('#mOut').innerHTML=`<h2>Working</h2><span class="stat"><b class="total">${inr(c.total)}</b><span>interest under section 16</span></span><span class="stat"><b>${inr(c.balance)}</b><span>total payable</span></span><span class="stat"><b>${rate.toFixed(2)}%</b><span>3 × bank rate ${bank}%</span></span><span class="stat"><b>${fmtD(start)}</b><span>interest runs from (day after the ${dd}-day period)</span></span><span class="stat"><b>${days(start,pay)}</b><span>days to ${fmtD(pay)}</span></span>${sched(c.rows)}<p class="note">Monthly rests from the start date: each month's interest is added to the balance and earns interest in the next; the final part-month is simple. Effective annual rate ${(100*(Math.pow(1+rate/1200,12)-1)).toFixed(2)}%.</p>`; };
 $('#cGo').onclick=()=>{ const P=+$('#cAmt').value, suit=$('#cSuit').value, dec=$('#cDec').value, pay=$('#cPay').value, pre=+$('#cPre').value, preFrom=$('#cPreFrom').value, pend=+$('#cPend').value, comm=$('#cComm').checked; let post=+$('#cPost').value; let w=''; if(!comm&&post>6){ w='<div class="warn">Post-decree interest cannot exceed six per cent unless the debt arose from a commercial transaction; 6% applied.</div>'; post=6; }
   const rows=[]; let tot=0; if(pre>0&&preFrom){ const d=days(preFrom,suit); const i=simple(P,pre,d); rows.push(['Before suit',fmtD(preFrom)+' to '+fmtD(suit),d,pre,i]); tot+=i; } { const d=days(suit,dec); const i=simple(P,pend,d); rows.push(['Pendente lite (suit to decree)',fmtD(suit)+' to '+fmtD(dec),d,pend,i]); tot+=i; } { const d=days(dec,pay); const i=simple(P,post,d); rows.push(['Decree to payment',fmtD(dec)+' to '+fmtD(pay),d,post,i]); tot+=i; }
-  $('#cOut').innerHTML=`<h2>Working</h2>${w}<span class="stat"><b class="total">${inr(tot)}</b><span>total interest</span></span><span class="stat"><b>${inr(P+tot)}</b><span>decretal amount with interest</span></span><table><tr><th>Period</th><th>Dates</th><th>Days</th><th>Rate</th><th>Interest</th></tr>${rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}%</td><td>${inr2(r[4])}</td></tr>`).join('')}</table><p class="note">All three periods are simple interest on the principal sum adjudged, actual days over 365.</p>`; };
+  $('#cOut').innerHTML=`<h2>Working</h2>${w}<span class="stat"><b class="total">${inr(tot)}</b><span>total interest</span></span><span class="stat"><b>${inr(P+tot)}</b><span>decretal amount with interest</span></span><div class="twrap" tabindex="0"><table><tr><th>Period</th><th>Dates</th><th>Days</th><th>Rate</th><th>Interest</th></tr>${rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}%</td><td>${inr2(r[4])}</td></tr>`).join('')}</table></div><p class="note">All three periods are simple interest on the principal sum adjudged, actual days over 365.</p>`; };
 $('#aGo').onclick=()=>{ const P=+$('#aAmt').value, cause=$('#aCause').value, aw=$('#aAward').value, pay=$('#aPay').value, pre=+$('#aPre').value, cur=+$('#aCur').value; const postIn=$('#aPost').value; const post=postIn===''?cur+2:+postIn; const dPre=days(cause,aw), dPost=days(aw,pay); const iPre=pre>0?simple(P,pre,dPre):0; const base1=P+iPre; const iPost1=simple(base1,post,dPost), iPost2=simple(P,post,dPost);
-  $('#aOut').innerHTML=`<h2>Working</h2><span class="stat"><b class="total">${inr(iPre+iPost1)}</b><span>total interest (post-award on sum plus pre-award interest)</span></span><span class="stat"><b>${inr(P+iPre+iPost1)}</b><span>total payable</span></span><span class="stat"><b>${post.toFixed(2)}%</b><span>post-award rate${postIn===''?' (current rate '+cur+'% + 2)':' (as directed)'}</span></span><table><tr><th>Period</th><th>Dates</th><th>Days</th><th>Base</th><th>Rate</th><th>Interest</th></tr><tr><td>Pre-award, s.31(7)(a)</td><td>${fmtD(cause)} to ${fmtD(aw)}</td><td>${dPre}</td><td>${inr2(P)}</td><td>${pre}%</td><td>${inr2(iPre)}</td></tr><tr><td>Post-award, s.31(7)(b), on sum directed to be paid</td><td>${fmtD(aw)} to ${fmtD(pay)}</td><td>${dPost}</td><td>${inr2(base1)}</td><td>${post.toFixed(2)}%</td><td>${inr2(iPost1)}</td></tr><tr><td>Alternative: post-award on the principal only</td><td>${fmtD(aw)} to ${fmtD(pay)}</td><td>${dPost}</td><td>${inr2(P)}</td><td>${post.toFixed(2)}%</td><td>${inr2(iPost2)}</td></tr></table>`; };
+  $('#aOut').innerHTML=`<h2>Working</h2><span class="stat"><b class="total">${inr(iPre+iPost1)}</b><span>total interest (post-award on sum plus pre-award interest)</span></span><span class="stat"><b>${inr(P+iPre+iPost1)}</b><span>total payable</span></span><span class="stat"><b>${post.toFixed(2)}%</b><span>post-award rate${postIn===''?' (current rate '+cur+'% + 2)':' (as directed)'}</span></span><div class="twrap" tabindex="0"><table><tr><th>Period</th><th>Dates</th><th>Days</th><th>Base</th><th>Rate</th><th>Interest</th></tr><tr><td>Pre-award, s.31(7)(a)</td><td>${fmtD(cause)} to ${fmtD(aw)}</td><td>${dPre}</td><td>${inr2(P)}</td><td>${pre}%</td><td>${inr2(iPre)}</td></tr><tr><td>Post-award, s.31(7)(b), on sum directed to be paid</td><td>${fmtD(aw)} to ${fmtD(pay)}</td><td>${dPost}</td><td>${inr2(base1)}</td><td>${post.toFixed(2)}%</td><td>${inr2(iPost1)}</td></tr><tr><td>Alternative: post-award on the principal only</td><td>${fmtD(aw)} to ${fmtD(pay)}</td><td>${dPost}</td><td>${inr2(P)}</td><td>${post.toFixed(2)}%</td><td>${inr2(iPost2)}</td></tr></table></div>`; };
 $('#nGo').onclick=()=>{ const P=+$('#nAmt').value, d0=$('#nDate').value, pay=$('#nPay').value, r=+$('#nRate').value; const d=days(d0,pay); const i=simple(P,r,d);
-  $('#nOut').innerHTML=`<h2>Working</h2><span class="stat"><b class="total">${inr(2*P)}</b><span>maximum fine, twice the cheque amount (s.138)</span></span><span class="stat"><b>${inr(0.2*P)}</b><span>maximum interim compensation (s.143A, 20%)</span></span><span class="stat"><b>${inr(0.2*P)}</b><span>minimum appellate deposit (s.148, 20% of fine or compensation as ordered; shown on the cheque amount)</span></span><span class="stat"><b>${inr(P+i)}</b><span>cheque amount plus ${r}% simple interest for ${d} days</span></span><table><tr><th>Head</th><th>Basis</th><th>Amount</th></tr><tr><td>Cheque amount</td><td></td><td>${inr2(P)}</td></tr><tr><td>Interest as a component of compensation</td><td>${r}% × ${d}/365</td><td>${inr2(i)}</td></tr><tr><td>Fine ceiling</td><td>2 × cheque</td><td>${inr2(2*P)}</td></tr></table><p class="note">The demand notice must go within thirty days of the bank's return memo and the complaint within one month of the fifteen-day period expiring (section 142); those clocks are not computed here.</p>`; };
+  $('#nOut').innerHTML=`<h2>Working</h2><span class="stat"><b class="total">${inr(2*P)}</b><span>maximum fine, twice the cheque amount (s.138)</span></span><span class="stat"><b>${inr(0.2*P)}</b><span>maximum interim compensation (s.143A, 20%)</span></span><span class="stat"><b>${inr(0.2*P)}</b><span>minimum appellate deposit (s.148, 20% of fine or compensation as ordered; shown on the cheque amount)</span></span><span class="stat"><b>${inr(P+i)}</b><span>cheque amount plus ${r}% simple interest for ${d} days</span></span><div class="twrap" tabindex="0"><table><tr><th>Head</th><th>Basis</th><th>Amount</th></tr><tr><td>Cheque amount</td><td></td><td>${inr2(P)}</td></tr><tr><td>Interest as a component of compensation</td><td>${r}% × ${d}/365</td><td>${inr2(i)}</td></tr><tr><td>Fine ceiling</td><td>2 × cheque</td><td>${inr2(2*P)}</td></tr></table></div><p class="note">The demand notice must go within thirty days of the bank's return memo and the complaint within one month of the fifteen-day period expiring (section 142); those clocks are not computed here.</p>`; };
 $('#pGo').onclick=()=>{ const P=+$('#pAmt').value, r=+$('#pRate').value, f=$('#pFrom').value, t=$('#pTo').value, m=$('#pMethod').value; let html; if(m==='simple'){ const d=days(f,t); const i=simple(P,r,d); html=`<span class="stat"><b class="total">${inr(i)}</b><span>simple interest, ${d} days</span></span><span class="stat"><b>${inr(P+i)}</b><span>total</span></span><p class="note">${inr2(P)} × ${r}% × ${d} ÷ 365.</p>`; } else { const c=compoundPeriodic(P,r,f,t,m==='monthly'?1:m==='quarterly'?3:12); html=`<span class="stat"><b class="total">${inr(c.total)}</b><span>compound interest, ${m} rests</span></span><span class="stat"><b>${inr(c.balance)}</b><span>total</span></span>`+sched(c.rows); } $('#pOut').innerHTML='<h2>Working</h2>'+html; };
 $('#mGo').click(); $('#cGo').click(); $('#aGo').click(); $('#nGo').click(); $('#pGo').click();
 </script>
