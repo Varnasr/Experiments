@@ -1,6 +1,6 @@
 # Experiments
 
-Twenty-three browser tools for development economics, law and data work, each a
+Twenty-one browser tools for development economics, law and data work, each a
 self-contained page: causal workbench, RCT planner, poverty and inequality,
 wage gap, women's indicators, heat exposure, air quality, court translator,
 petition builder, statutory interest, land acquisition, library builder and the
@@ -9,9 +9,19 @@ rest. No build step. Deployed to GitHub Pages and to Netlify.
 ## Commands
 
 ```bash
-python3 scripts/check.py     # static checks, run by CI
-python3 -m http.server 8000  # then open http://localhost:8000
+python3 scripts/check.py           # static checks, run by CI
+node scripts/check-inline-js.mjs   # every inline <script> parses, run by CI
+node scripts/axe.mjs               # accessibility over every page, run by CI
+node scripts/axe.mjs --all         # also list the moderate and minor findings
+node scripts/axe.mjs --page wage-gap/index.html
+python3 scripts/bind-labels.py     # report labels bound to nothing; --write to fix
+python3 -m http.server 8000        # then open http://localhost:8000
 ```
+
+`scripts/axe.mjs` needs `npm ci` first, and a Chromium. In the agent sandbox one
+is already installed and the script finds it under `PLAYWRIGHT_BROWSERS_PATH`;
+in CI it comes from `node node_modules/playwright-core/cli.js install chromium`,
+so the browser matches the lockfile rather than whatever `npx` resolves.
 
 A local server does not send the `netlify.toml` headers, so the
 Content-Security-Policy you see locally is no policy at all.
@@ -56,6 +66,84 @@ Two traps found while doing it, both worth not rediscovering:
   page to show it. It is exempted in `ALLOWED_UNREFERENCED` with that reason,
   and a stale exemption fails too.
 
+## flipbook was dead for as long as it existed, and the page rendered perfectly
+
+An HTML parser ends a `<script>` element at the first literal `</script` in the
+source, whatever the JavaScript around it thinks it is doing. `flipbook` builds
+a standalone HTML file inside a template literal, and that template contains
+script tags. One was escaped and the next was not:
+
+```
+<script>${lib}<\/script><script src="../js/dyslexia-font.js" …></script>
+             ^^ escaped                                        ^^ not
+```
+
+So the browser ended the page's own inline script 10,417 characters in, leaving
+an unterminated template literal inside an unterminated function. The block
+threw `SyntaxError: Unexpected end of input` and **not one line of the tool
+ran**: no controls, no book, no export. The markup rendered exactly as designed
+and the only evidence anywhere was a single console line.
+
+`scripts/check-inline-js.mjs` cuts every inline script where the browser would
+cut it and asks node to parse the remainder. It needs no browser and no
+network. Fault-injected against the real defect.
+
+**Write `<\/script` whenever JavaScript emits a script tag.** The backslash
+means nothing to JavaScript and everything to the HTML parser.
+
+## Accessibility: 573 violations, and every one of them silent
+
+`scripts/axe.mjs` walks the tree rather than a list, so a tool added tomorrow is
+covered by existing. It audits at 1280x900 and 390x844 and fails on serious or
+critical; moderate and minor print under `--all` and are deliberately not a
+gate, because a repository that has never run axe goes red on its first run for
+more than anyone can triage in a sitting, and a gate nobody can get green gets
+deleted.
+
+The first run, on 2026-09-23, found 573 serious or critical nodes and three
+pages scrolling sideways on a phone. What they were:
+
+- **274 form controls with no accessible name.** These pages were written as
+  `<label>Text</label><input id="x">`, which looks right, reads right and
+  associates nothing: a label binds to a control only by wrapping it or by a
+  matching `for`. A screen reader announced every one of them as an unnamed
+  edit field. `scripts/bind-labels.py` fixed 218 mechanically and named the
+  rest by hand, including the rows `promise-costing` and `cost-benefit`
+  generate, where ids cannot be unique and the name goes on the control.
+- **295 nodes failing contrast, and one token behind almost all of them.**
+  `--muted:#9ca3af` is defined identically in seventeen pages and measures
+  **2.43:1** on `#fafafa`, a little over half the AA threshold. It is
+  `#6b7280` now: 4.63:1 on `#fafafa`, 4.83:1 on white. The rest were white on
+  the brand orange (2.14:1; the orange stays, the ink is what moved), white
+  on the hyd-sir amber, and a subtitle at 85% opacity on the darkest alab
+  subject fill, which came to 4.47:1.
+- **Three pages wider than the phone**, every one a wide table. The fix is a
+  scroll wrapper **plus** `min-width:0` on the grid items, and it does not work
+  without both: a grid item's default `min-width:auto` lets its min-content
+  size the shared track, so the wrapper is simply as wide as its table.
+  Deliberately not `display:block` on the table, which fixes the layout and
+  drops the table's semantics from the accessibility tree.
+
+Two things about a local run that are not true of production. The local server
+sends no headers, so `netlify.toml`'s CSP is absent and nothing is blocked by
+it; `scripts/check.py` is what covers that and the two are not substitutes.
+
+And **a run with no network is a failure, not a warning.** In a sandbox the
+browser cannot reach a CDN, so a page is audited without the script that draws
+half of it. That used to print as a warning above the score, and the warning was
+not enough: this script reported sixteen incomplete loads, said OK, and CI then
+found a contrast failure on `hyd-sir` that only exists once Chart.js has drawn
+the list it sits in. `--red` was 4.67:1 on white and 4.27:1 on `--soft`, and
+only a *selected* row puts `--soft` behind it, so it failed in a state the
+degraded page never reached. CI has a network and sees no incomplete loads; an
+offline run passes `--allow-degraded` and is told in as many words what that
+result is worth.
+
+To audit the CDN-dependent pages offline, stub the scripts by route rather than
+trusting the degraded run: `chromium` with `ctx.route('**://cdnjs.cloudflare.com/**')`
+returning a stub `Chart` is enough to make `hyd-sir` render its 199-row list,
+and that is how the fix above was verified before pushing.
+
 ## Watch out for
 
 - **Inline event handlers work here only because `script-src` carries
@@ -79,9 +167,21 @@ Two traps found while doing it, both worth not rediscovering:
   `climate-trace-india`, `sdg-progress-tracker` and
   `industry-conglomerates-database` need the same change.
 
+- **The tool count is pinned now.** This file opened with "Twenty-three browser
+  tools" while 21 directories held an `index.html` and `index.html` linked 21 of
+  them. The 23 was the count of HTML files, which includes the landing page and
+  `404.html`. `scripts/check.py` compares the two, because a number written in
+  prose that nothing compares is how every repository here has drifted.
+
 ## Testing
 
-`.github/workflows/ci.yml` runs `scripts/check.py` on every push and pull
-request. Before 2026-09-22 the only workflow deployed to Pages and validated
-nothing, so none of the above was checked by anything. Four of the checks were
-fault-injected against a real failure to confirm they bite.
+`.github/workflows/ci.yml` runs two jobs on every push and pull request. The
+first is `scripts/check.py` and `scripts/check-inline-js.mjs`, neither of which
+needs a browser or a network. The second installs Chromium and runs
+`scripts/axe.mjs`; it is separate so a contributor waiting on the static checks
+does not wait on a browser download.
+
+Before 2026-09-22 the only workflow deployed to Pages and validated nothing, so
+none of this was checked by anything. Seven checks have been fault-injected
+against a real failure to confirm they bite, including the inline-script parse
+and the tool count.

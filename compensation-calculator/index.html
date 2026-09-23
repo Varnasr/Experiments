@@ -7,7 +7,7 @@
 <meta name="description" content="Fatal motor accident compensation under the Motor Vehicles Act, computed step by step with the authority for each step: the Sarla Verma multiplier, Pranay Sethi future prospects and conventional heads with their 10% triennial enhancement, consortium per dependant, and interest.">
 <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231B6B4A'/><path d='M16 6 v20 M8 12 h16 M8 12 l-3 8 h6 z M24 12 l-3 8 h6 z' stroke='white' stroke-width='2' fill='none' stroke-linejoin='round'/></svg>">
 <style>
-  :root { --bg:#fafafa; --surface:#fff; --border:#e5e7eb; --text:#1a1a2e; --dim:#4b5563; --muted:#9ca3af; --accent:#1B6B4A; --accent-soft:#e6f2ec; --mono:ui-monospace,SFMono-Regular,Menlo,monospace; }
+  :root { --bg:#fafafa; --surface:#fff; --border:#e5e7eb; --text:#1a1a2e; --dim:#4b5563; --muted:#6b7280; --accent:#1B6B4A; --accent-soft:#e6f2ec; --mono:ui-monospace,SFMono-Regular,Menlo,monospace; }
   * { box-sizing:border-box; margin:0; padding:0; }
   body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--text); line-height:1.55; }
   a { color:var(--accent); }
@@ -20,6 +20,12 @@
   main { padding:1.5rem 0 3rem; }
   .lede { color:var(--dim); font-size:.95rem; max-width:66ch; margin-bottom:1.25rem; }
   .grid { display:grid; grid-template-columns:340px 1fr; gap:1.25rem; align-items:start; }
+  /* A grid item's default `min-width:auto` lets its min-content size the
+     shared track, so one wide table makes the whole column, and then the
+     page, wider than the phone. This is what makes the scroll wrapper
+     above work: without it the wrapper is simply as wide as its table. */
+  .grid > * { min-width:0; }
+
   @media (max-width:860px){ .grid { grid-template-columns:1fr; } }
   .panel { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1rem 1.15rem; margin-bottom:1rem; }
   .panel h2 { font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; margin-bottom:.7rem; }
@@ -32,6 +38,11 @@
   .stat { display:inline-block; margin:.25rem 1.5rem .25rem 0; vertical-align:top; }
   .stat b { display:block; font-size:1.3rem; font-family:Georgia,serif; font-weight:400; } .stat span { font-size:.75rem; color:var(--muted); }
   table { border-collapse:collapse; width:100%; font-size:.86rem; margin:.5rem 0; }
+  /* A wide table scrolls inside its own box. Without this its columns set
+     the page's min-content width and the whole page scrolls sideways on a
+     phone, which is invisible on a desktop. Not `display:block` on the
+     table: that drops its table semantics from the accessibility tree. */
+  .twrap { overflow-x:auto; max-width:100%; }
   th, td { text-align:left; padding:.4rem .5rem; border-bottom:1px solid var(--border); vertical-align:top; }
   td.num, th.num { text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; }
   th { color:var(--dim); font-weight:600; font-size:.75rem; }
@@ -57,26 +68,26 @@
 <div>
   <div class="panel">
     <h2>The deceased</h2>
-    <div class="row"><div><label>Age at death (years)</label><input type="number" id="age" value="38" min="0" max="100"></div><div><label>Monthly income (₹)</label><input type="number" id="income" value="25000" min="0" step="500"></div></div>
-    <label>Income tax paid per year (₹), if any</label><input type="number" id="tax" value="0" min="0" step="1000">
-    <label>Nature of income</label>
+    <div class="row"><div><label for="age">Age at death (years)</label><input type="number" id="age" value="38" min="0" max="100"></div><div><label for="income">Monthly income (₹)</label><input type="number" id="income" value="25000" min="0" step="500"></div></div>
+    <label for="tax">Income tax paid per year (₹), if any</label><input type="number" id="tax" value="0" min="0" step="1000">
+    <label for="job">Nature of income</label>
     <select id="job"><option value="perm">Permanent job (salaried, with increments)</option><option value="self">Self-employed or on a fixed salary</option><option value="none">Not earning: notional income entered above</option></select>
-    <label>Marital status</label>
+    <label for="marital">Marital status</label>
     <select id="marital"><option value="married">Married</option><option value="bachelor">Unmarried (bachelor or spinster)</option></select>
-    <label>Number of dependants (legal representatives claiming)</label><input type="number" id="deps" value="3" min="1" max="20">
+    <label for="deps">Number of dependants (legal representatives claiming)</label><input type="number" id="deps" value="3" min="1" max="20">
   </div>
   <div class="panel">
     <h2>Dates and options</h2>
-    <div class="row"><div><label>Date of accident</label><input type="date" id="dAcc" value="2024-03-15"></div><div><label>Claim petition filed</label><input type="date" id="dClaim" value="2024-06-01"></div></div>
-    <label>Date of award (enhancement and interest run to this date)</label><input type="date" id="dAward">
-    <label>Consortium</label>
+    <div class="row"><div><label for="dAcc">Date of accident</label><input type="date" id="dAcc" value="2024-03-15"></div><div><label for="dClaim">Claim petition filed</label><input type="date" id="dClaim" value="2024-06-01"></div></div>
+    <label for="dAward">Date of award (enhancement and interest run to this date)</label><input type="date" id="dAward">
+    <label for="consortium">Consortium</label>
     <select id="consortium"><option value="each">₹40,000 (enhanced) to each dependant</option><option value="one">₹40,000 (enhanced) once, in total</option></select>
-    <label>Deduction for personal and living expenses</label>
+    <label for="dedMode">Deduction for personal and living expenses</label>
     <select id="dedMode"><option value="auto">As per Sarla Verma (from status and dependants)</option><option value="0.5">One-half</option><option value="0.3333">One-third</option><option value="0.25">One-fourth</option><option value="0.2">One-fifth</option></select>
-    <label>Multiplier</label>
+    <label for="multMode">Multiplier</label>
     <select id="multMode"><option value="auto">Sarla Verma table (by age of the deceased)</option><option value="custom">Enter a multiplier</option></select>
     <input type="number" id="multCustom" value="15" min="1" max="18" style="display:none;margin-top:.3rem">
-    <label>Interest rate (simple, per year)</label><input type="number" id="rate" value="7.5" step="0.5" min="0" max="18">
+    <label for="rate">Interest rate (simple, per year)</label><input type="number" id="rate" value="7.5" step="0.5" min="0" max="18">
     <p style="margin-top:.7rem"><button id="calc">Compute</button> <button class="secondary" id="printBtn">Print</button></p>
   </div>
 </div>
@@ -133,7 +144,7 @@ function compute(){ const age=+$('#age').value, inc=+$('#income').value, tax=+$(
   add('Total with interest', '', total+interest, '', 'tot');
   let warn=''; if(mult==null) warn+='<div class="warn">No multiplier applies from the table above age 70. Enter one by hand.</div>'; if(job!=='none'&&inc<=0) warn+='<div class="warn">Enter the deceased\'s monthly income; for a non-earning deceased choose "not earning" and enter a notional income.</div>'; if(marital==='bachelor'&&deps>3) warn+='<div class="warn">For an unmarried deceased with a large dependent family Sarla Verma para 31 allows the deduction to be reduced to one-third; the one-half default is applied.</div>'; if(dedMode==='auto'&&marital==='married'&&deps<=1) warn+='<div class="warn">A married deceased with a single dependant: Sarla Verma para 30 gives one-third for two to three dependants and is silent on one. One-third is applied; one-half is also seen. Choose explicitly if it matters.</div>';
   $('#out').innerHTML=`<h2>Award</h2><span class="stat"><b class="total">${inr(total)}</b><span>compensation (before interest)</span></span><span class="stat"><b>${inr(interest)}</b><span>interest to ${esc(dAward)}</span></span><span class="stat"><b>${inr(total+interest)}</b><span>total payable</span></span>${warn}
-  <table><tr><th>Head</th><th>Working</th><th class="num">Amount</th></tr>${rows.map(r=>`<tr class="${r.cls}"><td>${esc(r.head)}${r.auth?`<span class="auth">${esc(r.auth)}</span>`:''}</td><td>${esc(r.calc)}</td><td class="num">${inr(r.amount)}</td></tr>`).join('')}</table>
+  <div class="twrap" tabindex="0"><table><tr><th>Head</th><th>Working</th><th class="num">Amount</th></tr>${rows.map(r=>`<tr class="${r.cls}"><td>${esc(r.head)}${r.auth?`<span class="auth">${esc(r.auth)}</span>`:''}</td><td>${esc(r.calc)}</td><td class="num">${inr(r.amount)}</td></tr>`).join('')}</table></div>
   <p class="note">Accident ${esc(dAcc)}; claim filed ${esc(dClaim)}; award ${esc(dAward)}. Deceased aged ${age}, ${marital==='married'?'married':'unmarried'}, ${deps} dependant${deps===1?'':'s'}, ${job==='perm'?'permanent job':job==='self'?'self-employed or fixed salary':'notional income'}.</p>
   <details><summary>The method in one paragraph</summary><p>Annual income (net of tax) is raised by the future-prospects percentage for the deceased's age and kind of employment, reduced by the fraction the deceased would have spent on themself, and multiplied by the multiplier for their age, giving the loss of dependency. To that are added three fixed conventional heads, which grow 10% every three years from 31 October 2017 (so ₹15,000 became ₹16,500 in late 2020, ₹18,150 in late 2023, and ₹19,965 from late 2026; ₹40,000 became ₹44,000, ₹48,400 and ₹53,240). Some benches apply the enhancement by the date of the accident rather than the award; change the award date to see the effect. Interest is simple, from the date the claim was filed.</p></details>`; }
 $('#calc').onclick=compute; document.querySelectorAll('input,select').forEach(el=>el.addEventListener('change',compute)); compute();
