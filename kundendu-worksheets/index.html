@@ -1184,9 +1184,9 @@
               </div>
             </div>
             <div id="history-list"></div>
-            <div id="badge-row" aria-label="Badges earned"></div>
+            <div id="badge-row" role="group" aria-label="Badges earned"></div>
             <h3 class="display" style="margin:14px 0 0;font-size:.95rem;">Sticker book 🏅</h3>
-            <div id="sticker-row" aria-label="Animal stickers earned"></div>
+            <div id="sticker-row" role="group" aria-label="Animal stickers earned"></div>
           </section>
 
           <footer class="sheet-foot">
@@ -1214,7 +1214,7 @@
   </div>
 
   <div id="gu-backdrop" class="gu-backdrop no-print"></div>
-  <aside id="gu-drawer" class="gu-drawer no-print" role="dialog" aria-label="For grown-ups">
+  <div id="gu-drawer" class="gu-drawer no-print" role="dialog" aria-label="For grown-ups">
     <div class="gu-head">
       <h2 class="display">For grown-ups 💛</h2>
       <button id="gu-close" type="button" aria-label="Close">✕</button>
@@ -1297,7 +1297,7 @@
       <section class="panel-section" aria-label="Reminders and sharing">
         <h3 class="display">Daily reminder &amp; sharing</h3>
         <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
-          <input id="remind-time" type="time" value="17:00" class="field" style="flex:0 0 118px;min-height:2.5rem;padding:.4rem .6rem;">
+          <input id="remind-time" type="time" value="17:00" class="field" aria-label="Daily reminder time" style="flex:0 0 118px;min-height:2.5rem;padding:.4rem .6rem;">
           <button id="remind-btn" type="button" class="btn-ghost" style="margin-bottom:0;">📅 Add daily reminder</button>
         </div>
         <p class="tip-text" style="font-size:.78rem;margin-bottom:10px;">Downloads a calendar event that rings every day at this time, open it and tap “Add” on the phone.</p>
@@ -1330,7 +1330,7 @@
         <h3 class="display">His poems</h3>
         <button id="add-poem-btn" type="button" class="btn-ghost">➕ Add his poem (from his NCERT book)</button>
       </section>
-  </aside>
+  </div>
 
   <div id="pack-root" aria-hidden="true"></div>
 
