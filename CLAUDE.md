@@ -127,10 +127,22 @@ pages scrolling sideways on a phone. What they were:
 Two things about a local run that are not true of production. The local server
 sends no headers, so `netlify.toml`'s CSP is absent and nothing is blocked by
 it; `scripts/check.py` is what covers that and the two are not substitutes.
-And in the sandbox the browser cannot reach a CDN, so a page may be audited
-without the script that draws half of it. Every failed request is counted and
-printed **before** the score for that reason: a clean result on a page that
-lost its chart library is worse than no result.
+
+And **a run with no network is a failure, not a warning.** In a sandbox the
+browser cannot reach a CDN, so a page is audited without the script that draws
+half of it. That used to print as a warning above the score, and the warning was
+not enough: this script reported sixteen incomplete loads, said OK, and CI then
+found a contrast failure on `hyd-sir` that only exists once Chart.js has drawn
+the list it sits in. `--red` was 4.67:1 on white and 4.27:1 on `--soft`, and
+only a *selected* row puts `--soft` behind it, so it failed in a state the
+degraded page never reached. CI has a network and sees no incomplete loads; an
+offline run passes `--allow-degraded` and is told in as many words what that
+result is worth.
+
+To audit the CDN-dependent pages offline, stub the scripts by route rather than
+trusting the degraded run: `chromium` with `ctx.route('**://cdnjs.cloudflare.com/**')`
+returning a stub `Chart` is enough to make `hyd-sir` render its 199-row list,
+and that is how the fix above was verified before pushing.
 
 ## Watch out for
 

@@ -5,6 +5,7 @@
        node scripts/axe.mjs --all      # print moderate and minor too
        node scripts/axe.mjs --page wage-gap/index.html
        node scripts/axe.mjs --json      # every node, for working through
+       node scripts/axe.mjs --allow-degraded   # accept a run with no network
 
    Why this exists, and why it walks the tree rather than a list.
 
@@ -54,6 +55,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const args = process.argv.slice(2);
 const showAll = args.includes('--all');
 const asJson = args.includes('--json');
+const allowDegraded = args.includes('--allow-degraded');
 const onlyPage = flag('--page');
 
 function flag(name) {
@@ -254,6 +256,24 @@ async function main() {
     show(advisory);
   } else if (advisory.length) {
     console.log(`\n${advisory.length} moderate or minor finding(s). Run with --all to list them.`);
+  }
+
+  /* A degraded run is not a result, and printing that as a warning was not
+     enough: this script reported sixteen incomplete loads, said OK, and CI
+     then found a contrast failure on `hyd-sir` that only exists once Chart.js
+     has drawn the list it is in. The warning was right there and I shipped
+     anyway, so it is a failure now. CI has a network and sees none of these;
+     an offline run passes --allow-degraded and is told, loudly, what that
+     result is worth. */
+  if (degraded.length && !allowDegraded) {
+    console.error(`\nFAIL: ${degraded.length} audit(s) ran against a page that could not load` +
+                  ` everything it asks for, so this run does not describe the real page.` +
+                  `\nRe-run with a network, or pass --allow-degraded to accept a partial result.`);
+    process.exit(1);
+  }
+  if (degraded.length && allowDegraded) {
+    console.log('\nAccepting a degraded run (--allow-degraded). Whatever those pages' +
+                ' failed to load was not audited, and a green result here does not cover it.');
   }
 
   if (failures.length || overflow.length) {

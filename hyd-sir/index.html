@@ -8,7 +8,7 @@
 <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231f4e79'/><path d='M8 23V12M14 23V9M20 23v-7M26 23v-4' stroke='white' stroke-width='2.6' fill='none' stroke-linecap='round'/><path d='M6 26h20' stroke='%23c0504d' stroke-width='2.6' stroke-linecap='round'/></svg>">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
-:root{--ink:#1c2b3a;--navy:#1f4e79;--red:#c0504d;--amber:#d9a400;--grey:#8c8c8c;--line:#d8dde3;--bg:#ffffff;--soft:#f3f5f7}
+:root{--ink:#1c2b3a;--navy:#1f4e79;--red:#b13b38;--amber:#d9a400;--grey:#8c8c8c;--line:#d8dde3;--bg:#ffffff;--soft:#f3f5f7}
 *{box-sizing:border-box}
 body{margin:0;font-family:"Helvetica Neue",Arial,sans-serif;color:var(--ink);background:var(--bg);font-size:15px;line-height:1.45}
 h1,h2,h3{font-family:Georgia,"Times New Roman",serif;font-weight:normal;margin:0}
@@ -31,6 +31,10 @@ aside input{width:100%;padding:8px 10px;border:1px solid var(--line);border-radi
 #partlist{list-style:none;padding:0;margin:12px 0 0}
 #partlist li button{width:100%;text-align:left;background:none;border:0;border-top:1px solid var(--line);padding:7px 4px;font-size:13px;cursor:pointer;display:flex;justify-content:space-between;color:var(--ink)}
 #partlist li button:hover,#partlist li button.sel{background:var(--soft)}
+/* --red was #c0504d, which is 4.67:1 on white and 4.27:1 on --soft.
+   A selected row puts --soft behind this text, so the rate failed only
+   while selected. #b13b38 is 5.41:1 on --soft and 5.91:1 on white, and
+   white on it goes 4.67:1 to 5.91:1 for the fate bar segment. */
 #partlist .rate{color:var(--red);font-variant-numeric:tabular-nums}
 main{padding:22px 32px 48px;max-width:1120px}
 .crumb{font-size:13px;color:#4a5560;margin-bottom:6px}
