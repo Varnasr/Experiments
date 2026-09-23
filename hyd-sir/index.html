@@ -8,7 +8,7 @@
 <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231f4e79'/><path d='M8 23V12M14 23V9M20 23v-7M26 23v-4' stroke='white' stroke-width='2.6' fill='none' stroke-linecap='round'/><path d='M6 26h20' stroke='%23c0504d' stroke-width='2.6' stroke-linecap='round'/></svg>">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
-:root{--ink:#1c2b3a;--navy:#1f4e79;--red:#c0504d;--amber:#d9a400;--grey:#8c8c8c;--line:#d8dde3;--bg:#ffffff;--soft:#f3f5f7}
+:root{--ink:#1c2b3a;--navy:#1f4e79;--red:#b13b38;--amber:#d9a400;--grey:#8c8c8c;--line:#d8dde3;--bg:#ffffff;--soft:#f3f5f7}
 *{box-sizing:border-box}
 body{margin:0;font-family:"Helvetica Neue",Arial,sans-serif;color:var(--ink);background:var(--bg);font-size:15px;line-height:1.45}
 h1,h2,h3{font-family:Georgia,"Times New Roman",serif;font-weight:normal;margin:0}
@@ -31,6 +31,10 @@ aside input{width:100%;padding:8px 10px;border:1px solid var(--line);border-radi
 #partlist{list-style:none;padding:0;margin:12px 0 0}
 #partlist li button{width:100%;text-align:left;background:none;border:0;border-top:1px solid var(--line);padding:7px 4px;font-size:13px;cursor:pointer;display:flex;justify-content:space-between;color:var(--ink)}
 #partlist li button:hover,#partlist li button.sel{background:var(--soft)}
+/* --red was #c0504d, which is 4.67:1 on white and 4.27:1 on --soft.
+   A selected row puts --soft behind this text, so the rate failed only
+   while selected. #b13b38 is 5.41:1 on --soft and 5.91:1 on white, and
+   white on it goes 4.67:1 to 5.91:1 for the fate bar segment. */
 #partlist .rate{color:var(--red);font-variant-numeric:tabular-nums}
 main{padding:22px 32px 48px;max-width:1120px}
 .crumb{font-size:13px;color:#4a5560;margin-bottom:6px}
@@ -38,7 +42,7 @@ main{padding:22px 32px 48px;max-width:1120px}
 main h2{font-size:26px;margin-bottom:4px}
 .sub{color:#4a5560;margin:0 0 18px;max-width:80ch}
 .fate{display:flex;height:44px;border-radius:3px;overflow:hidden;margin:8px 0 6px}
-.fate div{display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden}
+.fate div{display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden}
 .fatekey{display:flex;gap:18px;font-size:13px;color:#4a5560;margin-bottom:22px;flex-wrap:wrap}
 .fatekey i{display:inline-block;width:12px;height:12px;vertical-align:-1px;margin-right:5px;border-radius:2px}
 .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px 26px;margin:0 0 26px}
@@ -46,12 +50,23 @@ main h2{font-size:26px;margin-bottom:4px}
 .kpis b{display:block;font-size:24px;font-family:Georgia,serif;font-weight:normal;line-height:1.1}
 .kpis span{font-size:13px;color:#4a5560}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:26px 34px}
+  /* A grid item's default `min-width:auto` lets its min-content size the
+     shared track, so one wide table makes the whole column, and then the
+     page, wider than the phone. This is what makes the scroll wrapper
+     above work: without it the wrapper is simply as wide as its table. */
+.grid > * { min-width:0; }
+
 .grid>*{min-width:0}
 .panel h3{font-size:17px;margin-bottom:2px}
 .panel p{font-size:13px;color:#4a5560;margin:0 0 8px;max-width:60ch}
 .panel canvas{max-height:230px;max-width:100%}
 .wide{grid-column:1/-1}
 table{border-collapse:collapse;width:100%;font-size:13px;margin-top:8px}
+  /* A wide table scrolls inside its own box. Without this its columns set
+     the page's min-content width and the whole page scrolls sideways on a
+     phone, which is invisible on a desktop. Not `display:block` on the
+     table: that drops its table semantics from the accessibility tree. */
+  .twrap { overflow-x:auto; max-width:100%; }
 th,td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:right;font-variant-numeric:tabular-nums}
 th:first-child,td:first-child,th:nth-child(2),td:nth-child(2){text-align:left}
 th{background:var(--soft);cursor:pointer;user-select:none;font-weight:600}
@@ -88,9 +103,9 @@ tbody tr{cursor:pointer}tbody tr:hover{background:var(--soft)}
     <div class="panel"><h3>Gender, religion and the 2002 test</h3><p>Deletion rate within each group. Religion is estimated from names; the ECI records none. Malakpet's file has no 2002 linkage.</p><canvas id="cGroup"></canvas></div>
     <div class="panel"><h3>Hearing load</h3><p id="hearP"></p><canvas id="cHear"></canvas></div>
     <div class="panel wide"><h3>Which rule sent electors to a hearing</h3><p>Count of electors called, by the ECI rule that flagged them.</p><canvas id="cRules" style="max-height:200px"></canvas></div>
-    <div class="panel wide" id="tablePanel"><h3 id="tblTitle">All parts</h3><p>Click a column to sort, a row to open the part.</p><div style="overflow:auto"><table id="tbl"><thead><tr>
+    <div class="panel wide" id="tablePanel"><h3 id="tblTitle">All parts</h3><p>Click a column to sort, a row to open the part.</p><div style="overflow:auto"><div class="twrap" tabindex="0"><table id="tbl"><thead><tr>
       <th data-k="part" class="on">Part</th><th data-k="loc">Locality</th><th data-k="total">Electors</th><th data-k="asd">Deleted</th><th data-k="rate">Deleted %</th><th data-k="hearrate">At hearing %</th><th data-k="untr">Untraceable %</th><th data-k="frate">Women deleted %</th><th data-k="old">80+ deleted %</th><th data-k="maxslot">Max cases in a slot</th>
-    </tr></thead><tbody></tbody></table></div></div>
+    </tr></thead><tbody></tbody></table></div></div></div>
   </div>
   <p class="note">Deleted means on the Absent-Shifted-Dead list and absent from the draft roll in the September 2026 exports. The Commission extended the schedule on 7 September: claims to 7 October, hearings to 5 November, final roll 9 November, so the count will move. Malakpet is read by polling-station name because its export carries no part numbers. "At hearing" combines the ECI discrepancy list (37,703) and the no-mapping list (12,465). Ages come from the draft and ASD files. Religion is a name-based estimate that agrees 99% with an independent rebuild. 2023 comparison uses the ECI result: 98,103 valid votes, winner 49,103, margin 22,853.</p>
 </main>
@@ -114,8 +129,8 @@ function render(){
   document.getElementById('title').textContent=whole?ac+', all '+P.length+' '+D.acs[ac].partlabel+'s':(ac==='Malakpet'?o.loc:'Part '+o.part+(o.loc?': '+o.loc:''));
   const hr=o.hear, clean=o.total-o.asd-hr-o.unacc;
   const avg=pct(T.asd,T.total); document.getElementById('sub').textContent=whole?f(o.total)+' electors on the pre-revision roll. '+p1(pct(o.asd,o.total))+' deleted, '+p1(pct(hr,o.total))+' kept but called to a hearing, '+p1(pct(clean,o.total))+' untouched.':f(o.total)+' electors. '+p1(o.rate)+' deleted against a constituency average of '+p1(avg)+'. '+f(hr)+' more must attend a hearing.';
-  const seg=[[o.asd,'var(--red)'],[hr,'var(--amber)'],[clean,'var(--navy)'],[o.unacc,'#bbbbbb']];
-  document.getElementById('fate').innerHTML=seg.map(([n,c])=>`<div style="flex:${n};background:${c}">${pct(n,o.total)>9?f(n)+' ('+p1(pct(n,o.total))+')':''}</div>`).join('');
+  const seg=[[o.asd,'var(--red)','#fff'],[hr,'var(--amber)','var(--ink)'],[clean,'var(--navy)','#fff'],[o.unacc,'#bbbbbb','var(--ink)']];
+  document.getElementById('fate').innerHTML=seg.map(([n,c,ink])=>`<div style="flex:${n};background:${c};color:${ink}">${pct(n,o.total)>9?f(n)+' ('+p1(pct(n,o.total))+')':''}</div>`).join('');
   const k=[[f(o.asd),'names deleted'],[p1(pct(o.reasons[0]+o.reasons[1],o.asd)),'of deletions coded shifted or untraceable'],[p1(pct(o.age_asd[7],o.age_all[7])),'of electors aged 80+ deleted ('+f(o.age_all[7])+' on roll)'],[p1(pct(o.f_asd,o.asd)),'of deletions are women'],[T.haslink?p1(pct(o.asd-o.lk_asd,o.total-o.lk_all)):'n/a',T.haslink?'deleted among those with no 2002 link':'no 2002 linkage in this file'],[whole?f(T.median_slot):f(o.maxslot),whole?'median hearing cases per part per slot':'most hearing cases in one slot']];
   if(whole)k.push([(o.asd/E23.margin).toFixed(E23.margin<2000?0:1)+'\u00d7','the 2023 winning margin ('+f(E23.margin)+', '+E23.name+')'],[p1(pct(o.asd,E23.valid)),'of all valid votes cast in 2023']);
   document.getElementById('kpis').innerHTML=k.map(([b,s])=>`<div><b>${b}</b><span>${s}</span></div>`).join('');

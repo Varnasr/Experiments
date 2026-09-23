@@ -7,7 +7,7 @@
 <meta name="description" content="Oaxaca–Blinder decomposition of the gender wage gap in the browser: two-fold and three-fold decompositions, four reference-coefficient choices, detailed contributions by variable, and bootstrap standard errors. Upload microdata or use a simulated dataset with a known structure.">
 <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231B6B4A'/><path d='M7 24h6V12H7zM19 24h6V8h-6z' stroke='white' stroke-width='2.2' fill='none' stroke-linejoin='round'/><path d='M13 10h6' stroke='white' stroke-width='2.2' stroke-dasharray='2 2'/></svg>">
 <style>
-  :root { --bg:#fafafa; --surface:#fff; --border:#e5e7eb; --text:#1a1a2e; --dim:#4b5563; --muted:#9ca3af; --accent:#1B6B4A; --accent-soft:#e6f2ec; --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#4a3aa7; --grid:#eceef1; --mono:ui-monospace,SFMono-Regular,Menlo,monospace; }
+  :root { --bg:#fafafa; --surface:#fff; --border:#e5e7eb; --text:#1a1a2e; --dim:#4b5563; --muted:#6b7280; --accent:#1B6B4A; --accent-soft:#e6f2ec; --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#4a3aa7; --grid:#eceef1; --mono:ui-monospace,SFMono-Regular,Menlo,monospace; }
   * { box-sizing:border-box; margin:0; padding:0; }
   body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--text); line-height:1.55; }
   a { color:var(--accent); }
@@ -20,6 +20,12 @@
   main { padding:1.5rem 0 3rem; }
   .lede { color:var(--dim); font-size:.95rem; max-width:66ch; margin-bottom:1.25rem; }
   .grid { display:grid; grid-template-columns:320px 1fr; gap:1.25rem; align-items:start; }
+  /* A grid item's default `min-width:auto` lets its min-content size the
+     shared track, so one wide table makes the whole column, and then the
+     page, wider than the phone. This is what makes the scroll wrapper
+     above work: without it the wrapper is simply as wide as its table. */
+  .grid > * { min-width:0; }
+
   @media (max-width:860px){ .grid { grid-template-columns:1fr; } }
   .panel { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1rem 1.15rem; margin-bottom:1rem; }
   .panel h2 { font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; margin-bottom:.7rem; }
@@ -36,6 +42,11 @@
   .stat { display:inline-block; margin:.25rem 1.25rem .25rem 0; vertical-align:top; }
   .stat b { display:block; font-size:1.4rem; font-family:Georgia,serif; font-weight:400; } .stat span { font-size:.75rem; color:var(--muted); }
   table { border-collapse:collapse; width:100%; font-size:.84rem; margin:.5rem 0; }
+  /* A wide table scrolls inside its own box. Without this its columns set
+     the page's min-content width and the whole page scrolls sideways on a
+     phone, which is invisible on a desktop. Not `display:block` on the
+     table: that drops its table semantics from the accessibility tree. */
+  .twrap { overflow-x:auto; max-width:100%; }
   th, td { text-align:right; padding:.3rem .5rem; border-bottom:1px solid var(--border); font-variant-numeric:tabular-nums; }
   th:first-child, td:first-child { text-align:left; } th { color:var(--dim); font-weight:600; font-size:.75rem; }
   .note { font-size:.82rem; color:var(--dim); margin-top:.5rem; }
@@ -65,30 +76,30 @@
     <div class="tabs" id="srcTabs"><button data-src="sim" class="on">Simulate</button><button data-src="csv">Upload CSV</button></div>
     <div class="tab on" id="src-sim">
       <p class="mini">A labour-force-style sample where the true wage equation differs by sex in a known way, so the decomposition can be checked against how the data were made.</p>
-      <div class="row"><div><label>Workers</label><input type="number" id="simN" value="4000" min="200" max="50000"></div><div><label>Seed</label><input type="number" id="simSeed" value="11"></div></div>
-      <label>Women's intercept penalty (log points)</label><input type="number" id="simPen" value="-0.15" step="0.01">
-      <label>Women's extra return to a year of education</label><input type="number" id="simEduDiff" value="0.01" step="0.005">
-      <label>Women's mean years of experience relative to men</label><input type="number" id="simExpDiff" value="-4" step="0.5">
+      <div class="row"><div><label for="simN">Workers</label><input type="number" id="simN" value="4000" min="200" max="50000"></div><div><label for="simSeed">Seed</label><input type="number" id="simSeed" value="11"></div></div>
+      <label for="simPen">Women's intercept penalty (log points)</label><input type="number" id="simPen" value="-0.15" step="0.01">
+      <label for="simEduDiff">Women's extra return to a year of education</label><input type="number" id="simEduDiff" value="0.01" step="0.005">
+      <label for="simExpDiff">Women's mean years of experience relative to men</label><input type="number" id="simExpDiff" value="-4" step="0.5">
       <p style="margin-top:.6rem"><button id="simGo">Generate</button></p>
     </div>
     <div class="tab" id="src-csv">
       <p class="mini">One row per worker. A wage column, a two-valued group column (e.g. sex), and covariates. Text columns are expanded into dummies against their most common category.</p>
-      <label>File</label><input type="file" id="csvFile" accept=".csv,text/csv">
+      <label for="csvFile">File</label><input type="file" id="csvFile" accept=".csv,text/csv">
       <div id="csvMap" style="display:none">
-        <label>Wage column</label><select id="cY"></select>
+        <label for="cY">Wage column</label><select id="cY"></select>
         <label><input type="checkbox" id="cLog" checked> Take the natural log of wages</label>
-        <label>Group column</label><select id="cG"></select>
-        <label>Reference (advantaged) group value</label><select id="cGA"></select>
-        <label>Covariates</label><select id="cX" multiple size="6"></select>
+        <label for="cG">Group column</label><select id="cG"></select>
+        <label for="cGA">Reference (advantaged) group value</label><select id="cGA"></select>
+        <label for="cX">Covariates</label><select id="cX" multiple size="6"></select>
         <p style="margin-top:.6rem"><button id="csvGo">Load</button></p>
       </div>
     </div>
   </div>
   <div class="panel">
     <h2>Decomposition</h2>
-    <label>Reference coefficients β*</label>
+    <label for="ref">Reference coefficients β*</label>
     <select id="ref"><option value="pooledD">Pooled regression with a group dummy (Jann 2008)</option><option value="pooled">Pooled regression without the dummy (Neumark 1988)</option><option value="A">Advantaged group's coefficients (men)</option><option value="B">Disadvantaged group's coefficients (women)</option></select>
-    <label>Bootstrap replications for standard errors</label><input type="number" id="boot" value="200" min="0" max="1000">
+    <label for="boot">Bootstrap replications for standard errors</label><input type="number" id="boot" value="200" min="0" max="1000">
     <p style="margin-top:.6rem"><button id="run" disabled>Decompose</button></p>
     <p class="mini" id="status"></p>
   </div>
@@ -169,9 +180,9 @@ $('#run').onclick=()=>{ if(!D) return; const ref=$('#ref').value, B=+$('#boot').
   $('#twoOut').innerHTML=`<span class="stat"><b>${fmt(ex)}</b><span>explained by characteristics (${pct(ex/r.gap)} of the gap)${se?`, SE ${fmt(se.ex)}`:''}</span></span><span class="stat"><b>${fmt(un)}</b><span>unexplained (${pct(un/r.gap)} of the gap)${se?`, SE ${fmt(se.un)}`:''}</span></span>`+bar(items,'two-fold totals')+`<p class="mini"><b>Explained part, by variable</b>: how much of the gap is because ${esc(D.labelA)} and ${esc(D.labelB)} differ in each characteristic, valued at β*.</p>`+bar(detail.map(x=>({name:x.n,v:r.expl[x.j],se:se?se.exj[x.j]:NaN,color:'var(--s1)'})),'explained detail')+`<p class="mini"><b>Unexplained part, by variable</b>: how much is because each characteristic is paid differently. The intercept row carries whatever is not tied to a measured characteristic. Rows for dummy variables shift if you change the base category; the total does not.</p>`+bar(detail.concat([{j:0,n:'Intercept (group shift)'}]).map(x=>({name:x.n,v:r.unexpl[x.j],se:se?se.unj[x.j]:NaN,color:'var(--s2)'})),'unexplained detail')+(se?`<p class="mini">Standard errors from ${B} bootstrap replications of the whole procedure (both regressions and the decomposition), resampling workers with replacement.</p>`:'');
   $('#twoPanel').style.display='block';
   const E=sum(r.E),C=sum(r.C),I=sum(r.I);
-  $('#threeOut').innerHTML=`<table><tr><th>Component</th><th>Value</th>${se?'<th>Bootstrap SE</th>':''}<th>Share of gap</th><th>Reading</th></tr><tr><td>Endowments E</td><td>${fmt(E)}</td>${se?`<td>${fmt(se.E)}</td>`:''}<td>${pct(E/r.gap)}</td><td style="text-align:left;white-space:normal">what ${esc(D.labelB)} would gain with ${esc(D.labelA)}'s characteristics at their own returns</td></tr><tr><td>Coefficients C</td><td>${fmt(C)}</td>${se?`<td>${fmt(se.C)}</td>`:''}<td>${pct(C/r.gap)}</td><td style="text-align:left;white-space:normal">what ${esc(D.labelB)} would gain from ${esc(D.labelA)}'s returns on their own characteristics</td></tr><tr><td>Interaction I</td><td>${fmt(I)}</td>${se?`<td>${fmt(se.I)}</td>`:''}<td>${pct(I/r.gap)}</td><td style="text-align:left;white-space:normal">the cross term: differences in characteristics and in returns occurring together</td></tr><tr><td><b>Gap</b></td><td><b>${fmt(r.gap)}</b></td>${se?`<td>${fmt(se.gap)}</td>`:''}<td>100%</td><td></td></tr></table>`;
+  $('#threeOut').innerHTML=`<div class="twrap" tabindex="0"><table><tr><th>Component</th><th>Value</th>${se?'<th>Bootstrap SE</th>':''}<th>Share of gap</th><th>Reading</th></tr><tr><td>Endowments E</td><td>${fmt(E)}</td>${se?`<td>${fmt(se.E)}</td>`:''}<td>${pct(E/r.gap)}</td><td style="text-align:left;white-space:normal">what ${esc(D.labelB)} would gain with ${esc(D.labelA)}'s characteristics at their own returns</td></tr><tr><td>Coefficients C</td><td>${fmt(C)}</td>${se?`<td>${fmt(se.C)}</td>`:''}<td>${pct(C/r.gap)}</td><td style="text-align:left;white-space:normal">what ${esc(D.labelB)} would gain from ${esc(D.labelA)}'s returns on their own characteristics</td></tr><tr><td>Interaction I</td><td>${fmt(I)}</td>${se?`<td>${fmt(se.I)}</td>`:''}<td>${pct(I/r.gap)}</td><td style="text-align:left;white-space:normal">the cross term: differences in characteristics and in returns occurring together</td></tr><tr><td><b>Gap</b></td><td><b>${fmt(r.gap)}</b></td>${se?`<td>${fmt(se.gap)}</td>`:''}<td>100%</td><td></td></tr></table></div>`;
   $('#threePanel').style.display='block';
-  $('#regOut').innerHTML=`<table><tr><th>Variable</th><th>β ${esc(D.labelA)}</th><th>SE</th><th>β ${esc(D.labelB)}</th><th>SE</th><th>β* (reference)</th><th>X̄ ${esc(D.labelA)}</th><th>X̄ ${esc(D.labelB)}</th></tr>${names.map((n,j)=>`<tr><td>${esc(n)}</td><td>${fmt(r.fA.beta[j])}</td><td>${fmt(r.fA.se[j])}</td><td>${fmt(r.fB.beta[j])}</td><td>${fmt(r.fB.se[j])}</td><td>${fmt(r.bs[j])}</td><td>${fmt(r.XA[j])}</td><td>${fmt(r.XB[j])}</td></tr>`).join('')}</table><p class="mini">R² ${fmt(r.fA.r2,3)} (${esc(D.labelA)}, n = ${r.nA}) and ${fmt(r.fB.r2,3)} (${esc(D.labelB)}, n = ${r.nB}); heteroskedasticity-robust (HC1) standard errors.</p>`;
+  $('#regOut').innerHTML=`<div class="twrap" tabindex="0"><table><tr><th>Variable</th><th>β ${esc(D.labelA)}</th><th>SE</th><th>β ${esc(D.labelB)}</th><th>SE</th><th>β* (reference)</th><th>X̄ ${esc(D.labelA)}</th><th>X̄ ${esc(D.labelB)}</th></tr>${names.map((n,j)=>`<tr><td>${esc(n)}</td><td>${fmt(r.fA.beta[j])}</td><td>${fmt(r.fA.se[j])}</td><td>${fmt(r.fB.beta[j])}</td><td>${fmt(r.fB.se[j])}</td><td>${fmt(r.bs[j])}</td><td>${fmt(r.XA[j])}</td><td>${fmt(r.XB[j])}</td></tr>`).join('')}</table></div><p class="mini">R² ${fmt(r.fA.r2,3)} (${esc(D.labelA)}, n = ${r.nA}) and ${fmt(r.fB.r2,3)} (${esc(D.labelB)}, n = ${r.nB}); heteroskedasticity-robust (HC1) standard errors.</p>`;
   $('#regPanel').style.display='block'; setStatus('Done.'); } catch(e){ setStatus('Error: '+e.message); } },20); };
 $('#simGo').click();
 </script>

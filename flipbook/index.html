@@ -8,7 +8,7 @@
 <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23572e91'/><path d='M6 8h9v18H6zM17 8h9v18h-9z' fill='white'/><path d='M17 8c3 2 5 6 5 9s-2 7-5 9' fill='%23ff9911'/></svg>">
 <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
 <style>
-  :root { --bg:#fafafa; --surface:#fff; --border:#e5e7eb; --text:#1a1a2e; --dim:#4b5563; --muted:#9ca3af; --accent:#572e91; --accent-soft:#efe9f7; --orange:#ff9911; }
+  :root { --bg:#fafafa; --surface:#fff; --border:#e5e7eb; --text:#1a1a2e; --dim:#4b5563; --muted:#6b7280; --accent:#572e91; --accent-soft:#efe9f7; --orange:#ff9911; }
   * { box-sizing:border-box; margin:0; padding:0; }
   body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--text); line-height:1.55; }
   a { color:var(--accent); }
@@ -21,6 +21,12 @@
   main { padding:1.5rem 0 3rem; }
   .lede { color:var(--dim); font-size:.95rem; max-width:72ch; margin-bottom:1.25rem; }
   .grid { display:grid; grid-template-columns:330px 1fr; gap:1.25rem; align-items:start; }
+  /* A grid item's default `min-width:auto` lets its min-content size the
+     shared track, so one wide table makes the whole column, and then the
+     page, wider than the phone. This is what makes the scroll wrapper
+     above work: without it the wrapper is simply as wide as its table. */
+  .grid > * { min-width:0; }
+
   @media (max-width:960px){ .grid { grid-template-columns:1fr; } }
   .panel { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1rem 1.15rem; margin-bottom:1rem; }
   .panel h2 { font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; margin-bottom:.7rem; }
@@ -71,16 +77,16 @@
   <div class="panel"><h2>1. The PDF</h2>
     <div class="drop" id="drop"><b>Choose a PDF</b> or drop one here<br><span class="mini">Reports, magazines, children's books, portfolios. Pages are rendered at the size you set below.</span></div>
     <input type="file" id="file" accept="application/pdf,.pdf" hidden>
-    <label>Render width per page (pixels)</label><select id="width"><option value="900">900, small and quick</option><option value="1400" selected>1400, sharp on most screens</option><option value="2000">2000, print-like, larger file</option></select>
-    <label>JPEG quality: <span id="qv">0.85</span></label><input type="range" id="quality" min="0.5" max="0.95" step="0.05" value="0.85">
+    <label for="width">Render width per page (pixels)</label><select id="width"><option value="900">900, small and quick</option><option value="1400" selected>1400, sharp on most screens</option><option value="2000">2000, print-like, larger file</option></select>
+    <label for="quality">JPEG quality: <span id="qv">0.85</span></label><input type="range" id="quality" min="0.5" max="0.95" step="0.05" value="0.85">
     <div class="prog"><i id="bar"></i></div><p class="mini" id="status">No file yet.</p>
   </div>
   <div class="panel"><h2>2. The book</h2>
-    <div class="row"><div><label>Title</label><input type="text" id="title" placeholder="from the PDF if it has one"></div><div><label>Author</label><input type="text" id="author"></div></div>
-    <label>Background</label><div class="row"><select id="theme"><option value="paper">Paper</option><option value="dark" selected>Dark</option><option value="custom">Colour</option></select><input type="color" id="colour" value="#334155"></div>
+    <div class="row"><div><label for="title">Title</label><input type="text" id="title" placeholder="from the PDF if it has one"></div><div><label for="author">Author</label><input type="text" id="author"></div></div>
+    <label>Background</label><div class="row"><select id="theme" aria-label="Background"><option value="paper">Paper</option><option value="dark" selected>Dark</option><option value="custom">Colour</option></select><input type="color" id="colour" value="#334155" aria-label="Background colour, used when Background is set to Colour"></div>
     <label><input type="checkbox" id="cover" checked> First page is a cover (shown alone, hard)</label>
     <label><input type="checkbox" id="portrait" checked> One page at a time on narrow screens</label>
-    <label>Turn speed</label><select id="speed"><option value="600">Quick</option><option value="900" selected>Natural</option><option value="1400">Slow</option></select>
+    <label for="speed">Turn speed</label><select id="speed"><option value="600">Quick</option><option value="900" selected>Natural</option><option value="1400">Slow</option></select>
     <div class="btns"><button id="rebuild" disabled>Rebuild the book</button></div>
   </div>
   <div class="panel"><h2>3. Export</h2>
@@ -183,7 +189,7 @@ document.getElementById('prev').onclick=function(){flip.flipPrev()};document.get
 document.getElementById('full').onclick=function(){if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen()};
 document.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' ')flip.flipNext();if(e.key==='ArrowLeft'||e.key==='PageUp')flip.flipPrev()});
 var t;window.addEventListener('resize',function(){clearTimeout(t);t=setTimeout(build,250)});build();})();
-<\/script><script src="../js/dyslexia-font.js" data-accent="var(--purple2)" data-radius="99px" defer></script>
+<\/script><script src="../js/dyslexia-font.js" data-accent="var(--purple2)" data-radius="99px" defer><\/script>
 </body></html>`; }
 </script>
 </body>

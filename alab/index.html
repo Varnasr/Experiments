@@ -236,7 +236,7 @@ header.mast::before{content:""; display:block; height:3px; background:var(--acce
 }
 .subjcard[aria-pressed="true"]{background:var(--hue); color:var(--on-accent); border-color:var(--hue)}
 .subjcard b{font-family:"Baloo 2",sans-serif; font-weight:700; font-size:1rem; line-height:1.2}
-.subjcard span{font-size:.78rem; opacity:.85}
+.subjcard span{font-size:.78rem; opacity:.92}
 
 /* The homepage mind map. Same renderer as Learn, boxed and capped so a
    fourteen-branch map does not become the whole page. */
@@ -672,6 +672,11 @@ ul.mindlist ul li::marker{color:var(--bhue)}
   .chk{background:#fff; border:1px solid #bbb; border-left:4px solid #555}
   .chk blockquote{background:#fff}
 }
+  /* A wide table scrolls inside its own box. Without this its columns set
+     the page's min-content width and the whole page scrolls sideways on a
+     phone, which is invisible on a desktop. Not `display:block` on the
+     table: that drops its table semantics from the accessibility tree. */
+  .twrap { overflow-x:auto; max-width:100%; }
 </style>
 <script>
 /* Work out how wide this page really is on the reader's screen, and adapt.
@@ -3403,13 +3408,13 @@ function sheetQuestion(q, n){
   } else if(q.t === 'tf'){
     body = `${q.q} <span class="sup">(True / False)</span>`;
   } else if(q.t === 'match'){
-    body = `${q.q}<div class="mtable"><table style="width:100%; border-collapse:collapse">
+    body = `${q.q}<div class="mtable"><div class="twrap" tabindex="0"><table style="width:100%; border-collapse:collapse">
       <tr><th style="text-align:left; padding:4px 8px 4px 0; border-bottom:1px solid var(--rule); width:50%">Column A</th>
           <th style="text-align:left; padding:4px 0; border-bottom:1px solid var(--rule)">Column B</th></tr>
       ${p.left.map((pr, i) => `<tr>
         <td style="padding:4px 8px 4px 0; vertical-align:top">(${LETTERS[i].toLowerCase()}) ${pr[0]}</td>
         <td style="padding:4px 0; vertical-align:top">(${i + 1}) ${p.right[i]}</td></tr>`).join('')}
-    </table></div>`;
+    </table></div></div>`;
   } else {
     body = q.q + (q.t === 'num' && q.u ? ` <span class="sup">(answer in ${q.u})</span>` : '');
   }

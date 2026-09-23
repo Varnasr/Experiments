@@ -15,7 +15,7 @@
     <style>
         :root {
             --purple:#572e91; --purple2:#7f3289; --purple3:#99459a; --deep:#382280; --lilac:#f5f1fa; --lilac2:#ece4f5;
-            --orange:#ff9911; --orange2:#fa830b; --ink:#222; --dim:#4b5563; --muted:#8b8f99; --border:#e6e3ec; --surface:#fff;
+            --orange:#ff9911; --orange2:#fa830b; --ink:#222; --dim:#4b5563; --muted:#6b7280; --border:#e6e3ec; --surface:#fff;
             --head:"Comfortaa","Segoe UI",sans-serif; --body:"Source Sans 3",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
         }
         * { margin:0; padding:0; box-sizing:border-box; }
@@ -32,7 +32,7 @@
         .top nav { display:flex; gap:1.1rem; font-size:.92rem; font-weight:600; }
         .top nav a { color:var(--dim); text-decoration:none; }
         .top nav a:hover { color:var(--purple2); }
-        .top nav .cta { background:var(--orange); color:#fff; padding:.4rem .95rem; border-radius:99px; }
+        .top nav .cta { background:var(--orange); color:var(--ink); padding:.4rem .95rem; border-radius:99px; }
         @media (max-width:700px) { .top nav a:not(.cta) { display:none; } }
 
         /* hero */
@@ -45,7 +45,9 @@
         .hero p { font-size:1.08rem; max-width:60ch; color:rgba(255,255,255,.88); margin-bottom:.7rem; }
         .hero p:last-of-type { margin-bottom:1.6rem; }
         .btn { display:inline-block; font-family:var(--body); font-weight:700; font-size:.95rem; padding:.7rem 1.4rem; border-radius:50px; text-decoration:none; transition:transform .15s, box-shadow .15s; }
-        .btn-orange { background:var(--orange); color:#fff; box-shadow:0 6px 14px rgba(0,0,0,.18); }
+        /* Dark ink on the orange, not white: white measures 2.14:1 on #ff9911
+           and the orange is the brand, so the ink is what moves. #222 gives 7.44:1. */
+        .btn-orange { background:var(--orange); color:var(--ink); box-shadow:0 6px 14px rgba(0,0,0,.18); }
         .btn-ghost { border:2px solid rgba(255,255,255,.75); color:#fff; margin-left:.6rem; }
         .btn:hover { transform:translateY(-2px); box-shadow:0 10px 18px rgba(0,0,0,.2); }
         .hero-art { position:relative; width:240px; height:240px; }
@@ -68,7 +70,7 @@
         section.block { padding:3.6rem 0 1.5rem; position:relative; }
         section.block.tint { background:var(--lilac); padding:3.4rem 0 2.4rem; margin-top:2rem; }
         .sec-head { display:flex; align-items:flex-start; gap:1rem; margin-bottom:1.4rem; }
-        .num { flex:0 0 auto; width:46px; height:46px; border-radius:50%; background:var(--orange); color:#fff; font-family:var(--head); font-weight:700; display:flex; align-items:center; justify-content:center; font-size:1rem; box-shadow:0 5px 10px rgba(250,131,11,.3); }
+        .num { flex:0 0 auto; width:46px; height:46px; border-radius:50%; background:var(--orange); color:var(--ink); font-family:var(--head); font-weight:700; display:flex; align-items:center; justify-content:center; font-size:1rem; box-shadow:0 5px 10px rgba(250,131,11,.3); }
         .sec-head .sub { font-size:.8rem; text-transform:uppercase; letter-spacing:.1em; color:var(--purple); font-weight:700; }
         .sec-head h2 { font-family:var(--head); font-weight:700; font-size:1.65rem; color:var(--deep); line-height:1.25; }
         .sec-head p { color:var(--dim); margin-top:.35rem; max-width:62ch; }

@@ -13,4 +13,33 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
       - run: python3 scripts/check.py
+
+      # An inline <script> ends at the first literal `</script` in the source,
+      # whatever the JavaScript around it thinks. flipbook shipped a template
+      # that emitted an unescaped one, which cut its own script in half and
+      # left the whole tool dead with the markup rendering perfectly. No
+      # browser and no network: this parses what the browser would be left
+      # with. See the comment at the top of the script.
+      - name: Inline scripts parse
+        run: node scripts/check-inline-js.mjs
+
+  # axe over every page, in a desktop and a phone viewport, plus a horizontal
+  # overflow measurement at 390px. Separate from the job above because it
+  # installs a browser and is the slow half; a contributor waiting on the
+  # static checks should not wait on a Chromium download.
+  accessibility:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci
+      # playwright-core ships its own CLI, so the browser comes from the
+      # pinned version in the lockfile rather than whatever npx resolves.
+      - run: node node_modules/playwright-core/cli.js install --with-deps chromium
+      - run: node scripts/axe.mjs

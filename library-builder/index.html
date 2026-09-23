@@ -7,7 +7,7 @@
 <meta name="description" content="Catalogue the books in a house: add by ISBN or title with metadata and covers from Open Library, or by hand or CSV; shelve, tag, track who is reading what and who has borrowed it, see the subjects the shelves cluster around, and export the whole thing. Stored in the browser only.">
 <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23572e91'/><path d='M8 8h4v16H8zM13 8h4v16h-4zM18.5 9l3.8-1 4.2 15.5-3.8 1z' fill='white'/><path d='M8 24h18' stroke='%23ff9911' stroke-width='2' stroke-linecap='round'/></svg>">
 <style>
-  :root { --bg:#fafafa; --surface:#fff; --border:#e5e7eb; --text:#1a1a2e; --dim:#4b5563; --muted:#9ca3af; --accent:#572e91; --accent-soft:#efe9f7; --orange:#ff9911; --grid:#eee; }
+  :root { --bg:#fafafa; --surface:#fff; --border:#e5e7eb; --text:#1a1a2e; --dim:#4b5563; --muted:#6b7280; --accent:#572e91; --accent-soft:#efe9f7; --orange:#ff9911; --grid:#eee; }
   * { box-sizing:border-box; margin:0; padding:0; }
   body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--text); line-height:1.55; }
   a { color:var(--accent); }
@@ -20,6 +20,12 @@
   main { padding:1.5rem 0 3rem; }
   .lede { color:var(--dim); font-size:.95rem; max-width:72ch; margin-bottom:1.25rem; }
   .grid { display:grid; grid-template-columns:380px 1fr; gap:1.25rem; align-items:start; }
+  /* A grid item's default `min-width:auto` lets its min-content size the
+     shared track, so one wide table makes the whole column, and then the
+     page, wider than the phone. This is what makes the scroll wrapper
+     above work: without it the wrapper is simply as wide as its table. */
+  .grid > * { min-width:0; }
+
   @media (max-width:960px){ .grid { grid-template-columns:1fr; } }
   .panel { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1rem 1.15rem; margin-bottom:1rem; }
   .panel h2 { font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; margin-bottom:.7rem; }
@@ -53,10 +59,15 @@
   .pill { display:inline-block; font-size:.66rem; padding:0 .35rem; border-radius:4px; background:var(--accent-soft); color:#2f1a52; margin:.15rem .15rem 0 0; }
   .pill.lent { background:#fff7ed; color:#9a3412; } .pill.read { background:#ecfdf5; color:#065f46; } .pill.reading { background:#eff6ff; color:#1e40af; }
   table { border-collapse:collapse; width:100%; font-size:.83rem; }
+  /* A wide table scrolls inside its own box. Without this its columns set
+     the page's min-content width and the whole page scrolls sideways on a
+     phone, which is invisible on a desktop. Not `display:block` on the
+     table: that drops its table semantics from the accessibility tree. */
+  .twrap { overflow-x:auto; max-width:100%; }
   th, td { text-align:left; padding:.3rem .45rem; border-bottom:1px solid var(--border); vertical-align:top; }
   th { color:var(--dim); font-weight:600; font-size:.74rem; white-space:nowrap; cursor:pointer; user-select:none; }
   tr.rowb { cursor:pointer; } tr.rowb:hover td { background:#faf7fe; }
-  .tscroll { overflow:auto; max-height:70vh; }
+  .tscroll { overflow:auto; max-width:100%; max-height:70vh; }
   .results { border:1px solid var(--border); border-radius:6px; margin-top:.4rem; max-height:16rem; overflow:auto; }
   .results div { padding:.35rem .5rem; font-size:.8rem; border-bottom:1px solid var(--border); cursor:pointer; } .results div:hover { background:var(--accent-soft); }
   .results div span { color:var(--muted); }
@@ -84,7 +95,7 @@
     <div id="results" class="results" hidden></div>
     <p class="mini" id="addMsg"></p>
     <details style="margin-top:.5rem"><summary class="mini" style="cursor:pointer;color:var(--accent)">Paste a list, or import a CSV</summary>
-      <label>One book per line: an ISBN, or "Title | Author | Year"</label><textarea id="bulk"></textarea>
+      <label for="bulk">One book per line: an ISBN, or "Title | Author | Year"</label><textarea id="bulk"></textarea>
       <div class="btns"><button id="bulkGo">Add these</button><label style="display:inline-flex;align-items:center;gap:.3rem;margin:0;font-size:.78rem"><input type="checkbox" id="bulkLookup" checked> look up ISBNs online</label></div>
       <div class="btns"><button id="csvIn">Import CSV (Goodreads, LibraryThing, or title/author/isbn columns)</button><input type="file" id="csvFile" accept=".csv,text/csv" hidden></div>
     </details>
@@ -102,7 +113,7 @@
 <div>
   <div class="panel" id="stats"></div>
   <div class="tabs"><button data-v="shelf" class="on">Shelves</button><button data-v="table">Table</button><button data-v="lent">Borrowed and reading</button><button data-v="subjects">Subjects</button><button data-v="map">Map</button></div>
-  <div class="filters"><input type="search" id="search" placeholder="Search title, author, subject, notes"><select id="fShelf"><option value="">All shelves</option></select><select id="fStatus"><option value="">Any status</option><option>unread</option><option>reading</option><option>read</option><option>reference</option></select><select id="fOwner"><option value="">Anyone's</option></select><select id="fTag"><option value="">Any subject</option></select><select id="sort"><option value="added">Newest first</option><option value="title">Title</option><option value="author">Author</option><option value="year">Year</option><option value="shelf">Shelf</option></select></div>
+  <div class="filters"><input type="search" id="search" aria-label="Search the library" placeholder="Search title, author, subject, notes"><select id="fShelf" aria-label="Filter by shelf"><option value="">All shelves</option></select><select id="fStatus" aria-label="Filter by reading status"><option value="">Any status</option><option>unread</option><option>reading</option><option>read</option><option>reference</option></select><select id="fOwner" aria-label="Filter by owner"><option value="">Anyone's</option></select><select id="fTag" aria-label="Filter by subject"><option value="">Any subject</option></select><select id="sort" aria-label="Sort by"><option value="added">Newest first</option><option value="title">Title</option><option value="author">Author</option><option value="year">Year</option><option value="shelf">Shelf</option></select></div>
   <div class="view on" id="v-shelf"><div class="shelf" id="shelf"></div></div>
   <div class="view" id="v-table"><div class="tscroll" id="table"></div></div>
   <div class="view" id="v-lent"><div id="lent"></div></div>
@@ -155,8 +166,8 @@ function render(){ const uniq=k=>[...new Set(B.map(b=>b[k]).filter(Boolean))].so
   $('#stats').innerHTML=`<span class="stat"><b>${B.length}</b><span>books catalogued</span></span><span class="stat"><b>${new Set(B.flatMap(b=>b.authors)).size}</b><span>authors</span></span><span class="stat"><b>${B.filter(b=>b.status==='read').length}</b><span>read</span></span><span class="stat"><b>${B.filter(b=>b.status==='reading').length}</b><span>being read now</span></span><span class="stat"><b>${lent.length}</b><span>out on loan${over.length?', '+over.length+' for over 60 days':''}</span></span><span class="stat"><b>${uniq('shelf').length}</b><span>shelves</span></span><span class="stat"><b>${tagCount.size}</b><span>subjects</span></span>${L.length!==B.length?`<span class="stat"><b>${L.length}</b><span>shown by the current filter</span></span>`:''}`;
   const view=$('.tabs button.on').dataset.v;
   if(view==='shelf') $('#shelf').innerHTML=L.length?L.map(b=>`<div class="book${b.id===sel?' sel':''}" data-id="${b.id}"><div class="cover">${b.cover?`<img src="${esc(b.cover)}" alt="" loading="lazy" onerror="this.remove()">`:''}<div class="t">${esc(b.title)}</div></div><div class="meta"><b title="${esc(b.title)}">${esc(b.title)}</b>${esc(b.authors.join(', '))}${b.year?' · '+b.year:''}<br>${b.shelf?`<span class="pill">${esc(b.shelf)}</span>`:''}${b.status!=='unread'?`<span class="pill ${b.status}">${b.status}</span>`:''}${b.lentTo?`<span class="pill lent">with ${esc(b.lentTo)}</span>`:''}</div></div>`).join(''):'<p class="note">Nothing here yet. Add a book on the left, or load the starter shelf.</p>';
-  if(view==='table') $('#table').innerHTML=`<table><tr><th data-s="title">Title</th><th data-s="author">Author</th><th data-s="year">Year</th><th data-s="shelf">Shelf</th><th>Whose</th><th>Status</th><th>Lent to</th><th>Subjects</th></tr>${L.map(b=>`<tr class="rowb" data-id="${b.id}"><td>${esc(b.title)}</td><td>${esc(b.authors.join(', '))}</td><td>${esc(b.year)}</td><td>${esc(b.shelf)}</td><td>${esc(b.owner)}</td><td>${b.status}</td><td>${esc(b.lentTo)}${b.lentOn?' <span class="mini">('+b.lentOn+')</span>':''}</td><td class="mini">${esc(b.subjects.slice(0,4).join(', '))}</td></tr>`).join('')}</table>`;
-  if(view==='lent'){ const reading=B.filter(b=>b.status==='reading'); $('#lent').innerHTML=`<h3 style="font-size:.9rem;margin:.3rem 0">Out on loan</h3>${lent.length?`<table><tr><th>Title</th><th>Lent to</th><th>Since</th><th>Days</th></tr>${lent.sort((a,b)=>(a.lentOn||'')<(b.lentOn||'')?-1:1).map(b=>{ const d=b.lentOn?Math.floor((Date.now()-new Date(b.lentOn))/864e5):null; return `<tr class="rowb" data-id="${b.id}"><td>${esc(b.title)}</td><td>${esc(b.lentTo)}</td><td>${b.lentOn||'—'}</td><td${d>60?' style="color:#b91c1c"':''}>${d??''}</td></tr>`; }).join('')}</table>`:'<p class="note">Everything is home.</p>'}<h3 style="font-size:.9rem;margin:1rem 0 .3rem">Being read now</h3>${reading.length?`<table><tr><th>Title</th><th>Whose</th><th>Shelf</th></tr>${reading.map(b=>`<tr class="rowb" data-id="${b.id}"><td>${esc(b.title)}</td><td>${esc(b.owner)}</td><td>${esc(b.shelf)}</td></tr>`).join('')}</table>`:'<p class="note">Nobody has a book marked as being read.</p>'}`; }
+  if(view==='table') $('#table').innerHTML=`<div class="twrap" tabindex="0"><table><tr><th data-s="title">Title</th><th data-s="author">Author</th><th data-s="year">Year</th><th data-s="shelf">Shelf</th><th>Whose</th><th>Status</th><th>Lent to</th><th>Subjects</th></tr>${L.map(b=>`<tr class="rowb" data-id="${b.id}"><td>${esc(b.title)}</td><td>${esc(b.authors.join(', '))}</td><td>${esc(b.year)}</td><td>${esc(b.shelf)}</td><td>${esc(b.owner)}</td><td>${b.status}</td><td>${esc(b.lentTo)}${b.lentOn?' <span class="mini">('+b.lentOn+')</span>':''}</td><td class="mini">${esc(b.subjects.slice(0,4).join(', '))}</td></tr>`).join('')}</table></div>`;
+  if(view==='lent'){ const reading=B.filter(b=>b.status==='reading'); $('#lent').innerHTML=`<h3 style="font-size:.9rem;margin:.3rem 0">Out on loan</h3>${lent.length?`<div class="twrap" tabindex="0"><table><tr><th>Title</th><th>Lent to</th><th>Since</th><th>Days</th></tr>${lent.sort((a,b)=>(a.lentOn||'')<(b.lentOn||'')?-1:1).map(b=>{ const d=b.lentOn?Math.floor((Date.now()-new Date(b.lentOn))/864e5):null; return `<tr class="rowb" data-id="${b.id}"><td>${esc(b.title)}</td><td>${esc(b.lentTo)}</td><td>${b.lentOn||'—'}</td><td${d>60?' style="color:#b91c1c"':''}>${d??''}</td></tr>`; }).join('')}</table></div>`:'<p class="note">Everything is home.</p>'}<h3 style="font-size:.9rem;margin:1rem 0 .3rem">Being read now</h3>${reading.length?`<div class="twrap" tabindex="0"><table><tr><th>Title</th><th>Whose</th><th>Shelf</th></tr>${reading.map(b=>`<tr class="rowb" data-id="${b.id}"><td>${esc(b.title)}</td><td>${esc(b.owner)}</td><td>${esc(b.shelf)}</td></tr>`).join('')}</table></div>`:'<p class="note">Nobody has a book marked as being read.</p>'}`; }
   if(view==='subjects'){ const top=[...tagCount].sort((a,b)=>b[1]-a[1]).slice(0,25); const authors=new Map(); B.forEach(b=>b.authors.forEach(a=>authors.set(a,(authors.get(a)||0)+1))); const topA=[...authors].sort((a,b)=>b[1]-a[1]).slice(0,12); const decades=new Map(); B.forEach(b=>{ if(/^\d{4}$/.test(b.year)){ const d=b.year.slice(0,3)+'0s'; decades.set(d,(decades.get(d)||0)+1); } }); $('#subjects').innerHTML=(top.length?bars(top,'Subjects with the most books'):'<p class="note">No subjects yet. Books looked up on Open Library carry them; add your own tags in the edit panel.</p>')+(topA.length?bars(topA,'Authors with the most books'):'')+([...decades].length?bars([...decades].sort(),'Books by decade of publication'):''); }
   if(view==='map') $('#map').innerHTML=network();
   $$('[data-id]').forEach(el=>el.onclick=()=>select(el.dataset.id));

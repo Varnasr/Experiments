@@ -7,7 +7,7 @@
 <meta name="description" content="Power and minimum detectable effect for individual and cluster-randomised trials, with intra-cluster correlation, covariate adjustment, attrition, imperfect take-up and multiple outcomes; then a seeded, stratified randomiser that takes a baseline CSV and returns assignments with a balance table and a randomisation record.">
 <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231B6B4A'/><circle cx='10' cy='11' r='3' fill='white'/><circle cx='22' cy='11' r='3' stroke='white' stroke-width='2' fill='none'/><circle cx='10' cy='22' r='3' stroke='white' stroke-width='2' fill='none'/><circle cx='22' cy='22' r='3' fill='white'/></svg>">
 <style>
-  :root { --bg:#fafafa; --surface:#fff; --border:#e5e7eb; --text:#1a1a2e; --dim:#4b5563; --muted:#9ca3af; --accent:#1B6B4A; --accent-soft:#e6f2ec; --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#4a3aa7; --grid:#eceef1; --mono:ui-monospace,SFMono-Regular,Menlo,monospace; }
+  :root { --bg:#fafafa; --surface:#fff; --border:#e5e7eb; --text:#1a1a2e; --dim:#4b5563; --muted:#6b7280; --accent:#1B6B4A; --accent-soft:#e6f2ec; --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#4a3aa7; --grid:#eceef1; --mono:ui-monospace,SFMono-Regular,Menlo,monospace; }
   * { box-sizing:border-box; margin:0; padding:0; }
   body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--text); line-height:1.55; }
   a { color:var(--accent); }
@@ -24,6 +24,12 @@
   .top-tabs button.on { color:var(--accent); border-bottom-color:var(--accent); font-weight:600; }
   .view { display:none; } .view.on { display:block; }
   .grid { display:grid; grid-template-columns:330px 1fr; gap:1.25rem; align-items:start; }
+  /* A grid item's default `min-width:auto` lets its min-content size the
+     shared track, so one wide table makes the whole column, and then the
+     page, wider than the phone. This is what makes the scroll wrapper
+     above work: without it the wrapper is simply as wide as its table. */
+  .grid > * { min-width:0; }
+
   @media (max-width:860px){ .grid { grid-template-columns:1fr; } }
   .panel { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1rem 1.15rem; margin-bottom:1rem; }
   .panel h2 { font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; margin-bottom:.7rem; }
@@ -38,7 +44,7 @@
   table { border-collapse:collapse; width:100%; font-size:.84rem; margin:.5rem 0; }
   th, td { text-align:right; padding:.3rem .5rem; border-bottom:1px solid var(--border); font-variant-numeric:tabular-nums; white-space:nowrap; }
   th:first-child, td:first-child { text-align:left; } th { color:var(--dim); font-weight:600; font-size:.75rem; }
-  .tscroll { overflow:auto; max-height:380px; }
+  .tscroll { overflow:auto; max-width:100%; max-height:380px; }
   .note { font-size:.82rem; color:var(--dim); margin-top:.5rem; }
   .warn { background:#fff7ed; border:1px solid #fed7aa; color:#9a3412; padding:.5rem .7rem; border-radius:6px; font-size:.83rem; margin:.5rem 0; }
   .ok { background:var(--accent-soft); color:var(--accent); padding:.5rem .7rem; border-radius:6px; font-size:.83rem; margin:.5rem 0; }
@@ -68,27 +74,27 @@
 <div>
   <div class="panel">
     <h2>Outcome</h2>
-    <label>Type</label><select id="otype"><option value="cont">Continuous (mean)</option><option value="bin">Binary (proportion)</option></select>
-    <div id="contIn"><label>Standard deviation in the control group</label><input type="number" id="sd" value="1" step="0.1" min="0.0001"><p class="mini">Enter 1 to work in standard-deviation units.</p></div>
-    <div id="binIn" style="display:none"><label>Control-group proportion</label><input type="number" id="p0" value="0.30" step="0.01" min="0.01" max="0.99"></div>
-    <label>Share of variance explained by covariates (R²)</label><input type="number" id="r2" value="0" step="0.05" min="0" max="0.95">
+    <label for="otype">Type</label><select id="otype"><option value="cont">Continuous (mean)</option><option value="bin">Binary (proportion)</option></select>
+    <div id="contIn"><label for="sd">Standard deviation in the control group</label><input type="number" id="sd" value="1" step="0.1" min="0.0001"><p class="mini">Enter 1 to work in standard-deviation units.</p></div>
+    <div id="binIn" style="display:none"><label for="p0">Control-group proportion</label><input type="number" id="p0" value="0.30" step="0.01" min="0.01" max="0.99"></div>
+    <label for="r2">Share of variance explained by covariates (R²)</label><input type="number" id="r2" value="0" step="0.05" min="0" max="0.95">
     <p class="mini">A baseline measure of the outcome typically gives R² of 0.3 to 0.6; its square root is what matters, so a weak baseline buys little.</p>
   </div>
   <div class="panel">
     <h2>Design</h2>
-    <label>Unit of randomisation</label><select id="design"><option value="ind">Individuals or households</option><option value="clu">Clusters (villages, schools, clinics)</option></select>
-    <div id="indIn"><label>Total sample size N (after attrition)</label><input type="number" id="N" value="1000" min="10"></div>
-    <div id="cluIn" style="display:none"><div class="row"><div><label>Number of clusters J</label><input type="number" id="J" value="60" min="4"></div><div><label>Units per cluster m</label><input type="number" id="m" value="20" min="1"></div></div><label>Intra-cluster correlation ρ</label><input type="number" id="icc" value="0.05" step="0.01" min="0" max="0.99"><p class="mini">Typical ρ: 0.01 to 0.05 for health outcomes across villages, 0.1 to 0.2 for test scores across schools.</p></div>
-    <label>Share assigned to treatment P</label><input type="number" id="P" value="0.5" step="0.05" min="0.05" max="0.95">
-    <div class="row"><div><label>Significance α (two-sided)</label><input type="number" id="alpha" value="0.05" step="0.01" min="0.001" max="0.5"></div><div><label>Power 1 − β</label><input type="number" id="power" value="0.8" step="0.05" min="0.5" max="0.99"></div></div>
+    <label for="design">Unit of randomisation</label><select id="design"><option value="ind">Individuals or households</option><option value="clu">Clusters (villages, schools, clinics)</option></select>
+    <div id="indIn"><label for="N">Total sample size N (after attrition)</label><input type="number" id="N" value="1000" min="10"></div>
+    <div id="cluIn" style="display:none"><div class="row"><div><label for="J">Number of clusters J</label><input type="number" id="J" value="60" min="4"></div><div><label for="m">Units per cluster m</label><input type="number" id="m" value="20" min="1"></div></div><label for="icc">Intra-cluster correlation ρ</label><input type="number" id="icc" value="0.05" step="0.01" min="0" max="0.99"><p class="mini">Typical ρ: 0.01 to 0.05 for health outcomes across villages, 0.1 to 0.2 for test scores across schools.</p></div>
+    <label for="P">Share assigned to treatment P</label><input type="number" id="P" value="0.5" step="0.05" min="0.05" max="0.95">
+    <div class="row"><div><label for="alpha">Significance α (two-sided)</label><input type="number" id="alpha" value="0.05" step="0.01" min="0.001" max="0.5"></div><div><label for="power">Power 1 − β</label><input type="number" id="power" value="0.8" step="0.05" min="0.5" max="0.99"></div></div>
   </div>
   <div class="panel">
     <h2>Real-world adjustments</h2>
-    <label>Expected attrition (share lost at endline)</label><input type="number" id="attr" value="0.10" step="0.05" min="0" max="0.9">
-    <div class="row"><div><label>Take-up in treatment</label><input type="number" id="tu1" value="1" step="0.05" min="0" max="1"></div><div><label>Take-up in control</label><input type="number" id="tu0" value="0" step="0.05" min="0" max="1"></div></div>
-    <label>Number of primary outcomes tested</label><input type="number" id="nout" value="1" min="1" max="50">
+    <label for="attr">Expected attrition (share lost at endline)</label><input type="number" id="attr" value="0.10" step="0.05" min="0" max="0.9">
+    <div class="row"><div><label for="tu1">Take-up in treatment</label><input type="number" id="tu1" value="1" step="0.05" min="0" max="1"></div><div><label for="tu0">Take-up in control</label><input type="number" id="tu0" value="0" step="0.05" min="0" max="1"></div></div>
+    <label for="nout">Number of primary outcomes tested</label><input type="number" id="nout" value="1" min="1" max="50">
     <p class="mini">Bonferroni: α is divided by the number of outcomes. Holm and Romero–Wolf are less conservative but cannot be planned for in closed form.</p>
-    <label>Target effect (to report power and required sample)</label><input type="number" id="target" value="0.2" step="0.01">
+    <label for="target">Target effect (to report power and required sample)</label><input type="number" id="target" value="0.2" step="0.01">
     <p style="margin-top:.6rem"><button id="calc">Compute</button></p>
   </div>
 </div>
@@ -106,20 +112,20 @@
 <div>
   <div class="panel">
     <h2>Baseline</h2>
-    <label>Baseline CSV (one row per unit)</label><input type="file" id="file" accept=".csv,text/csv">
+    <label for="file">Baseline CSV (one row per unit)</label><input type="file" id="file" accept=".csv,text/csv">
     <p class="mini" style="margin:.5rem 0">or</p><button class="secondary" id="demo">Use a demo baseline</button>
     <p class="mini" style="margin-top:.4rem">The demo is a simulated 720-household baseline in 36 villages with the covariates a typical survey has. It is labelled as such.</p>
   </div>
   <div class="panel" id="randSetup" style="display:none">
     <h2>Randomisation</h2>
-    <label>Unit ID column</label><select id="rId"></select>
-    <label>Randomise at the level of</label><select id="rLevel"><option value="unit">Each row (individual or household)</option><option value="cluster">A cluster column (all rows in a cluster get the same arm)</option></select>
-    <div id="rClusterIn" style="display:none"><label>Cluster column</label><select id="rCluster"></select></div>
-    <label>Stratify on (hold Ctrl or Cmd for several)</label><select id="rStrata" multiple size="5"></select>
-    <label>Bins for numeric stratifiers (quantiles)</label><input type="number" id="rBins" value="3" min="2" max="10">
-    <label>Arms and allocation (comma-separated shares)</label><input type="text" id="rArms" value="Control 0.5, Treatment 0.5">
-    <label>Seed</label><input type="number" id="rSeed" value="20260902">
-    <label>Balance table covariates (numeric)</label><select id="rBal" multiple size="5"></select>
+    <label for="rId">Unit ID column</label><select id="rId"></select>
+    <label for="rLevel">Randomise at the level of</label><select id="rLevel"><option value="unit">Each row (individual or household)</option><option value="cluster">A cluster column (all rows in a cluster get the same arm)</option></select>
+    <div id="rClusterIn" style="display:none"><label for="rCluster">Cluster column</label><select id="rCluster"></select></div>
+    <label for="rStrata">Stratify on (hold Ctrl or Cmd for several)</label><select id="rStrata" multiple size="5"></select>
+    <label for="rBins">Bins for numeric stratifiers (quantiles)</label><input type="number" id="rBins" value="3" min="2" max="10">
+    <label for="rArms">Arms and allocation (comma-separated shares)</label><input type="text" id="rArms" value="Control 0.5, Treatment 0.5">
+    <label for="rSeed">Seed</label><input type="number" id="rSeed" value="20260902">
+    <label for="rBal">Balance table covariates (numeric)</label><select id="rBal" multiple size="5"></select>
     <p style="margin-top:.6rem"><button id="randGo">Randomise</button></p>
     <p class="mini" id="randStatus"></p>
   </div>
@@ -226,11 +232,11 @@ $('#randGo').onclick=()=>{ if(!base) return; const R=base.rows, iId=+$('#rId').v
   // per-row assignment
   const rowArm=new Array(R.length); units.forEach(u=>u.rows.forEach(j=>rowArm[j]=u.arm)); assign=R.map((r,i)=>({id:r[iId]||String(i+1),cluster:level==='cluster'?r[iCl]:'',stratum:units.find(u=>u.rows.includes(i))?.stratum||'',arm:rowArm[i]}));
   const counts=arms.map(a=>({name:a.name,units:units.filter(u=>u.arm===a.name).length,rows:rowArm.filter(x=>x===a.name).length}));
-  $('#randSummary').innerHTML=`<h2>Assignment</h2>${counts.map(c=>`<span class="stat"><b>${c.units}</b><span>${esc(c.name)}${level==='cluster'?` clusters (${c.rows} rows)`:''}</span></span>`).join('')}<div class="note">${units.length} ${level==='cluster'?'clusters':'units'} randomised within ${groups.size} strat${groups.size===1?'um':'a'} by permuted blocks, seed ${seed}.</div>${stratumInfo.some(x=>x.n<arms.length*2)?'<div class="warn">Some strata have fewer units than twice the number of arms; allocation in those strata cannot match the target shares. Coarsen the stratification.</div>':''}<details><summary>Strata (${groups.size})</summary><div class="tscroll"><table><tr><th>Stratum</th><th>Units</th>${arms.map(a=>`<th>${esc(a.name)}</th>`).join('')}</tr>${stratumInfo.map(x=>`<tr><td>${esc(x.s)}</td><td>${x.n}</td>${x.counts.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</table></div></details>`;
+  $('#randSummary').innerHTML=`<h2>Assignment</h2>${counts.map(c=>`<span class="stat"><b>${c.units}</b><span>${esc(c.name)}${level==='cluster'?` clusters (${c.rows} rows)`:''}</span></span>`).join('')}<div class="note">${units.length} ${level==='cluster'?'clusters':'units'} randomised within ${groups.size} strat${groups.size===1?'um':'a'} by permuted blocks, seed ${seed}.</div>${stratumInfo.some(x=>x.n<arms.length*2)?'<div class="warn">Some strata have fewer units than twice the number of arms; allocation in those strata cannot match the target shares. Coarsen the stratification.</div>':''}<details><summary>Strata (${groups.size})</summary><div class="tscroll" tabindex="0"><table><tr><th>Stratum</th><th>Units</th>${arms.map(a=>`<th>${esc(a.name)}</th>`).join('')}</tr>${stratumInfo.map(x=>`<tr><td>${esc(x.s)}</td><td>${x.n}</td>${x.counts.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</table></div></details>`;
   // balance
   const armNames=arms.map(a=>a.name); const rowsBy=n=>R.map((r,i)=>i).filter(i=>rowArm[i]===n); let nsig=0; const balRows=bal.map(i=>{ const vals=armNames.map(n=>rowsBy(n).map(j=>parseFloat(R[j][i])).filter(isFinite)); const w=welch(vals[0],vals[1]); if(w.p<0.05) nsig++; return `<tr><td>${esc(base.head[i])}</td>${vals.map(v=>`<td>${fmt(v.reduce((a,b)=>a+b,0)/v.length,3)}</td>`).join('')}<td>${fmt(w.d,3)}</td><td class="${w.p<0.05?'sig':''}">${fmt(w.p,3)}</td></tr>`; });
   let joint=null; if(bal.length){ const idx=R.map((r,i)=>i).filter(i=>rowArm[i]===armNames[0]||rowArm[i]===armNames[1]); const ok=idx.filter(i=>bal.every(c=>isFinite(parseFloat(R[i][c])))); joint=jointF(ok.map(i=>rowArm[i]===armNames[1]?1:0), ok.map(i=>bal.map(c=>parseFloat(R[i][c])))); }
-  $('#balOut').innerHTML=bal.length?`<div class="tscroll"><table><tr><th>Covariate</th>${armNames.map(n=>`<th>mean, ${esc(n)}</th>`).join('')}<th>${esc(armNames[0])} − ${esc(armNames[1])}</th><th>p (Welch)</th></tr>${balRows.join('')}</table></div><p class="note">${nsig} of ${bal.length} covariates differ at 5% between the first two arms (about ${(bal.length/20).toFixed(1)} expected by chance).${joint?` Joint test: F(${joint.df1}, ${joint.df2}) = ${fmt(joint.F,2)}, p = ${fmt(joint.p,3)}.`:''}${level==='cluster'?' Cluster randomisation: these row-level tests understate the true uncertainty; the joint F on cluster means would be the strict version.':''}</p>`:'<p class="note">No balance covariates selected.</p>'; $('#balPanel').style.display='block';
+  $('#balOut').innerHTML=bal.length?`<div class="tscroll" tabindex="0"><table><tr><th>Covariate</th>${armNames.map(n=>`<th>mean, ${esc(n)}</th>`).join('')}<th>${esc(armNames[0])} − ${esc(armNames[1])}</th><th>p (Welch)</th></tr>${balRows.join('')}</table></div><p class="note">${nsig} of ${bal.length} covariates differ at 5% between the first two arms (about ${(bal.length/20).toFixed(1)} expected by chance).${joint?` Joint test: F(${joint.df1}, ${joint.df2}) = ${fmt(joint.F,2)}, p = ${fmt(joint.p,3)}.`:''}${level==='cluster'?' Cluster randomisation: these row-level tests understate the true uncertainty; the joint F on cluster means would be the strict version.':''}</p>`:'<p class="note">No balance covariates selected.</p>'; $('#balPanel').style.display='block';
   record=`RANDOMISATION RECORD\nDate: ${new Date().toISOString()}\nInput: ${base.label} (${R.length} rows, SHA-256 prefix ${base.digest})\nUnit of randomisation: ${level==='cluster'?'cluster column "'+base.head[iCl]+'" ('+units.length+' clusters)':'each row, ID column "'+base.head[iId]+'" ('+units.length+' units)'}\nStrata: ${strata.length?strata.map(i=>base.head[i]+(binners[strata.indexOf(i)]?' ('+bins+' quantile bins)':'')).join(', '):'none'} → ${groups.size} strata\nArms and shares: ${arms.map(a=>a.name+' '+a.w.toFixed(3)).join(', ')}\nAlgorithm: within each stratum, units shuffled with a seeded mulberry32 generator (seed ${seed}); arm counts set by largest remainder of share × stratum size plus the remainder carried over from earlier strata (so small strata still add up to the target split overall), ties broken by the same generator; the list of arm labels shuffled and assigned in order (permuted block within stratum).\nResult: ${counts.map(c=>c.name+' '+c.units).join(', ')}\nBalance: ${nsig} of ${bal.length} covariates differ at 5% between the first two arms${joint?'; joint F('+joint.df1+','+joint.df2+') = '+joint.F.toFixed(2)+', p = '+joint.p.toFixed(3):''}\nReproduce: load the same file in this tool with the same settings and seed; the digest above confirms the file is identical.`;
   $('#recOut').textContent=record; $('#recPanel').style.display='block'; $('#randStatus').textContent='Done.';
 };

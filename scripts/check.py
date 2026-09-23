@@ -197,6 +197,23 @@ def main():
     check('every tool is linked from the index', not unlinked,
           '%s reachable only by typing the URL' % unlinked)
 
+    # The number of tools, stated in prose, against the number on disk.
+    # CLAUDE.md opened with "Twenty-three browser tools" while 21 directories
+    # held an index.html and index.html linked 21 of them. The 23 was the count
+    # of HTML files, which includes the landing page and 404.html. A number
+    # written in prose that nothing compares is how every one of these
+    # repositories has drifted.
+    WORDS = {20: 'Twenty', 21: 'Twenty-one', 22: 'Twenty-two', 23: 'Twenty-three',
+             24: 'Twenty-four', 25: 'Twenty-five', 26: 'Twenty-six'}
+    claude = read('CLAUDE.md')
+    stated = re.search(r'^(\w+(?:-\w+)?) browser tools', claude, re.M)
+    check('CLAUDE.md states how many tools there are', stated is not None,
+          'the opening line no longer says "<N> browser tools"')
+    if stated:
+        check('the stated tool count matches the tools on disk',
+              stated.group(1) == WORDS.get(len(tools), ''),
+              'CLAUDE.md says %s, there are %d' % (stated.group(1), len(tools)))
+
     # A meta CSP and a header CSP are enforced as an intersection, so a meta
     # tag here would quietly govern instead of the header.
     metas = [f for f in html if re.search(r'http-equiv=["\']?Content-Security-Policy', read(f), re.I)]

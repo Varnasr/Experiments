@@ -7,7 +7,7 @@
 <meta name="description" content="Net present value, benefit–cost ratio, internal rate of return, payback and cost per outcome for a development programme, with Monte Carlo uncertainty on every input and a tornado chart of what drives the answer. Runs in the browser.">
 <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231B6B4A'/><path d='M7 24h18M9 20h4M15 14h4M21 9h4' stroke='white' stroke-width='2.6' stroke-linecap='round'/></svg>">
 <style>
-  :root { --bg:#fafafa; --surface:#fff; --border:#e5e7eb; --text:#1a1a2e; --dim:#4b5563; --muted:#9ca3af; --accent:#1B6B4A; --accent-soft:#e6f2ec; --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#4a3aa7; --grid:#eceef1; --mono:ui-monospace,SFMono-Regular,Menlo,monospace; }
+  :root { --bg:#fafafa; --surface:#fff; --border:#e5e7eb; --text:#1a1a2e; --dim:#4b5563; --muted:#6b7280; --accent:#1B6B4A; --accent-soft:#e6f2ec; --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#4a3aa7; --grid:#eceef1; --mono:ui-monospace,SFMono-Regular,Menlo,monospace; }
   * { box-sizing:border-box; margin:0; padding:0; }
   body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--text); line-height:1.55; }
   a { color:var(--accent); }
@@ -20,6 +20,12 @@
   main { padding:1.5rem 0 3rem; }
   .lede { color:var(--dim); font-size:.95rem; max-width:66ch; margin-bottom:1.25rem; }
   .grid { display:grid; grid-template-columns:380px 1fr; gap:1.25rem; align-items:start; }
+  /* A grid item's default `min-width:auto` lets its min-content size the
+     shared track, so one wide table makes the whole column, and then the
+     page, wider than the phone. This is what makes the scroll wrapper
+     above work: without it the wrapper is simply as wide as its table. */
+  .grid > * { min-width:0; }
+
   @media (max-width:900px){ .grid { grid-template-columns:1fr; } }
   .panel { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1rem 1.15rem; margin-bottom:1rem; }
   .panel h2 { font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; margin-bottom:.7rem; display:flex; justify-content:space-between; align-items:center; }
@@ -31,13 +37,14 @@
   .item { border:1px solid var(--border); border-radius:8px; padding:.5rem .6rem; margin-bottom:.5rem; background:#fcfcfc; }
   .item .r { display:grid; grid-template-columns:1fr 1fr 1fr; gap:.35rem; margin-top:.3rem; }
   .item input[type=text] { font-weight:600; }
-  .item .lab { font-size:.68rem; color:var(--muted); display:block; }
+  /* `label` above sets a margin a span never had; .item rows are tight. */
+  .item .lab { font-size:.68rem; color:var(--muted); display:block; margin:0; }
   .stat { display:inline-block; margin:.25rem 1.25rem .25rem 0; vertical-align:top; }
   .stat b { display:block; font-size:1.4rem; font-family:Georgia,serif; font-weight:400; } .stat span { font-size:.75rem; color:var(--muted); }
   table { border-collapse:collapse; width:100%; font-size:.83rem; margin:.5rem 0; }
   th, td { text-align:right; padding:.28rem .5rem; border-bottom:1px solid var(--border); font-variant-numeric:tabular-nums; white-space:nowrap; }
   th:first-child, td:first-child { text-align:left; } th { color:var(--dim); font-weight:600; font-size:.74rem; }
-  .tscroll { overflow:auto; max-height:360px; }
+  .tscroll { overflow:auto; max-width:100%; max-height:360px; }
   .note { font-size:.82rem; color:var(--dim); margin-top:.5rem; }
   .warn { background:#fff7ed; border:1px solid #fed7aa; color:#9a3412; padding:.5rem .7rem; border-radius:6px; font-size:.83rem; margin:.5rem 0; }
   .chart { width:100%; height:auto; display:block; margin:.4rem 0; } .chart text { font-family:inherit; font-size:11px; fill:var(--dim); }
@@ -60,9 +67,9 @@
 <div>
   <div class="panel">
     <h2>Setting</h2>
-    <div class="row"><div><label>Horizon (years, year 0 = first year)</label><input type="number" id="T" value="10" min="1" max="60"></div><div><label>Discount rate (% per year)</label><input type="number" id="rate" value="8" step="0.5"></div></div>
-    <div class="row"><div><label>Discount rate range for Monte Carlo (low, high %)</label><div class="row"><input type="number" id="rLo" value="5" step="0.5"><input type="number" id="rHi" value="12" step="0.5"></div></div><div><label>Currency label</label><input type="text" id="cur" value="₹ lakh"></div></div>
-    <label>Monte Carlo draws</label><input type="number" id="draws" value="4000" min="200" max="50000" step="200">
+    <div class="row"><div><label for="T">Horizon (years, year 0 = first year)</label><input type="number" id="T" value="10" min="1" max="60"></div><div><label for="rate">Discount rate (% per year)</label><input type="number" id="rate" value="8" step="0.5"></div></div>
+    <div class="row"><div><label>Discount rate range for Monte Carlo (low, high %)</label><div class="row"><input type="number" id="rLo" value="5" step="0.5" aria-label="Monte Carlo discount rate, low per cent"><input type="number" id="rHi" value="12" step="0.5" aria-label="Monte Carlo discount rate, high per cent"></div></div><div><label for="cur">Currency label</label><input type="text" id="cur" value="₹ lakh"></div></div>
+    <label for="draws">Monte Carlo draws</label><input type="number" id="draws" value="4000" min="200" max="50000" step="200">
     <p class="mini">India's official social discount rate for project appraisal has been debated between 8% and 12%; the range above spans that.</p>
   </div>
   <div class="panel"><h2>Costs <button class="small secondary" id="addC">+ add</button></h2><div id="costs"></div></div>
@@ -94,9 +101,9 @@ const tip=$('#tip'); document.addEventListener('mousemove',e=>{const t=e.target.
 
 // ── stream editor ──
 let uid=0;
-function itemHtml(kind,it){ const id='it'+(uid++); const isOut=kind==='out'; return `<div class="item" data-kind="${kind}" id="${id}"><div class="row"><input type="text" class="name" value="${esc(it.name||'')}" placeholder="name"><button class="small secondary del" style="flex:0 0 auto">remove</button></div>
-  <div class="r"><div><span class="lab">${isOut?'units per year':'amount per year'}</span><input type="number" class="amt" value="${it.amt??0}" step="any"></div><div><span class="lab">low</span><input type="number" class="lo" value="${it.lo??it.amt??0}" step="any"></div><div><span class="lab">high</span><input type="number" class="hi" value="${it.hi??it.amt??0}" step="any"></div></div>
-  <div class="r"><div><span class="lab">first year</span><input type="number" class="y0" value="${it.y0??0}" min="0"></div><div><span class="lab">last year</span><input type="number" class="y1" value="${it.y1??0}" min="0"></div><div><span class="lab">growth % per year</span><input type="number" class="g" value="${it.g??0}" step="0.5"></div></div></div>`; }
+function itemHtml(kind,it){ const id='it'+(uid++); const isOut=kind==='out'; return `<div class="item" data-kind="${kind}" id="${id}"><div class="row"><input type="text" class="name" value="${esc(it.name||'')}" placeholder="name" aria-label="${isOut?'Outcome':kind==='cost'?'Cost':'Benefit'} name"><button class="small secondary del" style="flex:0 0 auto">remove</button></div>
+  <div class="r"><div><label class="lab" for="${id}-amt">${isOut?'units per year':'amount per year'}</label><input type="number" id="${id}-amt" class="amt" value="${it.amt??0}" step="any"></div><div><label class="lab" for="${id}-lo">low</label><input type="number" id="${id}-lo" class="lo" value="${it.lo??it.amt??0}" step="any"></div><div><label class="lab" for="${id}-hi">high</label><input type="number" id="${id}-hi" class="hi" value="${it.hi??it.amt??0}" step="any"></div></div>
+  <div class="r"><div><label class="lab" for="${id}-y0">first year</label><input type="number" id="${id}-y0" class="y0" value="${it.y0??0}" min="0"></div><div><label class="lab" for="${id}-y1">last year</label><input type="number" id="${id}-y1" class="y1" value="${it.y1??0}" min="0"></div><div><label class="lab" for="${id}-g">growth % per year</label><input type="number" id="${id}-g" class="g" value="${it.g??0}" step="0.5"></div></div></div>`; }
 function add(kind,it={}){ const host=kind==='cost'?$('#costs'):kind==='ben'?$('#bens'):$('#outs'); host.insertAdjacentHTML('beforeend',itemHtml(kind,it)); }
 document.addEventListener('click',e=>{ if(e.target.classList.contains('del')) e.target.closest('.item').remove(); });
 $('#addC').onclick=()=>add('cost',{name:'New cost'}); $('#addB').onclick=()=>add('ben',{name:'New benefit'}); $('#addO').onclick=()=>add('out',{name:'New outcome'});
@@ -122,7 +129,7 @@ function compute(){ const cfg=read(); if(!cfg.items.length){ $('#head').innerHTM
   $('#head').innerHTML=`<span class="stat"><b>${fmt(m.npv,1)}</b><span>NPV (${esc(cur)}) at ${(100*cfg.r).toFixed(1)}%</span></span>${hasBen?`<span class="stat"><b>${fmt(m.bcr,2)}</b><span>benefit–cost ratio</span></span><span class="stat"><b>${m.irr==null?(m.signChanges===0?'none':'—'):pct(m.irr,1)}</b><span>IRR${m.signChanges>1?' (net flows change sign '+m.signChanges+' times: may not be unique)':''}</span></span><span class="stat"><b>${m.payback==null?'never':'year '+m.payback}</b><span>discounted payback</span></span>`:''}<span class="stat"><b>${fmt(m.pc,1)}</b><span>PV of costs</span></span>${hasBen?`<span class="stat"><b>${fmt(m.pb,1)}</b><span>PV of benefits</span></span>`:''}${hasOut?`<span class="stat"><b>${fmt(m.cpo,3)}</b><span>cost per outcome unit (undiscounted units)</span></span><span class="stat"><b>${fmt(m.cpoD,3)}</b><span>cost per outcome unit (discounted units)</span></span>`:''}`;
   // flows table + chart
   const years=[...Array(cfg.T).keys()]; let cum=0; const rows=years.map(t=>{ const d=Math.pow(1+cfg.r,t); const net=f.ben[t]-f.cost[t]; cum+=net/d; return `<tr><td>${t}</td><td>${fmt(f.cost[t],1)}</td><td>${fmt(f.ben[t],1)}</td><td>${fmt(net,1)}</td><td>${fmt(1/d,3)}</td><td>${fmt(net/d,1)}</td><td>${fmt(cum,1)}</td>${hasOut?`<td>${fmt(f.out[t],0)}</td>`:''}</tr>`; });
-  $('#flows').innerHTML=`<div class="legend"><span><i style="background:var(--s2)"></i>costs</span><span><i style="background:var(--s1)"></i>benefits</span><span><i style="background:var(--s3)"></i>cumulative discounted net benefit</span></div>`+flowChart(f,cfg.r)+`<div class="tscroll"><table><tr><th>Year</th><th>Costs</th><th>Benefits</th><th>Net</th><th>Discount factor</th><th>Discounted net</th><th>Cumulative</th>${hasOut?'<th>Outcomes</th>':''}</tr>${rows.join('')}</table></div>`;
+  $('#flows').innerHTML=`<div class="legend"><span><i style="background:var(--s2)"></i>costs</span><span><i style="background:var(--s1)"></i>benefits</span><span><i style="background:var(--s3)"></i>cumulative discounted net benefit</span></div>`+flowChart(f,cfg.r)+`<div class="tscroll" tabindex="0"><table><tr><th>Year</th><th>Costs</th><th>Benefits</th><th>Net</th><th>Discount factor</th><th>Discounted net</th><th>Cumulative</th>${hasOut?'<th>Outcomes</th>':''}</tr>${rows.join('')}</table></div>`;
   // Monte Carlo
   const rng=mulberry32(7); const N=cfg.draws; const npvs=[],bcrs=[],cpos=[]; for(let i=0;i<N;i++){ const r=cfg.rLo+rng()*(cfg.rHi-cfg.rLo); const fd=flowsFor(cfg,it=>tri(rng,it.lo,it.amt,it.hi)); const md=metrics(fd,r); npvs.push(md.npv); if(isFinite(md.bcr)) bcrs.push(md.bcr); if(isFinite(md.cpo)) cpos.push(md.cpo); }
   const q=(a,p)=>{ const s=a.slice().sort((x,y)=>x-y); return s[Math.min(s.length-1,Math.floor(p*s.length))]; }; const pPos=npvs.filter(v=>v>0).length/N;

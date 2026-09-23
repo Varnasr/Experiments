@@ -8,7 +8,7 @@
 <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231B6B4A'/><path d='M7 22 L14 15 L19 19 L26 9' stroke='white' stroke-width='3' fill='none' stroke-linecap='round'/></svg>">
 <style>
   :root {
-    --bg:#fafafa; --surface:#fff; --border:#e5e7eb; --text:#1a1a2e; --dim:#4b5563; --muted:#9ca3af;
+    --bg:#fafafa; --surface:#fff; --border:#e5e7eb; --text:#1a1a2e; --dim:#4b5563; --muted:#6b7280;
     --accent:#1B6B4A; --accent-soft:#e6f2ec;
     --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#4a3aa7; --s5:#e34948; --grid:#eceef1;
     --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
@@ -25,6 +25,12 @@
   main { padding:1.5rem 0 3rem; }
   .lede { color:var(--dim); font-size:.95rem; max-width:64ch; margin-bottom:1.25rem; }
   .grid { display:grid; grid-template-columns:320px 1fr; gap:1.25rem; align-items:start; }
+  /* A grid item's default `min-width:auto` lets its min-content size the
+     shared track, so one wide table makes the whole column, and then the
+     page, wider than the phone. This is what makes the scroll wrapper
+     above work: without it the wrapper is simply as wide as its table. */
+  .grid > * { min-width:0; }
+
   @media (max-width:860px){ .grid { grid-template-columns:1fr; } }
   .panel { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1rem 1.15rem; margin-bottom:1rem; }
   .panel h2 { font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; margin-bottom:.7rem; }
@@ -45,6 +51,11 @@
   .stat b { display:block; font-size:1.45rem; font-family:Georgia,serif; font-weight:400; }
   .stat span { font-size:.75rem; color:var(--muted); }
   table { border-collapse:collapse; width:100%; font-size:.85rem; margin:.5rem 0; }
+  /* A wide table scrolls inside its own box. Without this its columns set
+     the page's min-content width and the whole page scrolls sideways on a
+     phone, which is invisible on a desktop. Not `display:block` on the
+     table: that drops its table semantics from the accessibility tree. */
+  .twrap { overflow-x:auto; max-width:100%; }
   th, td { text-align:right; padding:.3rem .5rem; border-bottom:1px solid var(--border); font-variant-numeric:tabular-nums; }
   th:first-child, td:first-child { text-align:left; }
   th { color:var(--dim); font-weight:600; font-size:.75rem; }
@@ -86,29 +97,29 @@
 
     <div class="tab on" id="src-sim">
       <p class="mini">A panel with unit and year effects, an AR(1) shock, and a treatment effect you choose. Because the truth is known, you can see which estimator recovers it.</p>
-      <div class="row"><div><label>Units</label><input type="number" id="simN" value="40" min="6" max="300"></div>
-      <div><label>Periods</label><input type="number" id="simT" value="20" min="6" max="60"></div></div>
-      <div class="row"><div><label>Treated units</label><input type="number" id="simK" value="10" min="1" max="100"></div>
-      <div><label>First treated period</label><input type="number" id="simG" value="11" min="3"></div></div>
-      <label>Adoption</label>
+      <div class="row"><div><label for="simN">Units</label><input type="number" id="simN" value="40" min="6" max="300"></div>
+      <div><label for="simT">Periods</label><input type="number" id="simT" value="20" min="6" max="60"></div></div>
+      <div class="row"><div><label for="simK">Treated units</label><input type="number" id="simK" value="10" min="1" max="100"></div>
+      <div><label for="simG">First treated period</label><input type="number" id="simG" value="11" min="3"></div></div>
+      <label for="simStagger">Adoption</label>
       <select id="simStagger"><option value="0">Common date</option><option value="1">Staggered (cohorts spread over 5 periods)</option></select>
-      <div class="row"><div><label>Effect at adoption</label><input type="number" id="simEff" value="2" step="0.5"></div>
-      <div><label>Growth per period</label><input type="number" id="simSlope" value="0.5" step="0.25"></div></div>
-      <div class="row"><div><label>Noise SD</label><input type="number" id="simSD" value="1" step="0.25" min="0"></div>
-      <div><label>Seed</label><input type="number" id="simSeed" value="7"></div></div>
+      <div class="row"><div><label for="simEff">Effect at adoption</label><input type="number" id="simEff" value="2" step="0.5"></div>
+      <div><label for="simSlope">Growth per period</label><input type="number" id="simSlope" value="0.5" step="0.25"></div></div>
+      <div class="row"><div><label for="simSD">Noise SD</label><input type="number" id="simSD" value="1" step="0.25" min="0"></div>
+      <div><label for="simSeed">Seed</label><input type="number" id="simSeed" value="7"></div></div>
       <label><input type="checkbox" id="simTrend"> Give treated units a steeper pre-trend (violates parallel trends)</label>
       <p style="margin-top:.7rem"><button id="simGo">Generate panel</button></p>
     </div>
 
     <div class="tab" id="src-csv">
       <p class="mini">Long format: one row per unit-period. A 0/1 treatment column that switches on when a unit is treated, or a column with each unit's adoption period (blank or 0 for never treated).</p>
-      <label>File</label><input type="file" id="csvFile" accept=".csv,text/csv">
+      <label for="csvFile">File</label><input type="file" id="csvFile" accept=".csv,text/csv">
       <div id="csvMap" style="display:none">
-        <label>Unit column</label><select id="cUnit"></select>
-        <label>Time column</label><select id="cTime"></select>
-        <label>Outcome column</label><select id="cY"></select>
-        <label>Treatment column</label><select id="cD"></select>
-        <label>Treatment column is</label>
+        <label for="cUnit">Unit column</label><select id="cUnit"></select>
+        <label for="cTime">Time column</label><select id="cTime"></select>
+        <label for="cY">Outcome column</label><select id="cY"></select>
+        <label for="cD">Treatment column</label><select id="cD"></select>
+        <label for="cDkind">Treatment column is</label>
         <select id="cDkind"><option value="onoff">0/1 switching on at treatment</option><option value="adopt">adoption period (0 or blank = never)</option></select>
         <p style="margin-top:.7rem"><button id="csvGo">Load panel</button></p>
       </div>
@@ -116,7 +127,7 @@
 
     <div class="tab" id="src-wb">
       <p class="mini">Pulls a country-year panel straight from the World Bank API (<code>api.worldbank.org</code>). Aggregates are dropped. You name the treated country and the year.</p>
-      <label>Indicator</label>
+      <label for="wbInd">Indicator</label>
       <select id="wbInd">
         <option value="NY.GDP.PCAP.KD">GDP per capita (constant 2015 US$)</option>
         <option value="NY.GDP.PCAP.KD.ZG">GDP per capita growth (annual %)</option>
@@ -127,10 +138,10 @@
         <option value="FP.CPI.TOTL.ZG">Inflation, consumer prices (annual %)</option>
         <option value="IT.NET.USER.ZS">Individuals using the Internet (%)</option>
       </select>
-      <div class="row"><div><label>From</label><input type="number" id="wbFrom" value="2000"></div><div><label>To</label><input type="number" id="wbTo" value="2023"></div></div>
-      <div class="row"><div><label>Treated ISO3</label><input type="text" id="wbTreated" value="IND" maxlength="3" style="text-transform:uppercase"></div>
-      <div><label>Treatment year</label><input type="number" id="wbYear" value="2017"></div></div>
-      <label>Transform</label>
+      <div class="row"><div><label for="wbFrom">From</label><input type="number" id="wbFrom" value="2000"></div><div><label for="wbTo">To</label><input type="number" id="wbTo" value="2023"></div></div>
+      <div class="row"><div><label for="wbTreated">Treated ISO3</label><input type="text" id="wbTreated" value="IND" maxlength="3" style="text-transform:uppercase"></div>
+      <div><label for="wbYear">Treatment year</label><input type="number" id="wbYear" value="2017"></div></div>
+      <label for="wbLog">Transform</label>
       <select id="wbLog"><option value="none">Level</option><option value="log">Natural log</option></select>
       <p style="margin-top:.7rem"><button id="wbGo">Fetch panel</button></p>
       <p class="mini" id="wbStatus"></p>
@@ -140,10 +151,10 @@
   <div class="panel">
     <h2>2 · Estimation settings</h2>
     <label>Event window (periods before / after)</label>
-    <div class="row"><input type="number" id="esPre" value="5" min="1"><input type="number" id="esPost" value="5" min="0"></div>
-    <label>Event-study estimator</label>
+    <div class="row"><input type="number" id="esPre" value="5" min="1" aria-label="Event window: periods before"><input type="number" id="esPost" value="5" min="0" aria-label="Event window: periods after"></div>
+    <label for="esKind">Event-study estimator</label>
     <select id="esKind"><option value="twfe">TWFE (dynamic)</option><option value="sa">Sun–Abraham interaction-weighted</option></select>
-    <label>Synthetic control: placebo runs</label>
+    <label for="scPlacebo">Synthetic control: placebo runs</label>
     <select id="scPlacebo"><option value="all">Every donor</option><option value="0">None</option></select>
     <p style="margin-top:.7rem"><button id="runBtn" disabled>Run all three</button></p>
     <p class="mini" id="status"></p>
@@ -178,16 +189,16 @@
     <p class="mini">A separate estimator with its own data: an outcome, a running variable and a cutoff. Eligibility thresholds (a BPL score, a land ceiling, an age or marks cutoff) make this the natural design in India.</p>
     <div class="tabs" id="rdTabs"><button data-src="sim" class="on">Simulate</button><button data-src="csv">Upload CSV</button></div>
     <div class="tab on" id="rd-sim">
-      <div class="row"><div><label>Observations</label><input type="number" id="rdN" value="2000" min="100" max="50000"></div><div><label>True jump τ at the cutoff</label><input type="number" id="rdTau" value="1" step="0.25"></div><div><label>Noise SD</label><input type="number" id="rdSD" value="1" step="0.25"></div><div><label>Seed</label><input type="number" id="rdSeed" value="1"></div></div>
+      <div class="row"><div><label for="rdN">Observations</label><input type="number" id="rdN" value="2000" min="100" max="50000"></div><div><label for="rdTau">True jump τ at the cutoff</label><input type="number" id="rdTau" value="1" step="0.25"></div><div><label for="rdSD">Noise SD</label><input type="number" id="rdSD" value="1" step="0.25"></div><div><label for="rdSeed">Seed</label><input type="number" id="rdSeed" value="1"></div></div>
       <label><input type="checkbox" id="rdManip"> Let units just below the cutoff manipulate across it (a density bump the McCrary test should catch)</label>
       <p style="margin-top:.5rem"><button class="secondary" id="rdSimGo">Generate</button></p>
     </div>
     <div class="tab" id="rd-csv">
-      <label>File (columns: a running variable and an outcome)</label><input type="file" id="rdFile" accept=".csv,text/csv">
-      <div id="rdMap" style="display:none" class="row"><div><label>Running variable</label><select id="rdX"></select></div><div><label>Outcome</label><select id="rdY"></select></div><div><label>Cutoff</label><input type="number" id="rdC" value="0" step="any"></div></div>
+      <label for="rdFile">File (columns: a running variable and an outcome)</label><input type="file" id="rdFile" accept=".csv,text/csv">
+      <div id="rdMap" style="display:none" class="row"><div><label for="rdX">Running variable</label><select id="rdX"></select></div><div><label for="rdY">Outcome</label><select id="rdY"></select></div><div><label for="rdC">Cutoff</label><input type="number" id="rdC" value="0" step="any"></div></div>
       <p style="margin-top:.5rem"><button class="secondary" id="rdCsvGo">Load</button></p>
     </div>
-    <div class="row" style="margin-top:.5rem"><div><label>Bandwidth</label><select id="rdBw"><option value="ik">Imbens–Kalyanaraman (2012)</option><option value="manual">Enter by hand</option></select></div><div><label>Manual bandwidth</label><input type="number" id="rdH" value="0.5" step="any" min="0"></div><div><label>&nbsp;</label><button id="rdRun">Estimate</button></div></div>
+    <div class="row" style="margin-top:.5rem"><div><label for="rdBw">Bandwidth</label><select id="rdBw"><option value="ik">Imbens–Kalyanaraman (2012)</option><option value="manual">Enter by hand</option></select></div><div><label for="rdH">Manual bandwidth</label><input type="number" id="rdH" value="0.5" step="any" min="0"></div><div><label>&nbsp;</label><button id="rdRun">Estimate</button></div></div>
     <div id="rdOut" style="margin-top:.6rem"></div>
     <details><summary>What is being estimated</summary>
       <p>τ = lim<sub>x↓c</sub> E[y|x] − lim<sub>x↑c</sub> E[y|x], estimated by two local linear regressions, one on each side of the cutoff, with triangular kernel weights that fall to zero at the bandwidth h (Hahn, Todd and van der Klaauw 2001). Standard errors are heteroskedasticity-robust (HC1) from the two weighted fits; this is the “conventional” interval, not the bias-corrected one of Calonico, Cattaneo and Titiunik (2014), which the page does not implement. The default bandwidth follows Imbens and Kalyanaraman (2012): a pilot bandwidth gives the density at the cutoff and the conditional variances on each side, cubic and then quadratic fits give the second derivatives, a regularisation term guards against tiny curvature, and the plug-in constant for the triangular kernel is 3.4375. The bandwidth-sensitivity plot re-estimates τ from half to twice that bandwidth. The McCrary (2008) test bins the running variable, fits the density on each side of the cutoff with a local linear regression on the bin heights, and tests whether the log density jumps; a jump means units are sorting across the cutoff and the design is compromised. Placebo cutoffs re-run the estimator at the median of each side, where no effect should appear.</p>
@@ -384,7 +395,7 @@ function runDiD(){
   const X=Array.from(Dd,v=>[v]); const fit=olsCluster(X, yd, unit); const b=fit.beta[0], se=fit.se[0]; const crit=tCritical(fit.G-1); const t=b/se, p=2*(1-normCdf(Math.abs(t)));
   const cohorts=[...new Set([...panel.adopt.values()].filter(g=>g!=null))]; let tbl='';
   if(cohorts.length===1){ const g=cohorts[0]; const m=(tr,post)=>{ const v=rows.filter(r=>((panel.adopt.get(r.u)!=null)===tr)&&((r.t>=g)===post)).map(r=>r.y); return v.length?v.reduce((a,b)=>a+b,0)/v.length:NaN; }; const Tp=m(true,true),Tb=m(true,false),Cp=m(false,true),Cb=m(false,false); const did=(Tp-Tb)-(Cp-Cb);
-    tbl=`<table><tr><th></th><th>Before</th><th>After</th><th>Change</th></tr><tr><td>Treated</td><td>${fmt(Tb)}</td><td>${fmt(Tp)}</td><td>${fmt(Tp-Tb)}</td></tr><tr><td>Control</td><td>${fmt(Cb)}</td><td>${fmt(Cp)}</td><td>${fmt(Cp-Cb)}</td></tr><tr><td><b>Difference-in-differences</b></td><td></td><td></td><td><b>${fmt(did)}</b></td></tr></table><p class="mini">The 2×2 means table and the regression coefficient agree only for a balanced panel; with missing cells the regression is the one to report.</p>`; }
+    tbl=`<div class="twrap" tabindex="0"><table><tr><th></th><th>Before</th><th>After</th><th>Change</th></tr><tr><td>Treated</td><td>${fmt(Tb)}</td><td>${fmt(Tp)}</td><td>${fmt(Tp-Tb)}</td></tr><tr><td>Control</td><td>${fmt(Cb)}</td><td>${fmt(Cp)}</td><td>${fmt(Cp-Cb)}</td></tr><tr><td><b>Difference-in-differences</b></td><td></td><td></td><td><b>${fmt(did)}</b></td></tr></table></div><p class="mini">The 2×2 means table and the regression coefficient agree only for a balanced panel; with missing cells the regression is the one to report.</p>`; }
   let truthNote=''; if(panel.truth){ const ks=rows.filter(r=>r.D===1).map(r=>r.t-panel.adopt.get(r.u)); const avg=ks.reduce((a,k)=>a+panel.truth(k),0)/ks.length; truthNote=`<div class="ok">Simulated truth: the average effect over the treated observations is ${fmt(avg)}. The TWFE estimate ${Math.abs(b-avg)<crit*se?'covers it':'does not cover it'} at 95%.${cohorts.length>1?' With staggered adoption and effects that grow with k, TWFE is biased even under parallel trends; compare the Sun–Abraham event study.':''}</div>`; }
   $('#didOut').innerHTML=`<span class="stat"><b>${fmt(b)}</b><span>δ (ATT, TWFE)</span></span><span class="stat"><b>${fmt(se)}</b><span>cluster SE (${fit.G} clusters)</span></span><span class="stat"><b>[${fmt(b-crit*se,2)}, ${fmt(b+crit*se,2)}]</b><span>95% CI (t, ${fit.G-1} df)</span></span><span class="stat"><b>${p<0.001?'<0.001':fmt(p,3)}</b><span>p-value</span></span>${tbl}${truthNote}${cohorts.length>1?'<div class="warn">Staggered adoption detected. The single TWFE coefficient is a weighted average of many 2×2 comparisons, some of which use already-treated units as controls. Prefer the event study below.</div>':''}`;
   $('#didPanel').style.display='block';
@@ -412,7 +423,7 @@ function runES(){
   const postIdx=ks.map((k,i)=>k>=0?i:-1).filter(i=>i>=0); const avgPost=postIdx.reduce((a,i)=>a+(isFinite(b[i])?b[i]:0),0)/postIdx.length;
   let rowsHtml=ks.map((k,i)=>`<tr><td>${k}${k===-1?' (ref.)':''}</td><td>${fmt(b[i])}</td><td>${k===-1?'—':fmt(se[i])}</td><td>${k===-1?'—':`[${fmt(b[i]-crit*se[i],2)}, ${fmt(b[i]+crit*se[i],2)}]`}</td>${truth?`<td>${fmt(truth[i])}</td>`:''}</tr>`).join('');
   $('#esPill').textContent = kind==='twfe' ? 'TWFE, endpoints binned' : 'Sun–Abraham (2021), never-treated comparison';
-  $('#esOut').innerHTML=`<span class="stat"><b>${fmt(avgPost)}</b><span>mean of post coefficients (k ≥ 0)</span></span>${preTest}<div class="legend"><span><i style="background:var(--s1)"></i>estimate with 95% CI</span>${truth?'<span><i style="background:var(--s3)"></i>simulated truth</span>':''}</div>`+coefPlot(ks,b,se,{crit,truth})+weightsInfo+`<details><summary>Coefficient table</summary><table><tr><th>k</th><th>β</th><th>SE</th><th>95% CI</th>${truth?'<th>truth</th>':''}</tr>${rowsHtml}</table></details>`;
+  $('#esOut').innerHTML=`<span class="stat"><b>${fmt(avgPost)}</b><span>mean of post coefficients (k ≥ 0)</span></span>${preTest}<div class="legend"><span><i style="background:var(--s1)"></i>estimate with 95% CI</span>${truth?'<span><i style="background:var(--s3)"></i>simulated truth</span>':''}</div>`+coefPlot(ks,b,se,{crit,truth})+weightsInfo+`<details><summary>Coefficient table</summary><div class="twrap" tabindex="0"><table><tr><th>k</th><th>β</th><th>SE</th><th>95% CI</th>${truth?'<th>truth</th>':''}</tr>${rowsHtml}</table></div></details>`;
   $('#esPanel').style.display='block';
 }
 function chi2Upper(x,k){ // upper tail of chi-square via regularized gamma
@@ -443,8 +454,8 @@ function runSC(){
    <div class="legend"><span><i style="background:var(--s2)"></i>treated${treated.length>1?' (mean of '+treated.length+')':''}: ${esc(treated.length===1?nm(treated[0]):'')}</span><span><i style="background:var(--s1)"></i>synthetic control</span></div>`
    +lineChart(s1,{vline:g-0.5,vlabel:'treatment',ylabel:'outcome',xlabel:'period',title:'treated versus synthetic'})
    +(placebos.length?`<div class="legend"><span><i style="background:var(--s2)"></i>treated gap</span><span><i style="background:#9ca3af"></i>placebo gaps (each donor treated in turn)</span></div>`+lineChart(gapSeries,{vline:g-0.5,vlabel:'treatment',hline:0,ylabel:'gap: actual − synthetic',xlabel:'period',title:'placebo gaps'}):'')
-   +fitNote+truthNote+`<details open><summary>Donor weights (${wtab.length} donors with weight &gt; 0.001)</summary><table><tr><th>Donor</th><th>Weight</th></tr>${wtab.map(x=>`<tr><td>${esc(nm(x.d))}</td><td>${fmt(x.w,3)}</td></tr>`).join('')}</table></details>`
-   +(placebos.length?`<details><summary>Placebo RMSPE ratios</summary><table><tr><th>Unit</th><th>pre RMSPE</th><th>post RMSPE</th><th>ratio</th></tr><tr><td><b>${esc(treated.map(nm).join(', '))}</b></td><td>${fmt(main.preR)}</td><td>${fmt(main.postR)}</td><td><b>${fmt(ratio,2)}</b></td></tr>${placebos.map(p=>({...p,r:p.postR/p.preR})).sort((a,b)=>b.r-a.r).map(p=>`<tr><td>${esc(nm(p.u))}</td><td>${fmt(p.preR)}</td><td>${fmt(p.postR)}</td><td>${fmt(p.r,2)}</td></tr>`).join('')}</table><p class="mini">Abadie, Diamond and Hainmueller (2010) recommend discarding placebos whose pre-period fit is far worse than the treated unit's, since a bad pre-fit inflates post-period gaps mechanically; the ratio test above is their alternative that keeps every placebo.</p></details>`:'')
+   +fitNote+truthNote+`<details open><summary>Donor weights (${wtab.length} donors with weight &gt; 0.001)</summary><div class="twrap" tabindex="0"><table><tr><th>Donor</th><th>Weight</th></tr>${wtab.map(x=>`<tr><td>${esc(nm(x.d))}</td><td>${fmt(x.w,3)}</td></tr>`).join('')}</table></div></details>`
+   +(placebos.length?`<details><summary>Placebo RMSPE ratios</summary><div class="twrap" tabindex="0"><table><tr><th>Unit</th><th>pre RMSPE</th><th>post RMSPE</th><th>ratio</th></tr><tr><td><b>${esc(treated.map(nm).join(', '))}</b></td><td>${fmt(main.preR)}</td><td>${fmt(main.postR)}</td><td><b>${fmt(ratio,2)}</b></td></tr>${placebos.map(p=>({...p,r:p.postR/p.preR})).sort((a,b)=>b.r-a.r).map(p=>`<tr><td>${esc(nm(p.u))}</td><td>${fmt(p.preR)}</td><td>${fmt(p.postR)}</td><td>${fmt(p.r,2)}</td></tr>`).join('')}</table></div><p class="mini">Abadie, Diamond and Hainmueller (2010) recommend discarding placebos whose pre-period fit is far worse than the treated unit's, since a bad pre-fit inflates post-period gaps mechanically; the ratio test above is their alternative that keeps every placebo.</p></details>`:'')
    +`<p style="margin-top:.6rem"><button class="secondary" id="scDl">Download weights and gaps (CSV)</button></p>`;
   $('#scDl').onclick=()=>{ let csv='period,treated,synthetic,gap\n'+times.map((t,i)=>`${t},${y1[i]},${main.synth[i]},${main.gap[i]}`).join('\n')+'\n\ndonor,weight\n'+donors.map((d,j)=>`${d},${main.w[j]}`).join('\n'); const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'})); a.download='synthetic-control.csv'; a.click(); };
   $('#scPanel').style.display='block';
@@ -496,7 +507,7 @@ function runRD(){ if(!RD) return; const {x,y,c}=RD; const ik=ikBandwidth(x,y,c);
   <div class="legend"><span><i style="background:#9ca3af"></i>binned means of y</span><span><i style="background:var(--s1)"></i>local linear fit within h, each side</span></div>`
   +lineChart([{name:'binned mean',color:'#9ca3af',x:bx,y:by,points:true,width:0,opacity:0},{name:'left fit',color:'var(--s1)',x:lineL,y:lineLy,width:2.5,silent:true},{name:'right fit',color:'var(--s1)',x:lineR,y:lineRy,width:2.5,silent:true}],{vline:c,vlabel:'cutoff',xlabel:'running variable',ylabel:'outcome',xfrac:true,title:'regression discontinuity'})
   +`<div class="legend"><span><i style="background:var(--s2)"></i>τ across bandwidths, with 95% band</span></div>`+lineChart([{name:'τ',color:'var(--s2)',x:hs,y:ts,band:{lo,hi},points:true}],{hline:RD.truth!=null?RD.truth:0,vline:h,vlabel:'chosen h',xlabel:'bandwidth',ylabel:'τ',xfrac:true,title:'bandwidth sensitivity'})
-  +`<table><tr><th>Check</th><th>Estimate</th><th>SE</th><th>p</th><th>Reading</th></tr>${pl.map(q=>`<tr><td>Placebo cutoff at ${q.name} (${fmt(q.cc,3)})</td><td>${q.f?fmt(q.f.tau):'—'}</td><td>${q.f?fmt(q.f.se):'—'}</td><td>${q.f?fmt(2*(1-normCdf(Math.abs(q.f.tau/q.f.se))),3):'—'}</td><td style="text-align:left">should be near zero</td></tr>`).join('')}${mc?`<tr><td>McCrary density test (log f₊ − log f₋)</td><td>${fmt(mc.theta)}</td><td>${fmt(mc.se)}</td><td>${fmt(mc.p,3)}</td><td style="text-align:left">${mc.p<0.05?'<b>density jumps at the cutoff: sorting is likely</b>':'no evidence of sorting'}</td></tr>`:''}</table>`
+  +`<div class="twrap" tabindex="0"><table><tr><th>Check</th><th>Estimate</th><th>SE</th><th>p</th><th>Reading</th></tr>${pl.map(q=>`<tr><td>Placebo cutoff at ${q.name} (${fmt(q.cc,3)})</td><td>${q.f?fmt(q.f.tau):'—'}</td><td>${q.f?fmt(q.f.se):'—'}</td><td>${q.f?fmt(2*(1-normCdf(Math.abs(q.f.tau/q.f.se))),3):'—'}</td><td style="text-align:left">should be near zero</td></tr>`).join('')}${mc?`<tr><td>McCrary density test (log f₊ − log f₋)</td><td>${fmt(mc.theta)}</td><td>${fmt(mc.se)}</td><td>${fmt(mc.p,3)}</td><td style="text-align:left">${mc.p<0.05?'<b>density jumps at the cutoff: sorting is likely</b>':'no evidence of sorting'}</td></tr>`:''}</table></div>`
   +(ik?`<p class="mini">IK inputs: density at the cutoff ${fmt(ik.f,3)}, conditional variances ${fmt(ik.s2L,3)} / ${fmt(ik.s2R,3)}, second derivatives ${fmt(ik.m2L,3)} / ${fmt(ik.m2R,3)}, pilot bandwidth ${fmt(ik.h1,3)}.</p>`:'')+(mc?`<div class="legend"><span><i style="background:var(--s3)"></i>density of the running variable (bin width ${fmt(mc.b,3)})</span></div>`+lineChart([{name:'density',color:'var(--s3)',x:mc.pts.map(p=>p.mid),y:mc.pts.map(p=>p.dens),points:true}],{vline:c,vlabel:'cutoff',xlabel:'running variable',ylabel:'density',yzero:true,xfrac:true,title:'McCrary'}):'');
 }
 $('#rdRun').onclick=runRD; $('#rdBw').onchange=()=>{ if(RD) runRD(); };
