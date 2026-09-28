@@ -443,6 +443,19 @@
                 <li>The shareable link packs the draft into the URL fragment as base64url JSON, so a co-signatory sees the same draft with no server. The draft is also kept in local storage and can be exported as JSON.</li>
             </ul><span class="verified">Verified: the example renders every section and the signatory table headless; the House form switches opening, closing and countersignature line.</span></div>
         </article>
+        <article class="card" id="courtformat">
+            <div class="doodle"><svg viewBox="0 0 64 64" filter="url(#wobble)"><path d="M14 6h36v52H14z"/><path d="M22 6v52M42 6v52" stroke-dasharray="3 3"/><path d="M26 18h12M26 26h12M26 34h12M30 42h8"/></svg></div>
+            <h3><a href="court-format/">Court Filing Formatter</a><span class="badge b-law">Law</span><span class="badge b-tool">Tool</span></h3>
+            <p class="summary">A Word file set to a court's paper rules in the browser: A4, the prescribed margins, font, size and line spacing, with quotations and indents set smaller and single-spaced. Supreme Court, Delhi, Bombay and Gujarat presets, each with its circular quoted, and a before-and-after check read back from the new file.</p>
+            <p class="tech">SC circular 5.3.2020 · DHC PD 90/2022 · Bombay HC 2021 · Gujarat C.2002/2026 · OOXML rewritten in place</p>
+            <span class="open">Open the tool →</span>
+            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button></div>
+            <div class="pop"><b>In plain words.</b> Courts now want filings on A4 with a set font, size, spacing and margins, and a draft typed in Word's defaults meets none of them. Open the draft here, choose the court, and download a copy that does. The page shows what the document had, what the rule asks for, and what the new file has, and lets you say which indented paragraphs are really quotations.</div>
+            <div class="notes"><ul>
+                <li>The .docx is unzipped in the browser and its XML edited in place: page size and margins on every section (landscape sections stay landscape), fonts and sizes in the defaults, the styles and the text itself, with theme-font attributes removed so the new face wins. New elements go in the order the schema requires. Nothing is uploaded.</li>
+                <li>A value a rule does not state is left alone: Bombay prescribes font, size and inner and outer margins, so it gets mirrored margins and no line spacing. Quotations are found by indentation (net of any hanging indent) and style name, and the reader confirms each one.</li>
+            </ul><span class="verified">Verified: a Letter-size, Calibri, 1.15-spaced test file with pasted Arial, a block quote, hand numbering and a landscape section comes out at A4, 4/4/2/2 cm, Times New Roman 14 at 1.5 lines, the quote at 12 single, with no schema-order violations.</span></div>
+        </article>
         <article class="card" id="flipbook">
             <div class="doodle"><svg viewBox="0 0 64 64" filter="url(#wobble)"><path d="M6 14h22c3 0 4 2 4 4v34c0-2-1-4-4-4H6z"/><path d="M58 14H36c-3 0-4 2-4 4v34c0-2 1-4 4-4h22z"/><path d="M40 22c6-4 12-2 14 2"/><path d="M12 24h10M12 30h10M12 36h6"/></svg></div>
             <h3><a href="flipbook/">Flipbook Maker</a><span class="badge b-tool">Tool</span></h3>

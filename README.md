@@ -227,6 +227,25 @@ it in the URL. Nothing leaves the browser.
 
 ---
 
+### Court Filing Formatter
+
+Reformats a Word document to an Indian court's filing rules in the browser: A4,
+the prescribed margins, typeface, size and line spacing, with quotations and
+indented matter set at the smaller single-spaced size. Presets for the Supreme
+Court (circular of 5 March 2020), the Delhi High Court and Delhi district courts
+(Practice Directions No. 90/Rules/DHC of 10 October 2022), the Bombay High Court
+and courts in Maharashtra (notifications of 6 July 2021, mirrored inner and outer
+margins), and the district courts of Gujarat (Circular C.2002/2026, from 1 August
+2026, with the Gujarati font), each with its text quoted, plus custom settings.
+A value a rule does not state is left as the document has it. The file is read
+and rewritten in the tab and never uploaded; the result table is read back from
+the new file.
+
+**Directory:** `court-format/`
+**Stage:** Active
+
+---
+
 ### Household Library Builder
 
 A catalogue for the books in a house: add by ISBN or title with metadata and
@@ -437,6 +456,7 @@ Experiments/
 ├── air-quality/                        # a year of PM2.5 against WHO and NAAQS, live
 ├── hyd-sir/                            # Old City SIR 2026 deletions, by polling part
 ├── petition-builder/                   # representations and petitions in the accepted form
+├── court-format/                       # a .docx set to a court's A4 filing rules
 ├── library-builder/                    # household book catalogue, Open Library lookups
 ├── flipbook/                           # PDF to page-turning book, self-contained export
 ├── court-translator/
