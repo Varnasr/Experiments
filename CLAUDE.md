@@ -1,10 +1,11 @@
 # Experiments
 
-Twenty-one browser tools for development economics, law and data work, each a
+Twenty-two browser tools for development economics, law and data work, each a
 self-contained page: causal workbench, RCT planner, poverty and inequality,
 wage gap, women's indicators, heat exposure, air quality, court translator,
-petition builder, statutory interest, land acquisition, library builder and the
-rest. No build step. Deployed to GitHub Pages and to Netlify.
+court filing formatter, petition builder, statutory interest, land acquisition,
+library builder and the rest. No build step. Deployed to GitHub Pages and to
+Netlify.
 
 ## Commands
 
@@ -172,6 +173,16 @@ and that is how the fix above was verified before pushing.
   them. The 23 was the count of HTML files, which includes the landing page and
   `404.html`. `scripts/check.py` compares the two, because a number written in
   prose that nothing compares is how every repository here has drifted.
+
+- **`court-format` presets carry only what each circular says.** A value a
+  rule does not state is `null` and the document's own value is kept: Bombay
+  prescribes font, size and inner and outer margins, and nothing else. Do not
+  fill those in by analogy with the Supreme Court. Every preset quotes its
+  source text on the page; add a court only with its notification in hand.
+  The Supreme Court text is taken from two reproductions of the 5 March 2020
+  circular, not from the Court's own copy. The quotation checklist is the only
+  thing that makes a paragraph smaller: quotation *styles* are sized like body
+  text, so unticking a paragraph leaves it at the text size.
 
 ## Testing
 
