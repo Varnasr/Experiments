@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Court Filing Formatter · Experiments</title>
+<meta name="description" content="Reformat a Word document to an Indian court's filing rules in the browser: A4, the prescribed margins, font, size and line spacing, with quotations set smaller and single-spaced. Supreme Court, Delhi, Bombay and Gujarat presets, each with its circular quoted, and a before-and-after check of what was changed.">
+<link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23991b1b'/><path d='M10 6h9l5 5v15H10z' stroke='white' stroke-width='2' fill='none' stroke-linejoin='round'/><path d='M13 15h8M13 19h8M13 23h5' stroke='white' stroke-width='1.8' stroke-linecap='round'/></svg>">
+<style>
+  :root { --bg:#fafafa; --surface:#fff; --border:#e5e7eb; --text:#1a1a2e; --dim:#4b5563; --muted:#6b7280; --accent:#991b1b; --accent-soft:#fdf2f2; --ok:#166534; --ok-soft:#ecfdf3; --mono:ui-monospace,SFMono-Regular,Menlo,monospace; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--text); line-height:1.55; }
+  a { color:var(--accent); }
+  header { border-bottom:1px solid var(--border); background:#fff; }
+  .wrap { max-width:1080px; margin:0 auto; padding:0 1.25rem; }
+  header .wrap { display:flex; align-items:baseline; justify-content:space-between; gap:1rem; padding:.9rem 1.25rem; flex-wrap:wrap; }
+  header h1 { font-family:Georgia,serif; font-size:1.35rem; font-weight:400; }
+  header h1 small { font-size:.8rem; color:var(--muted); margin-left:.5rem; }
+  header nav a { font-size:.85rem; margin-left:1rem; text-decoration:none; }
+  main { padding:1.5rem 0 3rem; }
+  .lede { color:var(--dim); font-size:.95rem; max-width:70ch; margin-bottom:1.25rem; }
+  .grid { display:grid; grid-template-columns:340px 1fr; gap:1.25rem; align-items:start; }
+  /* A grid item's default min-width:auto lets one wide table size the whole
+     track, and then the page, wider than a phone. */
+  .grid > * { min-width:0; }
+  @media (max-width:860px){ .grid { grid-template-columns:1fr; } }
+  .panel { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1rem 1.15rem; margin-bottom:1rem; }
+  .panel h2 { font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; margin-bottom:.7rem; }
+  label { display:block; font-size:.8rem; color:var(--dim); margin:.55rem 0 .2rem; }
+  label.chk { display:flex; gap:.45rem; align-items:flex-start; font-size:.82rem; }
+  label.chk input { margin-top:.2rem; }
+  select, input[type=number], input[type=text] { width:100%; font:inherit; font-size:.9rem; padding:.4rem .5rem; border:1px solid var(--border); border-radius:6px; background:#fff; color:var(--text); }
+  input[type=file] { font:inherit; font-size:.85rem; width:100%; }
+  .row { display:flex; gap:.5rem; } .row > * { flex:1; min-width:0; }
+  button.go, a.go { display:inline-block; font:inherit; font-size:.88rem; padding:.5rem .9rem; border-radius:6px; border:1px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer; text-decoration:none; }
+  button.go:disabled { background:#d1d5db; border-color:#d1d5db; color:#374151; cursor:not-allowed; }
+  a.go.ok { background:var(--ok); border-color:var(--ok); }
+  .law { background:var(--accent-soft); border-radius:8px; padding:.7rem .9rem; font-size:.85rem; color:#7f1d1d; margin:.6rem 0; }
+  .law b { display:block; margin-bottom:.2rem; }
+  .law .src { display:block; margin-top:.4rem; font-size:.78rem; color:#7f1d1d; }
+  .note { font-size:.82rem; color:var(--dim); margin-top:.5rem; }
+  .mini { font-size:.78rem; color:var(--muted); margin-top:.3rem; }
+  .warn { background:#fff7ed; border:1px solid #fed7aa; color:#9a3412; padding:.5rem .7rem; border-radius:6px; font-size:.83rem; margin:.5rem 0; }
+  .done { background:var(--ok-soft); border:1px solid #bbf7d0; color:var(--ok); padding:.6rem .8rem; border-radius:6px; font-size:.85rem; margin:.5rem 0; }
+  .twrap { overflow-x:auto; max-width:100%; }
+  table { border-collapse:collapse; width:100%; font-size:.83rem; margin:.4rem 0; }
+  th, td { text-align:left; padding:.35rem .5rem; border-bottom:1px solid var(--border); vertical-align:top; }
+  th { color:var(--dim); font-weight:600; font-size:.75rem; }
+  td.st { white-space:nowrap; font-weight:600; }
+  .s-ok { color:var(--ok); } .s-fix { color:#9a3412; } .s-na { color:var(--muted); font-weight:400; }
+  .quotes { max-height:360px; overflow:auto; border:1px solid var(--border); border-radius:6px; }
+  .quotes label { margin:0; padding:.45rem .6rem; border-bottom:1px solid var(--border); color:var(--text); }
+  .quotes label:last-child { border-bottom:none; }
+  .quotes .why { display:block; font-size:.72rem; color:var(--muted); }
+  .hidden { display:none; }
+  ul.plain { margin:.3rem 0 0 1.1rem; font-size:.84rem; color:var(--dim); }
+  ul.plain li { margin:.2rem 0; }
+  footer { border-top:1px solid var(--border); padding:1.25rem; text-align:center; font-size:.8rem; color:var(--muted); }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>Court Filing Formatter <small>a Word file set to a court's paper rules, in the browser</small></h1>
+  <nav><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/court-format">Source</a></nav>
+</div></header>
+<main><div class="wrap">
+<p class="lede">Since 2020 the Supreme Court, and after it a run of High Courts, have required filings on A4 with a fixed font, size, line spacing and margins, and a draft written in Word's defaults meets none of them. Open a .docx here, pick the court, and the page rewrites the page setup and the type, sets quotations and indented matter in the smaller single-spaced size the rules ask for, and shows what it found and what it changed. The file is read and rewritten in this browser tab and is not uploaded anywhere.</p>
+
+<div class="grid">
+<div>
+  <div class="panel"><h2>1. Document</h2>
+    <label for="file">Word document (.docx)</label>
+    <input type="file" id="file" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+    <p class="mini">An older .doc, or a PDF, has to be saved as .docx first. A PDF cannot be reformatted at all: its lines are already broken, so changing the font or the spacing would mean re-typesetting it.</p>
+  </div>
+  <div class="panel"><h2>2. Court</h2>
+    <label for="court">Rules to apply</label>
+    <select id="court">
+      <option value="sc">Supreme Court of India</option>
+      <option value="dhc">Delhi High Court and Delhi district courts</option>
+      <option value="bom">Bombay High Court and courts in Maharashtra</option>
+      <option value="guj">District courts of Gujarat (from 1 August 2026)</option>
+      <option value="custom">My own settings</option>
+    </select>
+    <div id="fontPick" class="hidden"><label for="fontSel">Font the rule allows</label><select id="fontSel"></select></div>
+    <div id="csPick" class="hidden"><label for="csSel">Gujarati font the rule allows</label><select id="csSel"></select>
+      <p class="mini">The font has to be installed on the computer that opens and prints the file, or Word substitutes another one. All three are free.</p></div>
+    <div id="customBox" class="hidden">
+      <div class="row"><div><label for="cFont">Font</label><input type="text" id="cFont" value="Times New Roman"></div><div><label for="cSize">Size (pt)</label><input type="number" id="cSize" value="14" min="8" max="20" step="0.5"></div></div>
+      <div class="row"><div><label for="cLine">Line spacing</label><input type="number" id="cLine" value="1.5" min="1" max="3" step="0.05"></div><div><label for="cQSize">Quotations (pt)</label><input type="number" id="cQSize" value="12" min="8" max="20" step="0.5"></div></div>
+      <div class="row"><div><label for="cL">Left (cm)</label><input type="number" id="cL" value="4" step="0.1" min="0"></div><div><label for="cR">Right (cm)</label><input type="number" id="cR" value="4" step="0.1" min="0"></div></div>
+      <div class="row"><div><label for="cT">Top (cm)</label><input type="number" id="cT" value="2" step="0.1" min="0"></div><div><label for="cB">Bottom (cm)</label><input type="number" id="cB" value="2" step="0.1" min="0"></div></div>
+      <label class="chk"><input type="checkbox" id="cMirror"> Mirror margins for printing on both sides (left becomes inside)</label>
+    </div>
+  </div>
+  <div class="panel"><h2>3. Options</h2>
+    <label class="chk"><input type="checkbox" id="optDirect" checked> Replace fonts and sizes typed directly onto text, not only the styles. Leave this on unless the document uses a second typeface on purpose.</label>
+    <label class="chk"><input type="checkbox" id="optHeadings"> Keep headings at their own size. The rules state one size for the text and say nothing about headings, so this is off by default.</label>
+    <label class="chk"><input type="checkbox" id="optBlack"> Set coloured text to black. None of these rules mentions colour; this is here because Word's default headings are blue.</label>
+    <label for="optIndent">Treat a paragraph as a quotation or indent when it is indented at least (cm)</label>
+    <input type="number" id="optIndent" value="1" min="0.3" max="6" step="0.1">
+    <p style="margin-top:.8rem"><button class="go" id="go" disabled>Convert</button></p>
+  </div>
+</div>
+
+<div>
+  <div id="rule"></div>
+  <div class="panel" id="auditPanel"><h2>What the document has now</h2><p class="note">Open a .docx to see its page size, margins, fonts and spacing against the rule.</p></div>
+  <div class="panel hidden" id="quotePanel"><h2>Quotations and indents found</h2>
+    <p class="note" style="margin-top:0">These paragraphs will be set at the smaller size in single spacing. The match is by indentation and by style name, so a signature block or an indented address can turn up here: untick anything that is not a quotation or an indent.</p>
+    <div class="quotes" id="quotes"></div>
+  </div>
+  <div class="panel hidden" id="outPanel"><h2>Result</h2><div id="out"></div></div>
+  <div class="panel"><h2>What this cannot do</h2>
+    <ul class="plain">
+      <li>Paper weight and printing on both sides are instructions to whoever prints the file. They are listed in the result so they are not forgotten.</li>
+      <li>Pagination, indexing, the synopsis and list of dates, and the order of the paper book are governed by each court's own rules and practice directions, and are not touched.</li>
+      <li>Text in tables takes the same font, size and spacing as the body. Footnotes, headers and footers take the new typeface and keep their own sizes, because none of these rules sets one for them.</li>
+      <li>Open the result in Word and read it before filing. A reformatted document is longer, and a page break or a table that sat well at the old size may not at the new one.</li>
+    </ul>
+  </div>
+</div>
+</div>
+</div></main>
+<footer>Part of <a href="../">Experiments</a> by Varna Sri Raman · Idealog Works · MIT licence · Not legal advice; the registry's reading of its own rules controls.</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+'use strict';
+const $ = s => document.querySelector(s);
+const W = 'http://schemas.openxmlformats.org/wordprocessingml/2006/main';
+const TW_PER_CM = 1440 / 2.54;
+const cm2tw = cm => Math.round(cm * TW_PER_CM);
+const tw2cm = tw => tw / TW_PER_CM;
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+// Each preset states only what its circular states. A value the rule does not
+// prescribe is null, and null means "leave the document's own value alone":
+// Bombay sets no line spacing and no top or bottom margin, and inventing one
+// would put words in the High Court's mouth.
+const PRESETS = {
+  sc: {
+    name: 'Supreme Court of India',
+    fonts: ['Times New Roman'], size: 14, line: 1.5, qSize: 12, qLine: 1,
+    margins: { left: 4, right: 4, top: 2, bottom: 2 }, mirror: false,
+    paper: 'Superior quality A4, not less than 75 GSM, printed on both sides.',
+    title: 'Supreme Court circular dated 5 March 2020, in force from 1 April 2020',
+    text: '“…superior quality A4 size paper (29.7 cm x 21 cm) having not less than 75 GSM with printing on both sides of the paper with Font – Times New Roman, Font size 14, in one and a half line spacing (for quotations and indents – font size 12 in single line spacing), with a margin of 4 cm on left & right and 2 cm on top & bottom…”',
+    src: 'Text as quoted to the Delhi High Court in 2022 (<a href="https://lawbeat.in/news-updates/delhi-hc-permits-a4-size-paper-double-sided-printing-all-delhi-courts-november-1">LawBeat, 11 October 2022</a>) and in the contemporaneous report of the circular; it has not been read here against the Supreme Court\'s own copy, which its current circulars list does not carry.'
+  },
+  dhc: {
+    name: 'Delhi High Court and Delhi district courts',
+    fonts: ['Times New Roman'], size: 14, line: 1.5, qSize: 12, qLine: 1,
+    margins: { left: 4, right: 4, top: 2, bottom: 2 }, mirror: false,
+    paper: 'A4, not less than 75 GSM, printed or typed on both sides.',
+    title: 'Practice Directions No. 90/Rules/DHC dated 10 October 2022, in force from 1 November 2022',
+    text: '“A4 size paper (29.7 cm X 21 cm) having not less than 75 GSM with font – Times New Roman, font size 14, in 1.5 line spacing (for quotations and indents – font size 12 in single line spacing), with margin of 4 cm on left & right and 2 cm on top & bottom. The printing/typing shall be on both sides of the paper.”',
+    src: 'Applies to all pleadings, memoranda of appeal, orders and judgments in the High Court and every district court in Delhi. <a href="https://delhihighcourt.nic.in/files/Notifications%20and%20Practice%20Directions/notificationfile_gc6pru5vgei.pdf">Practice Directions (PDF, delhihighcourt.nic.in)</a>.'
+  },
+  bom: {
+    name: 'Bombay High Court and courts in Maharashtra',
+    fonts: ['Times New Roman', 'Georgia'], size: 14, line: null, qSize: null, qLine: null,
+    margins: { left: 5, right: 3, top: null, bottom: null }, mirror: true,
+    paper: 'Superior quality A4, not less than 75 GSM, printed on both sides.',
+    title: 'Notifications No. P.1604/2021 and G/Amend/671/2021 dated 6 July 2021, and circular of 14 July 2021',
+    text: '“Superior quality A4 size paper having not less than 75 GSM with printing on both sides of the paper with Font – Times New Roman or Georgia, Font size 14 with inner margin of 5 cms and outer margin 3 cms.”',
+    src: 'Amends the Appellate Side Rules (Ch. IV r. 26, Ch. XVII r. 10(ii)) and the Original Side Rules (Ch. IV r. 42(1)); the circular extends it to the Benches at Nagpur, Aurangabad and Goa and all courts in Maharashtra. It sets no line spacing, no top or bottom margin and no size for quotations, so none is applied. The inner and outer margins are set as mirrored margins, so the wide margin falls on the bound edge of both faces of the sheet. <a href="https://cdnbbsr.s3waas.gov.in/s3ec02b59307fdacf7b2db12ec4bd5ca1c/uploads/2023/05/2023050249.pdf">Gazette notifications and circular (PDF)</a>.'
+  },
+  guj: {
+    name: 'District courts of Gujarat',
+    fonts: ['Times New Roman'], size: 14, line: 1.5, qSize: 12, qLine: 1,
+    csFonts: ['Noto Serif Gujarati', 'Noto Sans Gujarati', 'Lohit Gujarati'], csSize: 13,
+    margins: { left: 4, right: 4, top: 2, bottom: 2 }, mirror: false,
+    paper: 'Superior quality A4, not less than 75 GSM, printed on both sides. The circular exempts police papers, chargesheets, police and FSL reports, other authorities\' reports, vakalatnamas, original documents, plans and maps.',
+    title: 'Gujarat High Court Circular No. C.2002/2026 dated 15 April 2026, in force from 1 August 2026',
+    text: '“Superior quality A4 size paper (29.7 cm x 21 cm) having not less than 75 GSM with printing on both sides of the paper with Gujarati Font – Lohit Gujarati/Noto Sans Gujarati/Noto Serif Gujarati, Font Size 13 and/or with English Font – Times New Roman, Font size 14, in one and half line spacing (for quotations and indents – font size 12 in single line spacing), with margin of 4 cm on left & right and 2 cm on top & bottom.”',
+    src: 'For the district judiciary of Gujarat, not the High Court itself; supersedes Circulars C.2002/2025 of 28 October and 22 December 2025. Gujarati text takes the Gujarati font at 13 pt; English text Times New Roman at 14 pt. <a href="https://cdnbbsr.s3waas.gov.in/s3ec01494ba9ff03bdad881378a6fd4092/uploads/2026/06/2026060132.pdf">Circular as forwarded by the Vadodara District Court (PDF)</a>.'
+  }
+};
+
+// --------------------------------------------------------------- OOXML helpers
+// Word validates the order of children inside these elements, and a file with
+// an element out of place can open as "unreadable content". So a new child is
+// inserted before the first existing sibling that the schema puts after it.
+const ORDER = {
+  rPr: ['ins','del','moveFrom','moveTo','rStyle','rFonts','b','bCs','i','iCs','caps','smallCaps','strike','dstrike','outline','shadow','emboss','imprint','noProof','snapToGrid','vanish','webHidden','color','spacing','w','kern','position','sz','szCs','highlight','u','effect','bdr','shd','fitText','vertAlign','rtl','cs','em','lang','eastAsianLayout','specVanish','oMath','rPrChange'],
+  pPr: ['pStyle','keepNext','keepLines','pageBreakBefore','framePr','widowControl','numPr','suppressLineNumbers','pBdr','shd','tabs','suppressAutoHyphens','kinsoku','wordWrap','overflowPunct','topLinePunct','autoSpaceDE','autoSpaceDN','bidi','adjustRightInd','snapToGrid','spacing','ind','contextualSpacing','mirrorIndents','suppressOverlap','jc','textDirection','textAlignment','textboxTightWrap','outlineLvl','divId','cnfStyle','rPr','sectPr','pPrChange'],
+  sectPr: ['headerReference','footerReference','footnotePr','endnotePr','type','pgSz','pgMar','paperSrc','pgBorders','lnNumType','pgNumType','cols','formProt','vAlign','noEndnote','titlePg','textDirection','bidi','rtlGutter','docGrid','printerSettings','sectPrChange'],
+  settings: ['writeProtection','view','zoom','removePersonalInformation','removeDateAndTime','doNotDisplayPageBoundaries','displayBackgroundShape','printPostScriptOverText','printFractionalCharacterWidth','printFormsData','embedTrueTypeFonts','embedSystemFonts','saveSubsetFonts','saveFormsData','mirrorMargins'],
+  style: ['name','aliases','basedOn','next','link','autoRedefine','hidden','uiPriority','semiHidden','unhideWhenUsed','qFormat','locked','personal','personalCompose','personalReply','rsid','pPr','rPr','tblPr','trPr','tcPr','tblStylePr'],
+  p: ['pPr'], r: ['rPr']
+};
+const kid = (el, name) => { if (!el) return null; for (const c of el.children) if (c.namespaceURI === W && c.localName === name) return c; return null; };
+function ensure(el, name) {
+  let c = kid(el, name); if (c) return c;
+  c = el.ownerDocument.createElementNS(W, 'w:' + name);
+  const order = ORDER[el.localName] || [];
+  const mine = order.indexOf(name);
+  let before = null;
+  if (mine >= 0) for (const s of el.children) {
+    const i = s.namespaceURI === W ? order.indexOf(s.localName) : Infinity;
+    if ((i === -1 ? Infinity : i) > mine) { before = s; break; }
+  }
+  // A property element with no place in the list (p, r) always goes first.
+  if (mine === -1 && (el.localName === 'p' || el.localName === 'r')) before = el.firstElementChild;
+  el.insertBefore(c, before);
+  return c;
+}
+const get = (el, a) => el ? el.getAttributeNS(W, a) : null;
+const set = (el, a, v) => el.setAttributeNS(W, 'w:' + a, String(v));
+const del = (el, a) => { if (el && el.hasAttributeNS(W, a)) el.removeAttributeNS(W, a); };
+const drop = (el, name) => { const c = kid(el, name); if (c) c.remove(); };
+const all = (root, name) => Array.from(root.getElementsByTagNameNS(W, name));
+const ownRuns = p => all(p, 'r').filter(r => r.closest('p') === p);   // not a text box's runs
+const paraText = p => ownRuns(p).map(r => all(r, 't').map(t => t.textContent).join('')).join('');
+
+function setFonts(rPr, face, csFace, create) {
+  let f = kid(rPr, 'rFonts');
+  if (!f) { if (!create) return; f = ensure(rPr, 'rFonts'); }
+  // A theme attribute outranks the explicit face, so it has to go too, or the
+  // run keeps Calibri with "Times New Roman" written beside it.
+  for (const a of ['asciiTheme', 'hAnsiTheme']) del(f, a);
+  set(f, 'ascii', face); set(f, 'hAnsi', face);
+  if (csFace) { del(f, 'cstheme'); set(f, 'cs', csFace); }
+}
+function setSize(rPr, pt, csPt) { set(ensure(rPr, 'sz'), 'val', Math.round(pt * 2)); set(ensure(rPr, 'szCs'), 'val', Math.round((csPt || pt) * 2)); }
+function setLine(pPr, mult) { const s = ensure(pPr, 'spacing'); set(s, 'line', Math.round(mult * 240)); set(s, 'lineRule', 'auto'); }
+
+const parse = xml => new DOMParser().parseFromString(xml, 'application/xml');
+const DECL = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\r\n';
+const serial = doc => { const s = new XMLSerializer().serializeToString(doc); return s.startsWith('<?xml') ? s : DECL + s; };
+
+// ------------------------------------------------------------------- reading
+let loaded = null;   // { zip, name, docs: {path: Document}, audit }
+
+async function load(file) {
+  const zip = await JSZip.loadAsync(file);
+  if (!zip.file('word/document.xml')) throw new Error('This is not a Word document: it has no word/document.xml inside it.');
+  const docs = {};
+  for (const path of Object.keys(zip.files)) {
+    if (/^word\/(document|styles|settings|header\d*|footer\d*|footnotes|endnotes)\.xml$/.test(path) || path === 'word/theme/theme1.xml') {
+      const d = parse(await zip.file(path).async('string'));
+      if (d.getElementsByTagName('parsererror').length) throw new Error('Could not read ' + path + ' inside the file.');
+      docs[path] = d;
+    }
+  }
+  return { zip, name: file.name, docs };
+}
+
+function styleMap(docs) {
+  const m = {}; const st = docs['word/styles.xml'];
+  if (st) for (const s of all(st, 'style')) m[get(s, 'styleId')] = { el: s, name: get(kid(s, 'name'), 'val') || get(s, 'styleId'), type: get(s, 'type') };
+  return m;
+}
+const QUOTE_STYLE = /quot|block ?text|extract/i;
+const HEADING_STYLE = /^(heading|title|subtitle)/i;
+const NOTE_STYLE = /^(footnote|endnote|comment|annotation|balloon)/i;
+
+function themeFont(docs, which) {
+  const t = docs['word/theme/theme1.xml']; if (!t) return null;
+  const el = Array.from(t.getElementsByTagNameNS('*', which + 'Font'))[0];
+  const latin = el && Array.from(el.children).find(c => c.localName === 'latin');
+  return latin ? latin.getAttribute('typeface') : null;
+}
+function faceOf(docs, f) {
+  if (!f) return null;
+  const t = get(f, 'asciiTheme');
+  if (t) return (themeFont(docs, /major/i.test(t) ? 'major' : 'minor') || 'theme font') + ' (theme)';
+  return get(f, 'ascii') || get(f, 'hAnsi') || null;
+}
+
+function quoteCandidates(docs, styles, minCm) {
+  const body = docs['word/document.xml'];
+  const out = [];
+  all(body, 'p').forEach((p, idx) => {
+    const text = paraText(p).trim(); if (!text) return;
+    const pPr = kid(p, 'pPr');
+    if (kid(pPr, 'numPr')) return;                 // a numbered paragraph is a paragraph, not a quote
+    const jc = get(kid(pPr, 'jc'), 'val');
+    if (jc === 'center' || jc === 'right' || jc === 'end') return;
+    const sid = get(kid(pPr, 'pStyle'), 'val'); const sname = sid && styles[sid] ? styles[sid].name : '';
+    if (sname && HEADING_STYLE.test(sname)) return;
+    if (sname && QUOTE_STYLE.test(sname)) { out.push({ idx, text, why: 'style “' + sname + '”' }); return; }
+    const ind = kid(pPr, 'ind'); if (!ind) return;
+    const left = +(get(ind, 'left') || get(ind, 'start') || 0), hang = +(get(ind, 'hanging') || 0);
+    // A hanging indent is how hand-typed numbering is laid out: "1." at the
+    // margin and the text wrapped under it. Its first line starts at
+    // left - hanging, so only what is left after the hang counts.
+    const eff = left - hang;
+    if (eff >= cm2tw(minCm)) out.push({ idx, text, why: 'indented ' + tw2cm(left).toFixed(1) + ' cm' });
+  });
+  return out;
+}
+
+function paperName(w, h) {
+  const a = Math.min(w, h), b = Math.max(w, h), near = (x, y) => Math.abs(x - y) < 60;
+  if (near(a, 11906) && near(b, 16838)) return 'A4';
+  if (near(a, 12240) && near(b, 15840)) return 'US Letter';
+  if (near(a, 12240) && near(b, 20160)) return 'US Legal';
+  if (near(a, 12240) && near(b, 18720)) return 'Foolscap';
+  return tw2cm(w).toFixed(1) + ' × ' + tw2cm(h).toFixed(1) + ' cm';
+}
+
+function audit(docs) {
+  const body = docs['word/document.xml'], styles = styleMap(docs);
+  const secs = all(body, 'sectPr').map(s => {
+    const sz = kid(s, 'pgSz'), m = kid(s, 'pgMar');
+    const w = +get(sz, 'w') || 12240, h = +get(sz, 'h') || 15840;
+    const mm = k => m && get(m, k) != null && get(m, k) !== '' ? tw2cm(+get(m, k)) : null;
+    return { paper: paperName(w, h), landscape: get(sz, 'orient') === 'landscape', left: mm('left'), right: mm('right'), top: mm('top'), bottom: mm('bottom'), gutter: mm('gutter') };
+  });
+  const st = docs['word/styles.xml'];
+  const dRPr = st && kid(kid(kid(st.documentElement, 'docDefaults'), 'rPrDefault'), 'rPr');
+  const dPPr = st && kid(kid(kid(st.documentElement, 'docDefaults'), 'pPrDefault'), 'pPr');
+  const normal = Object.values(styles).find(s => s.type === 'paragraph' && get(s.el, 'default') === '1');
+  const nRPr = normal && kid(normal.el, 'rPr'), nPPr = normal && kid(normal.el, 'pPr');
+  const face = faceOf(docs, kid(nRPr, 'rFonts')) || faceOf(docs, kid(dRPr, 'rFonts')) || 'Times New Roman (Word\'s fallback)';
+  const szv = get(kid(nRPr, 'sz'), 'val') || get(kid(dRPr, 'sz'), 'val');
+  const size = szv ? +szv / 2 : 10;
+  const sp = kid(nPPr, 'spacing') && get(kid(nPPr, 'spacing'), 'line') ? kid(nPPr, 'spacing') : kid(dPPr, 'spacing');
+  const lineOf = s => { if (!s || !get(s, 'line')) return 'single'; const r = get(s, 'lineRule') || 'auto', v = +get(s, 'line'); return r === 'auto' ? (v / 240).toFixed(2).replace(/\.?0+$/, '') + ' lines' : (v / 20) + ' pt ' + (r === 'exact' ? 'exactly' : 'at least'); };
+  const runs = all(body, 'r');
+  const faces = {}, sizes = {};
+  for (const r of runs) {
+    const rp = kid(r, 'rPr'); if (!rp) continue;
+    const f = faceOf(docs, kid(rp, 'rFonts')); if (f) faces[f] = (faces[f] || 0) + 1;
+    const z = get(kid(rp, 'sz'), 'val'); if (z) sizes[+z / 2] = (sizes[+z / 2] || 0) + 1;
+  }
+  const lines = {};
+  for (const p of all(body, 'p')) { const s = kid(kid(p, 'pPr'), 'spacing'); if (s && get(s, 'line')) { const k = lineOf(s); lines[k] = (lines[k] || 0) + 1; } }
+  const mirror = !!(docs['word/settings.xml'] && kid(docs['word/settings.xml'].documentElement, 'mirrorMargins'));
+  return { secs, face, size, line: lineOf(sp), faces, sizes, lines, mirror, paras: all(body, 'p').length, runs: runs.length, styles };
+}
+
+// ------------------------------------------------------------------ applying
+function currentRule() {
+  const key = $('#court').value;
+  if (key === 'custom') {
+    const n = id => { const v = parseFloat($(id).value); return isFinite(v) ? v : null; };
+    return { name: 'Custom settings', fonts: [$('#cFont').value.trim() || 'Times New Roman'], size: n('#cSize'), line: n('#cLine'), qSize: n('#cQSize'), qLine: 1,
+      margins: { left: n('#cL'), right: n('#cR'), top: n('#cT'), bottom: n('#cB') }, mirror: $('#cMirror').checked, paper: null, face: $('#cFont').value.trim() || 'Times New Roman' };
+  }
+  const p = Object.assign({}, PRESETS[key]);
+  p.face = p.fonts.length > 1 ? $('#fontSel').value : p.fonts[0];
+  if (p.csFonts) p.csFace = $('#csSel').value;
+  return p;
+}
+
+function apply(docs, rule, opts, quoteIdx) {
+  const styles = styleMap(docs), st = docs['word/styles.xml'], body = docs['word/document.xml'];
+  const csPt = rule.csSize || rule.size, qcsPt = rule.qSize;
+  // 1. defaults and styles
+  if (st) {
+    const root = st.documentElement;
+    const dd = kid(root, 'docDefaults') || root.insertBefore(st.createElementNS(W, 'w:docDefaults'), root.firstElementChild);
+    const rDef = kid(dd, 'rPrDefault') || dd.insertBefore(st.createElementNS(W, 'w:rPrDefault'), dd.firstElementChild);
+    const rPr = kid(rDef, 'rPr') || rDef.appendChild(st.createElementNS(W, 'w:rPr'));
+    setFonts(rPr, rule.face, rule.csFace, true);
+    if (rule.size) setSize(rPr, rule.size, csPt);
+    if (rule.line) {
+      const pDef = kid(dd, 'pPrDefault') || dd.appendChild(st.createElementNS(W, 'w:pPrDefault'));
+      setLine(kid(pDef, 'pPr') || pDef.appendChild(st.createElementNS(W, 'w:pPr')), rule.line);
+    }
+    for (const s of Object.values(styles)) {
+      // A quotation style is sized like any other here. The smaller size goes
+      // on the paragraphs ticked in the review list and nowhere else, so that
+      // unticking one actually leaves it at the text size.
+      const note = NOTE_STYLE.test(s.name), head = HEADING_STYLE.test(s.name);
+      const sr = kid(s.el, 'rPr'), sp = kid(s.el, 'pPr');
+      if (sr) setFonts(sr, rule.face, rule.csFace, false);
+      if (sr && opts.black) drop(sr, 'color');
+      if (note) continue;                                  // footnotes keep their own size and spacing
+      if (sr && kid(sr, 'sz') && rule.size && !(head && opts.keepHeadings)) setSize(sr, rule.size, csPt);
+      if (s.type === 'paragraph' && sp && kid(sp, 'spacing') && get(kid(sp, 'spacing'), 'line') && rule.line) setLine(sp, rule.line);
+    }
+  }
+  // 2. paragraphs and runs in the body
+  const qset = new Set(quoteIdx);
+  all(body, 'p').forEach((p, idx) => {
+    const isQ = qset.has(idx) && rule.qSize;
+    const sid = get(kid(kid(p, 'pPr'), 'pStyle'), 'val');
+    const head = sid && styles[sid] && HEADING_STYLE.test(styles[sid].name);
+    if (rule.line || (isQ && rule.qLine)) {
+      const pPr = kid(p, 'pPr');
+      if (isQ && rule.qLine) setLine(ensure(p, 'pPr'), rule.qLine);
+      else if (rule.line && pPr && kid(pPr, 'spacing') && get(kid(pPr, 'spacing'), 'line')) setLine(pPr, rule.line);
+    }
+    const targets = ownRuns(p).map(r => ({ r, rPr: kid(r, 'rPr') }));
+    const mark = kid(kid(p, 'pPr'), 'rPr'); if (mark) targets.push({ r: null, rPr: mark });
+    for (const t of targets) {
+      let rPr = t.rPr;
+      if (opts.direct && rPr) setFonts(rPr, rule.face, rule.csFace, false);
+      if (opts.black && rPr) drop(rPr, 'color');
+      if (isQ) { if (!rPr) rPr = ensure(t.r, 'rPr'); setSize(rPr, rule.qSize, qcsPt); }
+      else if (opts.direct && rPr && !(head && opts.keepHeadings)) { drop(rPr, 'sz'); drop(rPr, 'szCs'); }
+    }
+  });
+  // 3. page setup, every section
+  for (const s of all(body, 'sectPr')) {
+    const sz = ensure(s, 'pgSz');
+    const land = get(sz, 'orient') === 'landscape';
+    set(sz, 'w', land ? 16838 : 11906); set(sz, 'h', land ? 11906 : 16838); set(sz, 'code', 9);
+    const m = ensure(s, 'pgMar');
+    const M = rule.margins;
+    for (const k of ['left', 'right', 'top', 'bottom']) if (M[k] != null) set(m, k, cm2tw(M[k]));
+    for (const k of ['header', 'footer']) if (!get(m, k)) set(m, k, 709);
+    if (M.left != null || M.right != null) set(m, 'gutter', 0);   // a gutter would widen the margin past the rule
+  }
+  const settings = docs['word/settings.xml'];
+  if (settings) {
+    const root = settings.documentElement;
+    if (rule.mirror) ensure(root, 'mirrorMargins'); else drop(root, 'mirrorMargins');
+  }
+  // 4. headers, footers and notes take the face only
+  if (opts.direct) for (const [path, d] of Object.entries(docs)) {
+    if (!/^word\/(header|footer|footnotes|endnotes)/.test(path)) continue;
+    for (const rPr of all(d, 'rPr')) setFonts(rPr, rule.face, rule.csFace, false);
+  }
+}
+
+// ----------------------------------------------------------------- rendering
+function renderRule() {
+  const key = $('#court').value, p = PRESETS[key];
+  $('#fontPick').classList.toggle('hidden', !(p && p.fonts.length > 1));
+  $('#csPick').classList.toggle('hidden', !(p && p.csFonts));
+  $('#customBox').classList.toggle('hidden', key !== 'custom');
+  if (p && p.fonts.length > 1) $('#fontSel').innerHTML = p.fonts.map(f => `<option>${esc(f)}</option>`).join('');
+  if (p && p.csFonts) $('#csSel').innerHTML = p.csFonts.map(f => `<option>${esc(f)}</option>`).join('');
+  $('#rule').innerHTML = p
+    ? `<div class="law"><b>${esc(p.title)}</b>${esc(p.text)}<span class="src">${p.src}</span></div>`
+    : `<div class="law"><b>Your own settings</b>No court is claimed for these values. Use this for a tribunal or a court whose rules are not listed here, and check them against its current notification.</div>`;
+  if (loaded) { renderAudit(); }
+}
+
+const cmStr = v => v == null ? 'not set' : v.toFixed(2).replace(/\.?0+$/, '') + ' cm';
+const topN = (o, n = 3) => Object.entries(o).sort((a, b) => b[1] - a[1]).slice(0, n).map(([k, v]) => `${esc(k)} (${v})`).join(', ');
+
+function rows(a, rule) {
+  const R = [];
+  const status = (ok, na) => na ? '<td class="st s-na">not prescribed</td>' : ok ? '<td class="st s-ok">meets it</td>' : '<td class="st s-fix">differs</td>';
+  const papers = [...new Set(a.secs.map(s => s.paper))];
+  R.push(['Paper', 'A4', papers.join(', ') + (a.secs.length > 1 ? ` (${a.secs.length} sections)` : ''), status(papers.length === 1 && papers[0] === 'A4')]);
+  const M = rule.margins, lab = rule.mirror ? { left: 'Inner margin', right: 'Outer margin' } : { left: 'Left margin', right: 'Right margin' };
+  for (const k of ['left', 'right', 'top', 'bottom']) {
+    const vals = [...new Set(a.secs.map(s => cmStr(s[k])))];
+    const ok = M[k] != null && a.secs.every(s => s[k] != null && Math.abs(s[k] - M[k]) < 0.05) && (k === 'top' || k === 'bottom' || a.secs.every(s => !s.gutter));
+    R.push([lab[k] || (k[0].toUpperCase() + k.slice(1) + ' margin'), M[k] == null ? '—' : cmStr(M[k]), vals.join(', ') + (k !== 'top' && k !== 'bottom' && a.secs.some(s => s.gutter) ? ' + gutter' : ''), status(ok, M[k] == null)]);
+  }
+  if (rule.mirror) R.push(['Mirrored for two-sided printing', 'yes', a.mirror ? 'yes' : 'no', status(a.mirror)]);
+  const faceOk = a.face.replace(/ \(.*\)$/, '') === rule.face && !Object.keys(a.faces).some(f => f !== rule.face && f !== rule.csFace);
+  R.push(['Font', rule.face + (rule.csFace ? '; Gujarati: ' + rule.csFace : ''), esc(a.face) + (Object.keys(a.faces).length ? `<br><span class="mini">set directly on text: ${topN(a.faces)}</span>` : ''), status(faceOk)]);
+  const sizeOk = rule.size && a.size === rule.size && Object.keys(a.sizes).every(z => +z === rule.size || +z === rule.qSize);
+  R.push(['Size', rule.size ? rule.size + ' pt' + (rule.csSize ? ` (Gujarati ${rule.csSize} pt)` : '') : '—', a.size + ' pt' + (Object.keys(a.sizes).length ? `<br><span class="mini">set directly on text: ${topN(a.sizes)}</span>` : ''), status(sizeOk, !rule.size)]);
+  const want = rule.line ? (rule.line + ' lines') : '—';
+  const lineOk = rule.line && a.line === rule.line + ' lines' && Object.keys(a.lines).every(k => k === rule.line + ' lines' || k === (rule.qLine || 1) + ' lines' || k === 'single');
+  R.push(['Line spacing', want, esc(a.line) + (Object.keys(a.lines).length ? `<br><span class="mini">set on paragraphs: ${topN(a.lines)}</span>` : ''), status(lineOk, !rule.line)]);
+  R.push(['Quotations and indents', rule.qSize ? `${rule.qSize} pt, single` : '—', `${loaded.quotes.length} found`, rule.qSize ? '<td class="st s-na">set on convert</td>' : status(true, true)]);
+  return R;
+}
+function table(R, heads) {
+  return `<div class="twrap" tabindex="0" role="region" aria-label="${esc(heads[2])}"><table><tr>${heads.map(h => `<th>${h}</th>`).join('')}</tr>${R.map(r => `<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td>${r[3]}</tr>`).join('')}</table></div>`;
+}
+
+function renderAudit() {
+  const rule = currentRule();
+  loaded.quotes = quoteCandidates(loaded.docs, loaded.audit.styles, parseFloat($('#optIndent').value) || 1);
+  $('#auditPanel').innerHTML = `<h2>What the document has now</h2><p class="note" style="margin-top:0">${esc(loaded.name)}: ${loaded.audit.paras} paragraphs, ${loaded.audit.secs.length} section${loaded.audit.secs.length > 1 ? 's' : ''}.</p>` +
+    table(rows(loaded.audit, rule), ['Rule', 'Required', 'In the document', 'Status']);
+  const qp = $('#quotePanel');
+  qp.classList.toggle('hidden', !rule.qSize);
+  $('#quotes').innerHTML = loaded.quotes.length
+    ? loaded.quotes.map((q, i) => `<label class="chk"><input type="checkbox" data-i="${q.idx}" checked><span>${esc(q.text.length > 160 ? q.text.slice(0, 160) + '…' : q.text)}<span class="why">${esc(q.why)}</span></span></label>`).join('')
+    : '<p class="note" style="padding:.6rem">No indented or quotation-styled paragraphs found. If the document has block quotations, they may be set off by quotation marks alone, in which case Word cannot tell them from the text around them; indent them and open the file again.</p>';
+  $('#outPanel').classList.add('hidden');
+}
+
+async function onFile() {
+  const f = $('#file').files[0]; if (!f) return;
+  $('#go').disabled = true;
+  try {
+    if (typeof JSZip === 'undefined') throw new Error('The zip library did not load from cdnjs.cloudflare.com, so the file cannot be opened. Check the connection and reload.');
+    loaded = await load(f);
+    loaded.audit = audit(loaded.docs);
+    renderAudit();
+    $('#go').disabled = false;
+  } catch (e) {
+    loaded = null;
+    $('#auditPanel').innerHTML = `<h2>What the document has now</h2><div class="warn">${esc(e.message || e)}</div>`;
+  }
+}
+
+async function onGo() {
+  if (!loaded) return;
+  const btn = $('#go'); btn.disabled = true;
+  try {
+    // Work on a fresh parse so converting twice, or with a second court, starts from the original.
+    const fresh = await load($('#file').files[0]);
+    const rule = currentRule();
+    const opts = { direct: $('#optDirect').checked, keepHeadings: $('#optHeadings').checked, black: $('#optBlack').checked };
+    const picked = rule.qSize ? Array.from(document.querySelectorAll('#quotes input:checked')).map(i => +i.dataset.i) : [];
+    apply(fresh.docs, rule, opts, picked);
+    for (const [path, d] of Object.entries(fresh.docs)) fresh.zip.file(path, serial(d));
+    const blob = await fresh.zip.generateAsync({ type: 'blob', compression: 'DEFLATE', mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+    // Read the output back and audit it, so the "after" column is measured rather than assumed.
+    const back = await load(new File([blob], 'out.docx'));
+    const after = audit(back.docs);
+    const url = URL.createObjectURL(blob);
+    const outName = fresh.name.replace(/\.docx$/i, '') + ' (' + ($('#court').value === 'custom' ? 'formatted' : $('#court').value.toUpperCase()) + ').docx';
+    const R = rows(after, rule).slice(0, -1);
+    R.push(['Quotations and indents', rule.qSize ? `${rule.qSize} pt, single` : '—', rule.qSize ? `${picked.length} set` : 'left as they were', rule.qSize ? '<td class="st s-ok">set</td>' : '<td class="st s-na">not prescribed</td>']);
+    $('#out').innerHTML = `<div class="done">Converted. The table below is read back from the new file, not from the settings.</div>` +
+      `<p style="margin:.6rem 0"><a class="go ok" id="dl" href="${url}" download="${esc(outName)}">Download ${esc(outName)}</a></p>` +
+      table(R, ['Rule', 'Required', 'In the new file', 'Status']) +
+      (rule.paper ? `<p class="note"><b>For whoever prints it:</b> ${esc(rule.paper)}</p>` : '') +
+      (rule.csFace ? `<p class="note">Gujarati text will show in ${esc(rule.csFace)} only where that font is installed.</p>` : '') +
+      (!opts.direct && Object.keys(after.faces).length ? `<div class="warn">Fonts or sizes set directly on text were left alone, as asked, so parts of the document still differ from the rule.</div>` : '');
+    $('#outPanel').classList.remove('hidden');
+  } catch (e) {
+    $('#out').innerHTML = `<div class="warn">${esc(e.message || e)}</div>`;
+    $('#outPanel').classList.remove('hidden');
+  } finally { btn.disabled = false; }
+}
+
+$('#file').addEventListener('change', onFile);
+$('#go').addEventListener('click', onGo);
+['#court', '#fontSel', '#csSel', '#cFont', '#cSize', '#cLine', '#cQSize', '#cL', '#cR', '#cT', '#cB', '#cMirror'].forEach(id => $(id).addEventListener('change', () => id === '#court' ? renderRule() : (loaded && renderAudit())));
+$('#optIndent').addEventListener('change', () => loaded && renderAudit());
+renderRule();
+</script>
+<script src="../js/dyslexia-font.js" data-accent="var(--accent)" data-radius="99px" defer></script>
+</body>
+</html>
