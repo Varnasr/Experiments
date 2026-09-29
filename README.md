@@ -64,19 +64,12 @@ clearly labelled simulated dataset with six planted problems.
 
 ---
 
-### Old City SIR 2026: deletion explorer
+### Old City SIR 2026: moved
 
-Every elector on the pre-revision rolls of Charminar, Yakutpura, Malakpet,
-Chandrayangutta and Bahadurpura in the 2026 Special Intensive Revision, sorted
-into struck off, kept but summoned to a hearing, or untouched, and readable down
-to the polling part: 16,57,207 electors, 6,62,063 of them deleted (39.9%), across
-1,158 parts. Deletion rate by age band, by sex, by name-estimated religion and by
-linkage to the 2002 roll; the ECI reason codes and the seven rules that send an
-elector to a hearing; the hearing calendar with cases per slot; and a sortable
-table of every part against the 2023 result. Aggregates only, no names.
-
-**Directory:** `hyd-sir/`
-**Stage:** Active
+The Old City SIR explorer now lives on the SIR analyses hub, beside the Bihar
+analysis, at [forindia.netlify.app/hyderabad/](https://forindia.netlify.app/hyderabad/)
+(repository [INDIA-DATA](https://github.com/Varnasr/INDIA-DATA)). Old
+`/hyd-sir/` links redirect there.
 
 ---
 
@@ -454,7 +447,6 @@ Experiments/
 ├── promise-costing/                    # manifesto promises against the state budget
 ├── statutory-interest/                 # MSMED, CPC s.34, Arbitration s.31(7), NI Act
 ├── air-quality/                        # a year of PM2.5 against WHO and NAAQS, live
-├── hyd-sir/                            # Old City SIR 2026 deletions, by polling part
 ├── petition-builder/                   # representations and petitions in the accepted form
 ├── court-format/                       # a .docx set to a court's A4 filing rules
 ├── library-builder/                    # household book catalogue, Open Library lookups
