@@ -1,6 +1,6 @@
 # Experiments
 
-Twenty-two browser tools for development economics, law and data work, each a
+Twenty-one browser tools for development economics, law and data work, each a
 self-contained page: causal workbench, RCT planner, poverty and inequality,
 wage gap, women's indicators, heat exposure, air quality, court translator,
 court filing formatter, petition builder, statutory interest, land acquisition,
@@ -147,9 +147,14 @@ and that is how the fix above was verified before pushing.
 
 ## Watch out for
 
+- **`hyd-sir` moved out on 2026-09-29** to the SIR analyses hub, at
+  forindia.netlify.app/hyderabad/, beside the Bihar analysis
+  (repository `INDIA-DATA`). `netlify.toml` 301s `/hyd-sir/*` to its explorer
+  there. The mentions of `hyd-sir` further down this file are history.
+
 - **Inline event handlers work here only because `script-src` carries
-  `'unsafe-inline'`.** Three of them, in `library-builder` and `hyd-sir`.
-  Tighten that to a nonce or a hash and all three stop firing with nothing on
+  `'unsafe-inline'`.** Two of them, both in `library-builder`.
+  Tighten that to a nonce or a hash and both stop firing with nothing on
   the page to show it. A check pairs the two, so the dependency cannot be
   forgotten.
 - **Google Fonts spans two directives.** The stylesheet comes from
