@@ -64,7 +64,7 @@ clearly labelled simulated dataset with six planted problems.
 
 ---
 
-### Old City SIR 2026: moved
+### Off the Roll (was Old City SIR 2026): moved
 
 The Old City SIR explorer now lives on Off the Roll, the SIR analyses hub, at
 [offtheroll.in/hyderabad/](https://offtheroll.in/hyderabad/) (repository
