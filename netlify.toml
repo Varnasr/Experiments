@@ -36,10 +36,11 @@
 # serving from whogavetheorder.netlify.app. 301 rather than 302: the move is
 # permanent, and anything already shared should follow it for good.
 # The Old City SIR explorer moved to the SIR analyses hub on 2026-09-29, beside
-# the Bihar analysis. Old links land on the same explorer there.
+# the Bihar analysis. The hub is now Off the Roll at offtheroll.in, so this
+# points there directly rather than through the forindia.netlify.app hop.
 [[redirects]]
   from = "/hyd-sir/*"
-  to = "https://forindia.netlify.app/hyderabad/explorer/"
+  to = "https://offtheroll.in/hyderabad/explorer/"
   status = 301
   force = true
 

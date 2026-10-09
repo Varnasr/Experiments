@@ -147,10 +147,10 @@ and that is how the fix above was verified before pushing.
 
 ## Watch out for
 
-- **`hyd-sir` moved out on 2026-09-29** to the SIR analyses hub, at
-  forindia.netlify.app/hyderabad/, beside the Bihar analysis
-  (repository `INDIA-DATA`). `netlify.toml` 301s `/hyd-sir/*` to its explorer
-  there. The mentions of `hyd-sir` further down this file are history.
+- **`hyd-sir` moved out on 2026-09-29** to the SIR analyses hub, now Off the
+  Roll at offtheroll.in/hyderabad/ (repository `INDIA-DATA`;
+  forindia.netlify.app redirects there). `netlify.toml` 301s `/hyd-sir/*` to
+  its explorer at offtheroll.in. The card on the home page links the hub. The mentions of `hyd-sir` further down this file are history.
 
 - **Inline event handlers work here only because `script-src` carries
   `'unsafe-inline'`.** Two of them, both in `library-builder`.
