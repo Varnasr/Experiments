@@ -64,12 +64,13 @@ clearly labelled simulated dataset with six planted problems.
 
 ---
 
-### Old City SIR 2026: moved
+### Off the Roll (was Old City SIR 2026): moved
 
-The Old City SIR explorer now lives on the SIR analyses hub, beside the Bihar
-analysis, at [forindia.netlify.app/hyderabad/](https://forindia.netlify.app/hyderabad/)
-(repository [INDIA-DATA](https://github.com/Varnasr/INDIA-DATA)). Old
-`/hyd-sir/` links redirect there.
+The Old City SIR explorer now lives on Off the Roll, the SIR analyses hub, at
+[offtheroll.in/hyderabad/](https://offtheroll.in/hyderabad/) (repository
+[INDIA-DATA](https://github.com/Varnasr/INDIA-DATA)). The hub covers every
+state and union territory in the revision. Old `/hyd-sir/` links redirect to
+the explorer there.
 
 ---
 
