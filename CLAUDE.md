@@ -150,8 +150,10 @@ and that is how the fix above was verified before pushing.
 `scripts/seo/tools.json` holds each tool's name and a one-line tagline.
 `python3 scripts/seo.py` writes, from it, a block in every page's `<head>`
 (canonical, Open Graph, Twitter card, JSON-LD) between `<!-- seo:start -->`
-and `<!-- seo:end -->`, a share row before `</body>` (WhatsApp with the text
-prefilled, LinkedIn, X, Copy link) between `<!-- share:start -->` and
+and `<!-- seo:end -->`, a share row just above the page's `<footer>` (WhatsApp with the text
+prefilled, LinkedIn, X, Copy link; `"share_at": "end"` puts it before
+`</body>` instead, which `kundendu-worksheets` needs because its footer sits
+inside the control panel) between `<!-- share:start -->` and
 `<!-- share:end -->`, and `sitemap.xml` and `robots.txt`. CI runs it with
 `--check`, so do not edit inside those markers by hand.
 `node scripts/seo/og-cards.mjs` renders the 1200x630 preview images into
