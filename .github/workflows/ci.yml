@@ -27,6 +27,12 @@ jobs:
       - name: Inline scripts parse
         run: node scripts/check-inline-js.mjs
 
+      # Link previews, the share row, sitemap.xml and robots.txt are written
+      # from scripts/seo/tools.json. A hand edit to one page, or a new tool
+      # added without re-running the script, fails here.
+      - name: Link previews and share rows are current
+        run: python3 scripts/seo.py --check
+
   # axe over every page, in a desktop and a phone viewport, plus a horizontal
   # overflow measurement at 390px. Separate from the job above because it
   # installs a browser and is the slow half; a contributor waiting on the

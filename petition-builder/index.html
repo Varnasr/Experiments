@@ -5,6 +5,26 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Petition Builder · Experiments</title>
 <meta name="description" content="Draft a representation, memorandum or petition to an Indian public authority, legislature or court registry in the accepted form: addressee, subject, background, grounds, prayer, annexures and a signatory sheet, with print, Word and Markdown export and a shareable link. Nothing leaves the browser.">
+<!-- seo:start -->
+<link rel="canonical" href="https://idealogworks.foo/petition-builder/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Experiments">
+<meta property="og:locale" content="en_IN">
+<meta property="og:title" content="Petition Builder">
+<meta property="og:description" content="A representation or petition to an Indian authority, drafted in the accepted form. Nothing leaves the browser.">
+<meta property="og:url" content="https://idealogworks.foo/petition-builder/">
+<meta property="og:image" content="https://idealogworks.foo/og/petition-builder.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Petition Builder: A representation or petition to an Indian authority, drafted in the accepted form. Nothing leaves the browser.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Petition Builder">
+<meta name="twitter:description" content="A representation or petition to an Indian authority, drafted in the accepted form. Nothing leaves the browser.">
+<meta name="twitter:image" content="https://idealogworks.foo/og/petition-builder.jpg">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Petition Builder","url":"https://idealogworks.foo/petition-builder/","description":"Draft a representation, memorandum or petition to an Indian public authority, legislature or court registry in the accepted form: addressee, subject, background, grounds, prayer, annexures and a signatory sheet, with print, Word and Markdown export and a shareable link. Nothing leaves the browser.","image":"https://idealogworks.foo/og/petition-builder.jpg","operatingSystem":"Any","browserRequirements":"Requires JavaScript","isAccessibleForFree":true,"author":{"@type":"Person","name":"Varna Sri Raman"},"isPartOf":{"@type":"WebSite","name":"Experiments","url":"https://idealogworks.foo/"}}</script>
+<style>.xshare{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.5rem .6rem;box-sizing:border-box;width:calc(100% - 2rem);max-width:960px;margin:2.5rem auto 5rem;padding:.85rem 1rem;background:#f5f1fa;border:1px solid #e6e3ec;border-radius:12px;font:600 15px/1.4 "Source Sans 3",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:#382280;text-align:center}.xshare .xshare-t{margin-right:.25rem;color:#382280}.xshare .xshare-l{display:inline-flex;align-items:center;min-height:36px;margin:0;padding:.3rem .95rem;border:1px solid #572e91;border-radius:99px;background:#fff;color:#382280;font:inherit;text-decoration:underline;text-underline-offset:2px;cursor:pointer;box-shadow:none}.xshare .xshare-l:hover{background:#ece4f5}.xshare .xshare-l:focus-visible{outline:3px solid #ff9911;outline-offset:2px}.xshare [hidden]{display:none!important}@media print{.xshare{display:none}}</style>
+<!-- seo:end -->
 <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23572e91'/><path d='M9 7h14v18H9z' fill='white'/><path d='M12 12h8M12 16h8M12 20h5' stroke='%23572e91' stroke-width='1.6' stroke-linecap='round'/></svg>">
 <style>
   :root { --bg:#fafafa; --surface:#fff; --border:#e5e7eb; --text:#1a1a2e; --dim:#4b5563; --muted:#6b7280; --accent:#572e91; --accent-soft:#efe9f7; --orange:#ff9911; }
@@ -192,5 +212,8 @@ $('#example').onclick=()=>{ if(($('#subject').value||S.sigs.length)&&!confirm('R
   if(o) apply(o); else { $('#date').value=new Date().toISOString().slice(0,10); renderSigs(); render(); } }
 </script>
 <script src="../js/dyslexia-font.js" data-accent="var(--purple2)" data-radius="99px" defer></script>
+<!-- share:start -->
+<aside class="xshare" aria-label="Share this tool"><span class="xshare-t">Share this tool</span><a class="xshare-l" href="https://wa.me/?text=Petition%20Builder%3A%20A%20representation%20or%20petition%20to%20an%20Indian%20authority%2C%20drafted%20in%20the%20accepted%20form.%20Nothing%20leaves%20the%20browser.%0Ahttps%3A%2F%2Fidealogworks.foo%2Fpetition-builder%2F" target="_blank" rel="noopener">WhatsApp</a><a class="xshare-l" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fidealogworks.foo%2Fpetition-builder%2F" target="_blank" rel="noopener">LinkedIn</a><a class="xshare-l" href="https://twitter.com/intent/tweet?text=Petition%20Builder%3A%20A%20representation%20or%20petition%20to%20an%20Indian%20authority%2C%20drafted%20in%20the%20accepted%20form.%20Nothing%20leaves%20the%20browser.&amp;url=https%3A%2F%2Fidealogworks.foo%2Fpetition-builder%2F" target="_blank" rel="noopener">X</a><button type="button" class="xshare-l" data-xshare-copy data-url="https://idealogworks.foo/petition-builder/" hidden>Copy link</button><script>(function(){var b=document.currentScript.parentNode.querySelector('[data-xshare-copy]');if(!b||!navigator.clipboard)return;b.hidden=false;var u=b.getAttribute('data-url');b.addEventListener('click',function(){navigator.clipboard.writeText(u).then(function(){b.textContent='Link copied';setTimeout(function(){b.textContent='Copy link';},2000);});});})();</script></aside>
+<!-- share:end -->
 </body>
 </html>

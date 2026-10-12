@@ -61,7 +61,11 @@ function blocks(html) {
     if (/\bsrc=/i.test(m[1])) { continue; }
     const from = m.index + m[0].length;
     const end = html.indexOf('</script', from);
-    found.push({ line: html.slice(0, m.index).split('\n').length,
+    // A data block (JSON-LD for search engines) is not JavaScript and is never
+    // run; checking it as a script would fail on its first key. It is checked
+    // as JSON instead, since a malformed one is silently ignored by Google.
+    const json = /\btype=["']?application\/(?:ld\+)?json/i.test(m[1]);
+    found.push({ line: html.slice(0, m.index).split('\n').length, json,
                  body: end === -1 ? html.slice(from) : html.slice(from, end),
                  terminated: end !== -1 });
     open.lastIndex = end === -1 ? html.length : end;
@@ -77,6 +81,12 @@ for (const page of await pages()) {
   for (const b of blocks(html)) {
     if (!b.body.trim()) { continue; }
     checked += 1;
+    if (b.json) {
+      try { JSON.parse(b.body); } catch (err) {
+        failures.push({ page, line: b.line, why: `JSON: ${err.message}`, terminated: b.terminated });
+      }
+      continue;
+    }
     const tmp = path.join(tmpdir(), `inline-${process.pid}-${checked}.js`);
     await writeFile(tmp, b.body);
     try {
