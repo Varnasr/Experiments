@@ -1,0 +1,139 @@
+{
+  "site": {
+    "origin": "https://idealogworks.foo",
+    "name": "Experiments",
+    "author": "Varna Sri Raman",
+    "home_title": "Experiments · Varna Sri Raman",
+    "home_tagline": "Tools that show their working: econometrics, poverty measurement, survey auditing, women and climate data, and legal calculators."
+  },
+  "tools": [
+    {
+      "dir": "causal-workbench",
+      "card": "causal",
+      "name": "Causal Inference Workbench",
+      "tagline": "Difference-in-differences, event studies and synthetic control, computed in your browser."
+    },
+    {
+      "dir": "poverty-inequality",
+      "card": "poverty",
+      "name": "Poverty & Inequality Explorer",
+      "tagline": "Gini, Theil, Atkinson and FGT poverty measures from grouped data or the World Bank."
+    },
+    {
+      "dir": "wage-gap",
+      "card": "wagegap",
+      "name": "Wage Gap Decomposition",
+      "tagline": "Oaxaca–Blinder decomposition of the gender wage gap, with bootstrap standard errors."
+    },
+    {
+      "dir": "women-indicators",
+      "card": "nfhs",
+      "name": "Women in the NFHS",
+      "tagline": "Women's health, work, assets, agency and safety across India's states and NFHS rounds."
+    },
+    {
+      "dir": "heat-exposure",
+      "card": "heat",
+      "name": "Heat and Outdoor Work",
+      "tagline": "Hour-by-hour heat stress for outdoor workers, safe working hours and wages lost, for any place in India."
+    },
+    {
+      "dir": "rct-planner",
+      "card": "rct",
+      "name": "RCT Planner",
+      "tagline": "Power and minimum detectable effect for individual and cluster trials, and a seeded randomiser."
+    },
+    {
+      "dir": "survey-audit",
+      "card": "survey",
+      "name": "Survey Data Auditor",
+      "tagline": "Field-data checks for surveys: duplicates, Benford's law, age heaping and enumerator profiles."
+    },
+    {
+      "dir": "cost-benefit",
+      "card": "cba",
+      "name": "Cost–Benefit Calculator",
+      "tagline": "NPV, benefit–cost ratio, IRR and cost per outcome for a programme, with Monte Carlo uncertainty."
+    },
+    {
+      "dir": "compensation-calculator",
+      "card": "mact",
+      "name": "Motor Accident Compensation Calculator",
+      "tagline": "Fatal motor accident compensation under the Motor Vehicles Act, with the authority for each step."
+    },
+    {
+      "dir": "land-acquisition",
+      "card": "land",
+      "name": "Land Acquisition Compensation Calculator",
+      "tagline": "Compensation and rehabilitation under the 2013 Land Acquisition Act, with the section on each line."
+    },
+    {
+      "dir": "court-translator",
+      "card": "court",
+      "name": "Court Petition Translator",
+      "tagline": "Hindi Supreme Court and High Court petitions translated into formal legal English."
+    },
+    {
+      "dir": "expense-ledger",
+      "card": "ledger",
+      "name": "Election Expenditure Ledger",
+      "tagline": "A candidate's election spending against the Election Commission ceiling."
+    },
+    {
+      "dir": "promise-costing",
+      "card": "promise",
+      "name": "Manifesto Promise Costing",
+      "tagline": "Manifesto promises costed against a state's budget, with low and high ranges."
+    },
+    {
+      "dir": "statutory-interest",
+      "card": "interest",
+      "name": "Statutory Interest Calculator",
+      "tagline": "Interest the way Indian statutes prescribe it, from MSMED Act section 16 to cheque-bounce compensation."
+    },
+    {
+      "dir": "air-quality",
+      "card": "air",
+      "name": "A Year of Air",
+      "tagline": "A year of PM2.5 and PM10 for any place in India, against the WHO guideline and India's standard."
+    },
+    {
+      "dir": "petition-builder",
+      "card": "petition",
+      "name": "Petition Builder",
+      "tagline": "A representation or petition to an Indian authority, drafted in the accepted form. Nothing leaves the browser."
+    },
+    {
+      "dir": "court-format",
+      "card": "courtformat",
+      "name": "Court Filing Formatter",
+      "tagline": "A Word document reformatted to an Indian court's filing rules, with each circular quoted."
+    },
+    {
+      "dir": "flipbook",
+      "card": "flipbook",
+      "name": "Flipbook Maker",
+      "tagline": "A PDF turned into a page-turning flipbook that works offline. Nothing is uploaded."
+    },
+    {
+      "dir": "kundendu-worksheets",
+      "card": "littlek",
+      "name": "Kundendu's Learn & Play",
+      "tagline": "Class 1 CBSE worksheets in English, Hindi, Maths and EVS, with fresh questions every time.",
+      "canonical": "https://littlek.in/"
+    },
+    {
+      "dir": "alab",
+      "card": "alab",
+      "name": "Agastya's Study Lab",
+      "tagline": "Year-round revision for CBSE Class 8: mind maps, notes, practice, worksheets and a mock paper.",
+      "canonical": "https://alab.cloud/"
+    },
+    {
+      "dir": "library-builder",
+      "card": "library",
+      "name": "Household Library Builder",
+      "tagline": "The books in a house catalogued by ISBN or title, with who is reading and who has borrowed what."
+    }
+  ]
+}
