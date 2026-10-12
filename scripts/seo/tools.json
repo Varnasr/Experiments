@@ -120,7 +120,8 @@
       "card": "littlek",
       "name": "Kundendu's Learn & Play",
       "tagline": "Class 1 CBSE worksheets in English, Hindi, Maths and EVS, with fresh questions every time.",
-      "canonical": "https://littlek.in/"
+      "canonical": "https://littlek.in/",
+      "share_at": "end"
     },
     {
       "dir": "alab",
