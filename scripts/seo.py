@@ -11,7 +11,7 @@ Everything else is derived:
 - a block in each page's <head>, between <!-- seo:start --> and <!-- seo:end -->:
   canonical, Open Graph, Twitter card and JSON-LD, after the page's own
   <meta name="description">, which stays the text Google shows;
-- a share row before the page's closing </body>, between <!-- share:start -->
+- a share row just above the page's <footer>, between <!-- share:start -->
   and <!-- share:end -->: WhatsApp, LinkedIn and X links carrying the tool's
   name, tagline and canonical address, and a Copy link button;
 - sitemap.xml and robots.txt at the root.
@@ -49,7 +49,7 @@ DESC_RE = re.compile(r'<meta name="description" content="([^"]*)">')
 # 22 pages with 22 palettes, some of them dark, and has to read on all of them.
 CSS = (
     '.xshare{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;'
-    'gap:.5rem .6rem;box-sizing:border-box;width:calc(100% - 2rem);max-width:960px;margin:2.5rem auto 5rem;'
+    'gap:.5rem .6rem;box-sizing:border-box;width:calc(100% - 2rem);max-width:960px;margin:2.5rem auto 1.5rem;'
     'padding:.85rem 1rem;background:#f5f1fa;border:1px solid #e6e3ec;border-radius:12px;'
     'font:600 15px/1.4 "Source Sans 3",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;'
     'color:#382280;text-align:center}'
@@ -89,6 +89,7 @@ def pages():
             'url': t.get('canonical') or f"{ORIGIN}/{t['dir']}/",
             'name': t['name'], 'tagline': t['tagline'],
             'image': f"{ORIGIN}/og/{t['dir']}.jpg", 'home': False,
+            'share_at': t.get('share_at', 'footer'),
         }
 
 
@@ -160,6 +161,37 @@ def share_block(p):
     )
 
 
+SCRIPT_RE = re.compile(r'<script\b.*?</script>', re.S)
+
+
+def insert_share(p, out):
+    """Put the share row just above the page's footer, so it reads as part of
+    the page rather than trailing after the credits. Every tool has exactly one
+    real <footer>; a <footer> inside a <script> is a document the tool builds
+    for export and is skipped. Without one, the row goes before the last
+    </body>, which must then be the end of the document."""
+    rel = p['path'].relative_to(ROOT)
+    spans = [(m.start(), m.end()) for m in SCRIPT_RE.finditer(out)]
+    real = [m.start() for m in re.finditer(r'<footer\b', out)
+            if not any(a <= m.start() < b for a, b in spans)]
+    # kundendu-worksheets keeps its footer inside the control panel, where a
+    # share row lands among the worksheet settings; tools.json sends it to the end.
+    if p.get('share_at') == 'end':
+        real = []
+    if len(real) > 1:
+        raise SystemExit(f'{rel}: {len(real)} <footer> elements, so no single place for the share row')
+    if real:
+        i = out.rfind('\n', 0, real[0]) + 1
+        indent = out[i:real[0]]
+        if indent.strip():
+            i, indent = real[0], ''
+        return out[:i] + indent + share_block(p).replace('\n', '\n' + indent).rstrip(' ') + out[i:]
+    i = out.rfind('</body>')
+    if i < 0 or out[i:].replace('\n', '').replace(' ', '') not in ('</body></html>', '</body>'):
+        raise SystemExit(f'{rel}: the last </body> is not the end of the document')
+    return out[:i] + share_block(p) + out[i:]
+
+
 def render(p):
     src = p['path'].read_text(encoding='utf-8')
     out = HEAD_RE.sub('', src)
@@ -172,12 +204,7 @@ def render(p):
     desc = html.unescape(m.group(1))
     out = out[:m.end()] + head_block(p, desc) + out[m.end():]
     if not p['home']:
-        # The last </body>, because three pages build HTML documents inside
-        # their own scripts and carry the string earlier in the file.
-        i = out.rfind('</body>')
-        if i < 0 or out[i:].strip().replace('\n', '') not in ('</body></html>', '</body>'):
-            raise SystemExit(f"{p['path'].relative_to(ROOT)}: the last </body> is not the end of the document")
-        out = out[:i] + share_block(p) + out[i:]
+        out = insert_share(p, out)
     return out
 
 
