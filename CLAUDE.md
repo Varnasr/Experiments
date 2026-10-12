@@ -145,6 +145,35 @@ trusting the degraded run: `chromium` with `ctx.route('**://cdnjs.cloudflare.com
 returning a stub `Chart` is enough to make `hyd-sir` render its 199-row list,
 and that is how the fix above was verified before pushing.
 
+## Link previews, search tags and the share row come from one file
+
+`scripts/seo/tools.json` holds each tool's name and a one-line tagline.
+`python3 scripts/seo.py` writes, from it, a block in every page's `<head>`
+(canonical, Open Graph, Twitter card, JSON-LD) between `<!-- seo:start -->`
+and `<!-- seo:end -->`, a share row before `</body>` (WhatsApp with the text
+prefilled, LinkedIn, X, Copy link) between `<!-- share:start -->` and
+`<!-- share:end -->`, and `sitemap.xml` and `robots.txt`. CI runs it with
+`--check`, so do not edit inside those markers by hand.
+`node scripts/seo/og-cards.mjs` renders the 1200x630 preview images into
+`og/`, using each tool's doodle from its card in `index.html` and the fonts
+vendored in `scripts/seo/fonts` (OFL). It fails if a name and tagline run into
+the footer of the card. **Adding a tool means a row in `tools.json`, then both
+scripts.**
+
+Before 2026-10-12 none of the 21 tools had a preview image or a canonical
+address, and only the home page had Open Graph tags, so a tool pasted into
+WhatsApp showed a bare URL.
+
+The canonical is `idealogworks.foo` for everything except the two apps that
+own a domain: `kundendu-worksheets` names `littlek.in` and `alab` names
+`alab.cloud`, which `netlify.toml` rewrites to them, and neither is in the
+sitemap. The same files are also served at varnasr.github.io/Experiments, and
+the canonical tag is what stops that copy competing with the Netlify one.
+
+The JSON-LD blocks are `<script type="application/ld+json">`.
+`scripts/check-inline-js.mjs` parses those as JSON rather than JavaScript;
+before it knew the difference it reported all 22 as syntax errors.
+
 ## Watch out for
 
 - **`hyd-sir` moved out on 2026-09-29** to the SIR analyses hub, now Off the

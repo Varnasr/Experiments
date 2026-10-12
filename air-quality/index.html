@@ -5,6 +5,26 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>A Year of Air · Experiments</title>
 <meta name="description" content="A year of PM2.5 and PM10 for any place in India from Open-Meteo's air quality model: the annual mean against the WHO guideline and India's standard, days over the 24-hour limits, the cumulative dose in cigarette equivalents, and the monthly pattern.">
+<!-- seo:start -->
+<link rel="canonical" href="https://idealogworks.foo/air-quality/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Experiments">
+<meta property="og:locale" content="en_IN">
+<meta property="og:title" content="A Year of Air">
+<meta property="og:description" content="A year of PM2.5 and PM10 for any place in India, against the WHO guideline and India&#x27;s standard.">
+<meta property="og:url" content="https://idealogworks.foo/air-quality/">
+<meta property="og:image" content="https://idealogworks.foo/og/air-quality.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A Year of Air: A year of PM2.5 and PM10 for any place in India, against the WHO guideline and India&#x27;s standard.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="A Year of Air">
+<meta name="twitter:description" content="A year of PM2.5 and PM10 for any place in India, against the WHO guideline and India&#x27;s standard.">
+<meta name="twitter:image" content="https://idealogworks.foo/og/air-quality.jpg">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"A Year of Air","url":"https://idealogworks.foo/air-quality/","description":"A year of PM2.5 and PM10 for any place in India from Open-Meteo's air quality model: the annual mean against the WHO guideline and India's standard, days over the 24-hour limits, the cumulative dose in cigarette equivalents, and the monthly pattern.","image":"https://idealogworks.foo/og/air-quality.jpg","operatingSystem":"Any","browserRequirements":"Requires JavaScript","isAccessibleForFree":true,"author":{"@type":"Person","name":"Varna Sri Raman"},"isPartOf":{"@type":"WebSite","name":"Experiments","url":"https://idealogworks.foo/"}}</script>
+<style>.xshare{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.5rem .6rem;box-sizing:border-box;width:calc(100% - 2rem);max-width:960px;margin:2.5rem auto 5rem;padding:.85rem 1rem;background:#f5f1fa;border:1px solid #e6e3ec;border-radius:12px;font:600 15px/1.4 "Source Sans 3",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:#382280;text-align:center}.xshare .xshare-t{margin-right:.25rem;color:#382280}.xshare .xshare-l{display:inline-flex;align-items:center;min-height:36px;margin:0;padding:.3rem .95rem;border:1px solid #572e91;border-radius:99px;background:#fff;color:#382280;font:inherit;text-decoration:underline;text-underline-offset:2px;cursor:pointer;box-shadow:none}.xshare .xshare-l:hover{background:#ece4f5}.xshare .xshare-l:focus-visible{outline:3px solid #ff9911;outline-offset:2px}.xshare [hidden]{display:none!important}@media print{.xshare{display:none}}</style>
+<!-- seo:end -->
 <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231B6B4A'/><path d='M6 14c4-4 8 4 12 0s6-4 8 0M6 22c4-4 8 4 12 0s6-4 8 0' stroke='white' stroke-width='2.4' fill='none' stroke-linecap='round'/></svg>">
 <style>
   :root { --bg:#fafafa; --surface:#fff; --border:#e5e7eb; --text:#1a1a2e; --dim:#4b5563; --muted:#6b7280; --accent:#1B6B4A; --accent-soft:#e6f2ec; --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --grid:#eceef1; --mono:ui-monospace,SFMono-Regular,Menlo,monospace; }
@@ -113,5 +133,8 @@ function dailyChart(D){ const W=760,H=240,m={l:44,r:12,t:12,b:28},pw=W-m.l-m.r,p
 function monthChart(M){ const W=760,H=200,m={l:44,r:12,t:12,b:28},pw=W-m.l-m.r,ph=H-m.t-m.b; const y1=Math.max(...M.map(x=>x.v),40)*1.1; const bw=pw/M.length; const Y=v=>m.t+ph-v/y1*ph; let g=`<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="monthly PM2.5">`; [0,0.5,1].forEach(f=>{ const v=f*y1; g+=`<line x1="${m.l}" x2="${W-m.r}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--grid)"/><text x="${m.l-6}" y="${Y(v)+4}" text-anchor="end">${fmt(v,0)}</text>`; }); g+=`<line x1="${m.l}" x2="${W-m.r}" y1="${Y(40)}" y2="${Y(40)}" stroke="#9ca3af" stroke-dasharray="4 3"/><text x="${W-m.r}" y="${Y(40)-4}" text-anchor="end">India annual 40</text>`; M.forEach((x,i)=>{ const X=m.l+i*bw; g+=`<rect x="${X+bw*0.15}" y="${Y(x.v)}" width="${bw*0.7}" height="${Y(0)-Y(x.v)}" rx="2" fill="var(--s2)" data-tip="${x.m}: ${fmt(x.v)} µg/m³, ${x.over} days over 60"/><text x="${X+bw/2}" y="${H-m.b+16}" text-anchor="middle">${x.m.slice(5)}</text>`; }); return g+'</svg>'; }
 </script>
 <script src="../js/dyslexia-font.js" data-accent="var(--purple2)" data-radius="99px" defer></script>
+<!-- share:start -->
+<aside class="xshare" aria-label="Share this tool"><span class="xshare-t">Share this tool</span><a class="xshare-l" href="https://wa.me/?text=A%20Year%20of%20Air%3A%20A%20year%20of%20PM2.5%20and%20PM10%20for%20any%20place%20in%20India%2C%20against%20the%20WHO%20guideline%20and%20India%27s%20standard.%0Ahttps%3A%2F%2Fidealogworks.foo%2Fair-quality%2F" target="_blank" rel="noopener">WhatsApp</a><a class="xshare-l" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fidealogworks.foo%2Fair-quality%2F" target="_blank" rel="noopener">LinkedIn</a><a class="xshare-l" href="https://twitter.com/intent/tweet?text=A%20Year%20of%20Air%3A%20A%20year%20of%20PM2.5%20and%20PM10%20for%20any%20place%20in%20India%2C%20against%20the%20WHO%20guideline%20and%20India%27s%20standard.&amp;url=https%3A%2F%2Fidealogworks.foo%2Fair-quality%2F" target="_blank" rel="noopener">X</a><button type="button" class="xshare-l" data-xshare-copy data-url="https://idealogworks.foo/air-quality/" hidden>Copy link</button><script>(function(){var b=document.currentScript.parentNode.querySelector('[data-xshare-copy]');if(!b||!navigator.clipboard)return;b.hidden=false;var u=b.getAttribute('data-url');b.addEventListener('click',function(){navigator.clipboard.writeText(u).then(function(){b.textContent='Link copied';setTimeout(function(){b.textContent='Copy link';},2000);});});})();</script></aside>
+<!-- share:end -->
 </body>
 </html>
