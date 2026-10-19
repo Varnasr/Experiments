@@ -70,7 +70,7 @@ async function translateChunk(text) {
   return data.translated_text;
 }
 
-async function refineLegalTranslation(rawTranslation) {
+async function refineLegalTranslation(rawTranslation, source) {
   const groqRes = await fetch("https://api.groq.com/openai/v1/chat/completions", {
     method: "POST",
     headers: {
@@ -104,12 +104,13 @@ Rules:
 5. Do NOT add, remove, or summarise any content. Only refine the language.
 6. If a Hindi term has no direct English equivalent, keep it transliterated in italics with the English meaning in parentheses on first use.
 7. Numbers, dates, and proper nouns must remain unchanged.
+8. Check the translation against the Hindi source and correct any mistranslated term. Court names in particular: उच्चतम न्यायालय and सर्वोच्च न्यायालय are the Supreme Court, उच्च न्यायालय is a High Court, ज़िला न्यायालय is a District Court.
 
 Output ONLY the refined English translation. No explanations, no preamble.`,
         },
         {
           role: "user",
-          content: rawTranslation,
+          content: `Hindi source:\n${source}\n\nMachine translation to refine:\n${rawTranslation}`,
         },
       ],
       max_completion_tokens: 8192,
@@ -176,7 +177,7 @@ exports.handler = async function (event) {
   let refined;
   let refinementApplied = true;
   try {
-    refined = await refineLegalTranslation(rawTranslation);
+    refined = await refineLegalTranslation(rawTranslation, trimmed);
   } catch (e) {
     refined = rawTranslation;
     refinementApplied = false;

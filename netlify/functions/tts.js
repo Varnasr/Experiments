@@ -30,7 +30,12 @@ exports.handler = async (event) => {
       })
     });
 
-    if (!r.ok) return { statusCode: 502, body: "tts failed: " + r.status };
+    // Sarvam's own message says which field it rejected; a bare status code left
+    // a renamed field invisible for months. It carries no key or user data.
+    if (!r.ok) {
+      const why = (await r.text().catch(() => "")).slice(0, 300);
+      return { statusCode: 502, body: "tts failed: " + r.status + " " + why };
+    }
 
     const data = await r.json();
     const b64 = data.audios && data.audios[0];
