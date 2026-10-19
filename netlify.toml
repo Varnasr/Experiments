@@ -108,9 +108,9 @@
 
 # ---- aicc_analysis: not for publication ----
 # The folder holds data from the AICC observers' portal, including named people
-# with mobile numbers and caste. It was served publicly from 10 August 2026 until
-# this rule. A forced 404 beats a file that exists. Removing the folder from the
-# repository and its history is a separate decision for the owner.
+# with mobile numbers and caste. It was served publicly from 10 August 2026 to
+# 19 October 2026. The folder is deleted and purged from history; this rule stays
+# so the address answers 404 whatever an old build or cache holds.
 [[redirects]]
   from = "/aicc_analysis/*"
   to = "/404.html"
