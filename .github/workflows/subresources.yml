@@ -1,0 +1,35 @@
+name: Subresources and links
+
+# Weekly, and on demand. Deliberately not on push or pull_request: this job
+# talks to a dozen third-party hosts and takes minutes, and a job cancelled by
+# its own timeout cancels the whole run with it. Keeping it out of CI is what
+# lets CI stay fast and lets this one be slow.
+on:
+  schedule:
+    - cron: '17 3 * * 1'
+  workflow_dispatch:
+
+# Read-only: this workflow checks the repository and writes nothing back to it.
+permissions:
+  contents: read
+
+jobs:
+  subresources:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+
+      # scripts/check.py proves an integrity attribute is present. Present is
+      # not correct: a version bumped in the URL with the old hash left behind
+      # makes the browser refuse the script, and the tool then renders exactly
+      # as designed and does nothing. Only a fetch can tell the two apart.
+      #
+      # The same run follows every citation the tools carry, which are mostly
+      # court circulars and gazette notifications. A 404 fails; a 403 or a
+      # timeout is reported and does not, because neither is evidence that a
+      # page is gone.
+      - run: python3 scripts/subresources.py

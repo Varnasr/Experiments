@@ -257,6 +257,15 @@ needs a browser or a network. The second installs Chromium and runs
 `scripts/axe.mjs`; it is separate so a contributor waiting on the static checks
 does not wait on a browser download.
 
+`.github/workflows/subresources.yml` runs `scripts/subresources.py` weekly and
+on demand, and on neither push nor pull request. It fetches each pinned CDN
+file and compares its hash against the page's `integrity`, then follows every
+citation the tools carry. It is kept out of CI on purpose: it talks to a dozen
+third-party hosts, and a job cancelled by its own timeout cancels the run it
+is part of. A hash that no longer matches fails. A link fails only on 404 or
+410; a 403 or a timeout is reported and does not, because bot protection and
+a slow afternoon at a ministry are not evidence that a page is gone.
+
 Before 2026-09-22 the only workflow deployed to Pages and validated nothing, so
 none of this was checked by anything. Seven checks have been fault-injected
 against a real failure to confirm they bite, including the inline-script parse

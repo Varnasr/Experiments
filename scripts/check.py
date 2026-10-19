@@ -31,6 +31,18 @@ ALLOWED_UNREFERENCED = {
         "nothing on the page to show it.",
 }
 
+# Origins whose subresources cannot carry an integrity hash. A stale entry
+# fails too, the same way ALLOWED_UNREFERENCED cannot rot into a blindfold.
+NO_INTEGRITY = {
+    'https://fonts.googleapis.com':
+        "The stylesheet served here varies by user agent: the same URL answers "
+        "woff2 to one browser and ttf to another, so its bytes differ between "
+        "readers and no single hash matches them all. Pinning one would serve "
+        "the page in a fallback typeface for everyone whose browser got the "
+        "other answer. The font files themselves come from fonts.gstatic.com, "
+        "fetched by that stylesheet rather than by a tag here.",
+}
+
 # Directories whose code runs on Netlify rather than in a browser. A CSP
 # governs the page, not the server, so an origin a function calls does not
 # belong in connect-src. api.sarvam.ai and api.groq.com are reached only from
@@ -213,6 +225,50 @@ def main():
         check('the stated tool count matches the tools on disk',
               stated.group(1) == WORDS.get(len(tools), ''),
               'CLAUDE.md says %s, there are %d' % (stated.group(1), len(tools)))
+
+    # ------------------------------------------- subresource integrity
+    # Four scripts here are fetched from a CDN and run with the page's own
+    # privileges, and the page carries 'unsafe-inline', so nothing else is in
+    # the way of a CDN that serves different bytes than it served yesterday.
+    #
+    # The silent half matters more than the supply-chain half. An integrity
+    # attribute pins a URL to one exact file, so bumping the version in the
+    # URL and leaving the old hash makes the browser refuse the script. The
+    # tool then renders perfectly and does nothing, the way flipbook did, and
+    # the only evidence is a console line nobody is reading.
+    #
+    # Whether a hash is the right one for the file the CDN holds needs a
+    # network, and lives in .github/workflows/subresources.yml. This check
+    # tells you a hash is there to be checked at all.
+    missing = []
+    for f in html:
+        body = read(f)
+        for m in re.finditer(r'<(script|link)\b[^>]*>', body, re.I):
+            tag = m.group(0)
+            url = re.search(r'\b(?:src|href)=["\'](https?://[^"\']+)', tag, re.I)
+            if not url:
+                continue
+            if m.group(1).lower() == 'link' and not re.search(r'rel=["\']?stylesheet', tag, re.I):
+                continue
+            origin = origin_of(url.group(1))
+            if origin in NO_INTEGRITY:
+                continue
+            if not re.search(r'\bintegrity=', tag, re.I):
+                missing.append('%s: %s has no integrity' % (f, origin))
+            elif not re.search(r'\bcrossorigin=', tag, re.I):
+                missing.append('%s: %s has integrity but no crossorigin' % (f, origin))
+    check('every external script and stylesheet is pinned by integrity',
+          not missing, '; '.join(missing))
+
+    # An exemption for an origin no page loads any more is a blindfold.
+    loaded = {origin_of(m.group(1))
+              for f in html
+              for m in re.finditer(
+                  r'<(?:script|link)\b[^>]*\b(?:src|href)=["\'](https?://[^"\']+)',
+                  read(f), re.I)}
+    check('no integrity exemption outlived its reason',
+          all(o in loaded for o in NO_INTEGRITY),
+          '%s no longer loaded by any page' % sorted(set(NO_INTEGRITY) - loaded))
 
     # A meta CSP and a header CSP are enforced as an intersection, so a meta
     # tag here would quietly govern instead of the header.
