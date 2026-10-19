@@ -361,6 +361,39 @@ header.mast::before{content:""; display:block; height:3px; background:var(--acce
 .pgrid label{display:flex; align-items:center; gap:8px; font-size:.82rem; color:var(--ink-2)}
 .pgrid input{width:68px; padding:6px 8px; font-size:.85rem}
 
+/* ---- the board tab ----
+   One row per subject, so a reader sees the whole picture rather than
+   only the subject they happen to be standing in. A row where this app
+   follows a different book from the one CBSE named carries the warning
+   colour on its rule; colour is never the only signal, the row says so
+   in words as well. */
+.bookrow{
+  display:grid; grid-template-columns:minmax(118px,auto) 1fr; gap:2px 14px;
+  border-left:3px solid var(--hue); background:var(--surface);
+  border:1px solid var(--rule); border-left:3px solid var(--hue);
+  border-radius:var(--r); padding:11px 13px; align-items:baseline;
+}
+.bookrow b{font-weight:700; font-size:.93rem}
+.bookrow .bk-b{font-size:.93rem}
+.bookrow .bk-m{grid-column:2; font-size:.82rem; color:var(--ink-2)}
+.bookrow.differs{border-left-color:var(--bad)}
+.bookrow.differs .bk-m{color:var(--bad)}
+@media (max-width:560px){
+  .bookrow{grid-template-columns:1fr}
+  .bookrow .bk-m{grid-column:1}
+}
+.bku{margin:10px 0 2px; font-weight:700; font-size:.88rem}
+ol.bklist{margin:0; padding-left:22px; display:flex; flex-direction:column; gap:3px}
+ol.bklist li{font-size:.9rem; line-height:1.45; color:var(--ink-2)}
+ol.bklist.deva li{font-size:.98rem; line-height:1.75}
+.notice{
+  background:var(--surface); border:1px solid var(--rule); border-radius:var(--r-lg);
+  padding:16px 17px; box-shadow:var(--card-shadow);
+}
+ol.planrun{margin:8px 0 0; padding-left:21px; display:flex; flex-direction:column; gap:9px}
+ol.planrun li{color:var(--ink-2); line-height:1.55}
+ol.planrun li b{color:var(--ink)}
+
 /* ---- chapter chips ---- */
 .chapters{display:grid; grid-template-columns:repeat(auto-fill,minmax(232px,1fr)); gap:9px}
 .chip{
@@ -769,7 +802,7 @@ ul.mindlist ul li::marker{color:var(--bhue)}
       <button class="tab" role="tab" id="tab-practice" aria-selected="false" data-view="practice">Practice</button>
       <button class="tab" role="tab" id="tab-worksheet" aria-selected="false" data-view="worksheet">Worksheet</button>
       <button class="tab" role="tab" id="tab-paper" aria-selected="false" data-view="paper">Mock paper</button>
-      <button class="tab" role="tab" id="tab-syllabus" aria-selected="false" data-view="syllabus">Syllabus</button>
+      <button class="tab" role="tab" id="tab-board" aria-selected="false" data-view="board">CBSE</button>
     </nav>
   </div>
 </header>
@@ -868,7 +901,7 @@ ul.mindlist ul li::marker{color:var(--bhue)}
 <section id="view-practice" role="tabpanel" aria-labelledby="tab-practice" hidden>
   <div class="noBankYet empty" style="margin-top:24px" hidden>
     <p style="margin:0 0 8px"><b>Maths practice sets aren&rsquo;t written yet.</b></p>
-    <p style="margin:0; font-size:.95rem">All fourteen Ganita Prakash chapters have notes and a mind map under <b>Learn</b>. The question bank behind practice sets is science-only so far.</p>
+    <p style="margin:0; font-size:.95rem">Every chapter of this subject has notes and a mind map under <b>Learn</b>. No question bank has been written for it yet, so there is nothing to draw practice sets from.</p>
   </div>
   <div class="needsBank">
 
@@ -941,7 +974,7 @@ ul.mindlist ul li::marker{color:var(--bhue)}
 <section id="view-worksheet" role="tabpanel" aria-labelledby="tab-worksheet" hidden>
   <div class="noBankYet empty" style="margin-top:24px" hidden>
     <p style="margin:0 0 8px"><b>Maths worksheets aren&rsquo;t written yet.</b></p>
-    <p style="margin:0; font-size:.95rem">All fourteen Ganita Prakash chapters have notes and a mind map under <b>Learn</b>. The question bank behind worksheets is science-only so far.</p>
+    <p style="margin:0; font-size:.95rem">Every chapter of this subject has notes and a mind map under <b>Learn</b>. No question bank has been written for it yet, so there is nothing to draw worksheets from.</p>
   </div>
   <div class="needsBank">
   <div class="stack noprint" style="padding-top:24px">
@@ -970,7 +1003,7 @@ ul.mindlist ul li::marker{color:var(--bhue)}
 <section id="view-paper" role="tabpanel" aria-labelledby="tab-paper" hidden>
   <div class="noBankYet empty" style="margin-top:24px" hidden>
     <p style="margin:0 0 8px"><b>Maths mock papers aren&rsquo;t written yet.</b></p>
-    <p style="margin:0; font-size:.95rem">All fourteen Ganita Prakash chapters have notes and a mind map under <b>Learn</b>. The question bank behind mock papers is science-only so far.</p>
+    <p style="margin:0; font-size:.95rem">Every chapter of this subject has notes and a mind map under <b>Learn</b>. No question bank has been written for it yet, so there is nothing to draw mock papers from.</p>
   </div>
   <div class="needsBank">
   <div class="stack noprint" style="padding-top:24px">
@@ -989,24 +1022,32 @@ ul.mindlist ul li::marker{color:var(--bhue)}
 </section>
 
 <!-- ============ SYLLABUS ============ -->
-<section id="view-syllabus" role="tabpanel" aria-labelledby="tab-syllabus" hidden>
+<section id="view-board" role="tabpanel" aria-labelledby="tab-board" hidden>
   <div class="stack" style="padding-top:24px">
     <div>
-      <h2 style="font-size:1.15rem">What the Semester 1 exam covers</h2>
-      <p class="lede">Six chapters from the NCERT <em>Curiosity</em> Class 8 textbook. Chapter 6 is limited to section 6.1 only: everything on winds, storms and cyclones is out of the exam.</p>
+      <h2 style="font-size:1.15rem">What the board says, and which book this is</h2>
+      <p class="lede" id="boardLede"></p>
     </div>
-    <div class="stack" id="sylList" style="gap:12px"></div>
-    <div class="card">
-      <h3 style="font-size:1.02rem; margin-bottom:8px">A workable revision run for September</h3>
-      <ol style="margin:0; padding-left:20px; color:var(--ink-2)">
-        <li><b>Two chapters a sitting.</b> Read the chapter once, then run a 15-question practice on it here. Anything below 70&percnt; goes back for a second read.</li>
-        <li><b>Learn the named things.</b> Most marks lost in Chapters 2 and 3 are names, Rhizobium, Lactobacillus, Anopheles, the vitamin deficiencies. Write them out; don't just re-read them.</li>
-        <li><b>Numericals daily.</b> Chapters 5 and 6.1 are the ones with working. Five pressure sums a day for a week is enough to make them automatic. Always write the formula, then substitute, then the unit.</li>
-        <li><b>Print one worksheet a week</b> and do it on paper, timed. Screen practice checks recall; paper practice checks whether he can actually write the answer out.</li>
-        <li><b>Two full mock papers</b> in the last ten days, under 90 minutes, marked strictly.</li>
-      </ol>
+
+    <div class="stack" style="gap:11px">
+      <p class="eyebrow" style="margin:0">Your books</p>
+      <div id="bookRows" class="stack" style="gap:7px"></div>
     </div>
+
+    <div class="card" id="bookGap" hidden></div>
+
+    <div class="stack" style="gap:11px">
+      <p class="eyebrow" style="margin:0">Notices worth knowing about</p>
+      <div id="noticeList" class="stack" style="gap:11px"></div>
+    </div>
+
     <div class="card">
+      <p class="eyebrow">A revision run</p>
+      <h3 style="font-size:1.02rem; margin:6px 0 4px" id="planWhen"></h3>
+      <ol class="planrun" id="planSteps"></ol>
+    </div>
+
+    <div class="card" id="formulaCard" hidden>
       <h3 style="font-size:1.02rem; margin-bottom:8px">Formulae and constants worth memorising</h3>
       <div class="mono" style="font-size:.88rem; line-height:2; color:var(--ink-2)">
         Pressure &nbsp;P = F / A &nbsp;&middot;&nbsp; unit: pascal (Pa) = N/m&sup2;<br>
@@ -1026,7 +1067,7 @@ ul.mindlist ul li::marker{color:var(--bhue)}
 <footer class="foot">
   <p>Made for one Class 8 student, from the NCERT books his school sets. The questions here are for practice. They are not past papers and they are not CBSE sample papers.</p>
   <p style="margin-top:8px">Some chapters carry a <b>Check the book</b> panel. That means the textbook has something wrong, or leaves something out. The panel says what is actually the case and where to read it, then says what to write in the exam, because the exam is marked from the book.</p>
-  <p class="mono" style="font-size:.72rem; letter-spacing:.06em; margin:10px 0 0">Build 5 &middot; 22 September 2026 &middot; 1,546 questions</p>
+  <p class="mono" style="font-size:.72rem; letter-spacing:.06em; margin:10px 0 0" id="buildLine">Build 6 &middot; 19 October 2026</p>
 </footer>
 <script>
 "use strict";
@@ -2976,7 +3017,7 @@ const TOOLS = [
   ['practice',  'pencil',   'Practice',   'Questions drawn fresh each time. Anything you get wrong comes back until it sticks.',    'var(--sub-math)'],
   ['worksheet', 'sheet',    'Worksheet',  'Build a printable worksheet from the chapters you pick, answer key at the end.',         'var(--sub-sst)'],
   ['paper',     'clock',    'Mock paper', 'A full paper to sit in one go, timed, on paper, with the marks shown.',                  'var(--sub-eng)'],
-  ['syllabus',  'calendar', 'Syllabus',   'What each exam covers, and a plan for the weeks before it.',                             'var(--sub-hin)'],
+  ['board',     'calendar', 'CBSE',       'Which book the board has prescribed, what it has announced, and a revision run.',       'var(--sub-hin)'],
   ['exams',     'flag',     'Exams',      'Add an exam and tick its chapters. Everything above narrows to what the paper asks.',    'var(--sub-ct)']
 ];
 function renderTools(){
@@ -3577,15 +3618,24 @@ function makePaper(){
 /* ============================================================
    SANSKRIT: NCERT रुचिरा भाग ३ (Ruchira, Part 3), Class VIII.
 
-   CORRECTION. An earlier version of this file said the book was दीपकम्
-   (Deepakam) and listed twelve chapters under that name. That was wrong.
-   NCERT publishes Class 8 Sanskrit as Ruchira Bhag 3, the PDFs at
-   ncert.nic.in/textbook/pdf/hhsk1NN.pdf say "रुचिरा, तृतीयो भागः" on the
-   page: and no Deepakam exists on NCERT's site for any class. The
-   Deepakam list came from aggregator sites; two of them agreed, but both
-   were downstream of the same bad information, which is exactly the trap
-   this file congratulated itself on avoiding for Hindi. Cross-checking two
-   secondary sources is not verification. The primary source is.
+   THE BOOK BELOW IS NOT THE ONE CBSE HAS PRESCRIBED. Circular Acad-48/2025
+   of 28 July 2025 names दीपकम् (Deepakam) for Class 8 Sanskrit. The CBSE
+   tab says so on the page and carries Deepakam's own पाठानुक्रमणिका; this
+   content still follows Ruchira, and the grammar sections are the part that
+   survives the change. Do not quietly relabel it.
+
+   THIS NOTE HAS BEEN WRONG IN BOTH DIRECTIONS, and the reason is worth more
+   than either answer. It first said Deepakam, from aggregator sites. It was
+   then "corrected" to say that Deepakam does not exist on NCERT's site for
+   any class, on the strength of ncert.nic.in/textbook/pdf/hhsk1NN.pdf
+   returning Ruchira. That second check could not have found Deepakam: hhsk1
+   is Ruchira's own code and hsde1 is Deepakam's. A file code inferred from
+   the book you already know about cannot discover the book that replaced
+   it, and it returns a real PDF either way, so it reads as confirmation.
+   Deepakam's prelims are at ncert.nic.in/textbook/pdf/hsde1ps.pdf: first
+   edition July 2025, ISBN 978-93-5729-294-8, reprint 2026-27.
+
+   The index of what exists is CBSE's circular, not a URL pattern.
 
    The thirteen chapters below, and the source and theme given for each,
    are read from NCERT's own chapter PDFs. Two chapters of the original
@@ -4815,11 +4865,17 @@ BANK.push(...SST_BANK2);
 /* ============================================================
    ENGLISH: Class VIII grammar, usage and writing.
 
-   A deliberate choice about scope, and worth stating. NCERT still publishes
-   Class 8 English as Honeydew and It So Happened (the file at
-   ncert.nic.in/textbook/pdf/hehd1ps.pdf is a 2024-25 reprint, unlike the
-   2026-27 Science, Maths, Hindi and Social Science books), so the reader may
-   yet be replaced: and schools vary in which supplementary reader they set.
+   A deliberate choice about scope, and worth stating.
+
+   The old version of this note said NCERT "still publishes Class 8 English
+   as Honeydew and It So Happened" and read hehd1ps.pdf being a 2024-25
+   reprint as evidence the reader had not moved. It had. Poorvi replaced it:
+   ncert.nic.in/textbook/pdf/hepr1ps.pdf, first edition May 2025, reprint
+   2026-27, fifteen chapters in five units, and CBSE told schools so in
+   circular Acad-48/2025 on 28 July 2025. Same failure as the Sanskrit note
+   above, same cause: hehd1 is Honeydew's code and hepr1 is Poorvi's.
+
+   That changes the fact and not the argument.
 
    More importantly, literature does not drill. An MCQ on a poem tests whether
    you recognise the answer, not whether you can read the poem or write about
@@ -8248,9 +8304,8 @@ function gateSubject(){
   /* This tab is entirely about the September science paper, its heading, its
      6.1-only note and its revision plan. Under maths it was showing the science
      chapters, so hide it rather than mislabel it. */
-  const sylOK = subj().hasExam;
-  $('#tab-syllabus').hidden = !sylOK;
-  if(!sylOK && $('#tab-syllabus').getAttribute('aria-selected') === 'true') showView('learn');
+  /* The board tab is true in every subject now, so nothing hides it. It
+     used to be science-only, because it described one science paper. */
   const noBank = !subj().chapters.some(c => c.bank);
   $$('.needsBank').forEach(e => e.hidden = noBank);
   $$('.noBankYet').forEach(e => e.hidden = !noBank);
@@ -8258,16 +8313,248 @@ function gateSubject(){
   else if($('#p-run').hidden && $('#p-done').hidden){ $('#p-setup').hidden = false; }
 }
 
-/* ---------- syllabus ---------- */
-function renderSyllabus(){
-  $('#sylList').innerHTML = CHAPTERS.map(c => `
-    <div class="syl" style="--hue:${hue(c.n)}">
-      <p class="eyebrow" style="color:${hue(c.n)}">Chapter ${c.n}</p>
-      <h3>${c.name}<span style="font-weight:600; color:var(--ink-3)">: ${c.sub}</span></h3>
-      <p class="lede" style="margin:8px 0 0; font-size:.95rem">${c.blurb}</p>
-      ${c.warn ? `<p class="note" style="color:var(--c4); font-family:'IBM Plex Mono',monospace; font-size:.75rem; margin-top:8px">&#9888; ${c.warn}</p>` : ''}
-      <div class="tags">${c.tags.map(t => `<span>${t}</span>`).join('')}</div>
+/* ============================================================
+   WHAT THE BOARD SAYS
+
+   Two things a revision app has to get right and cannot get from
+   itself: which book the class is actually taught from, and what the
+   Board has told schools lately. Both are read here from primary
+   documents and cited on the page, because this file has been wrong
+   about the first one twice, in opposite directions, and each time it
+   was confident.
+
+   The shape of that mistake is worth keeping. Both wrong answers came
+   from looking up the OLD book's file code on ncert.nic.in and
+   reasoning from what came back. Ruchira is hhsk1 and Deepakam is
+   hsde1; Honeydew is hehd1 and Poorvi is hepr1. A code you inferred
+   from the book you already know about cannot find the book that
+   replaced it, and the search returns a real PDF either way, so it
+   reads as confirmation. The index of what exists is CBSE's own
+   circular, below, not a URL pattern.
+   ============================================================ */
+const CBSE_CIRCULARS = {
+  books:{
+    no:'Acad-48/2025', date:'28 July 2025',
+    title:'Availability of New Textbooks and Learning Outcomes for the Foundational Stage',
+    url:'https://cbseacademic.nic.in/web_material/Circulars/2025/48_Circular_2025.pdf'
+  },
+  science:{
+    no:'Acad-67/2026', date:'13 October 2026',
+    title:'CBSE Science Challenge 2026-27',
+    url:'https://cbseacademic.nic.in/web_material/Circulars/2026/67_Circular_2026.pdf'
+  },
+  languages:{
+    no:'Acad-49/2026', date:'10 July 2026',
+    title:'Guidelines for Implementation of Three-Language Scheme from academic Session 2026-27 onwards',
+    url:'https://cbseacademic.nic.in/web_material/Circulars/2026/49_Circular_2026.pdf'
+  }
+};
+
+/* Acad-48/2025 names ten Class 8 books and links each to its page on
+   ncert.nic.in. Six of them are subjects this app covers. `same` is
+   whether the content in this app was written against that book. */
+const BOOKS = {
+  sci: {board:'Curiosity',                          code:'hecu1', same:true},
+  math:{board:'Ganita Prakash',                     code:'hegp1', same:true},
+  sst: {board:'Exploring Society: India and Beyond', code:'hees1', same:true},
+  hin: {board:'मल्हार (Malhar)',                     code:'hhml1', same:true},
+  skt: {board:'दीपकम् (Deepakam)',                   code:'hsde1', same:false},
+  eng: {board:'Poorvi',                             code:'hepr1', same:false},
+  /* The handbook is CBSE's own publication, not an NCERT textbook, so
+     Acad-48/2025 does not list it. That is not a gap in the circular. */
+  ct:  {board:null, code:null, same:true}
+};
+
+/* दीपकम्, अष्टमकक्षायाः संस्कृत-पाठ्यपुस्तकम्, ISBN 978-93-5729-294-8,
+   first edition July 2025, reprint 2026-27. Read from the book's own
+   पाठानुक्रमणिका in ncert.nic.in/textbook/pdf/hsde1ps.pdf.
+
+   The index numbers thirteen पाठ. The भूमिका counts twelve, and lessons
+   10 and 11 are the two halves of one title, सन्निमित्ते वरं त्यागः. */
+const DEEPAKAM = [
+  'संगच्छध्वं संवदध्वम्',
+  'अल्पानामपि वस्तूनां संहतिः कार्यसाधिका',
+  'सुभाषितरसं पीत्वा जीवनं सफलं कुरु',
+  'प्रणम्यो देशभक्तोऽयं गोपबन्धुर्महामनाः',
+  'गीता सुगीता कर्तव्या',
+  'डिजिभारतम् - युगपरिवर्तनम्',
+  'मञ्जुलमञ्जूषा सुन्दरसुरभाषा',
+  'पश्यत कोणमैशान्यं भारतस्य मनोहरम्',
+  'कोऽरुक् ? कोऽरुक् ? कोऽरुक् ?',
+  'सन्निमित्ते वरं त्यागः (क-भागः)',
+  'सन्निमित्ते वरं त्यागः (ख-भागः)',
+  'सम्यग्वर्णप्रयोगेण ब्रह्मलोके महीयते',
+  'वर्णोच्चारण-शिक्षा १'
+];
+const DEEPAKAM_APP = ['व्याकरणम्', 'शब्दरूपाणि', 'धातुरूपाणि'];
+
+/* Poorvi, Textbook of English for Grade 8, ISBN 978-93-5729-940-4,
+   first edition May 2025, reprint 2026-27. Read from the CONTENTS page
+   of ncert.nic.in/textbook/pdf/hepr1ps.pdf. Fifteen chapters, five units. */
+const POORVI = [
+  ['Wit and Wisdom', ['The Wit that Won Hearts', 'A Concrete Example', 'Wisdom Paves the Way']],
+  ['Values and Dispositions', ['A Tale of Valour: Major Somnath Sharma and the Battle of Badgam',
+    'Somebody&rsquo;s Mother', 'Verghese Kurien: I Too Had A Dream']],
+  ['Mystery and Magic', ['The Case of the Fifth Word', 'The Magic Brush of Dreams', 'Spectacular Wonders']],
+  ['Environment', ['The Cherry Tree', 'Harvest Hymn', 'Waiting for the Rain']],
+  ['Science and Curiosity', ['Feathered Friend', 'Magnifying Glass',
+    'Bibha Chowdhuri: The Beam of Light that Lit the Path for Women in Indian Science']]
+];
+
+/* What this app does about each gap, in its own words. Written as a
+   limit rather than a promise: nobody is served by a plan with no date
+   on it. */
+const BOOK_GAP = {
+  skt:{
+    head:'This app follows the older Sanskrit book',
+    body:'The lessons, mind maps and questions in the Sanskrit tab were written against '
+       + '<b>रुचिरा भाग ३ (Ruchira, Part 3)</b>. NCERT still publishes Ruchira, and the two books '
+       + 'share their grammar: शब्दरूप, धातुरूप, कारक and सन्धि are the same in either, and those '
+       + 'carry most of the question bank here. The lessons are different. '
+       + 'If the school has moved to Deepakam, use the grammar sections here and read the lessons '
+       + 'from the book.'
+  },
+  eng:{
+    head:'This app teaches the English paper, not the reader',
+    body:'The English tab is grammar, usage, vocabulary and the writing formats, and that is a '
+       + 'choice rather than an omission. A multiple-choice question on a poem tests whether you '
+       + 'recognise the answer, not whether you can read the poem or write about it. Grammar and '
+       + 'the formats are mechanical, they are the same whichever reader a school sets, and they '
+       + 'are where marks are actually lost. Poorvi&rsquo;s fifteen chapters are listed below so you '
+       + 'can see what this app does not cover.'
+  }
+};
+
+/* Dated, and both of these were issued after the content in this app was
+   written. A notice with no date on it is a notice nobody can act on. */
+const NOTICES = [
+  {c:'science', head:'Class 8 can enter the CBSE Science Challenge',
+   body:'CBSE runs the Science Challenge for <b>Classes VIII to X</b>. Two rounds, within the '
+      + 'school and then between schools, no fee for either. The questions are multiple choice '
+      + 'after a stimulus, and the circular says the task is about speed as well as accuracy. '
+      + 'The school registers students for round one; for round two each school sends its best '
+      + 'two from each class. Everyone in round two gets a participation certificate. '
+      + 'Ask the school whether it has registered.'},
+  {c:'languages', head:'The three languages you take this year carry into Class 9',
+   body:'From 2026-27 every student in Class IX studies three languages, and at least two of them '
+      + 'have to be Bhartiya Bhashas. The circular says the Class IX batch continues the same '
+      + 'three language combinations it studied in Class VIII, and one of the three becomes the '
+      + 'third language, R3. R3 is assessed by the school and there is no Board examination in it, '
+      + 'though it has to be cleared for the Class X pass certificate. '
+      + 'Hindi and Sanskrit both count as Bhartiya Bhashas; English does not.'}
+];
+
+/* ---------- the board ----------
+   Replaces a tab that described one science paper sat in September 2026
+   and was hidden under the other six subjects. This one is true in every
+   subject and does not go stale when a date passes: the books come from a
+   circular, the notices carry theirs, and the plan is driven by whichever
+   exam is actually next. */
+function renderBoard(){
+  const S = subj(), B = BOOKS[S.id] || {}, C = CBSE_CIRCULARS;
+  const cite = k => `<a href="${C[k].url}" target="_blank" rel="noopener">${C[k].no}</a>, ${C[k].date}`;
+
+  /* Counted rather than written down, because a number in prose is how
+     every page in this repository has gone stale. The circular lists NCERT
+     textbooks, so the CBSE handbook behind AI & Thinking is not in it and
+     is not counted either way. */
+  const named = Object.keys(BOOKS).filter(k => BOOKS[k].board);
+  const follows = named.filter(k => BOOKS[k].same).length;
+  $('#boardLede').innerHTML =
+    `CBSE named the Class 8 textbooks in circular ${cite('books')}. `
+    + `${named.length} of the ${Object.keys(BOOKS).length} subjects here are in it, `
+    + `and this app follows ${follows} of those ${named.length}. `
+    + `Where it follows a different book it says so, rather than leaving you to find out in an exam.`;
+
+  /* Every subject, every time, so a reader can see the whole picture
+     rather than only the one they are standing in. */
+  const order = $$('#subjSeg button').map(b => b.dataset.subj).filter(k => SUBJECTS[k]);
+  $('#bookRows').innerHTML = order.map(k => {
+    const b = BOOKS[k] || {}, s = SUBJECTS[k];
+    const mine = esc(s.book);
+    const board = b.board
+      ? `<a href="https://ncert.nic.in/textbook.php?${b.code}=0-0" target="_blank" rel="noopener">${b.board}</a>`
+      : 'Not an NCERT textbook, so not in this circular';
+    return `<div class="bookrow${b.board && !b.same ? ' differs' : ''}" style="--hue:var(--sub-${k})">
+      <b>${esc(s.name)}</b>
+      <span class="bk-b">${board}</span>
+      <span class="bk-m">${b.same ? 'This app follows it' : 'This app follows ' + mine}</span>
+    </div>`;
+  }).join('');
+
+  /* The gap panel, and the prescribed book's own contents under it, for
+     the subject you are in. Showing all seven at once would bury it. */
+  const gap = (!B.same && BOOK_GAP[S.id]) ? BOOK_GAP[S.id] : null;
+  const gp = $('#bookGap');
+  gp.hidden = !gap;
+  if(gap){
+    let list = '';
+    if(S.id === 'skt'){
+      list = `<p class="eyebrow" style="margin:14px 0 6px">दीपकम् &middot; पाठानुक्रमणिका</p>
+        <ol class="bklist deva">${DEEPAKAM.map(t => `<li>${t}</li>`).join('')}</ol>
+        <p class="hint" style="margin-top:8px">परिशिष्टम्: ${DEEPAKAM_APP.join(' &middot; ')}</p>
+        <p class="hint" style="margin-top:6px">The index numbers thirteen पाठ and the भूमिका counts twelve.
+          Lessons 10 and 11 are the two halves of one title, सन्निमित्ते वरं त्यागः.</p>`;
+    } else if(S.id === 'eng'){
+      list = `<p class="eyebrow" style="margin:14px 0 6px">Poorvi &middot; contents</p>
+        ${POORVI.map(([u, cs]) => `<p class="bku">${u}</p>
+          <ol class="bklist">${cs.map(t => `<li>${t}</li>`).join('')}</ol>`).join('')}`;
+    }
+    gp.innerHTML = `<p class="eyebrow">Where this app and the book differ</p>
+      <h3 style="font-size:1.02rem; margin:6px 0 8px">${gap.head}</h3>
+      <p class="lede" style="margin:0">${gap.body}</p>${list}`;
+  }
+
+  $('#noticeList').innerHTML = NOTICES.map(n =>
+    `<div class="notice">
+      <p class="eyebrow" style="margin:0">${cite(n.c)}</p>
+      <h3 style="font-size:1.02rem; margin:6px 0 8px">${n.head}</h3>
+      <p class="lede" style="margin:0">${n.body}</p>
     </div>`).join('');
+
+  /* The plan. It used to be five numbered steps for a paper in September
+     2026, which had been sat by the time anybody read this. */
+  const e = nextExam(subject), d = e ? daysTo(e.date) : null;
+  const set = examChapterSet(subject);
+  const nCh = set ? set.size : S.chapters.length;
+  const what = e
+    ? `${examKindLabel(e.kind)} on ${new Date(e.date + 'T00:00:00').toDateString().slice(0, 10)}, `
+      + `${sylSummary(e).toLowerCase()}`
+    : `No exam set for ${esc(S.name)}, so this covers the whole book`;
+  $('#planWhen').innerHTML = what;
+
+  const steps = [];
+  if(d !== null && d <= 2){
+    steps.push(['Stop reading new chapters.',
+      'Two days out, a chapter met for the first time costs more than it returns. '
+      + 'Work the mistakes book and the chapters you have already covered.']);
+    steps.push(['One mock paper, timed, on paper.',
+      'Not on the screen. Screen practice checks recall; paper checks whether you can write the answer out.']);
+  } else {
+    const perDay = (d !== null && d > 0) ? Math.max(1, Math.ceil(nCh / Math.max(1, d - 2))) : 2;
+    steps.push([`${perDay} chapter${perDay > 1 ? 's' : ''} a sitting.`,
+      d !== null
+        ? `${nCh} chapter${nCh > 1 ? 's' : ''} in the syllabus and ${d} day${d === 1 ? '' : 's'} left, `
+          + 'keeping the last two days clear for mock papers. Read the chapter, then run a 15-question '
+          + 'practice on it here. Anything below 70&percnt; goes back for a second read.'
+        : 'Read the chapter, then run a 15-question practice on it here. '
+          + 'Anything below 70&percnt; goes back for a second read.']);
+    steps.push(['Write the named things out.',
+      'Most marks lost in this app&rsquo;s question bank are names and labels, not reasoning. '
+      + 'Re-reading them does not work. Writing them does.']);
+    steps.push(['One printed worksheet a week, done on paper and timed.',
+      'The Worksheet tab builds one from whichever chapters you tick, with the answer key at the end.']);
+    if(d === null || d > 10) steps.push(['Clear the mistakes book before adding new chapters.',
+      'A question leaves it only after two correct answers on two different days, so it cannot be cleared by clicking through.']);
+    else steps.push(['Two full mock papers in the last ten days.',
+      'In one sitting, timed, marked strictly. The Mock paper tab draws only from the exam&rsquo;s own chapters.']);
+  }
+  $('#planSteps').innerHTML = steps.map((s, i) =>
+    `<li><b>${s[0]}</b> ${s[1]}</li>`).join('');
+
+  /* Science is the only subject here whose paper turns on a handful of
+     formulae, so the card is its own and stays behind it. */
+  $('#formulaCard').hidden = S.id !== 'sci';
 }
 
 
@@ -8277,7 +8564,7 @@ function renderSyllabus(){
    ============================================================ */
 function showView(name){
   currentView = name;
-  ['today','learn','practice','worksheet','paper','syllabus'].forEach(v => {
+  ['today','learn','practice','worksheet','paper','board'].forEach(v => {
     $('#view-' + v).hidden = v !== name;
     $('#tab-' + v).setAttribute('aria-selected', v === name);
   });
@@ -8306,7 +8593,7 @@ function setSubject(id){
   $('#wsPrint').hidden = true; $('#paperPrint').hidden = true;
   $('#p-run').hidden = true; $('#p-done').hidden = true; $('#p-setup').hidden = false;
   refreshPool();
-  renderLearn(); renderSyllabus(); gateSubject(); renderToday();
+  renderLearn(); renderBoard(); gateSubject(); renderToday();
   window.scrollTo(0, 0);
 }
 $$('#subjSeg button').forEach(b => b.addEventListener('click', () => setSubject(b.dataset.subj)));
@@ -8405,6 +8692,13 @@ if('serviceWorker' in navigator){
 
 renderKicker();
 renderLearn();
+/* The question count is counted, not written down. It was "1,546 questions"
+   in the markup, which was right on the day it was typed and is the way every
+   number in prose in this repository has gone wrong since. */
+(function(){
+  const el = $('#buildLine');
+  if(el) el.textContent += ' \u00b7 ' + BANK.length.toLocaleString('en-IN') + ' questions';
+})();
 gateSubject();
 /* Puts the view in a known state rather than trusting the markup: it is what
    sets data-subject, and what decides whether the exam filter belongs on the
@@ -8412,7 +8706,7 @@ gateSubject();
    does nothing. */
 showView('today');
 renderToday();
-renderSyllabus();
+renderBoard();
 renderStats();
 refreshPool();
 </script>
