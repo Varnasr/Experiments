@@ -199,6 +199,18 @@ before it knew the difference it reported all 22 as syntax errors.
   forindia.netlify.app redirects there). `netlify.toml` 301s `/hyd-sir/*` to
   its explorer at offtheroll.in. The card on the home page links the hub. The mentions of `hyd-sir` further down this file are history.
 
+- **A file code inferred from the old textbook cannot find the one that
+  replaced it.** `alab` was confidently wrong twice, in opposite directions,
+  about which book NCERT publishes for Class 8 Sanskrit. Both answers came
+  from fetching `ncert.nic.in/textbook/pdf/<code>NN.pdf` with the code of the
+  book already known about: `hhsk1` is Ruchira, `hsde1` is Deepakam; `hehd1`
+  is Honeydew, `hepr1` is Poorvi. The old code returns a real PDF either way,
+  so the check reads as confirmation and the new book stays invisible. The
+  index of what exists is CBSE's own circular, Acad-48/2025 of 28 July 2025,
+  not a URL pattern. The CBSE tab in `alab` now carries that circular, the
+  per-subject comparison and `alab/tests/board.mjs`, which pins the two
+  subjects where the app and the board disagree.
+
 - **Inline event handlers work here only because `script-src` carries
   `'unsafe-inline'`.** Two of them, both in `library-builder`.
   Tighten that to a nonce or a hash and both stop firing with nothing on
