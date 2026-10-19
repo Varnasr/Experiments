@@ -3237,6 +3237,35 @@
     };
     const wordsForSet = set => set.reduce((a, l) => a.concat(SET_WORDS[l] || []), []);
 
+    // A lesson may only ask a child to read or spell letters he has met. The
+    // first two modules teach s a t p i n, so module 3 has these words and no
+    // others. It is a short list on purpose: it is the whole of what six
+    // letters can make, and it is enough for words and for captions.
+    const P2_LETTERS = "satpin";
+    const P4_LETTERS = "satpinckehrmdgo";
+    const only = (words, letters) =>
+      words.filter(w => w.split("").every(c => letters.indexOf(c) >= 0));
+
+    const SET1 = ["sat","sap","sip","sit","tan","tap","tin","tip",
+                  "nap","nip","pan","pat","pin","pit"];
+    const SET1_LONG = ["ant","pant","spin","spit","span","snap","snip","spat",
+                       "pins","tins","taps","naps","pits","sits"];
+    const SET1_A = only(SET1, "satpn");
+    const SET1_I = SET1.filter(w => w.indexOf("i") >= 0);
+
+    // The child reads the caption. The grown-up reads the question, which is
+    // why the questions use words the caption may not.
+    const SET1_CAPTIONS = [
+      ["Pip sat in a pit.", "Who sat in a pit?", "Pip"],
+      ["Nan taps a pan.", "What does Nan tap?", "pan", "a pan"],
+      ["An ant is in a tin.", "What is in the tin?", "ant", "an ant"],
+      ["A pin is in it.", "What is in it?", "pin", "a pin"],
+      ["Pat spins a tin.", "What does Pat spin?", "tin", "a tin"],
+      ["Pip naps.", "What does Pip do?", "naps", "nap"],
+      ["It is a tap.", "What is it?", "tap", "a tap"],
+      ["Pip tips a pan.", "What does Pip tip?", "pan", "a pan"]
+    ];
+
     const DIGRAPH = {
       sh:["ship","shop","fish","shell","sheep","shed"],
       ch:["chip","chin","chat","chick","bench","much"],
@@ -3275,14 +3304,17 @@
 
     /* decodable readers: each only uses sounds taught by that stage */
     const READERS = {
+      // Every word here is inside satpinckehrmdgo, the letters taught by the
+      // end of module 4. "bag", "van", "what", "fun" and "day" were in these
+      // books and are not, which is why the book waits for module 4.
       cvc_a: [{
         title: "The Fat Cat",
-        pages: ["A cat sat.", "The cat sat on a mat.", "A rat ran!", "The cat ran at the rat.", "The rat is in a bag.", "The cat had a nap."],
+        pages: ["A cat sat.", "The cat sat on a mat.", "A rat ran!", "The cat ran at the rat.", "The rat is in a pot.", "The cat had a nap."],
         qs: [["Where did the cat sit?","mat","on a mat","on the mat"], ["Who ran first?","rat","the rat"]]
       }, {
         title: "Dad and the Map",
-        pages: ["Dad has a map.", "The map is in the van.", "Dad can tap the map.", "Sam has a cap.", "Sam and Dad ran.", "What a fun day!"],
-        qs: [["Where is the map?","van","in the van"], ["What does Sam have?","cap","a cap"]]
+        pages: ["Dad has a map.", "The map is in a tin.", "Dad can tap the map.", "Sam has a red cap.", "Sam and Dad ran.", "Dad and Sam got home."],
+        qs: [["Where is the map?","tin","in a tin","in the tin"], ["What does Sam have?","cap","a red cap","a cap"]]
       }],
       cvc_all: [{
         title: "The Big Red Bus",
@@ -3364,23 +3396,23 @@
       },
       {
         id: "p3", title: "First words to read", emoji: "📖",
-        blurb: "Six letters is enough to read real words. This is where reading actually begins.",
+        blurb: "Six letters already make real words and captions. The first book waits for more letters.",
         lessons: [
-          { id: "p3a", title: "The -at family", rule: "Change the first sound and you get a whole family: cat, hat, mat, sat.",
-            note: "Write 'at' and add one letter in front at a time. Seeing the family change is the lightbulb moment.",
-            gen: lsMissing(FAM.at, "first") },
-          { id: "p3b", title: "The -an and -ap families", rule: "Same trick, new endings: can, man, pan, and map, cap, tap.",
-            note: "Ask him to invent a silly one too (zap, vap). Nonsense words prove he is decoding, not remembering.",
-            gen: lsMissing(famWords("an","ap"), "first") },
-          { id: "p3c", title: "The -in, -it and -ip families", rule: "Now with i in the middle: pin, sit, lip.",
-            note: "If he mixes up a and i, hold up two fingers, 'a' is the big open mouth, 'i' is the small smile.",
-            gen: lsMissing(famWords("in","it","ip"), "first") },
-          { id: "p3d", title: "Sound it out and read it", rule: "Look at each letter, say its sound, then push them together.",
-            note: "Let him be slow. Speed comes from repetition, never from being hurried.",
-            gen: lsBlend(famWords("at","an","ap","in","it","ip")) },
-          { id: "p3e", title: "My first book", rule: "You know enough sounds to read a whole book. Let's read it together.",
-            note: "Press 🔊 on each page and read along. Then let him read it alone. The second reading is where the confidence lands.",
-            gen: lsBook(READERS.cvc_a) }
+          { id: "p3a", title: "Your first words", rule: "Your six letters make real words. Say each sound, then push them together: s a t makes sat.",
+            note: "Every word here is built from s, a, t, p, i and n, so there is nothing in it he has not met. Let him be slow. Speed comes from repetition, never from being hurried.",
+            gen: lsBlend(SET1) },
+          { id: "p3b", title: "Listen and write", rule: "If you can say the sounds, you can write the word.",
+            note: "Say the word twice, then wait. Stretching it out himself is the skill; spelling it for him replaces that skill with memory.",
+            gen: lsDictate(SET1) },
+          { id: "p3c", title: "a or i in the middle?", rule: "sat has a in the middle. sit has i. Listen hard, the rest of the word is the same.",
+            note: "If he mixes up a and i, hold up two fingers. 'a' is the big open mouth, 'i' is the small smile. Press the speaker and let him decide by ear.",
+            gen: lsSort([["a", SET1_A], ["i", SET1_I]], "Does it have a or i in the middle?") },
+          { id: "p3d", title: "Read a little caption", rule: "Words sit together and say something. Read it out loud, then answer.",
+            note: "He reads the caption, you read the question. The caption uses only his six letters; the question does not have to.",
+            gen: lsSentence(SET1_CAPTIONS) },
+          { id: "p3e", title: "Longer words, same six letters", rule: "Four sounds now: s n a p makes snap. Still nothing new to learn.",
+            note: "Two sounds at the start is the only new thing here. Say it slowly, sss-n-ap, then speed it up. This is the last step before the next letters arrive.",
+            gen: lsBlend(SET1_LONG) }
         ]
       },
       {
@@ -3393,15 +3425,18 @@
           { id: "p4b", title: "m, d, g and o", rule: "m hums, d taps, g gulps, o says o like in ox.",
             note: "b and d get swapped by nearly every child. Do not correct it sharply. It fades on its own.",
             gen: lsFirst(wordsForSet(SETS[2])) },
-          { id: "p4c", title: "Words with o and e", rule: "New vowels make new words: dog, pot, hop, and pen, bed, net.",
+          { id: "p4c", title: "Words with o and e", rule: "New vowels make new words: dog, pot, hop, and pen, hen, net.",
             note: "The middle vowel is the tricky part. Ask 'what does your mouth do in the middle?'",
-            gen: lsMissing(famWords("og","ot","op","ed","en","et"), "middle") },
-          { id: "p4d", title: "Which vowel is hiding?", rule: "Every one of these words hides a vowel in the middle: a, e, i, o or u.",
-            note: "Say the word slowly and hold the middle sound long, caaat. Hearing it is the whole skill.",
-            gen: lsMiddle(famWords("at","in","og","ed","un","ot","it","en")) },
+            gen: lsMissing(only(famWords("og","ot","op","ed","en","et"), P4_LETTERS), "middle") },
+          { id: "p4d", title: "Which vowel is hiding?", rule: "Every one of these words hides a vowel in the middle: a, e, i or o. u comes later.",
+            note: "Say the word slowly and hold the middle sound long, caaat. Hearing it is the whole skill. u is missing on purpose: it arrives with the next set of letters.",
+            gen: lsMiddle(only(famWords("at","in","og","ed","ot","it","en"), P4_LETTERS)) },
           { id: "p4e", title: "Trace the new letters", rule: "Nine more letters to make with a pencil.",
             note: "Print this one. Two or three careful letters beat a whole page of rushed ones.",
-            gen: lsTrace(SETS[1].concat(SETS[2])) }
+            gen: lsTrace(SETS[1].concat(SETS[2])) },
+          { id: "p4f", title: "My first book", rule: "Fifteen letters is enough to read a whole book. Let's read it together.",
+            note: "Press the speaker on each page and read along, then let him read it alone. The second reading is where the confidence lands. Every word in both books is built from the letters he now knows.",
+            gen: lsBook(READERS.cvc_a) }
         ]
       },
       {

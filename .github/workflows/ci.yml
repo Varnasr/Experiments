@@ -53,3 +53,13 @@ jobs:
       # pinned version in the lockfile rather than whatever npx resolves.
       - run: node node_modules/playwright-core/cli.js install --with-deps chromium
       - run: node scripts/axe.mjs
+
+      # The phonics path in kundendu-worksheets must never ask a child to read
+      # a letter it has not taught him yet. Module 3 said six letters was
+      # enough to read real words and then showed him cat, van and bag, and
+      # nothing failed: the worksheet generated, the answers marked, the book
+      # turned its pages. Only sitting with him would have found it. This
+      # drives each lesson's own generator rather than reading its word bank,
+      # because the bank was never wrong; the lesson reached past it.
+      - name: Phonics lessons stay inside the letters taught
+        run: node kundendu-worksheets/tests/sequence.mjs
