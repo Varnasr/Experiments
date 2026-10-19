@@ -300,23 +300,6 @@ An AI-powered tool for translating Hindi Supreme Court and High Court petitions 
 
 ---
 
-### AICC Observers: DCC Readiness Grading
-
-Methodology, data, and grading outputs for evaluating AICC-appointed District Observers on their preparation for District Congress Committee (DCC) membership recommendations. Six components scored: district report submission, proposed names, daily activity reports, supporting documents, potential leaders, non-political influencers.
-
-**Directory:** `aicc_analysis/`
-**Stage:** Congress-facing deliverable
-
-**Files:**
-- `grading_system.py`: scoring engine (weights, thresholds, joins documented in module docstring + commit history)
-- `extract_candidates.py`: pulls candidate-level detail from the AICC portal (requires `AICC_USERNAME`/`AICC_PASSWORD` env vars)
-- `consolidated_district_grading.csv`: 592-district A/B/C/D grading
-- `candidates_detailed.csv`: 2,413 candidate-level profiles
-- `all_timestamps.csv`: 9,104 per-record submission timestamps (authoritative count source)
-- `*.json`: raw API extracts (district_reports, proposed_names, attachments, daily_reports, potential_leaders, political_influencers)
-
----
-
 ### Kundendu's Learn & Play
 
 A playful Class 1 CBSE worksheet generator for a young learner, with a structured course running alongside it.
@@ -399,15 +382,6 @@ valid and a view broken.
 
 ---
 
-### Drive PDF Extractor
-
-A small Node + Playwright tool that captures view-only Google Drive PDFs (the kind you can read but not download) and writes them out as a normal PDF.
-
-**Directory:** `tools/drive-pdf-extractor/`
-**Stage:** Internal tool
-
----
-
 ### KMUT Report
 
 A Right to Care: Kashmiri Muslim and Other Tribes report (PDF), kept here for direct linking from project pages.
@@ -454,18 +428,9 @@ Experiments/
 ├── flipbook/                           # PDF to page-turning book, self-contained export
 ├── court-translator/
 │   └── index.html                      # Court Petition Translator UI
-├── aicc_analysis/
-│   ├── grading_system.py               # DCC-readiness scoring engine
-│   ├── extract_candidates.py           # AICC portal extractor (needs env vars)
-│   ├── consolidated_district_grading.csv
-│   ├── candidates_detailed.csv
-│   ├── all_timestamps.csv
-│   └── *.json                          # raw source extracts
 ├── kundendu-worksheets/
 │   ├── index.html                      # worksheet generator + structured course
 │   └── sw.js                           # offline service worker
-├── tools/
-│   └── drive-pdf-extractor/            # view-only Drive PDF capture
 ├── netlify/
 │   └── functions/
 │       └── court-translate.js          # Hindi → English translation API
