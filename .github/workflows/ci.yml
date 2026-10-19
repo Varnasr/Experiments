@@ -62,7 +62,4 @@ jobs:
       # drives each lesson's own generator rather than reading its word bank,
       # because the bank was never wrong; the lesson reached past it.
       - name: Phonics lessons stay inside the letters taught
-        run: |
-          python3 -m http.server 8199 &
-          for i in $(seq 1 30); do curl -sf http://localhost:8199/ >/dev/null && break; sleep 1; done
-          node kundendu-worksheets/tests/sequence.mjs
+        run: node kundendu-worksheets/tests/sequence.mjs

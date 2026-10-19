@@ -1,7 +1,12 @@
 /* The phonics path must never ask a child to read a letter he has not met.
  *
- *   python3 -m http.server 8199 &                     # from the REPO ROOT
- *   LK_URL=http://localhost:8199/kundendu-worksheets/ node kundendu-worksheets/tests/sequence.mjs
+ *   node kundendu-worksheets/tests/sequence.mjs       # from the REPO ROOT
+ *   LK_URL=http://host/kundendu-worksheets/ node kundendu-worksheets/tests/sequence.mjs
+ *
+ * It serves the repository itself, the way scripts/axe.mjs does, so CI runs
+ * one command. A workflow step that backgrounds a server with `&` can hold
+ * the step open after the test has finished, because the server inherits
+ * the step's stdout and the runner waits on it.
  *
  * Module 2 teaches s a t p i n. Module 3 is called "First words to read"
  * and says six letters is enough to read real words. For a year it then
@@ -19,10 +24,33 @@
  * scraped, because a scrape that silently matches nothing passes.
  */
 import { chromium } from 'playwright-core';
-import { existsSync, readdirSync } from 'node:fs';
+import { existsSync, readdirSync, readFile } from 'node:fs';
+import { createServer } from 'node:http';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const BASE = process.env.LK_URL || 'http://localhost:8199/kundendu-worksheets/';
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
+const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript',
+                '.css': 'text/css', '.json': 'application/json', '.svg': 'image/svg+xml',
+                '.webmanifest': 'application/manifest+json' };
+
+let server = null;
+let BASE = process.env.LK_URL;
+if (!BASE) {
+  server = createServer((req, res) => {
+    let u = decodeURIComponent(req.url.split('?')[0]);
+    if (u.endsWith('/')) u += 'index.html';
+    const file = path.join(ROOT, u);
+    if (!file.startsWith(ROOT)) { res.writeHead(403); return res.end(); }
+    readFile(file, (err, body) => {
+      if (err) { res.writeHead(404); return res.end('not found'); }
+      res.writeHead(200, { 'Content-Type': TYPES[path.extname(file)] || 'application/octet-stream' });
+      res.end(body);
+    });
+  });
+  await new Promise(done => server.listen(0, '127.0.0.1', done));
+  BASE = `http://127.0.0.1:${server.address().port}/kundendu-worksheets/`;
+}
 const EXE = process.env.PW_CHROMIUM || (() => {
   const base = process.env.PLAYWRIGHT_BROWSERS_PATH || '/opt/pw-browsers';
   if (!existsSync(base)) return undefined;
@@ -108,6 +136,7 @@ if (pageErrors.length) problems.push('page errors: ' + pageErrors.join('; '));
 
 console.log(`\n${result.lessons} lessons. Distinct words per lesson: ${JSON.stringify(result.sizes)}`);
 await browser.close();
+if (server) server.close();
 
 if (problems.length) {
   console.error('\nFAIL');

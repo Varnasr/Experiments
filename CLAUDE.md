@@ -286,7 +286,10 @@ word in it is inside `satpinckehrmdgo`. "bag" was the one word that had to
 change. Lesson ids are unchanged, so saved progress still maps.
 
 `kundendu-worksheets/tests/sequence.mjs` pins it, and runs in CI beside axe
-because it needs the same browser. It drives each lesson's own generator
+because it needs the same browser. It serves the repository itself, the
+way `scripts/axe.mjs` does, so the workflow step is one command: a step
+that backgrounds a server with `&` can hold itself open after the test
+has finished, because the server inherits the step's stdout. It drives each lesson's own generator
 rather than reading its word bank: the bank was never wrong, the lesson
 reached past it, and a check written against the bank passes a lesson
 written as `lsBlend(SET1.concat(FAM.at))`. That exact shape is one of the
