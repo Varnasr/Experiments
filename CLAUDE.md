@@ -1,5 +1,7 @@
 # Experiments
 
+Shared engineering standard: @.claude/engineering-standards.md. It applies to all work in this repository. This file adds what is specific to the project, and wins where the two disagree.
+
 Twenty-one browser tools for development economics, law and data work, each a
 self-contained page: causal workbench, RCT planner, poverty and inequality,
 wage gap, women's indicators, heat exposure, air quality, court translator,
