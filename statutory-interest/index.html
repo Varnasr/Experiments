@@ -96,7 +96,7 @@
   <label for="mDays">Agreed payment period in writing (days; the Act caps it at 45)</label><input type="number" id="mDays" value="45" min="1" max="45">
   <label for="mPay">Date of payment or of computation</label><input type="date" id="mPay" value="2026-09-01">
   <label for="mBank">RBI bank rate on the relevant date (% per year)</label><input type="number" id="mBank" value="5.75" step="0.25">
-  <p class="mini">The bank rate is published by the RBI with every monetary policy statement; it has been aligned with the marginal standing facility rate since 13 February 2012. It is 5.75% from 7 October 2026, was 5.50% from 5 December 2025 and 5.75% from 6 June 2025. Enter the rate in force for the period.</p>
+  <p class="mini">The bank rate is published by the RBI with every monetary policy statement; it has been aligned with the marginal standing facility rate since 13 February 2012. It is 5.75% from 7 October 2026, was 5.50% from 5 December 2025 and 5.75% from 6 June 2025. Enter the rate in force for the period. This calculator applies one rate to the whole period; if the bank rate changed while the payment was overdue, compute each stretch at its own rate and add them.</p>
   <p style="margin-top:.6rem"><button class="go" id="mGo">Compute</button></p>
 </div></div>
 <div><div class="panel" id="mOut"></div>
@@ -148,13 +148,13 @@
   <label for="nAmt">Cheque amount (₹)</label><input type="number" id="nAmt" value="300000" step="1000">
   <label for="nDate">Date of the cheque</label><input type="date" id="nDate" value="2025-03-01">
   <label for="nPay">Date of computation</label><input type="date" id="nPay" value="2026-09-01">
-  <label for="nRate">Rate of interest the court may add to compensation (% per year, simple; courts commonly use 6 to 9)</label><input type="number" id="nRate" value="9" step="0.5">
+  <label for="nRate">Rate of interest the court may add to compensation (% per year, simple; the Supreme Court uses 9)</label><input type="number" id="nRate" value="9" step="0.5">
   <p style="margin-top:.6rem"><button class="go" id="nGo">Compute</button></p>
 </div></div>
 <div><div class="panel" id="nOut"></div>
   <div class="law"><b>Section 138, Negotiable Instruments Act 1881</b>The drawer "shall be deemed to have committed an offence and shall, without prejudice to any other provisions of this Act, be punished with imprisonment for a term which may be extended to two years, or with fine which may extend to twice the amount of the cheque, or with both", provided the cheque was presented within its validity, a written demand was made within thirty days of the dishonour memo, and the drawer failed to pay within fifteen days of receiving it.</div>
   <div class="law"><b>Section 143A</b>The court trying the offence may order interim compensation "which shall not exceed twenty per cent of the amount of the cheque", payable within sixty days. <b>Section 148</b>: on appeal against conviction, the appellate court may order deposit of "a minimum of twenty per cent of the fine or compensation awarded by the trial court".</div>
-  <p class="note">Compensation is ordered under section 357 of the Criminal Procedure Code (now section 395 of the BNSS) out of the fine, and the Supreme Court has directed that it be computed with the loss of interest in mind; the rate is in the court's discretion, so the figure below is an upper envelope and a common working rather than an entitlement.</p>
+  <p class="note">Compensation is ordered under section 357 of the Criminal Procedure Code (now section 395 of the BNSS) out of the fine, and the Supreme Court has directed that it be computed with the loss of interest in mind; the rate is in the court's discretion, so the figure below is an upper envelope and a working, and the complainant has no entitlement to it. In <i>Kalamani Tex v P. Balasubramanian</i> (Criminal Appeal 123 of 2021, decided 10 February 2021, para 20) the Supreme Court said that, "unless there exist special circumstances, the Courts should uniformly levy fine up to twice the cheque amount along with simple interest at the rate of 9% per annum", relying on <i>R. Vijayan v Baby</i> (2012) 1 SCC 260. In paragraph 21 it gave this complainant no compensation, because he had not asked for it in the High Court or challenged its judgment, so ask for it at trial.</p>
 </div></div></div>
 
 <!-- Plain -->
