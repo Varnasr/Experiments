@@ -21,14 +21,25 @@ exports.handler = async (event) => {
       },
       body: JSON.stringify({
         text,
-        target_language_code: lang,
-        speaker: "anushka",
-        model: "bulbul:v2",
+        // Sarvam renamed this field; target_language_code is answered with a 400,
+        // which left every read-aloud button silent.
+        language_code: lang,
+        // bulbul:v2 is withdrawn: Sarvam answers "Model 'bulbul:v2' has been
+        // deprecated. Please use 'bulbul:v3' instead." v3 has its own voices and
+        // anushka is not among them; priya is a v3 female voice (docs.sarvam.ai,
+        // text-to-speech/convert). Pace 0.5 to 2.0 on v3.
+        speaker: "priya",
+        model: "bulbul:v3",
         pace: 0.85
       })
     });
 
-    if (!r.ok) return { statusCode: 502, body: "tts failed: " + r.status };
+    // Sarvam's own message says which field it rejected; a bare status code left
+    // a renamed field invisible for months. It carries no key or user data.
+    if (!r.ok) {
+      const why = (await r.text().catch(() => "")).slice(0, 300);
+      return { statusCode: 502, body: "tts failed: " + r.status + " " + why };
+    }
 
     const data = await r.json();
     const b64 = data.audios && data.audios[0];

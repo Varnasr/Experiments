@@ -124,6 +124,10 @@
         .notes .verified { display:block; margin-top:.45rem; font-size:.85rem; color:var(--purple); font-weight:600; }
 
         /* stack band */
+        .grads { list-style:none; display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:1rem; margin-top:1.5rem; }
+        .grads li { border:1px solid var(--border); border-radius:12px; padding:1rem 1.1rem; background:var(--surface); }
+        .grads a { font-family:var(--head); font-weight:700; color:var(--purple); font-size:1.05rem; }
+        .grads span { display:block; margin-top:.35rem; color:var(--dim); font-size:.95rem; }
         .stack { background:linear-gradient(135deg,var(--deep),var(--purple)); color:#fff; padding:3.5rem 0; margin-top:3rem; position:relative; overflow:hidden; }
         .stack h2 { font-family:var(--head); font-weight:700; font-size:1.7rem; margin-bottom:.4rem; }
         .stack .lead { color:rgba(255,255,255,.85); max-width:64ch; margin-bottom:1.6rem; }
@@ -380,11 +384,11 @@
             <div class="doodle"><svg viewBox="0 0 64 64" filter="url(#wobble)"><path d="M8 14h24a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H18l-6 6v-6H8a4 4 0 0 1-4-4V18a4 4 0 0 1 4-4z"/><path d="M14 24h12"/><path d="M12 20h16" stroke-width="1.6"/><path d="M32 34h24a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4h-4v6l-6-6H32a4 4 0 0 1-4-4V38a4 4 0 0 1 4-4z"/><path d="M36 44h16M38 40h12" stroke-width="1.6"/></svg></div>
             <h3><a href="court-translator/">Court Petition Translator</a><span class="badge b-ai">AI</span><span class="badge b-tool">Tool</span></h3>
             <p class="summary">Translates Hindi Supreme Court and High Court petitions into formal legal English, so <em>yaachikaakarta</em> becomes "Petitioner" and <em>anuchhed</em> becomes "Article", and the output reads like it was drafted in English.</p>
-            <p class="tech">Sarvam AI · Llama 3.3 70B via Groq · Netlify Functions</p>
+            <p class="tech">Sarvam AI · GPT-OSS 120B via Groq · Netlify Functions</p>
             <span class="open">Open the tool →</span>
             <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button></div>
             <div class="pop"><b>In plain words.</b> Paste the Hindi text of a petition and get back English that a lawyer would recognise as a petition, with the right terms of art, rather than a literal translation.</div>
-            <div class="notes"><ul><li>Text is chunked and sent to <code>sarvam-translate:v1</code> in formal mode, then revised by Llama 3.3 70B on Groq with a prompt that fixes legal terminology.</li><li>Keys stay server-side in a Netlify Function; the browser only talks to that function. Stage: prototype, awaiting a blind comparison against a human legal translator.</li></ul></div>
+            <div class="notes"><ul><li>Text is chunked and sent to <code>sarvam-translate:v1</code> in formal mode, then revised by GPT-OSS 120B on Groq with a prompt that fixes legal terminology.</li><li>Keys stay server-side in a Netlify Function; the browser only talks to that function. Stage: prototype, awaiting a blind comparison against a human legal translator.</li></ul></div>
         </article>
         <article class="card" id="drive">
             <div class="doodle"><svg viewBox="0 0 64 64" filter="url(#wobble)"><path d="M16 8h22l10 10v36a3 3 0 0 1-3 3H16a3 3 0 0 1-3-3V11a3 3 0 0 1 3-3z"/><path d="M38 8v10h10"/><path d="M22 30h20M22 38h20M22 46h12"/><path d="M50 40v14M45 49l5 5 5-5"/></svg></div>
@@ -532,7 +536,13 @@
 
 <!-- 07 Graduated -->
 <section class="block" id="graduated"><div class="wrap">
-    <div class="sec-head"><div class="num">07</div><div><div class="sub">Graduated</div><h2>Everything that grew up and moved out</h2><p>When something outgrows this page it gets a repository and a home of its own, and it stops being listed here. The index of those projects, with status labels, is <a href="https://openstacks.dev">openstacks.dev</a>.</p></div></div>
+    <div class="sec-head"><div class="num">07</div><div><div class="sub">Graduated</div><h2>Everything that grew up and moved out</h2><p>When something outgrows this page it gets a repository and a home of its own, and it stops being listed here. The index of those projects, with status labels, is <a href="https://openstacks.dev">openstacks.dev</a>. These four started here or beside it.</p></div></div>
+    <ul class="grads">
+        <li><a href="https://offtheroll.in/">Off the Roll</a><span>Who was left off India's electoral rolls in the Special Intensive Revision, state by state, with the Old City explorer that began on this page.</span></li>
+        <li><a href="https://www.womenonrecord.net/">Women on Record</a><span>Crimes against women in India as police and courts recorded them, from NCRB's Crime in India, every state from 2017, with a free dataset.</span></li>
+        <li><a href="https://www.whogavetheorder.in/">Who gave the order?</a><span>A public record of police use of force in India, built around one question: who authorised it.</span></li>
+        <li><a href="https://chromalie.page/">Chromalie</a><span>A free colouring studio from StoryWell Books: colouring books in the browser, textured brushes, saved progress and downloads.</span></li>
+    </ul>
 </div></section>
 
 </main>

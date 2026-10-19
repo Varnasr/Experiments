@@ -33,7 +33,7 @@
 
 # ---- whogavetheorder moved to its own repository and site ----
 # Graduated out of this sandbox on 17 August 2026 to Varnasr/WhoGaveTheOrder,
-# serving from whogavetheorder.netlify.app. 301 rather than 302: the move is
+# serving from www.whogavetheorder.in (whogavetheorder.netlify.app before its domain). 301 rather than 302: the move is
 # permanent, and anything already shared should follow it for good.
 # The Old City SIR explorer moved to the SIR analyses hub on 2026-09-29, beside
 # the Bihar analysis. The hub is now Off the Roll at offtheroll.in, so this
@@ -46,7 +46,7 @@
 
 [[redirects]]
   from = "/whogavetheorder/*"
-  to = "https://whogavetheorder.netlify.app/:splat"
+  to = "https://www.whogavetheorder.in/:splat"
   status = 301
   force = true
 
