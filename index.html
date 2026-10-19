@@ -124,6 +124,10 @@
         .notes .verified { display:block; margin-top:.45rem; font-size:.85rem; color:var(--purple); font-weight:600; }
 
         /* stack band */
+        .grads { list-style:none; display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:1rem; margin-top:1.5rem; }
+        .grads li { border:1px solid var(--border); border-radius:12px; padding:1rem 1.1rem; background:var(--surface); }
+        .grads a { font-family:var(--head); font-weight:700; color:var(--purple); font-size:1.05rem; }
+        .grads span { display:block; margin-top:.35rem; color:var(--dim); font-size:.95rem; }
         .stack { background:linear-gradient(135deg,var(--deep),var(--purple)); color:#fff; padding:3.5rem 0; margin-top:3rem; position:relative; overflow:hidden; }
         .stack h2 { font-family:var(--head); font-weight:700; font-size:1.7rem; margin-bottom:.4rem; }
         .stack .lead { color:rgba(255,255,255,.85); max-width:64ch; margin-bottom:1.6rem; }
@@ -532,7 +536,13 @@
 
 <!-- 07 Graduated -->
 <section class="block" id="graduated"><div class="wrap">
-    <div class="sec-head"><div class="num">07</div><div><div class="sub">Graduated</div><h2>Everything that grew up and moved out</h2><p>When something outgrows this page it gets a repository and a home of its own, and it stops being listed here. The index of those projects, with status labels, is <a href="https://openstacks.dev">openstacks.dev</a>.</p></div></div>
+    <div class="sec-head"><div class="num">07</div><div><div class="sub">Graduated</div><h2>Everything that grew up and moved out</h2><p>When something outgrows this page it gets a repository and a home of its own, and it stops being listed here. The index of those projects, with status labels, is <a href="https://openstacks.dev">openstacks.dev</a>. These four started here or beside it.</p></div></div>
+    <ul class="grads">
+        <li><a href="https://offtheroll.in/">Off the Roll</a><span>Who was left off India's electoral rolls in the Special Intensive Revision, state by state, with the Old City explorer that began on this page.</span></li>
+        <li><a href="https://www.womenonrecord.net/">Women on Record</a><span>Crimes against women in India as police and courts recorded them, from NCRB's Crime in India, every state from 2017, with a free dataset.</span></li>
+        <li><a href="https://www.whogavetheorder.in/">Who gave the order?</a><span>A public record of police use of force in India, built around one question: who authorised it.</span></li>
+        <li><a href="https://chromalie.page/">Chromalie</a><span>A free colouring studio from StoryWell Books: colouring books in the browser, textured brushes, saved progress and downloads.</span></li>
+    </ul>
 </div></section>
 
 </main>
