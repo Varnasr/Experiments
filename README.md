@@ -399,15 +399,6 @@ valid and a view broken.
 
 ---
 
-### Drive PDF Extractor
-
-A small Node + Playwright tool that captures view-only Google Drive PDFs (the kind you can read but not download) and writes them out as a normal PDF.
-
-**Directory:** `tools/drive-pdf-extractor/`
-**Stage:** Internal tool
-
----
-
 ### KMUT Report
 
 A Right to Care: Kashmiri Muslim and Other Tribes report (PDF), kept here for direct linking from project pages.
@@ -464,8 +455,6 @@ Experiments/
 ├── kundendu-worksheets/
 │   ├── index.html                      # worksheet generator + structured course
 │   └── sw.js                           # offline service worker
-├── tools/
-│   └── drive-pdf-extractor/            # view-only Drive PDF capture
 ├── netlify/
 │   └── functions/
 │       └── court-translate.js          # Hindi → English translation API
