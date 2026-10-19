@@ -248,6 +248,19 @@ before it knew the difference it reported all 22 as syntax errors.
   thing that makes a paragraph smaller: quotation *styles* are sized like body
   text, so unticking a paragraph leaves it at the text size.
 
+  On 19 October 2026 the presets were read against their primary sources.
+  Delhi and Gujarat match on every value, both dates and the scope, and
+  Gujarat's exemption list and the two superseded 2025 circulars match as
+  well. Bombay's specification matches, and the nulls are right: the circular
+  prescribes no line spacing, no top or bottom margin and no size for
+  quotations. Its quotation was off by one word and now reads "printing on
+  the both sides of the paper", which is what the circular says.
+  What could not be read is Bombay's two notification numbers and the date
+  of 6 July 2021: the linked PDF carries the circular as text and the gazette
+  notifications as page images with no text layer, and the circular itself is
+  numbered No.Rule/P.1604/2021 and dated 14 July 2021. Whether P.1604/2021
+  also numbers a notification of 6 July is outstanding and needs the gazette.
+
 ## Testing
 
 `.github/workflows/ci.yml` runs two jobs on every push and pull request. The
@@ -255,6 +268,15 @@ first is `scripts/check.py` and `scripts/check-inline-js.mjs`, neither of which
 needs a browser or a network. The second installs Chromium and runs
 `scripts/axe.mjs`; it is separate so a contributor waiting on the static checks
 does not wait on a browser download.
+
+`.github/workflows/subresources.yml` runs `scripts/subresources.py` weekly and
+on demand, and on neither push nor pull request. It fetches each pinned CDN
+file and compares its hash against the page's `integrity`, then follows every
+citation the tools carry. It is kept out of CI on purpose: it talks to a dozen
+third-party hosts, and a job cancelled by its own timeout cancels the run it
+is part of. A hash that no longer matches fails. A link fails only on 404 or
+410; a 403 or a timeout is reported and does not, because bot protection and
+a slow afternoon at a ministry are not evidence that a page is gone.
 
 Before 2026-09-22 the only workflow deployed to Pages and validated nothing, so
 none of this was checked by anything. Seven checks have been fault-injected
