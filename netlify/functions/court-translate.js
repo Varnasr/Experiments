@@ -1,6 +1,9 @@
 // Netlify Function: Hindi → English Supreme Court Petition Translator
 // Experiment: court-translator
-// Uses Sarvam.ai for base translation + Groq/Llama 3.3 70B for legal terminology refinement
+// Uses Sarvam.ai for base translation + Groq/GPT-OSS 120B for legal terminology refinement.
+// Groq shut down llama-3.3-70b-versatile on 16 August 2026 and names openai/gpt-oss-120b
+// as its replacement (console.groq.com/docs/deprecations). Until this change every
+// refinement failed and the page showed the raw Sarvam output.
 
 const MAX_CHUNK = 1800;
 
@@ -75,7 +78,11 @@ async function refineLegalTranslation(rawTranslation) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      model: "llama-3.3-70b-versatile",
+      model: "openai/gpt-oss-120b",
+      // A reasoning model: keep its reasoning short and out of the reply, and leave
+      // room in the token budget for both the reasoning and the translation.
+      reasoning_effort: "low",
+      include_reasoning: false,
       messages: [
         {
           role: "system",
@@ -105,7 +112,7 @@ Output ONLY the refined English translation. No explanations, no preamble.`,
           content: rawTranslation,
         },
       ],
-      max_tokens: 4096,
+      max_completion_tokens: 8192,
     }),
   });
 
@@ -116,9 +123,17 @@ Output ONLY the refined English translation. No explanations, no preamble.`,
 }
 
 exports.handler = async function (event) {
+  // The page calls this function by its absolute netlify.app address so the GitHub
+  // Pages copy works too. Only the site's own origins may call it from a browser;
+  // "*" let any website spend the Sarvam and Groq keys. A server can still call it
+  // directly, since CORS binds browsers only.
+  const origin = event.headers?.origin || "";
+  const allowed = /^https:\/\/(idealogworks\.foo|varnasr\.github\.io|varnasr-experiments\.netlify\.app|deploy-preview-\d+--varnasr-experiments\.netlify\.app)$/.test(origin)
+    || /^http:\/\/localhost(:\d+)?$/.test(origin);
   const headers = {
-    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Origin": allowed ? origin : "https://idealogworks.foo",
     "Access-Control-Allow-Headers": "Content-Type",
+    "Vary": "Origin",
     "Content-Type": "application/json",
   };
 

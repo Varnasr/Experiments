@@ -290,7 +290,7 @@ An AI-powered tool for translating Hindi Supreme Court and High Court petitions 
 
 **How it works:**
 1. Hindi text is split into chunks and translated via [Sarvam AI](https://www.sarvam.ai) (`sarvam-translate:v1`, formal mode)
-2. The raw translation is refined by Llama 3.3 70B (via Groq) with a legal-terminology-aware prompt that corrects terms like याचिकाकर्ता → Petitioner, माननीय → Hon'ble, अनुच्छेद → Article, etc.
+2. The raw translation is refined by GPT-OSS 120B (via Groq) with a legal-terminology-aware prompt that corrects terms like याचिकाकर्ता → Petitioner, माननीय → Hon'ble, अनुच्छेद → Article, etc.
 
 **Environment variables required:**
 - `SARVAM_API_KEY`: from [Sarvam AI dashboard](https://dashboard.sarvam.ai)

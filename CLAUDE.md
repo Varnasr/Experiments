@@ -33,16 +33,30 @@ Content-Security-Policy you see locally is no policy at all.
 
 `.github/workflows/deploy-pages.yml` publishes the repository to GitHub Pages;
 `netlify.toml` configures Netlify. Most tools are fully client side and work on
-either. **`court-translator` is not.** It posts to
-`/.netlify/functions/court-translate`, which calls Sarvam AI for translation and
-Groq for refinement, and `/.netlify/functions/tts` for speech. Those paths do
-not exist on Pages, so on the Pages copy the tool loads, accepts a document,
-extracts the text in the browser, and then fails at the translation step.
+either. **`court-translator` calls a Netlify function**, and it calls it by its
+absolute address, `https://varnasr-experiments.netlify.app/.netlify/functions/court-translate`,
+so the Pages copy translates too. The function calls Sarvam AI for translation
+and Groq for refinement. `kundendu-worksheets` calls `/.netlify/functions/tts`
+(Sarvam's Bulbul voice) by a relative path, so read-aloud works only on Netlify
+and on littlek.in.
 
-The upside of that arrangement is worth stating too: the API keys live in
-Netlify's environment and never reach a browser. `api.sarvam.ai` and
-`api.groq.com` are therefore absent from `connect-src` **correctly**, because a
-CSP governs the page and not the server. Do not add them.
+The API keys live in Netlify's environment and never reach a browser.
+`api.sarvam.ai` and `api.groq.com` are therefore absent from `connect-src`
+**correctly**, because a CSP governs the page and not the server. Do not add
+them. Until 19 October 2026 the translate function answered every origin with
+`Access-Control-Allow-Origin: *`, so any website could spend the keys from a
+reader's browser; it now echoes only the site's own origins. CORS binds
+browsers only, so a server can still call it directly.
+
+**Both third-party APIs change under us, and nothing errors when they do.**
+Groq shut down `llama-3.3-70b-versatile` on 16 August 2026; from then until 19
+October every refinement failed and the page showed Sarvam's raw output with a
+small note. It is `openai/gpt-oss-120b` now, Groq's named replacement, with
+`reasoning_effort: "low"` and `include_reasoning: false`. Sarvam renamed the
+text-to-speech field `target_language_code` to `language_code` and answers the
+old name with a 400, which left every read-aloud button in Kundendu silent.
+Check both models against console.groq.com/docs/deprecations and
+docs.sarvam.ai when touching either function.
 
 ## The CSP is the thing to get right, and every way it is wrong is silent
 

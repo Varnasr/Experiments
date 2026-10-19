@@ -143,7 +143,7 @@ const $=s=>document.querySelector(s); const esc=s=>String(s??'').replace(/[&<>"]
 const inr=x=>'₹'+Math.round(x).toLocaleString('en-IN'); const lakh=x=>(x/1e5).toLocaleString('en-IN',{maximumFractionDigits:2})+' lakh';
 const fmtD=d=>d?new Date(d+'T00:00:00').toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}):'—';
 const days=(a,b)=>Math.round((new Date(b+'T00:00:00')-new Date(a+'T00:00:00'))/86400000);
-const addDays=(d,n)=>{ const x=new Date(d+'T00:00:00'); x.setDate(x.getDate()+n); return x.toISOString().slice(0,10); };
+const addDays=(d,n)=>{ const x=new Date(d+'T00:00:00Z'); x.setUTCDate(x.getUTCDate()+n); return x.toISOString().slice(0,10); };
 const tip=$('#tip'); document.addEventListener('mousemove',e=>{const t=e.target.closest&&e.target.closest('[data-tip]');if(t){tip.innerHTML=t.getAttribute('data-tip');tip.style.display='block';tip.style.left=(e.clientX+12)+'px';tip.style.top=(e.clientY-10)+'px';}else tip.style.display='none';});
 
 // Ceilings: Rule 90, Conduct of Elections Rules 1961, as amended 6 January 2022. Band B (the lower figure) follows the pattern of the 2014 and 2022 notifications: Arunachal Pradesh, Goa, Sikkim and the Union territories other than Delhi for Lok Sabha; the eight north-eastern and hill states other than Assam plus Goa and Puducherry for assemblies.

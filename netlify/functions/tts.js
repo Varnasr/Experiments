@@ -21,7 +21,9 @@ exports.handler = async (event) => {
       },
       body: JSON.stringify({
         text,
-        target_language_code: lang,
+        // Sarvam renamed this field; target_language_code is answered with a 400,
+        // which left every read-aloud button silent.
+        language_code: lang,
         speaker: "anushka",
         model: "bulbul:v2",
         pace: 0.85

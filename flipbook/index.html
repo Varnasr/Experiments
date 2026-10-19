@@ -171,7 +171,7 @@ async function render(file){ if(file.type&&file.type!=='application/pdf'&&!/\.pd
 }
 const mb=arr=>{ const bytes=arr.reduce((a,d)=>a+Math.round((d.length-d.indexOf(',')-1)*0.75),0); return (bytes/1048576).toFixed(1)+' MB'; };
 
-function build(){ if(!pages.length) return; if(flip){ try{ flip.destroy(); }catch(e){} flip=null; } const book=$('#book'); book.innerHTML=''; book.hidden=false; $('#stage .empty').hidden=true;
+function build(){ if(!pages.length) return; if(flip){ try{ flip.destroy(); }catch(e){} flip=null; } if(!$('#book')){ const nb=document.createElement('div'); nb.id='book'; $('#stage').appendChild(nb); } const book=$('#book'); book.innerHTML=''; book.hidden=false; $('#stage .empty').hidden=true;
   const ratio=dims.h/dims.w; const stageW=$('#stage').clientWidth*0.94; const pw=Math.min(Math.floor(stageW/2), Math.floor((window.innerHeight*0.78)/ratio)); const ph=Math.round(pw*ratio);
   flip=new St.PageFlip(book,{width:pw,height:ph,size:'stretch',minWidth:200,maxWidth:1200,minHeight:200,maxHeight:1600,showCover:$('#cover').checked,usePortrait:$('#portrait').checked,maxShadowOpacity:.45,flippingTime:+$('#speed').value,mobileScrollSupport:false,drawShadow:true,autoSize:true});
   flip.loadFromImages(pages); flip.on('flip',e=>{ setPg(e.data); }); setPg(0); thumbs(); }
