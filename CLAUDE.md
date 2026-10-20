@@ -261,6 +261,47 @@ before it knew the difference it reported all 22 as syntax errors.
   numbered No.Rule/P.1604/2021 and dated 14 July 2021. Whether P.1604/2021
   also numbers a notification of 6 July is outstanding and needs the gazette.
 
+## The phonics path taught letters it had not taught yet
+
+`kundendu-worksheets` holds a 162-lesson course. Its phonics path teaches
+`s a t p i n` in module 2, and module 3 is called "First words to read" and
+says six letters is enough to read real words. That is true: at, an, in, it,
+sat, pat, pan, tap, nap, tin, tan, sit, pit, tip, pin, nip, and with two
+sounds at the start, spin, spit, span, snap.
+
+Module 3 did not use them. Every one of its five lessons drew on the full
+word families, so a child who knew six letters was shown cat, van, fish and
+bag, and the lesson that said "You know enough sounds to read a whole book"
+handed him a book with c, h, m, r, b, g, d, o and e in it. Module 4 had a
+milder version: `p4c` and `p4d` asked for whole words using f, b, j, l and u
+before any of them were taught.
+
+**Nothing failed.** The worksheet generated, the answers marked, the book
+turned its pages, every check in this repository stayed green. The only way
+to find it was to sit with a six-year-old who could not do it.
+
+Fixed on 2026-10-19 by giving module 3 the set-1 words and captions it can
+actually read, and moving the first book to module 4 as `p4f`, where every
+word in it is inside `satpinckehrmdgo`. "bag" was the one word that had to
+change. Lesson ids are unchanged, so saved progress still maps.
+
+`kundendu-worksheets/tests/sequence.mjs` pins it, and runs in CI beside axe
+because it needs the same browser. It serves the repository itself, the
+way `scripts/axe.mjs` does, so the workflow step is one command: a step
+that backgrounds a server with `&` can hold itself open after the test
+has finished, because the server inherits the step's stdout. It drives each lesson's own generator
+rather than reading its word bank: the bank was never wrong, the lesson
+reached past it, and a check written against the bank passes a lesson
+written as `lsBlend(SET1.concat(FAM.at))`. That exact shape is one of the
+five faults it was injected against, along with one untaught word in a
+caption, one letter reverted in the book, the book moved back to module 3,
+and a filter that empties a bank, which passes every "is each word allowed?"
+test ever written because there is nothing left to fail.
+
+A picture cue is not a word he reads. `p2c`, `p4a` and `p4b` ask only for the
+first sound, so "elephant" and "ox" are fine there and the check leaves them
+alone.
+
 ## Testing
 
 `.github/workflows/ci.yml` runs two jobs on every push and pull request. The
