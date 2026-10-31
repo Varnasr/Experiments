@@ -40,6 +40,7 @@ ORIGIN = SITE['origin'].rstrip('/')
 
 HEAD_RE = re.compile(r'\n?[ \t]*<!-- seo:start -->.*?<!-- seo:end -->', re.S)
 SHARE_RE = re.compile(r'[ \t]*<!-- share:start -->.*?<!-- share:end -->\n?', re.S)
+CONTACT_RE = re.compile(r'[ \t]*<!-- contact:start -->.*?<!-- contact:end -->\n?', re.S)
 # The home page carried three hand-written Open Graph tags before this script.
 OLD_OG_RE = re.compile(r'\n[ \t]*<meta property="og:(?:title|description|type)" content="[^"]*">')
 DESC_RE = re.compile(r'<meta name="description" content="([^"]*)">')
@@ -63,6 +64,20 @@ CSS = (
     '.xshare [hidden]{display:none!important}'
     '@media print{.xshare{display:none}}'
 )
+
+# The contact line sits under the share row on every page, home included, so it
+# carries its own fixed colours like the row does: #382280 on #f5f1fa is 11.6:1,
+# and the links are underlined so colour is not the only cue.
+CSS_CONTACT = (
+    '.xcontact{box-sizing:border-box;width:calc(100% - 2rem);max-width:960px;margin:0 auto 1.5rem;'
+    'padding:.85rem 1rem;background:#f5f1fa;border:1px solid #e6e3ec;border-radius:12px;'
+    'font:400 15px/1.5 "Source Sans 3",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;'
+    'color:#382280;text-align:center}'
+    '.xcontact a{color:#382280;font-weight:600;text-decoration:underline;text-underline-offset:2px}'
+    '.xcontact a:focus-visible{outline:3px solid #ff9911;outline-offset:2px}'
+    '@media print{.xcontact{display:none}}'
+)
+DOMAIN = ORIGIN.split('://', 1)[-1]
 
 # Copy link needs a script; without one the button stays hidden and the three
 # links still work, because each is a plain address.
@@ -136,8 +151,7 @@ def head_block(p, desc):
         f'<meta name="twitter:image" content="{a(p["image"])}">',
         f'<script type="application/ld+json">{ld(p, desc)}</script>',
     ]
-    if not p['home']:
-        tags.append(f'<style>{CSS}</style>')
+    tags.append(f'<style>{CSS_CONTACT if p["home"] else CSS + CSS_CONTACT}</style>')
     return '\n<!-- seo:start -->\n' + '\n'.join(tags) + '\n<!-- seo:end -->'
 
 
@@ -161,10 +175,24 @@ def share_block(p):
     )
 
 
+def contact_block():
+    mail = f'mailto:hello@pinpointventures.in?subject=Enquiry%20from%20{DOMAIN}'
+    wa = ('https://wa.me/919871777110?text=Hi%20Pinpoint%20Ventures%2C%20I%20found%20you%20through%20'
+          f'{DOMAIN}.%20I%27d%20like%20to%20discuss%20a%20research%20or%20advisory%20engagement.')
+    return (
+        '<!-- contact:start -->\n'
+        '<p class="xcontact">Need help setting out your story, what sets your work apart, the context, '
+        'the return on investment and the projections? Pinpoint Ventures can help. Write to '
+        f'<a href="{a(mail)}">hello@pinpointventures.in</a> or message on '
+        f'<a href="{a(wa)}" target="_blank" rel="noopener">WhatsApp</a>.</p>\n'
+        '<!-- contact:end -->\n'
+    )
+
+
 SCRIPT_RE = re.compile(r'<script\b.*?</script>', re.S)
 
 
-def insert_share(p, out):
+def insert_share(p, out, block):
     """Put the share row just above the page's footer, so it reads as part of
     the page rather than trailing after the credits. Every tool has exactly one
     real <footer>; a <footer> inside a <script> is a document the tool builds
@@ -185,17 +213,18 @@ def insert_share(p, out):
         indent = out[i:real[0]]
         if indent.strip():
             i, indent = real[0], ''
-        return out[:i] + indent + share_block(p).replace('\n', '\n' + indent).rstrip(' ') + out[i:]
+        return out[:i] + indent + block.replace('\n', '\n' + indent).rstrip(' ') + out[i:]
     i = out.rfind('</body>')
     if i < 0 or out[i:].replace('\n', '').replace(' ', '') not in ('</body></html>', '</body>'):
         raise SystemExit(f'{rel}: the last </body> is not the end of the document')
-    return out[:i] + share_block(p) + out[i:]
+    return out[:i] + block + out[i:]
 
 
 def render(p):
     src = p['path'].read_text(encoding='utf-8')
     out = HEAD_RE.sub('', src)
     out = SHARE_RE.sub('', out)
+    out = CONTACT_RE.sub('', out)
     if p['home']:
         out = OLD_OG_RE.sub('', out)
     m = DESC_RE.search(out)
@@ -203,9 +232,8 @@ def render(p):
         raise SystemExit(f"{p['path'].relative_to(ROOT)}: no <meta name=\"description\">, so no place to put the tags")
     desc = html.unescape(m.group(1))
     out = out[:m.end()] + head_block(p, desc) + out[m.end():]
-    if not p['home']:
-        out = insert_share(p, out)
-    return out
+    block = contact_block() if p['home'] else share_block(p) + contact_block()
+    return insert_share(p, out, block)
 
 
 def sitemap():
