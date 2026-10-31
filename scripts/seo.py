@@ -31,7 +31,7 @@ import json
 import re
 import sys
 from pathlib import Path
-from urllib.parse import quote
+from urllib.parse import quote, urlsplit
 
 ROOT = Path(__file__).resolve().parent.parent
 CFG = json.loads((ROOT / 'scripts/seo/tools.json').read_text(encoding='utf-8'))
@@ -175,7 +175,10 @@ def share_block(p):
     )
 
 
-def contact_block():
+def contact_block(p):
+    # The page's own domain: the canonical host for the two apps that serve from
+    # their own domain, the site's otherwise.
+    DOMAIN = urlsplit(p['url']).netloc
     mail = f'mailto:hello@pinpointventures.in?subject=Enquiry%20from%20{DOMAIN}'
     wa = ('https://wa.me/919871777110?text=Hi%20Pinpoint%20Ventures%2C%20I%20found%20you%20through%20'
           f'{DOMAIN}.%20I%27d%20like%20to%20discuss%20a%20research%20or%20advisory%20engagement.')
@@ -232,7 +235,7 @@ def render(p):
         raise SystemExit(f"{p['path'].relative_to(ROOT)}: no <meta name=\"description\">, so no place to put the tags")
     desc = html.unescape(m.group(1))
     out = out[:m.end()] + head_block(p, desc) + out[m.end():]
-    block = contact_block() if p['home'] else share_block(p) + contact_block()
+    block = contact_block(p) if p['home'] else share_block(p) + contact_block(p)
     return insert_share(p, out, block)
 
 
