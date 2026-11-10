@@ -2,8 +2,8 @@
 
 Shared engineering standard: @.claude/engineering-standards.md. It applies to all work in this repository. This file adds what is specific to the project, and wins where the two disagree.
 
-Twenty-three browser tools for development economics, law and data work, each a
-self-contained page: causal workbench, RCT planner, sampling design, poverty and inequality,
+Twenty-four browser tools for development economics, law and data work, each a
+self-contained page: causal workbench, RCT planner, sampling design, trial checks, poverty and inequality,
 wage gap, fiscal incidence, women's indicators, heat exposure, air quality, court translator,
 court filing formatter, petition builder, statutory interest, land acquisition,
 library builder and the rest. No build step. Deployed to GitHub Pages and to
@@ -22,6 +22,7 @@ python3 scripts/seo.py             # head tags, share row, contact line; --check
 python3 scripts/card-dates.py      # months on the landing cards, from git; --check in CI
 node sampling-design/tests/core.mjs  # the sampling arithmetic against outside values, run by CI
 node fiscal-incidence/tests/core.mjs # the incidence arithmetic against outside values, run by CI
+node trial-checks/tests/core.mjs     # multiple-testing and bounds arithmetic, run by CI
 python3 -m http.server 8000        # then open http://localhost:8000
 ```
 
@@ -254,6 +255,15 @@ equal size, forgetting to divide group totals by population changes nothing,
 so the test now carries groups of unequal size entered both ways. Its sign
 conventions are the Commitment to Equity handbook's: a positive Kakwani index
 means progressive for a tax and for a transfer.
+
+`trial-checks` follows the pattern too (`trial-checks/tests/core.mjs`, twelve
+injected faults; Holm and Benjamini-Hochberg are compared with statsmodels).
+Its first browser run passed every assertion with no stylesheet at all: the
+page had been assembled by copying the first `<style>` block of
+`sampling-design`, which after `scripts/seo.py` is the share row's style and
+not the page's. Nothing failed except a 20-pixel overflow at phone width.
+**Look at the screenshot, and when copying a stylesheet take the block that
+contains `:root`.**
 
 A new tool's card gets its dates only after the tool has a commit, because
 `scripts/card-dates.py` reads them from git: commit the tool, run the script,

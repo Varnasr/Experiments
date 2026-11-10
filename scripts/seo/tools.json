@@ -56,6 +56,12 @@
       "tagline": "Sample size, allocation across strata and a PPS draw of clusters, with weights."
     },
     {
+      "dir": "trial-checks",
+      "card": "trialchecks",
+      "name": "Multiple Outcomes & Attrition Bounds",
+      "tagline": "Holm, Benjamini–Hochberg and sharpened q-values; Lee and Manski bounds for attrition."
+    },
+    {
       "dir": "survey-audit",
       "card": "survey",
       "name": "Survey Data Auditor",

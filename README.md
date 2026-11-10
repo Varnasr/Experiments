@@ -151,6 +151,17 @@ a sampling record.
 
 ---
 
+### Multiple Outcomes & Attrition Bounds
+
+P-values for a family of outcomes adjusted by Bonferroni, Holm,
+Benjamini–Hochberg and sharpened q-values; and Lee and Manski bounds on a
+treatment effect under differential attrition, with bootstrap intervals.
+
+**Directory:** `trial-checks/`
+**Stage:** Active
+
+---
+
 ### Cost–Benefit Calculator
 
 NPV, BCR, IRR, payback and cost per outcome for cost, benefit and outcome
@@ -443,6 +454,7 @@ Experiments/
 ├── fiscal-incidence/                   # Kakwani, Reynolds–Smolensky, reranking from grouped data
 ├── rct-planner/                        # power/MDE and stratified randomiser
 ├── sampling-design/                    # sample size, allocation, PPS draw of clusters
+├── trial-checks/                       # multiple-testing adjustments, Lee and Manski bounds
 ├── cost-benefit/                       # NPV/BCR/IRR with Monte Carlo
 ├── land-acquisition/                   # RFCTLARR 2013 compensation
 ├── expense-ledger/                     # election expenses against the Rule 90 ceiling
