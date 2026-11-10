@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Multidimensional Poverty · Experiments</title>
+<meta name="description" content="The Alkire-Foster multidimensional poverty index from your own data: headcount, intensity and the adjusted headcount, what each indicator contributes, a breakdown by group, and how the answer moves with the poverty cutoff.">
+<!-- seo:start -->
+<link rel="canonical" href="https://idealogworks.foo/mpi-calculator/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Experiments">
+<meta property="og:locale" content="en_IN">
+<meta property="og:title" content="Multidimensional Poverty">
+<meta property="og:description" content="The Alkire–Foster index from your own data: headcount, intensity, indicators and groups.">
+<meta property="og:url" content="https://idealogworks.foo/mpi-calculator/">
+<meta property="og:image" content="https://idealogworks.foo/og/mpi-calculator.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Multidimensional Poverty: The Alkire–Foster index from your own data: headcount, intensity, indicators and groups.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Multidimensional Poverty">
+<meta name="twitter:description" content="The Alkire–Foster index from your own data: headcount, intensity, indicators and groups.">
+<meta name="twitter:image" content="https://idealogworks.foo/og/mpi-calculator.jpg">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Multidimensional Poverty","url":"https://idealogworks.foo/mpi-calculator/","description":"The Alkire-Foster multidimensional poverty index from your own data: headcount, intensity and the adjusted headcount, what each indicator contributes, a breakdown by group, and how the answer moves with the poverty cutoff.","image":"https://idealogworks.foo/og/mpi-calculator.jpg","operatingSystem":"Any","browserRequirements":"Requires JavaScript","isAccessibleForFree":true,"author":{"@type":"Person","name":"Varna Sri Raman"},"isPartOf":{"@type":"WebSite","name":"Experiments","url":"https://idealogworks.foo/"}}</script>
+<style>.xshare{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.5rem .6rem;box-sizing:border-box;width:calc(100% - 2rem);max-width:960px;margin:2.5rem auto 1.5rem;padding:.85rem 1rem;background:#f5f1fa;border:1px solid #e6e3ec;border-radius:12px;font:600 15px/1.4 "Source Sans 3",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:#382280;text-align:center}.xshare .xshare-t{margin-right:.25rem;color:#382280}.xshare .xshare-l{display:inline-flex;align-items:center;min-height:36px;margin:0;padding:.3rem .95rem;border:1px solid #572e91;border-radius:99px;background:#fff;color:#382280;font:inherit;text-decoration:underline;text-underline-offset:2px;cursor:pointer;box-shadow:none}.xshare .xshare-l:hover{background:#ece4f5}.xshare .xshare-l:focus-visible{outline:3px solid #ff9911;outline-offset:2px}.xshare [hidden]{display:none!important}@media print{.xshare{display:none}}.xcontact{box-sizing:border-box;width:calc(100% - 2rem);max-width:960px;margin:0 auto 1.5rem;padding:.85rem 1rem;background:#f5f1fa;border:1px solid #e6e3ec;border-radius:12px;font:400 15px/1.5 "Source Sans 3",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:#382280;text-align:center}.xcontact a{color:#382280;font-weight:600;text-decoration:underline;text-underline-offset:2px}.xcontact a:focus-visible{outline:3px solid #ff9911;outline-offset:2px}@media print{.xcontact{display:none}}</style>
+<!-- seo:end -->
+<style>
+  :root { --bg:#fafafa; --surface:#fff; --border:#e5e7eb; --text:#1a1a2e; --dim:#4b5563; --muted:#6b7280; --accent:#1B6B4A; --accent-soft:#e6f2ec; --mono:ui-monospace,SFMono-Regular,Menlo,monospace; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--text); line-height:1.55; }
+  a { color:var(--accent); }
+  header { border-bottom:1px solid var(--border); background:#fff; }
+  .wrap { max-width:1080px; margin:0 auto; padding:0 1.25rem; }
+  header .wrap { display:flex; align-items:baseline; justify-content:space-between; gap:1rem; padding:.9rem 1.25rem; flex-wrap:wrap; }
+  header h1 { font-family:Georgia,serif; font-size:1.35rem; font-weight:400; }
+  header h1 small { font-size:.8rem; color:var(--muted); margin-left:.5rem; }
+  header nav a { font-size:.85rem; margin-left:1rem; text-decoration:none; }
+  main { padding:1.5rem 0 3rem; }
+  .lede { color:var(--dim); font-size:.95rem; max-width:66ch; margin-bottom:1.25rem; }
+  .top-tabs { display:flex; gap:.25rem; border-bottom:1px solid var(--border); margin-bottom:1.25rem; flex-wrap:wrap; }
+  .top-tabs button { font:inherit; font-size:.95rem; background:none; border:none; color:var(--dim); padding:.5rem .9rem; border-bottom:2px solid transparent; border-radius:0; cursor:pointer; }
+  .top-tabs button.on { color:var(--accent); border-bottom-color:var(--accent); font-weight:600; }
+  .view { display:none; } .view.on { display:block; }
+  .grid { display:grid; grid-template-columns:330px 1fr; gap:1.25rem; align-items:start; }
+  /* A grid item's default min-width:auto lets a wide table size the shared
+     track, and then the page is wider than the phone. */
+  .grid > * { min-width:0; }
+  @media (max-width:860px){ .grid { grid-template-columns:1fr; } }
+  .panel { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1rem 1.15rem; margin-bottom:1rem; }
+  .panel h2 { font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; margin-bottom:.7rem; }
+  label { display:block; font-size:.8rem; color:var(--dim); margin:.5rem 0 .2rem; }
+  select, input[type=text], input[type=number], textarea { width:100%; font:inherit; font-size:.9rem; padding:.4rem .5rem; border:1px solid var(--border); border-radius:6px; background:#fff; color:var(--text); }
+  textarea { font-family:var(--mono); font-size:.82rem; min-height:8.5rem; resize:vertical; }
+  input[type=file] { font-size:.85rem; max-width:100%; }
+  .row { display:flex; gap:.5rem; } .row > * { flex:1; min-width:0; }
+  button { font:inherit; font-size:.88rem; padding:.5rem .9rem; border-radius:6px; border:1px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer; margin-top:.6rem; }
+  button.secondary { background:#fff; color:var(--accent); }
+  .stat { display:inline-block; margin:.25rem 1.25rem .25rem 0; vertical-align:top; }
+  .stat b { display:block; font-size:1.4rem; font-family:Georgia,serif; font-weight:400; } .stat span { font-size:.75rem; color:var(--muted); }
+  table { border-collapse:collapse; width:100%; font-size:.84rem; margin:.5rem 0; }
+  th, td { text-align:right; padding:.3rem .5rem; border-bottom:1px solid var(--border); font-variant-numeric:tabular-nums; white-space:nowrap; }
+  th:first-child, td:first-child { text-align:left; } th { color:var(--dim); font-weight:600; font-size:.75rem; }
+  .tscroll { overflow:auto; max-width:100%; max-height:420px; }
+  .tscroll:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
+  .note { font-size:.82rem; color:var(--dim); margin-top:.5rem; max-width:70ch; }
+  .warn { background:#fff7ed; border:1px solid #fed7aa; color:#9a3412; padding:.5rem .7rem; border-radius:6px; font-size:.83rem; margin:.5rem 0; }
+  .ok { background:var(--accent-soft); color:var(--accent); padding:.5rem .7rem; border-radius:6px; font-size:.83rem; margin:.5rem 0; }
+  .mini { font-size:.78rem; color:var(--muted); } code { font-family:var(--mono); font-size:.8em; background:#f3f4f6; padding:.05em .3em; border-radius:3px; }
+  pre { font-family:var(--mono); font-size:.78rem; background:#f8f9fa; border:1px solid var(--border); border-radius:6px; padding:.6rem .8rem; white-space:pre-wrap; overflow-wrap:anywhere; color:var(--dim); }
+  ol.work { margin:.4rem 0 .2rem 1.2rem; font-size:.86rem; color:var(--dim); } ol.work li { margin-bottom:.3rem; } ol.work b { color:var(--text); font-variant-numeric:tabular-nums; }
+  footer { border-top:1px solid var(--border); padding:1.25rem; text-align:center; font-size:.8rem; color:var(--muted); }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>Multidimensional Poverty <small>Alkire–Foster headcount · intensity · MPI</small></h1>
+  <nav><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/mpi-calculator">Source</a></nav>
+</div></header>
+<main><div class="wrap">
+<p class="lede">Poverty counted across several deprivations at once. Give the page a file with one row per person and a 0 or 1 for each deprivation, choose the weights and the cutoff, and it returns how many people are poor, how deprived they are on average, which deprivations account for the index, and which groups carry it.</p>
+<div class="grid">
+<div>
+  <div class="panel">
+    <h2>Data</h2>
+    <label for="dataFile">A CSV with one row per person and a column of 0 or 1 for each deprivation</label>
+    <input type="file" id="dataFile" accept=".csv,text/csv">
+    <button type="button" class="secondary" id="demoData">Use the simulated example</button>
+    <p class="mini">The example is simulated: 2,400 people in three regions with the ten indicators of the global index. It describes no country. The file is read in this page and is not uploaded.</p>
+  </div>
+  <div class="panel" id="setup" style="display:none">
+    <h2>Indicators</h2>
+    <label for="inds">One indicator per line: column name, weight</label>
+    <textarea id="inds" spellcheck="false"></textarea>
+    <p class="mini">A 1 means deprived. Weights are rescaled to add to one, so 1, 1, 2 is read as a quarter, a quarter and a half.</p>
+    <label for="k">Poverty cutoff: the share of weighted deprivations at which a person is poor</label>
+    <input type="number" id="k" value="0.3333" step="0.01" min="0.01" max="1">
+    <label for="cW">Sampling weight (optional)</label><select id="cW"></select>
+    <label for="cG">Group for the breakdown (optional)</label><select id="cG"></select>
+    <button type="button" id="go">Compute</button>
+  </div>
+</div>
+<div>
+  <div class="panel"><h2>Index</h2><div id="sumOut" aria-live="polite"><p class="note">Load data to begin.</p></div></div>
+  <div class="panel" id="pInd" style="display:none"><h2>Indicators</h2><div id="indOut"></div></div>
+  <div class="panel" id="pGrp" style="display:none"><h2>Groups</h2><div id="grpOut"></div></div>
+  <div class="panel" id="pK" style="display:none"><h2>Other cutoffs</h2><div id="kOut"></div></div>
+  <div class="panel"><h2>Method</h2>
+    <p class="note">Each person's deprivation score is the weighted sum of the indicators in which they are deprived. A person is poor when the score is at or above the cutoff k. The headcount H is the share of people who are poor, the intensity A is the average score among the poor, and the index is M₀ = H × A, the adjusted headcount ratio of Alkire and Foster (2011). The censored headcount of an indicator is the share of people who are poor and deprived in it; weighted and summed over indicators it gives M₀ again, so each indicator's contribution is its weight times its censored headcount over M₀. For groups, M₀ is the population-weighted average of the group values. Vulnerable means a score of at least 0.2 and below the cutoff; severe means a score of at least 0.5, the thresholds the global index uses with a cutoff of one third (Alkire, Kanagaratnam and Suppa, OPHI).</p>
+  </div>
+</div>
+</div>
+</div></main>
+<!-- share:start -->
+<aside class="xshare" aria-label="Share this tool"><span class="xshare-t">Share this tool</span><a class="xshare-l" href="https://wa.me/?text=Multidimensional%20Poverty%3A%20The%20Alkire%E2%80%93Foster%20index%20from%20your%20own%20data%3A%20headcount%2C%20intensity%2C%20indicators%20and%20groups.%0Ahttps%3A%2F%2Fidealogworks.foo%2Fmpi-calculator%2F" target="_blank" rel="noopener">WhatsApp</a><a class="xshare-l" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fidealogworks.foo%2Fmpi-calculator%2F" target="_blank" rel="noopener">LinkedIn</a><a class="xshare-l" href="https://twitter.com/intent/tweet?text=Multidimensional%20Poverty%3A%20The%20Alkire%E2%80%93Foster%20index%20from%20your%20own%20data%3A%20headcount%2C%20intensity%2C%20indicators%20and%20groups.&amp;url=https%3A%2F%2Fidealogworks.foo%2Fmpi-calculator%2F" target="_blank" rel="noopener">X</a><button type="button" class="xshare-l" data-xshare-copy data-url="https://idealogworks.foo/mpi-calculator/" hidden>Copy link</button><script>(function(){var b=document.currentScript.parentNode.querySelector('[data-xshare-copy]');if(!b||!navigator.clipboard)return;b.hidden=false;var u=b.getAttribute('data-url');b.addEventListener('click',function(){navigator.clipboard.writeText(u).then(function(){b.textContent='Link copied';setTimeout(function(){b.textContent='Copy link';},2000);});});})();</script></aside>
+<!-- share:end -->
+<!-- contact:start -->
+<p class="xcontact">Need help setting out your story, what sets your work apart, the context, the return on investment and the projections? Pinpoint Ventures can help. Write to <a href="mailto:hello@pinpointventures.in?subject=Enquiry%20from%20idealogworks.foo">hello@pinpointventures.in</a> or message on <a href="https://wa.me/919871777110?text=Hi%20Pinpoint%20Ventures%2C%20I%20found%20you%20through%20idealogworks.foo.%20I%27d%20like%20to%20discuss%20a%20research%20or%20advisory%20engagement." target="_blank" rel="noopener">WhatsApp</a>.</p>
+<!-- contact:end -->
+<footer>Part of <a href="../">Experiments</a> by Varna Sri Raman · Idealog Works · MIT licence · Computation in the browser; uploaded data never leaves it.</footer>
+
+<script id="core">
+/* The arithmetic, with no reference to the page, so that
+   mpi-calculator/tests/core.mjs can run it under node. */
+const MP = (() => {
+  const EPS = 1e-9; // a score of 1/6 + 1/6 must count as reaching 1/3
+  // rows: [{d: [0|1, ...], w: weight, g: group}], weights: indicator weights (any scale).
+  function index(rows, weights, k) {
+    const tw = weights.reduce((s, v) => s + v, 0), w = weights.map(v => v / tw), J = w.length;
+    const W = rows.reduce((s, r) => s + r.w, 0);
+    let poorW = 0, scoreW = 0, vulW = 0, sevW = 0; const cens = new Array(J).fill(0), raw = new Array(J).fill(0);
+    rows.forEach(r => {
+      let c = 0; for (let j = 0; j < J; j++) if (r.d[j]) { c += w[j]; raw[j] += r.w; }
+      r.c = c;
+      if (c >= k - EPS) { poorW += r.w; scoreW += r.w * c; for (let j = 0; j < J; j++) if (r.d[j]) cens[j] += r.w; }
+      else if (c >= 0.2 - EPS) vulW += r.w;
+      if (c >= 0.5 - EPS && c >= k - EPS) sevW += r.w;
+    });
+    const H = poorW / W, A = poorW > 0 ? scoreW / poorW : 0, M0 = H * A;
+    return {
+      H, A, M0, W, n: rows.length, w, vulnerable: vulW / W, severe: sevW / W,
+      indicators: w.map((wj, j) => ({ weight: wj, uncensored: raw[j] / W, censored: cens[j] / W, contribution: M0 > 0 ? wj * (cens[j] / W) / M0 : 0 })),
+    };
+  }
+  function byGroup(rows, weights, k) {
+    const all = index(rows, weights, k), names = [...new Set(rows.map(r => r.g))].sort();
+    return names.map(g => {
+      const sub = rows.filter(r => r.g === g), r = index(sub, weights, k), share = r.W / all.W;
+      return { name: g, n: sub.length, share, H: r.H, A: r.A, M0: r.M0, contribution: all.M0 > 0 ? share * r.M0 / all.M0 : 0 };
+    });
+  }
+  const cutoffs = (rows, weights, ks) => ks.map(k => { const r = index(rows, weights, k); return { k, H: r.H, A: r.A, M0: r.M0 }; });
+  function rng(seed) {
+    let a = seed >>> 0;
+    return () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+  }
+  const DEMO = { names: ['nutrition', 'child_mortality', 'years_of_schooling', 'school_attendance', 'cooking_fuel', 'sanitation', 'drinking_water', 'electricity', 'housing', 'assets'], weights: [3, 3, 3, 3, 1, 1, 1, 1, 1, 1] };
+  // 2,400 simulated people: a household-level propensity makes deprivations cluster.
+  function demo() {
+    const g = rng(23), base = [0.22, 0.04, 0.13, 0.07, 0.48, 0.30, 0.10, 0.06, 0.34, 0.12], regions = [['Hills', 0.6, 600], ['Plains', 1.0, 1200], ['Coast', 1.5, 600]], rows = [];
+    regions.forEach(([name, mult, n]) => { for (let i = 0; i < n; i++) {
+      const u = g(), tilt = u < 0.25 ? 2.4 : u < 0.6 ? 1.0 : 0.35;
+      rows.push({ g: name, w: Math.round(40 + 120 * g()), d: base.map(p => g() < Math.min(0.95, p * mult * tilt) ? 1 : 0) });
+    } });
+    return rows;
+  }
+  return { index, byGroup, cutoffs, rng, demo, DEMO };
+})();
+if (typeof module !== 'undefined') module.exports = MP;
+</script>
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
+const num = (x, d = 0) => Number(x).toLocaleString('en-IN', { minimumFractionDigits: d, maximumFractionDigits: d });
+const pct = (x, d = 1) => num(100 * x, d) + '%';
+let data = null;
+function parseCSV(text) {
+  const rows = []; let row = [], cell = '', q = false;
+  text = text.replace(/^\uFEFF/, '');
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (q) { if (c === '"') { if (text[i + 1] === '"') { cell += '"'; i++; } else q = false; } else cell += c; }
+    else if (c === '"') q = true;
+    else if (c === ',') { row.push(cell); cell = ''; }
+    else if (c === '\n' || c === '\r') { if (c === '\r' && text[i + 1] === '\n') i++; row.push(cell); cell = ''; if (row.some(x => x !== '')) rows.push(row); row = []; }
+    else cell += c;
+  }
+  row.push(cell); if (row.some(x => x !== '')) rows.push(row);
+  return rows;
+}
+function loadData(text, label, preset) {
+  const rows = parseCSV(text);
+  if (rows.length < 3) { $('#sumOut').innerHTML = '<div class="warn">The file needs a header row and at least two people.</div>'; return; }
+  const head = rows[0].map(h => h.trim()), body = rows.slice(1); data = { head, body, label };
+  const binary = head.map((h, j) => body.every(r => /^[01]$/.test((r[j] || '').trim())));
+  $('#inds').value = preset || head.filter((h, j) => binary[j]).map(h => h + ', 1').join('\n');
+  const opt = (sel, pick) => { sel.innerHTML = '<option value="-1">None</option>' + head.map((h, j) => `<option value="${j}"${j === pick ? ' selected' : ''}>${esc(h)}</option>`).join(''); };
+  opt($('#cW'), head.findIndex(h => /weight|wgt|^wt$/i.test(h))); opt($('#cG'), head.findIndex((h, j) => !binary[j] && /region|state|district|group|area|urban|rural|caste|sex|gender/i.test(h)));
+  $('#setup').style.display = ''; ['#pInd', '#pGrp', '#pK'].forEach(s => { $(s).style.display = 'none'; });
+  $('#sumOut').innerHTML = `<p class="note">${esc(label)}: ${num(body.length)} rows, ${binary.filter(Boolean).length} columns of 0 and 1. Check the indicators and press Compute.</p>`;
+}
+$('#dataFile').addEventListener('change', e => { const f = e.target.files[0]; if (!f) return; const r = new FileReader(); r.onload = () => loadData(String(r.result), f.name); r.readAsText(f); });
+$('#demoData').addEventListener('click', () => {
+  const d = MP.demo(), n = MP.DEMO.names;
+  loadData(['region', 'weight', ...n].join(',') + '\n' + d.map(r => [r.g, r.w, ...r.d].join(',')).join('\n') + '\n', 'Simulated example', n.map((x, j) => `${x}, ${MP.DEMO.weights[j]}`).join('\n'));
+  compute();
+});
+function compute() {
+  if (!data) return;
+  const fail = m => { $('#sumOut').innerHTML = `<div class="warn">${esc(m)}</div>`; ['#pInd', '#pGrp', '#pK'].forEach(s => { $(s).style.display = 'none'; }); };
+  const cols = [], weights = [];
+  for (const [i, l] of $('#inds').value.split('\n').map(x => x.trim()).filter(Boolean).entries()) {
+    const c = l.lastIndexOf(','), name = (c < 0 ? l : l.slice(0, c)).trim(), wt = c < 0 ? 1 : Number(l.slice(c + 1)), j = data.head.indexOf(name);
+    if (j < 0) return fail(`Line ${i + 1} names a column that is not in the file: ${name}`);
+    if (!(wt > 0)) return fail(`Line ${i + 1} needs a weight above 0.`);
+    if (cols.includes(j)) return fail(`${name} is listed twice.`);
+    cols.push(j); weights.push(wt);
+  }
+  if (cols.length < 2) return fail('List at least two indicators, one per line.');
+  const k = parseFloat($('#k').value), jw = +$('#cW').value, jg = +$('#cG').value;
+  if (!(k > 0 && k <= 1)) return fail('The cutoff must be above 0 and at most 1.');
+  const rows = []; let dropped = 0;
+  data.body.forEach(r => {
+    const d = cols.map(j => (r[j] || '').trim()), w = jw < 0 ? 1 : Number(r[jw]);
+    if (d.some(v => v !== '0' && v !== '1') || !(w > 0)) { dropped++; return; }
+    rows.push({ d: d.map(Number), w, g: jg < 0 ? 'All' : (r[jg] || '').trim() || '(blank)' });
+  });
+  if (rows.length < 2) return fail('No row has a 0 or 1 in every indicator and a weight above 0.');
+  const r = MP.index(rows, weights, k), names = cols.map(j => data.head[j]);
+  let h = `<span class="stat"><b>${r.M0.toFixed(3)}</b><span>index, M₀</span></span><span class="stat"><b>${pct(r.H)}</b><span>poor, H</span></span><span class="stat"><b>${pct(r.A)}</b><span>intensity among the poor, A</span></span><span class="stat"><b>${pct(r.vulnerable)}</b><span>vulnerable</span></span><span class="stat"><b>${pct(r.severe)}</b><span>in severe poverty</span></span>`;
+  h += `<p class="note">${pct(r.H)} of people are deprived in at least ${pct(k)} of the weighted indicators. Those people are deprived in ${pct(r.A)} of them on average. The index, ${r.M0.toFixed(3)}, is the product: the share of all possible deprivations that poor people experience. Based on ${num(rows.length)} rows${jw < 0 ? '' : ', weighted'}.</p>`;
+  if (dropped) h += `<div class="warn">${num(dropped)} row${dropped === 1 ? ' was' : 's were'} left out for a value other than 0 or 1 in an indicator, or a weight that is not above 0. The global index treats missing indicators with its own rules, which this page does not apply.</div>`;
+  $('#sumOut').innerHTML = h;
+  let t = '<div class="tscroll" tabindex="0" role="region" aria-label="Indicators"><table><thead><tr><th>Indicator</th><th>Weight</th><th>Deprived</th><th>Poor and deprived</th><th>Share of the index</th></tr></thead><tbody>';
+  r.indicators.forEach((x, j) => { t += `<tr><td>${esc(names[j])}</td><td>${x.weight.toFixed(3)}</td><td>${pct(x.uncensored)}</td><td>${pct(x.censored)}</td><td>${pct(x.contribution)}</td></tr>`; });
+  $('#indOut').innerHTML = t + '</tbody></table></div><p class="note">"Deprived" counts everyone with a 1. "Poor and deprived" counts only those who are also poor, and it is this column, weighted, that adds up to the index. An indicator whose share of the index is well above its weight is where poor people are most often deprived.</p>';
+  $('#pInd').style.display = '';
+  if (jg >= 0) {
+    const gs = MP.byGroup(rows, weights, k);
+    let g = '<div class="tscroll" tabindex="0" role="region" aria-label="Groups"><table><thead><tr><th>Group</th><th>Rows</th><th>Share of people</th><th>H</th><th>A</th><th>M₀</th><th>Share of the index</th></tr></thead><tbody>';
+    gs.forEach(x => { g += `<tr><td>${esc(x.name)}</td><td>${num(x.n)}</td><td>${pct(x.share)}</td><td>${pct(x.H)}</td><td>${pct(x.A)}</td><td>${x.M0.toFixed(3)}</td><td>${pct(x.contribution)}</td></tr>`; });
+    $('#grpOut').innerHTML = g + '</tbody></table></div><p class="note">A group whose share of the index is above its share of people carries more poverty than its size. A small group has a wide margin of error, which this page does not compute.</p>';
+    $('#pGrp').style.display = '';
+  } else $('#pGrp').style.display = 'none';
+  const ks = [0.1, 0.2, 0.3, 1 / 3, 0.4, 0.5, 0.6, 0.7];
+  let q = '<div class="tscroll" tabindex="0" role="region" aria-label="Other cutoffs"><table><thead><tr><th>Cutoff</th><th>H</th><th>A</th><th>M₀</th></tr></thead><tbody>';
+  MP.cutoffs(rows, weights, ks).forEach(x => { q += `<tr><td>${Math.abs(x.k - 1 / 3) < 1e-9 ? 'one third' : pct(x.k, 0)}</td><td>${pct(x.H)}</td><td>${pct(x.A)}</td><td>${x.M0.toFixed(3)}</td></tr>`; });
+  $('#kOut').innerHTML = q + '</tbody></table></div><p class="note">A ranking of groups or of years that holds at every cutoff in this table does not depend on the choice of cutoff. One that flips does.</p>';
+  $('#pK').style.display = '';
+}
+$('#go').addEventListener('click', compute);
+</script>
+<script src="../js/dyslexia-font.js" data-accent="var(--purple2)" data-radius="99px" defer></script>
+</body>
+</html>
