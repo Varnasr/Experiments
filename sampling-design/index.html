@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sampling Design · Experiments</title>
+<meta name="description" content="Sample size for a survey estimate or a comparison between two rounds, with design effect, finite population correction and non-response; allocation across strata; and a seeded probability-proportional-to-size draw of clusters from a frame, with weights.">
+<!-- seo:start -->
+<link rel="canonical" href="https://idealogworks.foo/sampling-design/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Experiments">
+<meta property="og:locale" content="en_IN">
+<meta property="og:title" content="Sampling Design">
+<meta property="og:description" content="Sample size, allocation across strata and a PPS draw of clusters, with weights.">
+<meta property="og:url" content="https://idealogworks.foo/sampling-design/">
+<meta property="og:image" content="https://idealogworks.foo/og/sampling-design.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Sampling Design: Sample size, allocation across strata and a PPS draw of clusters, with weights.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Sampling Design">
+<meta name="twitter:description" content="Sample size, allocation across strata and a PPS draw of clusters, with weights.">
+<meta name="twitter:image" content="https://idealogworks.foo/og/sampling-design.jpg">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Sampling Design","url":"https://idealogworks.foo/sampling-design/","description":"Sample size for a survey estimate or a comparison between two rounds, with design effect, finite population correction and non-response; allocation across strata; and a seeded probability-proportional-to-size draw of clusters from a frame, with weights.","image":"https://idealogworks.foo/og/sampling-design.jpg","operatingSystem":"Any","browserRequirements":"Requires JavaScript","isAccessibleForFree":true,"author":{"@type":"Person","name":"Varna Sri Raman"},"isPartOf":{"@type":"WebSite","name":"Experiments","url":"https://idealogworks.foo/"}}</script>
+<style>.xshare{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.5rem .6rem;box-sizing:border-box;width:calc(100% - 2rem);max-width:960px;margin:2.5rem auto 1.5rem;padding:.85rem 1rem;background:#f5f1fa;border:1px solid #e6e3ec;border-radius:12px;font:600 15px/1.4 "Source Sans 3",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:#382280;text-align:center}.xshare .xshare-t{margin-right:.25rem;color:#382280}.xshare .xshare-l{display:inline-flex;align-items:center;min-height:36px;margin:0;padding:.3rem .95rem;border:1px solid #572e91;border-radius:99px;background:#fff;color:#382280;font:inherit;text-decoration:underline;text-underline-offset:2px;cursor:pointer;box-shadow:none}.xshare .xshare-l:hover{background:#ece4f5}.xshare .xshare-l:focus-visible{outline:3px solid #ff9911;outline-offset:2px}.xshare [hidden]{display:none!important}@media print{.xshare{display:none}}.xcontact{box-sizing:border-box;width:calc(100% - 2rem);max-width:960px;margin:0 auto 1.5rem;padding:.85rem 1rem;background:#f5f1fa;border:1px solid #e6e3ec;border-radius:12px;font:400 15px/1.5 "Source Sans 3",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:#382280;text-align:center}.xcontact a{color:#382280;font-weight:600;text-decoration:underline;text-underline-offset:2px}.xcontact a:focus-visible{outline:3px solid #ff9911;outline-offset:2px}@media print{.xcontact{display:none}}</style>
+<!-- seo:end -->
+<style>
+  :root { --bg:#fafafa; --surface:#fff; --border:#e5e7eb; --text:#1a1a2e; --dim:#4b5563; --muted:#6b7280; --accent:#1B6B4A; --accent-soft:#e6f2ec; --mono:ui-monospace,SFMono-Regular,Menlo,monospace; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--text); line-height:1.55; }
+  a { color:var(--accent); }
+  header { border-bottom:1px solid var(--border); background:#fff; }
+  .wrap { max-width:1080px; margin:0 auto; padding:0 1.25rem; }
+  header .wrap { display:flex; align-items:baseline; justify-content:space-between; gap:1rem; padding:.9rem 1.25rem; flex-wrap:wrap; }
+  header h1 { font-family:Georgia,serif; font-size:1.35rem; font-weight:400; }
+  header h1 small { font-size:.8rem; color:var(--muted); margin-left:.5rem; }
+  header nav a { font-size:.85rem; margin-left:1rem; text-decoration:none; }
+  main { padding:1.5rem 0 3rem; }
+  .lede { color:var(--dim); font-size:.95rem; max-width:66ch; margin-bottom:1.25rem; }
+  .top-tabs { display:flex; gap:.25rem; border-bottom:1px solid var(--border); margin-bottom:1.25rem; flex-wrap:wrap; }
+  .top-tabs button { font:inherit; font-size:.95rem; background:none; border:none; color:var(--dim); padding:.5rem .9rem; border-bottom:2px solid transparent; border-radius:0; cursor:pointer; }
+  .top-tabs button.on { color:var(--accent); border-bottom-color:var(--accent); font-weight:600; }
+  .view { display:none; } .view.on { display:block; }
+  .grid { display:grid; grid-template-columns:330px 1fr; gap:1.25rem; align-items:start; }
+  /* A grid item's default min-width:auto lets a wide table size the shared
+     track, and then the page is wider than the phone. */
+  .grid > * { min-width:0; }
+  @media (max-width:860px){ .grid { grid-template-columns:1fr; } }
+  .panel { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1rem 1.15rem; margin-bottom:1rem; }
+  .panel h2 { font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; margin-bottom:.7rem; }
+  label { display:block; font-size:.8rem; color:var(--dim); margin:.5rem 0 .2rem; }
+  select, input[type=text], input[type=number], textarea { width:100%; font:inherit; font-size:.9rem; padding:.4rem .5rem; border:1px solid var(--border); border-radius:6px; background:#fff; color:var(--text); }
+  textarea { font-family:var(--mono); font-size:.82rem; min-height:8.5rem; resize:vertical; }
+  input[type=file] { font-size:.85rem; max-width:100%; }
+  .row { display:flex; gap:.5rem; } .row > * { flex:1; min-width:0; }
+  button { font:inherit; font-size:.88rem; padding:.5rem .9rem; border-radius:6px; border:1px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer; margin-top:.6rem; }
+  button.secondary { background:#fff; color:var(--accent); }
+  .stat { display:inline-block; margin:.25rem 1.25rem .25rem 0; vertical-align:top; }
+  .stat b { display:block; font-size:1.4rem; font-family:Georgia,serif; font-weight:400; } .stat span { font-size:.75rem; color:var(--muted); }
+  table { border-collapse:collapse; width:100%; font-size:.84rem; margin:.5rem 0; }
+  th, td { text-align:right; padding:.3rem .5rem; border-bottom:1px solid var(--border); font-variant-numeric:tabular-nums; white-space:nowrap; }
+  th:first-child, td:first-child { text-align:left; } th { color:var(--dim); font-weight:600; font-size:.75rem; }
+  .tscroll { overflow:auto; max-width:100%; max-height:420px; }
+  .note { font-size:.82rem; color:var(--dim); margin-top:.5rem; max-width:70ch; }
+  .warn { background:#fff7ed; border:1px solid #fed7aa; color:#9a3412; padding:.5rem .7rem; border-radius:6px; font-size:.83rem; margin:.5rem 0; }
+  .ok { background:var(--accent-soft); color:var(--accent); padding:.5rem .7rem; border-radius:6px; font-size:.83rem; margin:.5rem 0; }
+  .mini { font-size:.78rem; color:var(--muted); } code { font-family:var(--mono); font-size:.8em; background:#f3f4f6; padding:.05em .3em; border-radius:3px; }
+  pre { font-family:var(--mono); font-size:.78rem; background:#f8f9fa; border:1px solid var(--border); border-radius:6px; padding:.6rem .8rem; white-space:pre-wrap; overflow-wrap:anywhere; color:var(--dim); }
+  ol.work { margin:.4rem 0 .2rem 1.2rem; font-size:.86rem; color:var(--dim); } ol.work li { margin-bottom:.3rem; } ol.work b { color:var(--text); font-variant-numeric:tabular-nums; }
+  footer { border-top:1px solid var(--border); padding:1.25rem; text-align:center; font-size:.8rem; color:var(--muted); }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>Sampling Design <small>sample size · allocation across strata · PPS draw of clusters</small></h1>
+  <nav><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/sampling-design">Source</a></nav>
+</div></header>
+<main><div class="wrap">
+<p class="lede">Three steps a descriptive survey needs before fieldwork. How many interviews give the precision you want once clustering and non-response are allowed for. How to divide them between strata. Which clusters to visit, drawn with probability proportional to size from your own list, with the weight each interview will carry. Every number is shown with its working.</p>
+
+<div class="top-tabs"><button type="button" data-v="size" class="on">Sample size</button><button type="button" data-v="alloc">Allocate across strata</button><button type="button" data-v="draw">Draw clusters</button></div>
+
+<!-- ───────────── Sample size ───────────── -->
+<div class="view on" id="v-size">
+<div class="grid">
+<div>
+  <div class="panel">
+    <h2>Purpose</h2>
+    <label for="goal">What the survey has to do</label>
+    <select id="goal"><option value="est">Estimate one value to a margin of error</option><option value="cmp">Detect a change between two rounds or groups</option></select>
+    <label for="otype">Outcome</label>
+    <select id="otype"><option value="prop">A proportion (share of households)</option><option value="mean">A mean (rupees, kilograms, days)</option></select>
+  </div>
+  <div class="panel" id="estIn">
+    <h2>Precision</h2>
+    <div id="estProp"><label for="p">Expected proportion</label><input type="number" id="p" value="0.5" step="0.05" min="0.01" max="0.99"><p class="mini">0.5 gives the largest sample. Use it when there is no earlier estimate.</p></div>
+    <div id="estMean" style="display:none"><label for="sd">Standard deviation of the outcome</label><input type="number" id="sd" value="1" step="0.1" min="0.0001"></div>
+    <label for="e">Margin of error, in the outcome's own units</label><input type="number" id="e" value="0.05" step="0.01" min="0.0001">
+    <label for="conf">Confidence level</label><select id="conf"><option value="0.90">90%</option><option value="0.95" selected>95%</option><option value="0.99">99%</option></select>
+  </div>
+  <div class="panel" id="cmpIn" style="display:none">
+    <h2>Change to detect</h2>
+    <div id="cmpProp"><div class="row"><div><label for="p1">Proportion in round 1</label><input type="number" id="p1" value="0.40" step="0.01" min="0.01" max="0.99"></div><div><label for="p2">Proportion in round 2</label><input type="number" id="p2" value="0.50" step="0.01" min="0.01" max="0.99"></div></div></div>
+    <div id="cmpMean" style="display:none"><div class="row"><div><label for="sd2">Standard deviation</label><input type="number" id="sd2" value="1" step="0.1" min="0.0001"></div><div><label for="delta">Difference in means</label><input type="number" id="delta" value="0.2" step="0.05" min="0.0001"></div></div></div>
+    <div class="row"><div><label for="alpha">Significance level, two-sided</label><select id="alpha"><option value="0.10">10%</option><option value="0.05" selected>5%</option><option value="0.01">1%</option></select></div><div><label for="power">Power</label><select id="power"><option value="0.8" selected>80%</option><option value="0.9">90%</option></select></div></div>
+    <p class="mini">The two rounds are treated as independent samples. A panel of the same households needs fewer.</p>
+  </div>
+  <div class="panel">
+    <h2>Design</h2>
+    <label for="dmode">Design effect</label>
+    <select id="dmode"><option value="icc">From interviews per cluster and the intra-cluster correlation</option><option value="direct">Entered directly</option><option value="none">Simple random sample (1)</option></select>
+    <div id="iccIn"><div class="row"><div><label for="m">Interviews per cluster</label><input type="number" id="m" value="20" step="1" min="1"></div><div><label for="rho">Intra-cluster correlation</label><input type="number" id="rho" value="0.05" step="0.01" min="0" max="1"></div></div></div>
+    <div id="deffIn" style="display:none"><label for="deff">Design effect</label><input type="number" id="deff" value="1.5" step="0.1" min="1"></div>
+    <label for="N">Population size (leave blank if large or unknown)</label><input type="number" id="N" value="" step="1" min="1">
+    <label for="rr">Expected response rate</label><input type="number" id="rr" value="0.90" step="0.01" min="0.05" max="1">
+  </div>
+</div>
+<div>
+  <div class="panel"><h2>Sample size</h2><div id="sizeOut" aria-live="polite"></div></div>
+  <div class="panel"><h2>What changes it</h2><div id="sensOut"></div></div>
+  <div class="panel"><h2>Method</h2>
+    <p class="note">For one proportion the simple random sample is n₀ = z²p(1−p)/e², and for a mean n₀ = z²σ²/e² (Cochran 1977, chapter 4). With a known population N the finite population correction gives n₀/(1 + (n₀−1)/N). The design effect 1 + (m−1)ρ multiplies that (Kish 1965), and the result is divided by the response rate. For a change between two independent rounds, each round needs (z₁₋α/₂ + z₁₋β)²[p₁(1−p₁) + p₂(1−p₂)]/(p₂−p₁)², or 2σ²(z₁₋α/₂ + z₁₋β)²/δ² for means, times the design effect. Sizes are rounded up.</p>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- ───────────── Allocation ───────────── -->
+<div class="view" id="v-alloc">
+<div class="grid">
+<div>
+  <div class="panel">
+    <h2>Strata</h2>
+    <label for="strata">One stratum per line: name, population, standard deviation</label>
+    <textarea id="strata" spellcheck="false">Urban slum, 12000, 0.50
+Urban other, 30000, 0.40
+Rural near road, 45000, 0.45
+Rural remote, 13000, 0.30</textarea>
+    <p class="mini">The standard deviation is optional. For a proportion p it is √(p(1−p)): 0.50 at p = 0.5, 0.40 at p = 0.2. Without it Neyman allocation cannot be computed.</p>
+    <div class="row"><div><label for="an">Total sample</label><input type="number" id="an" value="1200" step="10" min="1"></div><div><label for="amin">Minimum per stratum</label><input type="number" id="amin" value="0" step="10" min="0"></div></div>
+    <button type="button" id="allocGo">Allocate</button>
+  </div>
+</div>
+<div>
+  <div class="panel"><h2>Allocation</h2><div id="allocOut" aria-live="polite"><p class="note">Press Allocate.</p></div></div>
+  <div class="panel"><h2>Method</h2>
+    <p class="note">Proportional allocation gives each stratum n·N<sub>h</sub>/N. Neyman allocation gives n·N<sub>h</sub>S<sub>h</sub>/ΣN<sub>h</sub>S<sub>h</sub>, which minimises the variance of the overall mean for a fixed total (Neyman 1934; Cochran 1977, section 5.5). Equal allocation gives n/H, and suits a survey whose first purpose is a separate estimate for each stratum. A stratum never gets more than its population, and the excess is shared among the others. The standard error shown is √Σ W<sub>h</sub>²S<sub>h</sub>²(1 − n<sub>h</sub>/N<sub>h</sub>)/n<sub>h</sub> for a simple random sample within each stratum, before any design effect.</p>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- ───────────── PPS draw ───────────── -->
+<div class="view" id="v-draw">
+<div class="grid">
+<div>
+  <div class="panel">
+    <h2>Frame</h2>
+    <label for="frameFile">A CSV with one row per cluster (village, ward, school)</label>
+    <input type="file" id="frameFile" accept=".csv,text/csv">
+    <button type="button" class="secondary" id="demoFrame">Use the example frame</button>
+    <p class="mini">The example is invented: 60 villages in four districts. The file is read in this page and is not uploaded.</p>
+  </div>
+  <div class="panel" id="drawSetup" style="display:none">
+    <h2>Draw</h2>
+    <label for="cId">Cluster name or code</label><select id="cId"></select>
+    <label for="cSize">Measure of size (households, population)</label><select id="cSize"></select>
+    <label for="cStr">Stratum (optional)</label><select id="cStr"></select>
+    <div class="row"><div><label for="a">Clusters to draw</label><input type="number" id="a" value="12" step="1" min="1"></div><div><label for="take">Interviews per cluster</label><input type="number" id="take" value="20" step="1" min="1"></div></div>
+    <label for="seed">Seed</label><input type="number" id="seed" value="20261110" step="1">
+    <p class="mini">The same file, settings and seed give the same draw. Clusters are taken in the order of the file, so sort it by geography first if you want the draw spread across it.</p>
+    <button type="button" id="drawGo">Draw</button>
+  </div>
+</div>
+<div>
+  <div class="panel"><h2>Selected clusters</h2><div id="drawOut" aria-live="polite"><p class="note">Load a frame to begin.</p></div></div>
+  <div class="panel" id="recPanel" style="display:none"><h2>Sampling record</h2><pre id="recOut"></pre><p><button type="button" class="secondary" id="dlDraw">Download the selection (CSV)</button> <button type="button" class="secondary" id="dlRec">Download the record</button></p></div>
+  <div class="panel"><h2>Method</h2>
+    <p class="note">Systematic sampling with probability proportional to size: the sizes are cumulated in file order, the interval is the total divided by the number of clusters, a random start is taken within the first interval, and a cluster is selected each time the running point falls inside its range (Cochran 1977, section 9A.9). A cluster at least as large as the interval is taken with certainty and the interval is recomputed for the rest. With strata, clusters are divided between them in proportion to their size and each stratum has its own start. A cluster of size M<sub>i</sub> is selected with probability k·M<sub>i</sub>/M, and a household within it with probability take/M<sub>i</sub>, so the weight is the inverse of the product. Where no cluster is smaller than the take or selected with certainty, every household has the same weight.</p>
+  </div>
+</div>
+</div>
+</div>
+
+</div></main>
+<!-- share:start -->
+<aside class="xshare" aria-label="Share this tool"><span class="xshare-t">Share this tool</span><a class="xshare-l" href="https://wa.me/?text=Sampling%20Design%3A%20Sample%20size%2C%20allocation%20across%20strata%20and%20a%20PPS%20draw%20of%20clusters%2C%20with%20weights.%0Ahttps%3A%2F%2Fidealogworks.foo%2Fsampling-design%2F" target="_blank" rel="noopener">WhatsApp</a><a class="xshare-l" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fidealogworks.foo%2Fsampling-design%2F" target="_blank" rel="noopener">LinkedIn</a><a class="xshare-l" href="https://twitter.com/intent/tweet?text=Sampling%20Design%3A%20Sample%20size%2C%20allocation%20across%20strata%20and%20a%20PPS%20draw%20of%20clusters%2C%20with%20weights.&amp;url=https%3A%2F%2Fidealogworks.foo%2Fsampling-design%2F" target="_blank" rel="noopener">X</a><button type="button" class="xshare-l" data-xshare-copy data-url="https://idealogworks.foo/sampling-design/" hidden>Copy link</button><script>(function(){var b=document.currentScript.parentNode.querySelector('[data-xshare-copy]');if(!b||!navigator.clipboard)return;b.hidden=false;var u=b.getAttribute('data-url');b.addEventListener('click',function(){navigator.clipboard.writeText(u).then(function(){b.textContent='Link copied';setTimeout(function(){b.textContent='Copy link';},2000);});});})();</script></aside>
+<!-- share:end -->
+<!-- contact:start -->
+<p class="xcontact">Need help setting out your story, what sets your work apart, the context, the return on investment and the projections? Pinpoint Ventures can help. Write to <a href="mailto:hello@pinpointventures.in?subject=Enquiry%20from%20idealogworks.foo">hello@pinpointventures.in</a> or message on <a href="https://wa.me/919871777110?text=Hi%20Pinpoint%20Ventures%2C%20I%20found%20you%20through%20idealogworks.foo.%20I%27d%20like%20to%20discuss%20a%20research%20or%20advisory%20engagement." target="_blank" rel="noopener">WhatsApp</a>.</p>
+<!-- contact:end -->
+<footer>Part of <a href="../">Experiments</a> by Varna Sri Raman · Idealog Works · MIT licence · Computation in the browser; an uploaded frame never leaves it.</footer>
+
+<script id="core">
+/* The arithmetic, with no reference to the page, so that
+   sampling-design/tests/core.mjs can run it under node. */
+const SD = (() => {
+  // Normal distribution function by its power series, which converges for
+  // every x and is exact to machine precision in the range used here.
+  function pnorm(x) {
+    if (x < -8) return 0; if (x > 8) return 1;
+    let term = x, sum = x;
+    for (let k = 1; k < 200; k++) { term *= x * x / (2 * k + 1); sum += term; if (Math.abs(term) < 1e-17 * Math.abs(sum)) break; }
+    return 0.5 + sum * Math.exp(-x * x / 2) / Math.sqrt(2 * Math.PI);
+  }
+  function qnorm(p) {
+    let lo = -8, hi = 8;
+    for (let i = 0; i < 80; i++) { const mid = (lo + hi) / 2; if (pnorm(mid) < p) lo = mid; else hi = mid; }
+    return (lo + hi) / 2;
+  }
+  const deffOf = (m, rho) => 1 + (m - 1) * rho;
+
+  // One value to a margin of error.
+  function sizeEstimate({ type, p, sd, e, conf, N, deff, rr }) {
+    const z = qnorm(1 - (1 - conf) / 2);
+    const v = type === 'prop' ? p * (1 - p) : sd * sd;
+    const n0 = z * z * v / (e * e);
+    const nf = N > 0 ? n0 / (1 + (n0 - 1) / N) : n0;
+    const nd = nf * deff, nr = nd / rr;
+    return { z, v, n0, nf, nd, nr, n: Math.ceil(nr - 1e-9) };
+  }
+  // A change between two independent rounds; the size is for each round.
+  function sizeCompare({ type, p1, p2, sd, delta, alpha, power, deff, rr }) {
+    const za = qnorm(1 - alpha / 2), zb = qnorm(power);
+    const d = type === 'prop' ? p2 - p1 : delta;
+    const v = type === 'prop' ? p1 * (1 - p1) + p2 * (1 - p2) : 2 * sd * sd;
+    const n0 = (za + zb) * (za + zb) * v / (d * d);
+    const nd = n0 * deff, nr = nd / rr;
+    return { za, zb, d, v, n0, nd, nr, n: Math.ceil(nr - 1e-9) };
+  }
+
+  // Whole numbers that add to total, by largest remainder.
+  function roundTo(shares, total) {
+    const fl = shares.map(Math.floor);
+    let left = total - fl.reduce((s, x) => s + x, 0);
+    const order = shares.map((x, i) => [x - Math.floor(x), i]).sort((p, q) => q[0] - p[0] || p[1] - q[1]);
+    for (let j = 0; j < order.length && left > 0; j++, left--) fl[order[j][1]]++;
+    return fl;
+  }
+  // n divided in proportion to w, with a floor and a ceiling per stratum.
+  // A stratum pushed to a bound is fixed there and the rest is shared again.
+  function allocate(n, w, lo, hi) {
+    const H = w.length, fixed = new Array(H).fill(null);
+    for (let pass = 0; pass <= 2 * H; pass++) {
+      const free = [...Array(H).keys()].filter(i => fixed[i] === null);
+      const left = n - fixed.reduce((s, x) => s + (x === null ? 0 : x), 0);
+      const tw = free.reduce((s, i) => s + w[i], 0);
+      const share = i => tw > 0 ? left * w[i] / tw : left / free.length;
+      const over = free.filter(i => share(i) > hi[i]);
+      if (over.length) { over.forEach(i => { fixed[i] = hi[i]; }); continue; }
+      const under = free.filter(i => share(i) < lo[i]);
+      if (under.length) { under.forEach(i => { fixed[i] = lo[i]; }); continue; }
+      const raw = fixed.map((x, i) => x === null ? share(i) : x);
+      return roundTo(raw, Math.round(raw.reduce((s, x) => s + x, 0)));
+    }
+    return null;
+  }
+  function allocations(strata, n, min) {
+    const Nt = strata.reduce((s, h) => s + h.N, 0), H = strata.length;
+    const hi = strata.map(h => h.N), lo = strata.map(h => Math.min(min, h.N));
+    if (n > Nt) return { error: 'The total sample is larger than the population.' };
+    if (lo.reduce((s, x) => s + x, 0) > n) return { error: 'The minimum per stratum adds up to more than the total sample.' };
+    const haveS = strata.every(h => h.S > 0);
+    const se = nh => haveS ? Math.sqrt(strata.reduce((s, h, i) => s + (h.N / Nt) ** 2 * h.S * h.S * (1 - nh[i] / h.N) / nh[i], 0)) : null;
+    const out = { Nt, haveS, methods: [] };
+    const add = (name, w) => { const nh = allocate(n, w, lo, hi); out.methods.push({ name, nh, se: nh && nh.every(x => x > 0) ? se(nh) : null }); };
+    add('Proportional', strata.map(h => h.N));
+    if (haveS) add('Neyman', strata.map(h => h.N * h.S));
+    add('Equal', strata.map(() => 1));
+    return out;
+  }
+
+  // Seeded generator (mulberry32). start() returns a number in (0, 1].
+  function rng(seed) {
+    let a = seed >>> 0;
+    const next = () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+    return { start: () => 1 - next() };
+  }
+  // Systematic PPS of k units from `units` ([{id, size}]) in the order given,
+  // with random start u in (0, 1] as a share of the interval.
+  function pps(units, k, u) {
+    let rest = units.slice(), need = k; const picked = [];
+    while (need > 0) {
+      const M = rest.reduce((s, x) => s + x.size, 0), I = M / need;
+      const big = rest.filter(x => x.size >= I);
+      if (!big.length) break;
+      big.forEach(x => picked.push({ unit: x, prob: 1, certainty: true }));
+      rest = rest.filter(x => x.size < I); need -= big.length;
+    }
+    let interval = null, M = rest.reduce((s, x) => s + x.size, 0);
+    if (need > 0) {
+      interval = M / need;
+      let point = u * interval, cum = 0, got = 0;
+      for (const x of rest) {
+        cum += x.size;
+        if (got < need && point <= cum + 1e-9 * M) { picked.push({ unit: x, prob: need * x.size / M, certainty: false }); point += interval; got++; }
+      }
+    }
+    return { picked, interval, restTotal: M, start: interval === null ? null : u * interval };
+  }
+  // The whole draw: strata in name order, clusters shared in proportion to
+  // size with at least one each, a start for each stratum from the seed.
+  function draw(units, k, take, seed) {
+    const names = [...new Set(units.map(x => x.stratum))].sort();
+    if (k < names.length) return { error: `There are ${names.length} strata and ${k} clusters to draw. Draw at least one cluster in each stratum.` };
+    const groups = names.map(s => units.filter(x => x.stratum === s));
+    const tot = groups.map(g => g.reduce((s, x) => s + x.size, 0)), M = tot.reduce((s, x) => s + x, 0);
+    const kh = allocate(k, tot, groups.map(() => 1), groups.map(g => g.length));
+    if (!kh) return { error: 'The clusters could not be divided between the strata.' };
+    const g = rng(seed), rows = [], strata = [];
+    groups.forEach((grp, h) => {
+      const u = g.start(), r = pps(grp, kh[h], u);
+      strata.push({ name: names[h], units: grp.length, size: tot[h], k: kh[h], u, interval: r.interval, start: r.start, certainty: r.picked.filter(x => x.certainty).length });
+      r.picked.forEach(x => {
+        const t = Math.min(take, x.unit.size), p2 = t / x.unit.size, pr = x.prob * p2;
+        rows.push({ stratum: names[h], id: x.unit.id, size: x.unit.size, order: x.unit.order, certainty: x.certainty, p1: x.prob, take: t, p2, prob: pr, weight: 1 / pr });
+      });
+    });
+    rows.sort((p, q) => p.order - q.order);
+    return { rows, strata, total: M, estimate: rows.reduce((s, x) => s + x.take * x.weight, 0), interviews: rows.reduce((s, x) => s + x.take, 0) };
+  }
+  // The example frame: 60 invented villages in four districts.
+  function demo() {
+    const g = rng(7), names = ['Aravali', 'Betwa', 'Chambal', 'Dhasan'], rows = [];
+    names.forEach((d, j) => { for (let i = 1; i <= 15; i++) { const u = g.start(); rows.push({ district: d, village: `${d.slice(0, 3).toUpperCase()}-${String(i).padStart(2, '0')}`, households: Math.round(60 + 520 * u * u + 90 * j) }); } });
+    rows[22].households = 2600;
+    return rows;
+  }
+  return { pnorm, qnorm, deffOf, sizeEstimate, sizeCompare, roundTo, allocate, allocations, rng, pps, draw, demo };
+})();
+if (typeof module !== 'undefined') module.exports = SD;
+</script>
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
+const num = (x, d = 0) => Number(x).toLocaleString('en-IN', { minimumFractionDigits: d, maximumFractionDigits: d });
+const val = id => parseFloat($('#' + id).value);
+
+document.querySelectorAll('.top-tabs button').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('.top-tabs button').forEach(x => x.classList.toggle('on', x === b));
+  document.querySelectorAll('.view').forEach(v => v.classList.toggle('on', v.id === 'v-' + b.dataset.v));
+}));
+
+/* ───────────── Sample size ───────────── */
+function design() {
+  const mode = $('#dmode').value, m = val('m'), rho = val('rho');
+  const deff = mode === 'icc' ? SD.deffOf(m, rho) : mode === 'direct' ? val('deff') : 1;
+  return { mode, m, rho, deff, rr: val('rr'), N: val('N') };
+}
+function sizeInputs() {
+  const d = design(), type = $('#otype').value, goal = $('#goal').value;
+  const bad = [];
+  if (!(d.deff >= 1)) bad.push('The design effect must be 1 or more.');
+  if (!(d.rr > 0 && d.rr <= 1)) bad.push('The response rate must be above 0 and at most 1.');
+  if (d.mode === 'icc' && !(d.m >= 1)) bad.push('Interviews per cluster must be at least 1.');
+  let r = null;
+  if (goal === 'est') {
+    const a = { type, p: val('p'), sd: val('sd'), e: val('e'), conf: parseFloat($('#conf').value), N: d.N, deff: d.deff, rr: d.rr };
+    if (type === 'prop' && !(a.p > 0 && a.p < 1)) bad.push('The proportion must lie between 0 and 1.');
+    if (type === 'mean' && !(a.sd > 0)) bad.push('The standard deviation must be above 0.');
+    if (!(a.e > 0)) bad.push('The margin of error must be above 0.');
+    if (!bad.length) r = { goal, type, a, d, res: SD.sizeEstimate(a) };
+  } else {
+    const a = { type, p1: val('p1'), p2: val('p2'), sd: val('sd2'), delta: val('delta'), alpha: parseFloat($('#alpha').value), power: parseFloat($('#power').value), deff: d.deff, rr: d.rr };
+    if (type === 'prop' && !(a.p1 > 0 && a.p1 < 1 && a.p2 > 0 && a.p2 < 1)) bad.push('Both proportions must lie between 0 and 1.');
+    if (type === 'prop' && a.p1 === a.p2) bad.push('The two proportions are the same, so there is no change to detect.');
+    if (type === 'mean' && !(a.sd > 0 && a.delta > 0)) bad.push('The standard deviation and the difference must be above 0.');
+    if (!bad.length) r = { goal, type, a, d, res: SD.sizeCompare(a) };
+  }
+  return { bad, r };
+}
+function showSize() {
+  const goal = $('#goal').value, type = $('#otype').value, mode = $('#dmode').value;
+  $('#estIn').style.display = goal === 'est' ? '' : 'none'; $('#cmpIn').style.display = goal === 'cmp' ? '' : 'none';
+  $('#estProp').style.display = $('#cmpProp').style.display = type === 'prop' ? '' : 'none';
+  $('#estMean').style.display = $('#cmpMean').style.display = type === 'mean' ? '' : 'none';
+  $('#iccIn').style.display = mode === 'icc' ? '' : 'none'; $('#deffIn').style.display = mode === 'direct' ? '' : 'none';
+  const { bad, r } = sizeInputs();
+  if (bad.length) { $('#sizeOut').innerHTML = bad.map(b => `<div class="warn">${esc(b)}</div>`).join(''); $('#sensOut').innerHTML = ''; return; }
+  const { a, d, res } = r, each = goal === 'cmp' ? ' in each round' : '';
+  const clusters = d.mode === 'icc' ? Math.ceil(res.n / d.m) : null;
+  let h = `<span class="stat"><b>${num(res.n)}</b><span>interviews to attempt${each}</span></span>`;
+  if (clusters) h += `<span class="stat"><b>${num(clusters)}</b><span>clusters of ${num(d.m)}${each}</span></span>`;
+  h += `<span class="stat"><b>${num(d.deff, 2)}</b><span>design effect</span></span>`;
+  if (goal === 'cmp') h += `<span class="stat"><b>${num(2 * res.n)}</b><span>interviews over both rounds</span></span>`;
+  h += '<ol class="work">';
+  if (goal === 'est') {
+    h += `<li>z for ${num(a.conf * 100)}% confidence is <b>${res.z.toFixed(4)}</b>.</li>`;
+    h += type === 'prop'
+      ? `<li>Simple random sample: ${res.z.toFixed(4)}² × ${a.p} × ${(1 - a.p).toFixed(4).replace(/0+$/, '').replace(/\.$/, '')} ÷ ${a.e}² = <b>${num(res.n0, 1)}</b>.</li>`
+      : `<li>Simple random sample: ${res.z.toFixed(4)}² × ${a.sd}² ÷ ${a.e}² = <b>${num(res.n0, 1)}</b>.</li>`;
+    h += d.N > 0 ? `<li>Finite population of ${num(d.N)}: ${num(res.n0, 1)} ÷ (1 + (${num(res.n0, 1)} − 1) ÷ ${num(d.N)}) = <b>${num(res.nf, 1)}</b>.</li>` : '<li>No finite population correction, because no population size was entered.</li>';
+    h += `<li>Design effect ${num(d.deff, 2)}${d.mode === 'icc' ? ` = 1 + (${num(d.m)} − 1) × ${d.rho}` : ''}: <b>${num(res.nd, 1)}</b>.</li>`;
+  } else {
+    h += `<li>z for a two-sided ${num(a.alpha * 100)}% test is <b>${res.za.toFixed(4)}</b>, and for ${num(a.power * 100)}% power <b>${res.zb.toFixed(4)}</b>.</li>`;
+    h += type === 'prop'
+      ? `<li>Each round, simple random sample: (${res.za.toFixed(4)} + ${res.zb.toFixed(4)})² × (${a.p1} × ${(1 - a.p1).toFixed(2)} + ${a.p2} × ${(1 - a.p2).toFixed(2)}) ÷ (${a.p2} − ${a.p1})² = <b>${num(res.n0, 1)}</b>.</li>`
+      : `<li>Each round, simple random sample: 2 × ${a.sd}² × (${res.za.toFixed(4)} + ${res.zb.toFixed(4)})² ÷ ${a.delta}² = <b>${num(res.n0, 1)}</b>.</li>`;
+    h += `<li>Design effect ${num(d.deff, 2)}${d.mode === 'icc' ? ` = 1 + (${num(d.m)} − 1) × ${d.rho}` : ''}: <b>${num(res.nd, 1)}</b>.</li>`;
+  }
+  h += `<li>Response rate ${num(d.rr * 100)}%: ${num(res.nd, 1)} ÷ ${d.rr} = ${num(res.nr, 1)}, rounded up to <b>${num(res.n)}</b>.</li></ol>`;
+  if (goal === 'cmp' && d.N > 0) h += '<p class="note">The population size is not used for a comparison between rounds.</p>';
+  if (goal === 'est' && d.N > 0 && res.n > d.N) h += `<div class="warn">The sample is larger than the population of ${num(d.N)}. Interview everyone, or accept a wider margin of error.</div>`;
+  $('#sizeOut').innerHTML = h;
+
+  // What changes it: the same design at other values of one input.
+  const again = (ch) => { const b = Object.assign({}, a, ch); return goal === 'est' ? SD.sizeEstimate(b).n : SD.sizeCompare(b).n; };
+  let s = '<div class="tscroll"><table><thead><tr><th>Change one input</th><th>Interviews' + each + '</th></tr></thead><tbody>';
+  s += `<tr><td>As entered</td><td>${num(res.n)}</td></tr>`;
+  if (goal === 'est') [a.e / 2, a.e * 1.5, a.e * 2].forEach(e => { s += `<tr><td>Margin of error ${+e.toPrecision(3)}</td><td>${num(again({ e }))}</td></tr>`; });
+  if (d.mode === 'icc') {
+    [0.01, 0.1, 0.2].filter(x => x !== d.rho).forEach(rho => { s += `<tr><td>Intra-cluster correlation ${rho}</td><td>${num(again({ deff: SD.deffOf(d.m, rho) }))}</td></tr>`; });
+    [10, 30].filter(x => x !== d.m).forEach(m => { s += `<tr><td>${m} interviews per cluster</td><td>${num(again({ deff: SD.deffOf(m, d.rho) }))}</td></tr>`; });
+  }
+  [0.8, 0.7].filter(x => x !== d.rr).forEach(rr => { s += `<tr><td>Response rate ${num(rr * 100)}%</td><td>${num(again({ rr }))}</td></tr>`; });
+  $('#sensOut').innerHTML = s + '</tbody></table></div>';
+}
+document.querySelectorAll('#v-size input, #v-size select').forEach(x => x.addEventListener('input', showSize));
+showSize();
+
+/* ───────────── Allocation ───────────── */
+function readStrata() {
+  const rows = [], bad = [];
+  $('#strata').value.split('\n').map(l => l.trim()).filter(Boolean).forEach((l, i) => {
+    const parts = l.split(',').map(x => x.trim());
+    const N = parseFloat(parts[1]), S = parts[2] === undefined || parts[2] === '' ? null : parseFloat(parts[2]);
+    if (!parts[0] || !(N > 0) || (S !== null && !(S > 0))) bad.push(`Line ${i + 1} could not be read: ${l}`);
+    else rows.push({ name: parts[0], N: Math.round(N), S });
+  });
+  return { rows, bad };
+}
+function showAlloc() {
+  const { rows, bad } = readStrata(), n = Math.round(val('an')), min = Math.round(val('amin') || 0);
+  if (bad.length || rows.length < 2 || !(n > 0)) {
+    $('#allocOut').innerHTML = `<div class="warn">${esc(bad[0] || (rows.length < 2 ? 'Enter at least two strata, one per line: name, population, standard deviation.' : 'Enter a total sample above 0.'))}</div>`; return;
+  }
+  const r = SD.allocations(rows, n, min);
+  if (r.error) { $('#allocOut').innerHTML = `<div class="warn">${esc(r.error)}</div>`; return; }
+  const ok = r.methods.filter(m => m.nh);
+  let h = '<div class="tscroll"><table><thead><tr><th>Stratum</th><th>Population</th><th>Share</th>' + ok.map(m => `<th>${m.name}</th><th>Weight</th>`).join('') + '</tr></thead><tbody>';
+  rows.forEach((s, i) => { h += `<tr><td>${esc(s.name)}</td><td>${num(s.N)}</td><td>${num(100 * s.N / r.Nt, 1)}%</td>` + ok.map(m => `<td>${num(m.nh[i])}</td><td>${m.nh[i] > 0 ? num(s.N / m.nh[i], 1) : 'none'}</td>`).join('') + '</tr>'; });
+  h += `<tr><td><b>Total</b></td><td>${num(r.Nt)}</td><td>100%</td>` + ok.map(m => `<td><b>${num(m.nh.reduce((s, x) => s + x, 0))}</b></td><td></td>`).join('') + '</tr>';
+  if (r.haveS) h += '<tr><td>Standard error of the overall mean</td><td></td><td></td>' + ok.map(m => `<td>${m.se === null ? 'none' : m.se.toFixed(4)}</td><td></td>`).join('') + '</tr>';
+  h += '</tbody></table></div>';
+  h += '<p class="note">The weight is the number of people each interview stands for, N<sub>h</sub>/n<sub>h</sub>. Unequal weights are the price of an allocation that is not proportional.</p>';
+  if (r.haveS) {
+    const p = ok.find(m => m.name === 'Proportional'), ny = ok.find(m => m.name === 'Neyman'), eq = ok.find(m => m.name === 'Equal');
+    if (p && ny && p.se && ny.se) h += `<div class="ok">Neyman allocation gives a standard error ${num(100 * (1 - ny.se / p.se), 1)}% below proportional allocation for the same ${num(n)} interviews.${eq && eq.se ? ` Equal allocation is ${num(100 * (eq.se / p.se - 1), 1)}% ${eq.se >= p.se ? 'above' : 'below'} proportional.` : ''}</div>`;
+  } else h += '<p class="note">Add a standard deviation to every line to see Neyman allocation and the standard errors.</p>';
+  $('#allocOut').innerHTML = h;
+}
+$('#allocGo').addEventListener('click', showAlloc);
+showAlloc();
+
+/* ───────────── PPS draw ───────────── */
+let frame = null, lastDraw = null;
+function parseCSV(text) {
+  const rows = []; let row = [], cell = '', q = false;
+  text = text.replace(/^﻿/, '');
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (q) { if (c === '"') { if (text[i + 1] === '"') { cell += '"'; i++; } else q = false; } else cell += c; }
+    else if (c === '"') q = true;
+    else if (c === ',') { row.push(cell); cell = ''; }
+    else if (c === '\n' || c === '\r') { if (c === '\r' && text[i + 1] === '\n') i++; row.push(cell); cell = ''; if (row.some(x => x !== '')) rows.push(row); row = []; }
+    else cell += c;
+  }
+  row.push(cell); if (row.some(x => x !== '')) rows.push(row);
+  return rows;
+}
+const csvCell = x => /[",\n]/.test(String(x)) ? '"' + String(x).replace(/"/g, '""') + '"' : String(x);
+async function digest(text) {
+  if (!(window.crypto && crypto.subtle)) return 'not available in this browser';
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+  return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
+}
+async function loadFrame(text, label) {
+  const rows = parseCSV(text);
+  if (rows.length < 3) { $('#drawOut').innerHTML = '<div class="warn">The file needs a header row and at least two clusters.</div>'; return; }
+  const head = rows[0].map(h => h.trim()), body = rows.slice(1);
+  frame = { head, body, label, digest: await digest(text) };
+  const numeric = head.map((h, j) => body.filter(r => r[j] !== undefined && r[j].trim() !== '' && isFinite(Number(r[j].replace(/,/g, '')))).length / body.length);
+  const opt = (sel, pick, blank) => { sel.innerHTML = (blank ? '<option value="-1">None</option>' : '') + head.map((h, j) => `<option value="${j}"${j === pick ? ' selected' : ''}>${esc(h)}</option>`).join(''); };
+  const sizeCol = numeric.findIndex((s, j) => s > 0.95 && /house|hh|pop|size|count|number/i.test(head[j]));
+  const sizePick = sizeCol >= 0 ? sizeCol : Math.max(0, numeric.lastIndexOf(Math.max(...numeric)));
+  const idPick = Math.max(0, head.findIndex((h, j) => j !== sizePick && /vill|ward|cluster|name|code|id|school|psu/i.test(h)));
+  const strPick = head.findIndex((h, j) => j !== sizePick && j !== idPick && /strat|district|block|state|region|urban/i.test(h));
+  opt($('#cId'), idPick, false); opt($('#cSize'), sizePick, false); opt($('#cStr'), strPick, true);
+  $('#drawSetup').style.display = ''; $('#recPanel').style.display = 'none';
+  $('#drawOut').innerHTML = `<p class="note">${esc(label)}: ${num(body.length)} clusters, ${head.length} columns. Check the three columns chosen and press Draw.</p>`;
+}
+$('#frameFile').addEventListener('change', e => { const f = e.target.files[0]; if (!f) return; const r = new FileReader(); r.onload = () => loadFrame(String(r.result), f.name); r.readAsText(f); });
+$('#demoFrame').addEventListener('click', () => {
+  const d = SD.demo();
+  loadFrame('district,village,households\n' + d.map(r => `${r.district},${r.village},${r.households}`).join('\n') + '\n', 'Example frame (invented)');
+});
+function doDraw() {
+  if (!frame) return;
+  const ci = +$('#cId').value, cs = +$('#cSize').value, ct = +$('#cStr').value;
+  const k = Math.round(val('a')), take = Math.round(val('take')), seed = Math.round(val('seed'));
+  let dropped = 0; const units = [];
+  frame.body.forEach((r, i) => {
+    const size = Number(String(r[cs] === undefined ? '' : r[cs]).replace(/,/g, ''));
+    if (!(size > 0)) { dropped++; return; }
+    units.push({ id: (r[ci] || '').trim() || `row ${i + 2}`, size, stratum: ct >= 0 ? (r[ct] || '').trim() || '(blank)' : 'All', order: i });
+  });
+  const fail = m => { $('#drawOut').innerHTML = `<div class="warn">${esc(m)}</div>`; $('#recPanel').style.display = 'none'; };
+  if (!(k >= 1) || !(take >= 1) || !isFinite(seed)) return fail('Enter the number of clusters, the interviews per cluster and a seed.');
+  if (k > units.length) return fail(`The frame has ${units.length} clusters with a size above 0 and ${k} were asked for.`);
+  const r = SD.draw(units, k, take, seed);
+  if (r.error) return fail(r.error);
+  const cert = r.rows.filter(x => x.certainty).length, small = r.rows.filter(x => x.take < take).length;
+  const wts = r.rows.map(x => x.weight), same = Math.max(...wts) - Math.min(...wts) < 1e-9 * Math.max(...wts);
+  const multi = r.strata.length > 1;
+  let h = `<span class="stat"><b>${num(r.rows.length)}</b><span>clusters selected</span></span><span class="stat"><b>${num(r.interviews)}</b><span>interviews</span></span><span class="stat"><b>${same ? num(wts[0], 1) : num(Math.min(...wts), 1) + ' to ' + num(Math.max(...wts), 1)}</b><span>weight per interview</span></span>`;
+  if (dropped) h += `<div class="warn">${num(dropped)} row${dropped === 1 ? ' has' : 's have'} no size above 0 and ${dropped === 1 ? 'was' : 'were'} left out of the draw.</div>`;
+  if (cert) h += `<div class="warn">${num(cert)} cluster${cert === 1 ? ' is' : 's are'} as large as the sampling interval and ${cert === 1 ? 'was' : 'were'} taken with certainty. Its households carry a different weight, so the sample is not self-weighting.</div>`;
+  if (small) h += `<div class="warn">${num(small)} selected cluster${small === 1 ? ' has' : 's have'} fewer than ${num(take)} units, so all of them are interviewed there.</div>`;
+  h += `<div class="ok">The weights add back to the frame: ${num(r.estimate)} against a total of ${num(r.total)}.</div>`;
+  h += '<div class="tscroll"><table><thead><tr>' + (multi ? '<th>Stratum</th>' : '') + '<th>Cluster</th><th>Size</th><th>P(cluster)</th><th>Interviews</th><th>P(household)</th><th>Weight</th></tr></thead><tbody>';
+  r.rows.forEach(x => { h += '<tr>' + (multi ? `<td>${esc(x.stratum)}</td>` : '') + `<td>${esc(x.id)}${x.certainty ? ' (certainty)' : ''}</td><td>${num(x.size)}</td><td>${x.p1.toFixed(4)}</td><td>${num(x.take)}</td><td>${x.prob.toFixed(5)}</td><td>${num(x.weight, 2)}</td></tr>`; });
+  h += '</tbody></table></div>';
+  $('#drawOut').innerHTML = h;
+  const rec = ['Sampling record', `Frame: ${frame.label}`, `Clusters in the frame: ${frame.body.length} (${dropped} left out for a size of 0 or blank)`, `SHA-256 of the frame: ${frame.digest}`,
+    `Cluster column: ${frame.head[ci]}`, `Size column: ${frame.head[cs]}`, `Stratum column: ${ct >= 0 ? frame.head[ct] : 'none'}`,
+    `Method: systematic sampling with probability proportional to size, in file order`, `Generator: mulberry32, seed ${seed}`, `Clusters drawn: ${r.rows.length}`, `Interviews per cluster: ${take}`, '']
+    .concat(r.strata.map(s => `${multi ? s.name + ': ' : ''}${s.units} clusters, total size ${s.size}, ${s.k} drawn, ${s.certainty} with certainty, interval ${s.interval === null ? 'none' : s.interval.toFixed(4)}, random start ${s.start === null ? 'none' : s.start.toFixed(4)}`));
+  $('#recOut').textContent = rec.join('\n'); $('#recPanel').style.display = '';
+  lastDraw = { rec: rec.join('\n'), csv: ['stratum,cluster,size,certainty,p_cluster,interviews,p_household,weight'].concat(r.rows.map(x => [x.stratum, x.id, x.size, x.certainty ? 1 : 0, x.p1.toFixed(6), x.take, x.prob.toFixed(8), x.weight.toFixed(4)].map(csvCell).join(','))).join('\n') + '\n' };
+}
+function save(name, text, type) { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([text], { type })); a.download = name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 1000); }
+$('#drawGo').addEventListener('click', doDraw);
+$('#dlDraw').addEventListener('click', () => lastDraw && save('selected-clusters.csv', lastDraw.csv, 'text/csv'));
+$('#dlRec').addEventListener('click', () => lastDraw && save('sampling-record.txt', lastDraw.rec, 'text/plain'));
+</script>
+<script src="../js/dyslexia-font.js" data-accent="var(--purple2)" data-radius="99px" defer></script>
+</body>
+</html>
