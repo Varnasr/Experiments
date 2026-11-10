@@ -113,6 +113,30 @@ Python implementation.
 
 ---
 
+### Fiscal Incidence
+
+Who pays a tax and who receives a transfer, from a table of income groups:
+concentration coefficients, Kakwani indices, the Reynolds–Smolensky
+redistributive effect split into vertical equity and reranking, and the
+marginal contribution of each instrument to the fall in the Gini.
+
+**Directory:** `fiscal-incidence/`
+**Stage:** Active
+
+---
+
+### Multidimensional Poverty
+
+The Alkire–Foster adjusted headcount ratio from an uploaded file of 0/1
+deprivations: H, A and M₀, censored headcounts and indicator shares, a
+breakdown by group, vulnerable and severe shares, and the index at other
+cutoffs.
+
+**Directory:** `mpi-calculator/`
+**Stage:** Active
+
+---
+
 ### RCT Planner
 
 Power and minimum detectable effect for individual and cluster designs (ICC,
@@ -122,6 +146,30 @@ randomiser for an uploaded baseline with a balance table, joint F-test and a
 randomisation record for the pre-analysis plan.
 
 **Directory:** `rct-planner/`
+**Stage:** Active
+
+---
+
+### Sampling Design
+
+Sample size for a survey estimate or a change between two rounds (design
+effect, finite population correction, non-response); proportional, Neyman and
+equal allocation across strata with the standard error under each; and a
+seeded systematic PPS draw of clusters from an uploaded frame, with weights and
+a sampling record.
+
+**Directory:** `sampling-design/`
+**Stage:** Active
+
+---
+
+### Multiple Outcomes & Attrition Bounds
+
+P-values for a family of outcomes adjusted by Bonferroni, Holm,
+Benjamini–Hochberg and sharpened q-values; and Lee and Manski bounds on a
+treatment effect under differential attrition, with bootstrap intervals.
+
+**Directory:** `trial-checks/`
 **Stage:** Active
 
 ---
@@ -415,7 +463,11 @@ Experiments/
 ├── women-indicators/                   # NFHS women's indicators, live DHS API
 ├── heat-exposure/                      # WBGT, safe hours, wages lost, 35-year trend
 ├── wage-gap/                           # Oaxaca–Blinder decomposition
+├── fiscal-incidence/                   # Kakwani, Reynolds–Smolensky, reranking from grouped data
+├── mpi-calculator/                     # Alkire–Foster index from 0/1 deprivations
 ├── rct-planner/                        # power/MDE and stratified randomiser
+├── sampling-design/                    # sample size, allocation, PPS draw of clusters
+├── trial-checks/                       # multiple-testing adjustments, Lee and Manski bounds
 ├── cost-benefit/                       # NPV/BCR/IRR with Monte Carlo
 ├── land-acquisition/                   # RFCTLARR 2013 compensation
 ├── expense-ledger/                     # election expenses against the Rule 90 ceiling

@@ -20,10 +20,22 @@
       "tagline": "Gini, Theil, Atkinson and FGT poverty measures from grouped data or the World Bank."
     },
     {
+      "dir": "mpi-calculator",
+      "card": "mpi",
+      "name": "Multidimensional Poverty",
+      "tagline": "The Alkire–Foster index from your own data: headcount, intensity, indicators and groups."
+    },
+    {
       "dir": "wage-gap",
       "card": "wagegap",
       "name": "Wage Gap Decomposition",
       "tagline": "Oaxaca–Blinder decomposition of the gender wage gap, with bootstrap standard errors."
+    },
+    {
+      "dir": "fiscal-incidence",
+      "card": "incidence",
+      "name": "Fiscal Incidence",
+      "tagline": "Who pays a tax and who receives a transfer: Kakwani, Reynolds–Smolensky and reranking."
     },
     {
       "dir": "women-indicators",
@@ -42,6 +54,18 @@
       "card": "rct",
       "name": "RCT Planner",
       "tagline": "Power and minimum detectable effect for individual and cluster trials, and a seeded randomiser."
+    },
+    {
+      "dir": "sampling-design",
+      "card": "sampling",
+      "name": "Sampling Design",
+      "tagline": "Sample size, allocation across strata and a PPS draw of clusters, with weights."
+    },
+    {
+      "dir": "trial-checks",
+      "card": "trialchecks",
+      "name": "Multiple Outcomes & Attrition Bounds",
+      "tagline": "Holm, Benjamini–Hochberg and sharpened q-values; Lee and Manski bounds for attrition."
     },
     {
       "dir": "survey-audit",

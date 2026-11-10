@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Multiple Outcomes and Attrition Bounds · Experiments</title>
+<meta name="description" content="Two checks on the results of a trial: p-values adjusted for many outcomes by Bonferroni, Holm, Benjamini-Hochberg and Anderson's sharpened q-values, and Lee and Manski bounds on a treatment effect when the two arms lose different shares of their sample.">
+<!-- seo:start -->
+<link rel="canonical" href="https://idealogworks.foo/trial-checks/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Experiments">
+<meta property="og:locale" content="en_IN">
+<meta property="og:title" content="Multiple Outcomes &amp; Attrition Bounds">
+<meta property="og:description" content="Holm, Benjamini–Hochberg and sharpened q-values; Lee and Manski bounds for attrition.">
+<meta property="og:url" content="https://idealogworks.foo/trial-checks/">
+<meta property="og:image" content="https://idealogworks.foo/og/trial-checks.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Multiple Outcomes &amp; Attrition Bounds: Holm, Benjamini–Hochberg and sharpened q-values; Lee and Manski bounds for attrition.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Multiple Outcomes &amp; Attrition Bounds">
+<meta name="twitter:description" content="Holm, Benjamini–Hochberg and sharpened q-values; Lee and Manski bounds for attrition.">
+<meta name="twitter:image" content="https://idealogworks.foo/og/trial-checks.jpg">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Multiple Outcomes & Attrition Bounds","url":"https://idealogworks.foo/trial-checks/","description":"Two checks on the results of a trial: p-values adjusted for many outcomes by Bonferroni, Holm, Benjamini-Hochberg and Anderson's sharpened q-values, and Lee and Manski bounds on a treatment effect when the two arms lose different shares of their sample.","image":"https://idealogworks.foo/og/trial-checks.jpg","operatingSystem":"Any","browserRequirements":"Requires JavaScript","isAccessibleForFree":true,"author":{"@type":"Person","name":"Varna Sri Raman"},"isPartOf":{"@type":"WebSite","name":"Experiments","url":"https://idealogworks.foo/"}}</script>
+<style>.xshare{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.5rem .6rem;box-sizing:border-box;width:calc(100% - 2rem);max-width:960px;margin:2.5rem auto 1.5rem;padding:.85rem 1rem;background:#f5f1fa;border:1px solid #e6e3ec;border-radius:12px;font:600 15px/1.4 "Source Sans 3",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:#382280;text-align:center}.xshare .xshare-t{margin-right:.25rem;color:#382280}.xshare .xshare-l{display:inline-flex;align-items:center;min-height:36px;margin:0;padding:.3rem .95rem;border:1px solid #572e91;border-radius:99px;background:#fff;color:#382280;font:inherit;text-decoration:underline;text-underline-offset:2px;cursor:pointer;box-shadow:none}.xshare .xshare-l:hover{background:#ece4f5}.xshare .xshare-l:focus-visible{outline:3px solid #ff9911;outline-offset:2px}.xshare [hidden]{display:none!important}@media print{.xshare{display:none}}.xcontact{box-sizing:border-box;width:calc(100% - 2rem);max-width:960px;margin:0 auto 1.5rem;padding:.85rem 1rem;background:#f5f1fa;border:1px solid #e6e3ec;border-radius:12px;font:400 15px/1.5 "Source Sans 3",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:#382280;text-align:center}.xcontact a{color:#382280;font-weight:600;text-decoration:underline;text-underline-offset:2px}.xcontact a:focus-visible{outline:3px solid #ff9911;outline-offset:2px}@media print{.xcontact{display:none}}</style>
+<!-- seo:end -->
+<style>
+  :root { --bg:#fafafa; --surface:#fff; --border:#e5e7eb; --text:#1a1a2e; --dim:#4b5563; --muted:#6b7280; --accent:#1B6B4A; --accent-soft:#e6f2ec; --mono:ui-monospace,SFMono-Regular,Menlo,monospace; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--text); line-height:1.55; }
+  a { color:var(--accent); }
+  header { border-bottom:1px solid var(--border); background:#fff; }
+  .wrap { max-width:1080px; margin:0 auto; padding:0 1.25rem; }
+  header .wrap { display:flex; align-items:baseline; justify-content:space-between; gap:1rem; padding:.9rem 1.25rem; flex-wrap:wrap; }
+  header h1 { font-family:Georgia,serif; font-size:1.35rem; font-weight:400; }
+  header h1 small { font-size:.8rem; color:var(--muted); margin-left:.5rem; }
+  header nav a { font-size:.85rem; margin-left:1rem; text-decoration:none; }
+  main { padding:1.5rem 0 3rem; }
+  .lede { color:var(--dim); font-size:.95rem; max-width:66ch; margin-bottom:1.25rem; }
+  .top-tabs { display:flex; gap:.25rem; border-bottom:1px solid var(--border); margin-bottom:1.25rem; flex-wrap:wrap; }
+  .top-tabs button { font:inherit; font-size:.95rem; background:none; border:none; color:var(--dim); padding:.5rem .9rem; border-bottom:2px solid transparent; border-radius:0; cursor:pointer; }
+  .top-tabs button.on { color:var(--accent); border-bottom-color:var(--accent); font-weight:600; }
+  .view { display:none; } .view.on { display:block; }
+  .grid { display:grid; grid-template-columns:330px 1fr; gap:1.25rem; align-items:start; }
+  /* A grid item's default min-width:auto lets a wide table size the shared
+     track, and then the page is wider than the phone. */
+  .grid > * { min-width:0; }
+  @media (max-width:860px){ .grid { grid-template-columns:1fr; } }
+  .panel { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1rem 1.15rem; margin-bottom:1rem; }
+  .panel h2 { font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; margin-bottom:.7rem; }
+  label { display:block; font-size:.8rem; color:var(--dim); margin:.5rem 0 .2rem; }
+  select, input[type=text], input[type=number], textarea { width:100%; font:inherit; font-size:.9rem; padding:.4rem .5rem; border:1px solid var(--border); border-radius:6px; background:#fff; color:var(--text); }
+  textarea { font-family:var(--mono); font-size:.82rem; min-height:8.5rem; resize:vertical; }
+  input[type=file] { font-size:.85rem; max-width:100%; }
+  .row { display:flex; gap:.5rem; } .row > * { flex:1; min-width:0; }
+  button { font:inherit; font-size:.88rem; padding:.5rem .9rem; border-radius:6px; border:1px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer; margin-top:.6rem; }
+  button.secondary { background:#fff; color:var(--accent); }
+  .stat { display:inline-block; margin:.25rem 1.25rem .25rem 0; vertical-align:top; }
+  .stat b { display:block; font-size:1.4rem; font-family:Georgia,serif; font-weight:400; } .stat span { font-size:.75rem; color:var(--muted); }
+  table { border-collapse:collapse; width:100%; font-size:.84rem; margin:.5rem 0; }
+  th, td { text-align:right; padding:.3rem .5rem; border-bottom:1px solid var(--border); font-variant-numeric:tabular-nums; white-space:nowrap; }
+  th:first-child, td:first-child { text-align:left; } th { color:var(--dim); font-weight:600; font-size:.75rem; }
+  .tscroll { overflow:auto; max-width:100%; max-height:420px; }
+  .tscroll:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
+  .note { font-size:.82rem; color:var(--dim); margin-top:.5rem; max-width:70ch; }
+  .warn { background:#fff7ed; border:1px solid #fed7aa; color:#9a3412; padding:.5rem .7rem; border-radius:6px; font-size:.83rem; margin:.5rem 0; }
+  .ok { background:var(--accent-soft); color:var(--accent); padding:.5rem .7rem; border-radius:6px; font-size:.83rem; margin:.5rem 0; }
+  .mini { font-size:.78rem; color:var(--muted); } code { font-family:var(--mono); font-size:.8em; background:#f3f4f6; padding:.05em .3em; border-radius:3px; }
+  pre { font-family:var(--mono); font-size:.78rem; background:#f8f9fa; border:1px solid var(--border); border-radius:6px; padding:.6rem .8rem; white-space:pre-wrap; overflow-wrap:anywhere; color:var(--dim); }
+  ol.work { margin:.4rem 0 .2rem 1.2rem; font-size:.86rem; color:var(--dim); } ol.work li { margin-bottom:.3rem; } ol.work b { color:var(--text); font-variant-numeric:tabular-nums; }
+  footer { border-top:1px solid var(--border); padding:1.25rem; text-align:center; font-size:.8rem; color:var(--muted); }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>Multiple Outcomes and Attrition Bounds <small>Holm · sharpened q-values · Lee and Manski bounds</small></h1>
+  <nav><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/trial-checks">Source</a></nav>
+</div></header>
+<main><div class="wrap">
+<p class="lede">Two questions a reader asks of any trial report. With this many outcomes tested, which results would still stand after allowing for the number of tests? And if more people dropped out of one arm than the other, how far could that alone move the estimate?</p>
+
+<div class="top-tabs"><button type="button" data-v="multi" class="on">Many outcomes</button><button type="button" data-v="bounds">Attrition bounds</button></div>
+
+<div class="view on" id="v-multi">
+<div class="grid">
+<div>
+  <div class="panel">
+    <h2>Outcomes</h2>
+    <label for="pvals">One outcome per line: name, p-value</label>
+    <textarea id="pvals" spellcheck="false">School enrolment, 0.001
+Attendance, 0.008
+Test score, 0.012
+Hours of work, 0.031
+Household spending, 0.049
+Savings, 0.09
+Health visits, 0.21
+Migration, 0.44
+Marriage age, 0.62
+Dropout, 0.003</textarea>
+    <label for="level">Level</label><select id="level"><option value="0.10">10%</option><option value="0.05" selected>5%</option><option value="0.01">1%</option></select>
+    <button type="button" id="multiGo">Adjust</button>
+    <p class="mini">The names and p-values above are invented. Enter every outcome that was tested, including the ones that did not reach significance, or the adjustment is too kind.</p>
+  </div>
+</div>
+<div>
+  <div class="panel"><h2>Adjusted p-values</h2><div id="multiOut" aria-live="polite"></div></div>
+  <div class="panel"><h2>Method</h2>
+    <p class="note">Bonferroni multiplies each p-value by the number of tests. Holm (1979) sorts them and multiplies the smallest by M, the next by M − 1 and so on, taking a running maximum; both control the chance of even one false rejection. Benjamini and Hochberg (1995) control the expected share of rejections that are false: the adjusted value of the p-value ranked r is the smallest p·M/r at that rank or above. The sharpened q-value (Anderson 2008) uses the two-stage procedure of Benjamini, Krieger and Yekutieli (2006), which first estimates how many hypotheses are true nulls, and reports the smallest level on a grid of 0.001 at which the outcome is rejected. A sharpened q-value can be smaller than the p-value it comes from.</p>
+  </div>
+</div>
+</div>
+</div>
+
+<div class="view" id="v-bounds">
+<div class="grid">
+<div>
+  <div class="panel">
+    <h2>Data</h2>
+    <label for="dataFile">A CSV with one row per person assigned, including those lost</label>
+    <input type="file" id="dataFile" accept=".csv,text/csv">
+    <button type="button" class="secondary" id="demoData">Use the simulated example</button>
+    <p class="mini">The example is simulated: 600 people in each arm, a true effect of 0.20, and treated people with low outcomes less likely to drop out. The file is read in this page and is not uploaded.</p>
+  </div>
+  <div class="panel" id="bSetup" style="display:none">
+    <h2>Columns</h2>
+    <label for="cArm">Arm</label><select id="cArm"></select>
+    <label for="cTreat">Value that means treated</label><select id="cTreat"></select>
+    <label for="cY">Outcome (blank, NA or a full stop means lost)</label><select id="cY"></select>
+    <div class="row"><div><label for="ymin">Lowest possible outcome</label><input type="number" id="ymin" step="any"></div><div><label for="ymax">Highest possible outcome</label><input type="number" id="ymax" step="any"></div></div>
+    <p class="mini">The Manski bounds need the range the outcome could take. The boxes start at the lowest and highest values observed, which is too narrow if the scale goes further.</p>
+    <label for="bseed">Seed for the bootstrap</label><input type="number" id="bseed" value="20261110" step="1">
+    <button type="button" id="boundsGo">Compute bounds</button>
+  </div>
+</div>
+<div>
+  <div class="panel"><h2>Bounds on the effect</h2><div id="boundsOut" aria-live="polite"><p class="note">Load data to begin.</p></div></div>
+  <div class="panel"><h2>Method</h2>
+    <p class="note">The Lee (2009) bounds assume that assignment to treatment only ever moves people in one direction, into response or out of it. The arm with the higher response rate then contains extra respondents, a share p of its respondents equal to the difference in response rates over the higher rate. Trimming that share from the top of its outcomes gives one bound and from the bottom the other. When the trimmed number is not whole, the observation at the cut is given a fractional weight. The Manski (1990) bounds assume nothing about who is lost: every missing outcome is set to the lowest possible value in one arm and the highest in the other, and then the reverse. The interval beside each pair is a percentile bootstrap, resampling people within each arm with their missing outcomes, from the 2.5th percentile of the lower bound to the 97.5th of the upper.</p>
+  </div>
+</div>
+</div>
+</div>
+
+</div></main>
+<!-- share:start -->
+<aside class="xshare" aria-label="Share this tool"><span class="xshare-t">Share this tool</span><a class="xshare-l" href="https://wa.me/?text=Multiple%20Outcomes%20%26%20Attrition%20Bounds%3A%20Holm%2C%20Benjamini%E2%80%93Hochberg%20and%20sharpened%20q-values%3B%20Lee%20and%20Manski%20bounds%20for%20attrition.%0Ahttps%3A%2F%2Fidealogworks.foo%2Ftrial-checks%2F" target="_blank" rel="noopener">WhatsApp</a><a class="xshare-l" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fidealogworks.foo%2Ftrial-checks%2F" target="_blank" rel="noopener">LinkedIn</a><a class="xshare-l" href="https://twitter.com/intent/tweet?text=Multiple%20Outcomes%20%26%20Attrition%20Bounds%3A%20Holm%2C%20Benjamini%E2%80%93Hochberg%20and%20sharpened%20q-values%3B%20Lee%20and%20Manski%20bounds%20for%20attrition.&amp;url=https%3A%2F%2Fidealogworks.foo%2Ftrial-checks%2F" target="_blank" rel="noopener">X</a><button type="button" class="xshare-l" data-xshare-copy data-url="https://idealogworks.foo/trial-checks/" hidden>Copy link</button><script>(function(){var b=document.currentScript.parentNode.querySelector('[data-xshare-copy]');if(!b||!navigator.clipboard)return;b.hidden=false;var u=b.getAttribute('data-url');b.addEventListener('click',function(){navigator.clipboard.writeText(u).then(function(){b.textContent='Link copied';setTimeout(function(){b.textContent='Copy link';},2000);});});})();</script></aside>
+<!-- share:end -->
+<!-- contact:start -->
+<p class="xcontact">Need help setting out your story, what sets your work apart, the context, the return on investment and the projections? Pinpoint Ventures can help. Write to <a href="mailto:hello@pinpointventures.in?subject=Enquiry%20from%20idealogworks.foo">hello@pinpointventures.in</a> or message on <a href="https://wa.me/919871777110?text=Hi%20Pinpoint%20Ventures%2C%20I%20found%20you%20through%20idealogworks.foo.%20I%27d%20like%20to%20discuss%20a%20research%20or%20advisory%20engagement." target="_blank" rel="noopener">WhatsApp</a>.</p>
+<!-- contact:end -->
+<footer>Part of <a href="../">Experiments</a> by Varna Sri Raman · Idealog Works · MIT licence · Computation in the browser; uploaded data never leaves it.</footer>
+
+<script id="core">
+/* The arithmetic, with no reference to the page, so that
+   trial-checks/tests/core.mjs can run it under node. */
+const TC = (() => {
+  // Adjusted p-values, returned in the order given.
+  function adjust(p) {
+    const M = p.length, order = p.map((v, i) => [v, i]).sort((a, b) => a[0] - b[0] || a[1] - b[1]).map(x => x[1]);
+    const bonf = p.map(v => Math.min(1, v * M)), holm = new Array(M), bh = new Array(M);
+    let run = 0;
+    order.forEach((i, r) => { run = Math.max(run, Math.min(1, p[i] * (M - r))); holm[i] = run; });
+    let low = 1;
+    for (let r = M - 1; r >= 0; r--) { const i = order[r]; low = Math.min(low, p[i] * M / (r + 1)); bh[i] = Math.min(1, low); }
+    // Benjamini-Hochberg at a level: how many of the smallest are rejected.
+    const count = level => { let k = 0; order.forEach((i, r) => { if (p[i] <= level * (r + 1) / M) k = r + 1; }); return k; };
+    const sharp = new Array(M).fill(1);
+    for (let s = 1000; s >= 1; s--) {
+      const q = s / 1000, q1 = q / (1 + q), r1 = count(q1);
+      const k = r1 === 0 ? 0 : r1 === M ? M : count(q1 * M / (M - r1));
+      for (let r = 0; r < k; r++) sharp[order[r]] = q;
+    }
+    return { bonf, holm, bh, sharp, order };
+  }
+
+  const mean = a => a.reduce((s, v) => s + v, 0) / a.length;
+  // Mean of the lowest (or highest) K of the values, K possibly fractional.
+  function partMean(sorted, K, fromTop) {
+    const a = fromTop ? sorted.slice().reverse() : sorted, whole = Math.floor(K + 1e-12), frac = K - whole;
+    let s = 0; for (let i = 0; i < whole; i++) s += a[i];
+    if (frac > 1e-12 && whole < a.length) s += frac * a[whole];
+    return s / K;
+  }
+  // y1, y0: observed outcomes; n1, n0: people assigned.
+  function bounds(y1, y0, n1, n0, ymin, ymax) {
+    const q1 = y1.length / n1, q0 = y0.length / n0, m1 = mean(y1), m0 = mean(y0);
+    const s1 = y1.slice().sort((a, b) => a - b), s0 = y0.slice().sort((a, b) => a - b);
+    let trimmed, p, lower, upper;
+    if (q1 >= q0) {
+      trimmed = 'treated'; p = (q1 - q0) / q1; const K = (1 - p) * s1.length;
+      lower = partMean(s1, K, false) - m0; upper = partMean(s1, K, true) - m0;
+    } else {
+      trimmed = 'control'; p = (q0 - q1) / q0; const K = (1 - p) * s0.length;
+      lower = m1 - partMean(s0, K, true); upper = m1 - partMean(s0, K, false);
+    }
+    const fill = (m, q, v) => q * m + (1 - q) * v;
+    return {
+      q1, q0, m1, m0, naive: m1 - m0, trimmed, p, lee: [lower, upper],
+      manski: [fill(m1, q1, ymin) - fill(m0, q0, ymax), fill(m1, q1, ymax) - fill(m0, q0, ymin)],
+    };
+  }
+  function rng(seed) {
+    let a = seed >>> 0;
+    return () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+  }
+  // arm1, arm0: outcomes of everyone assigned, null where lost.
+  function bootstrap(arm1, arm0, ymin, ymax, B, seed) {
+    const g = rng(seed), draw = a => { const o = []; for (let i = 0; i < a.length; i++) o.push(a[Math.floor(g() * a.length)]); return o; };
+    const lo = { lee: [], manski: [] }, hi = { lee: [], manski: [] }; let skipped = 0;
+    for (let b = 0; b < B; b++) {
+      const a1 = draw(arm1), a0 = draw(arm0), y1 = a1.filter(v => v !== null), y0 = a0.filter(v => v !== null);
+      if (!y1.length || !y0.length) { skipped++; continue; }
+      const r = bounds(y1, y0, a1.length, a0.length, ymin, ymax);
+      lo.lee.push(r.lee[0]); hi.lee.push(r.lee[1]); lo.manski.push(r.manski[0]); hi.manski.push(r.manski[1]);
+    }
+    const pct = (a, q) => { const s = a.slice().sort((x, y) => x - y); return s[Math.min(s.length - 1, Math.max(0, Math.round(q * (s.length - 1))))]; };
+    return { lee: [pct(lo.lee, 0.025), pct(hi.lee, 0.975)], manski: [pct(lo.manski, 0.025), pct(hi.manski, 0.975)], skipped };
+  }
+  // The example: a true effect of 0.20, and treated people with low outcomes kept in.
+  function demo() {
+    const g = rng(11), norm = () => Math.sqrt(-2 * Math.log(1 - g())) * Math.cos(2 * Math.PI * g()), rows = [];
+    for (const arm of [1, 0]) for (let i = 0; i < 600; i++) {
+      const y = norm() + 0.2 * arm, stay = arm ? 0.9 - 0.08 * (y > 0.5 ? 1 : 0) : 0.72;
+      rows.push({ arm: arm ? 'treatment' : 'control', y: g() < stay ? Math.round(y * 1000) / 1000 : null });
+    }
+    return rows;
+  }
+  return { adjust, mean, partMean, bounds, rng, bootstrap, demo };
+})();
+if (typeof module !== 'undefined') module.exports = TC;
+</script>
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
+const num = (x, d = 0) => Number(x).toLocaleString('en-IN', { minimumFractionDigits: d, maximumFractionDigits: d });
+const f3 = x => (x < 0 ? '−' : '') + Math.abs(x).toFixed(3);
+document.querySelectorAll('.top-tabs button').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('.top-tabs button').forEach(x => x.classList.toggle('on', x === b));
+  document.querySelectorAll('.view').forEach(v => v.classList.toggle('on', v.id === 'v-' + b.dataset.v));
+}));
+
+/* ───────────── Many outcomes ───────────── */
+function showMulti() {
+  const rows = [], bad = [];
+  $('#pvals').value.split('\n').map(l => l.trim()).filter(Boolean).forEach((l, i) => {
+    const k = l.lastIndexOf(','), name = k < 0 ? '' : l.slice(0, k).trim(), p = k < 0 ? NaN : Number(l.slice(k + 1));
+    if (!name || !(p >= 0 && p <= 1)) bad.push(`Line ${i + 1} could not be read: ${l}`); else rows.push({ name, p });
+  });
+  if (bad.length || rows.length < 2) { $('#multiOut').innerHTML = `<div class="warn">${esc(bad[0] || 'Enter at least two outcomes, one per line: name, p-value.')}</div>`; return; }
+  const a = TC.adjust(rows.map(r => r.p)), level = parseFloat($('#level').value), M = rows.length;
+  const hit = v => v <= level, cell = v => `<td${hit(v) ? '' : ' style="color:var(--muted)"'}>${v.toFixed(3)}${hit(v) ? ' ✓' : ''}</td>`;
+  const n = k => a[k].filter(hit).length, raw = rows.filter(r => hit(r.p)).length;
+  let h = `<span class="stat"><b>${M}</b><span>outcomes tested</span></span><span class="stat"><b>${raw}</b><span>below ${num(level * 100)}% unadjusted</span></span><span class="stat"><b>${n('holm')}</b><span>after Holm</span></span><span class="stat"><b>${n('sharp')}</b><span>after sharpened q</span></span>`;
+  h += '<div class="tscroll" tabindex="0" role="region" aria-label="Adjusted p-values by outcome"><table><thead><tr><th>Outcome</th><th>p-value</th><th>Bonferroni</th><th>Holm</th><th>Benjamini–Hochberg</th><th>Sharpened q</th></tr></thead><tbody>';
+  a.order.forEach(i => { h += `<tr><td>${esc(rows[i].name)}</td>${cell(rows[i].p)}${cell(a.bonf[i])}${cell(a.holm[i])}${cell(a.bh[i])}${cell(a.sharp[i])}</tr>`; });
+  h += `</tbody></table></div><p class="note">A tick marks a value at or below ${num(level * 100)}%. Bonferroni and Holm answer "could even one of these be a false alarm?". Benjamini–Hochberg and the sharpened q-value answer "what share of the results I report are false alarms?", which is the usual question when a study has a family of related outcomes.</p>`;
+  if (raw > n('holm')) h += `<div class="warn">${raw - n('holm')} of the ${raw} results below ${num(level * 100)}% do not survive the Holm correction for ${M} tests.</div>`;
+  $('#multiOut').innerHTML = h;
+}
+$('#multiGo').addEventListener('click', showMulti); $('#level').addEventListener('change', showMulti); showMulti();
+
+/* ───────────── Attrition bounds ───────────── */
+let data = null;
+function parseCSV(text) {
+  const rows = []; let row = [], cell = '', q = false;
+  text = text.replace(/^\uFEFF/, '');
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (q) { if (c === '"') { if (text[i + 1] === '"') { cell += '"'; i++; } else q = false; } else cell += c; }
+    else if (c === '"') q = true;
+    else if (c === ',') { row.push(cell); cell = ''; }
+    else if (c === '\n' || c === '\r') { if (c === '\r' && text[i + 1] === '\n') i++; row.push(cell); cell = ''; if (row.some(x => x !== '')) rows.push(row); row = []; }
+    else cell += c;
+  }
+  row.push(cell); if (row.some(x => x !== '')) rows.push(row);
+  return rows;
+}
+const lost = v => v === undefined || /^(|na|n\/a|nan|\.|null)$/i.test(String(v).trim());
+function loadData(text, label) {
+  const rows = parseCSV(text);
+  if (rows.length < 5) { $('#boundsOut').innerHTML = '<div class="warn">The file needs a header row and at least a few people in each arm.</div>'; return; }
+  const head = rows[0].map(h => h.trim()), body = rows.slice(1); data = { head, body, label };
+  const distinct = j => new Set(body.map(r => (r[j] || '').trim())).size;
+  const armPick = Math.max(0, head.findIndex((h, j) => distinct(j) === 2));
+  const yPick = Math.max(0, head.findIndex((h, j) => j !== armPick && body.filter(r => !lost(r[j]) && isFinite(Number(r[j]))).length > body.length / 2));
+  const fill = (sel, pick) => { sel.innerHTML = head.map((h, j) => `<option value="${j}"${j === pick ? ' selected' : ''}>${esc(h)}</option>`).join(''); };
+  fill($('#cArm'), armPick); fill($('#cY'), yPick); armValues(); range();
+  $('#bSetup').style.display = '';
+  $('#boundsOut').innerHTML = `<p class="note">${esc(label)}: ${num(body.length)} rows. Check the columns and press Compute bounds.</p>`;
+}
+function armValues() {
+  const j = +$('#cArm').value, vals = [...new Set(data.body.map(r => (r[j] || '').trim()))].sort();
+  const pick = vals.findIndex(v => /^(1|t|treat|treated|treatment|yes)$/i.test(v));
+  $('#cTreat').innerHTML = vals.slice(0, 20).map((v, i) => `<option value="${esc(v)}"${i === (pick < 0 ? vals.length - 1 : pick) ? ' selected' : ''}>${esc(v || '(blank)')}</option>`).join('');
+}
+function range() {
+  const j = +$('#cY').value, ys = data.body.filter(r => !lost(r[j]) && isFinite(Number(r[j]))).map(r => Number(r[j]));
+  if (ys.length) { $('#ymin').value = Math.min(...ys); $('#ymax').value = Math.max(...ys); }
+}
+$('#cArm').addEventListener('change', armValues); $('#cY').addEventListener('change', range);
+$('#dataFile').addEventListener('change', e => { const f = e.target.files[0]; if (!f) return; const r = new FileReader(); r.onload = () => loadData(String(r.result), f.name); r.readAsText(f); });
+$('#demoData').addEventListener('click', () => loadData('arm,outcome\n' + TC.demo().map(r => `${r.arm},${r.y === null ? '' : r.y}`).join('\n') + '\n', 'Simulated example'));
+function showBounds() {
+  if (!data) return;
+  const ja = +$('#cArm').value, jy = +$('#cY').value, tv = $('#cTreat').value, ymin = parseFloat($('#ymin').value), ymax = parseFloat($('#ymax').value), seed = Math.round(parseFloat($('#bseed').value));
+  const arms = new Set(data.body.map(r => (r[ja] || '').trim()));
+  const fail = m => { $('#boundsOut').innerHTML = `<div class="warn">${esc(m)}</div>`; };
+  if (arms.size !== 2) return fail(`The arm column has ${arms.size} different values. It needs exactly two.`);
+  const arm1 = [], arm0 = []; let unread = 0;
+  data.body.forEach(r => { const v = r[jy], y = lost(v) ? null : Number(v); if (y !== null && !isFinite(y)) { unread++; return; } ((r[ja] || '').trim() === tv ? arm1 : arm0).push(y); });
+  const y1 = arm1.filter(v => v !== null), y0 = arm0.filter(v => v !== null);
+  if (y1.length < 2 || y0.length < 2) return fail('Each arm needs at least two observed outcomes.');
+  if (!(ymax > ymin) || !isFinite(seed)) return fail('Enter a lowest and a highest possible outcome, and a seed.');
+  if (Math.min(...y1, ...y0) < ymin || Math.max(...y1, ...y0) > ymax) return fail('Some observed outcomes lie outside the lowest and highest possible values entered.');
+  const r = TC.bounds(y1, y0, arm1.length, arm0.length, ymin, ymax), ci = TC.bootstrap(arm1, arm0, ymin, ymax, 1000, seed);
+  const sign = (a, b) => a > 0 && b > 0 ? 'above zero' : a < 0 && b < 0 ? 'below zero' : 'on both sides of zero';
+  let h = `<span class="stat"><b>${f3(r.naive)}</b><span>difference among those observed</span></span><span class="stat"><b>${f3(r.lee[0])} to ${f3(r.lee[1])}</b><span>Lee bounds</span></span><span class="stat"><b>${f3(r.manski[0])} to ${f3(r.manski[1])}</b><span>Manski bounds</span></span>`;
+  h += `<div class="tscroll" tabindex="0" role="region" aria-label="Response and bounds"><table><thead><tr><th>Measure</th><th>Treated</th><th>Control</th></tr></thead><tbody>
+    <tr><td>Assigned</td><td>${num(arm1.length)}</td><td>${num(arm0.length)}</td></tr><tr><td>Observed</td><td>${num(y1.length)}</td><td>${num(y0.length)}</td></tr>
+    <tr><td>Response rate</td><td>${num(100 * r.q1, 1)}%</td><td>${num(100 * r.q0, 1)}%</td></tr><tr><td>Mean among those observed</td><td>${f3(r.m1)}</td><td>${f3(r.m0)}</td></tr></tbody></table></div>`;
+  h += `<div class="tscroll" tabindex="0" role="region" aria-label="Bounds with bootstrap intervals"><table><thead><tr><th>Bounds</th><th>Lower</th><th>Upper</th><th>Bootstrap interval</th></tr></thead><tbody>
+    <tr><td>Lee</td><td>${f3(r.lee[0])}</td><td>${f3(r.lee[1])}</td><td>${f3(ci.lee[0])} to ${f3(ci.lee[1])}</td></tr>
+    <tr><td>Manski</td><td>${f3(r.manski[0])}</td><td>${f3(r.manski[1])}</td><td>${f3(ci.manski[0])} to ${f3(ci.manski[1])}</td></tr></tbody></table></div>`;
+  h += `<p class="note">The ${r.trimmed} arm kept more of its people, so ${num(100 * r.p, 1)}% of its observed outcomes were trimmed for the Lee bounds. The Lee bounds lie ${sign(r.lee[0], r.lee[1])} and their bootstrap interval lies ${sign(ci.lee[0], ci.lee[1])}. The Manski bounds lie ${sign(r.manski[0], r.manski[1])}.</p>`;
+  if (Math.abs(r.q1 - r.q0) < 1e-12) h += '<div class="ok">Both arms have the same response rate, so the Lee bounds are the plain difference. Equal attrition does not by itself show that those lost were alike in the two arms.</div>';
+  if (unread) h += `<div class="warn">${num(unread)} row${unread === 1 ? '' : 's'} had an outcome that is neither a number nor blank and ${unread === 1 ? 'was' : 'were'} left out.</div>`;
+  $('#boundsOut').innerHTML = h;
+}
+$('#boundsGo').addEventListener('click', showBounds);
+</script>
+<script src="../js/dyslexia-font.js" data-accent="var(--purple2)" data-radius="99px" defer></script>
+</body>
+</html>
