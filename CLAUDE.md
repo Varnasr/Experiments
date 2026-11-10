@@ -2,9 +2,9 @@
 
 Shared engineering standard: @.claude/engineering-standards.md. It applies to all work in this repository. This file adds what is specific to the project, and wins where the two disagree.
 
-Twenty-four browser tools for development economics, law and data work, each a
+Twenty-five browser tools for development economics, law and data work, each a
 self-contained page: causal workbench, RCT planner, sampling design, trial checks, poverty and inequality,
-wage gap, fiscal incidence, women's indicators, heat exposure, air quality, court translator,
+wage gap, fiscal incidence, multidimensional poverty, women's indicators, heat exposure, air quality, court translator,
 court filing formatter, petition builder, statutory interest, land acquisition,
 library builder and the rest. No build step. Deployed to GitHub Pages and to
 Netlify.
@@ -23,6 +23,7 @@ python3 scripts/card-dates.py      # months on the landing cards, from git; --ch
 node sampling-design/tests/core.mjs  # the sampling arithmetic against outside values, run by CI
 node fiscal-incidence/tests/core.mjs # the incidence arithmetic against outside values, run by CI
 node trial-checks/tests/core.mjs     # multiple-testing and bounds arithmetic, run by CI
+node mpi-calculator/tests/core.mjs   # the Alkire-Foster arithmetic, run by CI
 python3 -m http.server 8000        # then open http://localhost:8000
 ```
 
@@ -264,6 +265,13 @@ page had been assembled by copying the first `<style>` block of
 not the page's. Nothing failed except a 20-pixel overflow at phone width.
 **Look at the screenshot, and when copying a stylesheet take the block that
 contains `:root`.**
+
+`mpi-calculator` is the fourth (`mpi-calculator/tests/core.mjs`, ten injected
+faults, reference values in exact fractions). Removing its rounding tolerance
+passed at first, because 1/6 + 1/6 is exactly 1/3 in floating point and the
+example never falls short of a cutoff. **A tolerance needs a test built to
+need it**: 0.7 + 0.1 + 0.1 + 0.1 is 0.9999999999999999, and that is what the
+test now uses.
 
 A new tool's card gets its dates only after the tool has a commit, because
 `scripts/card-dates.py` reads them from git: commit the tool, run the script,

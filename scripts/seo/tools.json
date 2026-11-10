@@ -20,6 +20,12 @@
       "tagline": "Gini, Theil, Atkinson and FGT poverty measures from grouped data or the World Bank."
     },
     {
+      "dir": "mpi-calculator",
+      "card": "mpi",
+      "name": "Multidimensional Poverty",
+      "tagline": "The Alkire–Foster index from your own data: headcount, intensity, indicators and groups."
+    },
+    {
       "dir": "wage-gap",
       "card": "wagegap",
       "name": "Wage Gap Decomposition",

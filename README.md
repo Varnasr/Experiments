@@ -125,6 +125,18 @@ marginal contribution of each instrument to the fall in the Gini.
 
 ---
 
+### Multidimensional Poverty
+
+The Alkire–Foster adjusted headcount ratio from an uploaded file of 0/1
+deprivations: H, A and M₀, censored headcounts and indicator shares, a
+breakdown by group, vulnerable and severe shares, and the index at other
+cutoffs.
+
+**Directory:** `mpi-calculator/`
+**Stage:** Active
+
+---
+
 ### RCT Planner
 
 Power and minimum detectable effect for individual and cluster designs (ICC,
@@ -452,6 +464,7 @@ Experiments/
 ├── heat-exposure/                      # WBGT, safe hours, wages lost, 35-year trend
 ├── wage-gap/                           # Oaxaca–Blinder decomposition
 ├── fiscal-incidence/                   # Kakwani, Reynolds–Smolensky, reranking from grouped data
+├── mpi-calculator/                     # Alkire–Foster index from 0/1 deprivations
 ├── rct-planner/                        # power/MDE and stratified randomiser
 ├── sampling-design/                    # sample size, allocation, PPS draw of clusters
 ├── trial-checks/                       # multiple-testing adjustments, Lee and Manski bounds
