@@ -26,6 +26,12 @@
       "tagline": "Oaxaca–Blinder decomposition of the gender wage gap, with bootstrap standard errors."
     },
     {
+      "dir": "fiscal-incidence",
+      "card": "incidence",
+      "name": "Fiscal Incidence",
+      "tagline": "Who pays a tax and who receives a transfer: Kakwani, Reynolds–Smolensky and reranking."
+    },
+    {
       "dir": "women-indicators",
       "card": "nfhs",
       "name": "Women in the NFHS",

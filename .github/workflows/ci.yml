@@ -52,6 +52,9 @@ jobs:
       - name: Sampling design arithmetic
         run: node sampling-design/tests/core.mjs
 
+      - name: Fiscal incidence arithmetic
+        run: node fiscal-incidence/tests/core.mjs
+
   # axe over every page, in a desktop and a phone viewport, plus a horizontal
   # overflow measurement at 390px. Separate from the job above because it
   # installs a browser and is the slow half; a contributor waiting on the

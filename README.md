@@ -113,6 +113,18 @@ Python implementation.
 
 ---
 
+### Fiscal Incidence
+
+Who pays a tax and who receives a transfer, from a table of income groups:
+concentration coefficients, Kakwani indices, the Reynolds–Smolensky
+redistributive effect split into vertical equity and reranking, and the
+marginal contribution of each instrument to the fall in the Gini.
+
+**Directory:** `fiscal-incidence/`
+**Stage:** Active
+
+---
+
 ### RCT Planner
 
 Power and minimum detectable effect for individual and cluster designs (ICC,
@@ -428,6 +440,7 @@ Experiments/
 ├── women-indicators/                   # NFHS women's indicators, live DHS API
 ├── heat-exposure/                      # WBGT, safe hours, wages lost, 35-year trend
 ├── wage-gap/                           # Oaxaca–Blinder decomposition
+├── fiscal-incidence/                   # Kakwani, Reynolds–Smolensky, reranking from grouped data
 ├── rct-planner/                        # power/MDE and stratified randomiser
 ├── sampling-design/                    # sample size, allocation, PPS draw of clusters
 ├── cost-benefit/                       # NPV/BCR/IRR with Monte Carlo

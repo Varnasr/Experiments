@@ -2,9 +2,9 @@
 
 Shared engineering standard: @.claude/engineering-standards.md. It applies to all work in this repository. This file adds what is specific to the project, and wins where the two disagree.
 
-Twenty-two browser tools for development economics, law and data work, each a
+Twenty-three browser tools for development economics, law and data work, each a
 self-contained page: causal workbench, RCT planner, sampling design, poverty and inequality,
-wage gap, women's indicators, heat exposure, air quality, court translator,
+wage gap, fiscal incidence, women's indicators, heat exposure, air quality, court translator,
 court filing formatter, petition builder, statutory interest, land acquisition,
 library builder and the rest. No build step. Deployed to GitHub Pages and to
 Netlify.
@@ -21,6 +21,7 @@ python3 scripts/bind-labels.py     # report labels bound to nothing; --write to 
 python3 scripts/seo.py             # head tags, share row, contact line; --check in CI
 python3 scripts/card-dates.py      # months on the landing cards, from git; --check in CI
 node sampling-design/tests/core.mjs  # the sampling arithmetic against outside values, run by CI
+node fiscal-incidence/tests/core.mjs # the incidence arithmetic against outside values, run by CI
 python3 -m http.server 8000        # then open http://localhost:8000
 ```
 
@@ -234,7 +235,7 @@ commit is exempt from that rule, because several tools have arrived
 together in one commit. The check needs the full history, so the `checks`
 job fetches it.
 
-## sampling-design keeps its arithmetic where a test can run it
+## The newer tools keep their arithmetic where a test can run it
 
 `sampling-design/index.html` has two inline scripts. The first, `<script
 id="core">`, is the arithmetic and touches nothing on the page; the second
@@ -246,6 +247,13 @@ to the test in the same commit. Thirteen faults were injected into the core
 one at a time (the design effect, the finite population correction, the
 response rate, a one-sided quantile, the stratum cap, certainty selections,
 the second-stage probability, the seed) and the test fails on each.
+
+`fiscal-incidence` is built the same way, with `fiscal-incidence/tests/core.mjs`
+and eleven injected faults. One of them passed at first: with ten groups of
+equal size, forgetting to divide group totals by population changes nothing,
+so the test now carries groups of unequal size entered both ways. Its sign
+conventions are the Commitment to Equity handbook's: a positive Kakwani index
+means progressive for a tax and for a transfer.
 
 A new tool's card gets its dates only after the tool has a commit, because
 `scripts/card-dates.py` reads them from git: commit the tool, run the script,
