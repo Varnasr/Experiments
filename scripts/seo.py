@@ -65,9 +65,11 @@ CSS = (
     '@media print{.xshare{display:none}}'
 )
 
-# The contact line sits under the share row on every page, home included, so it
-# carries its own fixed colours like the row does: #382280 on #f5f1fa is 11.6:1,
-# and the links are underlined so colour is not the only cue.
+# The contact line sits under the share row on every tool page, so it carries
+# its own fixed colours like the row does: #382280 on #f5f1fa is 11.6:1, and
+# the links are underlined so colour is not the only cue. The landing page
+# carries neither the line nor its style: it is the notebook's index, and its
+# footer links idealog.works, where the consulting practice is described.
 CSS_CONTACT = (
     '.xcontact{box-sizing:border-box;width:calc(100% - 2rem);max-width:960px;margin:0 auto 1.5rem;'
     'padding:.85rem 1rem;background:#f5f1fa;border:1px solid #e6e3ec;border-radius:12px;'
@@ -151,7 +153,8 @@ def head_block(p, desc):
         f'<meta name="twitter:image" content="{a(p["image"])}">',
         f'<script type="application/ld+json">{ld(p, desc)}</script>',
     ]
-    tags.append(f'<style>{CSS_CONTACT if p["home"] else CSS + CSS_CONTACT}</style>')
+    if not p['home']:
+        tags.append(f'<style>{CSS + CSS_CONTACT}</style>')
     return '\n<!-- seo:start -->\n' + '\n'.join(tags) + '\n<!-- seo:end -->'
 
 
@@ -235,8 +238,9 @@ def render(p):
         raise SystemExit(f"{p['path'].relative_to(ROOT)}: no <meta name=\"description\">, so no place to put the tags")
     desc = html.unescape(m.group(1))
     out = out[:m.end()] + head_block(p, desc) + out[m.end():]
-    block = contact_block(p) if p['home'] else share_block(p) + contact_block(p)
-    return insert_share(p, out, block)
+    if p['home']:
+        return out
+    return insert_share(p, out, share_block(p) + contact_block(p))
 
 
 def sitemap():

@@ -18,6 +18,8 @@ node scripts/axe.mjs               # accessibility over every page, run by CI
 node scripts/axe.mjs --all         # also list the moderate and minor findings
 node scripts/axe.mjs --page wage-gap/index.html
 python3 scripts/bind-labels.py     # report labels bound to nothing; --write to fix
+python3 scripts/seo.py             # head tags, share row, contact line; --check in CI
+python3 scripts/card-dates.py      # months on the landing cards, from git; --check in CI
 python3 -m http.server 8000        # then open http://localhost:8000
 ```
 
@@ -191,6 +193,45 @@ the canonical tag is what stops that copy competing with the Netlify one.
 The JSON-LD blocks are `<script type="application/ld+json">`.
 `scripts/check-inline-js.mjs` parses those as JSON rather than JavaScript;
 before it knew the difference it reported all 22 as syntax errors.
+
+## The landing page is a notebook index, and what it says is checked
+
+The landing page is the index of a working notebook. The portfolio, the bio and
+the consulting practice are at idealog.works, which the page links, so the
+landing page carries no Pinpoint Ventures contact line: `scripts/seo.py` writes
+that line and the share row on the 21 tool pages only.
+
+Until 2026-11-10 the page said "Nothing you type in leaves your browser" and
+"Four public APIs, and only four". Neither was true. `library-builder` sends the
+ISBN or title to Open Library, `court-translator` sends the text of the
+petition to Sarvam AI and Groq through the function, and the read-aloud in
+`kundendu-worksheets` sends the sentence to Sarvam AI. The page now names each
+of those and counts five public data APIs. `scripts/check.py` holds it there:
+a page that calls a function or Open Library must be named in the paragraph
+that says what leaves the browser, every `connect-src` origin must be a named
+data API or a listed exception, and the count in the tile and in the method
+must equal the number the tools call. Ten faults were injected and each one
+fails.
+
+The tool count and the footer year are written into the HTML as well as by the
+script, because a crawler or a reader without JavaScript saw "0 tools" and
+"2025". The count is compared with the cards and the directories; the year is
+the latest year on any card.
+
+Each card has three panels: what it does, how it is built, and known limits.
+The limits were drafted on 2026-11-10 from each tool's README, its own page and
+this file, and **the owner has not yet read them against the tools**. Treat a
+limit as a claim to verify when touching that tool, and change the card in the
+same commit as the tool.
+
+Each card also says the month the tool was first committed and the month it
+last changed. `scripts/card-dates.py` reads both from git and CI runs it with
+`--check`, so **after changing a tool, run it and commit `index.html`**. A
+commit that touches more than four tool directories is a sweep (the share row,
+the contrast token) and does not count as a change to any of them. The first
+commit is exempt from that rule, because several tools have arrived
+together in one commit. The check needs the full history, so the `checks`
+job fetches it.
 
 ## Watch out for
 

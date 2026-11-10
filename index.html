@@ -23,7 +23,6 @@
 <meta name="twitter:description" content="Tools that show their working: econometrics, poverty measurement, survey auditing, women and climate data, and legal calculators.">
 <meta name="twitter:image" content="https://idealogworks.foo/og/home.jpg">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Experiments","url":"https://idealogworks.foo/","description":"Tools that show their working, by Varna Sri Raman: in-browser econometrics, poverty measurement, survey auditing, women and climate data, legal calculators, and a few apps made for family.","author":{"@type":"Person","name":"Varna Sri Raman"},"image":"https://idealogworks.foo/og/home.jpg","hasPart":[{"@type":"WebApplication","name":"Causal Inference Workbench","url":"https://idealogworks.foo/causal-workbench/"},{"@type":"WebApplication","name":"Poverty & Inequality Explorer","url":"https://idealogworks.foo/poverty-inequality/"},{"@type":"WebApplication","name":"Wage Gap Decomposition","url":"https://idealogworks.foo/wage-gap/"},{"@type":"WebApplication","name":"Women in the NFHS","url":"https://idealogworks.foo/women-indicators/"},{"@type":"WebApplication","name":"Heat and Outdoor Work","url":"https://idealogworks.foo/heat-exposure/"},{"@type":"WebApplication","name":"RCT Planner","url":"https://idealogworks.foo/rct-planner/"},{"@type":"WebApplication","name":"Survey Data Auditor","url":"https://idealogworks.foo/survey-audit/"},{"@type":"WebApplication","name":"Cost–Benefit Calculator","url":"https://idealogworks.foo/cost-benefit/"},{"@type":"WebApplication","name":"Motor Accident Compensation Calculator","url":"https://idealogworks.foo/compensation-calculator/"},{"@type":"WebApplication","name":"Land Acquisition Compensation Calculator","url":"https://idealogworks.foo/land-acquisition/"},{"@type":"WebApplication","name":"Court Petition Translator","url":"https://idealogworks.foo/court-translator/"},{"@type":"WebApplication","name":"Election Expenditure Ledger","url":"https://idealogworks.foo/expense-ledger/"},{"@type":"WebApplication","name":"Manifesto Promise Costing","url":"https://idealogworks.foo/promise-costing/"},{"@type":"WebApplication","name":"Statutory Interest Calculator","url":"https://idealogworks.foo/statutory-interest/"},{"@type":"WebApplication","name":"A Year of Air","url":"https://idealogworks.foo/air-quality/"},{"@type":"WebApplication","name":"Petition Builder","url":"https://idealogworks.foo/petition-builder/"},{"@type":"WebApplication","name":"Court Filing Formatter","url":"https://idealogworks.foo/court-format/"},{"@type":"WebApplication","name":"Flipbook Maker","url":"https://idealogworks.foo/flipbook/"},{"@type":"WebApplication","name":"Kundendu's Learn & Play","url":"https://littlek.in/"},{"@type":"WebApplication","name":"Agastya's Study Lab","url":"https://alab.cloud/"},{"@type":"WebApplication","name":"Household Library Builder","url":"https://idealogworks.foo/library-builder/"}]}</script>
-<style>.xcontact{box-sizing:border-box;width:calc(100% - 2rem);max-width:960px;margin:0 auto 1.5rem;padding:.85rem 1rem;background:#f5f1fa;border:1px solid #e6e3ec;border-radius:12px;font:400 15px/1.5 "Source Sans 3",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:#382280;text-align:center}.xcontact a{color:#382280;font-weight:600;text-decoration:underline;text-underline-offset:2px}.xcontact a:focus-visible{outline:3px solid #ff9911;outline-offset:2px}@media print{.xcontact{display:none}}</style>
 <!-- seo:end -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -61,6 +60,8 @@
         .hero h1 span { color:var(--orange); }
         .hero p { font-size:1.08rem; max-width:60ch; color:rgba(255,255,255,.88); margin-bottom:.7rem; }
         .hero p:last-of-type { margin-bottom:1.6rem; }
+        .hero p a { color:#fff; font-weight:600; text-decoration:underline; text-underline-offset:2px; }
+        .hero p a:focus-visible { outline:3px solid var(--orange); outline-offset:2px; }
         .btn { display:inline-block; font-family:var(--body); font-weight:700; font-size:.95rem; padding:.7rem 1.4rem; border-radius:50px; text-decoration:none; transition:transform .15s, box-shadow .15s; }
         /* Dark ink on the orange, not white: white measures 2.14:1 on #ff9911
            and the orange is the brand, so the ink is what moves. #222 gives 7.44:1. */
@@ -107,6 +108,7 @@
         .card .summary { font-size:.95rem; color:var(--dim); padding-right:56px; }
         .card .tech { margin-top:.5rem; font-size:.78rem; color:var(--muted); font-weight:600; }
         .card .live { font-size:.8rem; color:var(--muted); margin-top:.1rem; } .card .live a { position:relative; z-index:2; font-weight:600; }
+        .card .dates { margin-top:.35rem; font-size:.78rem; color:var(--muted); }
         .card .open { display:inline-block; margin-top:.5rem; font-weight:700; color:var(--orange2); font-size:.9rem; }
         .doodle { position:absolute; top:12px; right:12px; width:74px; height:74px; opacity:.32; pointer-events:none; transform:rotate(-6deg); color:var(--purple2); transition:opacity .2s, transform .2s; }
         .card:hover .doodle, .card:focus-within .doodle { opacity:.85; transform:rotate(-2deg) scale(1.05); }
@@ -116,9 +118,9 @@
         .more { position:relative; z-index:2; margin-top:.6rem; display:flex; gap:.45rem; flex-wrap:wrap; }
         .more button { font:inherit; font-size:.78rem; font-weight:600; padding:.25rem .7rem; border-radius:99px; border:1.5px solid var(--lilac2); background:#fff; color:var(--purple); cursor:pointer; }
         .more button:hover, .more button[aria-expanded="true"] { background:var(--purple); color:#fff; border-color:var(--purple); }
-        .pop, .notes { position:relative; z-index:2; display:none; margin-top:.75rem; font-size:.92rem; color:var(--dim); border-top:1px dashed var(--lilac2); padding-top:.7rem; }
-        .pop b, .notes b { color:var(--ink); font-weight:700; }
-        .card.pop-open .pop, .card.notes-open .notes { display:block; }
+        .pop, .notes, .limits { position:relative; z-index:2; display:none; margin-top:.75rem; font-size:.92rem; color:var(--dim); border-top:1px dashed var(--lilac2); padding-top:.7rem; }
+        .pop b, .notes b, .limits b { color:var(--ink); font-weight:700; }
+        .card.pop-open .pop, .card.notes-open .notes, .card.limits-open .limits { display:block; }
         @media (hover:hover) and (pointer:fine) { .card:hover .pop, .card:focus-within .pop { display:block; } }
         .notes ul { margin:.35rem 0 0 1.1rem; } .notes li { margin-bottom:.3rem; }
         .notes code { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.82em; background:var(--lilac); padding:.05em .3em; border-radius:3px; }
@@ -144,7 +146,7 @@
         footer .wrap { display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap; align-items:center; }
         footer a { color:#fff; text-decoration:none; font-weight:600; margin-right:1.1rem; }
         footer a:hover { color:var(--orange); }
-        @media print { .doodle, .more, .top, .shape { display:none; } .pop, .notes { display:block; } .card { opacity:1; transform:none; } }
+        @media print { .doodle, .more, .top, .shape { display:none; } .pop, .notes, .limits { display:block; } .card { opacity:1; transform:none; } }
     </style>
 </head>
 <body>
@@ -162,7 +164,8 @@
             <div class="eyebrow">Varna Sri Raman · Idealog Works</div>
             <h1>Tools that <span>show their working</span>, built to be read as much as used.</h1>
             <p>I am a development economist and a licensed social justice worker. This is where the experiments live: econometrics that runs in the page, poverty and inequality from grouped data, survey audits, women's and climate data pulled live, and legal calculators that cite the paragraph beside every rupee.</p>
-            <p>Hover over any card for what it does in plain words; open "how it's built" for the method and what it was checked against. Nothing you type in leaves your browser.</p>
+            <p>This is a working notebook. Hover over any card for what it does in plain words; open "how it's built" for the method and what it was checked against, and "known limits" for what the tool leaves out. My ventures, writing and background are at <a href="https://idealog.works">idealog.works</a>.</p>
+            <p>Most of these tools compute in the page, and what you type stays in your browser. These send something out: the Court Petition Translator sends the text of the document to Sarvam AI and Groq, the Household Library Builder sends the ISBN or title you look up to Open Library, and the read-aloud in Kundendu's Learn &amp; Play sends the sentence to Sarvam AI. The data tools ask a public API for a country, an indicator or a pair of coordinates.</p>
             <a class="btn btn-orange" href="#econ">Browse the tools</a><a class="btn btn-ghost" href="https://github.com/Varnasr/Experiments">Source on GitHub</a>
         </div>
         <div class="hero-art"><svg viewBox="0 0 64 64" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" filter="url(#wobble)" aria-hidden="true"><path d="M26 8h12"/><path d="M28 8v14L14 46a4 4 0 0 0 3.5 6h29A4 4 0 0 0 50 46L36 22V8"/><path d="M20 38h24" stroke="#ff9911" stroke-width="2.4"/><circle cx="30" cy="44" r="1.8" fill="#ff9911" stroke="none"/><circle cx="37" cy="47" r="1.3" fill="#ff9911" stroke="none"/><circle cx="33" cy="41" r="1" fill="#fff" stroke="none"/><path d="M54 12l3-3M56 20h4M8 16l-3 2" stroke="#ff9911"/></svg></div>
@@ -170,8 +173,8 @@
 </header>
 
 <div class="stats"><div class="wrap">
-    <div class="stat"><b id="nTools">0</b><span>tools on this page</span></div>
-    <div class="stat"><b>4</b><span>live public data APIs</span></div>
+    <div class="stat"><b id="nTools">21</b><span>tools on this page</span></div>
+    <div class="stat"><b id="nApis">5</b><span>live public data APIs</span></div>
 </div></div>
 
 <main>
@@ -185,8 +188,9 @@
             <h3><a href="causal-workbench/">Causal Inference Workbench</a><span class="badge b-data">Data</span><span class="badge b-research">Research</span></h3>
             <p class="summary">Difference-in-differences, event studies, synthetic control and regression discontinuity: simulate a panel with a known effect, upload a CSV, or pull a live World Bank country panel and name the treated country.</p>
             <p class="tech">World Bank API · cluster-robust SEs · Sun–Abraham · placebo inference · IK bandwidth</p>
+            <p class="dates">First committed September 2026.</p>
             <span class="open">Open the tool →</span>
-            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button></div>
+            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button><button type="button" class="l" aria-expanded="false">Known limits</button></div>
             <div class="pop"><b>In plain words.</b> When a policy reaches some places and not others, the question is what would have happened without it. These four methods each build a counterfactual from the untreated units and measure the gap. The simulator plants a known effect so you can watch each estimator recover it, or fail when its assumption is violated.</div>
             <div class="notes"><ul>
                 <li><b>DiD.</b> Two-way fixed effects removed by alternating demeaning, OLS on the residualised variables by Cholesky, cluster-robust sandwich with the <code>fixest</code> small-sample convention, t on G−1 degrees of freedom.</li>
@@ -194,6 +198,7 @@
                 <li><b>Synthetic control.</b> Simplex weights by accelerated projected gradient with the exact projection of Duchi et al. (2008); placebo-in-space RMSPE ratios; an over-fitting warning when donors outnumber pre-periods.</li>
                 <li><b>Regression discontinuity.</b> Local linear fits with a triangular kernel and HC1 errors, the Imbens–Kalyanaraman (2012) plug-in bandwidth, a bandwidth-sensitivity band, placebo cutoffs and a McCrary density test.</li>
             </ul><span class="verified">Verified: TWFE coefficient and SE match an explicit-dummies regression written separately in Python to six and four decimals; the RD simulator's interval covers the planted jump.</span></div>
+            <div class="limits"><b>Known limits.</b> The regression discontinuity interval is the conventional one: the bias-corrected interval of Calonico, Cattaneo and Titiunik is not implemented, and the McCrary density test is a simplified version on binned counts. Standard errors are clustered at the unit level. Synthetic control uses pre-period outcomes as its only predictors, and when donors outnumber pre-periods the weights are not unique and the placebo p-value should not be read. The World Bank panel shows the mechanics and supports no causal claim by itself.</div>
         </article>
 
         <article class="card" id="poverty">
@@ -201,14 +206,16 @@
             <h3><a href="poverty-inequality/">Poverty &amp; Inequality Explorer</a><span class="badge b-data">Data</span><span class="badge b-research">Research</span></h3>
             <p class="summary">What POVCAL did with grouped data: Lorenz curves fitted to decile shares pulled live from the World Bank's Poverty and Inequality Platform, then Gini, Theil, Atkinson, Palma and FGT poverty at any line, the Datt–Ravallion decomposition and a growth incidence curve.</p>
             <p class="tech">PIP API · GQ and Beta Lorenz curves · Shapley decomposition</p>
+            <p class="dates">First committed September 2026.</p>
             <span class="open">Open the tool →</span>
-            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button></div>
+            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button><button type="button" class="l" aria-expanded="false">Known limits</button></div>
             <div class="pop"><b>In plain words.</b> Published inequality data usually comes as ten numbers, the share of income going to each tenth of the population. From those ten numbers and the average, this page reconstructs the whole distribution and reads off how many people fall below any poverty line, how unequal the country is, and whether growth between two surveys reached the poor. One click compares its answers with the World Bank's own.</div>
             <div class="notes"><ul>
                 <li><b>Lorenz curves</b> after Datt (1998): General Quadratic and Beta forms fitted by OLS to the cumulative decile points, validity checked on a 2,000-point grid and against the theoretical conditions; the valid curve with the smaller squared error wins.</li>
                 <li><b>Measures</b> from the fitted quantile function y(p) = μ·L′(p) on a 4,000-point grid: Gini, Theil T, mean log deviation, Atkinson at three aversions, Palma, P90/P10, median; headcount by bisection, FGT1 and FGT2 by integration, Watts.</li>
                 <li><b>Change over time</b>: Datt–Ravallion growth and redistribution with its residual, the Shapley version without one, and the Ravallion–Chen growth incidence curve.</li>
             </ul><span class="verified">Verified: on India 2022 the page gives Gini 0.256 and a $3.00 headcount of 5.1% against PIP's microdata 0.255 and 5.3%; the GQ results match Datt's closed forms to four decimals.</span></div>
+            <div class="limits"><b>Known limits.</b> Ten grouped points determine three parameters, so the fitted curves are least reliable in the tails, and the Atkinson(2) index and the ends of the growth incidence curve depend on those tails. PIP labels each survey as income or consumption and as national, urban or rural; an income survey and a consumption survey should not be compared as if they measured the same thing.</div>
         </article>
 
         <article class="card" id="wagegap">
@@ -216,14 +223,16 @@
             <h3><a href="wage-gap/">Wage Gap Decomposition</a><span class="badge b-women">Women</span><span class="badge b-research">Research</span></h3>
             <p class="summary">Oaxaca–Blinder decomposition of a wage gap on your own microdata: how much is education, experience, sector and location, and how much is the same characteristics being paid differently. Four reference-coefficient choices, three-fold form, bootstrap standard errors.</p>
             <p class="tech">HC1 regressions · Jann (2008) pooled reference · bootstrap</p>
+            <p class="dates">First committed September 2026.</p>
             <span class="open">Open the tool →</span>
-            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button></div>
+            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button><button type="button" class="l" aria-expanded="false">Known limits</button></div>
             <div class="pop"><b>In plain words.</b> Women earn less than men in every labour force survey India has run. This page splits the gap into the part that comes from differences in what women and men bring to the market and the part that comes from how the market pays them for it, and shows how much the answer depends on choices that are usually hidden.</div>
             <div class="notes"><ul>
                 <li><b>Two-fold</b>: (X̄<sub>A</sub> − X̄<sub>B</sub>)′β* + [X̄<sub>A</sub>′(β<sub>A</sub> − β*) + X̄<sub>B</sub>′(β* − β<sub>B</sub>)], with β* from the pooled regression with a group dummy (Jann 2008), the pooled regression without it (Neumark 1988), or either group.</li>
                 <li><b>Three-fold</b>: endowments, coefficients and interaction. Detailed contributions per variable, with the Oaxaca–Ransom warning that dummy-variable rows depend on the base category.</li>
                 <li><b>Bootstrap</b> standard errors resample workers and rerun both regressions and the decomposition each time; text columns are expanded to dummies against their most common category.</li>
             </ul><span class="verified">Verified: totals reproduced exactly by an independent plain-Python implementation on the same simulated sample.</span></div>
+            <div class="limits"><b>Known limits.</b> It decomposes the gap in mean wages and says nothing about the gap at other points of the wage distribution. The unexplained contribution of each dummy variable depends on which category is the base (Oaxaca and Ransom 1999); the totals do not. Rows with a missing value are dropped, with a count.</div>
         </article>
     </div>
 </div></section>
@@ -239,14 +248,16 @@
             <h3><a href="women-indicators/">Women in the NFHS</a><span class="badge b-women">Women</span><span class="badge b-data">Data</span></h3>
             <p class="summary">Women's health, work, assets, agency and safety across India's states and the five NFHS rounds, pulled live from the DHS Program API: state rankings with change since the previous round, and who is behind by wealth, residence, education and age.</p>
             <p class="tech">DHS API · dumbbell charts · approximate design-based intervals · CSV export</p>
+            <p class="dates">First committed September 2026.</p>
             <span class="open">Open the tool →</span>
-            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button></div>
+            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button><button type="button" class="l" aria-expanded="false">Known limits</button></div>
             <div class="pop"><b>In plain words.</b> Pick anaemia, bank accounts, spousal violence, child marriage or any of twenty indicators and see every state's number, how far it moved since the last survey, and whether the poorest or least educated women are the ones still behind. Nothing is typed in by hand: every figure comes from the survey's own API with its sample size.</div>
             <div class="notes"><ul>
                 <li>Pulls <code>api.dhsprogram.com/rest/dhs/data</code> for India, all rounds, all breakdowns, and resolves NFHS-5's nested regions and renamed states before matching across rounds.</li>
                 <li>The API carries sample sizes but not NFHS's published confidence intervals, so the page draws Wilson intervals on the unweighted n inflated by a design effect the reader sets, and labels them approximate.</li>
                 <li>Says when a module has no all-India total in the API (domestic violence) rather than inventing one.</li>
             </ul><span class="verified">Verified: anaemia among women renders 57.0% for NFHS-5 and 53.1% for NFHS-4, matching the published fact sheets.</span></div>
+            <div class="limits"><b>Known limits.</b> The DHS API does not carry the design-based confidence intervals that NFHS publishes in its reports. The intervals drawn are Wilson intervals on the unweighted sample size, inflated by a design effect the reader sets (1.5 by default), and they are approximate. Some modules, the domestic violence module among them, have no all-India total in the API.</div>
         </article>
 
         <article class="card" id="heat">
@@ -254,14 +265,16 @@
             <h3><a href="heat-exposure/">Heat and Outdoor Work</a><span class="badge b-climate">Climate</span><span class="badge b-women">Women</span></h3>
             <p class="summary">Hour-by-hour heat stress for outdoor workers from live weather: WBGT for any place in India this week, the occupational work–rest limits by workload, safe working hours per day, wages lost, and how the count of dangerous-heat days has changed since 1991.</p>
             <p class="tech">Open-Meteo forecast and ERA5 archive · ACGIH screening limits · OLS trend</p>
+            <p class="dates">First committed September 2026.</p>
             <span class="open">Open the tool →</span>
-            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button></div>
+            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button><button type="button" class="l" aria-expanded="false">Known limits</button></div>
             <div class="pop"><b>In plain words.</b> Heat takes hours and wages from outdoor workers long before it puts anyone in a clinic. The people who work through an Indian summer, on farms, at kilns, on construction sites and on public-works schemes where women are most of the workforce, lose hours and wages as the air gets hotter and wetter. This page says which hours are safe to work this week, what the lost hours cost, and whether the summers are getting worse where you are.</div>
             <div class="notes"><ul>
                 <li>WBGT in the sun from the Australian Bureau of Meteorology approximation (0.567·T + 0.393·e + 3.94); in shade and at night from Stull's natural wet-bulb, 0.7·T<sub>w</sub> + 0.3·T.</li>
                 <li>Each hour gets the largest work allocation the ACGIH threshold limit values (acclimatised) or action limits (unacclimatised) permit for the chosen workload; hours lost are summed over the workday and priced at the wage you enter.</li>
                 <li>Thirty-five years of daily maxima and mean humidity from the ERA5-based archive give March–June counts of days over the continuous-work and almost-no-work limits, with a least-squares trend and its 95% interval.</li>
             </ul><span class="verified">Verified: 35 °C at 50% humidity gives WBGT 34.8 °C, matching the Bureau of Meteorology's tables; the allocation function returns the ACGIH table's values.</span></div>
+            <div class="limits"><b>Known limits.</b> The wet-bulb globe temperature in the sun is an approximation that assumes moderately high radiation and light wind, so it is a screening value and no substitute for a measurement on site. Reanalysis cells are roughly 10 km wide, so a city's series is an area average and understates the urban heat island. The work limits are for healthy, hydrated, lightly clothed adults and do not cover pregnancy, chronic illness or protective clothing.</div>
         </article>
     </div>
 </div></section>
@@ -277,14 +290,16 @@
             <h3><a href="rct-planner/">RCT Planner</a><span class="badge b-tool">Tool</span><span class="badge b-research">Research</span></h3>
             <p class="summary">Power and minimum detectable effect for individual and cluster designs, with intra-cluster correlation, covariate adjustment, attrition, take-up and multiple outcomes; then a seeded, stratified randomiser for a baseline CSV with a balance table and a randomisation record.</p>
             <p class="tech">Bloom / Duflo–Glennerster–Kremer formulas · permuted blocks · Welch and joint F balance tests</p>
+            <p class="dates">First committed September 2026.</p>
             <span class="open">Open the tool →</span>
-            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button></div>
+            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button><button type="button" class="l" aria-expanded="false">Known limits</button></div>
             <div class="pop"><b>In plain words.</b> Before a trial starts, two questions: how small an effect this sample could detect once villages cluster, some people drop out and not everyone takes the programme up; and who gets treatment. The page answers the first with curves you can move, and does the second with a draw that is stratified, reproducible from a seed, and documented for the pre-analysis plan.</div>
             <div class="notes"><ul>
                 <li>MDE = (t<sub>1−α/2</sub> + t<sub>1−β</sub>)·√[1/(P(1−P))]·√[σ²(1−R²)·(1+(m−1)ρ)/N], t quantiles from the regularised incomplete beta function; required sample by bisection.</li>
                 <li>Randomisation within strata by permuted blocks with a seeded generator, allocation remainders carried across strata so small strata still add up to the target split, cluster-level draws supported.</li>
                 <li>Balance table with Welch p-values and a joint F-test; a randomisation record with the seed, algorithm and a SHA-256 digest of the input file.</li>
             </ul><span class="verified">Verified: MDE 0.177 for N = 1,000 matches the closed form; 18/18 cluster splits and 40/30/30 three-arm splits come out exact.</span></div>
+            <div class="limits"><b>Known limits.</b> The power formula assumes clusters of equal size and one level of clustering. Several primary outcomes are handled by Bonferroni, which is conservative when the outcomes are correlated. Attrition is applied as one share of the whole sample. The balance table tests one covariate at a time, so about one in twenty will differ at the 5% level by chance.</div>
         </article>
 
         <article class="card" id="survey">
@@ -292,14 +307,16 @@
             <h3><a href="survey-audit/">Survey Data Auditor</a><span class="badge b-data">Data</span><span class="badge b-tool">Tool</span></h3>
             <p class="summary">The checks a monitoring team runs before anyone estimates anything: duplicate and near-duplicate interviews, Benford's law, age heaping, straightlining, interview length and timing, missingness, and an enumerator profile that says who to call back.</p>
             <p class="tech">Nigrini MAD · Whipple and Myers · Welch z-scores · Markdown and CSV export</p>
+            <p class="dates">First committed September 2026.</p>
             <span class="open">Open the tool →</span>
-            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button></div>
+            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button><button type="button" class="l" aria-expanded="false">Known limits</button></div>
             <div class="pop"><b>In plain words.</b> Field surveys go wrong in predictable ways: an interviewer copies yesterday's form under a new number, invents incomes, rounds every age to a five, answers a whole block with the same tick, or finishes a forty-minute interview in eight. Drop in the CSV and the page finds each pattern, names the enumerator, and writes the call-back list.</div>
             <div class="notes"><ul>
                 <li>Exact duplicates by hashing every column except ID and timestamps; near-duplicates by pairwise comparison within an enumerator at 90% identical fields.</li>
                 <li>Benford judged by Nigrini's mean-absolute-deviation cut-offs, per-enumerator by χ² p-value because MAD is unreliable at small n; Whipple's index on the UN scale and Myers' blended index; straightlining against a chance benchmark.</li>
                 <li>Every metric z-scored across enumerators; two flags puts a name on the list. Nothing is uploaded anywhere.</li>
             </ul><span class="verified">Verified: the seeded demo plants six problems across five enumerators and the audit recovers all six, attributed to the right people.</span></div>
+            <div class="limits"><b>Known limits.</b> Every verdict is a threshold on a statistic. A flag is a reason to call back and proves nothing about an enumerator. Column roles are guessed from header names and value patterns and need checking before the report is read. Benford's law is offered only for amounts whose 5th to 95th percentile spans at least fifty-fold, because it does not apply to bounded numbers.</div>
         </article>
 
 
@@ -308,14 +325,16 @@
             <h3><a href="cost-benefit/">Cost–Benefit Calculator</a><span class="badge b-tool">Tool</span><span class="badge b-research">Research</span></h3>
             <p class="summary">Net present value, benefit–cost ratio, IRR, payback and cost per outcome for a programme's cost, benefit and outcome streams, with Monte Carlo on every input and a tornado chart of which assumptions drive the answer.</p>
             <p class="tech">Triangular draws · bisection IRR · one-at-a-time tornado</p>
+            <p class="dates">First committed September 2026.</p>
             <span class="open">Open the tool →</span>
-            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button></div>
+            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button><button type="button" class="l" aria-expanded="false">Known limits</button></div>
             <div class="pop"><b>In plain words.</b> Every donor asks whether a programme was worth it; almost nobody shows how sure they are. Enter what it costs, what it returns and how confident you are of each, and the page gives the usual numbers plus the probability the programme pays off and the two or three assumptions on which that hangs.</div>
             <div class="notes"><ul>
                 <li>PV by year with year 0 undiscounted; IRR by bisection with a warning when net flows change sign more than once; cost per outcome shown with outcomes undiscounted and discounted.</li>
                 <li>Monte Carlo draws each stream from a triangular distribution on its range and the discount rate uniformly; the tornado sets each input to its low and high with everything else fixed.</li>
                 <li>Streams are independent by design, and the page says what that leaves out.</li>
             </ul><span class="verified">Verified: PV, NPV, BCR, IRR and cost per outcome on the illustrative example reproduced to the cent in an independent Python calculation.</span></div>
+            <div class="limits"><b>Known limits.</b> The simulation treats cost and benefit streams as independent, so inputs that move together would give a wider distribution than the one shown. Benefits are not weighted by who receives them. When the net flow changes sign more than once, the internal rate of return may not be unique.</div>
         </article>
     </div>
 </div></section>
@@ -331,13 +350,15 @@
             <h3><a href="compensation-calculator/">Motor Accident Compensation Calculator</a><span class="badge b-law">Law</span></h3>
             <p class="summary">Fatal-accident awards under the Motor Vehicles Act, step by step with the authority for each line: the <em>Sarla Verma</em> multiplier, <em>Pranay Sethi</em> future prospects and conventional heads with their 10% triennial enhancement, consortium per dependant, and interest.</p>
             <p class="tech">Sarla Verma (2009) · Pranay Sethi (2017) · Magma, Somwati, Sameem Begum · section 171</p>
+            <p class="dates">First committed September 2026, last changed October 2026.</p>
             <span class="open">Open the tool →</span>
-            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button></div>
+            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button><button type="button" class="l" aria-expanded="false">Known limits</button></div>
             <div class="pop"><b>In plain words.</b> When someone dies in a road accident, tribunals value the income the family has lost using rules the Supreme Court has fixed. Enter the age, income and family, and the page produces the award the way a tribunal would write it, with the case and paragraph next to every figure.</div>
             <div class="notes"><ul>
                 <li>Sarla Verma paras 30–32 and 42 (deductions, multiplier table); Pranay Sethi para 61 (future prospects by employment and age, conventional heads, 10% every three years from 31 October 2017); consortium to each dependant per Magma (2018), Somwati (2020) and Sameem Begum (2026), with the contrary 2023 line offered too.</li>
                 <li>Enhancement computed as 1.1<sup>⌊months/36⌋</sup>, which reproduces the ₹16,500 / ₹44,000 and ₹18,150 / ₹48,400 figures the courts have applied since.</li>
             </ul><span class="verified">Verified: reproduces a published worked example (₹8,64,864 loss of dependency) and the ₹48,400 consortium applied by the Supreme Court in August 2026.</span></div>
+            <div class="limits"><b>Known limits.</b> Fatal-accident claims under section 166 only. Injury claims, contributory negligence, the section 164 no-fault scheme and a child's death are outside it. The Sarla Verma table stops at age 70, so a multiplier must be entered above that. Where benches differ, on consortium to each dependant or once and on the date the 10% enhancement is measured to, the page states the choice it makes. The most recent decision it cites is Sameem Begum v K. Venkat Swamy (Supreme Court, 14 August 2026). Not legal advice.</div>
         </article>
 
         <article class="card" id="land">
@@ -345,14 +366,16 @@
             <h3><a href="land-acquisition/">Land Acquisition Compensation Calculator</a><span class="badge b-law">Law</span></h3>
             <p class="summary">The RFCTLARR Act 2013 formula line by line: section 26 market value, the First Schedule multiplication factor, section 29 assets, 100% solatium, the 12% additional amount, and every Second Schedule rehabilitation entitlement, with a comparison to the 1894 Act.</p>
             <p class="tech">sections 26, 29, 30 · First and Second Schedules · annuity present value</p>
+            <p class="dates">First committed September 2026.</p>
             <span class="open">Open the tool →</span>
-            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button></div>
+            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button><button type="button" class="l" aria-expanded="false">Known limits</button></div>
             <div class="pop"><b>In plain words.</b> When the state takes land, the 2013 Act says exactly how the price is built: the best of three market benchmarks, doubled or less depending on how rural the land is, plus what stands on it, plus the same again as solatium, plus 12% a year for the wait, and then a separate list of what each displaced family is owed. Enter the land and the family; the page does the sum and names the section beside every line.</div>
             <div class="notes"><ul>
                 <li>Market value as the higher of the circle rate, the average of the top 50% of sale deeds and any consented amount (section 26); the state's factor for rural land; assets under section 29; solatium and the 12% addition under section 30.</li>
                 <li>Second Schedule items 1 to 10 with the Act's minimums; the annuity option valued as a present value on a discount rate and CPI indexation the reader sets, next to its nominal total.</li>
                 <li>The unsettled base for the 12% addition (bare market value or multiplied value) is left to a selector, so the reader chooses rather than the page.</li>
             </ul><span class="verified">Verified: every First Schedule line reproduced by hand on the default inputs; Second Schedule amounts checked against the schedule text.</span></div>
+            <div class="limits"><b>Known limits.</b> It applies the central Act's minimums and the multiplication factor the reader enters. States have amended the Act, exempted categories of project, notified their own factors and raised Second Schedule amounts, and none of that is built in. Sections 41 and 42 (Scheduled Areas), section 46, section 80 (interest on delay) and income tax beyond the section 96 exemption are outside it. Not legal advice.</div>
         </article>
     </div>
 </div></section>
@@ -368,101 +391,117 @@
             <h3><a href="court-translator/">Court Petition Translator</a><span class="badge b-ai">AI</span><span class="badge b-tool">Tool</span></h3>
             <p class="summary">Translates Hindi Supreme Court and High Court petitions into formal legal English, so <em>yaachikaakarta</em> becomes "Petitioner" and <em>anuchhed</em> becomes "Article", and the output reads like it was drafted in English.</p>
             <p class="tech">Sarvam AI · GPT-OSS 120B via Groq · Netlify Functions</p>
+            <p class="dates">First committed March 2026, last changed September 2026.</p>
             <span class="open">Open the tool →</span>
-            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button></div>
+            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button><button type="button" class="l" aria-expanded="false">Known limits</button></div>
             <div class="pop"><b>In plain words.</b> Paste the Hindi text of a petition and get back English that a lawyer would recognise as a petition, with the right terms of art, rather than a literal translation.</div>
             <div class="notes"><ul><li>Text is chunked and sent to <code>sarvam-translate:v1</code> in formal mode, then revised by GPT-OSS 120B on Groq with a prompt that fixes legal terminology.</li><li>Keys stay server-side in a Netlify Function; the browser only talks to that function. Stage: prototype, awaiting a blind comparison against a human legal translator.</li></ul></div>
+            <div class="limits"><b>Known limits.</b> A prototype. The output has not yet been compared blind against a human legal translator. It works from Hindi to English only. The text of the document is sent to Sarvam AI and Groq; the file itself stays in the browser. On scanned pages the result depends on the quality of the scan. A lawyer should review the translation before it is filed anywhere.</div>
         </article>
         <article class="card" id="ledger">
             <div class="doodle"><svg viewBox="0 0 64 64" filter="url(#wobble)"><path d="M10 54V22M22 54V12M34 54V30M46 54V18"/><path d="M6 54h52"/><path d="M6 14h52" stroke-dasharray="4 3"/><path d="M50 24l6 6M56 24l-6 6"/></svg></div>
             <h3><a href="expense-ledger/">Election Expenditure Ledger</a><span class="badge b-law">Law</span><span class="badge b-tool">Tool</span></h3>
             <p class="summary">A candidate's running account under section 77 of the Representation of the People Act: entries by head against the Rule 90 ceiling, burn rate and a projection to counting day, the section 78 lodging deadline, and flags for cash above the threshold, spending outside the period and expenditure by others.</p>
             <p class="tech">s.77, s.78, s.10A RPA 1951 · Rule 90 CER 1961 (2022) · localStorage · CSV</p>
+            <p class="dates">First committed September 2026.</p>
             <span class="open">Open the tool →</span>
-            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button></div>
+            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button><button type="button" class="l" aria-expanded="false">Known limits</button></div>
             <div class="pop"><b>In plain words.</b> Every candidate must keep a day-by-day account of what the campaign spends, and the total has a legal cap. Type in each bill as it comes; the page keeps the total, shows how fast the money is going, says where the campaign will land on counting day at that pace, and tells you the last day to file the account. Nothing leaves your browser.</div>
             <div class="notes"><ul>
                 <li>Ceiling pre-filled by house and state from the Rule 90 amendment of 6 January 2022 (₹95 / ₹75 lakh; ₹40 / ₹28 lakh), editable because the state banding is reproduced from the notification pattern rather than read from each notification.</li>
                 <li>Accounting period from nomination to declaration, both inclusive; burn rate over elapsed accounting days; the projection is linear; the step chart marks the poll day. A hand-written CSV parser handles quoted commas so descriptions round-trip.</li>
             </ul><span class="verified">Verified: the example ledger's fourteen entries sum to ₹21,01,000 by hand; a ₹12,000 cash entry raises the flag.</span></div>
+            <div class="limits"><b>Known limits.</b> The ceilings follow Rule 90 as amended on 6 January 2022 and the state bands of the 2014 and 2022 notifications; check the notification for the election in hand and edit the ceiling if it differs. The page does not apply the district rate card. The cash threshold is the Commission's instruction as commonly stated, and the compendium of instructions controls. Not legal advice.</div>
         </article>
         <article class="card" id="promise">
             <div class="doodle"><svg viewBox="0 0 64 64" filter="url(#wobble)"><path d="M14 10h36v44H14z"/><path d="M22 20h20M22 28h20M22 36h12"/><path d="M8 48c6-8 12-8 18 0s12 8 18 0"/><path d="M44 44l4 4 8-10"/></svg></div>
             <h3><a href="promise-costing/">Manifesto Promise Costing</a><span class="badge b-data">Data</span><span class="badge b-research">Research</span></h3>
             <p class="summary">Beneficiaries × uptake × unit cost for each promise, with low and high ranges, against a state's revenue receipts, expenditure, GSDP and fiscal deficit: a multi-year path against the 3% norm, a Monte Carlo band and a tornado of which assumption matters.</p>
             <p class="tech">triangular Monte Carlo · one-at-a-time tornado · RBI State Finances inputs</p>
+            <p class="dates">First committed September 2026.</p>
             <span class="open">Open the tool →</span>
-            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button></div>
+            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button><button type="button" class="l" aria-expanded="false">Known limits</button></div>
             <div class="pop"><b>In plain words.</b> A party promises free electricity, or a monthly transfer to women, or a loan waiver. Each promise has a cost: the number of people covered, times the share who will claim, times the amount each gets. This page adds those costs up and sets the sum beside the state's own budget, so you can see whether the promises cost a tenth of the revenue or half of it, and what the deficit would be if they were simply borrowed.</div>
             <div class="notes"><ul>
                 <li>Each promise carries low, likely and high for beneficiaries, uptake and unit cost; recurring promises grow at a unit-cost rate, one-off promises are spread over their years. Aggregates are entered by hand from the state budget or the RBI study; the default is an illustrative state, labelled as such.</li>
                 <li>4,000 draws from independent triangular distributions give the 5th to 95th percentile of the first-year bill and the share of draws that breach the deficit norm; the tornado moves one input at a time from low to high and ranks by swing.</li>
             </ul><span class="verified">Verified: the six example promises reproduce by hand (₹31,500 crore, 15.7% of revenue receipts, deficit 3.0% to 5.0% of GSDP).</span></div>
+            <div class="limits"><b>Known limits.</b> It leaves out the revenue side of a promise, any behavioural response and the Centre's share in centrally sponsored schemes. The simulation treats promises as independent, so its band is narrower than reality. The state's budget figures are typed in by hand for one year, and the deficit path is a baseline scaled with GSDP and should not be read as a forecast.</div>
         </article>
         <article class="card" id="interest">
             <div class="doodle"><svg viewBox="0 0 64 64" filter="url(#wobble)"><path d="M8 52C20 50 30 40 34 26s8-16 22-14"/><path d="M8 56h48"/><path d="M14 40a3 3 0 1 0 0 .1M40 22a3 3 0 1 0 0 .1"/><path d="M50 6l4 4-4 4"/></svg></div>
             <h3><a href="statutory-interest/">Statutory Interest Calculator</a><span class="badge b-law">Law</span></h3>
             <p class="summary">Interest the way Indian statutes prescribe it, with the section quoted: MSMED Act s.16 (three times the bank rate, monthly rests), CPC s.34 on decrees, Arbitration Act s.31(7) on awards, the Negotiable Instruments Act limits on a bounced cheque, and plain simple or compound with the schedule.</p>
             <p class="tech">MSMED ss.15–16 · CPC s.34 · A&amp;C Act s.31(7) · NI Act ss.138, 143A, 148 · actual/365</p>
+            <p class="dates">First committed September 2026, last changed October 2026.</p>
             <span class="open">Open the tool →</span>
-            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button></div>
+            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button><button type="button" class="l" aria-expanded="false">Known limits</button></div>
             <div class="pop"><b>In plain words.</b> When a buyer pays a small supplier late, or a court decrees a sum, or an arbitrator awards one, the law fixes the interest, and the rules differ. Pick the situation, enter the amount and the dates, and the page computes the interest month by month with the section it is applying printed beside the working.</div>
             <div class="notes"><ul>
                 <li>MSMED: the 45-day cap on the agreed period, interest from the day after, compound with monthly rests at 3 × the RBI bank rate the reader enters. CPC: three simple-interest periods with the 6% post-decree ceiling and the commercial-transaction proviso. Arbitration: post-award at current rate + 2 on the sum plus pre-award interest (Hyder Consulting, 2015), with the principal-only alternative shown.</li>
                 <li>Every compounding schedule prints each period's opening balance, interest and closing balance; stub periods are simple; day count actual over 365.</li>
             </ul><span class="verified">Verified: all five default cases reproduce in Python to the rupee (MSMED ₹86,430; decree ₹2,65,315; award ₹8,74,473).</span></div>
+            <div class="limits"><b>Known limits.</b> The RBI bank rate is typed in as a dated list; the page does not fetch it. Section 16 of the MSMED Act applies only where the supplier is a registered micro or small enterprise. The section 138 figures are ceilings and a common working, and compensation is in the court's discretion. The limitation periods under section 142 are not computed. Not legal advice.</div>
         </article>
         <article class="card" id="air">
             <div class="doodle"><svg viewBox="0 0 64 64" filter="url(#wobble)"><path d="M10 40c8-10 16-10 24 0s16 10 22 0"/><path d="M10 28c8-10 16-10 24 0s16 10 22 0" stroke-dasharray="3 3"/><path d="M14 54c0-6 6-8 10-4 4-4 12-2 10 4"/><path d="M40 10l4 6M50 8l-2 8"/></svg></div>
             <h3><a href="air-quality/">A Year of Air</a><span class="badge b-climate">Climate</span><span class="badge b-data">Data</span></h3>
             <p class="summary">A year of hourly PM2.5, PM10 and NO₂ for any Indian city or coordinate, live from Open-Meteo's CAMS archive, reduced to what the standards ask: annual means against WHO 2021 and NAAQS 2009, days over each 24-hour limit, month by month, and the cigarette equivalent.</p>
             <p class="tech">Open-Meteo air quality API (CAMS) · WHO 2021 · NAAQS 2009 · Berkeley Earth rule</p>
+            <p class="dates">First committed September 2026.</p>
             <span class="open">Open the tool →</span>
-            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button></div>
+            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button><button type="button" class="l" aria-expanded="false">Known limits</button></div>
             <div class="pop"><b>In plain words.</b> Pick a city. The page fetches every hour of the past year's fine-particle pollution, works out the daily averages, counts how many days broke the Indian limit and the WHO guideline, and says how many cigarettes a year of that air is comparable to. The figures are model estimates rather than readings from a roadside monitor, and the page says so.</div>
             <div class="notes"><ul>
                 <li>8,760 hourly rows fetched in one request with an IST timezone; daily means of 24 hourly values; a day breaches a 24-hour limit when its mean exceeds it; the cigarette equivalent is the sum of daily PM2.5 divided by 22.</li>
                 <li>Hand-rolled SVG for the daily line and the monthly bars with hover; tolerant of a series the API does not return.</li>
             </ul><span class="verified">Verified: a recorded Delhi year reproduces in Python (365 days, 86.2 µg/m³ annual mean, 260 days over India's 24-hour limit, 1,431 cigarette equivalents).</span></div>
+            <div class="limits"><b>Known limits.</b> The values are Copernicus CAMS model reanalyses and forecasts on a grid of roughly 11 km, served by Open-Meteo. They are smoother than a CPCB monitor beside a road and do not replace one. The archive starts in August 2022. The cigarette equivalent is Berkeley Earth's way of communicating exposure and is no dose-response model.</div>
         </article>
         <article class="card" id="petition">
             <div class="doodle"><svg viewBox="0 0 64 64" filter="url(#wobble)"><path d="M16 6h26l10 10v42H16z"/><path d="M42 6v10h10"/><path d="M22 26h22M22 34h22M22 42h14"/><path d="M22 50h8M36 50h10"/></svg></div>
             <h3><a href="petition-builder/">Petition Builder</a><span class="badge b-law">Law</span><span class="badge b-tool">Tool</span></h3>
             <p class="summary">A representation, memorandum or petition drafted in the accepted form: addressee, subject, facts, grounds, prayer, annexures and a signatory sheet, in four variants from a municipal office to the Lok Sabha, with print, Word and Markdown export and a link that carries the draft to co-signatories.</p>
             <p class="tech">Article 350 · House petition rules · .doc export without a library · draft encoded in the URL</p>
+            <p class="dates">First committed September 2026.</p>
             <span class="open">Open the tool →</span>
-            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button></div>
+            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button><button type="button" class="l" aria-expanded="false">Known limits</button></div>
             <div class="pop"><b>In plain words.</b> Officials read the shape of a petition before they read its words. Fill in who it goes to, what it is about, what happened, why they should act and what you want, add the names, and the page lays it out the way a clerk expects to see it, ready to print or send as a Word file.</div>
             <div class="notes"><ul>
                 <li>Four templates share one form model; facts and grounds number continuously, the prayer restarts, annexures are lettered. The Word export is an HTML document served with Word's MIME type, which Word and LibreOffice open with the layout intact, so no library is needed.</li>
                 <li>The shareable link packs the draft into the URL fragment as base64url JSON, so a co-signatory sees the same draft with no server. The draft is also kept in local storage and can be exported as JSON.</li>
             </ul><span class="verified">Verified: the example renders every section and the signatory table headless; the House form switches opening, closing and countersignature line.</span></div>
+            <div class="limits"><b>Known limits.</b> It drafts representations, memoranda and administrative petitions. It does not draft a pleading: a writ petition, an appeal, an application under a statute or a plaint has its own form, court rules and verification. The guidance on petitions to a House describes general practice, so check the current rules of the House concerned. The Word download is an HTML file with a .doc extension.</div>
         </article>
         <article class="card" id="courtformat">
             <div class="doodle"><svg viewBox="0 0 64 64" filter="url(#wobble)"><path d="M14 6h36v52H14z"/><path d="M22 6v52M42 6v52" stroke-dasharray="3 3"/><path d="M26 18h12M26 26h12M26 34h12M30 42h8"/></svg></div>
             <h3><a href="court-format/">Court Filing Formatter</a><span class="badge b-law">Law</span><span class="badge b-tool">Tool</span></h3>
             <p class="summary">A Word file set to a court's paper rules in the browser: A4, the prescribed margins, font, size and line spacing, with quotations and indents set smaller and single-spaced. Supreme Court, Delhi, Bombay and Gujarat presets, each with its circular quoted, and a before-and-after check read back from the new file.</p>
             <p class="tech">SC circular 5.3.2020 · DHC PD 90/2022 · Bombay HC 2021 · Gujarat C.2002/2026 · OOXML rewritten in place</p>
+            <p class="dates">First committed September 2026, last changed October 2026.</p>
             <span class="open">Open the tool →</span>
-            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button></div>
+            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button><button type="button" class="l" aria-expanded="false">Known limits</button></div>
             <div class="pop"><b>In plain words.</b> Courts now want filings on A4 with a set font, size, spacing and margins, and a draft typed in Word's defaults meets none of them. Open the draft here, choose the court, and download a copy that does. The page shows what the document had, what the rule asks for, and what the new file has, and lets you say which indented paragraphs are really quotations.</div>
             <div class="notes"><ul>
                 <li>The .docx is unzipped in the browser and its XML edited in place: page size and margins on every section (landscape sections stay landscape), fonts and sizes in the defaults, the styles and the text itself, with theme-font attributes removed so the new face wins. New elements go in the order the schema requires. Nothing is uploaded.</li>
                 <li>A value a rule does not state is left alone: Bombay prescribes font, size and inner and outer margins, so it gets mirrored margins and no line spacing. Quotations are found by indentation (net of any hanging indent) and style name, and the reader confirms each one.</li>
             </ul><span class="verified">Verified: a Letter-size, Calibri, 1.15-spaced test file with pasted Arial, a block quote, hand numbering and a landscape section comes out at A4, 4/4/2/2 cm, Times New Roman 14 at 1.5 lines, the quote at 12 single, with no schema-order violations.</span></div>
+            <div class="limits"><b>Known limits.</b> It takes .docx files and has four presets: the Supreme Court, Delhi, Bombay and Gujarat. A value a circular does not state is left as the document had it, so Bombay gets no line spacing and no top or bottom margin. The Supreme Court preset rests on two reproductions of the circular of 5 March 2020. The date and notification numbers quoted for Bombay are unconfirmed against the gazette. Quotations are found by indentation and style name, and the reader has to confirm each one.</div>
         </article>
         <article class="card" id="flipbook">
             <div class="doodle"><svg viewBox="0 0 64 64" filter="url(#wobble)"><path d="M6 14h22c3 0 4 2 4 4v34c0-2-1-4-4-4H6z"/><path d="M58 14H36c-3 0-4 2-4 4v34c0-2 1-4 4-4h22z"/><path d="M40 22c6-4 12-2 14 2"/><path d="M12 24h10M12 30h10M12 36h6"/></svg></div>
             <h3><a href="flipbook/">Flipbook Maker</a><span class="badge b-tool">Tool</span></h3>
             <p class="summary">Drop a PDF and get a page-turning book with a hard cover and facing spreads that flip under the mouse or a finger, then download it as one HTML file with the pages and the page-turn engine inside. The file works offline, on a phone, and on any web host. The PDF never leaves the browser.</p>
             <p class="tech">PDF.js rendering in a Web Worker · StPageFlip · self-contained export with JPEG pages inlined</p>
+            <p class="dates">First committed September 2026.</p>
             <span class="open">Open the tool →</span>
-            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button></div>
+            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button><button type="button" class="l" aria-expanded="false">Known limits</button></div>
             <div class="pop"><b>In plain words.</b> The flipbook services charge a subscription, watermark the result and keep your file on their servers. This does the same thing in the browser: an annual report, a magazine or a child's picture book becomes a book you can leaf through, and the file you download needs nothing else to open.</div>
             <div class="notes"><ul>
                 <li>Each PDF page is drawn to a canvas at the width you choose (1000 to 2400px) and stored as a JPEG at the quality you set; title and author are read from the PDF's own metadata. The book is a StPageFlip instance with hard cover, facing spreads, single pages on narrow screens, keyboard and thumbnail navigation.</li>
                 <li>Export fetches the page-flip library text and writes it into the file together with the page images as data URLs, so the result is one HTML document with no external requests; a 20-page A4 report at 1400px is about 2 MB.</li>
             </ul><span class="verified">Verified: a seven-page PDF generated headless renders in full, the title is read from its metadata, buttons, keys and thumbnails turn pages, and the exported file opens from disk with no network request and turns pages.</span></div>
+            <div class="limits"><b>Known limits.</b> Each page is stored as a JPEG image, so text in the exported book cannot be selected, searched or read by a screen reader, and links in the PDF do not work. The file grows with the page count: a 20-page A4 report at 1400 pixels comes to about 2 MB. The exported book works offline; this page needs a connection to load its two libraries.</div>
         </article>
     </div>
 </div></section>
@@ -476,33 +515,39 @@
             <h3><a href="kundendu-worksheets/">Kundendu's Learn &amp; Play</a><span class="badge b-family">Family</span></h3>
             <p class="summary">A Class 1 CBSE worksheet generator with a structured course beside it: English phonics and reading, Hindi, Maths and EVS. Fresh questions every time, on-screen marking with confetti, printable sheets with answer keys, and eight decodable readers with read-along audio.</p>
             <p class="tech">PWA · offline · no dependencies</p><p class="live">Also at <a href="https://littlek.in">littlek.in</a></p>
+            <p class="dates">First committed August 2026, last changed October 2026.</p>
             <span class="open">Open the app →</span>
-            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button></div>
+            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button><button type="button" class="l" aria-expanded="false">Known limits</button></div>
             <div class="pop"><b>In plain words.</b> A six-year-old's practice app. It never shows the same worksheet twice, it checks answers on screen, and its course introduces sounds before letters in the order that makes readable words fastest. Every lesson has a note for the grown-up on how to teach the rule.</div>
             <div class="notes"><ul><li>36 activity types generated from rules, seeded per sheet so a printed answer key matches its worksheet; 161 lessons across four paths, each opening the next at 80%.</li><li>Decodable readers use only the sounds taught so far, with word-timed audio; installable PWA with a small service worker, progress stored on the device.</li></ul></div>
+            <div class="limits"><b>Known limits.</b> Made for one six-year-old in Class 1 of a CBSE school, so the scope and the order follow his syllabus. Read-aloud sends the sentence to Sarvam AI through the site's server and works only at littlek.in and the Netlify address. Progress is stored on the device and does not move to another one. The daily reminder, if switched on, stores a push subscription on the server.</div>
         </article>
         <article class="card" id="alab">
             <div class="doodle"><svg viewBox="0 0 64 64" filter="url(#wobble)"><path d="M26 8h12"/><path d="M28 8v14L14 46a4 4 0 0 0 3.5 6h29A4 4 0 0 0 50 46L36 22V8"/><path d="M20 38h24"/><circle cx="30" cy="44" r="1.6"/><circle cx="37" cy="47" r="1.2"/></svg></div>
             <h3><a href="alab/">Agastya's Study Lab</a><span class="badge b-family">Family</span></h3>
             <p class="summary">Year-round CBSE Class 8 revision: a mind map and notes for every chapter of science, maths, social science, English, Hindi, Sanskrit and computing, hundreds of questions with instant marking and explanations, printable worksheets, mock papers in the CBSE pattern, and a mistakes book. Plus a layer that flags where the textbook is wrong and says what to write in the exam anyway.</p>
             <p class="tech">PWA · offline · no dependencies</p><p class="live">Also at <a href="https://alab.cloud">alab.cloud</a></p>
+            <p class="dates">First committed August 2026, last changed October 2026.</p>
             <span class="open">Open the app →</span>
-            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button></div>
+            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button><button type="button" class="l" aria-expanded="false">Known limits</button></div>
             <div class="pop"><b>In plain words.</b> A thirteen-year-old's exam companion. Pick a chapter, read the notes, answer questions and see why an answer is right or wrong, then let the mistakes book bring back what you got wrong until the answers stick.</div>
             <div class="notes"><ul><li>All content in one HTML file as structured data, a doodle per chapter as inline SVG; one marking engine across question types; spaced repetition on the mistakes book; content checked against the NCERT texts. Mind maps render twice from one data shape, an SVG tree where there is room and a nested list on a phone, with colour kept out of every text label so nothing can fail contrast in either theme. Corrections carry a dated source, a named case or a statute.</li></ul></div>
+            <div class="limits"><b>Known limits.</b> It covers CBSE Class 8 only. The Sanskrit chapters follow Ruchira Part 3, while the board's circular Acad-48/2025 of 28 July 2025 names Deepakam; the CBSE tab in the app says so. English covers grammar, usage and writing and leaves out the literature reader. Progress and the mistakes book are stored on the device.</div>
         </article>
         <article class="card" id="library">
             <div class="doodle"><svg viewBox="0 0 64 64" filter="url(#wobble)"><path d="M10 14h8v40h-8zM20 14h8v40h-8zM30 18l7-2 10 36-7 2z"/><path d="M6 54h52"/><path d="M13 22h2M23 22h2"/></svg></div>
             <h3><a href="library-builder/">Household Library Builder</a><span class="badge b-family">Family</span><span class="badge b-tool">Tool</span></h3>
             <p class="summary">Catalogue the books in a house: add by ISBN or title with authors, year, subjects and covers from Open Library, or by hand, list or CSV; shelve them, track who is reading what and who borrowed which book, and see the shelves as a subject map. Kept in the browser only.</p>
             <p class="tech">Open Library books and search APIs · Goodreads CSV import · force-directed subject map in plain SVG</p>
+            <p class="dates">First committed September 2026.</p>
             <span class="open">Open the tool →</span>
-            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button></div>
+            <div class="more"><button type="button" class="q" aria-expanded="false">? What it does</button><button type="button" class="n" aria-expanded="false">How it's built</button><button type="button" class="l" aria-expanded="false">Known limits</button></div>
             <div class="pop"><b>In plain words.</b> A house with a few hundred books has a library and no catalogue. Type an ISBN and the book appears with its cover; tell it which room it lives in and who has borrowed it; and look at the whole collection as a map of subjects rather than a list. The replacement for the family library that used to live on this page, without the family's data.</div>
             <div class="notes"><ul>
                 <li>Records come from openlibrary.org's books and search endpoints (both send CORS headers); covers from covers.openlibrary.org. Duplicates are refused by ISBN or by title and first author. A hand-written CSV parser handles Goodreads' quoted ISBN cells.</li>
                 <li>The map is a seeded force layout (repulsion, spring on shared subjects, centring) run for 220 iterations in the page and drawn as static SVG with hover; subjects shared by more than forty books are ignored as uninformative.</li>
             </ul><span class="verified">Verified headless against recorded Open Library responses: ISBN lookup, title search, every view, filters and persistence.</span></div>
+            <div class="limits"><b>Known limits.</b> The catalogue is kept in this browser's local storage and nowhere else, so clearing site data deletes it; the JSON export is the only backup and the way to move it to another machine. Book details and covers come from Open Library and are as complete as its record. The subject map is capped at 300 books.</div>
         </article>
     </div>
 </div></section>
@@ -528,27 +573,25 @@
         <p class="lead">Every tool can be read in full, and every result is checked against something outside the tool.</p>
         <ol>
             <li><b>Compute in the browser</b>Cholesky solves, alternating-projection demeaning, cluster-robust sandwiches, simplex projection, Lorenz-curve fitting, incomplete beta functions, numerical integration and bisection are written in plain JavaScript in the page. Survey data, panels and microdata never leave the machine.</li>
-            <li><b>Live where it should be</b>Four public APIs, and only four: the World Bank indicators and Poverty and Inequality Platform, the DHS Program, and Open-Meteo.</li>
+            <li><b>Live where it should be</b>Five public data APIs: the World Bank indicators and Poverty and Inequality Platform, the DHS Program, Open-Meteo and Open Library. The Court Petition Translator and Kundendu's Learn &amp; Play also reach a translation and a speech service through this site's server: the translator sends the text of the document to Sarvam AI and Groq, and the read-aloud sends the sentence to Sarvam AI.</li>
             <li><b>Checked against something outside</b>TWFE against an explicit-dummies regression in Python; GQ poverty measures against Datt's closed forms and PIP's microdata; the wage-gap decomposition and the cost-benefit sums against independent implementations; Whipple, Myers and Benford against limiting cases; the legal calculators against published worked examples and the schedule text.</li>
             <li><b>Written to be read</b>Every tool carries a method note beside its output, and where a method or a judgment is unsettled the tool says so. Source: <a href="https://github.com/Varnasr/Experiments">github.com/Varnasr/Experiments</a>, MIT.</li>
         </ol>
     </div>
 </section>
 
-<!-- contact:start -->
-<p class="xcontact">Need help setting out your story, what sets your work apart, the context, the return on investment and the projections? Pinpoint Ventures can help. Write to <a href="mailto:hello@pinpointventures.in?subject=Enquiry%20from%20idealogworks.foo">hello@pinpointventures.in</a> or message on <a href="https://wa.me/919871777110?text=Hi%20Pinpoint%20Ventures%2C%20I%20found%20you%20through%20idealogworks.foo.%20I%27d%20like%20to%20discuss%20a%20research%20or%20advisory%20engagement." target="_blank" rel="noopener">WhatsApp</a>.</p>
-<!-- contact:end -->
 <footer><div class="wrap">
     <div><a href="https://github.com/Varnasr/Experiments">GitHub</a><a href="https://github.com/Varnasr/Experiments/blob/main/LICENSE">MIT License</a><a href="https://github.com/Varnasr/OpenStacks-for-Change">OpenStacks for Change</a><a href="https://idealog.works">Idealog Works</a></div>
-    <span>&copy; <span id="year">2025</span> Varna Sri Raman</span>
+    <span>&copy; <span id="year">2026</span> Varna Sri Raman</span>
 </div></footer>
 <script>
 document.getElementById('year').textContent = new Date().getFullYear();
 document.getElementById('nTools').textContent = document.querySelectorAll('.card').length;
 document.querySelectorAll('.card').forEach(card => {
-  const q = card.querySelector('.q'), n = card.querySelector('.n');
+  const q = card.querySelector('.q'), n = card.querySelector('.n'), l = card.querySelector('.l');
   if (q) q.addEventListener('click', e => { e.preventDefault(); const on = card.classList.toggle('pop-open'); q.setAttribute('aria-expanded', on); });
   if (n) n.addEventListener('click', e => { e.preventDefault(); const on = card.classList.toggle('notes-open'); n.setAttribute('aria-expanded', on); });
+  if (l) l.addEventListener('click', e => { e.preventDefault(); const on = card.classList.toggle('limits-open'); l.setAttribute('aria-expanded', on); });
 });
 // fade cards in as they scroll into view; show everything at once if the observer is unavailable
 if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) { document.body.classList.add('fade'); const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { rootMargin:'0px 0px -6% 0px' }); document.querySelectorAll('.card').forEach(c => io.observe(c)); setTimeout(() => document.body.classList.remove('fade'), 2500); }

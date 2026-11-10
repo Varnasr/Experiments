@@ -13,7 +13,7 @@ export default async (req) => {
     if (body.test && body.subscription && body.subscription.endpoint) {
       const pub = process.env.VAPID_PUBLIC_KEY, priv = process.env.VAPID_PRIVATE_KEY;
       if (!pub || !priv) return new Response("no vapid keys", { status: 503 });
-      webpush.setVapidDetails("mailto:varna.sr@gmail.com", pub, priv);
+      webpush.setVapidDetails("mailto:info@idealog.works", pub, priv);
       try {
         await webpush.sendNotification(body.subscription, JSON.stringify({
           title: "🔔 Test — notifications are working!",
