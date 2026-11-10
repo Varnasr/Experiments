@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fiscal Incidence · Experiments</title>
+<meta name="description" content="Who pays a tax and who receives a transfer, from a table of income groups: concentration coefficients, Kakwani progressivity, the Reynolds-Smolensky redistributive effect split into vertical equity and reranking, and each instrument's marginal contribution to the fall in the Gini.">
+<!-- seo:start -->
+<link rel="canonical" href="https://idealogworks.foo/fiscal-incidence/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Experiments">
+<meta property="og:locale" content="en_IN">
+<meta property="og:title" content="Fiscal Incidence">
+<meta property="og:description" content="Who pays a tax and who receives a transfer: Kakwani, Reynolds–Smolensky and reranking.">
+<meta property="og:url" content="https://idealogworks.foo/fiscal-incidence/">
+<meta property="og:image" content="https://idealogworks.foo/og/fiscal-incidence.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Fiscal Incidence: Who pays a tax and who receives a transfer: Kakwani, Reynolds–Smolensky and reranking.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Fiscal Incidence">
+<meta name="twitter:description" content="Who pays a tax and who receives a transfer: Kakwani, Reynolds–Smolensky and reranking.">
+<meta name="twitter:image" content="https://idealogworks.foo/og/fiscal-incidence.jpg">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Fiscal Incidence","url":"https://idealogworks.foo/fiscal-incidence/","description":"Who pays a tax and who receives a transfer, from a table of income groups: concentration coefficients, Kakwani progressivity, the Reynolds-Smolensky redistributive effect split into vertical equity and reranking, and each instrument's marginal contribution to the fall in the Gini.","image":"https://idealogworks.foo/og/fiscal-incidence.jpg","operatingSystem":"Any","browserRequirements":"Requires JavaScript","isAccessibleForFree":true,"author":{"@type":"Person","name":"Varna Sri Raman"},"isPartOf":{"@type":"WebSite","name":"Experiments","url":"https://idealogworks.foo/"}}</script>
+<style>.xshare{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.5rem .6rem;box-sizing:border-box;width:calc(100% - 2rem);max-width:960px;margin:2.5rem auto 1.5rem;padding:.85rem 1rem;background:#f5f1fa;border:1px solid #e6e3ec;border-radius:12px;font:600 15px/1.4 "Source Sans 3",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:#382280;text-align:center}.xshare .xshare-t{margin-right:.25rem;color:#382280}.xshare .xshare-l{display:inline-flex;align-items:center;min-height:36px;margin:0;padding:.3rem .95rem;border:1px solid #572e91;border-radius:99px;background:#fff;color:#382280;font:inherit;text-decoration:underline;text-underline-offset:2px;cursor:pointer;box-shadow:none}.xshare .xshare-l:hover{background:#ece4f5}.xshare .xshare-l:focus-visible{outline:3px solid #ff9911;outline-offset:2px}.xshare [hidden]{display:none!important}@media print{.xshare{display:none}}.xcontact{box-sizing:border-box;width:calc(100% - 2rem);max-width:960px;margin:0 auto 1.5rem;padding:.85rem 1rem;background:#f5f1fa;border:1px solid #e6e3ec;border-radius:12px;font:400 15px/1.5 "Source Sans 3",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:#382280;text-align:center}.xcontact a{color:#382280;font-weight:600;text-decoration:underline;text-underline-offset:2px}.xcontact a:focus-visible{outline:3px solid #ff9911;outline-offset:2px}@media print{.xcontact{display:none}}</style>
+<!-- seo:end -->
+<style>
+  :root { --bg:#fafafa; --surface:#fff; --border:#e5e7eb; --text:#1a1a2e; --dim:#4b5563; --muted:#6b7280; --accent:#1B6B4A; --accent-soft:#e6f2ec; --grid:#eceef1; --mono:ui-monospace,SFMono-Regular,Menlo,monospace; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--text); line-height:1.55; }
+  a { color:var(--accent); }
+  header { border-bottom:1px solid var(--border); background:#fff; }
+  .wrap { max-width:1080px; margin:0 auto; padding:0 1.25rem; }
+  header .wrap { display:flex; align-items:baseline; justify-content:space-between; gap:1rem; padding:.9rem 1.25rem; flex-wrap:wrap; }
+  header h1 { font-family:Georgia,serif; font-size:1.35rem; font-weight:400; }
+  header h1 small { font-size:.8rem; color:var(--muted); margin-left:.5rem; }
+  header nav a { font-size:.85rem; margin-left:1rem; text-decoration:none; }
+  main { padding:1.5rem 0 3rem; }
+  .lede { color:var(--dim); font-size:.95rem; max-width:66ch; margin-bottom:1.25rem; }
+  .grid { display:grid; grid-template-columns:360px 1fr; gap:1.25rem; align-items:start; }
+  /* A grid item's default min-width:auto lets a wide table size the shared
+     track, and then the page is wider than the phone. */
+  .grid > * { min-width:0; }
+  @media (max-width:900px){ .grid { grid-template-columns:1fr; } }
+  .panel { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1rem 1.15rem; margin-bottom:1rem; }
+  .panel h2 { font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; margin-bottom:.7rem; }
+  label { display:block; font-size:.8rem; color:var(--dim); margin:.5rem 0 .2rem; }
+  select, textarea { width:100%; font:inherit; font-size:.9rem; padding:.4rem .5rem; border:1px solid var(--border); border-radius:6px; background:#fff; color:var(--text); }
+  textarea { font-family:var(--mono); font-size:.78rem; min-height:17rem; resize:vertical; white-space:pre; overflow:auto; }
+  button { font:inherit; font-size:.88rem; padding:.5rem .9rem; border-radius:6px; border:1px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer; margin-top:.6rem; }
+  button.secondary { background:#fff; color:var(--accent); }
+  .stat { display:inline-block; margin:.25rem 1.25rem .25rem 0; vertical-align:top; }
+  .stat b { display:block; font-size:1.4rem; font-family:Georgia,serif; font-weight:400; } .stat span { font-size:.75rem; color:var(--muted); }
+  table { border-collapse:collapse; width:100%; font-size:.84rem; margin:.5rem 0; }
+  th, td { text-align:right; padding:.3rem .5rem; border-bottom:1px solid var(--border); font-variant-numeric:tabular-nums; white-space:nowrap; }
+  th:first-child, td:first-child { text-align:left; } th { color:var(--dim); font-weight:600; font-size:.75rem; }
+  .tscroll { overflow:auto; max-width:100%; }
+  .tscroll:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
+  .note { font-size:.82rem; color:var(--dim); margin-top:.5rem; max-width:72ch; }
+  .warn { background:#fff7ed; border:1px solid #fed7aa; color:#9a3412; padding:.5rem .7rem; border-radius:6px; font-size:.83rem; margin:.5rem 0; }
+  .ok { background:var(--accent-soft); color:var(--accent); padding:.5rem .7rem; border-radius:6px; font-size:.83rem; margin:.5rem 0; }
+  .mini { font-size:.78rem; color:var(--muted); } code { font-family:var(--mono); font-size:.8em; background:#f3f4f6; padding:.05em .3em; border-radius:3px; }
+  .chart { width:100%; max-width:520px; height:auto; display:block; margin:.4rem 0; } .chart text { font-family:inherit; font-size:11px; fill:var(--dim); }
+  .legend { display:flex; gap:.4rem 1rem; flex-wrap:wrap; font-size:.8rem; color:var(--dim); margin:.2rem 0; } .legend i { display:inline-block; width:18px; height:0; border-top:3px solid; vertical-align:middle; margin-right:.35rem; } .legend i.dash { border-top-style:dashed; }
+  footer { border-top:1px solid var(--border); padding:1.25rem; text-align:center; font-size:.8rem; color:var(--muted); }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>Fiscal Incidence <small>who pays · who receives · how much inequality falls</small></h1>
+  <nav><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/fiscal-incidence">Source</a></nav>
+</div></header>
+<main><div class="wrap">
+<p class="lede">A budget line has a total, and it also has a distribution. Enter a table of income groups with what each pays in taxes and receives in transfers, and the page measures how progressive each one is, how far inequality falls once all of them are counted, and how much of that fall each tax or transfer accounts for.</p>
+
+<div class="grid">
+<div>
+  <div class="panel">
+    <h2>Incidence table</h2>
+    <label for="tbl">First line names the columns. Mark each tax as <code>tax: name</code> and each transfer as <code>transfer: name</code>.</label>
+    <textarea id="tbl" spellcheck="false" wrap="off"></textarea>
+    <label for="unit">The income, tax and transfer figures are</label>
+    <select id="unit"><option value="mean">per person in the group</option><option value="total">totals for the group</option></select>
+    <p class="mini">Population can be a count or a share. Groups are ranked by income per person before anything is computed, so the order of the lines does not matter.</p>
+    <button type="button" id="go">Compute</button> <button type="button" class="secondary" id="example">Load the example</button>
+    <p class="mini">The example is invented: ten deciles, two taxes and two transfers with round numbers. It belongs to no country.</p>
+  </div>
+</div>
+<div>
+  <div class="panel"><h2>Redistribution</h2><div id="sumOut" aria-live="polite"></div></div>
+  <div class="panel"><h2>Each tax and transfer</h2><div id="insOut"></div></div>
+  <div class="panel"><h2>Who pays and who receives</h2><div id="grpOut"></div></div>
+  <div class="panel"><h2>Lorenz and concentration curves</h2><div id="chartOut"></div></div>
+  <div class="panel"><h2>Method</h2>
+    <p class="note">Groups are ranked by income before taxes and transfers. The Gini coefficient is one minus twice the area under the Lorenz curve drawn through the group points. A concentration coefficient is the same calculation for a tax or a transfer with the groups still ranked by that income (Kakwani 1977). A tax is progressive when its concentration coefficient is above the Gini, so the Kakwani index is C<sub>T</sub> − G<sub>X</sub>. For a transfer the index is G<sub>X</sub> − C<sub>B</sub>, the convention of the Commitment to Equity handbook (Lustig 2018), so that a positive number means progressive for both. A transfer with a negative concentration coefficient gives more rupees per person to poorer groups.</p>
+    <p class="note">The redistributive effect is the Gini before minus the Gini after (Reynolds and Smolensky 1977). It splits into vertical equity, G<sub>X</sub> minus the concentration coefficient of final income ranked by initial income, less reranking, the Gini of final income minus that same coefficient (Atkinson 1980; Plotnick 1981). Vertical equity also equals (t·K<sub>T</sub> + b·K<sub>B</sub>)/(1 − t + b), where t and b are taxes and transfers as shares of initial income (Lambert 2001), and the page prints both so the identity can be seen to hold. The marginal contribution of one instrument is the Gini of final income without it, minus the Gini of final income with it.</p>
+  </div>
+</div>
+</div>
+
+</div></main>
+<!-- share:start -->
+<aside class="xshare" aria-label="Share this tool"><span class="xshare-t">Share this tool</span><a class="xshare-l" href="https://wa.me/?text=Fiscal%20Incidence%3A%20Who%20pays%20a%20tax%20and%20who%20receives%20a%20transfer%3A%20Kakwani%2C%20Reynolds%E2%80%93Smolensky%20and%20reranking.%0Ahttps%3A%2F%2Fidealogworks.foo%2Ffiscal-incidence%2F" target="_blank" rel="noopener">WhatsApp</a><a class="xshare-l" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fidealogworks.foo%2Ffiscal-incidence%2F" target="_blank" rel="noopener">LinkedIn</a><a class="xshare-l" href="https://twitter.com/intent/tweet?text=Fiscal%20Incidence%3A%20Who%20pays%20a%20tax%20and%20who%20receives%20a%20transfer%3A%20Kakwani%2C%20Reynolds%E2%80%93Smolensky%20and%20reranking.&amp;url=https%3A%2F%2Fidealogworks.foo%2Ffiscal-incidence%2F" target="_blank" rel="noopener">X</a><button type="button" class="xshare-l" data-xshare-copy data-url="https://idealogworks.foo/fiscal-incidence/" hidden>Copy link</button><script>(function(){var b=document.currentScript.parentNode.querySelector('[data-xshare-copy]');if(!b||!navigator.clipboard)return;b.hidden=false;var u=b.getAttribute('data-url');b.addEventListener('click',function(){navigator.clipboard.writeText(u).then(function(){b.textContent='Link copied';setTimeout(function(){b.textContent='Copy link';},2000);});});})();</script></aside>
+<!-- share:end -->
+<!-- contact:start -->
+<p class="xcontact">Need help setting out your story, what sets your work apart, the context, the return on investment and the projections? Pinpoint Ventures can help. Write to <a href="mailto:hello@pinpointventures.in?subject=Enquiry%20from%20idealogworks.foo">hello@pinpointventures.in</a> or message on <a href="https://wa.me/919871777110?text=Hi%20Pinpoint%20Ventures%2C%20I%20found%20you%20through%20idealogworks.foo.%20I%27d%20like%20to%20discuss%20a%20research%20or%20advisory%20engagement." target="_blank" rel="noopener">WhatsApp</a>.</p>
+<!-- contact:end -->
+<footer>Part of <a href="../">Experiments</a> by Varna Sri Raman · Idealog Works · MIT licence · Computation in the browser; the table never leaves it.</footer>
+
+<script id="core">
+/* The arithmetic, with no reference to the page, so that
+   fiscal-incidence/tests/core.mjs can run it under node. */
+const FI = (() => {
+  // Group indices in ascending order of `by`, ties left in the order given.
+  const rank = by => by.map((v, i) => [v, i]).sort((a, b) => a[0] - b[0] || a[1] - b[1]).map(x => x[1]);
+  // Points of the curve of y against population, groups ranked by `by`.
+  function curve(p, y, by) {
+    const tot = p.reduce((s, w, i) => s + w * y[i], 0), pts = [[0, 0]]; let F = 0, L = 0;
+    rank(by).forEach(i => { F += p[i]; L += p[i] * y[i] / tot; pts.push([F, L]); });
+    return pts;
+  }
+  // One minus twice the area under that curve: the Gini when y is ranked by
+  // itself, a concentration coefficient otherwise.
+  function coef(p, y, by) {
+    const pts = curve(p, y, by); let area = 0;
+    for (let i = 1; i < pts.length; i++) area += (pts[i][0] - pts[i - 1][0]) * (pts[i][1] + pts[i - 1][1]) / 2;
+    return 1 - 2 * area;
+  }
+  const mean = (p, y) => p.reduce((s, w, i) => s + w * y[i], 0);
+
+  // groups: [{name, pop, income}] with income per person;
+  // instruments: [{name, kind: 'tax' | 'transfer', values: [per person]}].
+  function analyse(groups, instruments) {
+    const W = groups.reduce((s, g) => s + g.pop, 0), p = groups.map(g => g.pop / W), x = groups.map(g => g.income);
+    const sign = k => k.kind === 'tax' ? -1 : 1;
+    const n = x.map((v, i) => v + instruments.reduce((s, k) => s + sign(k) * k.values[i], 0));
+    const mx = mean(p, x), gx = coef(p, x, x);
+    const positive = n.every(v => v > 0);
+    const gn = positive ? coef(p, n, n) : null, cnx = positive ? coef(p, n, x) : null;
+    const ins = instruments.map(k => {
+      const total = mean(p, k.values), c = total > 0 ? coef(p, k.values, x) : null;
+      const without = n.map((v, i) => v - sign(k) * k.values[i]);
+      return {
+        name: k.name, kind: k.kind, share: total / mx, c,
+        kakwani: c === null ? null : k.kind === 'tax' ? c - gx : gx - c,
+        marginal: positive && without.every(v => v > 0) ? coef(p, without, without) - gn : null,
+      };
+    });
+    const sum = kind => groups.map((_, i) => instruments.filter(k => k.kind === kind).reduce((s, k) => s + k.values[i], 0));
+    const T = sum('tax'), B = sum('transfer'), t = mean(p, T) / mx, b = mean(p, B) / mx;
+    const kT = t > 0 ? coef(p, T, x) - gx : 0, kB = b > 0 ? gx - coef(p, B, x) : 0;
+    const order = rank(x);
+    return {
+      p, x, n, order, mx, mn: mean(p, n), gx, gn, cnx, positive, ins, t, b, kT, kB,
+      rs: positive ? gx - gn : null, ve: positive ? gx - cnx : null, rr: positive ? gn - cnx : null,
+      lambert: (t * kT + b * kB) / (1 - t + b),
+      rows: order.map(i => ({
+        name: groups[i].name, pop: p[i], income: x[i], final: n[i],
+        parts: instruments.map(k => sign(k) * k.values[i] / x[i]), net: (n[i] - x[i]) / x[i],
+        shareBefore: p[i] * x[i] / mx, shareAfter: p[i] * n[i] / mean(p, n),
+      })),
+      curves: { before: curve(p, x, x), after: positive ? curve(p, n, n) : null, ins: instruments.map(k => mean(p, k.values) > 0 ? curve(p, k.values, x) : null) },
+    };
+  }
+  const example = [
+    'group, population, income, tax: Direct tax, tax: Indirect tax, transfer: Cash transfer, transfer: Food subsidy',
+    'Decile 1, 10, 1800, 0, 160, 300, 220', 'Decile 2, 10, 2600, 0, 220, 280, 210', 'Decile 3, 10, 3300, 0, 270, 250, 200',
+    'Decile 4, 10, 4000, 0, 320, 200, 180', 'Decile 5, 10, 4800, 20, 370, 150, 150', 'Decile 6, 10, 5800, 60, 430, 100, 110',
+    'Decile 7, 10, 7100, 150, 500, 60, 70', 'Decile 8, 10, 9000, 400, 600, 30, 40', 'Decile 9, 10, 12500, 1100, 760, 10, 20',
+    'Decile 10, 10, 26000, 4800, 1250, 0, 10'].join('\n');
+  // Read the table. Returns {groups, instruments} or {error}.
+  function parse(text, unit) {
+    const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+    if (lines.length < 3) return { error: 'Enter a line of column names and at least two groups.' };
+    const head = lines[0].split(',').map(c => c.trim());
+    if (head.length < 4) return { error: 'The first line needs a group, a population, an income and at least one tax or transfer.' };
+    const instruments = [];
+    for (let j = 3; j < head.length; j++) {
+      const m = head[j].match(/^(tax|transfer)\s*:\s*(.+)$/i);
+      if (!m) return { error: `Column ${j + 1} is "${head[j]}". Write it as "tax: name" or "transfer: name".` };
+      instruments.push({ name: m[2].trim(), kind: m[1].toLowerCase(), values: [] });
+    }
+    const groups = [];
+    for (let r = 1; r < lines.length; r++) {
+      const c = lines[r].split(',').map(v => v.trim());
+      if (c.length !== head.length) return { error: `Line ${r + 1} has ${c.length} values and the first line names ${head.length} columns.` };
+      const v = c.slice(1).map(Number);
+      if (v.some(q => !isFinite(q))) return { error: `Line ${r + 1} has a value that is not a number: ${lines[r]}` };
+      if (!(v[0] > 0) || !(v[1] > 0)) return { error: `Line ${r + 1} needs a population and an income above 0.` };
+      if (v.slice(2).some(q => q < 0)) return { error: `Line ${r + 1} has a negative tax or transfer. Enter a refund as a transfer.` };
+      const d = unit === 'total' ? v[0] : 1;
+      groups.push({ name: c[0] || `Group ${r}`, pop: v[0], income: v[1] / d });
+      instruments.forEach((k, j) => k.values.push(v[2 + j] / d));
+    }
+    return { groups, instruments };
+  }
+  return { rank, curve, coef, mean, analyse, parse, example };
+})();
+if (typeof module !== 'undefined') module.exports = FI;
+</script>
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
+const num = (x, d = 0) => Number(x).toLocaleString('en-IN', { minimumFractionDigits: d, maximumFractionDigits: d });
+const pct = (x, d = 1) => num(100 * x, d) + '%';
+const f4 = x => x === null ? 'none' : x.toFixed(4);
+const PALETTE = ['#2a78d6', '#b4470f', '#4a3aa7', '#b91c1c', '#0e7490', '#855d00'];
+
+function verdict(k) {
+  if (k.c === null) return 'no amount entered';
+  if (k.kind === 'tax') return k.kakwani > 0.0005 ? 'progressive' : k.kakwani < -0.0005 ? 'regressive' : 'proportional';
+  if (k.c < -0.0005) return 'progressive in absolute terms';
+  return k.kakwani > 0.0005 ? 'progressive relative to income' : k.kakwani < -0.0005 ? 'regressive' : 'proportional';
+}
+function chart(r, names) {
+  const W = 520, H = 400, m = { l: 44, r: 12, t: 12, b: 38 }, w = W - m.l - m.r, h = H - m.t - m.b;
+  const X = v => m.l + v * w, Y = v => m.t + (1 - v) * h;
+  const path = pts => pts.map((q, i) => (i ? 'L' : 'M') + X(q[0]).toFixed(1) + ' ' + Y(q[1]).toFixed(1)).join('');
+  let s = `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Lorenz curves of income before and after taxes and transfers, and the concentration curve of each tax and transfer, against the cumulative share of population ranked by income before.">`;
+  for (let g = 0; g <= 4; g++) { const v = g / 4; s += `<line x1="${X(v)}" y1="${Y(0)}" x2="${X(v)}" y2="${Y(1)}" stroke="var(--grid)"/><line x1="${X(0)}" y1="${Y(v)}" x2="${X(1)}" y2="${Y(v)}" stroke="var(--grid)"/><text x="${X(v)}" y="${Y(0) + 14}" text-anchor="middle">${v * 100}%</text><text x="${X(0) - 6}" y="${Y(v) + 4}" text-anchor="end">${v * 100}%</text>`; }
+  s += `<text x="${X(0.5)}" y="${H - 6}" text-anchor="middle">Cumulative share of people, poorest first</text>`;
+  s += `<path d="M${X(0)} ${Y(0)}L${X(1)} ${Y(1)}" stroke="#9ca3af" stroke-dasharray="2 4" fill="none"/>`;
+  r.curves.ins.forEach((c, j) => { if (c) s += `<path d="${path(c)}" stroke="${PALETTE[j % PALETTE.length]}" stroke-width="1.8" fill="none"${r.ins[j].kind === 'transfer' ? ' stroke-dasharray="6 4"' : ''}/>`; });
+  s += `<path d="${path(r.curves.before)}" stroke="#1a1a2e" stroke-width="2.6" fill="none"/>`;
+  if (r.curves.after) s += `<path d="${path(r.curves.after)}" stroke="#1B6B4A" stroke-width="2.6" fill="none"/>`;
+  s += '</svg><div class="legend"><span><i style="border-color:#1a1a2e"></i>Income before</span>' + (r.curves.after ? '<span><i style="border-color:#1B6B4A"></i>Income after</span>' : '');
+  r.curves.ins.forEach((c, j) => { if (c) s += `<span><i class="${r.ins[j].kind === 'transfer' ? 'dash' : ''}" style="border-color:${PALETTE[j % PALETTE.length]}"></i>${esc(names[j])}</span>`; });
+  return s + '</div><p class="note">A tax curve below the black line is progressive: the poorer groups pay a smaller share of it than they hold of income. A transfer curve above the diagonal goes mostly to the poorer groups. The final income curve is ranked by final income, the others by income before.</p>';
+}
+function compute() {
+  const parsed = FI.parse($('#tbl').value, $('#unit').value);
+  const clear = () => { $('#insOut').innerHTML = $('#grpOut').innerHTML = $('#chartOut').innerHTML = ''; };
+  if (parsed.error) { $('#sumOut').innerHTML = `<div class="warn">${esc(parsed.error)}</div>`; clear(); return; }
+  const r = FI.analyse(parsed.groups, parsed.instruments), names = parsed.instruments.map(k => k.name);
+  let h = '';
+  if (!r.positive) {
+    h += `<span class="stat"><b>${f4(r.gx)}</b><span>Gini before</span></span><div class="warn">At least one group ends with an income of zero or less after taxes and transfers, so a Gini of final income is not defined. Check the units of the table.</div>`;
+  } else {
+    h += `<span class="stat"><b>${f4(r.gx)}</b><span>Gini before</span></span><span class="stat"><b>${f4(r.gn)}</b><span>Gini after</span></span><span class="stat"><b>${num(100 * r.rs, 2)}</b><span>Gini points of redistribution</span></span><span class="stat"><b>${pct(r.rs / r.gx)}</b><span>of initial inequality</span></span>`;
+    h += `<div class="tscroll" tabindex="0" role="region" aria-label="Decomposition of the redistributive effect"><table><tbody>
+      <tr><td>Vertical equity, G<sub>X</sub> − C<sub>N</sub></td><td>${f4(r.ve)}</td></tr>
+      <tr><td>Reranking, G<sub>N</sub> − C<sub>N</sub></td><td>${f4(Math.abs(r.rr) < 5e-13 ? 0 : r.rr)}</td></tr>
+      <tr><td>Redistributive effect, the first less the second</td><td>${f4(r.rs)}</td></tr>
+      <tr><td>Vertical equity from the Kakwani indices, (t·K<sub>T</sub> + b·K<sub>B</sub>)/(1 − t + b)</td><td>${f4(r.lambert)}</td></tr>
+    </tbody></table></div>`;
+    h += `<p class="note">Taxes take ${pct(r.t)} of income before and have a Kakwani index of ${f4(r.kT)}. Transfers add ${pct(r.b)} and have an index of ${f4(r.kB)}. Mean income moves from ${num(r.mx)} to ${num(r.mn)} per person.</p>`;
+    if (r.rr > 1e-9) h += `<div class="warn">Taxes and transfers change the order of the groups. That reranking removes ${num(100 * r.rr, 2)} Gini points from what vertical equity alone would give.</div>`;
+  }
+  $('#sumOut').innerHTML = h;
+
+  let t = '<div class="tscroll" tabindex="0" role="region" aria-label="Each tax and transfer"><table><thead><tr><th>Instrument</th><th>Kind</th><th>Share of income before</th><th>Concentration</th><th>Kakwani</th><th>Reading</th><th>Marginal contribution</th></tr></thead><tbody>';
+  r.ins.forEach(k => { t += `<tr><td>${esc(k.name)}</td><td>${k.kind}</td><td>${pct(k.share, 2)}</td><td>${f4(k.c)}</td><td>${f4(k.kakwani)}</td><td>${verdict(k)}</td><td>${k.marginal === null ? 'none' : (k.marginal >= 0 ? '+' : '') + num(100 * k.marginal, 2) + ' points'}</td></tr>`; });
+  t += '</tbody></table></div><p class="note">The marginal contribution is how many Gini points higher inequality would be without that instrument, everything else unchanged. A negative figure means the instrument raises inequality. The contributions do not add up to the total, because each is measured with the others in place.</p>';
+  const worse = r.ins.filter(k => k.marginal !== null && k.marginal < -1e-9);
+  if (worse.length) t += `<div class="warn">${worse.map(k => esc(k.name)).join(' and ')} ${worse.length === 1 ? 'leaves' : 'leave'} inequality higher than it would be without ${worse.length === 1 ? 'it' : 'them'}.</div>`;
+  const odd = r.ins.filter(k => k.marginal !== null && k.kakwani !== null && ((k.kakwani > 0.0005 && k.marginal < -1e-9) || (k.kakwani < -0.0005 && k.marginal > 1e-9)));
+  if (odd.length) t += `<p class="note">${odd.map(k => esc(k.name)).join(' and ')}: the Kakwani index and the marginal contribution point in opposite directions. That can happen when instruments are combined (Lambert 2001), and the marginal contribution is the one to act on.</p>`;
+  $('#insOut').innerHTML = t;
+
+  let g = '<div class="tscroll" tabindex="0" role="region" aria-label="Incidence by group"><table><thead><tr><th>Group</th><th>Income before</th>' + names.map(nm => `<th>${esc(nm)}</th>`).join('') + '<th>Net change</th><th>Income after</th><th>Share before</th><th>Share after</th></tr></thead><tbody>';
+  r.rows.forEach(q => { g += `<tr><td>${esc(q.name)}</td><td>${num(q.income)}</td>` + q.parts.map(v => `<td>${v === 0 ? '0.0%' : (v > 0 ? '+' : '−') + pct(Math.abs(v))}</td>`).join('') + `<td>${(q.net >= 0 ? '+' : '−') + pct(Math.abs(q.net))}</td><td>${num(q.final)}</td><td>${pct(q.shareBefore)}</td><td>${pct(q.shareAfter)}</td></tr>`; });
+  g += '</tbody></table></div><p class="note">Each tax and transfer is shown as a percentage of the group\'s own income before. Groups run from poorest to richest by that income.</p>';
+  $('#grpOut').innerHTML = g;
+  $('#chartOut').innerHTML = chart(r, names);
+}
+$('#go').addEventListener('click', compute);
+$('#example').addEventListener('click', () => { $('#tbl').value = FI.example; $('#unit').value = 'mean'; compute(); });
+$('#unit').addEventListener('change', compute);
+$('#tbl').value = FI.example; compute();
+</script>
+<script src="../js/dyslexia-font.js" data-accent="var(--purple2)" data-radius="99px" defer></script>
+</body>
+</html>
