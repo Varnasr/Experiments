@@ -276,6 +276,89 @@ def main():
     check('no page carries its own meta CSP', not metas,
           '%s would be intersected with the header, and the tighter one wins' % metas)
 
+    # ------------------------------------------------- the landing page
+    # The landing page states numbers and makes a privacy claim, and before
+    # 2026-11-10 nothing compared either with the tools. It said "Four public
+    # APIs, and only four" and "Nothing you type in leaves your browser" while
+    # library-builder called Open Library, court-translator sent the text of a
+    # petition to a translation service, and the policy in netlify.toml allowed
+    # both. The tool count and the year were written by a script, so a reader
+    # or a crawler without JavaScript saw "0 tools" and "2025".
+    cards = re.findall(r'<article class="card" id="([^"]+)">(.*?)</article>', index, re.S)
+    stated = re.search(r'<b id="nTools">(\d+)</b>', index)
+    check('the tool count on the landing page matches its cards and the tools on disk',
+          stated is not None and int(stated.group(1)) == len(cards) == len(tools),
+          'the page says %s, has %d cards, and %d tools are on disk'
+          % (stated.group(1) if stated else 'nothing', len(cards), len(tools)))
+
+    # Every card says when the tool was last changed and what it does not do.
+    bare = [cid for cid, body in cards
+            if not re.search(r'<p class="dates">First committed [A-Z][a-z]+ \d{4}(, last changed [A-Z][a-z]+ \d{4})?\.</p>', body)
+            or not re.search(r'<div class="limits"><b>Known limits\.</b> \S', body)
+            or 'class="l"' not in body]
+    check('every card carries its dates and its known limits', not bare,
+          '%s lack a dates line, a limits panel or the button that opens it' % bare)
+
+    # The year in the footer is the latest year on any card. The script still
+    # writes the current year over it, so this is what a reader without
+    # JavaScript sees, and it cannot be older than the newest change.
+    years = [int(y) for y in re.findall(r'<p class="dates">[^<]*?(\d{4})\.</p>', index)]
+    foot = re.search(r'<span id="year">(\d{4})</span>', index)
+    check('the year in the footer is the year of the latest change on a card',
+          foot is not None and years and int(foot.group(1)) == max(years),
+          'the footer says %s, the cards run to %s'
+          % (foot.group(1) if foot else 'nothing', max(years) if years else 'nothing'))
+
+    # The public data APIs the page counts and names, against the ones the
+    # policy lets a page reach. Every connect-src origin is either one of these
+    # or is listed here as something else, so a new origin cannot arrive
+    # without the page's sentence being read again.
+    DATA_APIS = {
+        'World Bank indicators': 'https://api.worldbank.org/v2',
+        'Poverty and Inequality Platform': 'https://api.worldbank.org/pip',
+        'DHS Program': 'https://api.dhsprogram.com',
+        'Open-Meteo': 'open-meteo.com',
+        'Open Library': 'https://openlibrary.org',
+    }
+    NOT_DATA = {"'self'", 'https://varnasr-experiments.netlify.app', 'https://cdnjs.cloudflare.com',
+                'https://cdn.jsdelivr.net', 'https://tessdata.projectnaptha.com'}
+    blob = '\n'.join(read(f) for f in html if f != 'index.html')
+    live = sorted(name for name, needle in DATA_APIS.items() if needle in blob)
+    unknown = [o for o in csp.get('connect-src', []) if o not in NOT_DATA
+               and not any(origin_of(n) == o or (not n.startswith('https://') and o.endswith(n))
+                           for n in DATA_APIS.values())]
+    check('every origin a page may reach is a named data API or a known exception', not unknown,
+          '%s is in connect-src and is neither; name it on the landing page or list it in NOT_DATA' % unknown)
+    WORDS_N = {3: 'Three', 4: 'Four', 5: 'Five', 6: 'Six', 7: 'Seven', 8: 'Eight'}
+    tile = re.search(r'<b id="nApis">(\d+)</b>', index)
+    prose = re.search(r'<b>Live where it should be</b>(\w+) public data APIs: ([^.]*)\.', index)
+    check('the number of public data APIs on the landing page matches the tools',
+          tile is not None and prose is not None and int(tile.group(1)) == len(live)
+          and prose.group(1) == WORDS_N.get(len(live)),
+          'the tools call %d (%s); the tile says %s and the method says %s'
+          % (len(live), ', '.join(live), tile.group(1) if tile else 'nothing',
+             prose.group(1) if prose else 'nothing'))
+    if prose:
+        unnamed = [n for n in live if n not in prose.group(2)]
+        check('the method names every public data API the tools call', not unnamed,
+              '%s is called by a tool and not named' % unnamed)
+
+    # A tool that sends what the reader typed to a server must be named in the
+    # paragraph that says what leaves the browser. The site's own functions
+    # and Open Library are the routes out; a page that uses one is matched to
+    # its card title.
+    SENDS = {'court-translator': 'Court Petition Translator', 'library-builder': 'Household Library Builder',
+             'kundendu-worksheets': "Kundendu's Learn &amp; Play"}
+    out = sorted({f.split('/')[0] for f in html if '/' in f
+                  and re.search(r'\.netlify/functions/(?!push-)|openlibrary\.org', read(f))})
+    para = re.search(r'<p>Most of these tools compute in the page.*?</p>', index, re.S)
+    missing = [t for t in out if para is None or SENDS.get(t, '\0') not in para.group(0)]
+    check('the landing page names every tool that sends what the reader types to a server',
+          para is not None and not missing,
+          '%s calls a function or Open Library and the paragraph does not name it' % (missing or 'no paragraph found'))
+    check('the landing page does not say that nothing leaves the browser',
+          not re.search(r'[Nn]othing you type (in )?leaves', index), 'the old sentence is back')
+
     return report()
 
 

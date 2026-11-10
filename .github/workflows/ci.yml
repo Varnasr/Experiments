@@ -13,7 +13,11 @@ jobs:
   checks:
     runs-on: ubuntu-latest
     steps:
+      # The full history, because scripts/card-dates.py reads each tool's first
+      # and latest commit and a shallow clone has neither.
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
@@ -36,6 +40,12 @@ jobs:
       # added without re-running the script, fails here.
       - name: Link previews and share rows are current
         run: python3 scripts/seo.py --check
+
+      # Each card on the landing page says the month its tool was first
+      # committed and the month it last changed. A tool edited without the
+      # script being run again fails here.
+      - name: Card dates match the git history
+        run: python3 scripts/card-dates.py --check
 
   # axe over every page, in a desktop and a phone viewport, plus a horizontal
   # overflow measurement at 390px. Separate from the job above because it
