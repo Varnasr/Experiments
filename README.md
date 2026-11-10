@@ -126,6 +126,19 @@ randomisation record for the pre-analysis plan.
 
 ---
 
+### Sampling Design
+
+Sample size for a survey estimate or a change between two rounds (design
+effect, finite population correction, non-response); proportional, Neyman and
+equal allocation across strata with the standard error under each; and a
+seeded systematic PPS draw of clusters from an uploaded frame, with weights and
+a sampling record.
+
+**Directory:** `sampling-design/`
+**Stage:** Active
+
+---
+
 ### Cost–Benefit Calculator
 
 NPV, BCR, IRR, payback and cost per outcome for cost, benefit and outcome
@@ -416,6 +429,7 @@ Experiments/
 ├── heat-exposure/                      # WBGT, safe hours, wages lost, 35-year trend
 ├── wage-gap/                           # Oaxaca–Blinder decomposition
 ├── rct-planner/                        # power/MDE and stratified randomiser
+├── sampling-design/                    # sample size, allocation, PPS draw of clusters
 ├── cost-benefit/                       # NPV/BCR/IRR with Monte Carlo
 ├── land-acquisition/                   # RFCTLARR 2013 compensation
 ├── expense-ledger/                     # election expenses against the Rule 90 ceiling

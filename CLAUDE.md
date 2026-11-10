@@ -2,8 +2,8 @@
 
 Shared engineering standard: @.claude/engineering-standards.md. It applies to all work in this repository. This file adds what is specific to the project, and wins where the two disagree.
 
-Twenty-one browser tools for development economics, law and data work, each a
-self-contained page: causal workbench, RCT planner, poverty and inequality,
+Twenty-two browser tools for development economics, law and data work, each a
+self-contained page: causal workbench, RCT planner, sampling design, poverty and inequality,
 wage gap, women's indicators, heat exposure, air quality, court translator,
 court filing formatter, petition builder, statutory interest, land acquisition,
 library builder and the rest. No build step. Deployed to GitHub Pages and to
@@ -20,6 +20,7 @@ node scripts/axe.mjs --page wage-gap/index.html
 python3 scripts/bind-labels.py     # report labels bound to nothing; --write to fix
 python3 scripts/seo.py             # head tags, share row, contact line; --check in CI
 python3 scripts/card-dates.py      # months on the landing cards, from git; --check in CI
+node sampling-design/tests/core.mjs  # the sampling arithmetic against outside values, run by CI
 python3 -m http.server 8000        # then open http://localhost:8000
 ```
 
@@ -199,7 +200,7 @@ before it knew the difference it reported all 22 as syntax errors.
 The landing page is the index of a working notebook. The portfolio, the bio and
 the consulting practice are at idealog.works, which the page links, so the
 landing page carries no Pinpoint Ventures contact line: `scripts/seo.py` writes
-that line and the share row on the 21 tool pages only.
+that line and the share row on the tool pages only.
 
 Until 2026-11-10 the page said "Nothing you type in leaves your browser" and
 "Four public APIs, and only four". Neither was true. `library-builder` sends the
@@ -232,6 +233,23 @@ the contrast token) and does not count as a change to any of them. The first
 commit is exempt from that rule, because several tools have arrived
 together in one commit. The check needs the full history, so the `checks`
 job fetches it.
+
+## sampling-design keeps its arithmetic where a test can run it
+
+`sampling-design/index.html` has two inline scripts. The first, `<script
+id="core">`, is the arithmetic and touches nothing on the page; the second
+reads the inputs and writes the output. `sampling-design/tests/core.mjs` cuts
+the first block out and runs it under node, with no browser, against values
+computed separately in Python and against a second PPS implementation written
+in the test. Keep new arithmetic in the core block and add its reference value
+to the test in the same commit. Thirteen faults were injected into the core
+one at a time (the design effect, the finite population correction, the
+response rate, a one-sided quantile, the stratum cap, certainty selections,
+the second-stage probability, the seed) and the test fails on each.
+
+A new tool's card gets its dates only after the tool has a commit, because
+`scripts/card-dates.py` reads them from git: commit the tool, run the script,
+commit `index.html`.
 
 ## Watch out for
 

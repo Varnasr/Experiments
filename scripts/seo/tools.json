@@ -44,6 +44,12 @@
       "tagline": "Power and minimum detectable effect for individual and cluster trials, and a seeded randomiser."
     },
     {
+      "dir": "sampling-design",
+      "card": "sampling",
+      "name": "Sampling Design",
+      "tagline": "Sample size, allocation across strata and a PPS draw of clusters, with weights."
+    },
+    {
       "dir": "survey-audit",
       "card": "survey",
       "name": "Survey Data Auditor",

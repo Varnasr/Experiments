@@ -62,6 +62,7 @@
   th, td { text-align:right; padding:.3rem .5rem; border-bottom:1px solid var(--border); font-variant-numeric:tabular-nums; white-space:nowrap; }
   th:first-child, td:first-child { text-align:left; } th { color:var(--dim); font-weight:600; font-size:.75rem; }
   .tscroll { overflow:auto; max-width:100%; max-height:420px; }
+  .tscroll:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
   .note { font-size:.82rem; color:var(--dim); margin-top:.5rem; max-width:70ch; }
   .warn { background:#fff7ed; border:1px solid #fed7aa; color:#9a3412; padding:.5rem .7rem; border-radius:6px; font-size:.83rem; margin:.5rem 0; }
   .ok { background:var(--accent-soft); color:var(--accent); padding:.5rem .7rem; border-radius:6px; font-size:.83rem; margin:.5rem 0; }
@@ -406,7 +407,7 @@ function showSize() {
 
   // What changes it: the same design at other values of one input.
   const again = (ch) => { const b = Object.assign({}, a, ch); return goal === 'est' ? SD.sizeEstimate(b).n : SD.sizeCompare(b).n; };
-  let s = '<div class="tscroll"><table><thead><tr><th>Change one input</th><th>Interviews' + each + '</th></tr></thead><tbody>';
+  let s = '<div class="tscroll" tabindex="0" role="region" aria-label="Sample size at other inputs"><table><thead><tr><th>Change one input</th><th>Interviews' + each + '</th></tr></thead><tbody>';
   s += `<tr><td>As entered</td><td>${num(res.n)}</td></tr>`;
   if (goal === 'est') [a.e / 2, a.e * 1.5, a.e * 2].forEach(e => { s += `<tr><td>Margin of error ${+e.toPrecision(3)}</td><td>${num(again({ e }))}</td></tr>`; });
   if (d.mode === 'icc') {
@@ -438,7 +439,7 @@ function showAlloc() {
   const r = SD.allocations(rows, n, min);
   if (r.error) { $('#allocOut').innerHTML = `<div class="warn">${esc(r.error)}</div>`; return; }
   const ok = r.methods.filter(m => m.nh);
-  let h = '<div class="tscroll"><table><thead><tr><th>Stratum</th><th>Population</th><th>Share</th>' + ok.map(m => `<th>${m.name}</th><th>Weight</th>`).join('') + '</tr></thead><tbody>';
+  let h = '<div class="tscroll" tabindex="0" role="region" aria-label="Allocation by stratum"><table><thead><tr><th>Stratum</th><th>Population</th><th>Share</th>' + ok.map(m => `<th>${m.name}</th><th>Weight</th>`).join('') + '</tr></thead><tbody>';
   rows.forEach((s, i) => { h += `<tr><td>${esc(s.name)}</td><td>${num(s.N)}</td><td>${num(100 * s.N / r.Nt, 1)}%</td>` + ok.map(m => `<td>${num(m.nh[i])}</td><td>${m.nh[i] > 0 ? num(s.N / m.nh[i], 1) : 'none'}</td>`).join('') + '</tr>'; });
   h += `<tr><td><b>Total</b></td><td>${num(r.Nt)}</td><td>100%</td>` + ok.map(m => `<td><b>${num(m.nh.reduce((s, x) => s + x, 0))}</b></td><td></td>`).join('') + '</tr>';
   if (r.haveS) h += '<tr><td>Standard error of the overall mean</td><td></td><td></td>' + ok.map(m => `<td>${m.se === null ? 'none' : m.se.toFixed(4)}</td><td></td>`).join('') + '</tr>';
@@ -518,7 +519,7 @@ function doDraw() {
   if (cert) h += `<div class="warn">${num(cert)} cluster${cert === 1 ? ' is' : 's are'} as large as the sampling interval and ${cert === 1 ? 'was' : 'were'} taken with certainty. Its households carry a different weight, so the sample is not self-weighting.</div>`;
   if (small) h += `<div class="warn">${num(small)} selected cluster${small === 1 ? ' has' : 's have'} fewer than ${num(take)} units, so all of them are interviewed there.</div>`;
   h += `<div class="ok">The weights add back to the frame: ${num(r.estimate)} against a total of ${num(r.total)}.</div>`;
-  h += '<div class="tscroll"><table><thead><tr>' + (multi ? '<th>Stratum</th>' : '') + '<th>Cluster</th><th>Size</th><th>P(cluster)</th><th>Interviews</th><th>P(household)</th><th>Weight</th></tr></thead><tbody>';
+  h += '<div class="tscroll" tabindex="0" role="region" aria-label="Selected clusters"><table><thead><tr>' + (multi ? '<th>Stratum</th>' : '') + '<th>Cluster</th><th>Size</th><th>P(cluster)</th><th>Interviews</th><th>P(household)</th><th>Weight</th></tr></thead><tbody>';
   r.rows.forEach(x => { h += '<tr>' + (multi ? `<td>${esc(x.stratum)}</td>` : '') + `<td>${esc(x.id)}${x.certainty ? ' (certainty)' : ''}</td><td>${num(x.size)}</td><td>${x.p1.toFixed(4)}</td><td>${num(x.take)}</td><td>${x.prob.toFixed(5)}</td><td>${num(x.weight, 2)}</td></tr>`; });
   h += '</tbody></table></div>';
   $('#drawOut').innerHTML = h;
