@@ -189,10 +189,10 @@
   </div>
 
   <div class="panel" id="didPanel" style="display:none">
-    <h2>Difference-in-differences <span class="pill">TWFE · cluster-robust SE</span></h2>
+    <h2>Difference-in-differences <span class="pill">TWFE · cluster-robust SE · wild bootstrap · Bacon decomposition</span></h2>
     <div id="didOut"></div>
     <details><summary>What is being estimated</summary>
-      <p>y<sub>it</sub> = α<sub>i</sub> + λ<sub>t</sub> + δ·D<sub>it</sub> + ε<sub>it</sub>, where D<sub>it</sub> = 1 once unit i is treated. Both sets of fixed effects are removed by alternating demeaning, δ is estimated by OLS on the residualised variables, and the variance uses the cluster-robust sandwich with clusters at the unit level and the usual small-sample factor G/(G−1)·(n−1)/(n−k). With a single adoption date this equals the 2×2 comparison of means shown in the table. With staggered adoption, TWFE mixes clean and “forbidden” comparisons (Goodman-Bacon 2021); read the event study instead.</p>
+      <p>y<sub>it</sub> = α<sub>i</sub> + λ<sub>t</sub> + δ·D<sub>it</sub> + ε<sub>it</sub>, where D<sub>it</sub> = 1 once unit i is treated. Both sets of fixed effects are removed by alternating demeaning, δ is estimated by OLS on the residualised variables, and the variance uses the cluster-robust sandwich with clusters at the unit level and the usual small-sample factor G/(G−1)·(n−1)/(n−k). With a single adoption date this equals the 2×2 comparison of means shown in the table. With staggered adoption, TWFE mixes clean and “forbidden” comparisons (Goodman-Bacon 2021); the table of weights shows how much of each, and the event study is the estimate to read. The wild cluster bootstrap p-value recomputes the cluster-robust t after flipping the sign of each cluster's restricted residuals, which holds its size with few clusters where the sandwich does not (Cameron, Gelbach and Miller 2008).</p>
     </details>
   </div>
 
@@ -244,20 +244,12 @@
 <!-- contact:end -->
 <footer>Part of <a href="../">Experiments</a> by Varna Sri Raman · Idealog Works · MIT licence · Computation is in-browser and nothing leaves the page.</footer>
 
-<script>
+<script id="core">
 'use strict';
-// ───────────────────────── utilities ─────────────────────────
-const $ = s => document.querySelector(s);
-const fmt = (x, d=3) => x===Infinity ? '∞' : (x==null || !isFinite(x)) ? '—' : Number(x).toLocaleString('en-IN', {maximumFractionDigits:d, minimumFractionDigits: d>2 ? Math.min(d,3) : 0});
-const fmt2 = (x,d=2)=> fmt(x,d);
+/* The estimators that a test can run under node: they touch nothing on the
+   page. causal-workbench/tests/core.mjs loads this block. */
 function mulberry32(a){ return function(){ a|=0; a=a+0x6D2B79F5|0; let t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; } }
-function randn(rng){ let u=0,v=0; while(u===0)u=rng(); while(v===0)v=rng(); return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v); }
-function normCdf(z){ const t=1/(1+0.2316419*Math.abs(z)); const d=0.3989423*Math.exp(-z*z/2); let p=d*t*(0.3193815+t*(-0.3565638+t*(1.781478+t*(-1.821256+t*1.330274)))); return z>0?1-p:p; }
-function tCritical(df){ // 97.5th percentile, Cornish-Fisher approximation of Student t
-  if(!isFinite(df)||df>1e6) return 1.959964; const z=1.959964; const g1=(z**3+z)/4, g2=(5*z**5+16*z**3+3*z)/96, g3=(3*z**7+19*z**5+17*z**3-15*z)/384; return z+g1/df+g2/df**2+g3/df**3; }
-function esc(s){ return String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 
-// ───────────────────────── linear algebra ─────────────────────────
 function cholSolve(A, B){ // A symmetric PD (k×k), B k×m → X k×m
   const k=A.length; const L=Array.from({length:k},()=>new Float64Array(k));
   for(let i=0;i<k;i++){ for(let j=0;j<=i;j++){ let s=A[i][j]; for(let p=0;p<j;p++) s-=L[i][p]*L[j][p];
@@ -268,9 +260,9 @@ function cholSolve(A, B){ // A symmetric PD (k×k), B k×m → X k×m
     for(let i=k-1;i>=0;i--){ let s=y[i]; for(let p=i+1;p<k;p++) s-=L[p][i]*X[p][c]; X[i][c]=s/L[i][i]; } }
   return X;
 }
+
 function invPD(A){ const k=A.length; const I=Array.from({length:k},(_,i)=>{const r=new Float64Array(k); r[i]=1; return r;}); return cholSolve(A,I); }
 
-// OLS with cluster-robust covariance. X: n×k arrays, y: n, cl: n cluster ids
 function olsCluster(X, y, cl){
   const n=y.length, k=X[0].length;
   const XtX=Array.from({length:k},()=>new Float64Array(k)); const Xty=Array.from({length:k},()=>new Float64Array(1));
@@ -287,7 +279,6 @@ function olsCluster(X, y, cl){
   return {beta, V, se:beta.map((_,a)=>Math.sqrt(Math.max(V[a][a],0))), G, n, k, resid:e};
 }
 
-// Two-way demeaning by alternating projections (handles unbalanced panels)
 function demeanTwoWay(cols, unit, time){
   const n=unit.length; const uIdx=new Map(), tIdx=new Map();
   unit.forEach(u=>{ if(!uIdx.has(u)) uIdx.set(u,uIdx.size); }); time.forEach(t=>{ if(!tIdx.has(t)) tIdx.set(t,tIdx.size); });
@@ -298,6 +289,80 @@ function demeanTwoWay(cols, unit, time){
       const tm=new Float64Array(tIdx.size); for(let i=0;i<n;i++) tm[ti[i]]+=v[i]; for(let i=0;i<tm.length;i++) tm[i]/=tc[i]; for(let i=0;i<n;i++){ v[i]-=tm[ti[i]]; maxd=Math.max(maxd,Math.abs(tm[ti[i]])); }
       if(maxd<1e-11) break; } return v; });
 }
+
+// Wild cluster bootstrap of the hypothesis that the coefficient is zero, with
+// the null imposed and Rademacher weights (Cameron, Gelbach and Miller 2008).
+// x and y are already two-way demeaned. Under the null the model holds only
+// the fixed effects, so the restricted residual is y itself; each replicate
+// flips its sign by cluster, removes the fixed effects again and recomputes
+// the cluster-robust t. With 11 clusters or fewer every one of the 2^G sign
+// patterns is used, so the p-value is exact for the data and needs no seed.
+function wildClusterP(x, y, unit, time, B, seed){
+  const X=Array.from(x,v=>[v]), fit=olsCluster(X, y, unit), t0=fit.beta[0]/fit.se[0];
+  const idx=new Map(); unit.forEach(u=>{ if(!idx.has(u)) idx.set(u, idx.size); });
+  const G=idx.size, gi=unit.map(u=>idx.get(u)), exact=G<=11, R=exact?2**G:B, rng=mulberry32(seed);
+  let ge=0, used=0; const w=new Float64Array(G), ys=new Float64Array(y.length);
+  for(let r=0;r<R;r++){
+    for(let g=0;g<G;g++) w[g]=exact ? ((r>>g)&1 ? -1 : 1) : (rng()<0.5 ? -1 : 1);
+    for(let i=0;i<y.length;i++) ys[i]=y[i]*w[gi[i]];
+    const f=olsCluster(X, demeanTwoWay([ys], unit, time)[0], unit), t=f.beta[0]/f.se[0];
+    if(!isFinite(t)) continue; used++; if(Math.abs(t)>=Math.abs(t0)-1e-10) ge++;
+  }
+  return {t:t0, p:ge/used, reps:used, exact, G};
+}
+
+// Goodman-Bacon (2021) decomposition of the two-way fixed effects coefficient
+// into its 2x2 comparisons, for a balanced panel in which treatment switches
+// on once and stays on. rows: [{u, t, y}], adopt: Map(unit -> first treated
+// period, or null). Returns {error} when the panel does not qualify.
+function baconDecomp(rows, adopt){
+  const units=[...new Set(rows.map(r=>r.u))], times=[...new Set(rows.map(r=>r.t))].sort((a,b)=>a-b), T=times.length, N=units.length;
+  if(rows.length!==N*T) return {error:'The decomposition needs a balanced panel: every unit observed in every period.'};
+  const groups=new Map(); units.forEach(u=>{ const g=adopt.get(u); const key=g==null?'never':g; if(!groups.has(key)) groups.set(key,[]); groups.get(key).push(u); });
+  const timing=[...groups.keys()].filter(k=>k!=='never').sort((a,b)=>a-b);
+  if(timing.some(g=>g<=times[0])) return {error:'Some units are treated in every period. The decomposition here covers units first treated after the panel starts.'};
+  if(timing.some(g=>g>times[T-1])) return {error:'Some units adopt after the panel ends. Mark them as never treated.'};
+  const gOf=new Map(); groups.forEach((us,key)=>us.forEach(u=>gOf.set(u,key)));
+  const sum=new Map(); groups.forEach((_,key)=>sum.set(key,new Map(times.map(t=>[t,0]))));
+  rows.forEach(r=>{ const m=sum.get(gOf.get(r.u)); m.set(r.t, m.get(r.t)+r.y); });
+  const ybar=(key,keep)=>{ const ts=times.filter(keep); return ts.reduce((s,t)=>s+sum.get(key).get(t),0)/(ts.length*groups.get(key).length); };
+  const n=key=>groups.get(key).length/N, Dbar=g=>times.filter(t=>t>=g).length/T;
+  const D=rows.map(r=>{ const g=adopt.get(r.u); return g!=null&&r.t>=g?1:0; });
+  const Dd=demeanTwoWay([D], rows.map(r=>r.u), rows.map(r=>r.t))[0]; let VD=0; for(const v of Dd) VD+=v*v; VD/=rows.length;
+  if(!(VD>1e-12)) return {error:'Treatment does not vary once the fixed effects are removed.'};
+  const parts=[];
+  timing.forEach(k=>{
+    const nk=n(k), Dk=Dbar(k);
+    if(groups.has('never')){ const nu=n('never'), nku=nk/(nk+nu);
+      parts.push({type:'never', treated:k, control:'never', weight:(nk+nu)**2*nku*(1-nku)*Dk*(1-Dk)/VD,
+        estimate:(ybar(k,t=>t>=k)-ybar(k,t=>t<k))-(ybar('never',t=>t>=k)-ybar('never',t=>t<k))}); }
+    timing.filter(l=>l>k).forEach(l=>{ const nl=n(l), Dl=Dbar(l), nkl=nk/(nk+nl);
+      parts.push({type:'early', treated:k, control:l, weight:((nk+nl)*(1-Dl))**2*nkl*(1-nkl)*((Dk-Dl)/(1-Dl))*((1-Dk)/(1-Dl))/VD,
+        estimate:(ybar(k,t=>t>=k&&t<l)-ybar(k,t=>t<k))-(ybar(l,t=>t>=k&&t<l)-ybar(l,t=>t<k))});
+      parts.push({type:'late', treated:l, control:k, weight:((nk+nl)*Dk)**2*nkl*(1-nkl)*(Dl/Dk)*((Dk-Dl)/Dk)/VD,
+        estimate:(ybar(l,t=>t>=l)-ybar(l,t=>t>=k&&t<l))-(ybar(k,t=>t>=l)-ybar(k,t=>t>=k&&t<l))}); });
+  });
+  const by=type=>{ const ps=parts.filter(q=>q.type===type), w=ps.reduce((s,q)=>s+q.weight,0); return {weight:w, estimate:w>0?ps.reduce((s,q)=>s+q.weight*q.estimate,0)/w:null, count:ps.length}; };
+  return {parts, total:parts.reduce((s,q)=>s+q.weight*q.estimate,0), weightSum:parts.reduce((s,q)=>s+q.weight,0), never:by('never'), early:by('early'), late:by('late')};
+}
+</script>
+<script>
+'use strict';
+// ───────────────────────── utilities ─────────────────────────
+const $ = s => document.querySelector(s);
+const fmt = (x, d=3) => x===Infinity ? '∞' : (x==null || !isFinite(x)) ? '—' : Number(x).toLocaleString('en-IN', {maximumFractionDigits:d, minimumFractionDigits: d>2 ? Math.min(d,3) : 0});
+const fmt2 = (x,d=2)=> fmt(x,d);
+function randn(rng){ let u=0,v=0; while(u===0)u=rng(); while(v===0)v=rng(); return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v); }
+function normCdf(z){ const t=1/(1+0.2316419*Math.abs(z)); const d=0.3989423*Math.exp(-z*z/2); let p=d*t*(0.3193815+t*(-0.3565638+t*(1.781478+t*(-1.821256+t*1.330274)))); return z>0?1-p:p; }
+function tCritical(df){ // 97.5th percentile, Cornish-Fisher approximation of Student t
+  if(!isFinite(df)||df>1e6) return 1.959964; const z=1.959964; const g1=(z**3+z)/4, g2=(5*z**5+16*z**3+3*z)/96, g3=(3*z**7+19*z**5+17*z**3-15*z)/384; return z+g1/df+g2/df**2+g3/df**3; }
+function esc(s){ return String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+// ───────────────────────── linear algebra ─────────────────────────
+
+// OLS with cluster-robust covariance. X: n×k arrays, y: n, cl: n cluster ids
+
+// Two-way demeaning by alternating projections (handles unbalanced panels)
 
 // Projection onto the probability simplex (Duchi, Shalev-Shwartz, Singer, Chandra 2008)
 function projSimplex(v){ const n=v.length; const u=Array.from(v).sort((a,b)=>b-a); let css=0, rho=-1, theta=0;
@@ -419,11 +484,23 @@ $('#srcTabs').addEventListener('click',e=>{ const b=e.target.closest('button'); 
 function runDiD(){
   const rows=panel.rows; const unit=rows.map(r=>r.u), time=rows.map(r=>r.t); const [yd, Dd]=demeanTwoWay([rows.map(r=>r.y), rows.map(r=>r.D)], unit, time);
   const X=Array.from(Dd,v=>[v]); const fit=olsCluster(X, yd, unit); const b=fit.beta[0], se=fit.se[0]; const crit=tCritical(fit.G-1); const t=b/se, p=2*(1-normCdf(Math.abs(t)));
+  let wild=null; try{ wild=wildClusterP(Dd, yd, unit, time, 999, 20261111); }catch(err){ wild=null; }
+  const wildStat=wild&&isFinite(wild.p)?`<span class="stat"><b>${wild.p<0.001?'<0.001':fmt(wild.p,3)}</b><span>wild cluster bootstrap p (${wild.exact?`all ${wild.reps} sign patterns`:`${wild.reps} draws`})</span></span>`:'';
+  const wildNote=wild&&isFinite(wild.p)?`<p class="mini">The wild cluster bootstrap tests δ = 0 with the null imposed and Rademacher weights (Cameron, Gelbach and Miller 2008). ${wild.exact?`With ${wild.G} clusters it uses every one of the 2<sup>${wild.G}</sup> sign patterns, so the smallest p-value it can give is ${fmt(2/wild.reps,4)}.`:'It draws from a fixed seed, so the same panel gives the same p-value.'} With few clusters, or few treated clusters, trust it over the t-based interval.</p>`:'';
   const cohorts=[...new Set([...panel.adopt.values()].filter(g=>g!=null))]; let tbl='';
+  let bacon='';
+  if(cohorts.length>1){ const bd=baconDecomp(rows, panel.adopt);
+    if(bd.error) bacon=`<p class="mini">Goodman-Bacon decomposition: ${esc(bd.error)}</p>`;
+    else { const lab={never:'Treated against never treated', early:'Earlier against later treated, before the later group adopts', late:'Later against earlier treated, with already-treated units as the control'};
+      bacon=`<h3 style="font-size:.9rem;margin:.9rem 0 .2rem">Where the coefficient comes from</h3><div class="twrap" tabindex="0" role="region" aria-label="Goodman-Bacon decomposition"><table><tr><th>Comparison</th><th>2×2 pairs</th><th>Weight</th><th>Average estimate</th></tr>`
+        +['never','early','late'].filter(k=>bd[k].count).map(k=>`<tr><td>${lab[k]}</td><td>${bd[k].count}</td><td>${fmt(100*bd[k].weight,1)}%</td><td>${fmt(bd[k].estimate)}</td></tr>`).join('')
+        +`<tr><td><b>Weighted sum</b></td><td>${bd.parts.length}</td><td>${fmt(100*bd.weightSum,1)}%</td><td><b>${fmt(bd.total)}</b></td></tr></table></div>`
+        +`<p class="mini">Goodman-Bacon (2021): the TWFE coefficient is exactly this weighted sum of two-group, two-period comparisons. The third row uses units that are already treated as the control group, which is only valid if effects do not change over time.</p>`
+        +(bd.late.weight>0.1?`<div class="warn">${fmt(100*bd.late.weight,1)}% of the weight is on comparisons that use already-treated units as controls${bd.late.estimate!=null&&bd.never.estimate!=null&&Math.sign(bd.late.estimate)!==Math.sign(bd.never.estimate)?', and their average has the opposite sign to the clean comparisons':''}.</div>`:''); } }
   if(cohorts.length===1){ const g=cohorts[0]; const m=(tr,post)=>{ const v=rows.filter(r=>((panel.adopt.get(r.u)!=null)===tr)&&((r.t>=g)===post)).map(r=>r.y); return v.length?v.reduce((a,b)=>a+b,0)/v.length:NaN; }; const Tp=m(true,true),Tb=m(true,false),Cp=m(false,true),Cb=m(false,false); const did=(Tp-Tb)-(Cp-Cb);
     tbl=`<div class="twrap" tabindex="0"><table><tr><th></th><th>Before</th><th>After</th><th>Change</th></tr><tr><td>Treated</td><td>${fmt(Tb)}</td><td>${fmt(Tp)}</td><td>${fmt(Tp-Tb)}</td></tr><tr><td>Control</td><td>${fmt(Cb)}</td><td>${fmt(Cp)}</td><td>${fmt(Cp-Cb)}</td></tr><tr><td><b>Difference-in-differences</b></td><td></td><td></td><td><b>${fmt(did)}</b></td></tr></table></div><p class="mini">The 2×2 means table and the regression coefficient agree only for a balanced panel; with missing cells the regression is the one to report.</p>`; }
   let truthNote=''; if(panel.truth){ const ks=rows.filter(r=>r.D===1).map(r=>r.t-panel.adopt.get(r.u)); const avg=ks.reduce((a,k)=>a+panel.truth(k),0)/ks.length; truthNote=`<div class="ok">Simulated truth: the average effect over the treated observations is ${fmt(avg)}. The TWFE estimate ${Math.abs(b-avg)<crit*se?'covers it':'does not cover it'} at 95%.${cohorts.length>1?' With staggered adoption and effects that grow with k, TWFE is biased even under parallel trends; compare the Sun–Abraham event study.':''}</div>`; }
-  $('#didOut').innerHTML=`<span class="stat"><b>${fmt(b)}</b><span>δ (ATT, TWFE)</span></span><span class="stat"><b>${fmt(se)}</b><span>cluster SE (${fit.G} clusters)</span></span><span class="stat"><b>[${fmt(b-crit*se,2)}, ${fmt(b+crit*se,2)}]</b><span>95% CI (t, ${fit.G-1} df)</span></span><span class="stat"><b>${p<0.001?'<0.001':fmt(p,3)}</b><span>p-value</span></span>${tbl}${truthNote}${cohorts.length>1?'<div class="warn">Staggered adoption detected. The single TWFE coefficient is a weighted average of many 2×2 comparisons, some of which use already-treated units as controls. Prefer the event study below.</div>':''}`;
+  $('#didOut').innerHTML=`<span class="stat"><b>${fmt(b)}</b><span>δ (ATT, TWFE)</span></span><span class="stat"><b>${fmt(se)}</b><span>cluster SE (${fit.G} clusters)</span></span><span class="stat"><b>[${fmt(b-crit*se,2)}, ${fmt(b+crit*se,2)}]</b><span>95% CI (t, ${fit.G-1} df)</span></span><span class="stat"><b>${p<0.001?'<0.001':fmt(p,3)}</b><span>p-value (normal)</span></span>${wildStat}${wildNote}${tbl}${truthNote}${bacon}${cohorts.length>1?'<div class="warn">Staggered adoption detected. The single TWFE coefficient is a weighted average of many 2×2 comparisons, some of which use already-treated units as controls. Prefer the event study below.</div>':''}`;
   $('#didPanel').style.display='block';
 }
 

@@ -61,6 +61,9 @@ jobs:
       - name: Multidimensional poverty arithmetic
         run: node mpi-calculator/tests/core.mjs
 
+      - name: Workbench estimators
+        run: node causal-workbench/tests/core.mjs
+
   # axe over every page, in a desktop and a phone viewport, plus a horizontal
   # overflow measurement at 390px. Separate from the job above because it
   # installs a browser and is the slow half; a contributor waiting on the

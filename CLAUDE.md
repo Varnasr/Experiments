@@ -24,6 +24,7 @@ node sampling-design/tests/core.mjs  # the sampling arithmetic against outside v
 node fiscal-incidence/tests/core.mjs # the incidence arithmetic against outside values, run by CI
 node trial-checks/tests/core.mjs     # multiple-testing and bounds arithmetic, run by CI
 node mpi-calculator/tests/core.mjs   # the Alkire-Foster arithmetic, run by CI
+node causal-workbench/tests/core.mjs # TWFE, wild cluster bootstrap and Bacon decomposition, run by CI
 python3 -m http.server 8000        # then open http://localhost:8000
 ```
 
@@ -272,6 +273,17 @@ passed at first, because 1/6 + 1/6 is exactly 1/3 in floating point and the
 example never falls short of a cutoff. **A tolerance needs a test built to
 need it**: 0.7 + 0.1 + 0.1 + 0.1 is 0.9999999999999999, and that is what the
 test now uses.
+
+`causal-workbench` was split the same way on 2026-11-11: its linear algebra,
+`olsCluster`, `demeanTwoWay`, the wild cluster bootstrap and the Goodman-Bacon
+decomposition sit in `<script id="core">`, and the rest of the page uses them
+as globals. `causal-workbench/tests/core.mjs` compares them with Python on
+the two panels in `causal-workbench/tests/`. The bootstrap counts the sign
+patterns that reproduce the original t, so its p-value is never zero; the
+`wildboottest` package leaves them out, and the two differ by exactly 2/2^G.
+A browser check of the staggered case first toggled the wrong control and
+reported an empty decomposition table as a pass. **Assert that the thing
+under test is on the page before reading anything else from it.**
 
 A new tool's card gets its dates only after the tool has a commit, because
 `scripts/card-dates.py` reads them from git: commit the tool, run the script,

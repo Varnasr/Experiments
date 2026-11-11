@@ -59,3 +59,45 @@ half to twice the chosen bandwidth, placebo cutoffs at the median of each side,
 and a simplified McCrary (2008) density test on binned counts. The simulator
 plants a known jump and, optionally, manipulation just below the cutoff so the
 density test has something to find.
+
+## Wild cluster bootstrap and Goodman-Bacon decomposition (added November 2026)
+
+Two additions to the difference-in-differences panel.
+
+**Wild cluster bootstrap.** The cluster-robust sandwich needs many clusters.
+With a handful of states or districts it rejects too often. The panel now
+also reports a wild cluster bootstrap p-value for δ = 0 with the null imposed
+and Rademacher weights (Cameron, Gelbach and Miller 2008). Under the null the
+model holds only the fixed effects, so the restricted residual is the
+two-way demeaned outcome; each replicate flips its sign by cluster, removes
+the fixed effects again and recomputes the cluster-robust t. With 11 clusters
+or fewer every one of the 2^G sign patterns is used, so the p-value is exact
+for the data and needs no seed. Otherwise 999 patterns are drawn from a fixed
+seed. The two patterns that reproduce the original t are counted, so the
+p-value is never below 2/2^G.
+
+**Goodman-Bacon decomposition.** With more than one adoption date the page
+shows the TWFE coefficient as the weighted sum of its two-group, two-period
+comparisons (Goodman-Bacon 2021, equations 10e to 10g): each timing group
+against the never treated, earlier against later groups before the later one
+adopts, and later against earlier groups with already-treated units as the
+control. The last kind is only valid when effects do not change over time,
+and the page warns when it carries more than a tenth of the weight.
+
+Where these stop: the bootstrap gives a p-value and no confidence interval;
+the decomposition needs a balanced panel, treatment that switches on once
+and stays on, no unit treated from the first period, and has no covariates.
+
+Verification: `node causal-workbench/tests/core.mjs` runs the estimators
+under node on two panels stored in `tests/`. The coefficient and standard
+error match a regression on unit and period dummies in Python. The exact
+bootstrap p-values (2/256 and 0.4375) match a Python loop over every sign
+pattern; the `wildboottest` package gives 0.43359375 on the second panel,
+which is the same count without the two tied patterns. With 40 clusters the
+drawn p-value is 0.005 to 0.007 against 0.00705 from 20,000 Python draws.
+Under a true null with 12 clusters the test rejects between 2% and 9% of the
+time. The Bacon weights match weights computed in Python from the variance of
+the demeaned treatment in each subsample, add to one, and their weighted sum
+equals the coefficient, including a case with three timing groups and no
+never-treated units. Twelve faults were put into the estimators one at a time
+and the test fails on each. CI runs it.
