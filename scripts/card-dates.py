@@ -13,8 +13,11 @@ A sweep is not a change to a tool. The contact line, the share row, the
 contrast token and the label binding each touched every page in one commit;
 counting those would give every tool the same "last changed" month, which
 says nothing. A commit counts as a change to a tool only when it touches at
-most SWEEP_LIMIT tool directories. The first commit is exempt, because several
-tools have arrived together in one commit.
+most SWEEP_LIMIT tool directories that already existed. A directory arriving
+in the commit does not count toward that limit, because several tools have
+arrived together in one commit, and on 2026-11-11 four arrived in a squash
+merge that also changed the causal workbench: counting all five called it a
+sweep and took the workbench's "last changed" month away.
 
 The months are coarse on purpose. A squash merge is dated the day it lands
 rather than the day the work was done, and a day-level date would fail the
@@ -57,12 +60,16 @@ def history(tools):
                          'Fetch the full history (git fetch --unshallow) and run again.')
     out = git('log', '--no-merges', '--date=short', '--format=@%ad', '--name-only')
     every, own = {t: [] for t in tools}, {t: [] for t in tools}
-    for chunk in out.split('@')[1:]:
+    # Oldest first, so that a directory seen for the first time is known to be
+    # arriving. A commit that adds four tools and edits one other is a change to
+    # that one: only the tools that already existed count toward a sweep.
+    for chunk in reversed(out.split('@')[1:]):
         lines = chunk.strip().split('\n')
         touched = {f.split('/')[0] for f in lines[1:] if '/' in f} & set(tools)
+        existing = {t for t in touched if every[t]}
         for t in touched:
             every[t].append(lines[0])
-            if len(touched) <= SWEEP_LIMIT:
+            if len(existing) <= SWEEP_LIMIT:
                 own[t].append(lines[0])
     missing = [t for t in tools if not every[t]]
     if missing:
