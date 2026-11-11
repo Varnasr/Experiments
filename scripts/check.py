@@ -216,7 +216,10 @@ def main():
     # written in prose that nothing compares is how every one of these
     # repositories has drifted.
     WORDS = {20: 'Twenty', 21: 'Twenty-one', 22: 'Twenty-two', 23: 'Twenty-three',
-             24: 'Twenty-four', 25: 'Twenty-five', 26: 'Twenty-six'}
+             24: 'Twenty-four', 25: 'Twenty-five', 26: 'Twenty-six',
+             27: 'Twenty-seven', 28: 'Twenty-eight', 29: 'Twenty-nine', 30: 'Thirty',
+             31: 'Thirty-one', 32: 'Thirty-two', 33: 'Thirty-three', 34: 'Thirty-four',
+             35: 'Thirty-five'}
     claude = read('CLAUDE.md')
     stated = re.search(r'^(\w+(?:-\w+)?) browser tools', claude, re.M)
     check('CLAUDE.md states how many tools there are', stated is not None,

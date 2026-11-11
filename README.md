@@ -137,6 +137,50 @@ cutoffs.
 
 ---
 
+### Robustness Value
+
+How strong an unobserved confounder would have to be to overturn a regression
+estimate: the Cinelli–Hazlett robustness value, the partial R² of the
+treatment, and the adjusted estimate for a confounder as strong as a named
+covariate.
+
+**Directory:** `robustness-value/`
+**Stage:** Active
+
+---
+
+### Unpaid Care Valuation
+
+Unpaid domestic and care work valued at market wages, by state and sex:
+minutes from the Time Use Survey 2024 unit-level data and wages from the
+Periodic Labour Force Survey 2024.
+
+**Directory:** `care-valuation/`
+**Stage:** Active
+
+---
+
+### Child Growth z-scores
+
+Height-for-age, weight-for-height, weight-for-age and BMI-for-age for children
+under five against the WHO 2006 Child Growth Standards, for one child or a
+pasted list.
+
+**Directory:** `anthro-zscores/`
+**Stage:** Active
+
+---
+
+### Rupee Converter
+
+Rupee amounts restated across months and years with the all-India Consumer
+Price Index, and converted to and from 2021 PPP dollars.
+
+**Directory:** `rupee-converter/`
+**Stage:** Active
+
+---
+
 ### RCT Planner
 
 Power and minimum detectable effect for individual and cluster designs (ICC,
@@ -465,6 +509,10 @@ Experiments/
 ├── wage-gap/                           # Oaxaca–Blinder decomposition
 ├── fiscal-incidence/                   # Kakwani, Reynolds–Smolensky, reranking from grouped data
 ├── mpi-calculator/                     # Alkire–Foster index from 0/1 deprivations
+├── robustness-value/                   # Cinelli–Hazlett sensitivity to an omitted variable
+├── care-valuation/                     # unpaid care valued at PLFS wages, by state and sex
+├── anthro-zscores/                     # WHO 2006 child growth z-scores
+├── rupee-converter/                    # CPI across time and 2021 PPP dollars
 ├── rct-planner/                        # power/MDE and stratified randomiser
 ├── sampling-design/                    # sample size, allocation, PPS draw of clusters
 ├── trial-checks/                       # multiple-testing adjustments, Lee and Manski bounds

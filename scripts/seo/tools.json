@@ -159,6 +159,30 @@
       "card": "library",
       "name": "Household Library Builder",
       "tagline": "The books in a house catalogued by ISBN or title, with who is reading and who has borrowed what."
+    },
+    {
+      "dir": "robustness-value",
+      "card": "rv",
+      "name": "Robustness Value",
+      "tagline": "How strong a left-out variable must be to overturn a regression estimate."
+    },
+    {
+      "dir": "care-valuation",
+      "card": "care",
+      "name": "Unpaid Care Valuation",
+      "tagline": "What unpaid domestic and care work is worth at market wages, by Indian state and sex."
+    },
+    {
+      "dir": "anthro-zscores",
+      "card": "anthro",
+      "name": "Child Growth z-scores",
+      "tagline": "Stunting, wasting and underweight z-scores from the WHO 2006 growth standards."
+    },
+    {
+      "dir": "rupee-converter",
+      "card": "rupee",
+      "name": "Rupee Converter",
+      "tagline": "Rupees across months and years with India's CPI, and into 2021 PPP dollars."
     }
   ]
 }

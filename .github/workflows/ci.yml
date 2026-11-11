@@ -64,6 +64,20 @@ jobs:
       - name: Workbench estimators
         run: node causal-workbench/tests/core.mjs
 
+      - name: Robustness value arithmetic
+        run: node robustness-value/tests/core.mjs
+
+      - name: Care valuation arithmetic and data
+        run: node care-valuation/tests/core.mjs
+
+      # 360 measurements WHO prints at -4 to +4 standard deviations, each
+      # turned back into its number.
+      - name: Child growth z-scores against the WHO tables
+        run: node anthro-zscores/tests/core.mjs
+
+      - name: Rupee converter arithmetic and data
+        run: node rupee-converter/tests/core.mjs
+
   # axe over every page, in a desktop and a phone viewport, plus a horizontal
   # overflow measurement at 390px. Separate from the job above because it
   # installs a browser and is the slow half; a contributor waiting on the
