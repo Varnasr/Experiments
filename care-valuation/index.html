@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unpaid Care Valuation · Experiments</title>
+<meta name="description" content="What unpaid domestic and care work in India is worth at market wages: minutes per person from the Time Use Survey 2024 and wages from the Periodic Labour Force Survey 2024, by state and sex.">
+<!-- seo:start -->
+<link rel="canonical" href="https://idealogworks.foo/care-valuation/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Experiments">
+<meta property="og:locale" content="en_IN">
+<meta property="og:title" content="Unpaid Care Valuation">
+<meta property="og:description" content="What unpaid domestic and care work is worth at market wages, by Indian state and sex.">
+<meta property="og:url" content="https://idealogworks.foo/care-valuation/">
+<meta property="og:image" content="https://idealogworks.foo/og/care-valuation.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Unpaid Care Valuation: What unpaid domestic and care work is worth at market wages, by Indian state and sex.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Unpaid Care Valuation">
+<meta name="twitter:description" content="What unpaid domestic and care work is worth at market wages, by Indian state and sex.">
+<meta name="twitter:image" content="https://idealogworks.foo/og/care-valuation.jpg">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Unpaid Care Valuation","url":"https://idealogworks.foo/care-valuation/","description":"What unpaid domestic and care work in India is worth at market wages: minutes per person from the Time Use Survey 2024 and wages from the Periodic Labour Force Survey 2024, by state and sex.","image":"https://idealogworks.foo/og/care-valuation.jpg","operatingSystem":"Any","browserRequirements":"Requires JavaScript","isAccessibleForFree":true,"author":{"@type":"Person","name":"Varna Sri Raman"},"isPartOf":{"@type":"WebSite","name":"Experiments","url":"https://idealogworks.foo/"}}</script>
+<style>.xshare{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.5rem .6rem;box-sizing:border-box;width:calc(100% - 2rem);max-width:960px;margin:2.5rem auto 1.5rem;padding:.85rem 1rem;background:#f5f1fa;border:1px solid #e6e3ec;border-radius:12px;font:600 15px/1.4 "Source Sans 3",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:#382280;text-align:center}.xshare .xshare-t{margin-right:.25rem;color:#382280}.xshare .xshare-l{display:inline-flex;align-items:center;min-height:36px;margin:0;padding:.3rem .95rem;border:1px solid #572e91;border-radius:99px;background:#fff;color:#382280;font:inherit;text-decoration:underline;text-underline-offset:2px;cursor:pointer;box-shadow:none}.xshare .xshare-l:hover{background:#ece4f5}.xshare .xshare-l:focus-visible{outline:3px solid #ff9911;outline-offset:2px}.xshare [hidden]{display:none!important}@media print{.xshare{display:none}}.xcontact{box-sizing:border-box;width:calc(100% - 2rem);max-width:960px;margin:0 auto 1.5rem;padding:.85rem 1rem;background:#f5f1fa;border:1px solid #e6e3ec;border-radius:12px;font:400 15px/1.5 "Source Sans 3",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:#382280;text-align:center}.xcontact a{color:#382280;font-weight:600;text-decoration:underline;text-underline-offset:2px}.xcontact a:focus-visible{outline:3px solid #ff9911;outline-offset:2px}@media print{.xcontact{display:none}}</style>
+<!-- seo:end -->
+<style>
+  :root { --bg:#fafafa; --surface:#fff; --border:#e5e7eb; --text:#1a1a2e; --dim:#4b5563; --muted:#6b7280; --accent:#1B6B4A; --accent-soft:#e6f2ec; --mono:ui-monospace,SFMono-Regular,Menlo,monospace; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--text); line-height:1.55; }
+  a { color:var(--accent); }
+  header { border-bottom:1px solid var(--border); background:#fff; }
+  .wrap { max-width:1080px; margin:0 auto; padding:0 1.25rem; }
+  header .wrap { display:flex; align-items:baseline; justify-content:space-between; gap:1rem; padding:.9rem 1.25rem; flex-wrap:wrap; }
+  header h1 { font-family:Georgia,serif; font-size:1.35rem; font-weight:400; }
+  header h1 small { font-size:.8rem; color:var(--muted); margin-left:.5rem; }
+  header nav a { font-size:.85rem; margin-left:1rem; text-decoration:none; }
+  main { padding:1.5rem 0 3rem; }
+  .lede { color:var(--dim); font-size:.95rem; max-width:66ch; margin-bottom:1.25rem; }
+  .top-tabs { display:flex; gap:.25rem; border-bottom:1px solid var(--border); margin-bottom:1.25rem; flex-wrap:wrap; }
+  .top-tabs button { font:inherit; font-size:.95rem; background:none; border:none; color:var(--dim); padding:.5rem .9rem; border-bottom:2px solid transparent; border-radius:0; cursor:pointer; }
+  .top-tabs button.on { color:var(--accent); border-bottom-color:var(--accent); font-weight:600; }
+  .view { display:none; } .view.on { display:block; }
+  .grid { display:grid; grid-template-columns:330px 1fr; gap:1.25rem; align-items:start; }
+  /* A grid item's default min-width:auto lets a wide table size the shared
+     track, and then the page is wider than the phone. */
+  .grid > * { min-width:0; }
+  @media (max-width:860px){ .grid { grid-template-columns:1fr; } }
+  .panel { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1rem 1.15rem; margin-bottom:1rem; }
+  .panel h2 { font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; margin-bottom:.7rem; }
+  label { display:block; font-size:.8rem; color:var(--dim); margin:.5rem 0 .2rem; }
+  select, input[type=text], input[type=number], textarea { width:100%; font:inherit; font-size:.9rem; padding:.4rem .5rem; border:1px solid var(--border); border-radius:6px; background:#fff; color:var(--text); }
+  textarea { font-family:var(--mono); font-size:.82rem; min-height:8.5rem; resize:vertical; }
+  input[type=file] { font-size:.85rem; max-width:100%; }
+  .row { display:flex; gap:.5rem; } .row > * { flex:1; min-width:0; }
+  button { font:inherit; font-size:.88rem; padding:.5rem .9rem; border-radius:6px; border:1px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer; margin-top:.6rem; }
+  button.secondary { background:#fff; color:var(--accent); }
+  .stat { display:inline-block; margin:.25rem 1.25rem .25rem 0; vertical-align:top; }
+  .stat b { display:block; font-size:1.4rem; font-family:Georgia,serif; font-weight:400; } .stat span { font-size:.75rem; color:var(--muted); }
+  table { border-collapse:collapse; width:100%; font-size:.84rem; margin:.5rem 0; }
+  th, td { text-align:right; padding:.3rem .5rem; border-bottom:1px solid var(--border); font-variant-numeric:tabular-nums; white-space:nowrap; }
+  th:first-child, td:first-child { text-align:left; } th { color:var(--dim); font-weight:600; font-size:.75rem; }
+  .tscroll { overflow:auto; max-width:100%; max-height:420px; }
+  .tscroll:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
+  .note { font-size:.82rem; color:var(--dim); margin-top:.5rem; max-width:70ch; }
+  .warn { background:#fff7ed; border:1px solid #fed7aa; color:#9a3412; padding:.5rem .7rem; border-radius:6px; font-size:.83rem; margin:.5rem 0; }
+  .ok { background:var(--accent-soft); color:var(--accent); padding:.5rem .7rem; border-radius:6px; font-size:.83rem; margin:.5rem 0; }
+  .mini { font-size:.78rem; color:var(--muted); } code { font-family:var(--mono); font-size:.8em; background:#f3f4f6; padding:.05em .3em; border-radius:3px; }
+  pre { font-family:var(--mono); font-size:.78rem; background:#f8f9fa; border:1px solid var(--border); border-radius:6px; padding:.6rem .8rem; white-space:pre-wrap; overflow-wrap:anywhere; color:var(--dim); }
+  ol.work { margin:.4rem 0 .2rem 1.2rem; font-size:.86rem; color:var(--dim); } ol.work li { margin-bottom:.3rem; } ol.work b { color:var(--text); font-variant-numeric:tabular-nums; }
+  footer { border-top:1px solid var(--border); padding:1.25rem; text-align:center; font-size:.8rem; color:var(--muted); }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>Unpaid Care Valuation <small>Time Use Survey 2024 × PLFS 2024 wages</small></h1>
+  <nav><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/care-valuation">Source</a></nav>
+</div></header>
+<main><div class="wrap">
+<p class="lede">A rupee value for the unpaid domestic and care work that women and men do in each Indian state. The minutes come from the Time Use Survey 2024 and the wages from the Periodic Labour Force Survey 2024. Every assumption that turns a wage into an hourly rate is an input you can change.</p>
+<div class="grid">
+<div>
+  <div class="panel">
+    <h2>Place and people</h2>
+    <label for="state">State or union territory</label><select id="state"></select>
+    <label for="age">Age group for the minutes</label>
+    <select id="age"><option value="15-59">15 to 59 years</option><option value="6+">6 years and above</option></select>
+    <label for="scope">Work counted</label>
+    <select id="scope"><option value="both">Domestic services and caregiving</option><option value="domestic">Domestic services only</option><option value="care">Caregiving only</option></select>
+  </div>
+  <div class="panel">
+    <h2>Wage used as the price of an hour</h2>
+    <label for="wage">Wage series</label>
+    <select id="wage"><option value="casual">Casual labour, daily earnings</option><option value="regular">Regular wage or salary, monthly earnings</option></select>
+    <label for="wsex">Whose wage</label>
+    <select id="wsex"><option value="person">All workers in the state, for both sexes</option><option value="own">Each sex at its own wage</option></select>
+    <div class="row">
+      <div><label for="hpd">Hours in a paid day</label><input type="number" id="hpd" value="8" min="1" max="24" step="0.5"></div>
+      <div><label for="dpm">Paid days in a month</label><input type="number" id="dpm" value="26" min="1" max="31" step="1"></div>
+    </div>
+    <p class="mini">A casual wage is divided by the hours in a paid day. A monthly salary is divided by paid days and then by hours. PLFS reports earnings and does not report hours with them, so both divisors are assumptions.</p>
+  </div>
+  <div class="panel">
+    <h2>Minutes per day, editable</h2>
+    <div class="row">
+      <div><label for="mF">Women</label><input type="number" id="mF" min="0" max="1440" step="1"></div>
+      <div><label for="mM">Men</label><input type="number" id="mM" min="0" max="1440" step="1"></div>
+    </div>
+    <button type="button" class="secondary" id="reset">Use the survey figure</button>
+    <p class="mini">Filled from the survey for the state, age group and work chosen above. Type over them to value a different figure.</p>
+  </div>
+</div>
+<div>
+  <div class="panel"><h2>Value per person</h2><div id="out" aria-live="polite"></div></div>
+  <div class="panel"><h2>How the figure is reached</h2><div id="work"></div></div>
+  <div class="panel"><h2>All states, at these settings</h2><div class="tscroll" tabindex="0" role="region" aria-label="Value of unpaid work by state" id="all"></div>
+    <p class="note">Sorted by the annual value of a woman's unpaid work. The table uses the survey minutes for every state, including the one whose minutes you may have edited above.</p></div>
+  <div class="panel"><h2>Method and limits</h2>
+    <p class="note">Minutes are the average per person per day, counting people who did none of the activity as zero. When a person reported two or three activities in the same time slot, the slot is shared equally among them, which is how the survey's own published tables count time "irrespective of major activity". Domestic services are ICATUS major division 3 and caregiving is major division 4. The state figures were computed from the unit-level data with the survey multipliers, and the same computation returns the published all-India figures: 283 and 58 minutes for women aged 15 to 59, 26 and 16 for men.</p>
+    <p class="note">The value is a replacement cost at a generalist wage: what the hours would cost if someone were paid the state's average wage to do them. It is a floor for some tasks and a ceiling for others. Childcare and care of the sick are valued at the same wage as sweeping. Supervision that overlaps another task gets only its share of the slot.</p>
+    <p class="note">Valuing each sex at its own wage builds the gender wage gap into the answer: an hour of a woman's cooking is then worth less than an hour of a man's. The default prices both at the wage of all workers in the state.</p>
+    <p class="note">Small states and union territories rest on few sample households. The standard error beside each minutes figure treats the first-stage sample unit as a cluster and ignores stratification. A casual wage for women reported as exactly ₹200 or ₹500, as in Chandigarh, Delhi and Mizoram, points to a handful of observations. Lakshadweep reports no casual wage for women. The page gives a value per person and no state total, because a total needs the population in each age group.</p>
+    <p class="note">Sources: Time Use Survey 2024, Ministry of Statistics and Programme Implementation, unit-level data. Periodic Labour Force Survey, calendar year 2024, indicators 6 and 7, through the MoSPI data service, read on 11 November 2026.</p>
+  </div>
+</div>
+</div>
+</div></main>
+<!-- share:start -->
+<aside class="xshare" aria-label="Share this tool"><span class="xshare-t">Share this tool</span><a class="xshare-l" href="https://wa.me/?text=Unpaid%20Care%20Valuation%3A%20What%20unpaid%20domestic%20and%20care%20work%20is%20worth%20at%20market%20wages%2C%20by%20Indian%20state%20and%20sex.%0Ahttps%3A%2F%2Fidealogworks.foo%2Fcare-valuation%2F" target="_blank" rel="noopener">WhatsApp</a><a class="xshare-l" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fidealogworks.foo%2Fcare-valuation%2F" target="_blank" rel="noopener">LinkedIn</a><a class="xshare-l" href="https://twitter.com/intent/tweet?text=Unpaid%20Care%20Valuation%3A%20What%20unpaid%20domestic%20and%20care%20work%20is%20worth%20at%20market%20wages%2C%20by%20Indian%20state%20and%20sex.&amp;url=https%3A%2F%2Fidealogworks.foo%2Fcare-valuation%2F" target="_blank" rel="noopener">X</a><button type="button" class="xshare-l" data-xshare-copy data-url="https://idealogworks.foo/care-valuation/" hidden>Copy link</button><script>(function(){var b=document.currentScript.parentNode.querySelector('[data-xshare-copy]');if(!b||!navigator.clipboard)return;b.hidden=false;var u=b.getAttribute('data-url');b.addEventListener('click',function(){navigator.clipboard.writeText(u).then(function(){b.textContent='Link copied';setTimeout(function(){b.textContent='Copy link';},2000);});});})();</script></aside>
+<!-- share:end -->
+<!-- contact:start -->
+<p class="xcontact">Need help setting out your story, what sets your work apart, the context, the return on investment and the projections? Pinpoint Ventures can help. Write to <a href="mailto:hello@pinpointventures.in?subject=Enquiry%20from%20idealogworks.foo">hello@pinpointventures.in</a> or message on <a href="https://wa.me/919871777110?text=Hi%20Pinpoint%20Ventures%2C%20I%20found%20you%20through%20idealogworks.foo.%20I%27d%20like%20to%20discuss%20a%20research%20or%20advisory%20engagement." target="_blank" rel="noopener">WhatsApp</a>.</p>
+<!-- contact:end -->
+<footer>Part of <a href="../">Experiments</a> by Varna Sri Raman · Idealog Works · MIT licence · Computation in the browser.</footer>
+<script src="data/care-data.js"></script>
+<script id="core">
+// The arithmetic of the page. It touches nothing on the page, so that
+// care-valuation/tests/core.mjs can run it under node.
+const CV = (() => {
+  // Rupees for one hour of work, from a daily casual wage or a monthly salary.
+  function hourly(series, wage, hoursPerDay, daysPerMonth) {
+    if (wage == null || !(wage > 0)) return null;
+    if (!(hoursPerDay > 0)) return null;
+    if (series === 'casual') return wage / hoursPerDay;
+    if (!(daysPerMonth > 0)) return null;
+    return wage / (daysPerMonth * hoursPerDay);
+  }
+  // Minutes for the work counted. rec is [domestic, care, se domestic, se care, n].
+  function minutes(rec, scope) {
+    if (scope === 'domestic') return rec[0];
+    if (scope === 'care') return rec[1];
+    return rec[0] + rec[1];
+  }
+  // The standard error of a sum of two means from the same people is not the
+  // sum of the two errors. The covariance is not in the data file, so the sum
+  // is reported with the upper bound se1 + se2.
+  function minutesSe(rec, scope) {
+    if (scope === 'domestic') return rec[2];
+    if (scope === 'care') return rec[3];
+    return rec[2] + rec[3];
+  }
+  function value(mins, rate) {
+    if (rate == null || mins == null || !(mins >= 0)) return null;
+    const day = mins / 60 * rate;
+    return { day, month: day * 365 / 12, year: day * 365 };
+  }
+  // One state: the value for women and for men.
+  function state(d, o) {
+    const out = {};
+    for (const sex of ['female', 'male']) {
+      const rec = d.min[o.age + '|' + sex];
+      const wage = d[o.wage][o.wsex === 'own' ? sex : 'person'];
+      const rate = hourly(o.wage, wage, o.hoursPerDay, o.daysPerMonth);
+      const mins = o.override && o.override[sex] != null ? o.override[sex] : minutes(rec, o.scope);
+      out[sex] = { minutes: mins, se: minutesSe(rec, o.scope), n: rec[4], wage, rate, value: value(mins, rate) };
+    }
+    const f = out.female.value, m = out.male.value;
+    out.ratio = f && m && m.year > 0 ? f.year / m.year : null;
+    return out;
+  }
+  function table(states, o) {
+    const rows = Object.keys(states).map(name => ({ name, ...state(states[name], { ...o, override: null }) }));
+    rows.sort((a, b) => (b.female.value ? b.female.value.year : -1) - (a.female.value ? a.female.value.year : -1));
+    return rows;
+  }
+  return { hourly, minutes, minutesSe, value, state, table };
+})();
+if (typeof module !== 'undefined') module.exports = CV;
+</script>
+<script>
+const $ = s => document.querySelector(s);
+const D = window.CARE_DATA.states;
+const rs = v => v == null ? 'not reported' : '₹' + Math.round(v).toLocaleString('en-IN');
+const rs2 = v => v == null ? 'not reported' : '₹' + v.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+$('#state').innerHTML = Object.keys(D).map(s => `<option>${esc(s)}</option>`).join('');
+let edited = false;
+function opts() {
+  return { age: $('#age').value, scope: $('#scope').value, wage: $('#wage').value, wsex: $('#wsex').value, hoursPerDay: +$('#hpd').value, daysPerMonth: +$('#dpm').value };
+}
+function fill() {
+  const d = D[$('#state').value], o = opts();
+  $('#mF').value = Math.round(CV.minutes(d.min[o.age + '|female'], o.scope));
+  $('#mM').value = Math.round(CV.minutes(d.min[o.age + '|male'], o.scope));
+  edited = false;
+}
+function render() {
+  const name = $('#state').value, d = D[name], o = opts();
+  if (edited) o.override = { female: $('#mF').value === '' ? null : +$('#mF').value, male: $('#mM').value === '' ? null : +$('#mM').value };
+  const r = CV.state(d, o);
+  const unit = o.wage === 'casual' ? 'a day' : 'a month';
+  const who = o.wsex === 'own' ? 'own-sex' : 'all-worker';
+  const stat = (lab, x) => `<div class="stat"><b>${x.value ? rs(x.value.year) : 'no wage'}</b><span>${lab}, a year</span></div><div class="stat"><b>${x.value ? rs(x.value.day) : 'no wage'}</b><span>${lab}, a day</span></div>`;
+  let h = stat('a woman', r.female) + '<br>' + stat('a man', r.male);
+  if (r.ratio != null) h += `<p class="note">A woman's unpaid work in ${esc(name)} is worth ${r.ratio.toFixed(1)} times a man's at these settings.</p>`;
+  for (const [sex, lab] of [['female', 'women'], ['male', 'men']]) {
+    if (r[sex].wage == null) h += `<p class="warn">The survey reports no ${o.wage} wage for ${o.wsex === 'own' ? lab : 'workers'} in ${esc(name)}, so no value is shown. Choose the other wage series or the all-worker wage.</p>`;
+  }
+  if (edited) h += `<p class="warn">The minutes were typed in and are not the survey figure for ${esc(name)}.</p>`;
+  $('#out').innerHTML = h;
+  const line = (lab, x, sex) => x.value ? `<li>${lab}: <b>${x.minutes}</b> minutes a day${edited ? '' : ` (survey: standard error ${x.se.toFixed(1)}, ${x.n.toLocaleString('en-IN')} people in the sample)`}. The ${who} ${o.wage} wage is <b>${rs2(x.wage)}</b> ${unit}, which is <b>${rs2(x.rate)}</b> an hour. ${x.minutes} ÷ 60 × ${x.rate.toFixed(2)} = <b>${rs2(x.value.day)}</b> a day, and × 365 = <b>${rs(x.value.year)}</b> a year.</li>` : `<li>${lab}: no wage reported.</li>`;
+  $('#work').innerHTML = `<ol class="work">${line('Women', r.female)}${line('Men', r.male)}</ol><p class="mini">Hourly rate: ${o.wage === 'casual' ? `daily wage ÷ ${o.hoursPerDay} hours` : `monthly earnings ÷ ${o.daysPerMonth} days ÷ ${o.hoursPerDay} hours`}.</p>`;
+  const rows = CV.table(D, o);
+  $('#all').innerHTML = `<table><thead><tr><th scope="col">State</th><th scope="col">Women, min</th><th scope="col">Men, min</th><th scope="col">₹ an hour, women</th><th scope="col">Women, ₹ a year</th><th scope="col">Men, ₹ a year</th><th scope="col">Ratio</th></tr></thead><tbody>${rows.map(x => `<tr><td>${esc(x.name)}</td><td>${Math.round(x.female.minutes)}</td><td>${Math.round(x.male.minutes)}</td><td>${x.female.rate == null ? 'n/r' : x.female.rate.toFixed(0)}</td><td>${x.female.value ? rs(x.female.value.year) : 'n/r'}</td><td>${x.male.value ? rs(x.male.value.year) : 'n/r'}</td><td>${x.ratio == null ? 'n/r' : x.ratio.toFixed(1)}</td></tr>`).join('')}</tbody></table>`;
+}
+for (const id of ['state', 'age', 'scope']) $('#' + id).addEventListener('change', () => { fill(); render(); });
+for (const id of ['wage', 'wsex', 'hpd', 'dpm']) $('#' + id).addEventListener('input', render);
+for (const id of ['mF', 'mM']) $('#' + id).addEventListener('input', () => { edited = true; render(); });
+$('#reset').addEventListener('click', () => { fill(); render(); });
+fill(); render();
+</script>
+<script src="../js/dyslexia-font.js" data-accent="var(--purple2)" data-radius="99px" defer></script>
+</body>
+</html>

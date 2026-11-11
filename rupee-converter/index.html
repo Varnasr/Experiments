@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rupee Converter · Experiments</title>
+<meta name="description" content="Move a rupee amount between months and years with India's Consumer Price Index, and between rupees and 2021 international dollars with the World Bank's purchasing power parity factor.">
+<!-- seo:start -->
+<link rel="canonical" href="https://idealogworks.foo/rupee-converter/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Experiments">
+<meta property="og:locale" content="en_IN">
+<meta property="og:title" content="Rupee Converter">
+<meta property="og:description" content="Rupees across months and years with India&#x27;s CPI, and into 2021 PPP dollars.">
+<meta property="og:url" content="https://idealogworks.foo/rupee-converter/">
+<meta property="og:image" content="https://idealogworks.foo/og/rupee-converter.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Rupee Converter: Rupees across months and years with India&#x27;s CPI, and into 2021 PPP dollars.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Rupee Converter">
+<meta name="twitter:description" content="Rupees across months and years with India&#x27;s CPI, and into 2021 PPP dollars.">
+<meta name="twitter:image" content="https://idealogworks.foo/og/rupee-converter.jpg">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Rupee Converter","url":"https://idealogworks.foo/rupee-converter/","description":"Move a rupee amount between months and years with India's Consumer Price Index, and between rupees and 2021 international dollars with the World Bank's purchasing power parity factor.","image":"https://idealogworks.foo/og/rupee-converter.jpg","operatingSystem":"Any","browserRequirements":"Requires JavaScript","isAccessibleForFree":true,"author":{"@type":"Person","name":"Varna Sri Raman"},"isPartOf":{"@type":"WebSite","name":"Experiments","url":"https://idealogworks.foo/"}}</script>
+<style>.xshare{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.5rem .6rem;box-sizing:border-box;width:calc(100% - 2rem);max-width:960px;margin:2.5rem auto 1.5rem;padding:.85rem 1rem;background:#f5f1fa;border:1px solid #e6e3ec;border-radius:12px;font:600 15px/1.4 "Source Sans 3",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:#382280;text-align:center}.xshare .xshare-t{margin-right:.25rem;color:#382280}.xshare .xshare-l{display:inline-flex;align-items:center;min-height:36px;margin:0;padding:.3rem .95rem;border:1px solid #572e91;border-radius:99px;background:#fff;color:#382280;font:inherit;text-decoration:underline;text-underline-offset:2px;cursor:pointer;box-shadow:none}.xshare .xshare-l:hover{background:#ece4f5}.xshare .xshare-l:focus-visible{outline:3px solid #ff9911;outline-offset:2px}.xshare [hidden]{display:none!important}@media print{.xshare{display:none}}.xcontact{box-sizing:border-box;width:calc(100% - 2rem);max-width:960px;margin:0 auto 1.5rem;padding:.85rem 1rem;background:#f5f1fa;border:1px solid #e6e3ec;border-radius:12px;font:400 15px/1.5 "Source Sans 3",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:#382280;text-align:center}.xcontact a{color:#382280;font-weight:600;text-decoration:underline;text-underline-offset:2px}.xcontact a:focus-visible{outline:3px solid #ff9911;outline-offset:2px}@media print{.xcontact{display:none}}</style>
+<!-- seo:end -->
+<style>
+  :root { --bg:#fafafa; --surface:#fff; --border:#e5e7eb; --text:#1a1a2e; --dim:#4b5563; --muted:#6b7280; --accent:#1B6B4A; --accent-soft:#e6f2ec; --mono:ui-monospace,SFMono-Regular,Menlo,monospace; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--text); line-height:1.55; }
+  a { color:var(--accent); }
+  header { border-bottom:1px solid var(--border); background:#fff; }
+  .wrap { max-width:1080px; margin:0 auto; padding:0 1.25rem; }
+  header .wrap { display:flex; align-items:baseline; justify-content:space-between; gap:1rem; padding:.9rem 1.25rem; flex-wrap:wrap; }
+  header h1 { font-family:Georgia,serif; font-size:1.35rem; font-weight:400; }
+  header h1 small { font-size:.8rem; color:var(--muted); margin-left:.5rem; }
+  header nav a { font-size:.85rem; margin-left:1rem; text-decoration:none; }
+  main { padding:1.5rem 0 3rem; }
+  .lede { color:var(--dim); font-size:.95rem; max-width:66ch; margin-bottom:1.25rem; }
+  .top-tabs { display:flex; gap:.25rem; border-bottom:1px solid var(--border); margin-bottom:1.25rem; flex-wrap:wrap; }
+  .top-tabs button { font:inherit; font-size:.95rem; background:none; border:none; color:var(--dim); padding:.5rem .9rem; border-bottom:2px solid transparent; border-radius:0; cursor:pointer; }
+  .top-tabs button.on { color:var(--accent); border-bottom-color:var(--accent); font-weight:600; }
+  .view { display:none; } .view.on { display:block; }
+  .grid { display:grid; grid-template-columns:330px 1fr; gap:1.25rem; align-items:start; }
+  /* A grid item's default min-width:auto lets a wide table size the shared
+     track, and then the page is wider than the phone. */
+  .grid > * { min-width:0; }
+  @media (max-width:860px){ .grid { grid-template-columns:1fr; } }
+  .panel { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1rem 1.15rem; margin-bottom:1rem; }
+  .panel h2 { font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; margin-bottom:.7rem; }
+  label { display:block; font-size:.8rem; color:var(--dim); margin:.5rem 0 .2rem; }
+  select, input[type=text], input[type=number], textarea { width:100%; font:inherit; font-size:.9rem; padding:.4rem .5rem; border:1px solid var(--border); border-radius:6px; background:#fff; color:var(--text); }
+  textarea { font-family:var(--mono); font-size:.82rem; min-height:8.5rem; resize:vertical; }
+  input[type=file] { font-size:.85rem; max-width:100%; }
+  .row { display:flex; gap:.5rem; } .row > * { flex:1; min-width:0; }
+  button { font:inherit; font-size:.88rem; padding:.5rem .9rem; border-radius:6px; border:1px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer; margin-top:.6rem; }
+  button.secondary { background:#fff; color:var(--accent); }
+  .stat { display:inline-block; margin:.25rem 1.25rem .25rem 0; vertical-align:top; }
+  .stat b { display:block; font-size:1.4rem; font-family:Georgia,serif; font-weight:400; } .stat span { font-size:.75rem; color:var(--muted); }
+  table { border-collapse:collapse; width:100%; font-size:.84rem; margin:.5rem 0; }
+  th, td { text-align:right; padding:.3rem .5rem; border-bottom:1px solid var(--border); font-variant-numeric:tabular-nums; white-space:nowrap; }
+  th:first-child, td:first-child { text-align:left; } th { color:var(--dim); font-weight:600; font-size:.75rem; }
+  .tscroll { overflow:auto; max-width:100%; max-height:420px; }
+  .tscroll:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
+  .note { font-size:.82rem; color:var(--dim); margin-top:.5rem; max-width:70ch; }
+  .warn { background:#fff7ed; border:1px solid #fed7aa; color:#9a3412; padding:.5rem .7rem; border-radius:6px; font-size:.83rem; margin:.5rem 0; }
+  .ok { background:var(--accent-soft); color:var(--accent); padding:.5rem .7rem; border-radius:6px; font-size:.83rem; margin:.5rem 0; }
+  .mini { font-size:.78rem; color:var(--muted); } code { font-family:var(--mono); font-size:.8em; background:#f3f4f6; padding:.05em .3em; border-radius:3px; }
+  pre { font-family:var(--mono); font-size:.78rem; background:#f8f9fa; border:1px solid var(--border); border-radius:6px; padding:.6rem .8rem; white-space:pre-wrap; overflow-wrap:anywhere; color:var(--dim); }
+  ol.work { margin:.4rem 0 .2rem 1.2rem; font-size:.86rem; color:var(--dim); } ol.work li { margin-bottom:.3rem; } ol.work b { color:var(--text); font-variant-numeric:tabular-nums; }
+  footer { border-top:1px solid var(--border); padding:1.25rem; text-align:center; font-size:.8rem; color:var(--muted); }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>Rupee Converter <small>CPI across time · 2021 PPP across currencies</small></h1>
+  <nav><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/rupee-converter">Source</a></nav>
+</div></header>
+<main><div class="wrap">
+<p class="lede">Two conversions that survey and budget work needs constantly. The first restates a rupee amount at the prices of another month or year, using the all-India Consumer Price Index. The second turns rupees into 2021 international dollars and back, the unit in which the World Bank's poverty lines are set.</p>
+<div class="top-tabs" role="tablist">
+  <button type="button" role="tab" id="tabT" aria-selected="true" aria-controls="viewT" class="on">Across time</button>
+  <button type="button" role="tab" id="tabP" aria-selected="false" aria-controls="viewP">To and from 2021 PPP dollars</button>
+</div>
+<div class="view on" id="viewT" role="tabpanel" aria-labelledby="tabT">
+<div class="grid">
+<div><div class="panel">
+  <h2>Amount and periods</h2>
+  <label for="amtT">Amount in rupees</label><input type="number" id="amtT" value="1000" step="any">
+  <label for="kindF">Prices of</label>
+  <div class="row"><select id="kindF" aria-label="Kind of period the amount is in"><option value="m">a month</option><option value="cy">a calendar year</option><option value="fy">a financial year</option></select><select id="perF" aria-label="Period the amount is in"></select></div>
+  <label for="kindT">Restated at the prices of</label>
+  <div class="row"><select id="kindT" aria-label="Kind of period to convert to"><option value="m">a month</option><option value="cy">a calendar year</option><option value="fy">a financial year</option></select><select id="perT" aria-label="Period to convert to"></select></div>
+</div></div>
+<div>
+  <div class="panel"><h2>Result</h2><div id="outT" aria-live="polite"></div></div>
+</div>
+</div>
+</div>
+<div class="view" id="viewP" role="tabpanel" aria-labelledby="tabP">
+<div class="grid">
+<div><div class="panel">
+  <h2>Amount</h2>
+  <label for="dir">Direction</label>
+  <select id="dir"><option value="to">Rupees to 2021 PPP dollars</option><option value="from">2021 PPP dollars to rupees</option></select>
+  <label for="amtP" id="amtPl">Amount in rupees</label><input type="number" id="amtP" value="100" step="any">
+  <label for="kindP" id="kindPl">Rupees at the prices of</label>
+  <div class="row"><select id="kindP" aria-label="Kind of period for the rupee amount"><option value="cy">a calendar year</option><option value="fy">a financial year</option><option value="m">a month</option></select><select id="perP" aria-label="Period for the rupee amount"></select></div>
+  <label for="ppp">Conversion factor</label>
+  <select id="ppp"><option value="private">Household consumption (used for poverty lines)</option><option value="gdp">GDP</option></select>
+</div></div>
+<div>
+  <div class="panel"><h2>Result</h2><div id="outP" aria-live="polite"></div></div>
+</div>
+</div>
+</div>
+<div class="panel"><h2>Method and limits</h2>
+  <p class="note">An amount at the prices of period A is restated at the prices of period B by multiplying by the ratio of the price index in B to the index in A. A calendar year uses the average of its twelve monthly indices, and a financial year the average from April to the following March. A year with a month missing is not offered.</p>
+  <p class="note">The index is the all-India Consumer Price Index, rural and urban combined, general. The series with base 2012 runs from January 2013 to December 2025. From January 2026 the Ministry publishes a new series with base 2024 and a different basket. The two overlap for the twelve months of 2025, and this page joins them at the ratio of their 2025 averages, <span id="linkTxt"></span>. The month-by-month ratio in 2025 runs from 1.894 to 1.903, so a conversion that crosses January 2026 carries an uncertainty of about a quarter of one per cent from the join alone.</p>
+  <p class="note">A 2021 PPP dollar is a rupee amount first restated at 2021 prices and then divided by the World Bank's 2021 conversion factor for India: <span id="pppTxt"></span>. The household consumption factor is the one behind the international poverty lines of $3.00, $4.20 and $8.30 a day. It is a national average. It does not know that rural prices are lower than urban ones or that Bihar is cheaper than Kerala.</p>
+  <p class="note">The general index is an average basket. A household that spends most of its money on food faces food inflation, which this index understates in some years and overstates in others. The index before 2013 is not included, and neither are the rural, urban or state series.</p>
+  <p class="note">Sources: Consumer Price Index, Ministry of Statistics and Programme Implementation, through the MoSPI data service, read on 11 November 2026. World Bank, World Development Indicators, series PA.NUS.PRVT.PP and PA.NUS.PPP, last updated 8 October 2026.</p>
+</div>
+</div></main>
+<!-- share:start -->
+<aside class="xshare" aria-label="Share this tool"><span class="xshare-t">Share this tool</span><a class="xshare-l" href="https://wa.me/?text=Rupee%20Converter%3A%20Rupees%20across%20months%20and%20years%20with%20India%27s%20CPI%2C%20and%20into%202021%20PPP%20dollars.%0Ahttps%3A%2F%2Fidealogworks.foo%2Frupee-converter%2F" target="_blank" rel="noopener">WhatsApp</a><a class="xshare-l" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fidealogworks.foo%2Frupee-converter%2F" target="_blank" rel="noopener">LinkedIn</a><a class="xshare-l" href="https://twitter.com/intent/tweet?text=Rupee%20Converter%3A%20Rupees%20across%20months%20and%20years%20with%20India%27s%20CPI%2C%20and%20into%202021%20PPP%20dollars.&amp;url=https%3A%2F%2Fidealogworks.foo%2Frupee-converter%2F" target="_blank" rel="noopener">X</a><button type="button" class="xshare-l" data-xshare-copy data-url="https://idealogworks.foo/rupee-converter/" hidden>Copy link</button><script>(function(){var b=document.currentScript.parentNode.querySelector('[data-xshare-copy]');if(!b||!navigator.clipboard)return;b.hidden=false;var u=b.getAttribute('data-url');b.addEventListener('click',function(){navigator.clipboard.writeText(u).then(function(){b.textContent='Link copied';setTimeout(function(){b.textContent='Copy link';},2000);});});})();</script></aside>
+<!-- share:end -->
+<!-- contact:start -->
+<p class="xcontact">Need help setting out your story, what sets your work apart, the context, the return on investment and the projections? Pinpoint Ventures can help. Write to <a href="mailto:hello@pinpointventures.in?subject=Enquiry%20from%20idealogworks.foo">hello@pinpointventures.in</a> or message on <a href="https://wa.me/919871777110?text=Hi%20Pinpoint%20Ventures%2C%20I%20found%20you%20through%20idealogworks.foo.%20I%27d%20like%20to%20discuss%20a%20research%20or%20advisory%20engagement." target="_blank" rel="noopener">WhatsApp</a>.</p>
+<!-- contact:end -->
+<footer>Part of <a href="../">Experiments</a> by Varna Sri Raman · Idealog Works · MIT licence · Computation in the browser.</footer>
+<script src="data/prices.js"></script>
+<script id="core">
+// The arithmetic of the page. It touches nothing on the page, so that
+// rupee-converter/tests/core.mjs can run it under node.
+const RC = (() => {
+  function build(data) {
+    const old = data.cpi2012, neu = data.cpi2024;
+    const mean = a => a.reduce((s, x) => s + x, 0) / a.length;
+    // The join: ratio of the two series' averages over the year both cover.
+    const link = mean(old[2025]) / mean(neu[2025]);
+    // One monthly series on base 2012. Months after the old series ends come
+    // from the new one, multiplied by the link.
+    const idx = {};
+    for (const y of Object.keys(old)) old[y].forEach((v, m) => { if (v != null) idx[y + '-' + (m + 1)] = v; });
+    for (const y of Object.keys(neu)) neu[y].forEach((v, m) => { const k = y + '-' + (m + 1); if (v != null && !(k in idx)) idx[k] = v * link; });
+    return { idx, link, ppp: data.ppp };
+  }
+  // The index for a period. kind 'm': key 'YYYY-M'. 'cy': 'YYYY'. 'fy': the
+  // year in which the financial year starts, so 2023 is April 2023 to March 2024.
+  function index(S, kind, key) {
+    if (kind === 'm') return S.idx[key] == null ? null : S.idx[key];
+    const y = +key, months = [];
+    if (kind === 'cy') for (let m = 1; m <= 12; m++) months.push(y + '-' + m);
+    else { for (let m = 4; m <= 12; m++) months.push(y + '-' + m); for (let m = 1; m <= 3; m++) months.push((y + 1) + '-' + m); }
+    let s = 0;
+    for (const k of months) { if (S.idx[k] == null) return null; s += S.idx[k]; }
+    return s / 12;
+  }
+  function periods(S, kind) {
+    const ys = [...new Set(Object.keys(S.idx).map(k => +k.split('-')[0]))].sort((a, b) => a - b);
+    if (kind === 'm') return Object.keys(S.idx).sort((a, b) => { const [ay, am] = a.split('-').map(Number), [by, bm] = b.split('-').map(Number); return ay - by || am - bm; });
+    return ys.filter(y => index(S, kind, String(y)) != null).map(String);
+  }
+  function restate(S, amount, fromKind, fromKey, toKind, toKey) {
+    const a = index(S, fromKind, fromKey), b = index(S, toKind, toKey);
+    if (a == null || b == null) return null;
+    return { value: amount * b / a, from: a, to: b, factor: b / a };
+  }
+  function toPPP(S, rupees, kind, key, which) {
+    const r = restate(S, rupees, kind, key, 'cy', '2021');
+    if (!r) return null;
+    const f = S.ppp[which][2021];
+    return { value: r.value / f, rupees2021: r.value, factor: f, deflator: r.factor };
+  }
+  function fromPPP(S, dollars, kind, key, which) {
+    const f = S.ppp[which][2021];
+    const r = restate(S, dollars * f, 'cy', '2021', kind, key);
+    if (!r) return null;
+    return { value: r.value, rupees2021: dollars * f, factor: f, deflator: r.factor };
+  }
+  return { build, index, periods, restate, toPPP, fromPPP };
+})();
+if (typeof module !== 'undefined') module.exports = RC;
+</script>
+<script>
+const $ = s => document.querySelector(s);
+const S = RC.build(window.PRICE_DATA);
+const MON = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const label = (kind, k) => kind === 'm' ? MON[+k.split('-')[1] - 1] + ' ' + k.split('-')[0] : kind === 'cy' ? k : k + '–' + String(+k + 1).slice(2);
+const rs = v => '₹' + v.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+function fillPer(kindSel, perSel, pick) {
+  const kind = $(kindSel).value, ps = RC.periods(S, kind);
+  $(perSel).innerHTML = ps.map(k => `<option value="${k}">${label(kind, k)}</option>`).join('');
+  $(perSel).value = pick === 'first' ? ps[0] : pick === 'last' ? ps[ps.length - 1] : ps.includes(pick) ? pick : ps[ps.length - 1];
+}
+function renderT() {
+  const amt = +$('#amtT').value, fk = $('#kindF').value, tk = $('#kindT').value;
+  const r = RC.restate(S, amt, fk, $('#perF').value, tk, $('#perT').value);
+  if (!r || !isFinite(amt)) { $('#outT').innerHTML = '<p class="note">Enter an amount.</p>'; return; }
+  $('#outT').innerHTML = `<div class="stat"><b>${rs(r.value)}</b><span>at the prices of ${label(tk, $('#perT').value)}</span></div>
+    <ol class="work"><li>Index for ${label(fk, $('#perF').value)}: <b>${r.from.toFixed(2)}</b></li><li>Index for ${label(tk, $('#perT').value)}: <b>${r.to.toFixed(2)}</b></li><li>${rs(amt)} × ${r.to.toFixed(2)} ÷ ${r.from.toFixed(2)} = <b>${rs(r.value)}</b></li></ol>
+    <p class="note">Prices ${r.factor >= 1 ? 'rose' : 'fell'} by ${Math.abs((r.factor - 1) * 100).toFixed(1)} per cent between the two periods. Both indices are on base 2012 = 100.</p>`;
+}
+function renderP() {
+  const to = $('#dir').value === 'to', amt = +$('#amtP').value, k = $('#kindP').value, key = $('#perP').value, which = $('#ppp').value;
+  $('#amtPl').textContent = to ? 'Amount in rupees' : 'Amount in 2021 PPP dollars';
+  $('#kindPl').textContent = to ? 'Rupees at the prices of' : 'Rupees wanted at the prices of';
+  const r = to ? RC.toPPP(S, amt, k, key, which) : RC.fromPPP(S, amt, k, key, which);
+  if (!r || !isFinite(amt)) { $('#outP').innerHTML = '<p class="note">Enter an amount.</p>'; return; }
+  const usd = v => '$' + v.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  $('#outP').innerHTML = to
+    ? `<div class="stat"><b>${usd(r.value)}</b><span>2021 PPP dollars</span></div><ol class="work"><li>${rs(amt)} at ${label(k, key)} prices is <b>${rs(r.rupees2021)}</b> at 2021 prices (× ${r.deflator.toFixed(4)}).</li><li>${rs(r.rupees2021)} ÷ ${r.factor.toFixed(4)} rupees per dollar = <b>${usd(r.value)}</b></li></ol>`
+    : `<div class="stat"><b>${rs(r.value)}</b><span>at the prices of ${label(k, key)}</span></div><ol class="work"><li>${usd(amt)} × ${r.factor.toFixed(4)} rupees per dollar = <b>${rs(r.rupees2021)}</b> at 2021 prices.</li><li>${rs(r.rupees2021)} × ${r.deflator.toFixed(4)} = <b>${rs(r.value)}</b> at ${label(k, key)} prices.</li></ol>`;
+}
+fillPer('#kindF', '#perF', 'first'); fillPer('#kindT', '#perT', 'last'); fillPer('#kindP', '#perP', '2024');
+$('#kindF').addEventListener('change', () => { fillPer('#kindF', '#perF', 'first'); renderT(); });
+$('#kindT').addEventListener('change', () => { fillPer('#kindT', '#perT', 'last'); renderT(); });
+$('#kindP').addEventListener('change', () => { fillPer('#kindP', '#perP', 'last'); renderP(); });
+for (const id of ['amtT', 'perF', 'perT']) $('#' + id).addEventListener('input', renderT);
+for (const id of ['dir', 'amtP', 'perP', 'ppp']) $('#' + id).addEventListener('input', renderP);
+for (const [t, v] of [['T', 'P'], ['P', 'T']]) $('#tab' + t).addEventListener('click', () => {
+  $('#tab' + t).classList.add('on'); $('#tab' + v).classList.remove('on');
+  $('#tab' + t).setAttribute('aria-selected', 'true'); $('#tab' + v).setAttribute('aria-selected', 'false');
+  $('#view' + t).classList.add('on'); $('#view' + v).classList.remove('on');
+});
+$('#linkTxt').textContent = S.link.toFixed(4);
+$('#pppTxt').textContent = S.ppp.private[2021].toFixed(2) + ' rupees per dollar for household consumption and ' + S.ppp.gdp[2021].toFixed(2) + ' for GDP';
+renderT(); renderP();
+</script>
+<script src="../js/dyslexia-font.js" data-accent="var(--purple2)" data-radius="99px" defer></script>
+</body>
+</html>

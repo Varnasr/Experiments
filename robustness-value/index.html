@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Robustness Value · Experiments</title>
+<meta name="description" content="How strong an unobserved confounder would have to be to overturn a regression estimate: the Cinelli and Hazlett robustness value, partial R², and bounds from an observed covariate.">
+<!-- seo:start -->
+<link rel="canonical" href="https://idealogworks.foo/robustness-value/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Experiments">
+<meta property="og:locale" content="en_IN">
+<meta property="og:title" content="Robustness Value">
+<meta property="og:description" content="How strong a left-out variable must be to overturn a regression estimate.">
+<meta property="og:url" content="https://idealogworks.foo/robustness-value/">
+<meta property="og:image" content="https://idealogworks.foo/og/robustness-value.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Robustness Value: How strong a left-out variable must be to overturn a regression estimate.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Robustness Value">
+<meta name="twitter:description" content="How strong a left-out variable must be to overturn a regression estimate.">
+<meta name="twitter:image" content="https://idealogworks.foo/og/robustness-value.jpg">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Robustness Value","url":"https://idealogworks.foo/robustness-value/","description":"How strong an unobserved confounder would have to be to overturn a regression estimate: the Cinelli and Hazlett robustness value, partial R², and bounds from an observed covariate.","image":"https://idealogworks.foo/og/robustness-value.jpg","operatingSystem":"Any","browserRequirements":"Requires JavaScript","isAccessibleForFree":true,"author":{"@type":"Person","name":"Varna Sri Raman"},"isPartOf":{"@type":"WebSite","name":"Experiments","url":"https://idealogworks.foo/"}}</script>
+<style>.xshare{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.5rem .6rem;box-sizing:border-box;width:calc(100% - 2rem);max-width:960px;margin:2.5rem auto 1.5rem;padding:.85rem 1rem;background:#f5f1fa;border:1px solid #e6e3ec;border-radius:12px;font:600 15px/1.4 "Source Sans 3",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:#382280;text-align:center}.xshare .xshare-t{margin-right:.25rem;color:#382280}.xshare .xshare-l{display:inline-flex;align-items:center;min-height:36px;margin:0;padding:.3rem .95rem;border:1px solid #572e91;border-radius:99px;background:#fff;color:#382280;font:inherit;text-decoration:underline;text-underline-offset:2px;cursor:pointer;box-shadow:none}.xshare .xshare-l:hover{background:#ece4f5}.xshare .xshare-l:focus-visible{outline:3px solid #ff9911;outline-offset:2px}.xshare [hidden]{display:none!important}@media print{.xshare{display:none}}.xcontact{box-sizing:border-box;width:calc(100% - 2rem);max-width:960px;margin:0 auto 1.5rem;padding:.85rem 1rem;background:#f5f1fa;border:1px solid #e6e3ec;border-radius:12px;font:400 15px/1.5 "Source Sans 3",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:#382280;text-align:center}.xcontact a{color:#382280;font-weight:600;text-decoration:underline;text-underline-offset:2px}.xcontact a:focus-visible{outline:3px solid #ff9911;outline-offset:2px}@media print{.xcontact{display:none}}</style>
+<!-- seo:end -->
+<style>
+  :root { --bg:#fafafa; --surface:#fff; --border:#e5e7eb; --text:#1a1a2e; --dim:#4b5563; --muted:#6b7280; --accent:#1B6B4A; --accent-soft:#e6f2ec; --mono:ui-monospace,SFMono-Regular,Menlo,monospace; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--text); line-height:1.55; }
+  a { color:var(--accent); }
+  header { border-bottom:1px solid var(--border); background:#fff; }
+  .wrap { max-width:1080px; margin:0 auto; padding:0 1.25rem; }
+  header .wrap { display:flex; align-items:baseline; justify-content:space-between; gap:1rem; padding:.9rem 1.25rem; flex-wrap:wrap; }
+  header h1 { font-family:Georgia,serif; font-size:1.35rem; font-weight:400; }
+  header h1 small { font-size:.8rem; color:var(--muted); margin-left:.5rem; }
+  header nav a { font-size:.85rem; margin-left:1rem; text-decoration:none; }
+  main { padding:1.5rem 0 3rem; }
+  .lede { color:var(--dim); font-size:.95rem; max-width:66ch; margin-bottom:1.25rem; }
+  .top-tabs { display:flex; gap:.25rem; border-bottom:1px solid var(--border); margin-bottom:1.25rem; flex-wrap:wrap; }
+  .top-tabs button { font:inherit; font-size:.95rem; background:none; border:none; color:var(--dim); padding:.5rem .9rem; border-bottom:2px solid transparent; border-radius:0; cursor:pointer; }
+  .top-tabs button.on { color:var(--accent); border-bottom-color:var(--accent); font-weight:600; }
+  .view { display:none; } .view.on { display:block; }
+  .grid { display:grid; grid-template-columns:330px 1fr; gap:1.25rem; align-items:start; }
+  /* A grid item's default min-width:auto lets a wide table size the shared
+     track, and then the page is wider than the phone. */
+  .grid > * { min-width:0; }
+  @media (max-width:860px){ .grid { grid-template-columns:1fr; } }
+  .panel { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1rem 1.15rem; margin-bottom:1rem; }
+  .panel h2 { font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; margin-bottom:.7rem; }
+  label { display:block; font-size:.8rem; color:var(--dim); margin:.5rem 0 .2rem; }
+  select, input[type=text], input[type=number], textarea { width:100%; font:inherit; font-size:.9rem; padding:.4rem .5rem; border:1px solid var(--border); border-radius:6px; background:#fff; color:var(--text); }
+  textarea { font-family:var(--mono); font-size:.82rem; min-height:8.5rem; resize:vertical; }
+  input[type=file] { font-size:.85rem; max-width:100%; }
+  .row { display:flex; gap:.5rem; } .row > * { flex:1; min-width:0; }
+  button { font:inherit; font-size:.88rem; padding:.5rem .9rem; border-radius:6px; border:1px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer; margin-top:.6rem; }
+  button.secondary { background:#fff; color:var(--accent); }
+  .stat { display:inline-block; margin:.25rem 1.25rem .25rem 0; vertical-align:top; }
+  .stat b { display:block; font-size:1.4rem; font-family:Georgia,serif; font-weight:400; } .stat span { font-size:.75rem; color:var(--muted); }
+  table { border-collapse:collapse; width:100%; font-size:.84rem; margin:.5rem 0; }
+  th, td { text-align:right; padding:.3rem .5rem; border-bottom:1px solid var(--border); font-variant-numeric:tabular-nums; white-space:nowrap; }
+  th:first-child, td:first-child { text-align:left; } th { color:var(--dim); font-weight:600; font-size:.75rem; }
+  .tscroll { overflow:auto; max-width:100%; max-height:420px; }
+  .tscroll:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
+  .note { font-size:.82rem; color:var(--dim); margin-top:.5rem; max-width:70ch; }
+  .warn { background:#fff7ed; border:1px solid #fed7aa; color:#9a3412; padding:.5rem .7rem; border-radius:6px; font-size:.83rem; margin:.5rem 0; }
+  .ok { background:var(--accent-soft); color:var(--accent); padding:.5rem .7rem; border-radius:6px; font-size:.83rem; margin:.5rem 0; }
+  .mini { font-size:.78rem; color:var(--muted); } code { font-family:var(--mono); font-size:.8em; background:#f3f4f6; padding:.05em .3em; border-radius:3px; }
+  pre { font-family:var(--mono); font-size:.78rem; background:#f8f9fa; border:1px solid var(--border); border-radius:6px; padding:.6rem .8rem; white-space:pre-wrap; overflow-wrap:anywhere; color:var(--dim); }
+  ol.work { margin:.4rem 0 .2rem 1.2rem; font-size:.86rem; color:var(--dim); } ol.work li { margin-bottom:.3rem; } ol.work b { color:var(--text); font-variant-numeric:tabular-nums; }
+  .wrapt td:first-child { white-space:normal; }
+  footer { border-top:1px solid var(--border); padding:1.25rem; text-align:center; font-size:.8rem; color:var(--muted); }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>Robustness Value <small>Cinelli and Hazlett sensitivity to an omitted variable</small></h1>
+  <nav><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/robustness-value">Source</a></nav>
+</div></header>
+<main><div class="wrap">
+<p class="lede">A regression coefficient is causal only if nothing that drives both the treatment and the outcome was left out. This page takes three numbers from a regression table and says how strong a left-out variable would have to be to bring the estimate to zero, or to make it statistically insignificant.</p>
+<div class="grid">
+<div>
+  <div class="panel">
+    <h2>From the regression table</h2>
+    <label for="est">Coefficient on the treatment</label><input type="number" id="est" value="0.09731582" step="any">
+    <label for="se">Its standard error</label><input type="number" id="se" value="0.02325654" step="any" min="0">
+    <label for="df">Residual degrees of freedom</label><input type="number" id="df" value="783" step="1" min="2">
+    <p class="mini">Observations minus the number of coefficients estimated, the intercept included. The example is the effect of direct exposure to violence on support for peace in Darfur, from Hazlett (2020).</p>
+    <div class="row">
+      <div><label for="q">Share of the estimate to explain away</label><input type="number" id="q" value="1" step="0.05" min="0.01"></div>
+      <div><label for="alpha">Significance level</label><input type="number" id="alpha" value="0.05" step="0.01" min="0.001" max="0.5"></div>
+    </div>
+  </div>
+  <div class="panel">
+    <h2>A covariate to compare against (optional)</h2>
+    <label for="tD">Its t-statistic in the regression of the treatment on the controls</label><input type="number" id="tD" value="2.680" step="any">
+    <label for="dfD">Residual degrees of freedom of that regression</label><input type="number" id="dfD" value="784" step="1" min="2">
+    <label for="tY">Its t-statistic in the main regression</label><input type="number" id="tY" value="-9.789" step="any">
+    <div class="row">
+      <div><label for="kd">Times as strong, with the treatment</label><input type="number" id="kd" value="1" step="0.5" min="0"></div>
+      <div><label for="ky">Times as strong, with the outcome</label><input type="number" id="ky" value="1" step="0.5" min="0"></div>
+    </div>
+    <p class="mini">The example values give the bounds the paper reports for a confounder as strong as being female: 0.9% with the treatment and 12.5% with the outcome. Leave the t-statistics empty to skip this part.</p>
+  </div>
+</div>
+<div>
+  <div class="panel"><h2>How fragile is the estimate</h2><div id="out" aria-live="polite"></div></div>
+  <div class="panel" id="pB"><h2>If the confounder were like the covariate</h2><div id="bound" class="wrapt" aria-live="polite"></div></div>
+  <div class="panel"><h2>Adjusted t-statistic for a confounder of a given strength</h2>
+    <div class="tscroll" tabindex="0" role="region" aria-label="Adjusted t-statistic by confounder strength" id="grid"></div>
+    <p class="note">Rows: the share of the treatment's residual variation the confounder explains. Columns: the share of the outcome's residual variation it explains. Each cell is the t-statistic that would remain, assuming the confounder pulls the estimate toward zero.</p></div>
+  <div class="panel"><h2>Method and limits</h2>
+    <p class="note">Write f = t ÷ √df for the estimate. The partial R² of the treatment with the outcome is f² ÷ (1 + f²). The robustness value for a share q is RV = ½ (√(f<sub>q</sub>⁴ + 4 f<sub>q</sub>²) − f<sub>q</sub>²), with f<sub>q</sub> = q |f|. A confounder that explains RV of the residual variation in both the treatment and the outcome removes the share q of the estimate. One that explains less than RV in both cannot.</p>
+    <p class="note">The second robustness value asks for less: only that the confidence interval come to include the target. It replaces f<sub>q</sub> with f<sub>q</sub> minus the critical t-value at df − 1, divided by √(df − 1). When the estimate is very precise, with f<sub>q</sub> above the reciprocal of that critical ratio, the bound that constrains only the confounder's association with the treatment is tighter, and the value is (f<sub>q</sub>² − f*²) ÷ (1 + f<sub>q</sub>²).</p>
+    <p class="note">For a confounder with strengths R²<sub>D</sub> and R²<sub>Y</sub>, the bias is at most se × √df × √(R²<sub>Y</sub> R²<sub>D</sub> ÷ (1 − R²<sub>D</sub>)), and the standard error becomes se × √((1 − R²<sub>Y</sub>) ÷ (1 − R²<sub>D</sub>)) × √(df ÷ (df − 1)). The comparison with a covariate turns "k times as strong as this covariate" into those two strengths with the bounds in section 4.4 of the paper.</p>
+    <p class="note">The robustness value is a description of the estimate. It does not say whether such a confounder exists. That is an argument about the setting, and the covariate comparison is only as persuasive as the claim that the left-out variable is no stronger than the one named. The method covers one linear regression coefficient with conventional standard errors. With clustered or robust standard errors the page's answers use the t-statistic you enter and the degrees of freedom you enter, and no adjustment has been derived here for the number of clusters. It does not cover instrumental variables, logit or probit, or several confounders that each fall below the threshold and together exceed it, although the bounds do hold for a set of confounders taken as one.</p>
+    <p class="note">Sources: Carlos Cinelli and Chad Hazlett, "Making sense of sensitivity: extending omitted variable bias", <cite>Journal of the Royal Statistical Society: Series B</cite> 82(1), 2020, pages 39 to 67. Chad Hazlett, "Angry or weary? How violence impacts attitudes toward peace among Darfurian refugees", <cite>Journal of Conflict Resolution</cite> 64(5), 2020.</p>
+  </div>
+</div>
+</div>
+</div></main>
+<!-- share:start -->
+<aside class="xshare" aria-label="Share this tool"><span class="xshare-t">Share this tool</span><a class="xshare-l" href="https://wa.me/?text=Robustness%20Value%3A%20How%20strong%20a%20left-out%20variable%20must%20be%20to%20overturn%20a%20regression%20estimate.%0Ahttps%3A%2F%2Fidealogworks.foo%2Frobustness-value%2F" target="_blank" rel="noopener">WhatsApp</a><a class="xshare-l" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fidealogworks.foo%2Frobustness-value%2F" target="_blank" rel="noopener">LinkedIn</a><a class="xshare-l" href="https://twitter.com/intent/tweet?text=Robustness%20Value%3A%20How%20strong%20a%20left-out%20variable%20must%20be%20to%20overturn%20a%20regression%20estimate.&amp;url=https%3A%2F%2Fidealogworks.foo%2Frobustness-value%2F" target="_blank" rel="noopener">X</a><button type="button" class="xshare-l" data-xshare-copy data-url="https://idealogworks.foo/robustness-value/" hidden>Copy link</button><script>(function(){var b=document.currentScript.parentNode.querySelector('[data-xshare-copy]');if(!b||!navigator.clipboard)return;b.hidden=false;var u=b.getAttribute('data-url');b.addEventListener('click',function(){navigator.clipboard.writeText(u).then(function(){b.textContent='Link copied';setTimeout(function(){b.textContent='Copy link';},2000);});});})();</script></aside>
+<!-- share:end -->
+<!-- contact:start -->
+<p class="xcontact">Need help setting out your story, what sets your work apart, the context, the return on investment and the projections? Pinpoint Ventures can help. Write to <a href="mailto:hello@pinpointventures.in?subject=Enquiry%20from%20idealogworks.foo">hello@pinpointventures.in</a> or message on <a href="https://wa.me/919871777110?text=Hi%20Pinpoint%20Ventures%2C%20I%20found%20you%20through%20idealogworks.foo.%20I%27d%20like%20to%20discuss%20a%20research%20or%20advisory%20engagement." target="_blank" rel="noopener">WhatsApp</a>.</p>
+<!-- contact:end -->
+<footer>Part of <a href="../">Experiments</a> by Varna Sri Raman · Idealog Works · MIT licence · Computation in the browser.</footer>
+<script id="core">
+// The arithmetic of the page. It touches nothing on the page, so that
+// robustness-value/tests/core.mjs can run it under node.
+const RV = (() => {
+  function lgamma(x) {
+    const c = [76.18009172947146, -86.50532032941677, 24.01409824083091, -1.231739572450155, 0.1208650973866179e-2, -0.5395239384953e-5];
+    let y = x, t = x + 5.5; t -= (x + 0.5) * Math.log(t);
+    let s = 1.000000000190015;
+    for (let j = 0; j < 6; j++) s += c[j] / ++y;
+    return -t + Math.log(2.5066282746310005 * s / x);
+  }
+  // Regularised incomplete beta, by Lentz's continued fraction.
+  function betacf(a, b, x) {
+    const TINY = 1e-300;
+    let qab = a + b, qap = a + 1, qam = a - 1, c = 1, d = 1 - qab * x / qap;
+    if (Math.abs(d) < TINY) d = TINY; d = 1 / d; let h = d;
+    for (let m = 1; m <= 400; m++) {
+      const m2 = 2 * m;
+      let aa = m * (b - m) * x / ((qam + m2) * (a + m2));
+      d = 1 + aa * d; if (Math.abs(d) < TINY) d = TINY; c = 1 + aa / c; if (Math.abs(c) < TINY) c = TINY; d = 1 / d; h *= d * c;
+      aa = -(a + m) * (qab + m) * x / ((a + m2) * (qap + m2));
+      d = 1 + aa * d; if (Math.abs(d) < TINY) d = TINY; c = 1 + aa / c; if (Math.abs(c) < TINY) c = TINY; d = 1 / d;
+      const del = d * c; h *= del;
+      if (Math.abs(del - 1) < 1e-15) break;
+    }
+    return h;
+  }
+  function ibeta(a, b, x) {
+    if (x <= 0) return 0; if (x >= 1) return 1;
+    const bt = Math.exp(lgamma(a + b) - lgamma(a) - lgamma(b) + a * Math.log(x) + b * Math.log(1 - x));
+    return x < (a + 1) / (a + b + 2) ? bt * betacf(a, b, x) / a : 1 - bt * betacf(b, a, 1 - x) / b;
+  }
+  // Two-sided tail probability of Student's t.
+  const tTwoSided = (t, df) => ibeta(df / 2, 0.5, df / (df + t * t));
+  // The positive t with two-sided tail probability alpha, by bisection.
+  function tCrit(alpha, df) {
+    let lo = 0, hi = 1e3;
+    for (let i = 0; i < 200; i++) { const mid = (lo + hi) / 2; if (tTwoSided(mid, df) > alpha) lo = mid; else hi = mid; }
+    return (lo + hi) / 2;
+  }
+  const partialR2 = (t, df) => t * t / (t * t + df);
+  const bf = fq => 0.5 * (Math.sqrt(Math.pow(fq, 4) + 4 * fq * fq) - fq * fq);
+  // alpha = 1 gives the value for the point estimate.
+  function rv(t, df, q = 1, alpha = 1) {
+    const fq = q * Math.abs(t / Math.sqrt(df));
+    if (alpha >= 1) return bf(fq);
+    const fcrit = tCrit(alpha, df - 1) / Math.sqrt(df - 1);
+    const fqa = fq - fcrit;
+    if (fqa <= 0) return 0;
+    if (fq > 1 / fcrit) return (fq * fq - fcrit * fcrit) / (1 + fq * fq);
+    return bf(fqa);
+  }
+  // The largest bias a confounder of these strengths can cause, and what
+  // remains when it works against the estimate.
+  function adjust(est, se, df, r2dz, r2yz, alpha = 0.05) {
+    if (!(r2dz >= 0 && r2dz < 1) || !(r2yz >= 0 && r2yz <= 1)) return null;
+    const bias = se * Math.sqrt(df) * Math.sqrt(r2yz * r2dz / (1 - r2dz));
+    const adjEst = Math.sign(est) * (Math.abs(est) - bias);
+    const adjSe = se * Math.sqrt((1 - r2yz) / (1 - r2dz)) * Math.sqrt(df / (df - 1));
+    const tc = tCrit(alpha, df - 1);
+    return { bias, est: adjEst, se: adjSe, t: adjEst / adjSe, lo: adjEst - tc * adjSe, hi: adjEst + tc * adjSe };
+  }
+  // Strengths of a confounder kd and ky times as strong as a covariate whose
+  // partial R2 with the treatment is r2dxj and with the outcome r2yxj.
+  function bound(r2dxj, r2yxj, kd = 1, ky = 1) {
+    const r2dz = kd * r2dxj / (1 - r2dxj);
+    if (!(r2dz < 1)) return { error: 'A confounder this many times as strong as the covariate would explain all of the treatment.' };
+    const r2zxj = kd * r2dxj * r2dxj / ((1 - kd * r2dxj) * (1 - r2dxj));
+    if (!(r2zxj < 1)) return { error: 'The comparison is impossible at this strength.' };
+    let r2yz = Math.pow((Math.sqrt(ky) + Math.sqrt(r2zxj)) / Math.sqrt(1 - r2zxj), 2) * r2yxj / (1 - r2yxj);
+    const capped = r2yz > 1; if (capped) r2yz = 1;
+    return { r2dz, r2yz, capped };
+  }
+  function summary(est, se, df, q = 1, alpha = 0.05) {
+    const t = est / se;
+    return { t, f: t / Math.sqrt(df), r2yd: partialR2(t, df), rv: rv(t, df, q, 1), rva: rv(t, df, q, alpha), p: tTwoSided(Math.abs(t), df) };
+  }
+  return { lgamma, ibeta, tTwoSided, tCrit, partialR2, rv, adjust, bound, summary };
+})();
+if (typeof module !== 'undefined') module.exports = RV;
+</script>
+<script>
+const $ = s => document.querySelector(s);
+const pc = v => (v * 100).toFixed(1) + '%';
+const num = id => { const v = $(id).value; return v === '' ? NaN : +v; };
+function render() {
+  const est = num('#est'), se = num('#se'), df = num('#df'), q = num('#q'), alpha = num('#alpha');
+  if (!(se > 0) || !(df >= 2) || !isFinite(est) || !(q > 0) || !(alpha > 0 && alpha < 1)) { $('#out').innerHTML = '<p class="warn">Enter a coefficient, a positive standard error and at least 2 degrees of freedom.</p>'; $('#bound').innerHTML = ''; $('#grid').innerHTML = ''; return; }
+  const s = RV.summary(est, se, df, q, alpha);
+  const share = q === 1 ? 'all of the estimate' : pc(q) + ' of the estimate';
+  $('#out').innerHTML = `<div class="stat"><b>${pc(s.rv)}</b><span>robustness value</span></div><div class="stat"><b>${pc(s.rva)}</b><span>robustness value at ${alpha}</span></div><div class="stat"><b>${pc(s.r2yd)}</b><span>partial R² of the treatment</span></div><div class="stat"><b>${s.t.toFixed(2)}</b><span>t-statistic</span></div>
+  <ol class="work"><li>A confounder would have to explain <b>${pc(s.rv)}</b> of the residual variation in the treatment and in the outcome to remove ${share}.</li>
+  <li>${s.rva > 0 ? `It would have to explain <b>${pc(s.rva)}</b> of both for the estimate to stop being significant at ${alpha}.` : `The estimate is already not significant at ${alpha}, so the second value is zero.`}</li>
+  <li>Even a confounder that explained all of the remaining variation in the outcome would need to explain <b>${pc(s.r2yd)}</b> of the treatment to remove the whole estimate.</li></ol>`;
+  const tD = num('#tD'), dfD = num('#dfD'), tY = num('#tY'), kd = num('#kd'), ky = num('#ky');
+  if (isFinite(tD) && isFinite(tY) && dfD >= 2 && kd >= 0 && ky >= 0) {
+    const rd = RV.partialR2(tD, dfD), ry = RV.partialR2(tY, df), b = RV.bound(rd, ry, kd, ky);
+    if (b.error) $('#bound').innerHTML = `<p class="warn">${b.error}</p>`;
+    else {
+      const a = RV.adjust(est, se, df, b.r2dz, b.r2yz, alpha);
+      $('#bound').innerHTML = `<table><thead><tr><th scope="col">Quantity</th><th scope="col">Value</th></tr></thead><tbody>
+      <tr><td>Covariate's partial R² with the treatment</td><td>${pc(rd)}</td></tr><tr><td>Covariate's partial R² with the outcome</td><td>${pc(ry)}</td></tr>
+      <tr><td>Confounder's bound with the treatment</td><td>${pc(b.r2dz)}</td></tr><tr><td>Confounder's bound with the outcome</td><td>${pc(b.r2yz)}${b.capped ? ' (capped)' : ''}</td></tr>
+      <tr><td>Adjusted estimate</td><td>${a.est.toPrecision(4)}</td></tr><tr><td>Adjusted standard error</td><td>${a.se.toPrecision(4)}</td></tr><tr><td>Adjusted t-statistic</td><td>${a.t.toFixed(2)}</td></tr>
+      <tr><td>${pc(1 - alpha)} interval</td><td>${a.lo.toPrecision(4)} to ${a.hi.toPrecision(4)}</td></tr></tbody></table>
+      <p class="note">${b.r2dz < s.rva && b.r2yz < s.rva ? 'Both bounds are below the robustness value, so a confounder of this strength leaves the estimate significant.' : Math.sign(a.lo) === Math.sign(a.hi) && Math.sign(a.est) === Math.sign(est) ? 'A confounder of this strength shrinks the estimate and leaves it significant.' : 'A confounder of this strength is enough to make the estimate insignificant or to reverse it.'}</p>`;
+    }
+  } else $('#bound').innerHTML = '<p class="note">Enter the covariate\'s two t-statistics to compare.</p>';
+  const lv = [0.01, 0.02, 0.05, 0.1, 0.2, 0.3];
+  $('#grid').innerHTML = `<table><thead><tr><th scope="col">Treatment \\ outcome</th>${lv.map(y => `<th scope="col">${pc(y)}</th>`).join('')}</tr></thead><tbody>${lv.map(d => `<tr><th scope="row" style="text-align:left">${pc(d)}</th>${lv.map(y => `<td>${RV.adjust(est, se, df, d, y, alpha).t.toFixed(2)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+}
+for (const id of ['est', 'se', 'df', 'q', 'alpha', 'tD', 'dfD', 'tY', 'kd', 'ky']) $('#' + id).addEventListener('input', render);
+render();
+</script>
+<script src="../js/dyslexia-font.js" data-accent="var(--purple2)" data-radius="99px" defer></script>
+</body>
+</html>

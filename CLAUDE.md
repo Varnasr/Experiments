@@ -2,7 +2,7 @@
 
 Shared engineering standard: @.claude/engineering-standards.md. It applies to all work in this repository. This file adds what is specific to the project, and wins where the two disagree.
 
-Twenty-five browser tools for development economics, law and data work, each a
+Twenty-nine browser tools for development economics, law and data work, each a
 self-contained page: causal workbench, RCT planner, sampling design, trial checks, poverty and inequality,
 wage gap, fiscal incidence, multidimensional poverty, women's indicators, heat exposure, air quality, court translator,
 court filing formatter, petition builder, statutory interest, land acquisition,
@@ -24,6 +24,11 @@ node sampling-design/tests/core.mjs  # the sampling arithmetic against outside v
 node fiscal-incidence/tests/core.mjs # the incidence arithmetic against outside values, run by CI
 node trial-checks/tests/core.mjs     # multiple-testing and bounds arithmetic, run by CI
 node mpi-calculator/tests/core.mjs   # the Alkire-Foster arithmetic, run by CI
+node causal-workbench/tests/core.mjs # TWFE, wild cluster bootstrap and Bacon decomposition, run by CI
+node robustness-value/tests/core.mjs # robustness value against the Darfur numbers and scipy, run by CI
+node care-valuation/tests/core.mjs   # the valuation, and the data file against MoSPI's figures, run by CI
+node anthro-zscores/tests/core.mjs   # z-scores against 360 values WHO prints, run by CI
+node rupee-converter/tests/core.mjs  # CPI and PPP conversions, and the data file against its CSVs, run by CI
 python3 -m http.server 8000        # then open http://localhost:8000
 ```
 
@@ -272,6 +277,53 @@ passed at first, because 1/6 + 1/6 is exactly 1/3 in floating point and the
 example never falls short of a cutoff. **A tolerance needs a test built to
 need it**: 0.7 + 0.1 + 0.1 + 0.1 is 0.9999999999999999, and that is what the
 test now uses.
+
+`causal-workbench` was split the same way on 2026-11-11: its linear algebra,
+`olsCluster`, `demeanTwoWay`, the wild cluster bootstrap and the Goodman-Bacon
+decomposition sit in `<script id="core">`, and the rest of the page uses them
+as globals. `causal-workbench/tests/core.mjs` compares them with Python on
+the two panels in `causal-workbench/tests/`. The bootstrap counts the sign
+patterns that reproduce the original t, so its p-value is never zero; the
+`wildboottest` package leaves them out, and the two differ by exactly 2/2^G.
+A browser check of the staggered case first toggled the wrong control and
+reported an empty decomposition table as a pass. **Assert that the thing
+under test is on the page before reading anything else from it.**
+
+Four more arrived on 2026-11-11 with the same split: `robustness-value`,
+`care-valuation`, `anthro-zscores` and `rupee-converter`. Forty-seven faults
+were injected across the four and each one fails. One passed at first: the
+standard error of the care minutes was read from the wrong column and no
+check looked at it.
+
+**Three of the four carry data, and the data is a snapshot.** None of them
+calls an API from the browser, so `connect-src` did not change and the count
+of public data APIs on the landing page is still five. Each loads a
+`data/*.js` file that sets one property on `window`, and each test compares
+that file with the source files beside it, so a hand edit to one and not the
+other fails. To refresh: PLFS and CPI through the MoSPI connector, the PPP
+factors from `api.worldbank.org`, then rebuild the `.js` file.
+
+**The MoSPI connector returns TUS indicator 8 for All India only.** Every
+state code comes back empty, for 2024 and 2019. The state minutes in
+`care-valuation` were therefore computed from the unit-level file with
+`care-valuation/tools/tus_minutes.py`. MoSPI distributes that file in Nesstar
+format, which has no published specification; the script's docstring records
+the layout it relies on. The script refuses to write anything unless its
+all-India results equal the eight figures the connector returns, and its
+output is byte for byte the `min` entries in `care-data.js`. The unit-level
+file is not in the repository and must not be added: it is 899 MB and it is
+row-level survey data.
+
+**Two choices in that script are the owner's to confirm.** Weights are MULT
+as released. Dividing by NSC gives the same all-India figures and moves a
+state's domestic minutes by at most 6. And the CPI join in `rupee-converter`
+is the ratio of the two series' 2025 averages, 1.8985; whether MoSPI has
+published a linking factor of its own was not checked.
+
+`robustness-value` was chosen over Oster's delta because delta's reference
+implementation is Stata's `psacalc`, which could not be run. The default
+covariate example on that page uses t-statistics derived from the bounds the
+paper reports, and its README says so.
 
 A new tool's card gets its dates only after the tool has a commit, because
 `scripts/card-dates.py` reads them from git: commit the tool, run the script,
