@@ -83,11 +83,15 @@
   footer { border-top:1px solid var(--border); padding:1.25rem; text-align:center; font-size:.8rem; color:var(--muted); }
   :fullscreen .stage { border-radius:0; min-height:100vh; padding:2vh 2vw; }
 </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/tool.css">
 </head>
 <body>
 <header><div class="wrap">
   <h1>Flipbook Maker <small>a PDF into a page-turning book, and one file you can host</small></h1>
-  <nav><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/flipbook">Source</a></nav>
+  <nav data-dyslexia-slot><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/flipbook">Source</a></nav>
 </div></header>
 <main><div class="wrap">
 <p class="lede">Drop a PDF. Each page is drawn to an image in this browser, the pages are bound into a book with a cover and facing spreads that turn under the mouse or a finger, and the result can be exported as a single HTML file with the pages and the page-turn engine inside it. That file works offline, opens on a phone, and can be put on any web host or sent as an attachment. Nothing is uploaded anywhere; the only network requests are for the two open-source libraries the page loads, PDF.js and StPageFlip.</p>
@@ -218,5 +222,6 @@ var t;window.addEventListener('resize',function(){clearTimeout(t);t=setTimeout(b
 <\/script><script src="../js/dyslexia-font.js" data-accent="var(--purple2)" data-radius="99px" defer><\/script>
 </body></html>`; }
 </script>
+<script src="../js/tool.js" defer></script>
 </body>
 </html>

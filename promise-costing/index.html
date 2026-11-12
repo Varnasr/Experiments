@@ -84,11 +84,15 @@
   footer { border-top:1px solid var(--border); padding:1.25rem; text-align:center; font-size:.8rem; color:var(--muted); }
   @media print { header nav, .btns, footer, .tip { display:none; } .grid { grid-template-columns:1fr; } body { background:#fff; } }
 </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/tool.css">
 </head>
 <body>
 <header><div class="wrap">
   <h1>Manifesto Promise Costing <small>what the promises add up to, against the state's own budget</small></h1>
-  <nav><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/promise-costing">Source</a></nav>
+  <nav data-dyslexia-slot><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/promise-costing">Source</a></nav>
 </div></header>
 <main><div class="wrap">
 <p class="lede">A manifesto promise has a cost that is rarely written down: so many households, times the share that will claim, times the amount each gets, every year. This page does that arithmetic. Enter each promise as a range for beneficiaries, uptake and unit cost, enter the state's fiscal aggregates from its own budget or the RBI's <em>State Finances: A Study of Budgets</em>, and the page returns the annual bill as a share of revenue receipts, expenditure and GSDP, the fiscal deficit it implies against the 3 per cent norm, a Monte Carlo band from the ranges, and a tornado showing which assumption drives the total. The example is illustrative, with round numbers labelled as such.</p>
@@ -201,6 +205,7 @@ function tornadoChart(items,base){ const W=760,rh=22,m={l:300,r:70,t:10,b:24},pw
 $('#run').onclick=run;
 { let j=null; try{ j=JSON.parse(localStorage.getItem(KEY)); }catch(e){} if(j&&Array.isArray(j.P)&&j.P.length){ P=j.P; loadFiscal(j.fiscal); renderP(); run(); } else { $('#example').click(); } }
 </script>
+<script src="../js/tool.js" defer></script>
 <script src="../js/dyslexia-font.js" data-accent="var(--purple2)" data-radius="99px" defer></script>
 </body>
 </html>

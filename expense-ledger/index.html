@@ -85,11 +85,15 @@
   footer { border-top:1px solid var(--border); padding:1.25rem; text-align:center; font-size:.8rem; color:var(--muted); }
   @media print { header nav, .btns, footer, .grid > div:first-child, .tip { display:none; } .grid { grid-template-columns:1fr; } .tscroll { max-height:none; overflow:visible; } body { background:#fff; } }
 </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/tool.css">
 </head>
 <body>
 <header><div class="wrap">
   <h1>Election Expenditure Ledger <small>a candidate's running account against the ceiling</small></h1>
-  <nav><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/expense-ledger">Source</a></nav>
+  <nav data-dyslexia-slot><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/expense-ledger">Source</a></nav>
 </div></header>
 <main><div class="wrap">
 <p class="lede">Section 77 of the Representation of the People Act 1951 makes every candidate keep a separate and correct account of election expenses from the date of nomination to the date the result is declared, and Rule 90 of the Conduct of Elections Rules 1961 caps the total. This page keeps that account: enter each expense as it happens, and the ledger shows the total by head, how fast the money is going, where the campaign will land on counting day at the present rate, and the date by which the account must be lodged. Everything stays in this browser. Export the CSV for the expenditure observer or the election agent.</p>
@@ -208,6 +212,7 @@ function chart(E,ceil,nom,res,rate,elapsed,span){ if(!E.length) return '<p class
 }
 load(); $('#eDate').value=new Date().toISOString().slice(0,10); render();
 </script>
+<script src="../js/tool.js" defer></script>
 <script src="../js/dyslexia-font.js" data-accent="var(--purple2)" data-radius="99px" defer></script>
 </body>
 </html>

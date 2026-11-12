@@ -71,11 +71,15 @@
   ol.work { margin:.4rem 0 .2rem 1.2rem; font-size:.86rem; color:var(--dim); } ol.work li { margin-bottom:.3rem; } ol.work b { color:var(--text); font-variant-numeric:tabular-nums; }
   footer { border-top:1px solid var(--border); padding:1.25rem; text-align:center; font-size:.8rem; color:var(--muted); }
 </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/tool.css">
 </head>
 <body>
 <header><div class="wrap">
   <h1>Sampling Design <small>sample size · allocation across strata · PPS draw of clusters</small></h1>
-  <nav><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/sampling-design">Source</a></nav>
+  <nav data-dyslexia-slot><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/sampling-design">Source</a></nav>
 </div></header>
 <main><div class="wrap">
 <p class="lede">Three steps a descriptive survey needs before fieldwork. How many interviews give the precision you want once clustering and non-response are allowed for. How to divide them between strata. Which clusters to visit, drawn with probability proportional to size from your own list, with the weight each interview will carry. Every number is shown with its working.</p>
@@ -535,6 +539,7 @@ $('#drawGo').addEventListener('click', doDraw);
 $('#dlDraw').addEventListener('click', () => lastDraw && save('selected-clusters.csv', lastDraw.csv, 'text/csv'));
 $('#dlRec').addEventListener('click', () => lastDraw && save('sampling-record.txt', lastDraw.rec, 'text/plain'));
 </script>
+<script src="../js/tool.js" defer></script>
 <script src="../js/dyslexia-font.js" data-accent="var(--purple2)" data-radius="99px" defer></script>
 </body>
 </html>
