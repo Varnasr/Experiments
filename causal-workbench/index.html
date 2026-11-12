@@ -95,11 +95,15 @@
   .pill { display:inline-block; font-size:.7rem; padding:1px 7px; border-radius:99px; background:var(--accent-soft); color:var(--accent); font-weight:600; margin-left:.4rem; vertical-align:middle; }
   footer { border-top:1px solid var(--border); padding:1.25rem; text-align:center; font-size:.8rem; color:var(--muted); }
 </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/tool.css">
 </head>
 <body>
 <header><div class="wrap">
   <h1>Causal Inference Workbench <small>DiD · event study · synthetic control · regression discontinuity</small></h1>
-  <nav><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/causal-workbench">Source</a></nav>
+  <nav data-dyslexia-slot><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/causal-workbench">Source</a></nav>
 </div></header>
 
 <main><div class="wrap">
@@ -617,6 +621,7 @@ $('#rdRun').onclick=runRD; $('#rdBw').onchange=()=>{ if(RD) runRD(); };
 $('#rdSimGo').click();
 $('#simGo').click();
 </script>
+<script src="../js/tool.js" defer></script>
 <script src="../js/dyslexia-font.js" data-accent="var(--purple2)" data-radius="99px" defer></script>
 </body>
 </html>

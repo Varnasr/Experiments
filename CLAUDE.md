@@ -172,6 +172,44 @@ trusting the degraded run: `chromium` with `ctx.route('**://cdnjs.cloudflare.com
 returning a stub `Chart` is enough to make `hyd-sir` render its 199-row list,
 and that is how the fix above was verified before pushing.
 
+## The tool pages share one stylesheet, loaded after their own
+
+Until 2026-11-12 each tool page carried its whole look in its own `<style>`
+block, in a green and grey that matched nothing on the landing page, and on a
+phone every one of them had the same four faults: a header that spent 140
+pixels on a title and a subtitle wrapped mid-phrase, eight to twelve lines of
+explanation before the first field, fields under 16px and about 30px high
+(iOS zooms the page when a field under 16px takes focus), and the font button
+floating over labels at the bottom left. The owner found it, not a check:
+nothing scrolled sideways and axe was green.
+
+`css/tool.css` now carries the look for the 26 pages on the common template
+(`<header><div class="wrap"><h1>… <small>…</small></h1><nav>…`, `.lede`,
+`.panel`). It is linked last in each page's `<head>`, so a rule in it wins
+over the same selector in the page. It sets the landing page's palette and
+type, 16px and 46px-high fields, and a first table column that stays in view
+on a phone. `js/tool.js` folds `.lede` to two lines below 700px behind a
+"Read more" button; without the script the text shows in full. The nav carries
+`data-dyslexia-slot`, which is how `js/dyslexia-font.js` puts its button in
+the band. `alab`, `kundendu-worksheets` and `court-translator` have their own
+layouts and do not load either file.
+
+A new tool page needs the four `<link>` lines before `</head>`, the attribute
+on its nav, and `<script src="../js/tool.js" defer></script>`. Three things
+went wrong in the sweep and are worth not repeating:
+
+- **`flipbook` again.** Its only `dyslexia-font.js` tag is inside the template
+  literal that builds the exported book, so a script tag inserted "before the
+  dyslexia script" landed in the template with an unescaped `</script>` and
+  cut the page's own script in two. `scripts/check-inline-js.mjs` caught it.
+  The fold script goes before the page's real `</body>`.
+- **A page's own button variants sit on the new fill.** `button.danger` is red
+  text, which on the purple fill is 2.4:1; the stylesheet puts it back on
+  white. axe caught it on three pages.
+- **The custom properties are overridden, not replaced.** Each page still
+  declares its own `--accent`; `tool.css` declares it again later. A colour a
+  page writes as a literal, not through a token, keeps its old value.
+
 ## Link previews, search tags and the share row come from one file
 
 `scripts/seo/tools.json` holds each tool's name and a one-line tagline.

@@ -89,11 +89,15 @@
      table: that drops its table semantics from the accessibility tree. */
   .twrap { overflow-x:auto; max-width:100%; }
 </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/tool.css">
 </head>
 <body>
 <header><div class="wrap">
   <h1>Petition Builder <small>representations, memoranda and petitions in the accepted form</small></h1>
-  <nav><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/petition-builder">Source</a></nav>
+  <nav data-dyslexia-slot><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/petition-builder">Source</a></nav>
 </div></header>
 <main><div class="wrap">
 <p class="lede">A petition is a document with a shape: who it is addressed to, who sends it, what it concerns, the facts, the grounds, and what is asked for, followed by the people who put their names to it. Officials read the shape before they read the words, and a petition that lacks it is easier to set aside. This page builds the document from its parts, in the form used for a representation to a public authority, a petition to Parliament or a state assembly, a memorandum to a minister or legislator, or a petition to a court registry or a professional body. Everything stays in this browser; the shareable link carries the draft in the address itself, so it can be passed to co-signatories without a server.</p>
@@ -217,6 +221,7 @@ $('#example').onclick=()=>{ if(($('#subject').value||S.sigs.length)&&!confirm('R
   if(!o){ try{ o=JSON.parse(localStorage.getItem(KEY)); }catch(e){} }
   if(o) apply(o); else { $('#date').value=new Date().toISOString().slice(0,10); renderSigs(); render(); } }
 </script>
+<script src="../js/tool.js" defer></script>
 <script src="../js/dyslexia-font.js" data-accent="var(--purple2)" data-radius="99px" defer></script>
 </body>
 </html>

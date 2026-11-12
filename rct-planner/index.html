@@ -77,11 +77,15 @@
   .sig { color:#b91c1c; font-weight:600; }
   footer { border-top:1px solid var(--border); padding:1.25rem; text-align:center; font-size:.8rem; color:var(--muted); }
 </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/tool.css">
 </head>
 <body>
 <header><div class="wrap">
   <h1>RCT Planner <small>power · minimum detectable effect · stratified randomisation</small></h1>
-  <nav><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/rct-planner">Source</a></nav>
+  <nav data-dyslexia-slot><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/rct-planner">Source</a></nav>
 </div></header>
 <main><div class="wrap">
 <p class="lede">Two things every field trial needs before it starts and rarely has in one place: an answer to “how small an effect could we detect with this sample?”, allowing for clustering, attrition, imperfect take-up and the number of outcomes; and a randomisation that is stratified, seeded, reproducible and documented, with a balance table produced at the moment of the draw. Both run in the browser. The baseline you upload for randomising never leaves it.</p>
@@ -270,6 +274,7 @@ $('#dlAssign').onclick=()=>{ if(!assign) return; const q=s=>'"'+String(s??'').re
 $('#dlRec').onclick=()=>dl(record,'randomisation-record.txt','text/plain');
 function dl(content,name,type){ const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([content],{type})); a.download=name; a.click(); }
 </script>
+<script src="../js/tool.js" defer></script>
 <script src="../js/dyslexia-font.js" data-accent="var(--purple2)" data-radius="99px" defer></script>
 </body>
 </html>

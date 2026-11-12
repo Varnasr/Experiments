@@ -71,11 +71,15 @@
   ol.work { margin:.4rem 0 .2rem 1.2rem; font-size:.86rem; color:var(--dim); } ol.work li { margin-bottom:.3rem; } ol.work b { color:var(--text); font-variant-numeric:tabular-nums; }
   footer { border-top:1px solid var(--border); padding:1.25rem; text-align:center; font-size:.8rem; color:var(--muted); }
 </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/tool.css">
 </head>
 <body>
 <header><div class="wrap">
   <h1>Child Growth z-scores <small>WHO 2006 standards · birth to five years</small></h1>
-  <nav><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/anthro-zscores">Source</a></nav>
+  <nav data-dyslexia-slot><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/anthro-zscores">Source</a></nav>
 </div></header>
 <main><div class="wrap">
 <p class="lede">How far a child's weight and height sit from the median of the WHO 2006 Child Growth Standards, in standard deviations. Enter one child, or paste a list and get the share stunted, wasted and underweight. The measurements stay in this page.</p>
@@ -260,6 +264,7 @@ for (const id of ['sex', 'ageU', 'age', 'wt', 'ht', 'how']) $('#' + id).addEvent
 $('#run').addEventListener('click', list);
 one();
 </script>
+<script src="../js/tool.js" defer></script>
 <script src="../js/dyslexia-font.js" data-accent="var(--purple2)" data-radius="99px" defer></script>
 </body>
 </html>

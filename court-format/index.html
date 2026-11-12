@@ -77,11 +77,15 @@
   ul.plain li { margin:.2rem 0; }
   footer { border-top:1px solid var(--border); padding:1.25rem; text-align:center; font-size:.8rem; color:var(--muted); }
 </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/tool.css">
 </head>
 <body>
 <header><div class="wrap">
   <h1>Court Filing Formatter <small>a Word file set to a court's paper rules, in the browser</small></h1>
-  <nav><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/court-format">Source</a></nav>
+  <nav data-dyslexia-slot><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/court-format">Source</a></nav>
 </div></header>
 <main><div class="wrap">
 <p class="lede">Since 2020 the Supreme Court, and after it a run of High Courts, have required filings on A4 with a fixed font, size, line spacing and margins, and a draft written in Word's defaults meets none of them. Open a .docx here, pick the court, and the page rewrites the page setup and the type, sets quotations and indented matter in the smaller single-spaced size the rules ask for, and shows what it found and what it changed. The file is read and rewritten in this browser tab and is not uploaded anywhere.</p>
@@ -552,6 +556,7 @@ $('#go').addEventListener('click', onGo);
 $('#optIndent').addEventListener('change', () => loaded && renderAudit());
 renderRule();
 </script>
+<script src="../js/tool.js" defer></script>
 <script src="../js/dyslexia-font.js" data-accent="var(--accent)" data-radius="99px" defer></script>
 </body>
 </html>

@@ -73,11 +73,15 @@
   .pill { display:inline-block; font-size:.7rem; padding:1px 7px; border-radius:99px; background:var(--accent-soft); color:var(--accent); font-weight:600; margin-left:.4rem; vertical-align:middle; text-transform:none; letter-spacing:0; }
   footer { border-top:1px solid var(--border); padding:1.25rem; text-align:center; font-size:.8rem; color:var(--muted); }
 </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/tool.css">
 </head>
 <body>
 <header><div class="wrap">
   <h1>Heat and Outdoor Work <small>WBGT · safe hours · wages lost · 35-year trend</small></h1>
-  <nav><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/heat-exposure">Source</a></nav>
+  <nav data-dyslexia-slot><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/heat-exposure">Source</a></nav>
 </div></header>
 <main><div class="wrap">
 <p class="lede">Heat takes hours and wages from outdoor workers long before it puts anyone in a clinic. The people who work through an Indian summer, on farms, at brick kilns, on construction sites and on public-works schemes where women are most of the workforce, lose hours, wages and safety as the wet-bulb globe temperature climbs. This page takes live weather for any place in India, estimates WBGT hour by hour, applies the occupational screening limits by workload, and reports how many working hours are safe each day this week, what the lost hours cost, and how the count of dangerous-heat days has changed since 1991.</p>
@@ -175,6 +179,7 @@ function trendChart(yrs,over,sev,t){ const W=760,H=240,m={l:44,r:16,t:14,b:30},p
   yrs.forEach((y,i)=>{ const x=X(y)-bw/2; g+=`<rect x="${x+1}" y="${Y(over[i])}" width="${Math.max(bw-2,1)}" height="${Y(0)-Y(over[i])}" fill="var(--s2)" opacity=".75" data-tip="${y}: ${over[i]} days above the continuous-work limit, ${sev[i]} above the almost-no-work limit"/><rect x="${x+1}" y="${Y(sev[i])}" width="${Math.max(bw-2,1)}" height="${Y(0)-Y(sev[i])}" fill="#e11d48" data-tip="${y}: ${sev[i]} days above the almost-no-work limit"/>`; if(y%5===0) g+=`<text x="${X(y)}" y="${H-m.b+16}" text-anchor="middle">${y}</text>`; });
   g+=`<line x1="${X(yrs[0])}" y1="${Y(t.a+t.b*yrs[0])}" x2="${X(yrs[yrs.length-1])}" y2="${Y(t.a+t.b*yrs[yrs.length-1])}" stroke="#4b5563" stroke-width="2" stroke-dasharray="5 4"/>`; return g+'</svg>'; }
 </script>
+<script src="../js/tool.js" defer></script>
 <script src="../js/dyslexia-font.js" data-accent="var(--purple2)" data-radius="99px" defer></script>
 </body>
 </html>

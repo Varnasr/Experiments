@@ -3,7 +3,7 @@
    on below 700px, so a wide screen shows the whole text and the button stays
    hidden. Without this script the text is simply shown in full. */
 (function () {
-  var lede = document.querySelector('main .lede');
+  var lede = document.querySelector('.lede');
   if (!lede) return;
   if (!lede.id) lede.id = 'lede';
   var btn = document.createElement('button');

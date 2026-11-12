@@ -71,11 +71,15 @@
   .pill { display:inline-block; font-size:.7rem; padding:1px 7px; border-radius:99px; background:var(--accent-soft); color:var(--accent); font-weight:600; margin-left:.4rem; vertical-align:middle; text-transform:none; letter-spacing:0; }
   footer { border-top:1px solid var(--border); padding:1.25rem; text-align:center; font-size:.8rem; color:var(--muted); }
 </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/tool.css">
 </head>
 <body>
 <header><div class="wrap">
   <h1>Women in the NFHS <small>state rankings · change between rounds · who is left behind</small></h1>
-  <nav><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/women-indicators">Source</a></nav>
+  <nav data-dyslexia-slot><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/women-indicators">Source</a></nav>
 </div></header>
 <main><div class="wrap">
 <p class="lede">India's National Family Health Survey is the country's main evidence on women's health, work, assets, agency and safety. This page pulls any of its indicators live from the DHS Program API, for every state and every round since 1992–93, and shows three things at once: where each state stands, how far it has moved since the previous round, and which women, by wealth, residence, education and age, are behind the average. Nothing here is typed in by hand; every number arrives from the API with its survey and denominator.</p>
@@ -192,6 +196,7 @@ $('#ind').onchange=()=>load($('#ind').value); $('#indGo').onclick=()=>{ const v=
 $('#dl').onclick=()=>{ const q=s=>'"'+String(s??'').replace(/"/g,'""')+'"'; const csv=['survey,round,category,label,value,n_weighted,n_unweighted',...rows.map(r=>[r.SurveyId,ROUND[r.SurveyId]||'',r.CharacteristicCategory,r.CharacteristicLabel,r.Value,r.DenominatorWeighted,r.DenominatorUnweighted].map(q).join(','))].join('\n'); const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'})); a.download=`nfhs-${meta.id}.csv`; a.click(); };
 load($('#ind').value);
 </script>
+<script src="../js/tool.js" defer></script>
 <script src="../js/dyslexia-font.js" data-accent="var(--purple2)" data-radius="99px" defer></script>
 </body>
 </html>

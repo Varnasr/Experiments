@@ -72,11 +72,15 @@
   .wrapt td:first-child { white-space:normal; }
   footer { border-top:1px solid var(--border); padding:1.25rem; text-align:center; font-size:.8rem; color:var(--muted); }
 </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/tool.css">
 </head>
 <body>
 <header><div class="wrap">
   <h1>Robustness Value <small>Cinelli and Hazlett sensitivity to an omitted variable</small></h1>
-  <nav><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/robustness-value">Source</a></nav>
+  <nav data-dyslexia-slot><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/robustness-value">Source</a></nav>
 </div></header>
 <main><div class="wrap">
 <p class="lede">A regression coefficient is causal only if nothing that drives both the treatment and the outcome was left out. This page takes three numbers from a regression table and says how strong a left-out variable would have to be to bring the estimate to zero, or to make it statistically insignificant.</p>
@@ -242,6 +246,7 @@ function render() {
 for (const id of ['est', 'se', 'df', 'q', 'alpha', 'tD', 'dfD', 'tY', 'kd', 'ky']) $('#' + id).addEventListener('input', render);
 render();
 </script>
+<script src="../js/tool.js" defer></script>
 <script src="../js/dyslexia-font.js" data-accent="var(--purple2)" data-radius="99px" defer></script>
 </body>
 </html>

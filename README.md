@@ -503,6 +503,8 @@ Projects in this repo follow a simple lifecycle:
 ```
 Experiments/
 ├── index.html                          # Experiments index page
+├── css/tool.css                        # the look the tool pages share, loaded after their own styles
+├── js/tool.js                          # folds a tool page's opening text to two lines on a phone
 ├── causal-workbench/                   # DiD, event study, synthetic control
 ├── poverty-inequality/                 # Lorenz curves, FGT, Datt–Ravallion, live PIP
 ├── survey-audit/                       # field-data quality checks

@@ -81,11 +81,15 @@
   .sg b { display:block; font-size:.95rem; color:var(--text); font-weight:600; margin:.2rem 0; }
   footer { border-top:1px solid var(--border); padding:1.25rem; text-align:center; font-size:.8rem; color:var(--muted); }
 </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/tool.css">
 </head>
 <body>
 <header><div class="wrap">
   <h1>Survey Data Auditor <small>field-data quality checks, in the browser</small></h1>
-  <nav><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/survey-audit">Source</a></nav>
+  <nav data-dyslexia-slot><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/survey-audit">Source</a></nav>
 </div></header>
 <main><div class="wrap">
 <p class="lede">The checks a monitoring team runs on a survey dataset before anyone estimates anything: duplicated and near-duplicated interviews, Benford's law on amounts, age heaping (Whipple and Myers), straightlining in rating batteries, interview length and timing, missingness, and an enumerator-by-enumerator profile that says who to call. Drop in a CSV; it never leaves your machine.</p>
@@ -310,6 +314,7 @@ $('#run').onclick=()=>{ report=[]; flags=new Map(); const out=[]; const R=data.r
 };
 function dl(content,name,type){ const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([content],{type})); a.download=name; a.click(); }
 </script>
+<script src="../js/tool.js" defer></script>
 <script src="../js/dyslexia-font.js" data-accent="var(--purple2)" data-radius="99px" defer></script>
 </body>
 </html>
