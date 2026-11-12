@@ -286,6 +286,23 @@ bounced cheque, and a plain simple-or-compound calculator with the schedule show
 
 ---
 
+### RTI Timeline
+
+Every date the Right to Information Act 2005 fixes for one application, from the
+day the public authority received it: the last day for the reply (thirty days,
+forty-eight hours for life or liberty, five more through an assistant officer,
+forty with a third-party notice, the days between a fee intimation and payment
+left out), the last day for the first appeal, the day it must be decided, and the
+last day for the second appeal. The words of each section are printed under the
+table. Weekends are marked; holidays are not known and no date is moved. The
+statutory text was taken from a State government's copy of the Act and from the
+Commonwealth Human Rights Initiative's, and the page says so.
+
+**Directory:** `rti-timeline/`
+**Stage:** Active
+
+---
+
 ### A Year of Air
 
 A year of hourly PM2.5, PM10 and NO₂ for any Indian city or coordinate from
@@ -521,6 +538,7 @@ Experiments/
 ├── expense-ledger/                     # election expenses against the Rule 90 ceiling
 ├── promise-costing/                    # manifesto promises against the state budget
 ├── statutory-interest/                 # MSMED, CPC s.34, Arbitration s.31(7), NI Act
+├── rti-timeline/                       # every deadline under the RTI Act 2005, section quoted
 ├── air-quality/                        # a year of PM2.5 against WHO and NAAQS, live
 ├── petition-builder/                   # representations and petitions in the accepted form
 ├── court-format/                       # a .docx set to a court's A4 filing rules

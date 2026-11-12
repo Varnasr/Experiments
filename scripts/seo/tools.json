@@ -183,6 +183,12 @@
       "card": "rupee",
       "name": "Rupee Converter",
       "tagline": "Rupees across months and years with India's CPI, and into 2021 PPP dollars."
+    },
+    {
+      "dir": "rti-timeline",
+      "card": "rti",
+      "name": "RTI Timeline",
+      "tagline": "Every deadline the Right to Information Act sets for one application, with the section quoted."
     }
   ]
 }

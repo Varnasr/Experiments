@@ -2,7 +2,7 @@
 
 Shared engineering standard: @.claude/engineering-standards.md. It applies to all work in this repository. This file adds what is specific to the project, and wins where the two disagree.
 
-Twenty-nine browser tools for development economics, law and data work, each a
+Thirty browser tools for development economics, law and data work, each a
 self-contained page: causal workbench, RCT planner, sampling design, trial checks, poverty and inequality,
 wage gap, fiscal incidence, multidimensional poverty, women's indicators, heat exposure, air quality, court translator,
 court filing formatter, petition builder, statutory interest, land acquisition,
@@ -26,6 +26,7 @@ node trial-checks/tests/core.mjs     # multiple-testing and bounds arithmetic, r
 node mpi-calculator/tests/core.mjs   # the Alkire-Foster arithmetic, run by CI
 node causal-workbench/tests/core.mjs # TWFE, wild cluster bootstrap and Bacon decomposition, run by CI
 node robustness-value/tests/core.mjs # robustness value against the Darfur numbers and scipy, run by CI
+node rti-timeline/tests/core.mjs     # RTI deadlines against dates worked in Python, run by CI
 node care-valuation/tests/core.mjs   # the valuation, and the data file against MoSPI's figures, run by CI
 node anthro-zscores/tests/core.mjs   # z-scores against 360 values WHO prints, run by CI
 node rupee-converter/tests/core.mjs  # CPI and PPP conversions, and the data file against its CSVs, run by CI
@@ -335,7 +336,7 @@ implementation is Stata's `psacalc`, which could not be run. The default
 covariate example on that page uses t-statistics derived from the bounds the
 paper reports, and its README says so.
 
-## Four law tools are decided and not yet built
+## Four law tools were decided; the RTI timeline is built and three are not
 
 The owner asked on 2026-11-11 for more law tools, because the page leans
 toward development economics, and chose these four. Her decisions are
@@ -368,6 +369,27 @@ case names and dates below were given from memory and are to be checked.
   the first appeal, 30 to 45 for its disposal, 90 for the second appeal.
 
 They go in section 04 of the landing page. Adding four takes the count to 33.
+
+**`rti-timeline` was built on 2026-11-12** (`rti-timeline/tests/core.mjs`, 73
+checks, 28 injected faults, expected dates from Python's `datetime`). The owner
+decided two points that day: on a transfer the page shows the date counted
+from the second authority's receipt and, beside it, five days plus the period
+from the first receipt; and where the first appellate authority is silent the
+ninety days run from the thirtieth day, with the forty-fifth shown beside it.
+Three readings are the page's own and are stated on it: the five days of
+section 5(2) are added to the forty-eight hours, nothing is added to or left
+out of the forty days of section 11(3), and the day of receipt is day zero.
+The first-day rule and the next-open-day rule are described on the page and
+not quoted, because the General Clauses Act was not read.
+
+**The statutory text is not from the India Code.** That site could not be
+opened from the build session. Sections 5(2), 6(3), 7(1), 11 and 19(1), (3)
+and (6) come from the copy on dhe.goa.gov.in, which is in the India Code
+layout and marked last updated 17 May 2021; sections 7(2), 7(3), 7(6) and
+19(2) come from the Commonwealth Human Rights Initiative's reproductions.
+Both were read through a fetch tool that returns extracted text, so a comma
+could differ from the gazette. Read the quotations against the India Code
+when someone can open it, as was done for `court-format`.
 
 ## Production on Netlify is published by upload
 

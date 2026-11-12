@@ -67,6 +67,10 @@ jobs:
       - name: Robustness value arithmetic
         run: node robustness-value/tests/core.mjs
 
+      # Dates worked separately in Python from the periods the Act states.
+      - name: RTI timeline dates
+        run: node rti-timeline/tests/core.mjs
+
       - name: Care valuation arithmetic and data
         run: node care-valuation/tests/core.mjs
 

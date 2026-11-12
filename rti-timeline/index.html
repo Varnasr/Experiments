@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RTI Timeline · Experiments</title>
+<meta name="description" content="Every date the Right to Information Act 2005 fixes for one application: when the reply is due, when the first appeal must be filed and decided, and the last day for the second appeal, with the section quoted beside each.">
+<!-- seo:start -->
+<link rel="canonical" href="https://idealogworks.foo/rti-timeline/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Experiments">
+<meta property="og:locale" content="en_IN">
+<meta property="og:title" content="RTI Timeline">
+<meta property="og:description" content="Every deadline the Right to Information Act sets for one application, with the section quoted.">
+<meta property="og:url" content="https://idealogworks.foo/rti-timeline/">
+<meta property="og:image" content="https://idealogworks.foo/og/rti-timeline.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="RTI Timeline: Every deadline the Right to Information Act sets for one application, with the section quoted.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="RTI Timeline">
+<meta name="twitter:description" content="Every deadline the Right to Information Act sets for one application, with the section quoted.">
+<meta name="twitter:image" content="https://idealogworks.foo/og/rti-timeline.jpg">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"RTI Timeline","url":"https://idealogworks.foo/rti-timeline/","description":"Every date the Right to Information Act 2005 fixes for one application: when the reply is due, when the first appeal must be filed and decided, and the last day for the second appeal, with the section quoted beside each.","image":"https://idealogworks.foo/og/rti-timeline.jpg","operatingSystem":"Any","browserRequirements":"Requires JavaScript","isAccessibleForFree":true,"author":{"@type":"Person","name":"Varna Sri Raman"},"isPartOf":{"@type":"WebSite","name":"Experiments","url":"https://idealogworks.foo/"}}</script>
+<style>.xshare{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.5rem .6rem;box-sizing:border-box;width:calc(100% - 2rem);max-width:960px;margin:2.5rem auto 1.5rem;padding:.85rem 1rem;background:#f5f1fa;border:1px solid #e6e3ec;border-radius:12px;font:600 15px/1.4 "Source Sans 3",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:#382280;text-align:center}.xshare .xshare-t{margin-right:.25rem;color:#382280}.xshare .xshare-l{display:inline-flex;align-items:center;min-height:36px;margin:0;padding:.3rem .95rem;border:1px solid #572e91;border-radius:99px;background:#fff;color:#382280;font:inherit;text-decoration:underline;text-underline-offset:2px;cursor:pointer;box-shadow:none}.xshare .xshare-l:hover{background:#ece4f5}.xshare .xshare-l:focus-visible{outline:3px solid #ff9911;outline-offset:2px}.xshare [hidden]{display:none!important}@media print{.xshare{display:none}}.xcontact{box-sizing:border-box;width:calc(100% - 2rem);max-width:960px;margin:0 auto 1.5rem;padding:.85rem 1rem;background:#f5f1fa;border:1px solid #e6e3ec;border-radius:12px;font:400 15px/1.5 "Source Sans 3",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:#382280;text-align:center}.xcontact a{color:#382280;font-weight:600;text-decoration:underline;text-underline-offset:2px}.xcontact a:focus-visible{outline:3px solid #ff9911;outline-offset:2px}@media print{.xcontact{display:none}}</style>
+<!-- seo:end -->
+<style>
+  :root { --bg:#fafafa; --surface:#fff; --border:#e5e7eb; --text:#1a1a2e; --dim:#4b5563; --muted:#6b7280; --accent:#1B6B4A; --accent-soft:#e6f2ec; --mono:ui-monospace,SFMono-Regular,Menlo,monospace; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--text); line-height:1.55; }
+  a { color:var(--accent); }
+  header { border-bottom:1px solid var(--border); background:#fff; }
+  .wrap { max-width:1080px; margin:0 auto; padding:0 1.25rem; }
+  header .wrap { display:flex; align-items:baseline; justify-content:space-between; gap:1rem; padding:.9rem 1.25rem; flex-wrap:wrap; }
+  header h1 { font-family:Georgia,serif; font-size:1.35rem; font-weight:400; }
+  header h1 small { font-size:.8rem; color:var(--muted); margin-left:.5rem; }
+  header nav a { font-size:.85rem; margin-left:1rem; text-decoration:none; }
+  main { padding:1.5rem 0 3rem; }
+  .lede { color:var(--dim); font-size:.95rem; max-width:66ch; margin-bottom:1.25rem; }
+  .top-tabs { display:flex; gap:.25rem; border-bottom:1px solid var(--border); margin-bottom:1.25rem; flex-wrap:wrap; }
+  .top-tabs button { font:inherit; font-size:.95rem; background:none; border:none; color:var(--dim); padding:.5rem .9rem; border-bottom:2px solid transparent; border-radius:0; cursor:pointer; }
+  .top-tabs button.on { color:var(--accent); border-bottom-color:var(--accent); font-weight:600; }
+  .view { display:none; } .view.on { display:block; }
+  .grid { display:grid; grid-template-columns:330px 1fr; gap:1.25rem; align-items:start; }
+  /* A grid item's default min-width:auto lets a wide table size the shared
+     track, and then the page is wider than the phone. */
+  .grid > * { min-width:0; }
+  @media (max-width:860px){ .grid { grid-template-columns:1fr; } }
+  .panel { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1rem 1.15rem; margin-bottom:1rem; }
+  .panel h2 { font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; margin-bottom:.7rem; }
+  label { display:block; font-size:.8rem; color:var(--dim); margin:.5rem 0 .2rem; }
+  select, input[type=text], input[type=number], textarea { width:100%; font:inherit; font-size:.9rem; padding:.4rem .5rem; border:1px solid var(--border); border-radius:6px; background:#fff; color:var(--text); }
+  textarea { font-family:var(--mono); font-size:.82rem; min-height:8.5rem; resize:vertical; }
+  input[type=file] { font-size:.85rem; max-width:100%; }
+  .row { display:flex; gap:.5rem; } .row > * { flex:1; min-width:0; }
+  button { font:inherit; font-size:.88rem; padding:.5rem .9rem; border-radius:6px; border:1px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer; margin-top:.6rem; }
+  button.secondary { background:#fff; color:var(--accent); }
+  .stat { display:inline-block; margin:.25rem 1.25rem .25rem 0; vertical-align:top; }
+  .stat b { display:block; font-size:1.4rem; font-family:Georgia,serif; font-weight:400; } .stat span { font-size:.75rem; color:var(--muted); }
+  table { border-collapse:collapse; width:100%; font-size:.84rem; margin:.5rem 0; }
+  th, td { text-align:right; padding:.3rem .5rem; border-bottom:1px solid var(--border); font-variant-numeric:tabular-nums; white-space:nowrap; }
+  th:first-child, td:first-child { text-align:left; } th { color:var(--dim); font-weight:600; font-size:.75rem; }
+  .tscroll { overflow:auto; max-width:100%; max-height:420px; }
+  .tscroll:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
+  .note { font-size:.82rem; color:var(--dim); margin-top:.5rem; max-width:70ch; }
+  .warn { background:#fff7ed; border:1px solid #fed7aa; color:#9a3412; padding:.5rem .7rem; border-radius:6px; font-size:.83rem; margin:.5rem 0; }
+  .ok { background:var(--accent-soft); color:var(--accent); padding:.5rem .7rem; border-radius:6px; font-size:.83rem; margin:.5rem 0; }
+  .mini { font-size:.78rem; color:var(--muted); } code { font-family:var(--mono); font-size:.8em; background:#f3f4f6; padding:.05em .3em; border-radius:3px; }
+  pre { font-family:var(--mono); font-size:.78rem; background:#f8f9fa; border:1px solid var(--border); border-radius:6px; padding:.6rem .8rem; white-space:pre-wrap; overflow-wrap:anywhere; color:var(--dim); }
+  ol.work { margin:.4rem 0 .2rem 1.2rem; font-size:.86rem; color:var(--dim); } ol.work li { margin-bottom:.3rem; } ol.work b { color:var(--text); font-variant-numeric:tabular-nums; }
+  .wrapt td:first-child { white-space:normal; }
+  footer { border-top:1px solid var(--border); padding:1.25rem; text-align:center; font-size:.8rem; color:var(--muted); }
+  input[type=date] { width:100%; font:inherit; font-size:.9rem; padding:.4rem .5rem; border:1px solid var(--border); border-radius:6px; background:#fff; color:var(--text); }
+  .check { display:flex; gap:.5rem; align-items:flex-start; margin:.45rem 0; font-size:.86rem; color:var(--text); }
+  .check input { margin-top:.2rem; }
+  .sub { border-left:3px solid var(--accent-soft); padding-left:.7rem; margin:.2rem 0 .5rem; }
+  .sub[hidden] { display:none; }
+  td.when b { font-weight:600; } td.when small, td small { display:block; color:var(--muted); font-size:.74rem; white-space:normal; }
+  .steps td { white-space:normal; vertical-align:top; } .steps td:nth-child(2), .steps td:nth-child(3) { white-space:nowrap; }
+  #out .tscroll { max-height:none; } td.when small { white-space:nowrap; }
+  blockquote { border-left:3px solid var(--accent); background:#f8f9fa; padding:.55rem .8rem; margin:.5rem 0 .8rem; font-family:Georgia,serif; font-size:.9rem; color:var(--text); }
+  blockquote cite { display:block; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; font-style:normal; font-size:.74rem; color:var(--muted); margin-top:.3rem; }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>RTI Timeline <small>the dates the Right to Information Act 2005 fixes for one application</small></h1>
+  <nav><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/rti-timeline">Source</a></nav>
+</div></header>
+<main><div class="wrap">
+<p class="lede">Enter the day the public authority received your application. The page works out the last day for the reply, the last day to file the first appeal, when that appeal must be decided, and the last day for the second appeal. Each date carries the section it comes from, and the words of that section are printed below the table.</p>
+<div class="grid">
+<div>
+  <div class="panel">
+    <h2>The application</h2>
+    <label for="received">Date the authority received it</label><input type="date" id="received">
+    <label for="via">Given to</label>
+    <select id="via"><option value="pio">The Public Information Officer</option><option value="apio">An Assistant Public Information Officer</option></select>
+    <label class="check"><input type="checkbox" id="life"><span>The information concerns the life or liberty of a person</span></label>
+    <label class="check"><input type="checkbox" id="third"><span>The officer has sent notice to a third party under section 11</span></label>
+    <div class="sub" id="thirdBox" hidden>
+      <label for="noticeReceived">Date the third party received the notice (if known)</label><input type="date" id="noticeReceived">
+      <label for="thirdOrder">Date of the order to disclose (if made)</label><input type="date" id="thirdOrder">
+    </div>
+    <label class="check"><input type="checkbox" id="transferred"><span>It was transferred to another public authority under section 6(3)</span></label>
+    <div class="sub" id="transBox" hidden>
+      <label for="secondReceived">Date the second authority received it (if known)</label><input type="date" id="secondReceived">
+    </div>
+  </div>
+  <div class="panel">
+    <h2>If further fees were asked for</h2>
+    <label for="feeSent">Date the fee intimation was despatched</label><input type="date" id="feeSent">
+    <label for="feePaid">Date you paid</label><input type="date" id="feePaid">
+    <p class="mini">The days between the two are left out of the thirty. Leave both empty if no further fee was demanded.</p>
+  </div>
+  <div class="panel">
+    <h2>What has happened since</h2>
+    <label for="decisionReceived">Date you received a reply or a refusal</label><input type="date" id="decisionReceived">
+    <label for="appealFiled">Date you filed the first appeal</label><input type="date" id="appealFiled">
+    <label for="orderReceived">Date you received the order on the first appeal</label><input type="date" id="orderReceived">
+    <label for="today">Count the days from</label><input type="date" id="today">
+    <p class="mini">Leave a date empty if that step has not happened. Nothing typed here leaves the browser.</p>
+  </div>
+</div>
+<div>
+  <div class="panel"><h2>The dates</h2><div id="out" aria-live="polite"></div></div>
+  <div class="panel"><h2>The words of the Act</h2><div id="law"></div></div>
+  <div class="panel"><h2>How the days are counted, and what this page leaves out</h2>
+    <p class="note">The day the authority received the application is day zero and the count starts on the next day, so an application received on 1 March has its thirtieth day on 31 March. The same rule is used for every period on this page. It is the ordinary rule for a period that runs "from" a day, and it is stated here as the page's assumption.</p>
+    <p class="note">A last day that falls on a Saturday or a Sunday is marked. The page does not know gazetted holidays and does not move a date. Where an office is closed on the last day, the act can ordinarily be done on the next day the office is open, and the safe course is to file before the marked date.</p>
+    <p class="note">Three readings are the page's own. First, where the application went to an Assistant Public Information Officer and concerns life or liberty, the five days are added to the forty-eight hours, because the proviso to section 5(2) adds them to "the period for response specified under sub-section (1) of section 7" and the forty-eight hours sit in that sub-section. Second, with a third-party notice the period is forty days and nothing is added or left out, because section 11(3) sets that period "notwithstanding anything contained in section 7". Third, where the first appellate authority has not decided, the ninety days for the second appeal are counted from the thirtieth day after the first appeal was filed. Section 19(6) allows up to forty-five days with written reasons, so the later date is shown beside the earlier one, and the earlier one is the date to file by.</p>
+    <p class="note">On a transfer the Act says the transfer must be made within five days and does not say in terms when the second authority's thirty days begin. The page counts from the day the second authority received the application when you enter it, and shows beside it the date reached by allowing five days for the transfer and then the period, from the first receipt. The two differ by the time the application spent in transit.</p>
+    <p class="note">The page covers the central Act's time limits only: sections 5(2), 6(3), 7, 11 and 19. It does not cover fees, the exemptions in sections 8 and 9, the form of an appeal, or the rules of any State or court. An appeal filed late can still be admitted for sufficient cause under the provisos to section 19(1) and 19(3), and the page does not judge that. The first appeal is taken as received on the day it was filed.</p>
+    <p class="note">Source of the text: the copy of the Right to Information Act 2005 hosted by the Directorate of Higher Education, Goa, in the India Code layout and marked last updated 17 May 2021, for sections 5(2), 6(3), 7(1), 11 and 19(1), (3) and (6); and the Commonwealth Human Rights Initiative's reproductions of the Act for sections 7(2), 7(3), 7(6) and 19(2). Where both carry a section they agree on every period. The India Code's own copy was not opened when this page was written.</p>
+  </div>
+</div>
+</div>
+</div></main>
+<!-- share:start -->
+<aside class="xshare" aria-label="Share this tool"><span class="xshare-t">Share this tool</span><a class="xshare-l" href="https://wa.me/?text=RTI%20Timeline%3A%20Every%20deadline%20the%20Right%20to%20Information%20Act%20sets%20for%20one%20application%2C%20with%20the%20section%20quoted.%0Ahttps%3A%2F%2Fidealogworks.foo%2Frti-timeline%2F" target="_blank" rel="noopener">WhatsApp</a><a class="xshare-l" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fidealogworks.foo%2Frti-timeline%2F" target="_blank" rel="noopener">LinkedIn</a><a class="xshare-l" href="https://twitter.com/intent/tweet?text=RTI%20Timeline%3A%20Every%20deadline%20the%20Right%20to%20Information%20Act%20sets%20for%20one%20application%2C%20with%20the%20section%20quoted.&amp;url=https%3A%2F%2Fidealogworks.foo%2Frti-timeline%2F" target="_blank" rel="noopener">X</a><button type="button" class="xshare-l" data-xshare-copy data-url="https://idealogworks.foo/rti-timeline/" hidden>Copy link</button><script>(function(){var b=document.currentScript.parentNode.querySelector('[data-xshare-copy]');if(!b||!navigator.clipboard)return;b.hidden=false;var u=b.getAttribute('data-url');b.addEventListener('click',function(){navigator.clipboard.writeText(u).then(function(){b.textContent='Link copied';setTimeout(function(){b.textContent='Copy link';},2000);});});})();</script></aside>
+<!-- share:end -->
+<!-- contact:start -->
+<p class="xcontact">Need help setting out your story, what sets your work apart, the context, the return on investment and the projections? Pinpoint Ventures can help. Write to <a href="mailto:hello@pinpointventures.in?subject=Enquiry%20from%20idealogworks.foo">hello@pinpointventures.in</a> or message on <a href="https://wa.me/919871777110?text=Hi%20Pinpoint%20Ventures%2C%20I%20found%20you%20through%20idealogworks.foo.%20I%27d%20like%20to%20discuss%20a%20research%20or%20advisory%20engagement." target="_blank" rel="noopener">WhatsApp</a>.</p>
+<!-- contact:end -->
+<footer>Part of <a href="../">Experiments</a> by Varna Sri Raman · Idealog Works · MIT licence · Computation in the browser.</footer>
+<script id="core">
+// Dates are whole days counted from 1 January 1970, in UTC, so that adding
+// thirty to a date is adding thirty and daylight saving cannot move it.
+const RTI = (() => {
+  const DAY = 86400000;
+  // The periods the Act states. Each is used in exactly one place below.
+  const P = { reply: 30, assistant: 5, life: 2, transfer: 5, notice: 5, represent: 10,
+              thirdParty: 40, firstAppeal: 30, thirdAppeal: 30, dispose: 30, disposeMax: 45, secondAppeal: 90 };
+
+  function parse(s) {
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(s == null ? '' : s).trim());
+    if (!m) return null;
+    const y = +m[1], mo = +m[2], d = +m[3], t = Date.UTC(y, mo - 1, d), dt = new Date(t);
+    if (dt.getUTCFullYear() !== y || dt.getUTCMonth() !== mo - 1 || dt.getUTCDate() !== d) return null;
+    return t / DAY;
+  }
+  const iso = n => new Date(n * DAY).toISOString().slice(0, 10);
+  const weekday = n => new Date(n * DAY).getUTCDay();          // 0 is Sunday
+  const closed = n => weekday(n) === 0 || weekday(n) === 6;    // weekends only; holidays are not known here
+
+  // When the reply is due. o.received is the day the authority received the
+  // request, and the count starts the day after.
+  function reply(o) {
+    const r = o.received;
+    if (r == null) return { error: 'Enter the date the authority received the request.' };
+    const feeApplies = !o.life && !o.thirdParty;
+    let days, rule;
+    if (o.life) { days = P.life + (o.assistant ? P.assistant : 0); rule = 'life'; }
+    else if (o.thirdParty) { days = P.thirdParty; rule = 'thirdParty'; }
+    else { days = P.reply + (o.assistant ? P.assistant : 0); rule = 'ordinary'; }
+    // Section 6(3): a transfer must be made within five days. The Act does not
+    // say in terms when the second authority's period starts, so the count
+    // runs from its receipt when that date is known, and "outer" is five days
+    // for the transfer plus the period, counted from the first receipt.
+    let base = r, outer = null;
+    if (o.transferred) {
+      if (o.secondReceived != null && o.secondReceived < r) return { error: 'The second authority cannot have received the request before the first.' };
+      outer = r + P.transfer + days;
+      base = o.secondReceived != null ? o.secondReceived : r + P.transfer;
+    }
+    const out = { days, rule, excluded: 0, paused: false, feeIgnored: false, due: base + days, base, outer, outerOnly: !!o.transferred && o.secondReceived == null };
+    if (o.feeSent != null) {
+      if (!feeApplies) { out.feeIgnored = true; return out; }
+      if (o.feeSent < r) return { error: 'The fee intimation cannot be dated before the request was received.' };
+      if (o.feeSent > base + days) return Object.assign(out, { error: 'The fee intimation is dated after the period had already run out, so nothing is excluded.' });
+      if (o.feePaid == null) { out.paused = true; out.due = null; out.left = days - Math.max(0, o.feeSent - base); return out; }
+      if (o.feePaid < o.feeSent) return { error: 'The fee cannot be paid before the intimation was sent.' };
+      out.excluded = o.feePaid - o.feeSent;
+      out.due = base + days + out.excluded;
+      if (outer != null) out.outer = outer + out.excluded;
+    }
+    return out;
+  }
+
+  // Section 19(1): thirty days from the expiry of the period, or from the
+  // receipt of a decision if one came.
+  const firstAppealBy = (replyDue, decisionReceived) =>
+    (decisionReceived != null ? decisionReceived : replyDue) + P.firstAppeal;
+
+  // Section 19(6): thirty days, or up to forty-five from filing with reasons.
+  const dispose = filed => ({ by: filed + P.dispose, outer: filed + P.disposeMax });
+
+  // Section 19(3): ninety days from the day the decision was received, or
+  // from the day it should have been made. The second is read as the
+  // thirtieth day, which is the earlier and so the safer of the two readings;
+  // "later" is the same count from the forty-fifth.
+  function secondAppealBy(filed, orderReceived) {
+    if (orderReceived != null) return { by: orderReceived + P.secondAppeal, basis: 'received' };
+    const d = dispose(filed);
+    return { by: d.by + P.secondAppeal, later: d.outer + P.secondAppeal, basis: 'due' };
+  }
+
+  // Section 11: notice to the third party in five days, ten days from its
+  // receipt to object, a decision in forty days from the request.
+  const thirdParty = (received, noticeReceived) => ({
+    noticeBy: received + P.notice,
+    representBy: noticeReceived != null ? noticeReceived + P.represent : null,
+    decideBy: received + P.thirdParty
+  });
+  const thirdPartyAppealBy = orderDate => orderDate + P.thirdAppeal;
+  const transferBy = received => received + P.transfer;
+
+  // Every step that the dates entered so far can fix, in the order they fall.
+  function timeline(o) {
+    const rep = reply(o), steps = [];
+    if (rep.error && rep.due == null && !rep.paused) return { error: rep.error, steps };
+    const r = o.received;
+    const push = (key, date, section, extra) => steps.push(Object.assign({ key, date, section, weekend: date != null && closed(date) }, extra || {}));
+    push('transfer', transferBy(r), '6(3)');
+    if (o.thirdParty) {
+      const tp = thirdParty(r, o.noticeReceived);
+      push('notice', tp.noticeBy, '11(1)');
+      if (tp.representBy != null) push('represent', tp.representBy, '11(2)');
+    }
+    push('reply', rep.due, rep.rule === 'thirdParty' ? '11(3)' : '7(1)', { days: rep.days, excluded: rep.excluded, paused: rep.paused, left: rep.left, outer: rep.outer, outerOnly: rep.outerOnly, note: rep.error || null });
+    if (o.thirdParty && o.thirdOrder != null) push('thirdAppeal', thirdPartyAppealBy(o.thirdOrder), '19(2)');
+    if (rep.due == null) return { reply: rep, steps };
+    const start = o.decisionReceived != null ? o.decisionReceived : rep.due;
+    push('firstAppeal', firstAppealBy(rep.due, o.decisionReceived), '19(1)', { from: start, basis: o.decisionReceived != null ? 'received' : 'expiry' });
+    if (o.appealFiled != null) {
+      const d = dispose(o.appealFiled), s = secondAppealBy(o.appealFiled, o.orderReceived);
+      push('dispose', d.by, '19(6)', { outer: d.outer, late: o.appealFiled > firstAppealBy(rep.due, o.decisionReceived) });
+      push('secondAppeal', s.by, '19(3)', { later: s.later, basis: s.basis });
+    }
+    return { reply: rep, steps };
+  }
+
+  return { P, parse, iso, weekday, closed, reply, firstAppealBy, dispose, secondAppealBy, thirdParty, thirdPartyAppealBy, transferBy, timeline };
+})();
+if (typeof module !== 'undefined') module.exports = RTI;
+</script>
+<script>
+const $ = s => document.querySelector(s);
+const LAW = {
+  '5(2)': ['Section 5(2), proviso', 'Provided that where an application for information or appeal is given to a Central Assistant Public Information Officer or a State Assistant Public Information Officer, as the case may be, a period of five days shall be added in computing the period for response specified under sub-section (1) of section 7.'],
+  '6(3)': ['Section 6(3), proviso', 'Provided that the transfer of an application pursuant to this sub-section shall be made as soon as practicable but in no case later than five days from the date of receipt of the application.'],
+  '7(1)': ['Section 7(1)', 'Subject to the proviso to sub-section (2) of section 5 or the proviso to sub-section (3) of section 6, the Central Public Information Officer or State Public Information Officer, as the case may be, on receipt of a request under section 6 shall, as expeditiously as possible, and in any case within thirty days of the receipt of the request, either provide the information on payment of such fee as may be prescribed or reject the request for any of the reasons specified in sections 8 and 9: Provided that where the information sought for concerns the life or liberty of a person, the same shall be provided within forty-eight hours of the receipt of the request.'],
+  '7(2)': ['Section 7(2)', 'If the Central Public Information Officer or State Public Information Officer, as the case may be fails to give decision on the request for information within the period specified under sub-section (1), the Central Public Information Officer or State Public Information Officer, as the case may be shall be deemed to have refused the request.'],
+  '7(3)': ['Section 7(3)(a)', 'the details of further fees representing the cost of providing the information as determined by him, together with the calculations made to arrive at the amount in accordance with fee prescribed under sub-section (1), requesting him to deposit that fees, and the period intervening between the despatch of the said intimation and payment of fees shall be excluded for the purpose of calculating the period of thirty days referred to in that sub-section;'],
+  '7(6)': ['Section 7(6)', 'Notwithstanding anything contained in sub-section (5), the person making request for the information shall be provided the information free of charge where a public authority fails to comply with the time limits specified in sub-section (1).'],
+  '11(1)': ['Section 11(1)', 'Where a Central Public Information Officer or a State Public Information Officer, as the case may be, intends to disclose any information or record, or part thereof on a request made under this Act, which relates to or has been supplied by a third party and has been treated as confidential by that third party, the Central Public Information Officer or State Public Information Officer, as the case may be, shall, within five days from the receipt of the request, give a written notice to such third party of the request and of the fact that the Central Public Information Officer or State Public Information Officer, as the case may be, intends to disclose the information or record, or part thereof, and invite the third party to make a submission in writing or orally, regarding whether the information should be disclosed, and such submission of the third party shall be kept in view while taking a decision about disclosure of information:'],
+  '11(2)': ['Section 11(2)', 'Where a notice is served by the Central Public Information Officer or State Public Information Officer, as the case may be, under sub-section (1) to a third party in respect of any information or record or part thereof, the third party shall, within ten days from the date of receipt of such notice, be given the opportunity to make representation against the proposed disclosure.'],
+  '11(3)': ['Section 11(3)', 'Notwithstanding anything contained in section 7, the Central Public Information Officer or State Public Information Officer, as the case may be, shall, within forty days after receipt of the request under section 6, if the third party has been given an opportunity to make representation under sub-section (2), make a decision as to whether or not to disclose the information or record or part thereof and give in writing the notice of his decision to the third party.'],
+  '19(1)': ['Section 19(1)', 'Any person who, does not receive a decision within the time specified in sub-section (1) or clause (a) of sub-section (3) of section 7, or is aggrieved by a decision of the Central Public Information Officer or State Public Information Officer, as the case may be, may within thirty days from the expiry of such period or from the receipt of such a decision prefer an appeal to such officer who is senior in rank to the Central Public Information Officer or State Public Information Officer as the case may be, in each public authority: Provided that such officer may admit the appeal after the expiry of the period of thirty days if he or she is satisfied that the appellant was prevented by sufficient cause from filing the appeal in time.'],
+  '19(2)': ['Section 19(2)', 'Where an appeal is preferred against an order made by a Central Public Information Officer or a State Public Information Officer, as the case may be, under section 11 to disclose third party information, the appeal by the concerned third party shall be made within thirty days from the date of the order.'],
+  '19(3)': ['Section 19(3)', 'A second appeal against the decision under sub-section (1) shall lie within ninety days from the date on which the decision should have been made or was actually received, with the Central Information Commission or the State Information Commission: Provided that the Central Information Commission or the State Information Commission, as the case may be, may admit the appeal after the expiry of the period of ninety days if it is satisfied that the appellant was prevented by sufficient cause from filing the appeal in time.'],
+  '19(6)': ['Section 19(6)', 'An appeal under sub-section (1) or sub-section (2) shall be disposed of within thirty days of the receipt of the appeal or within such extended period not exceeding a total of forty-five days from the date of filing thereof as the case may be, for reasons to be recorded in writing.']
+};
+const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'], MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const show = n => { const [y, m, d] = RTI.iso(n).split('-'); return `${DAYS[RTI.weekday(n)]} ${+d} ${MONTHS[+m - 1]} ${y}`; };
+const gap = (n, today) => today == null ? '' : n === today ? 'today' : n > today ? `in ${n - today} day${n - today === 1 ? '' : 's'}` : `${today - n} day${today - n === 1 ? '' : 's'} ago`;
+const val = id => RTI.parse($(id).value);
+function label(s, o) {
+  switch (s.key) {
+    case 'transfer': return ['Transfer to the right authority', o.transferred ? 'The first authority had until this day to send it on.' : 'Only if the information is held by another authority.'];
+    case 'notice': return ['Notice to the third party', 'The officer had until this day to send it.'];
+    case 'represent': return ['Third party may object until', 'Ten days from the day the notice reached the third party.'];
+    case 'reply': {
+      if (s.paused) return ['Reply due', `The count is stopped until the fee is paid. ${s.left} day${s.left === 1 ? '' : 's'} will remain from the day you pay.`];
+      const bits = [];
+      if (o.life) bits.push(`Forty-eight hours from the hour of receipt${o.assistant ? ', plus five days for the assistant officer' : ''}.`);
+      else if (o.thirdParty) bits.push('Forty days from receipt, because a third party was given notice.');
+      else bits.push(`${s.days} days from ${o.transferred && !s.outerOnly ? 'the second authority\u2019s receipt' : 'receipt'}${o.assistant ? ', five of them for the assistant officer' : ''}.`);
+      if (s.excluded) bits.push(`${s.excluded} day${s.excluded === 1 ? '' : 's'} between the fee intimation and payment left out.`);
+      if (o.transferred) bits.push(s.outerOnly ? 'This date allows five days for the transfer and then the period, from the first receipt. Enter the second authority\u2019s receipt date for the date counted from there.' : `Counted instead as five days for the transfer and then the period, from the first receipt, the date is ${show(s.outer)}.`);
+      if (s.note) bits.push(s.note);
+      bits.push('After this day with no decision, the request is deemed refused and the information, when given, is free of charge.');
+      return [o.thirdParty ? 'Decision on disclosure due' : 'Reply due', bits.join(' ')];
+    }
+    case 'thirdAppeal': return ['Third party\u2019s appeal, last day', 'Thirty days from the date of the order to disclose.'];
+    case 'firstAppeal': return ['First appeal, last day to file', s.basis === 'received' ? 'Thirty days from the day you received the decision.' : 'Thirty days from the day the reply fell due, since no decision has been entered.'];
+    case 'dispose': return ['First appeal to be decided by', `With written reasons the authority may take until ${show(s.outer)}, forty-five days from filing.${s.late ? ' The appeal was filed after the last day above, so it needed the authority to accept the delay.' : ''}`];
+    case 'secondAppeal': return ['Second appeal, last day to file', s.basis === 'received' ? 'Ninety days from the day you received the order on the first appeal.' : `Ninety days from the thirtieth day after the first appeal, since no order has been entered. Counted from the forty-fifth day it would be ${show(s.later)}; file by the earlier date.`];
+  }
+}
+function render() {
+  for (const [box, on] of [['#thirdBox', $('#third').checked], ['#transBox', $('#transferred').checked]]) $(box).hidden = !on;
+  const o = { received: val('#received'), assistant: $('#via').value === 'apio', life: $('#life').checked, thirdParty: $('#third').checked,
+    transferred: $('#transferred').checked, secondReceived: $('#transferred').checked ? val('#secondReceived') : null,
+    noticeReceived: $('#third').checked ? val('#noticeReceived') : null, thirdOrder: $('#third').checked ? val('#thirdOrder') : null,
+    feeSent: val('#feeSent'), feePaid: val('#feePaid'), decisionReceived: val('#decisionReceived'), appealFiled: val('#appealFiled'), orderReceived: val('#orderReceived') };
+  const today = val('#today');
+  if (o.received == null) { $('#out').innerHTML = '<p class="note">Enter the date the authority received the application.</p>'; $('#law').innerHTML = ''; return; }
+  const t = RTI.timeline(o);
+  if (t.error) { $('#out').innerHTML = `<p class="warn">${t.error}</p>`; $('#law').innerHTML = ''; return; }
+  const warn = [];
+  if (t.reply.feeIgnored) warn.push('The fee dates were not used. Section 7(3)(a) leaves days out of "the period of thirty days", and this application is on the forty-eight hour or the forty-day period.');
+  if (o.life && o.thirdParty) warn.push('Both boxes are ticked. The page uses the forty-eight hours for life or liberty and shows the third-party steps beside it.');
+  if (o.decisionReceived != null && o.decisionReceived < o.received) warn.push('The reply is dated before the application was received.');
+  if (o.orderReceived != null && o.appealFiled == null) warn.push('Enter the date the first appeal was filed to see the second appeal.');
+  if (o.orderReceived != null && o.appealFiled != null && o.orderReceived < o.appealFiled) warn.push('The order on the first appeal is dated before the appeal was filed.');
+  const rows = t.steps.map(s => { const [name, why] = label(s, o);
+    return `<tr><td>${name}<small>${why}</small></td><td class="when">${s.date == null ? 'Stopped' : `<b>${show(s.date)}</b><small>${gap(s.date, today)}${s.weekend ? ', a weekend' : ''}</small>`}</td><td>s. ${s.section}</td></tr>`; }).join('');
+  $('#out').innerHTML = warn.map(w => `<p class="warn">${w}</p>`).join('') +
+    `<div class="tscroll" tabindex="0" role="region" aria-label="Dates fixed by the Act"><table class="steps"><thead><tr><th scope="col">Step</th><th scope="col">Last day</th><th scope="col">Section</th></tr></thead><tbody>${rows}</tbody></table></div>` +
+    (o.appealFiled == null ? '<p class="note">Enter the date you filed the first appeal to see when it must be decided and the last day for the second appeal.</p>' : '');
+  const need = new Set(t.steps.map(s => s.section));
+  need.add('7(1)'); need.add('7(2)'); need.add('7(6)');
+  if (o.assistant) need.add('5(2)');
+  if (o.feeSent != null) need.add('7(3)');
+  if (o.thirdParty) { need.add('11(1)'); need.add('11(2)'); need.add('11(3)'); need.add('19(2)'); }
+  $('#law').innerHTML = Object.keys(LAW).filter(k => need.has(k)).map(k => `<blockquote>${LAW[k][1]}<cite>${LAW[k][0]}, Right to Information Act 2005</cite></blockquote>`).join('');
+}
+const now = new Date(); $('#today').value = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+for (const id of ['received', 'via', 'life', 'third', 'transferred', 'secondReceived', 'noticeReceived', 'thirdOrder', 'feeSent', 'feePaid', 'decisionReceived', 'appealFiled', 'orderReceived', 'today']) { $('#' + id).addEventListener('input', render); $('#' + id).addEventListener('change', render); }
+render();
+</script>
+<script src="../js/dyslexia-font.js" data-accent="var(--purple2)" data-radius="99px" defer></script>
+</body>
+</html>
