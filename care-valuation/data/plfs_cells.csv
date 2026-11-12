@@ -1,0 +1,112 @@
+state,sex,reg_n,reg_hours,cas_n,cas_hours
+All India,male,34397,50.9,21556,7.85
+All India,female,12362,42.4,5536,7.10
+All India,person,46760,48.8,27092,7.70
+Andaman & Nicobar Islands,male,266,51.6,85,8.26
+Andaman & Nicobar Islands,female,95,44.0,6,8.38
+Andaman & Nicobar Islands,person,361,49.6,91,8.26
+Andhra Pradesh,male,1164,49.4,809,8.11
+Andhra Pradesh,female,488,43.2,407,7.21
+Andhra Pradesh,person,1652,47.5,1216,7.82
+Arunachal Pradesh,male,629,48.4,165,7.83
+Arunachal Pradesh,female,288,45.6,13,7.71
+Arunachal Pradesh,person,917,47.6,178,7.82
+Assam,male,992,48.7,969,7.73
+Assam,female,506,44.1,158,7.22
+Assam,person,1498,47.0,1127,7.65
+Bihar,male,788,52.5,1282,7.82
+Bihar,female,164,39.6,110,6.86
+Bihar,person,952,50.3,1392,7.74
+Chandigarh,male,302,51.9,23,9.23
+Chandigarh,female,119,45.3,1,2.00
+Chandigarh,person,421,50.0,24,9.18
+Chhattisgarh,male,740,50.0,467,7.89
+Chhattisgarh,female,267,39.9,240,7.40
+Chhattisgarh,person,1007,47.7,707,7.72
+Dadra & Nagar Haveli & Daman & Diu,male,306,63.2,21,7.68
+Dadra & Nagar Haveli & Daman & Diu,female,75,51.4,3,7.39
+Dadra & Nagar Haveli & Daman & Diu,person,381,60.9,24,7.67
+Delhi,male,565,54.1,53,8.67
+Delhi,female,112,46.4,3,9.00
+Delhi,person,677,52.4,56,8.69
+Goa,male,240,49.0,30,8.03
+Goa,female,112,45.0,7,6.89
+Goa,person,352,47.7,37,7.80
+Gujarat,male,1937,55.4,516,7.77
+Gujarat,female,463,44.1,228,7.19
+Gujarat,person,2400,53.3,744,7.59
+Haryana,male,1222,50.5,487,8.09
+Haryana,female,279,43.3,91,7.25
+Haryana,person,1501,49.2,578,8.00
+Himachal Pradesh,male,591,49.8,395,8.22
+Himachal Pradesh,female,197,43.7,17,7.97
+Himachal Pradesh,person,788,48.4,412,8.22
+Jammu & Kashmir,male,1209,48.4,650,8.05
+Jammu & Kashmir,female,257,39.4,16,8.00
+Jammu & Kashmir,person,1467,46.7,666,8.05
+Jharkhand,male,781,49.1,689,7.89
+Jharkhand,female,173,38.5,56,7.10
+Jharkhand,person,954,47.1,745,7.81
+Karnataka,male,1405,49.0,1002,8.06
+Karnataka,female,612,44.6,452,7.32
+Karnataka,person,2017,47.7,1454,7.83
+Kerala,male,1291,48.0,830,7.82
+Kerala,female,943,42.2,110,6.67
+Kerala,person,2234,45.6,940,7.69
+Ladakh,male,99,48.7,37,8.12
+Ladakh,female,27,38.2,3,8.00
+Ladakh,person,126,46.4,40,8.12
+Lakshadweep,male,74,43.1,57,7.92
+Lakshadweep,female,28,44.3,0,
+Lakshadweep,person,102,43.4,57,7.92
+Madhya Pradesh,male,1460,51.0,974,8.04
+Madhya Pradesh,female,353,40.2,309,7.83
+Madhya Pradesh,person,1813,49.1,1283,7.99
+Maharashtra,male,3296,52.1,1794,7.82
+Maharashtra,female,1269,44.0,1079,7.07
+Maharashtra,person,4565,49.9,2873,7.55
+Manipur,male,688,47.4,274,7.67
+Manipur,female,274,44.8,30,6.75
+Manipur,person,962,46.7,304,7.59
+Meghalaya,male,376,42.6,588,7.38
+Meghalaya,female,285,37.7,222,6.26
+Meghalaya,person,661,40.5,810,7.08
+Mizoram,male,551,41.3,147,7.91
+Mizoram,female,159,41.2,1,8.00
+Mizoram,person,710,41.3,148,7.91
+Nagaland,male,364,42.5,136,6.56
+Nagaland,female,154,40.9,10,6.64
+Nagaland,person,518,42.1,146,6.56
+Odisha,male,935,49.7,1062,7.80
+Odisha,female,302,40.1,273,7.21
+Odisha,person,1237,47.4,1335,7.68
+Puducherry,male,252,47.8,94,7.54
+Puducherry,female,158,45.5,12,4.06
+Puducherry,person,410,46.9,106,6.95
+Punjab,male,1360,55.5,779,8.16
+Punjab,female,497,40.6,86,6.86
+Punjab,person,1857,51.8,865,8.03
+Rajasthan,male,1395,54.2,636,8.09
+Rajasthan,female,347,40.0,153,7.32
+Rajasthan,person,1742,51.7,789,7.95
+Sikkim,male,401,44.9,75,8.03
+Sikkim,female,242,38.3,7,7.75
+Sikkim,person,643,42.8,82,8.02
+Tamil Nadu,male,2585,47.7,1467,8.07
+Tamil Nadu,female,1218,43.4,636,6.65
+Tamil Nadu,person,3803,46.4,2103,7.66
+Telangana,male,929,48.7,401,7.92
+Telangana,female,342,44.2,333,7.38
+Telangana,person,1271,47.6,734,7.66
+Tripura,male,460,48.7,503,7.53
+Tripura,female,217,38.5,43,6.68
+Tripura,person,677,45.5,546,7.46
+Uttar Pradesh,male,2186,51.1,2017,7.97
+Uttar Pradesh,female,397,41.1,127,7.16
+Uttar Pradesh,person,2583,49.6,2144,7.92
+Uttarakhand,male,626,49.6,231,7.82
+Uttarakhand,female,219,43.1,31,7.45
+Uttarakhand,person,845,48.0,262,7.76
+West Bengal,male,1932,49.6,1811,7.29
+West Bengal,female,724,37.3,263,6.36
+West Bengal,person,2656,46.4,2074,7.15
