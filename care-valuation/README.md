@@ -41,7 +41,32 @@ and ₹500 in Mizoram, each from one woman, and ₹500 in Delhi from three.
 Lakshadweep has no woman in casual labour in the sample. There is no state
 total.
 
+## 2019
+
+The year switch gives the same valuation for 2019, and a panel sets the two
+years side by side: 2019 rupees are multiplied by the ratio of the all-India
+CPI averaged over 2024 to its 2019 average (1.3262, base 2012).
+
+MoSPI's unit-level file for the 2019 Time Use Survey has no start or end time
+on any diary row, so the 2019 minutes are read from the survey report,
+"Time Use in India-2019", Statement 7.1, with the relative standard errors of
+Table (3RSE)_State (`tools/tus2019_report.py`). The 2019 wages, hours and
+sample counts are computed from the PLFS unit-level data for January to
+December 2019 (`tools/plfs_2019.py`): the last two quarters of the 2018-19
+round and the first two of 2019-20, all visits, urban records at a quarter of
+their weight. Both scripts stop unless they reproduce MoSPI's all-India
+figures. `tools/build_2019.py` writes `data/care-2019.js`.
+
+A change in minutes is marked clear at 1.96 standard errors of the
+difference. The two years' errors were computed in different ways and the
+2019 ones are about three times larger at all-India level, so the mark is a
+guide. The 2019 wage cells count every urban visit and the 2024 cells the
+first visit only; a state's regular wage can move with who is in the sample
+and should not be read as a wage change. Dadra and Nagar Haveli, Daman and
+Diu and Ladakh have no comparison, because the units changed.
+
 ## Tests
 
 `node care-valuation/tests/core.mjs`. Nineteen faults were injected into the
-core one at a time and the test fails on each.
+core one at a time and the test fails on each. Fourteen more were injected into
+the year comparison and the 2019 data file.

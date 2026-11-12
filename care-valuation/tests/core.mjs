@@ -120,5 +120,58 @@ ok('the table has every area', t.length === 37);
 ok('the table is sorted by the value of a woman\'s work, with missing values last', t.every((x, i) => i === 0 || (t[i - 1].female.value ? t[i - 1].female.value.year : -1) >= (x.female.value ? x.female.value.year : -1)));
 ok('a missing value sorts last', X.table(D, { ...o, wsex: 'own' }).slice(-1)[0].female.value === null && X.table(D, { ...o, wsex: 'own' })[0].female.value !== null);
 
+// ---- 2019, and the two years side by side
+// change() on made-up numbers worked by hand: 300 to 330 minutes with errors 6 and 8 is
+// +30 with error 10; 73,000 rupees at a price ratio of 1.25 is 91,250, and 109,500 is 20% above it.
+const mk = (minutes, se, year, rate) => ({ minutes, se, rate, value: year == null ? null : { year } });
+const ch = X.change({ female: mk(300, 6, 73000, 40), male: mk(40, 3, null, null) }, { female: mk(330, 8, 109500, 60), male: mk(42, 4, 9000, 60) }, 1.25);
+near('change: difference in minutes', ch.female.diff, 30, 1e-12);
+near('change: error of the difference is the root of the sum of squares', ch.female.se, 10, 1e-12);
+ok('change: 30 on an error of 10 is clear', ch.female.clear === true);
+near('change: the earlier value in later prices', ch.female.value[0], 91250, 1e-9);
+near('change: real change in value', ch.female.real, 0.2, 1e-12);
+near('change: real change in the hourly rate, 60 over 40 x 1.25', ch.female.rate, 0.2, 1e-12);
+ok('change: 2 on an error of 5 is not clear', ch.male.clear === false && Math.abs(ch.male.se - 5) < 1e-12);
+ok('change: no value in one year, no real change', ch.male.real === null && ch.male.rate === null && ch.male.value[0] === null && ch.male.value[1] === 9000);
+ok('change: exactly 1.96 errors counts as clear', X.change({ female: mk(0, 3, 1, 1), male: mk(0, 3, 1, 1) }, { female: mk(9.8, 4, 1, 1), male: mk(9.7, 4, 1, 1) }, 1).female.clear === true && X.change({ female: mk(0, 3, 1, 1), male: mk(0, 3, 1, 1) }, { female: mk(9.8, 4, 1, 1), male: mk(9.7, 4, 1, 1) }, 1).male.clear === false);
+
+const Y = load('care-2019.js', 'CARE_DATA_2019'), D19 = Y.states;
+const lines = f => fs.readFileSync(path.join(here, '..', 'data', f), 'utf8').trim().split('\n').slice(1).map(l => l.split(','));
+const tus = lines('tus2019.csv'), plfs = lines('plfs_2019.csv');
+ok('2019: 37 places, 148 minute rows and 111 wage rows', Object.keys(D19).length === 37 && tus.length === 148 && plfs.length === 111);
+ok('2019: every minutes figure equals the report file, and its error is the relative error times the figure', tus.every(([s, sex, age, dom, care, rd, rc, n]) => { const r = D19[s].min[age + '|' + sex];
+  return r[0] === +dom && r[1] === +care && r[4] === +n && Math.abs(r[2] - dom * rd / 100) <= 0.0501 && Math.abs(r[3] - care * rc / 100) <= 0.0501; }));
+ok('2019: every wage, hour and count equals the script\'s output', plfs.every(([s, g, rw, rn, rh, cw, cn, chh]) => { const d = D19[s], c = d.cells[g];
+  return d.regular[g] === (rw === '' ? null : +rw) && d.casual[g] === (cw === '' ? null : +cw) && c[0] === +rn && c[1] === (rh === '' ? 0 : +rh) && c[2] === +cn && c[3] === (chh === '' ? 0 : +chh); }));
+// MoSPI data service, TUS indicator 8, 2019, all-India, ages 15 to 59
+ok('2019: all-India minutes are the four MoSPI publishes', D19['All India'].min['15-59|female'][0] === 290 && D19['All India'].min['15-59|female'][1] === 45 && D19['All India'].min['15-59|male'][0] === 28 && D19['All India'].min['15-59|male'][1] === 12);
+ok('2019: the same shape as 2024', Object.values(D19).every(d => ['15-59|male', '15-59|female', '6+|male', '6+|female'].every(k => d.min[k] && d.min[k].length === 5) && ['male', 'female', 'person'].every(g => g in d.regular && g in d.casual && d.cells[g].length === 4)));
+ok('2019: the two territories are separate and Ladakh is absent', 'Daman & Diu' in D19 && 'Dadra & Nagar Haveli' in D19 && !('Ladakh' in D19) && !('Dadra & Nagar Haveli & Daman & Diu' in D19));
+ok('2019 and 2024 share 35 places, all-India among them', Object.keys(D19).filter(k => D[k]).length === 35);
+// the price ratio, from the CPI file the rupee converter carries
+const cpiRows = Object.fromEntries(fs.readFileSync(path.join(here, '..', '..', 'rupee-converter', 'data', 'cpi2012.csv'), 'utf8').trim().split('\n').slice(1).map(l => { const c = l.split(','); return [c[0], c.slice(1).map(Number)]; }));
+const avg = y => Math.round(cpiRows[y].reduce((a, b) => a + b, 0) / 12 * 100) / 100;
+ok('the CPI averages equal the rupee converter\'s series', Y.cpi['2019'] === avg('2019') && Y.cpi['2024'] === avg('2024'), JSON.stringify(Y.cpi));
+const ratio = Y.cpi['2024'] / Y.cpi['2019'];
+near('the price ratio', ratio, 1.3262002362, 1e-9);
+// values worked in Python from the same files
+const two = (name, opt) => X.change(X.state(D19[name], { ...o, hours: 'survey', ...opt }), X.state(D[name], { ...o, hours: 'survey', ...opt }), ratio);
+const ai = two('All India', {});
+near('India, women, all-worker casual wage: 2019 value in 2024 prices', ai.female.value[0], 96425.285, 0.01);
+near('India, women: 2024 value', ai.female.value[1], 115710.425, 0.01);
+near('India, women: real change', ai.female.real, 0.2000009, 1e-6);
+near('India, women: real change in the hourly rate', ai.female.rate, 0.1792323, 1e-6);
+near('India, women: change in minutes', ai.female.diff, 5.9, 1e-9);
+near('India, women: error of the change', ai.female.se, Math.hypot(2.3 + 1.0, 0.8 + 0.4), 1e-9);
+ok('India, women: 5.9 minutes is within sampling error', ai.female.clear === false);
+near('India, women, own-sex casual wage: real change', two('All India', { wsex: 'own' }).female.real, 0.2581500, 1e-6);
+near('India, men, regular wage: real change', two('All India', { wage: 'regular' }).male.real, 0.1150063, 1e-6);
+const bi = two('Bihar', {});
+near('Bihar, women: minutes fell by 46.6', bi.female.diff, -46.6, 1e-9);
+ok('Bihar, women: the fall is clear', bi.female.clear === true);
+near('Bihar, women: real change in value', bi.female.real, -0.0124889, 1e-6);
+near('Kerala, women: real change in value', two('Kerala', {}).female.real, -0.0654102, 1e-6);
+ok('Lakshadweep, women at their own casual wage: no value, no change', two('Lakshadweep', { wsex: 'own' }).female.real === null);
+
 if (errors.length) { console.error(`FAIL: ${errors.length} of ${checks} checks`); for (const e of errors) console.error('  ' + e); process.exit(1); }
 console.log(`OK: ${checks} checks on care-valuation.`);

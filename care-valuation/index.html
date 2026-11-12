@@ -74,15 +74,17 @@
 </head>
 <body>
 <header><div class="wrap">
-  <h1>Unpaid Care Valuation <small>Time Use Survey 2024 × PLFS 2024 wages</small></h1>
+  <h1>Unpaid Care Valuation <small>Time Use Survey × PLFS wages, 2019 and 2024</small></h1>
   <nav><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/care-valuation">Source</a></nav>
 </div></header>
 <main><div class="wrap">
-<p class="lede">A rupee value for the unpaid domestic and care work that women and men do in each Indian state. The minutes come from the Time Use Survey 2024 and the wages from the Periodic Labour Force Survey 2024. Every assumption that turns a wage into an hourly rate is an input you can change.</p>
+<p class="lede">A rupee value for the unpaid domestic and care work that women and men do in each Indian state. The minutes come from the Time Use Survey and the wages from the Periodic Labour Force Survey, for 2024 or for 2019, and the page sets the two years side by side in 2024 prices. Every assumption that turns a wage into an hourly rate is an input you can change.</p>
 <div class="grid">
 <div>
   <div class="panel">
     <h2>Place and people</h2>
+    <label for="year">Year</label>
+    <select id="year"><option value="2024">2024</option><option value="2019">2019</option></select>
     <label for="state">State or union territory</label><select id="state"></select>
     <label for="age">Age group for the minutes</label>
     <select id="age"><option value="15-59">15 to 59 years</option><option value="6+">6 years and above</option></select>
@@ -116,6 +118,9 @@
 <div>
   <div class="panel"><h2>Value per person</h2><div id="out" aria-live="polite"></div></div>
   <div class="panel"><h2>How the figure is reached</h2><div id="work"></div></div>
+  <div class="panel"><h2>2019 and 2024, in 2024 prices</h2><div id="chg" aria-live="polite"></div>
+    <div class="tscroll" tabindex="0" role="region" aria-label="Change in women's unpaid work by state, 2019 to 2024" id="chgAll"></div>
+    <p class="note">Women, at the settings on the left, with the survey minutes of each year. A change in minutes is marked clear when it is at least 1.96 times its standard error. The standard errors of the two years were computed in different ways, which the method below sets out, so the mark is a guide. Sorted by the change in minutes.</p></div>
   <div class="panel"><h2>All states, at these settings</h2><div class="tscroll" tabindex="0" role="region" aria-label="Value of unpaid work by state" id="all"></div>
     <p class="note">Sorted by the annual value of a woman's unpaid work. The table uses the survey minutes for every state, including the one whose minutes you may have edited above.</p></div>
   <div class="panel"><h2>Method and limits</h2>
@@ -123,8 +128,10 @@
     <p class="note">The value is a replacement cost at a generalist wage: what the hours would cost if someone were paid the state's average wage to do them. It is a floor for some tasks and a ceiling for others. Childcare and care of the sick are valued at the same wage as sweeping. Supervision that overlaps another task gets only its share of the slot.</p>
     <p class="note">Valuing each sex at its own wage builds the gender wage gap into the answer: an hour of a woman's cooking is then worth less than an hour of a man's. The default prices both at the wage of all workers in the state.</p>
     <p class="note">Small states and union territories rest on few sample households. The standard error beside each minutes figure treats the first-stage sample unit as a cluster and ignores stratification. A wage that rests on fewer than 30 workers in the survey sample is not used. The published casual wage for women is ₹200 in Chandigarh and ₹500 in Mizoram, and each comes from one woman; Delhi's ₹500 comes from three. Eighteen casual-wage cells fall below 30 workers, most of them women in small states and union territories, and two regular-wage cells do. Lakshadweep has no woman in casual labour in the sample. The page gives a value per person and no state total, because a total needs the population in each age group.</p>
-    <p class="note">Hours are what the same workers reported for the survey week: for casual labourers the hours on a day of casual work, and for regular employees the hours in all their work that week. Across India a casual day is 7.7 hours and a regular employee's week is 48.8 hours.</p>
-    <p class="note">Sources: Time Use Survey 2024, Ministry of Statistics and Programme Implementation, unit-level data. Periodic Labour Force Survey, calendar year 2024: wages from indicators 6 and 7 through the MoSPI data service, read on 11 November 2026; sample counts and hours from the unit-level data.</p>
+    <p class="note">The 2019 figures come from different files. MoSPI's unit-level file for the 2019 survey has no start or end time on any diary row, so the minutes are the ones printed in the survey report, Statement 7.1, in whole minutes, with the relative standard errors of its Table (3RSE). Those errors are the survey office's own and are larger than the ones computed here for 2024, which ignore stratification: for women aged 15 to 59 across India the 2019 error is 2.3 minutes on 290 and the 2024 error is 0.8 on 283. The 2019 wages are computed from the unit-level data of two survey rounds, January to June 2019 from the 2018-19 round and July to December 2019 from the 2019-20 round, because the published figures are by quarter. The computation returns MoSPI's all-India quarterly regular wages to 0.15% and casual wages to 1.75%. The 2019 cells count every visit to an urban household and the 2024 cells count the first visit only, so the worker counts of the two years are not comparable, and a state's regular wage can move with who is in the sample.</p>
+    <p class="note">Prices: 2019 rupees are multiplied by the ratio of the all-India Consumer Price Index averaged over 2024 to its average over 2019, base 2012, which is <span id="cpiRatio"></span>. One national index is used for every state. In 2019 Dadra and Nagar Haveli and Daman and Diu were separate and Ladakh was part of Jammu and Kashmir, so those places have no comparison.</p>
+    <p class="note">Hours are what the same workers reported for the survey week: for casual labourers the hours on a day of casual work, and for regular employees the hours in all their work that week. Across India in 2024 a casual day is 7.7 hours and a regular employee's week is 48.8 hours.</p>
+    <p class="note">Sources: Time Use Survey 2024, Ministry of Statistics and Programme Implementation, unit-level data. Periodic Labour Force Survey, calendar year 2024: wages from indicators 6 and 7 through the MoSPI data service, read on 11 November 2026; sample counts and hours from the unit-level data. For 2019: Time Use in India-2019, National Statistical Office, 2020; Periodic Labour Force Survey unit-level data, July 2018 to June 2019 and July 2019 to June 2020; Consumer Price Index, base 2012, MoSPI.</p>
   </div>
 </div>
 </div>
@@ -137,6 +144,7 @@
 <!-- contact:end -->
 <footer>Part of <a href="../">Experiments</a> by Varna Sri Raman · Idealog Works · MIT licence · Computation in the browser.</footer>
 <script src="data/care-data.js"></script>
+<script src="data/care-2019.js"></script>
 <script id="core">
 // The arithmetic of the page. It touches nothing on the page, so that
 // care-valuation/tests/core.mjs can run it under node.
@@ -200,17 +208,44 @@ const CV = (() => {
     rows.sort((a, b) => (b.female.value ? b.female.value.year : -1) - (a.female.value ? a.female.value.year : -1));
     return rows;
   }
-  return { hourly, hourlySurvey, minutes, minutesSe, value, state, table, MIN_N };
+  // Two years of one state, set side by side. a is state() for the earlier
+  // year and b for the later; ratio is later prices over earlier prices.
+  // The minutes of the two years come from separate samples, so the error
+  // of their difference is the root of the sum of the two squared errors.
+  const Z = 1.96;
+  function change(a, b, ratio) {
+    const out = {};
+    for (const sex of ['female', 'male']) {
+      const x = a[sex], y = b[sex], diff = y.minutes - x.minutes, se = Math.hypot(x.se, y.se);
+      const then = x.value && ratio > 0 ? x.value.year * ratio : null, now = y.value ? y.value.year : null;
+      out[sex] = { minutes: [x.minutes, y.minutes], diff, se, clear: se > 0 ? Math.abs(diff) >= Z * se : null,
+        value: [then, now], real: then > 0 && now != null ? now / then - 1 : null,
+        rate: x.rate != null && y.rate != null && ratio > 0 ? y.rate / (x.rate * ratio) - 1 : null };
+    }
+    return out;
+  }
+  return { hourly, hourlySurvey, minutes, minutesSe, value, state, table, change, MIN_N, Z };
 })();
 if (typeof module !== 'undefined') module.exports = CV;
 </script>
 <script>
 const $ = s => document.querySelector(s);
-const D = window.CARE_DATA.states;
+const YEARS = { 2024: window.CARE_DATA, 2019: window.CARE_DATA_2019 };
+const RATIO = YEARS[2019].cpi['2024'] / YEARS[2019].cpi['2019'];
+let D = YEARS[2024].states;
 const rs = v => v == null ? 'not reported' : '₹' + Math.round(v).toLocaleString('en-IN');
 const rs2 = v => v == null ? 'not reported' : '₹' + v.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-$('#state').innerHTML = Object.keys(D).map(s => `<option>${esc(s)}</option>`).join('');
+function setYear() {
+  const keep = $('#state').value;
+  D = YEARS[$('#year').value].states;
+  $('#state').innerHTML = Object.keys(D).map(s => `<option>${esc(s)}</option>`).join('');
+  if (D[keep]) $('#state').value = keep;
+}
+setYear();
+$('#cpiRatio').textContent = RATIO.toFixed(4);
+const pct = v => v == null ? 'no wage' : (v >= 0 ? '+' : '−') + Math.abs(v * 100).toFixed(1) + '%';
+const signed = v => (v >= 0 ? '+' : '−') + Math.abs(v).toFixed(0);
 let edited = false;
 function opts() {
   return { age: $('#age').value, scope: $('#scope').value, wage: $('#wage').value, wsex: $('#wsex').value, hours: $('#hrs').value, hoursPerDay: +$('#hpd').value, daysPerMonth: +$('#dpm').value };
@@ -237,9 +272,18 @@ function render() {
   $('#out').innerHTML = h;
   const line = (lab, x, sex) => x.value ? `<li>${lab}: <b>${x.minutes}</b> minutes a day${edited ? '' : ` (survey: standard error ${x.se.toFixed(1)}, ${x.n.toLocaleString('en-IN')} people in the sample)`}. The ${who} ${o.wage} wage is <b>${rs2(x.wage)}</b> ${unit}, from ${x.workers.toLocaleString('en-IN')} workers in the sample, which is <b>${rs2(x.rate)}</b> an hour. ${x.minutes} ÷ 60 × ${x.rate.toFixed(2)} = <b>${rs2(x.value.day)}</b> a day, and × 365 = <b>${rs(x.value.year)}</b> a year.</li>` : `<li>${lab}: no wage that can be used.</li>`;
   $('#work').innerHTML = `<ol class="work">${line('Women', r.female)}${line('Men', r.male)}</ol><p class="mini">Hourly rate: ${o.hours === 'own' ? (o.wage === 'casual' ? `daily wage ÷ ${o.hoursPerDay} hours` : `monthly earnings ÷ ${o.daysPerMonth} days ÷ ${o.hoursPerDay} hours`) : (o.wage === 'casual' ? `daily wage ÷ ${r.female.hours ?? r.male.hours} hours on a casual day` : `monthly earnings ÷ (${r.female.hours ?? r.male.hours} hours a week × 52 ÷ 12)`) + (o.wsex === 'own' ? ' for women; men have their own hours' : '')}.</p>`;
+  const so = { ...o, override: null }, A = YEARS[2019].states, B = YEARS[2024].states;
+  if (A[name] && B[name]) {
+    const c = CV.change(CV.state(A[name], so), CV.state(B[name], so), RATIO);
+    const li = (lab, x) => `<li>${lab}: <b>${x.minutes[0]}</b> minutes a day in 2019 and <b>${x.minutes[1].toFixed(0)}</b> in 2024, a change of ${signed(x.diff)} with a standard error of ${x.se.toFixed(1)}: ${x.clear ? 'clear of sampling error' : 'within sampling error'}. ${x.real == null ? `No value for one of the years, because the ${o.wage} wage rests on fewer than ${CV.MIN_N} workers.` : `A year of it was worth <b>${rs(x.value[0])}</b> in 2019 at 2024 prices and <b>${rs(x.value[1])}</b> in 2024, a real change of <b>${pct(x.real)}</b>. The real hourly rate changed by ${pct(x.rate)}.`}</li>`;
+    $('#chg').innerHTML = `<p class="note">${esc(name)}, survey minutes of each year${edited ? ', not the minutes typed in' : ''}.</p><ol class="work">${li('Women', c.female)}${li('Men', c.male)}</ol>`;
+  } else $('#chg').innerHTML = `<p class="note">${esc(name)} was not reported as the same unit in both years, so there is no comparison.</p>`;
+  const cmp = Object.keys(B).filter(k => A[k]).map(k => ({ name: k, ...CV.change(CV.state(A[k], so), CV.state(B[k], so), RATIO).female })).sort((x, y) => x.diff - y.diff);
+  $('#chgAll').innerHTML = `<table><thead><tr><th scope="col">State</th><th scope="col">Women, min 2019</th><th scope="col">2024</th><th scope="col">Change</th><th scope="col">Clear?</th><th scope="col">Real change in value</th></tr></thead><tbody>${cmp.map(x => `<tr><td>${esc(x.name)}</td><td>${x.minutes[0]}</td><td>${x.minutes[1].toFixed(0)}</td><td>${signed(x.diff)} ± ${(CV.Z * x.se).toFixed(0)}</td><td>${x.clear ? 'yes' : 'no'}</td><td>${pct(x.real)}</td></tr>`).join('')}</tbody></table>`;
   const rows = CV.table(D, o);
   $('#all').innerHTML = `<table><thead><tr><th scope="col">State</th><th scope="col">Women, min</th><th scope="col">Men, min</th><th scope="col">₹ an hour, women</th><th scope="col">Women, ₹ a year</th><th scope="col">Men, ₹ a year</th><th scope="col">Ratio</th></tr></thead><tbody>${rows.map(x => `<tr><td>${esc(x.name)}</td><td>${Math.round(x.female.minutes)}</td><td>${Math.round(x.male.minutes)}</td><td>${x.female.rate == null ? 'none' : x.female.rate.toFixed(0)}</td><td>${x.female.value ? rs(x.female.value.year) : 'none'}</td><td>${x.male.value ? rs(x.male.value.year) : 'none'}</td><td>${x.ratio == null ? 'none' : x.ratio.toFixed(1)}</td></tr>`).join('')}</tbody></table>`;
 }
+$('#year').addEventListener('change', () => { setYear(); fill(); render(); });
 for (const id of ['state', 'age', 'scope']) $('#' + id).addEventListener('change', () => { fill(); render(); });
 for (const id of ['wage', 'wsex', 'hpd', 'dpm']) $('#' + id).addEventListener('input', render);
 $('#hrs').addEventListener('change', () => { $('#ownRow').style.display = $('#hrs').value === 'own' ? '' : 'none'; render(); });
