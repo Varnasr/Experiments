@@ -314,6 +314,16 @@ output is byte for byte the `min` entries in `care-data.js`. The unit-level
 file is not in the repository and must not be added: it is 899 MB and it is
 row-level survey data.
 
+**The wages are published figures, and the unit-level file says how few
+workers some rest on.** `care-valuation/tools/plfs_cells.py` reads the PLFS
+2024 person-level file and writes `plfs_cells.csv`: workers in the sample and
+their hours, for each state and sex. The page divides a wage by those hours
+and refuses a wage from fewer than 30 workers. Chandigarh's ₹200 and
+Mizoram's ₹500 for women in casual work each come from one woman. The script
+reproduces every regular wage to 0.02%; its casual wages are within 0.5%
+except in one cell of 21 workers, where it is 5% from MoSPI's, so the page
+keeps the published wages and takes only counts and hours from the file.
+
 **Two choices in that script are the owner's to confirm.** Weights are MULT
 as released. Dividing by NSC gives the same all-India figures and moves a
 state's domestic minutes by at most 6. And the CPI join in `rupee-converter`

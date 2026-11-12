@@ -66,7 +66,7 @@ near('All India casual wage, women', D['All India'].casual.female, 301.91, 1e-9)
 ok('every state has minutes for both sexes and both age groups', Object.values(D).every(d => ['15-59|female', '15-59|male', '6+|female', '6+|male'].every(k => d.min[k] && d.min[k].length === 5 && d.min[k][4] > 0)));
 // ---- one state, by hand. All India, 15 to 59, both kinds of work, casual wage of all workers:
 // women 283.3 + 57.6 = 340.9 minutes; 429.63 / 8 = 53.70375 an hour; 340.9 / 60 * 53.70375 = 305.1268... a day.
-const o = { age: '15-59', scope: 'both', wage: 'casual', wsex: 'person', hoursPerDay: 8, daysPerMonth: 26 };
+const o = { age: '15-59', scope: 'both', wage: 'casual', wsex: 'person', hours: 'own', hoursPerDay: 8, daysPerMonth: 26 };
 let r = X.state(D['All India'], o);
 near('All India women, a day', r.female.value.day, 340.9 / 60 * (429.63 / 8), 1e-9);
 near('All India women, a year', r.female.value.year, 340.9 / 60 * (429.63 / 8) * 365, 1e-6);
@@ -85,11 +85,40 @@ near('override, women', r.female.value.day, 120 / 60 * (429.63 / 8), 1e-9); near
 // Lakshadweep at own-sex casual wages has no value for women and one for men.
 r = X.state(D['Lakshadweep'], { ...o, wsex: 'own' });
 ok('Lakshadweep women: no value', r.female.value === null && r.ratio === null); ok('Lakshadweep men: a value', r.male.value.year > 0);
+// ---- hours from the survey
+near('casual: 400 a day over 7.5 hours', X.hourlySurvey('casual', 400, 7.5), 400 / 7.5, 1e-12);
+near('regular: 26,000 a month over 48 hours a week', X.hourlySurvey('regular', 26000, 48), 26000 / 208, 1e-9);
+ok('no hours, no rate', X.hourlySurvey('casual', 400, null) === null && X.hourlySurvey('regular', 0, 48) === null);
+// All India, all workers: a casual day is 7.7 hours and a regular week is 48.8 hours.
+const os = { ...o, hours: 'survey' };
+r = X.state(D['All India'], os);
+near('survey hours, casual rate', r.female.rate, 429.63 / 7.7, 1e-9);
+near('survey hours, women a day', r.female.value.day, 340.9 / 60 * (429.63 / 7.7), 1e-9);
+ok('the count of workers behind the wage is reported', r.female.workers === 27092 && r.female.hours === 7.7);
+r = X.state(D['All India'], { ...os, wage: 'regular' });
+near('survey hours, regular rate', r.female.rate, 21454.87 / (48.8 * 52 / 12), 1e-9);
+// Own-sex wages use own-sex hours: women 7.1 hours on a casual day, men 7.85.
+r = X.state(D['All India'], { ...os, wsex: 'own' });
+near('own hours, women', r.female.rate, 301.91 / 7.1, 1e-9); near('own hours, men', r.male.rate, 462.64 / 7.85, 1e-9);
+// ---- wages from too few workers are not used
+ok('the floor is 30 workers', X.MIN_N === 30);
+r = X.state(D['Chandigarh'], os);
+ok('Chandigarh: 24 casual workers, no value', r.female.value === null && r.female.thin === true && r.female.workers === 24);
+ok('Chandigarh: 421 regular workers, a value', X.state(D['Chandigarh'], { ...os, wage: 'regular' }).female.value.year > 0);
+r = X.state(D['Delhi'], { ...os, wsex: 'own' });
+ok('Delhi women: three casual workers, no value; men have one', r.female.value === null && r.female.workers === 3 && r.male.value.year > 0);
+ok('Mizoram women: one casual worker', X.state(D['Mizoram'], { ...os, wsex: 'own' }).female.workers === 1);
+ok('a thin wage is refused with typed-in hours too', X.state(D['Chandigarh'], o).female.value === null);
+// ---- the cells against the file the script wrote
+const cellRows = fs.readFileSync(path.join(here, '..', 'data', 'plfs_cells.csv'), 'utf8').trim().split('\n').slice(1).map(l => l.split(','));
+ok('111 cells: 37 areas by three groups', cellRows.length === 111);
+ok('every cell in the data file equals the script\'s output', cellRows.every(([s, g, rn, rh, cn, ch]) => { const c = D[s].cells[g]; return c[0] === +rn && c[1] === (rh === '' ? null : +rh) && c[2] === +cn && c[3] === (ch === '' ? null : +ch); }));
+ok('18 casual cells and 2 regular cells are below the floor', cellRows.filter(c => +c[4] < 30).length === 18 && cellRows.filter(c => +c[2] < 30).length === 2);
 // ---- the table
 const t = X.table(D, o);
 ok('the table has every area', t.length === 37);
-ok('the table is sorted by the value of a woman\'s work', t.every((x, i) => i === 0 || t[i - 1].female.value.year >= x.female.value.year));
-ok('a missing value sorts last', X.table(D, { ...o, wsex: 'own' }).slice(-1)[0].name === 'Lakshadweep');
+ok('the table is sorted by the value of a woman\'s work, with missing values last', t.every((x, i) => i === 0 || (t[i - 1].female.value ? t[i - 1].female.value.year : -1) >= (x.female.value ? x.female.value.year : -1)));
+ok('a missing value sorts last', X.table(D, { ...o, wsex: 'own' }).slice(-1)[0].female.value === null && X.table(D, { ...o, wsex: 'own' })[0].female.value !== null);
 
 if (errors.length) { console.error(`FAIL: ${errors.length} of ${checks} checks`); for (const e of errors) console.error('  ' + e); process.exit(1); }
 console.log(`OK: ${checks} checks on care-valuation.`);

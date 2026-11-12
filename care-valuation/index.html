@@ -95,11 +95,13 @@
     <select id="wage"><option value="casual">Casual labour, daily earnings</option><option value="regular">Regular wage or salary, monthly earnings</option></select>
     <label for="wsex">Whose wage</label>
     <select id="wsex"><option value="person">All workers in the state, for both sexes</option><option value="own">Each sex at its own wage</option></select>
-    <div class="row">
+    <label for="hrs">Hours behind the wage</label>
+    <select id="hrs"><option value="survey">Hours the same workers reported in the survey</option><option value="own">My own figures</option></select>
+    <div class="row" id="ownRow" style="display:none">
       <div><label for="hpd">Hours in a paid day</label><input type="number" id="hpd" value="8" min="1" max="24" step="0.5"></div>
       <div><label for="dpm">Paid days in a month</label><input type="number" id="dpm" value="26" min="1" max="31" step="1"></div>
     </div>
-    <p class="mini">A casual wage is divided by the hours in a paid day. A monthly salary is divided by paid days and then by hours. PLFS reports earnings and does not report hours with them, so both divisors are assumptions.</p>
+    <p class="mini">A casual wage is divided by the hours worked on a casual day. A monthly salary is divided by the hours worked in a month, taken as the hours in the survey week times 52 ÷ 12. With your own figures, a salary is divided by paid days and then by hours a day.</p>
   </div>
   <div class="panel">
     <h2>Minutes per day, editable</h2>
@@ -120,8 +122,9 @@
     <p class="note">Minutes are the average per person per day, counting people who did none of the activity as zero. When a person reported two or three activities in the same time slot, the slot is shared equally among them, which is how the survey's own published tables count time "irrespective of major activity". Domestic services are ICATUS major division 3 and caregiving is major division 4. The state figures were computed from the unit-level data with the survey multipliers, and the same computation returns the published all-India figures: 283 and 58 minutes for women aged 15 to 59, 26 and 16 for men.</p>
     <p class="note">The value is a replacement cost at a generalist wage: what the hours would cost if someone were paid the state's average wage to do them. It is a floor for some tasks and a ceiling for others. Childcare and care of the sick are valued at the same wage as sweeping. Supervision that overlaps another task gets only its share of the slot.</p>
     <p class="note">Valuing each sex at its own wage builds the gender wage gap into the answer: an hour of a woman's cooking is then worth less than an hour of a man's. The default prices both at the wage of all workers in the state.</p>
-    <p class="note">Small states and union territories rest on few sample households. The standard error beside each minutes figure treats the first-stage sample unit as a cluster and ignores stratification. A casual wage for women reported as exactly ₹200 or ₹500, as in Chandigarh, Delhi and Mizoram, points to a handful of observations. Lakshadweep reports no casual wage for women. The page gives a value per person and no state total, because a total needs the population in each age group.</p>
-    <p class="note">Sources: Time Use Survey 2024, Ministry of Statistics and Programme Implementation, unit-level data. Periodic Labour Force Survey, calendar year 2024, indicators 6 and 7, through the MoSPI data service, read on 11 November 2026.</p>
+    <p class="note">Small states and union territories rest on few sample households. The standard error beside each minutes figure treats the first-stage sample unit as a cluster and ignores stratification. A wage that rests on fewer than 30 workers in the survey sample is not used. The published casual wage for women is ₹200 in Chandigarh and ₹500 in Mizoram, and each comes from one woman; Delhi's ₹500 comes from three. Eighteen casual-wage cells fall below 30 workers, most of them women in small states and union territories, and two regular-wage cells do. Lakshadweep has no woman in casual labour in the sample. The page gives a value per person and no state total, because a total needs the population in each age group.</p>
+    <p class="note">Hours are what the same workers reported for the survey week: for casual labourers the hours on a day of casual work, and for regular employees the hours in all their work that week. Across India a casual day is 7.7 hours and a regular employee's week is 48.8 hours.</p>
+    <p class="note">Sources: Time Use Survey 2024, Ministry of Statistics and Programme Implementation, unit-level data. Periodic Labour Force Survey, calendar year 2024: wages from indicators 6 and 7 through the MoSPI data service, read on 11 November 2026; sample counts and hours from the unit-level data.</p>
   </div>
 </div>
 </div>
@@ -146,6 +149,15 @@ const CV = (() => {
     if (!(daysPerMonth > 0)) return null;
     return wage / (daysPerMonth * hoursPerDay);
   }
+  // The same, with the hours the workers themselves reported: hours on a
+  // casual day, or hours in the survey week for a regular employee.
+  const WEEKS_PER_MONTH = 52 / 12;
+  function hourlySurvey(series, wage, hours) {
+    if (wage == null || !(wage > 0) || !(hours > 0)) return null;
+    return series === 'casual' ? wage / hours : wage / (hours * WEEKS_PER_MONTH);
+  }
+  // A wage from fewer than this many workers in the sample is not used.
+  const MIN_N = 30;
   // Minutes for the work counted. rec is [domestic, care, se domestic, se care, n].
   function minutes(rec, scope) {
     if (scope === 'domestic') return rec[0];
@@ -170,10 +182,14 @@ const CV = (() => {
     const out = {};
     for (const sex of ['female', 'male']) {
       const rec = d.min[o.age + '|' + sex];
-      const wage = d[o.wage][o.wsex === 'own' ? sex : 'person'];
-      const rate = hourly(o.wage, wage, o.hoursPerDay, o.daysPerMonth);
+      const who = o.wsex === 'own' ? sex : 'person';
+      const cell = d.cells[who], casual = o.wage === 'casual';
+      const n = casual ? cell[2] : cell[0], hours = casual ? cell[3] : cell[1];
+      const thin = n < MIN_N;
+      const wage = thin ? null : d[o.wage][who];
+      const rate = o.hours === 'own' ? hourly(o.wage, wage, o.hoursPerDay, o.daysPerMonth) : hourlySurvey(o.wage, wage, hours);
       const mins = o.override && o.override[sex] != null ? o.override[sex] : minutes(rec, o.scope);
-      out[sex] = { minutes: mins, se: minutesSe(rec, o.scope), n: rec[4], wage, rate, value: value(mins, rate) };
+      out[sex] = { minutes: mins, se: minutesSe(rec, o.scope), n: rec[4], wage, rate, value: value(mins, rate), workers: n, thin, hours };
     }
     const f = out.female.value, m = out.male.value;
     out.ratio = f && m && m.year > 0 ? f.year / m.year : null;
@@ -184,7 +200,7 @@ const CV = (() => {
     rows.sort((a, b) => (b.female.value ? b.female.value.year : -1) - (a.female.value ? a.female.value.year : -1));
     return rows;
   }
-  return { hourly, minutes, minutesSe, value, state, table };
+  return { hourly, hourlySurvey, minutes, minutesSe, value, state, table, MIN_N };
 })();
 if (typeof module !== 'undefined') module.exports = CV;
 </script>
@@ -197,7 +213,7 @@ const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;',
 $('#state').innerHTML = Object.keys(D).map(s => `<option>${esc(s)}</option>`).join('');
 let edited = false;
 function opts() {
-  return { age: $('#age').value, scope: $('#scope').value, wage: $('#wage').value, wsex: $('#wsex').value, hoursPerDay: +$('#hpd').value, daysPerMonth: +$('#dpm').value };
+  return { age: $('#age').value, scope: $('#scope').value, wage: $('#wage').value, wsex: $('#wsex').value, hours: $('#hrs').value, hoursPerDay: +$('#hpd').value, daysPerMonth: +$('#dpm').value };
 }
 function fill() {
   const d = D[$('#state').value], o = opts();
@@ -215,17 +231,18 @@ function render() {
   let h = stat('a woman', r.female) + '<br>' + stat('a man', r.male);
   if (r.ratio != null) h += `<p class="note">A woman's unpaid work in ${esc(name)} is worth ${r.ratio.toFixed(1)} times a man's at these settings.</p>`;
   for (const [sex, lab] of [['female', 'women'], ['male', 'men']]) {
-    if (r[sex].wage == null) h += `<p class="warn">The survey reports no ${o.wage} wage for ${o.wsex === 'own' ? lab : 'workers'} in ${esc(name)}, so no value is shown. Choose the other wage series or the all-worker wage.</p>`;
+    if (r[sex].wage == null && !(o.wsex !== 'own' && sex === 'male')) h += `<p class="warn">${r[sex].workers === 0 ? `The survey sample has no ${o.wsex === 'own' ? lab : 'workers'} in ${o.wage} work in ${esc(name)}` : `The ${o.wage} wage for ${o.wsex === 'own' ? lab : 'workers'} in ${esc(name)} rests on ${r[sex].workers} ${r[sex].workers === 1 ? 'worker' : 'workers'} in the survey sample, fewer than ${CV.MIN_N}`}, so no value is shown. Choose the other wage series${o.wsex === 'own' ? ' or the all-worker wage' : ''}.</p>`;
   }
   if (edited) h += `<p class="warn">The minutes were typed in and are not the survey figure for ${esc(name)}.</p>`;
   $('#out').innerHTML = h;
-  const line = (lab, x, sex) => x.value ? `<li>${lab}: <b>${x.minutes}</b> minutes a day${edited ? '' : ` (survey: standard error ${x.se.toFixed(1)}, ${x.n.toLocaleString('en-IN')} people in the sample)`}. The ${who} ${o.wage} wage is <b>${rs2(x.wage)}</b> ${unit}, which is <b>${rs2(x.rate)}</b> an hour. ${x.minutes} ÷ 60 × ${x.rate.toFixed(2)} = <b>${rs2(x.value.day)}</b> a day, and × 365 = <b>${rs(x.value.year)}</b> a year.</li>` : `<li>${lab}: no wage reported.</li>`;
-  $('#work').innerHTML = `<ol class="work">${line('Women', r.female)}${line('Men', r.male)}</ol><p class="mini">Hourly rate: ${o.wage === 'casual' ? `daily wage ÷ ${o.hoursPerDay} hours` : `monthly earnings ÷ ${o.daysPerMonth} days ÷ ${o.hoursPerDay} hours`}.</p>`;
+  const line = (lab, x, sex) => x.value ? `<li>${lab}: <b>${x.minutes}</b> minutes a day${edited ? '' : ` (survey: standard error ${x.se.toFixed(1)}, ${x.n.toLocaleString('en-IN')} people in the sample)`}. The ${who} ${o.wage} wage is <b>${rs2(x.wage)}</b> ${unit}, from ${x.workers.toLocaleString('en-IN')} workers in the sample, which is <b>${rs2(x.rate)}</b> an hour. ${x.minutes} ÷ 60 × ${x.rate.toFixed(2)} = <b>${rs2(x.value.day)}</b> a day, and × 365 = <b>${rs(x.value.year)}</b> a year.</li>` : `<li>${lab}: no wage that can be used.</li>`;
+  $('#work').innerHTML = `<ol class="work">${line('Women', r.female)}${line('Men', r.male)}</ol><p class="mini">Hourly rate: ${o.hours === 'own' ? (o.wage === 'casual' ? `daily wage ÷ ${o.hoursPerDay} hours` : `monthly earnings ÷ ${o.daysPerMonth} days ÷ ${o.hoursPerDay} hours`) : (o.wage === 'casual' ? `daily wage ÷ ${r.female.hours ?? r.male.hours} hours on a casual day` : `monthly earnings ÷ (${r.female.hours ?? r.male.hours} hours a week × 52 ÷ 12)`) + (o.wsex === 'own' ? ' for women; men have their own hours' : '')}.</p>`;
   const rows = CV.table(D, o);
-  $('#all').innerHTML = `<table><thead><tr><th scope="col">State</th><th scope="col">Women, min</th><th scope="col">Men, min</th><th scope="col">₹ an hour, women</th><th scope="col">Women, ₹ a year</th><th scope="col">Men, ₹ a year</th><th scope="col">Ratio</th></tr></thead><tbody>${rows.map(x => `<tr><td>${esc(x.name)}</td><td>${Math.round(x.female.minutes)}</td><td>${Math.round(x.male.minutes)}</td><td>${x.female.rate == null ? 'n/r' : x.female.rate.toFixed(0)}</td><td>${x.female.value ? rs(x.female.value.year) : 'n/r'}</td><td>${x.male.value ? rs(x.male.value.year) : 'n/r'}</td><td>${x.ratio == null ? 'n/r' : x.ratio.toFixed(1)}</td></tr>`).join('')}</tbody></table>`;
+  $('#all').innerHTML = `<table><thead><tr><th scope="col">State</th><th scope="col">Women, min</th><th scope="col">Men, min</th><th scope="col">₹ an hour, women</th><th scope="col">Women, ₹ a year</th><th scope="col">Men, ₹ a year</th><th scope="col">Ratio</th></tr></thead><tbody>${rows.map(x => `<tr><td>${esc(x.name)}</td><td>${Math.round(x.female.minutes)}</td><td>${Math.round(x.male.minutes)}</td><td>${x.female.rate == null ? 'none' : x.female.rate.toFixed(0)}</td><td>${x.female.value ? rs(x.female.value.year) : 'none'}</td><td>${x.male.value ? rs(x.male.value.year) : 'none'}</td><td>${x.ratio == null ? 'none' : x.ratio.toFixed(1)}</td></tr>`).join('')}</tbody></table>`;
 }
 for (const id of ['state', 'age', 'scope']) $('#' + id).addEventListener('change', () => { fill(); render(); });
 for (const id of ['wage', 'wsex', 'hpd', 'dpm']) $('#' + id).addEventListener('input', render);
+$('#hrs').addEventListener('change', () => { $('#ownRow').style.display = $('#hrs').value === 'own' ? '' : 'none'; render(); });
 for (const id of ['mF', 'mM']) $('#' + id).addEventListener('input', () => { edited = true; render(); });
 $('#reset').addEventListener('click', () => { fill(); render(); });
 fill(); render();
