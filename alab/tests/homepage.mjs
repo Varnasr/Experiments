@@ -3,7 +3,7 @@
  *   python3 -m http.server 8199 &          # from the REPO ROOT
  *   cd alab && ALAB_URL=http://localhost:8199/alab/ node tests/homepage.mjs
  *
- * Agastya's father opened this three times and asked where the mind maps
+ * A parent opened this three times and asked where the mind maps
  * were. They were on the Learn tab the whole time, one tap away, and a tap
  * away with nothing on the first screen naming it is the same as absent. The
  * app also does six different things and the homepage named none of them.

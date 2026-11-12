@@ -395,7 +395,7 @@ An AI-powered tool for translating Hindi Supreme Court and High Court petitions 
 
 ---
 
-### Kundendu's Learn & Play
+### Little K Learn & Play
 
 A playful Class 1 CBSE worksheet generator for a young learner, with a structured course running alongside it.
 
@@ -412,10 +412,10 @@ A playful Class 1 CBSE worksheet generator for a young learner, with a structure
 
 Following a synthetic-phonics scope and sequence, the reading path introduces sounds before letters and letters in the order that makes words fastest, and includes eight decodable readers across six stages, each using only the sounds taught by that point, with word-by-word read-along audio. Every lesson also carries a short note for the grown-up explaining the rule and how to teach it.
 
-**Directory:** `kundendu-worksheets/`
+**Directory:** `littlek/`
 **Stage:** Active
 
-Installable PWA: add it to a phone or tablet home screen and it works fully offline after the first visit. Single dependency-free HTML file plus a small service worker; open `kundendu-worksheets/index.html` or visit it on the deployed site.
+Installable PWA: add it to a phone or tablet home screen and it works fully offline after the first visit. Single dependency-free HTML file plus a small service worker; open `littlek/index.html` or visit it on the deployed site.
 
 ---
 
@@ -533,7 +533,7 @@ Experiments/
 ├── flipbook/                           # PDF to page-turning book, self-contained export
 ├── court-translator/
 │   └── index.html                      # Court Petition Translator UI
-├── kundendu-worksheets/
+├── littlek/
 │   ├── index.html                      # worksheet generator + structured course
 │   └── sw.js                           # offline service worker
 ├── netlify/

@@ -1,7 +1,7 @@
 /* The phonics path must never ask a child to read a letter he has not met.
  *
- *   node kundendu-worksheets/tests/sequence.mjs       # from the REPO ROOT
- *   LK_URL=http://host/kundendu-worksheets/ node kundendu-worksheets/tests/sequence.mjs
+ *   node littlek/tests/sequence.mjs       # from the REPO ROOT
+ *   LK_URL=http://host/littlek/ node littlek/tests/sequence.mjs
  *
  * It serves the repository itself, the way scripts/axe.mjs does, so CI runs
  * one command. A workflow step that backgrounds a server with `&` can hold
@@ -49,7 +49,7 @@ if (!BASE) {
     });
   });
   await new Promise(done => server.listen(0, '127.0.0.1', done));
-  BASE = `http://127.0.0.1:${server.address().port}/kundendu-worksheets/`;
+  BASE = `http://127.0.0.1:${server.address().port}/littlek/`;
 }
 const EXE = process.env.PW_CHROMIUM || (() => {
   const base = process.env.PLAYWRIGHT_BROWSERS_PATH || '/opt/pw-browsers';

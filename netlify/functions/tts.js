@@ -1,4 +1,4 @@
-// Text-to-speech proxy for Kundendu's Learn & Play.
+// Text-to-speech proxy for Little K Learn & Play.
 // Calls Sarvam AI's Bulbul voice (natural Indian English + Hindi) and returns
 // WAV audio. The API key stays server-side; responses are immutable-cacheable
 // because the same text+lang always produces the same audio.

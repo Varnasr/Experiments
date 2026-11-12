@@ -60,12 +60,22 @@ def history(tools):
                          'Fetch the full history (git fetch --unshallow) and run again.')
     out = git('log', '--no-merges', '--date=short', '--format=@%ad', '--name-only')
     every, own = {t: [] for t in tools}, {t: [] for t in tools}
+    # A tool's directory can be renamed, and its history is then under the old
+    # name. Git records the rename, so the old name is read from there and is
+    # written nowhere in this file.
+    was = {}
+    for line in git('log', '--no-merges', '--diff-filter=R', '-M', '--name-status', '--format=').split('\n'):
+        parts = line.split('\t')
+        if len(parts) == 3 and '/' in parts[1] and '/' in parts[2]:
+            old, new = parts[1].split('/')[0], parts[2].split('/')[0]
+            if old != new and new in tools:
+                was[old] = new
     # Oldest first, so that a directory seen for the first time is known to be
     # arriving. A commit that adds four tools and edits one other is a change to
     # that one: only the tools that already existed count toward a sweep.
     for chunk in reversed(out.split('@')[1:]):
         lines = chunk.strip().split('\n')
-        touched = {f.split('/')[0] for f in lines[1:] if '/' in f} & set(tools)
+        touched = {was.get(d, d) for d in (f.split('/')[0] for f in lines[1:] if '/' in f)} & set(tools)
         existing = {t for t in touched if every[t]}
         for t in touched:
             every[t].append(lines[0])

@@ -1,8 +1,8 @@
-/* Service worker for Kundendu's Learn & Play.
+/* Service worker for Little K Learn & Play.
    Precaches the app shell; caches line-art SVGs and fonts as they are used,
    so the app keeps working fully offline after the first visit. */
 
-const VERSION = "kws-v16";
+const VERSION = "kws-v17";
 const SHELL_CACHE = VERSION + "-shell";
 const RUNTIME_CACHE = VERSION + "-runtime";
 
