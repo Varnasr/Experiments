@@ -248,6 +248,15 @@ the consulting practice are at idealog.works, which the page links, so the
 landing page carries no Pinpoint Ventures contact line: `scripts/seo.py` writes
 that line and the share row on the tool pages only.
 
+**Three sites, one job each, decided on 2026-11-12.** The owner has three
+indexes and they had come to list each other's contents. This page lists the
+working tools and nothing that has moved out. idealog.works lists the
+ventures, the writing and the bio. openstacks.dev lists the open-source
+repositories with their status labels. A thing is listed in full in exactly
+one of them and the others carry a link. So the "Graduated" section that named
+four moved-out projects is gone, and the opening paragraph says where such
+work lives. Do not add a list of other projects back to this page.
+
 Until 2026-11-10 the page said "Nothing you type in leaves your browser" and
 "Four public APIs, and only four". Neither was true. `library-builder` sends the
 ISBN or title to Open Library, `court-translator` sends the text of the
