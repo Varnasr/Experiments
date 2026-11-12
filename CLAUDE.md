@@ -47,7 +47,7 @@ Content-Security-Policy you see locally is no policy at all.
 either. **`court-translator` calls a Netlify function**, and it calls it by its
 absolute address, `https://varnasr-experiments.netlify.app/.netlify/functions/court-translate`,
 so the Pages copy translates too. The function calls Sarvam AI for translation
-and Groq for refinement. `kundendu-worksheets` calls `/.netlify/functions/tts`
+and Groq for refinement. `littlek` calls `/.netlify/functions/tts`
 (Sarvam's Bulbul voice) by a relative path, so read-aloud works only on Netlify
 and on littlek.in.
 
@@ -65,7 +65,7 @@ October every refinement failed and the page showed Sarvam's raw output with a
 small note. It is `openai/gpt-oss-120b` now, Groq's named replacement, with
 `reasoning_effort: "low"` and `include_reasoning: false`. Sarvam renamed the
 text-to-speech field `target_language_code` to `language_code` and answers the
-old name with a 400, which left every read-aloud button in Kundendu silent.
+old name with a 400, which left every read-aloud button in the Class 1 app silent.
 Check both models against console.groq.com/docs/deprecations and
 docs.sarvam.ai when touching either function.
 
@@ -86,7 +86,7 @@ Two traps found while doing it, both worth not rediscovering:
 
 - **`window.open` is a navigation, not a fetch.** `connect-src` does not govern
   it. A check matching a bare `.open(` reports
-  `https://docs.new` in `kundendu-worksheets` as a violation, and it is not one.
+  `https://docs.new` in `littlek` as a violation, and it is not one.
 - **`tessdata.projectnaptha.com` appears in no file and is load-bearing.**
   `court-translator` calls `Tesseract.createWorker('hin', 1, {...})` with no
   explicit `langPath`, so tesseract.js builds the traineddata URL inside the
@@ -191,7 +191,7 @@ type, 16px and 46px-high fields, and a first table column that stays in view
 on a phone. `js/tool.js` folds `.lede` to two lines below 700px behind a
 "Read more" button; without the script the text shows in full. The nav carries
 `data-dyslexia-slot`, which is how `js/dyslexia-font.js` puts its button in
-the band. `alab`, `kundendu-worksheets` and `court-translator` have their own
+the band. `alab`, `littlek` and `court-translator` have their own
 layouts and do not load either file.
 
 A new tool page needs the four `<link>` lines before `</head>`, the attribute
@@ -217,7 +217,7 @@ went wrong in the sweep and are worth not repeating:
 (canonical, Open Graph, Twitter card, JSON-LD) between `<!-- seo:start -->`
 and `<!-- seo:end -->`, a share row just above the page's `<footer>` (WhatsApp with the text
 prefilled, LinkedIn, X, Copy link; `"share_at": "end"` puts it before
-`</body>` instead, which `kundendu-worksheets` needs because its footer sits
+`</body>` instead, which `littlek` needs because its footer sits
 inside the control panel) between `<!-- share:start -->` and
 `<!-- share:end -->`, and `sitemap.xml` and `robots.txt`. CI runs it with
 `--check`, so do not edit inside those markers by hand.
@@ -232,7 +232,7 @@ address, and only the home page had Open Graph tags, so a tool pasted into
 WhatsApp showed a bare URL.
 
 The canonical is `idealogworks.foo` for everything except the two apps that
-own a domain: `kundendu-worksheets` names `littlek.in` and `alab` names
+own a domain: `littlek` names `littlek.in` and `alab` names
 `alab.cloud`, which `netlify.toml` rewrites to them, and neither is in the
 sitemap. The same files are also served at varnasr.github.io/Experiments, and
 the canonical tag is what stops that copy competing with the Netlify one.
@@ -261,7 +261,7 @@ Until 2026-11-10 the page said "Nothing you type in leaves your browser" and
 "Four public APIs, and only four". Neither was true. `library-builder` sends the
 ISBN or title to Open Library, `court-translator` sends the text of the
 petition to Sarvam AI and Groq through the function, and the read-aloud in
-`kundendu-worksheets` sends the sentence to Sarvam AI. The page now names each
+`littlek` sends the sentence to Sarvam AI. The page now names each
 of those and counts five public data APIs. Since 2026-11-12 that paragraph sits in
 the Method section at the foot of the page: the owner found it unneeded in the
 opening, and it stays on the page because the checks below hold it there and
@@ -487,7 +487,7 @@ commit `index.html`.
 
 ## The phonics path taught letters it had not taught yet
 
-`kundendu-worksheets` holds a 162-lesson course. Its phonics path teaches
+`littlek` holds a 162-lesson course. Its phonics path teaches
 `s a t p i n` in module 2, and module 3 is called "First words to read" and
 says six letters is enough to read real words. That is true: at, an, in, it,
 sat, pat, pan, tap, nap, tin, tan, sit, pit, tip, pin, nip, and with two
@@ -509,7 +509,7 @@ actually read, and moving the first book to module 4 as `p4f`, where every
 word in it is inside `satpinckehrmdgo`. "bag" was the one word that had to
 change. Lesson ids are unchanged, so saved progress still maps.
 
-`kundendu-worksheets/tests/sequence.mjs` pins it, and runs in CI beside axe
+`littlek/tests/sequence.mjs` pins it, and runs in CI beside axe
 because it needs the same browser. It serves the repository itself, the
 way `scripts/axe.mjs` does, so the workflow step is one command: a step
 that backgrounds a server with `&` can hold itself open after the test
@@ -525,6 +525,23 @@ test ever written because there is nothing left to fail.
 A picture cue is not a word he reads. `p2c`, `p4a` and `p4b` ask only for the
 first sound, so "elephant" and "ox" are fine there and the check leaves them
 alone.
+
+## Neither child is named, on the site or in these files
+
+Decided by the owner on 2026-11-12. The two family apps are "Little K Learn
+& Play" (`littlek/`, littlek.in) and "A Lab" (`alab/`, alab.cloud). Inside
+the Class 1 app the name is typed once into the Name field and kept on the
+device under `lk-student-name`; the stories and sums read it from there as
+`KID`, and use a stock name until one is typed. Storage keys are `lk-…`. The
+first lines of the page's script move progress saved under the old prefix
+across, and a backup saved before the change still restores.
+
+The two old folder names are written in exactly two redirect rules in
+`netlify.toml`, which keep shared links working, and nowhere else.
+`scripts/card-dates.py` reads a renamed folder's old name from git. The names
+are still in the commit history; rewriting it is the owner's decision and has
+not been taken. Do not write either name in a file, a commit message or a
+pull request.
 
 ## Testing
 

@@ -122,7 +122,7 @@ def main():
     # `window.open` is a top-level navigation, not a fetch, so connect-src does
     # not govern it. Matching a bare `.open(` reports it as a violation, which
     # is a false positive this check used to produce for https://docs.new in
-    # kundendu-worksheets.
+    # littlek.
     referenced = {}
 
     def note(origin, directive, where):
@@ -351,7 +351,7 @@ def main():
     # and Open Library are the routes out; a page that uses one is matched to
     # its card title.
     SENDS = {'court-translator': 'Court Petition Translator', 'library-builder': 'Household Library Builder',
-             'kundendu-worksheets': "Kundendu's Learn &amp; Play"}
+             'littlek': "Little K Learn &amp; Play"}
     out = sorted({f.split('/')[0] for f in html if '/' in f
                   and re.search(r'\.netlify/functions/(?!push-)|openlibrary\.org', read(f))})
     para = re.search(r'<p>Most of these tools compute in the page.*?</p>', index, re.S)

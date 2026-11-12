@@ -74,7 +74,7 @@
   force = true
 
 # ---- earlier paths for the same app, both shared before it was renamed ----
-# The Class 8 science lab and the Agastya lab were two takes on the same thing;
+# The Class 8 science lab and an earlier lab under another name were two takes on the same thing;
 # they are now one app. 301 because the merge is permanent, and the old path was
 # shared before the merge.
 [[redirects]]
@@ -89,6 +89,15 @@
   status = 301
   force = true
 
+# ---- the Class 1 app's folder was renamed on 12 November 2026 ----
+# The old address was shared, so it answers 301. This rule and the one above
+# it are the only places the two old folder names are still written.
+[[redirects]]
+  from = "/kundendu-worksheets/*"
+  to = "/littlek/:splat"
+  status = 301
+  force = true
+
 # ---- littlek.in: serve the worksheet app at the domain root ----
 # www → apex
 [[redirects]]
@@ -97,12 +106,12 @@
   status = 301
   force = true
 
-# rewrite (not redirect): littlek.in/* serves kundendu-worksheets/* — the app owns the domain root.
+# rewrite (not redirect): littlek.in/* serves littlek/* — the app owns the domain root.
 # Relative `to` is Netlify's documented hostname-rewrite form; an absolute same-host `to`
 # re-enters rule processing and loops.
 [[redirects]]
   from = "https://littlek.in/*"
-  to = "/kundendu-worksheets/:splat"
+  to = "/littlek/:splat"
   status = 200
   force = true
 

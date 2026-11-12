@@ -19,7 +19,7 @@ export default async () => {
     try {
       await webpush.sendNotification(rec.sub, JSON.stringify({
         title: "⭐ Today's 5 time!",
-        body: "Five little questions with Kundendu — little and often wins!",
+        body: "Five little questions today. Little and often wins!",
         url: "https://littlek.in/"
       }));
       sent++;

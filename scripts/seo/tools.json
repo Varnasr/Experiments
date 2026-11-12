@@ -140,9 +140,9 @@
       "tagline": "A PDF turned into a page-turning flipbook that works offline. Nothing is uploaded."
     },
     {
-      "dir": "kundendu-worksheets",
+      "dir": "littlek",
       "card": "littlek",
-      "name": "Kundendu's Learn & Play",
+      "name": "Little K Learn & Play",
       "tagline": "Class 1 CBSE worksheets in English, Hindi, Maths and EVS, with fresh questions every time.",
       "canonical": "https://littlek.in/",
       "share_at": "end"
@@ -150,7 +150,7 @@
     {
       "dir": "alab",
       "card": "alab",
-      "name": "Agastya's Study Lab",
+      "name": "A Lab",
       "tagline": "Year-round revision for CBSE Class 8: mind maps, notes, practice, worksheets and a mock paper.",
       "canonical": "https://alab.cloud/"
     },

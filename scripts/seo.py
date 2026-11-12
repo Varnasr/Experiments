@@ -208,7 +208,7 @@ def insert_share(p, out, block):
     spans = [(m.start(), m.end()) for m in SCRIPT_RE.finditer(out)]
     real = [m.start() for m in re.finditer(r'<footer\b', out)
             if not any(a <= m.start() < b for a, b in spans)]
-    # kundendu-worksheets keeps its footer inside the control panel, where a
+    # littlek keeps its footer inside the control panel, where a
     # share row lands among the worksheet settings; tools.json sends it to the end.
     if p.get('share_at') == 'end':
         real = []
