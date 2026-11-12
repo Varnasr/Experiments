@@ -325,6 +325,52 @@ implementation is Stata's `psacalc`, which could not be run. The default
 covariate example on that page uses t-statistics derived from the bounds the
 paper reports, and its README says so.
 
+## Four law tools are decided and not yet built
+
+The owner asked on 2026-11-11 for more law tools, because the page leans
+toward development economics, and chose these four. Her decisions are
+recorded here so that the build starts from them. Each page quotes its
+section beside the result, as `court-format` does, and each statutory text
+must be read from the India Code or the judgment before it is typed in. The
+case names and dates below were given from memory and are to be checked.
+
+- **Limitation calculator.** Limitation Act 1963: sections 4 and 12 to 15,
+  and about thirty Schedule articles. It applies the Supreme Court's COVID-19
+  exclusion automatically (15 March 2020 to 28 February 2022, with 90 days
+  from 1 March 2022 where less remained; check against the order of 10 January
+  2022) and shows that step with the order cited.
+- **Default bail clock.** Section 187(3) BNSS, and section 167(2) CrPC for
+  older cases. Counted from the date of first remand with that day included
+  (Chaganti Satyanarayana 1986; ED v. Kapil Wadhawan 2023). For an offence
+  whose maximum is exactly ten years the page shows both the 60-day and the
+  90-day date and says the point is unsettled: the Karnataka, Kerala and Delhi
+  High Courts apply 60 days and the Supreme Court has not ruled on the BNSS
+  wording.
+- **Gratuity and retrenchment.** Both regimes, chosen by the date the job
+  ended: the Payment of Gratuity Act 1972 and the Industrial Disputes Act 1947
+  before 21 November 2025, the Code on Social Security 2020 and the Industrial
+  Relations Code 2020 from that date. Where service straddles the date and the
+  treatment of earlier service is disputed, the page shows both figures. The
+  retrenchment provisions of the Industrial Relations Code have not been read.
+- **RTI timeline.** Sections 5(2), 6(3), 7(1), 11 and 19 of the Right to
+  Information Act 2005: 30 days for the reply (48 hours for life or liberty,
+  5 more through an APIO or on transfer, 40 with a third party), 30 days for
+  the first appeal, 30 to 45 for its disposal, 90 for the second appeal.
+
+They go in section 04 of the landing page. Adding four takes the count to 33.
+
+## Production on Netlify is published by upload
+
+Netlify builds a preview for every pull request and does not build `main`.
+`[skip netlify]` in a commit message did not stop the preview for #105.
+Production is published with the Netlify deploy tool from a clone of `main`
+that has its own `.git` directory; a `git worktree` fails at "preparing repo"
+because its `.git` file points at a path that exists only on the machine that
+made it. A deploy can be locked in the Netlify interface, and a locked deploy
+stays live whatever is uploaded after it. The owner unlocked it on
+2026-11-11. Merging to `main` updates GitHub Pages at once and Netlify not at
+all, so after a merge the two sites differ until someone deploys.
+
 A new tool's card gets its dates only after the tool has a commit, because
 `scripts/card-dates.py` reads them from git: commit the tool, run the script,
 commit `index.html`.
