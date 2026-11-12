@@ -71,11 +71,15 @@
   ol.work { margin:.4rem 0 .2rem 1.2rem; font-size:.86rem; color:var(--dim); } ol.work li { margin-bottom:.3rem; } ol.work b { color:var(--text); font-variant-numeric:tabular-nums; }
   footer { border-top:1px solid var(--border); padding:1.25rem; text-align:center; font-size:.8rem; color:var(--muted); }
 </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/tool.css">
 </head>
 <body>
 <header><div class="wrap">
   <h1>Unpaid Care Valuation <small>Time Use Survey × PLFS wages, 2019 and 2024</small></h1>
-  <nav><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/care-valuation">Source</a></nav>
+  <nav data-dyslexia-slot><a href="../">Experiments</a><a href="https://github.com/Varnasr/Experiments/tree/main/care-valuation">Source</a></nav>
 </div></header>
 <main><div class="wrap">
 <p class="lede">A rupee value for the unpaid domestic and care work that women and men do in each Indian state. The minutes come from the Time Use Survey and the wages from the Periodic Labour Force Survey, for 2024 or for 2019, and the page sets the two years side by side in 2024 prices. Every assumption that turns a wage into an hourly rate is an input you can change.</p>
@@ -120,7 +124,7 @@
   <div class="panel"><h2>How the figure is reached</h2><div id="work"></div></div>
   <div class="panel"><h2>2019 and 2024, in 2024 prices</h2><div id="chg" aria-live="polite"></div>
     <div class="tscroll" tabindex="0" role="region" aria-label="Change in women's unpaid work by state, 2019 to 2024" id="chgAll"></div>
-    <p class="note">Women, at the settings on the left, with the survey minutes of each year. A change in minutes is marked clear when it is at least 1.96 times its standard error. The standard errors of the two years were computed in different ways, which the method below sets out, so the mark is a guide. Sorted by the change in minutes.</p></div>
+    <p class="note">Women, at the settings chosen, with the survey minutes of each year. A change in minutes is marked clear when it is at least 1.96 times its standard error. The standard errors of the two years were computed in different ways, which the method below sets out, so the mark is a guide. Sorted by the change in minutes.</p></div>
   <div class="panel"><h2>All states, at these settings</h2><div class="tscroll" tabindex="0" role="region" aria-label="Value of unpaid work by state" id="all"></div>
     <p class="note">Sorted by the annual value of a woman's unpaid work. The table uses the survey minutes for every state, including the one whose minutes you may have edited above.</p></div>
   <div class="panel"><h2>Method and limits</h2>
@@ -244,6 +248,8 @@ function setYear() {
 }
 setYear();
 $('#cpiRatio').textContent = RATIO.toFixed(4);
+// 283 + 57.9 is 340.90000000000003 in floating point; a tenth of a minute is all the survey gives.
+const mins = v => String(+v.toFixed(1));
 const pct = v => v == null ? 'no wage' : (v >= 0 ? '+' : '−') + Math.abs(v * 100).toFixed(1) + '%';
 const signed = v => (v >= 0 ? '+' : '−') + Math.abs(v).toFixed(0);
 let edited = false;
@@ -270,7 +276,7 @@ function render() {
   }
   if (edited) h += `<p class="warn">The minutes were typed in and are not the survey figure for ${esc(name)}.</p>`;
   $('#out').innerHTML = h;
-  const line = (lab, x, sex) => x.value ? `<li>${lab}: <b>${x.minutes}</b> minutes a day${edited ? '' : ` (survey: standard error ${x.se.toFixed(1)}, ${x.n.toLocaleString('en-IN')} people in the sample)`}. The ${who} ${o.wage} wage is <b>${rs2(x.wage)}</b> ${unit}, from ${x.workers.toLocaleString('en-IN')} workers in the sample, which is <b>${rs2(x.rate)}</b> an hour. ${x.minutes} ÷ 60 × ${x.rate.toFixed(2)} = <b>${rs2(x.value.day)}</b> a day, and × 365 = <b>${rs(x.value.year)}</b> a year.</li>` : `<li>${lab}: no wage that can be used.</li>`;
+  const line = (lab, x, sex) => x.value ? `<li>${lab}: <b>${mins(x.minutes)}</b> minutes a day${edited ? '' : ` (survey: standard error ${x.se.toFixed(1)}, ${x.n.toLocaleString('en-IN')} people in the sample)`}. The ${who} ${o.wage} wage is <b>${rs2(x.wage)}</b> ${unit}, from ${x.workers.toLocaleString('en-IN')} workers in the sample, which is <b>${rs2(x.rate)}</b> an hour. ${mins(x.minutes)} ÷ 60 × ${x.rate.toFixed(2)} = <b>${rs2(x.value.day)}</b> a day, and × 365 = <b>${rs(x.value.year)}</b> a year.</li>` : `<li>${lab}: no wage that can be used.</li>`;
   $('#work').innerHTML = `<ol class="work">${line('Women', r.female)}${line('Men', r.male)}</ol><p class="mini">Hourly rate: ${o.hours === 'own' ? (o.wage === 'casual' ? `daily wage ÷ ${o.hoursPerDay} hours` : `monthly earnings ÷ ${o.daysPerMonth} days ÷ ${o.hoursPerDay} hours`) : (o.wage === 'casual' ? `daily wage ÷ ${r.female.hours ?? r.male.hours} hours on a casual day` : `monthly earnings ÷ (${r.female.hours ?? r.male.hours} hours a week × 52 ÷ 12)`) + (o.wsex === 'own' ? ' for women; men have their own hours' : '')}.</p>`;
   const so = { ...o, override: null }, A = YEARS[2019].states, B = YEARS[2024].states;
   if (A[name] && B[name]) {
@@ -291,6 +297,7 @@ for (const id of ['mF', 'mM']) $('#' + id).addEventListener('input', () => { edi
 $('#reset').addEventListener('click', () => { fill(); render(); });
 fill(); render();
 </script>
+<script src="../js/tool.js" defer></script>
 <script src="../js/dyslexia-font.js" data-accent="var(--purple2)" data-radius="99px" defer></script>
 </body>
 </html>
