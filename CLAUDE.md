@@ -262,7 +262,10 @@ Until 2026-11-10 the page said "Nothing you type in leaves your browser" and
 ISBN or title to Open Library, `court-translator` sends the text of the
 petition to Sarvam AI and Groq through the function, and the read-aloud in
 `kundendu-worksheets` sends the sentence to Sarvam AI. The page now names each
-of those and counts five public data APIs. `scripts/check.py` holds it there:
+of those and counts five public data APIs. Since 2026-11-12 that paragraph sits in
+the Method section at the foot of the page: the owner found it unneeded in the
+opening, and it stays on the page because the checks below hold it there and
+because a reader pasting a petition should be able to find out where it goes. `scripts/check.py` holds it there:
 a page that calls a function or Open Library must be named in the paragraph
 that says what leaves the browser, every `connect-src` origin must be a named
 data API or a listed exception, and the count in the tile and in the method
