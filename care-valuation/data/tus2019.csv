@@ -1,0 +1,149 @@
+state,sex,age,domestic,care,rse_domestic,rse_care,sample_persons
+All India,male,15-59,28,12,2.1,3.4,165283
+All India,male,6+,25,11,2.0,3.4,226644
+All India,female,15-59,290,45,0.8,2.3,164399
+All India,female,6+,243,37,0.7,2.3,218526
+Andaman & Nicobar Islands,male,15-59,28,11,20.8,23.7,400
+Andaman & Nicobar Islands,male,6+,25,11,17.8,23.4,538
+Andaman & Nicobar Islands,female,15-59,255,40,10.5,18.8,369
+Andaman & Nicobar Islands,female,6+,211,33,10.1,20.9,497
+Andhra Pradesh,male,15-59,16,10,5.4,5.7,5432
+Andhra Pradesh,male,6+,16,8,4.9,5.4,7418
+Andhra Pradesh,female,15-59,237,41,1.6,3.7,5793
+Andhra Pradesh,female,6+,203,33,1.7,3.8,7699
+Arunachal Pradesh,male,15-59,53,28,10.4,9.5,1876
+Arunachal Pradesh,male,6+,46,25,12.1,9.2,2441
+Arunachal Pradesh,female,15-59,279,55,6.2,8.4,1863
+Arunachal Pradesh,female,6+,246,50,6.2,8.2,2229
+Assam,male,15-59,63,21,4.9,4.9,4840
+Assam,male,6+,56,17,4.7,5.0,6373
+Assam,female,15-59,339,64,2.6,3.4,4888
+Assam,female,6+,284,53,2.7,3.4,6154
+Bihar,male,15-59,40,25,4.9,9.3,10662
+Bihar,male,6+,34,22,4.9,7.5,15132
+Bihar,female,15-59,366,75,3.0,7.9,10467
+Bihar,female,6+,298,62,3.0,7.4,13764
+Chandigarh,male,15-59,21,11,20.2,28.5,305
+Chandigarh,male,6+,19,12,20.4,21.6,377
+Chandigarh,female,15-59,224,59,4.1,13.4,236
+Chandigarh,female,6+,201,52,3.4,15.4,287
+Chhattisgarh,male,15-59,29,14,10.2,10.2,3531
+Chhattisgarh,male,6+,26,13,9.8,11.0,4710
+Chhattisgarh,female,15-59,253,37,3.6,7.2,3533
+Chhattisgarh,female,6+,211,31,3.6,7.0,4646
+Dadra & Nagar Haveli,male,15-59,44,10,14.7,20.7,332
+Dadra & Nagar Haveli,male,6+,39,9,15.3,20.6,401
+Dadra & Nagar Haveli,female,15-59,282,64,5.9,13.3,224
+Dadra & Nagar Haveli,female,6+,231,52,6.6,14.4,287
+Daman & Diu,male,15-59,40,7,33.6,16.7,355
+Daman & Diu,male,6+,32,7,35.4,15.3,437
+Daman & Diu,female,15-59,340,51,5.6,16.5,246
+Daman & Diu,female,6+,294,44,6.7,14.3,322
+Delhi,male,15-59,29,8,9.5,13.9,2720
+Delhi,male,6+,25,8,8.8,15.6,3494
+Delhi,female,15-59,292,32,4.0,10.9,2299
+Delhi,female,6+,251,28,4.2,11.1,2938
+Goa,male,15-59,45,23,11.3,12.4,422
+Goa,male,6+,49,21,7.2,11.8,548
+Goa,female,15-59,239,57,7.1,16.0,400
+Goa,female,6+,215,46,7.5,13.8,529
+Gujarat,male,15-59,20,11,7.2,5.8,8482
+Gujarat,male,6+,18,10,6.5,5.6,11456
+Gujarat,female,15-59,291,41,1.4,3.6,7851
+Gujarat,female,6+,242,34,1.4,3.7,10673
+Haryana,male,15-59,15,9,12.0,7.7,3704
+Haryana,male,6+,13,10,11.4,8.5,5004
+Haryana,female,15-59,269,46,3.0,6.5,3282
+Haryana,female,6+,223,38,3.1,6.3,4422
+Himachal Pradesh,male,15-59,23,8,8.5,12.7,1342
+Himachal Pradesh,male,6+,21,6,8.7,12.4,1925
+Himachal Pradesh,female,15-59,244,41,4.9,9.2,1475
+Himachal Pradesh,female,6+,200,32,4.8,9.7,2042
+Jammu & Kashmir,male,15-59,19,13,26.6,31.2,1565
+Jammu & Kashmir,male,6+,19,11,22.8,31.4,2186
+Jammu & Kashmir,female,15-59,277,36,3.3,18.6,1595
+Jammu & Kashmir,female,6+,226,30,2.4,20.0,2107
+Jharkhand,male,15-59,30,23,6.2,9.3,4121
+Jharkhand,male,6+,28,23,6.0,9.5,5828
+Jharkhand,female,15-59,321,44,2.6,5.6,4205
+Jharkhand,female,6+,264,40,2.8,5.6,5665
+Karnataka,male,15-59,23,9,5.5,5.6,8203
+Karnataka,male,6+,23,8,5.2,5.5,10858
+Karnataka,female,15-59,289,37,1.8,4.4,8123
+Karnataka,female,6+,246,31,1.8,4.4,10741
+Kerala,male,15-59,29,15,4.6,5.1,4143
+Kerala,male,6+,31,14,3.9,4.9,6107
+Kerala,female,15-59,268,57,1.5,4.0,4925
+Kerala,female,6+,231,45,1.4,3.8,7006
+Lakshadweep,male,15-59,28,8,25.4,35.3,215
+Lakshadweep,male,6+,30,8,20.8,31.4,302
+Lakshadweep,female,15-59,284,71,8.1,27.5,238
+Lakshadweep,female,6+,251,58,8.7,26.2,310
+Madhya Pradesh,male,15-59,30,8,5.5,6.0,10029
+Madhya Pradesh,male,6+,27,7,5.1,5.9,13681
+Madhya Pradesh,female,15-59,287,38,1.4,4.0,9447
+Madhya Pradesh,female,6+,235,31,1.4,4.0,12784
+Maharashtra,male,15-59,21,11,4.1,5.1,15077
+Maharashtra,male,6+,20,10,4.0,5.0,20552
+Maharashtra,female,15-59,277,39,1.3,4.3,14486
+Maharashtra,female,6+,236,32,1.3,4.2,19539
+Manipur,male,15-59,29,21,9.4,11.8,3388
+Manipur,male,6+,26,17,6.7,11.3,4719
+Manipur,female,15-59,247,47,4.4,12.9,3481
+Manipur,female,6+,205,39,4.1,12.1,4571
+Meghalaya,male,15-59,41,13,16.1,11.5,1954
+Meghalaya,male,6+,35,10,16.7,11.9,2632
+Meghalaya,female,15-59,252,44,4.0,10.4,2039
+Meghalaya,female,6+,203,34,4.0,9.9,2739
+Mizoram,male,15-59,22,44,13.0,9.2,1676
+Mizoram,male,6+,22,39,11.9,8.8,2056
+Mizoram,female,15-59,249,131,4.0,6.3,1668
+Mizoram,female,6+,220,116,4.2,6.4,1966
+Nagaland,male,15-59,47,10,12.2,11.6,1219
+Nagaland,male,6+,44,8,10.9,11.1,1635
+Nagaland,female,15-59,235,38,5.0,8.2,1168
+Nagaland,female,6+,212,32,4.7,8.8,1463
+Odisha,male,15-59,29,9,6.4,7.3,4914
+Odisha,male,6+,27,8,6.0,7.1,6946
+Odisha,female,15-59,310,44,1.7,5.6,5164
+Odisha,female,6+,260,35,1.8,5.7,6886
+Puducherry,male,15-59,27,15,15.3,12.9,495
+Puducherry,male,6+,27,13,12.8,12.3,659
+Puducherry,female,15-59,246,45,5.8,10.1,516
+Puducherry,female,6+,220,37,5.3,10.2,678
+Punjab,male,15-59,22,9,7.7,7.1,4356
+Punjab,male,6+,20,8,6.9,6.7,5959
+Punjab,female,15-59,324,40,3.0,6.0,4017
+Punjab,female,6+,266,34,2.8,5.8,5447
+Rajasthan,male,15-59,21,8,5.2,6.9,9551
+Rajasthan,male,6+,19,7,4.9,6.7,13403
+Rajasthan,female,15-59,275,40,1.6,4.6,9301
+Rajasthan,female,6+,226,32,1.7,4.7,12730
+Sikkim,male,15-59,50,11,8.3,15.1,1117
+Sikkim,male,6+,47,10,8.1,15.3,1362
+Sikkim,female,15-59,266,38,3.0,10.6,944
+Sikkim,female,6+,236,34,3.0,10.6,1124
+Tamil Nadu,male,15-59,20,11,4.9,4.7,8309
+Tamil Nadu,male,6+,20,10,4.3,4.7,11330
+Tamil Nadu,female,15-59,231,41,1.7,3.6,8819
+Tamil Nadu,female,6+,202,33,1.6,3.6,11673
+Telangana,male,15-59,18,13,6.3,7.1,3721
+Telangana,male,6+,18,11,5.7,7.1,4847
+Telangana,female,15-59,217,47,2.3,4.6,3757
+Telangana,female,6+,190,40,2.4,4.5,4721
+Tripura,male,15-59,50,13,4.5,9.2,3042
+Tripura,male,6+,45,12,4.4,9.2,4068
+Tripura,female,15-59,320,50,3.5,5.2,3158
+Tripura,female,6+,275,41,3.8,5.2,4061
+Uttar Pradesh,male,15-59,29,10,10.0,6.7,21242
+Uttar Pradesh,male,6+,26,9,9.7,6.9,30205
+Uttar Pradesh,female,15-59,301,44,1.9,4.2,21642
+Uttar Pradesh,female,6+,245,36,1.9,4.2,29166
+Uttarakhand,male,15-59,38,15,8.4,23.8,1388
+Uttarakhand,male,6+,39,15,19.1,27.4,2017
+Uttarakhand,female,15-59,294,49,9.0,31.0,1530
+Uttarakhand,female,6+,252,40,10.5,32.0,2084
+West Bengal,male,15-59,34,9,3.7,7.6,11155
+West Bengal,male,6+,33,8,3.4,7.1,15038
+West Bengal,female,15-59,322,41,1.9,5.1,11250
+West Bengal,female,6+,276,33,2.0,5.0,14576

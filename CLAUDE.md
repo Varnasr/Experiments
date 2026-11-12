@@ -330,6 +330,33 @@ state's domestic minutes by at most 6. And the CPI join in `rupee-converter`
 is the ratio of the two series' 2025 averages, 1.8985; whether MoSPI has
 published a linking factor of its own was not checked.
 
+**The 2019 side of `care-valuation` was added on 2026-11-12 and rests on
+different files.** MoSPI's Nesstar file for the 2019 Time Use Survey has the
+"time from" and "time to" columns empty on all 9,436,777 diary rows, and the
+catalogue offers no other format, so no minutes can be computed from it. The
+minutes come from the report instead: `tools/tus2019_report.py` runs
+`pdftotext` over "Time Use in India-2019" and reads Statement 7.1 and Table
+(3RSE)_State for 36 States/UTs, and stops unless the all-India figures equal
+the four the connector returns. `tools/plfs_2019.py` computes calendar-2019
+wages, hours and counts from the first-visit and revisit person files of the
+2018-19 and 2019-20 rounds (Q7, Q8, Q1, Q2), with urban records at a quarter
+of their weight, and stops unless its all-India quarterly figures are within
+0.2% of MoSPI's regular wages and 2% of the casual ones; it reached 0.15% and
+1.75%. Published PLFS wages for those years need `year_type_code=1` in the
+connector call and come by quarter. `tools/build_2019.py` writes
+`data/care-2019.js` from the two CSVs and the CPI file in `rupee-converter`.
+Fourteen faults were injected into `change()` and the data file and each
+fails. None of the source files is in the repository.
+
+**What the comparison cannot carry.** The 2019 standard errors are the survey
+office's and the 2024 ones are computed here ignoring stratification, and they
+differ by a factor of about three at all-India level, so "clear of sampling
+error" on the page is a guide. The 2019 wage cells count four urban visits and
+the 2024 cells one, and state regular wages move with that: Delhi's for women
+falls 45% in real terms and Himachal Pradesh's rises 48%. The owner was told
+not to quote state regular wages. The 1.75% casual gap is largest for women in
+July to September 2019 and its cause was not found.
+
 `robustness-value` was chosen over Oster's delta because delta's reference
 implementation is Stata's `psacalc`, which could not be run. The default
 covariate example on that page uses t-statistics derived from the bounds the

@@ -153,7 +153,10 @@ covariate.
 
 Unpaid domestic and care work valued at market wages, by state and sex:
 minutes from the Time Use Survey 2024 unit-level data and wages from the
-Periodic Labour Force Survey 2024.
+Periodic Labour Force Survey 2024. A year switch gives 2019 as well, from the
+survey report and the PLFS unit-level data, and the page sets the two years
+side by side in 2024 prices and marks which changes in minutes are clear of
+sampling error.
 
 **Directory:** `care-valuation/`
 **Stage:** Active
