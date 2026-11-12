@@ -526,6 +526,23 @@ A picture cue is not a word he reads. `p2c`, `p4a` and `p4b` ask only for the
 first sound, so "elephant" and "ox" are fine there and the check leaves them
 alone.
 
+## Neither child is named, on the site or in these files
+
+Decided by the owner on 2026-11-12. The two family apps are "Little K Learn
+& Play" (`littlek/`, littlek.in) and "A Lab" (`alab/`, alab.cloud). Inside
+the Class 1 app the name is typed once into the Name field and kept on the
+device under `lk-student-name`; the stories and sums read it from there as
+`KID`, and use a stock name until one is typed. Storage keys are `lk-…`. The
+first lines of the page's script move progress saved under the old prefix
+across, and a backup saved before the change still restores.
+
+The two old folder names are written in exactly two redirect rules in
+`netlify.toml`, which keep shared links working, and nowhere else.
+`scripts/card-dates.py` reads a renamed folder's old name from git. The names
+are still in the commit history; rewriting it is the owner's decision and has
+not been taken. Do not write either name in a file, a commit message or a
+pull request.
+
 ## Testing
 
 `.github/workflows/ci.yml` runs two jobs on every push and pull request. The
