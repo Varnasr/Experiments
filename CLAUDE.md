@@ -543,6 +543,10 @@ are still in the commit history; rewriting it is the owner's decision and has
 not been taken. Do not write either name in a file, a commit message or a
 pull request.
 
+## The reading-font button was missing on both app domains
+
+Both family apps load `../js/dyslexia-font.js`. At `idealogworks.foo/littlek/` that is `/js/dyslexia-font.js` and it loads. At `littlek.in/` and `alab.cloud/` the same address fell under the rule that rewrites the whole domain into the app's folder, so the script and the OpenDyslexic files answered 404 and the button never appeared. Found on 21 November 2026 by fetching the live domains; every test and axe run serves the apps at `/littlek/` and `/alab/`, where it works, so nothing here could see it. `netlify.toml` now rewrites `/js/*` and `/fonts/*` on each domain to the repository root, above the catch-all. A hostname rule cannot be tried on a deploy preview: check the two live addresses after a deploy. Anything else an app loads from outside its own folder needs the same pair of rules.
+
 ## Testing
 
 `.github/workflows/ci.yml` runs two jobs on every push and pull request. The

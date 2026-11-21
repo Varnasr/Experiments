@@ -67,6 +67,23 @@
   status = 301
   force = true
 
+# The app loads ../js/dyslexia-font.js, which at this domain's root is /js/…,
+# and that script loads /fonts/…. Both live at the repository root, outside the
+# app's folder, so the catch-all below sent them to a path that does not exist
+# and the reading-font button never appeared here (404 until 21 November 2026).
+# These two must stay above the catch-all.
+[[redirects]]
+  from = "https://alab.cloud/js/*"
+  to = "/js/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "https://alab.cloud/fonts/*"
+  to = "/fonts/:splat"
+  status = 200
+  force = true
+
 [[redirects]]
   from = "https://alab.cloud/*"
   to = "/alab/:splat"
@@ -109,6 +126,23 @@
 # rewrite (not redirect): littlek.in/* serves littlek/* — the app owns the domain root.
 # Relative `to` is Netlify's documented hostname-rewrite form; an absolute same-host `to`
 # re-enters rule processing and loops.
+# The app loads ../js/dyslexia-font.js, which at this domain's root is /js/…,
+# and that script loads /fonts/…. Both live at the repository root, outside the
+# app's folder, so the catch-all below sent them to a path that does not exist
+# and the reading-font button never appeared here (404 until 21 November 2026).
+# These two must stay above the catch-all.
+[[redirects]]
+  from = "https://littlek.in/js/*"
+  to = "/js/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "https://littlek.in/fonts/*"
+  to = "/fonts/:splat"
+  status = 200
+  force = true
+
 [[redirects]]
   from = "https://littlek.in/*"
   to = "/littlek/:splat"

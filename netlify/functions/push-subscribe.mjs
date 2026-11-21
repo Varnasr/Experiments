@@ -4,10 +4,25 @@ import webpush from "web-push";
 
 const subId = endpoint => Buffer.from(endpoint).toString("base64url").slice(-40);
 
+// A push subscription's endpoint is an address at the browser maker's push
+// service. Until 21 November 2026 the test path would send a signed request to
+// whatever address a caller supplied, and the store path would keep it for the
+// hourly job to call. Only the push services of Chrome and Edge on Android and
+// desktop, Firefox, Windows and Apple are accepted.
+const PUSH_HOST = /^fcm\.googleapis\.com$|\.push\.services\.mozilla\.com$|\.notify\.windows\.com$|^web\.push\.apple\.com$|\.push\.apple\.com$/;
+export function pushEndpointOk(endpoint) {
+  try {
+    const u = new URL(String(endpoint));
+    return u.protocol === "https:" && PUSH_HOST.test(u.hostname);
+  } catch (e) { return false; }
+}
+
 export default async (req) => {
   if (req.method !== "POST") return new Response("POST only", { status: 405 });
   try {
     const body = await req.json();
+    const given = (body.subscription && body.subscription.endpoint) || body.endpoint;
+    if (given && !pushEndpointOk(given)) return new Response("bad request", { status: 400 });
 
     // instant test notification, so parents can verify delivery in seconds
     if (body.test && body.subscription && body.subscription.endpoint) {
@@ -16,7 +31,7 @@ export default async (req) => {
       webpush.setVapidDetails("mailto:info@idealog.works", pub, priv);
       try {
         await webpush.sendNotification(body.subscription, JSON.stringify({
-          title: "🔔 Test — notifications are working!",
+          title: "Notifications are working",
           body: "This is how the daily Today's 5 reminder will look.",
           url: "https://littlek.in/"
         }));
