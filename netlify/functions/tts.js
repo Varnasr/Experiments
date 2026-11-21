@@ -3,7 +3,29 @@
 // WAV audio. The API key stays server-side; responses are immutable-cacheable
 // because the same text+lang always produces the same audio.
 
+// The hosts whose pages may ask for audio: the app's own domain and the other
+// addresses this repository is served from.
+const OWN = /^(www\.)?littlek\.in$|^(www\.)?idealogworks\.foo$|^varnasr\.github\.io$|^(deploy-preview-\d+--)?varnasr-experiments\.netlify\.app$|^localhost$/;
+const hostOf = (v) => { try { return new URL(v).hostname; } catch (e) { return null; } };
+
+// Until 21 November 2026 any website could put this address in an <audio> tag
+// and spend the Sarvam key. A browser says where a request came from in Origin
+// or Referer; if either names another site the request is refused. A request
+// that carries neither is let through, so a browser set to send no referrer
+// still reads aloud. This stops other sites' pages, not a server calling the
+// function directly.
+function fromElsewhere(headers) {
+  const h = headers || {};
+  for (const v of [h.origin, h.referer]) {
+    if (!v) continue;
+    const host = hostOf(v);
+    if (!host || !OWN.test(host)) return true;
+  }
+  return false;
+}
+
 exports.handler = async (event) => {
+  if (fromElsewhere(event.headers)) return { statusCode: 403, body: "not allowed from this site" };
   const KEY = process.env.SARVAM_API_KEY;
   if (!KEY) return { statusCode: 503, body: "tts unavailable" };
 
@@ -58,3 +80,4 @@ exports.handler = async (event) => {
     return { statusCode: 502, body: "tts error" };
   }
 };
+exports.fromElsewhere = fromElsewhere;
